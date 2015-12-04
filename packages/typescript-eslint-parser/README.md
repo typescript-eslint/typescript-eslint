@@ -36,8 +36,9 @@ TypeScript ESLint Parser is licensed under a permissive BSD 2-clause license.
 ## Development Plan
 
 * **Phase 1:** Full ES6 support, stripping out all TypeScript-specific syntax.
-* **Phase 2:** Add JSX support.
-* **Phase 3:** Add support for top-level TypeScript syntax.
-* **Phase 4:** Add support for types.
+* **Phase 2:** Add support for attaching comments.
+* **Phase 3:** Add JSX support.
+* **Phase 4:** Add support for top-level TypeScript syntax.
+* **Phase 5:** Add support for types.
 
 The high-level goal is to have output that matches Espree v3.x.
