@@ -49,7 +49,7 @@ var testFiles = shelljs.find(FIXTURES_DIR).filter(function(filename) {
 }).map(function(filename) {
     return filename.substring(FIXTURES_DIR.length - 1, filename.length - 7);  // strip off ".src.js"
 }).filter(function(filename) {
-    return /classes/.test(filename) && filename.indexOf("error-") === -1 && filename.indexOf("invalid-") === -1;
+    return !(/jsx|error\-|invalid\-|globalReturn|experimental|newTarget/.test(filename));
 });
 
 var moduleTestFiles = testFiles.filter(function(filename) {
