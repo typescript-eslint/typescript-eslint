@@ -1,0 +1,742 @@
+{
+    "if (morning) goodMorning()": {
+        "type": "IfStatement",
+        "test": {
+            "type": "Identifier",
+            "name": "morning",
+            "range": [
+                4,
+                11
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 11
+                }
+            }
+        },
+        "consequent": {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "Identifier",
+                    "name": "goodMorning",
+                    "range": [
+                        13,
+                        24
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 13
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 24
+                        }
+                    }
+                },
+                "arguments": [],
+                "range": [
+                    13,
+                    26
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 13
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 26
+                    }
+                }
+            },
+            "range": [
+                13,
+                26
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 13
+                },
+                "end": {
+                    "line": 1,
+                    "column": 26
+                }
+            }
+        },
+        "alternate": null,
+        "range": [
+            0,
+            26
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 26
+            }
+        }
+    },
+    "if (morning) (function(){})": {
+        "type": "IfStatement",
+        "test": {
+            "type": "Identifier",
+            "name": "morning",
+            "range": [
+                4,
+                11
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 11
+                }
+            }
+        },
+        "consequent": {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [],
+
+                "body": {
+                    "type": "BlockStatement",
+                    "body": [],
+                    "range": [
+                        24,
+                        26
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 24
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 26
+                        }
+                    }
+                },
+
+                "generator": false,
+                "expression": false,
+                "range": [
+                    14,
+                    26
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 14
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 26
+                    }
+                }
+            },
+            "range": [
+                13,
+                27
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 13
+                },
+                "end": {
+                    "line": 1,
+                    "column": 27
+                }
+            }
+        },
+        "alternate": null,
+        "range": [
+            0,
+            27
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 27
+            }
+        }
+    },
+    "if (morning) var x = 0;": {
+        "type": "IfStatement",
+        "test": {
+            "type": "Identifier",
+            "name": "morning",
+            "range": [
+                4,
+                11
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 11
+                }
+            }
+        },
+        "consequent": {
+            "type": "VariableDeclaration",
+            "declarations": [
+                {
+                    "type": "VariableDeclarator",
+                    "id": {
+                        "type": "Identifier",
+                        "name": "x",
+                        "range": [
+                            17,
+                            18
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 17
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 18
+                            }
+                        }
+                    },
+                    "init": {
+                        "type": "Literal",
+                        "value": 0,
+                        "raw": "0",
+                        "range": [
+                            21,
+                            22
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 21
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 22
+                            }
+                        }
+                    },
+                    "range": [
+                        17,
+                        22
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 17
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 22
+                        }
+                    }
+                }
+            ],
+            "kind": "var",
+            "range": [
+                13,
+                23
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 13
+                },
+                "end": {
+                    "line": 1,
+                    "column": 23
+                }
+            }
+        },
+        "alternate": null,
+        "range": [
+            0,
+            23
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 23
+            }
+        }
+    },
+    "if (morning) function a(){}": {
+        "type": "IfStatement",
+        "test": {
+            "type": "Identifier",
+            "name": "morning",
+            "range": [
+                4,
+                11
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 11
+                }
+            }
+        },
+        "consequent": {
+            "type": "FunctionDeclaration",
+            "id": {
+                "type": "Identifier",
+                "name": "a",
+                "range": [
+                    22,
+                    23
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 22
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 23
+                    }
+                }
+            },
+            "params": [],
+
+            "body": {
+                "type": "BlockStatement",
+                "body": [],
+                "range": [
+                    25,
+                    27
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 25
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 27
+                    }
+                }
+            },
+
+            "generator": false,
+            "expression": false,
+            "range": [
+                13,
+                27
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 13
+                },
+                "end": {
+                    "line": 1,
+                    "column": 27
+                }
+            }
+        },
+        "alternate": null,
+        "range": [
+            0,
+            27
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 27
+            }
+        }
+    },
+    "if (morning) goodMorning(); else goodDay()": {
+        "type": "IfStatement",
+        "test": {
+            "type": "Identifier",
+            "name": "morning",
+            "range": [
+                4,
+                11
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 11
+                }
+            }
+        },
+        "consequent": {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "Identifier",
+                    "name": "goodMorning",
+                    "range": [
+                        13,
+                        24
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 13
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 24
+                        }
+                    }
+                },
+                "arguments": [],
+                "range": [
+                    13,
+                    26
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 13
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 26
+                    }
+                }
+            },
+            "range": [
+                13,
+                27
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 13
+                },
+                "end": {
+                    "line": 1,
+                    "column": 27
+                }
+            }
+        },
+        "alternate": {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "Identifier",
+                    "name": "goodDay",
+                    "range": [
+                        33,
+                        40
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 33
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 40
+                        }
+                    }
+                },
+                "arguments": [],
+                "range": [
+                    33,
+                    42
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 33
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 42
+                    }
+                }
+            },
+            "range": [
+                33,
+                42
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 33
+                },
+                "end": {
+                    "line": 1,
+                    "column": 42
+                }
+            }
+        },
+        "range": [
+            0,
+            42
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 42
+            }
+        }
+    },
+    "if (true) that()\n; else;": {
+        "type": "IfStatement",
+        "test": {
+            "type": "Literal",
+            "value": true,
+            "raw": "true",
+            "range": [
+                4,
+                8
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 8
+                }
+            }
+        },
+        "consequent": {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "Identifier",
+                    "name": "that",
+                    "range": [
+                        10,
+                        14
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 10
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 14
+                        }
+                    }
+                },
+                "arguments": [],
+                "range": [
+                    10,
+                    16
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 10
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 16
+                    }
+                }
+            },
+            "range": [
+                10,
+                18
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 10
+                },
+                "end": {
+                    "line": 2,
+                    "column": 1
+                }
+            }
+        },
+        "alternate": {
+            "type": "EmptyStatement",
+            "range": [
+                23,
+                24
+            ],
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 6
+                },
+                "end": {
+                    "line": 2,
+                    "column": 7
+                }
+            }
+        },
+        "range": [
+            0,
+            24
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 2,
+                "column": 7
+            }
+        }
+    },
+    "if (true) that(); else;": {
+        "type": "IfStatement",
+        "test": {
+            "type": "Literal",
+            "value": true,
+            "raw": "true",
+            "range": [
+                4,
+                8
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 8
+                }
+            }
+        },
+        "consequent": {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "Identifier",
+                    "name": "that",
+                    "range": [
+                        10,
+                        14
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 10
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 14
+                        }
+                    }
+                },
+                "arguments": [],
+                "range": [
+                    10,
+                    16
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 10
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 16
+                    }
+                }
+            },
+            "range": [
+                10,
+                17
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 10
+                },
+                "end": {
+                    "line": 1,
+                    "column": 17
+                }
+            }
+        },
+        "alternate": {
+            "type": "EmptyStatement",
+            "range": [
+                22,
+                23
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 22
+                },
+                "end": {
+                    "line": 1,
+                    "column": 23
+                }
+            }
+        },
+        "range": [
+            0,
+            23
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 23
+            }
+        }
+    }
+}
