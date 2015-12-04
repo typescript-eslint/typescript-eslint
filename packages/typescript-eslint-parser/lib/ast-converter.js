@@ -113,6 +113,7 @@ TOKEN_TO_TEXT[SyntaxKind.AmpersandEqualsToken] = "&=";
 TOKEN_TO_TEXT[SyntaxKind.BarEqualsToken] = "|=";
 TOKEN_TO_TEXT[SyntaxKind.CaretEqualsToken] = "^=";
 TOKEN_TO_TEXT[SyntaxKind.AtToken] = "@";
+TOKEN_TO_TEXT[SyntaxKind.InKeyword] = "in";
 
 function isESTreeClassMember(node) {
     return node.kind !== SyntaxKind.PropertyDeclaration && node.kind !== SyntaxKind.SemicolonClassElement;
@@ -123,11 +124,11 @@ function isComma(token) {
 }
 
 function isAssignmentOperator(operator) {
-    return ASSIGNMENT_OPERATORS.indexOf(operator) > -1;
+    return ASSIGNMENT_OPERATORS.indexOf(operator.kind) > -1;
 }
 
 function isLogicalOperator(operator) {
-    return LOGICAL_OPERATORS.indexOf(operator) > -1;
+    return LOGICAL_OPERATORS.indexOf(operator.kind) > -1;
 }
 
 function getBinaryExpressionType(operator) {
@@ -174,7 +175,36 @@ function getLoc(nodeOrToken, ast) {
     // };
 }
 
+function fixExports(node, result, ast) {
+    // check for exports
+    if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
+        var exportKeyword = node.modifiers[0],
+            nextModifier = node.modifiers[1],
+            lastModifier = node.modifiers[node.modifiers.length - 1],
+            declarationIsDefault = nextModifier && (nextModifier.kind === SyntaxKind.DefaultKeyword),
+            varToken = ts.findNextToken(lastModifier, ast);
 
+        result.range[0] = varToken.getStart();
+        result.loc = getLocFor(result.range[0], result.range[1], ast);
+
+        var newResult = {
+            type: declarationIsDefault ? "ExportDefaultDeclaration" : "ExportNamedDeclaration",
+            declaration: result,
+            range: [ exportKeyword.getStart(), result.range[1] ],
+            loc: getLocFor(exportKeyword.getStart(), result.range[1], ast)
+        };
+
+        if (!declarationIsDefault) {
+            newResult.specifiers = [];
+            newResult.source = null;
+        }
+
+        return newResult;
+
+    }
+
+    return result;
+}
 
 function convertError(error) {
 
@@ -184,19 +214,39 @@ function convertError(error) {
         index: error.start,
         lineNumber: loc.line + 1,
         column: loc.character,
-        message: error.message
+        message: error.message || error.messageText
     };
 }
 
 function getTokenType(token) {
 
+
     // Need two checks for keywords since some are also identifiers
     if (token.originalKeywordKind) {
-        return "Keyword";
+
+        switch (token.originalKeywordKind) {
+            case SyntaxKind.NullKeyword:
+                return "Null";
+
+            case SyntaxKind.GetKeyword:
+            case SyntaxKind.SetKeyword:
+                return "Identifier";
+
+            default:
+                return "Keyword"
+        }
     }
 
     if (token.kind >= 68 && token.kind <= 112) {
         return "Keyword";
+    }
+
+    if (token.kind >= 15 && token.kind <= 66) {
+        return "Punctuator";
+    }
+
+    if (token.kind >= SyntaxKind.NoSubstitutionTemplateLiteral && token.kind <= SyntaxKind.TemplateTail) {
+        return "Template";
     }
 
     switch (token.kind) {
@@ -213,22 +263,13 @@ function getTokenType(token) {
         case SyntaxKind.ConstructorKeyword:
         case SyntaxKind.GetKeyword:
         case SyntaxKind.SetKeyword:
-            return "Identifier"
-    }
-
-
-    if (token.kind >= 15 && token.kind <= 66) {
-        return "Punctuator";
+            // falls through
     }
 
 
 
-    if (token.kind >= SyntaxKind.NoSubstitutionTemplateLiteral && token.kind <= SyntaxKind.TemplateTail) {
-        return "Template";
-    }
 
-
-    return "Unknown";
+    return "Identifier";
 }
 
 function convertToken(token, ast) {
@@ -273,7 +314,7 @@ function convertTokens(ast) {
 // Public
 //------------------------------------------------------------------------------
 
-module.exports = function(ast) {
+module.exports = function(ast, extra) {
 
     if (ast.parseDiagnostics.length) {
         throw convertError(ast.parseDiagnostics[0]);
@@ -306,9 +347,21 @@ module.exports = function(ast) {
             case SyntaxKind.SourceFile:
                 assign(result, {
                     type: "Program",
-                    body: node.statements.map(convertChild),
+                    body: [],
                     sourceType: node.externalModuleIndicator ? "module": "script"
                 });
+
+                // filter out unknown nodes for now
+                node.statements.forEach(function(statement) {
+                    var convertedStatement = convertChild(statement);
+                    if (convertedStatement) {
+                        result.body.push(convertedStatement);
+                    }
+                });
+
+                // fix end location
+                result.range[1] = node.endOfFileToken.pos;
+                result.loc = getLocFor(node.getStart(), result.range[1], ast);
                 break;
 
             case SyntaxKind.Block:
@@ -398,6 +451,7 @@ module.exports = function(ast) {
             case SyntaxKind.TryStatement:
                 assign(result, {
                     type: "TryStatement",
+                    block: convert(node.tryBlock),
                     handler: convertChild(node.catchClause),
                     finalizer: convertChild(node.finallyBlock)
                 });
@@ -461,6 +515,10 @@ module.exports = function(ast) {
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body)
                 });
+
+                // check for exports
+                result = fixExports(node, result, ast);
+
                 break;
 
             case SyntaxKind.VariableDeclaration:
@@ -472,10 +530,23 @@ module.exports = function(ast) {
                 break;
 
             case SyntaxKind.VariableStatement:
+
                 assign(result, {
                     type: "VariableDeclaration",
                     declarations: node.declarationList.declarations.map(convertChild),
                     kind: (node.declarationList.flags ? (node.declarationList.flags === ts.NodeFlags.Let ? "let" : "const") : "var")
+                });
+
+                // check for exports
+                result = fixExports(node, result, ast);
+                break;
+
+            // mostly for for-of, for-in
+            case SyntaxKind.VariableDeclarationList:
+                assign(result, {
+                    type: "VariableDeclaration",
+                    declarations: node.declarations.map(convertChild),
+                    kind: (node.flags ? (node.flags === ts.NodeFlags.Let ? "let" : "const") : "var")
                 });
                 break;
 
@@ -496,8 +567,19 @@ module.exports = function(ast) {
 
             case SyntaxKind.ArrayLiteralExpression:
 
+                var arrayAssignNode = ts.getAncestor(node, SyntaxKind.BinaryExpression),
+                    arrayIsInAssignment;
+
+                if (arrayAssignNode) {
+                    if (arrayAssignNode.left === node) {
+                        arrayIsInAssignment = true;
+                    } else {
+                        arrayIsInAssignment = (ts.findChildOfKind(arrayAssignNode.left, SyntaxKind.ArrayLiteralExpression, ast) === node);
+                    }
+                }
+
                 // TypeScript uses ArrayLiteralExpression in destructuring assignment, too
-                if (parent.kind === SyntaxKind.BinaryExpression && node === parent.left) {
+                if (arrayIsInAssignment) {
                     assign(result, {
                         type: "ArrayPattern",
                         elements: node.elements.map(convertChild)
@@ -511,10 +593,30 @@ module.exports = function(ast) {
                 break;
 
             case SyntaxKind.ObjectLiteralExpression:
-                assign(result, {
-                    type: "ObjectExpression",
-                    properties: node.properties.map(convertChild)
-                });
+
+                var objectAssignNode = ts.getAncestor(node, SyntaxKind.BinaryExpression),
+                    objectIsInAssignment;
+
+                if (objectAssignNode) {
+                    if (objectAssignNode.left === node) {
+                        objectIsInAssignment = true;
+                    } else {
+                        objectIsInAssignment = (ts.findChildOfKind(objectAssignNode.left, SyntaxKind.ObjectLiteralExpression, ast) === node);
+                    }
+                }
+
+                // TypeScript uses ObjectLiteralExpression in destructuring assignment, too
+                if (objectIsInAssignment) {
+                    assign(result, {
+                        type: "ObjectPattern",
+                        properties: node.properties.map(convertChild)
+                    });
+                } else {
+                    assign(result, {
+                        type: "ObjectExpression",
+                        properties: node.properties.map(convertChild)
+                    });
+                }
                 break;
 
             case SyntaxKind.PropertyAssignment:
@@ -522,7 +624,7 @@ module.exports = function(ast) {
                     type: "Property",
                     key: convertChild(node.name),
                     value: convertChild(node.initializer),
-                    computed: false,
+                    computed: (node.name.kind === SyntaxKind.ComputedPropertyName),
                     method: false,
                     shorthand: false,
                     kind: "init"
@@ -564,6 +666,7 @@ module.exports = function(ast) {
 
                 // TODO: double-check that these positions are correct
                 var methodLoc = ast.getLineAndCharacterOfPosition(node.name.end + 1),
+                    nodeIsMethod = (node.kind === SyntaxKind.MethodDeclaration),
                     method = {
                         type: "FunctionExpression",
                         id: null,
@@ -575,7 +678,7 @@ module.exports = function(ast) {
                         loc: {
                             start: {
                                 line: methodLoc.line + 1,
-                                column: methodLoc.character
+                                column: methodLoc.character - 1
                             },
                             end: result.loc.end
                         }
@@ -586,8 +689,8 @@ module.exports = function(ast) {
                         type: "Property",
                         key: convertChild(node.name),
                         value: method,
-                        computed: false,
-                        method: false,
+                        computed: (node.name.kind === SyntaxKind.ComputedPropertyName),
+                        method: nodeIsMethod,
                         shorthand: false,
                         kind: "init"
                     });
@@ -717,6 +820,56 @@ module.exports = function(ast) {
                     elements: node.elements.map(convertChild)
                 });
                 break;
+
+            // occurs with missing array elements like [,]
+            case SyntaxKind.OmittedExpression:
+                return null;
+
+            case SyntaxKind.ObjectBindingPattern:
+                assign(result, {
+                    type: "ObjectPattern",
+                    properties: node.elements.map(convertChild)
+                });
+                break;
+
+            case SyntaxKind.BindingElement:
+
+                if (parent.kind === SyntaxKind.ArrayBindingPattern) {
+                    var arrayItem = convert(node.name, parent);
+                    if (node.initializer) {
+                        assign(result, {
+                            type: "AssignmentPattern",
+                            left: arrayItem,
+                            right: convertChild(node.initializer)
+                        });
+                    } else {
+                        return arrayItem;
+                    }
+                } else {
+
+                    assign(result, {
+                        type: "Property",
+                        key: convertChild(node.propertyName || node.name),
+                        value: convertChild(node.name),
+                        computed: false,
+                        method: false,
+                        shorthand: !node.propertyName,
+                        kind: "init"
+                    });
+
+                    if (node.initializer) {
+                        result.value = {
+                            type: "AssignmentPattern",
+                            left: convertChild(node.name),
+                            right: convertChild(node.initializer),
+                            range: [ node.name.getStart(), node.initializer.end ],
+                            loc: getLocFor(node.name.getStart(), node.initializer.end, ast)
+                        };
+                    }
+
+                }
+                break;
+
 
             case SyntaxKind.ArrowFunction:
                 assign(result, {
@@ -852,6 +1005,97 @@ module.exports = function(ast) {
                     result.body.body = filteredMembers.map(convertChild);
                 }
 
+                // check for exports
+                result = fixExports(node, result, ast);
+
+                break;
+
+            // Modules
+            case SyntaxKind.ImportDeclaration:
+                assign(result, {
+                    type: "ImportDeclaration",
+                    source: convertChild(node.moduleSpecifier),
+                    specifiers: []
+                });
+
+                if (node.importClause) {
+                    if (node.importClause.name) {
+                        result.specifiers.push(convertChild(node.importClause));
+                    }
+
+                    if (node.importClause.namedBindings) {
+                        if (node.importClause.namedBindings.kind === SyntaxKind.NamespaceImport) {
+                            result.specifiers.push(convertChild(node.importClause.namedBindings));
+                        } else {
+                            result.specifiers = result.specifiers.concat(node.importClause.namedBindings.elements.map(convertChild));
+                        }
+                    }
+                }
+
+                break;
+
+            case SyntaxKind.NamespaceImport:
+                assign(result, {
+                    type: "ImportNamespaceSpecifier",
+                    local: convertChild(node.name)
+                });
+                break;
+
+            case SyntaxKind.ImportSpecifier:
+                assign(result, {
+                    type: "ImportSpecifier",
+                    local: convertChild(node.name),
+                    imported: convertChild(node.propertyName || node.name)
+                });
+                break;
+
+            case SyntaxKind.ImportClause:
+                assign(result, {
+                    type: "ImportDefaultSpecifier",
+                    local: convertChild(node.name)
+                });
+
+                // have to adjust location information due to tree differences
+                result.range[1] = node.name.end;
+                result.loc = getLocFor(result.range[0], result.range[1], ast);
+                break;
+
+            case SyntaxKind.NamedImports:
+                assign(result, {
+                    type: "ImportDefaultSpecifier",
+                    local: convertChild(node.name)
+                });
+                break;
+
+            case SyntaxKind.ExportDeclaration:
+                if (node.exportClause) {
+                    assign(result, {
+                        type: "ExportNamedDeclaration",
+                        source: convertChild(node.moduleSpecifier),
+                        specifiers: node.exportClause.elements.map(convertChild),
+                        declaration: null
+                    });
+                } else {
+                    assign(result, {
+                        type: "ExportAllDeclaration",
+                        source: convertChild(node.moduleSpecifier)
+                    });
+                }
+                break;
+
+            case SyntaxKind.ExportSpecifier:
+                assign(result, {
+                    type: "ExportSpecifier",
+                    local: convertChild(node.propertyName || node.name),
+                    exported: convertChild(node.name)
+                });
+                break;
+
+            case SyntaxKind.ExportAssignment:
+                assign(result, {
+                    type: "ExportDefaultDeclaration",
+                    declaration: convertChild(node.expression)
+                });
                 break;
 
             // Unary Operations
@@ -900,6 +1144,26 @@ module.exports = function(ast) {
                         left: convertChild(node.left),
                         right: convertChild(node.right)
                     });
+
+                    // if the binary expression is in a destructured array, switch it
+                    if (result.type === "AssignmentExpression") {
+                        var upperArrayNode = ts.getAncestor(node, SyntaxKind.ArrayLiteralExpression),
+                            upperArrayAssignNode = upperArrayNode && ts.getAncestor(upperArrayNode, SyntaxKind.BinaryExpression),
+                            upperArrayIsInAssignment;
+
+                        if (upperArrayAssignNode) {
+                            if (upperArrayAssignNode.left === upperArrayNode) {
+                                upperArrayIsInAssignment = true;
+                            } else {
+                                upperArrayIsInAssignment = (ts.findChildOfKind(upperArrayAssignNode.left, SyntaxKind.ArrayLiteralExpression, ast) === upperArrayNode);
+                            }
+                        }
+
+                        if (upperArrayIsInAssignment) {
+                            delete result.operator;
+                            result.type = "AssignmentPattern";
+                        }
+                    }
                 }
                 break;
 
@@ -939,11 +1203,21 @@ module.exports = function(ast) {
                 break;
 
             case SyntaxKind.NewExpression:
-                assign(result, {
-                    type: "NewExpression",
-                    callee: convertChild(node.expression),
-                    arguments: node.arguments.map(convertChild)
-                });
+
+                // new.target
+                if (node.expression.kind === SyntaxKind.PropertyAccessExpression) {
+                    assign(result, {
+                        type: "MetaProperty",
+                        meta: convertChild(node.expression.name),
+                        property: convertChild(node.expression.propertyName)
+                    });
+                } else {
+                    assign(result, {
+                        type: "NewExpression",
+                        callee: convertChild(node.expression),
+                        arguments: node.arguments.map(convertChild)
+                    });
+                }
                 break;
 
 
@@ -1020,7 +1294,15 @@ module.exports = function(ast) {
 
 
     var estree = convert(ast);
-    estree.tokens = convertTokens(ast);
+
+    if (extra.tokens) {
+        estree.tokens = convertTokens(ast);
+    }
+
+    if (extra.comment || extra.attachComment) {
+        estree.comments = [];
+    }
+
     return estree;
 
 };

@@ -99,59 +99,6 @@ function parse(code, options) {
             commentAttachment.reset();
         }
 
-        if (options.sourceType === "module") {
-            extra.ecmaFeatures = {
-                arrowFunctions: true,
-                binaryLiterals: true,
-                blockBindings: true,
-                classes: true,
-                destructuring: true,
-                forOf: true,
-                generators: true,
-                modules: true,
-                objectLiteralComputedProperties: true,
-                objectLiteralDuplicateProperties: true,
-                objectLiteralShorthandMethods: true,
-                objectLiteralShorthandProperties: true,
-                octalLiterals: true,
-                regexUFlag: true,
-                regexYFlag: true,
-                restParams: true,
-                spread: true,
-                templateStrings: true,
-                unicodeCodePointEscapes: true,
-            };
-            acornOptions.ecmaVersion = 6;
-            acornOptions.sourceType = "module";
-        }
-
-        // apply parsing flags after sourceType to allow overriding
-        if (options.ecmaFeatures && typeof options.ecmaFeatures === "object") {
-
-            var flags = Object.keys(options.ecmaFeatures);
-
-            // if it's a module, augment the ecmaFeatures
-            flags.forEach(function(key) {
-                var value = extra.ecmaFeatures[key] = options.ecmaFeatures[key];
-
-                if (value) {
-                    switch (key) {
-                        case "globalReturn":
-                            acornOptions.allowReturnOutsideFunction = true;
-                            break;
-
-                        case "modules":
-                            acornOptions.sourceType = "module";
-                            // falls through
-
-                        default:
-                            acornOptions.ecmaVersion = 6;
-                    }
-                }
-            });
-
-        }
-
         var FILENAME = "eslint.ts";
 
         var compilerHost = {
@@ -205,34 +152,10 @@ function parse(code, options) {
             };
         }
 
-        if (extra.range) {
-            acornOptions.ranges = true;
-        }
-
-        if (extra.loc) {
-            acornOptions.locations = true;
-        }
-
-        if (extra.ecmaFeatures.jsx) {
-            if (extra.ecmaFeatures.spread !== false) {
-                extra.ecmaFeatures.spread = true;
-            }
-            acornOptions.plugins = { jsx: true };
-        }
     }
 
-
-    // if (extra.comment || extra.attachComment) {
-    //     ast.comments = extra.comments;
-    // }
-
-    // if (extra.tokens) {
-    //     ast.tokens = extra.tokens;
-    // }
     var convert = require("./lib/ast-converter");
-    return convert(ast);
-
-    // return ast;
+    return convert(ast, extra);
 }
 
 //------------------------------------------------------------------------------
