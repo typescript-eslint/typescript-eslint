@@ -1,0 +1,450 @@
+{
+    "while (true) { break }": {
+        "type": "WhileStatement",
+        "test": {
+            "type": "Literal",
+            "value": true,
+            "raw": "true",
+            "range": [
+                7,
+                11
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 7
+                },
+                "end": {
+                    "line": 1,
+                    "column": 11
+                }
+            }
+        },
+        "body": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "BreakStatement",
+                    "label": null,
+                    "range": [
+                        15,
+                        21
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 15
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 21
+                        }
+                    }
+                }
+            ],
+            "range": [
+                13,
+                22
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 13
+                },
+                "end": {
+                    "line": 1,
+                    "column": 22
+                }
+            }
+        },
+        "range": [
+            0,
+            22
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 22
+            }
+        }
+    },
+    "done: while (true) { break done }": {
+        "type": "LabeledStatement",
+        "label": {
+            "type": "Identifier",
+            "name": "done",
+            "range": [
+                0,
+                4
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 4
+                }
+            }
+        },
+        "body": {
+            "type": "WhileStatement",
+            "test": {
+                "type": "Literal",
+                "value": true,
+                "raw": "true",
+                "range": [
+                    13,
+                    17
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 13
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 17
+                    }
+                }
+            },
+            "body": {
+                "type": "BlockStatement",
+                "body": [
+                    {
+                        "type": "BreakStatement",
+                        "label": {
+                            "type": "Identifier",
+                            "name": "done",
+                            "range": [
+                                27,
+                                31
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 27
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 31
+                                }
+                            }
+                        },
+                        "range": [
+                            21,
+                            32
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 21
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 32
+                            }
+                        }
+                    }
+                ],
+                "range": [
+                    19,
+                    33
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 19
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 33
+                    }
+                }
+            },
+            "range": [
+                6,
+                33
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 6
+                },
+                "end": {
+                    "line": 1,
+                    "column": 33
+                }
+            }
+        },
+        "range": [
+            0,
+            33
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 33
+            }
+        }
+    },
+    "done: while (true) { break done; }": {
+        "type": "LabeledStatement",
+        "label": {
+            "type": "Identifier",
+            "name": "done",
+            "range": [
+                0,
+                4
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 4
+                }
+            }
+        },
+        "body": {
+            "type": "WhileStatement",
+            "test": {
+                "type": "Literal",
+                "value": true,
+                "raw": "true",
+                "range": [
+                    13,
+                    17
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 13
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 17
+                    }
+                }
+            },
+            "body": {
+                "type": "BlockStatement",
+                "body": [
+                    {
+                        "type": "BreakStatement",
+                        "label": {
+                            "type": "Identifier",
+                            "name": "done",
+                            "range": [
+                                27,
+                                31
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 27
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 31
+                                }
+                            }
+                        },
+                        "range": [
+                            21,
+                            32
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 21
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 32
+                            }
+                        }
+                    }
+                ],
+                "range": [
+                    19,
+                    34
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 19
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 34
+                    }
+                }
+            },
+            "range": [
+                6,
+                34
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 6
+                },
+                "end": {
+                    "line": 1,
+                    "column": 34
+                }
+            }
+        },
+        "range": [
+            0,
+            34
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 34
+            }
+        }
+    },
+    "__proto__: while (true) { break __proto__; }": {
+        "type": "LabeledStatement",
+        "label": {
+            "type": "Identifier",
+            "name": "__proto__",
+            "range": [
+                0,
+                9
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 9
+                }
+            }
+        },
+        "body": {
+            "type": "WhileStatement",
+            "test": {
+                "type": "Literal",
+                "value": true,
+                "raw": "true",
+                "range": [
+                    18,
+                    22
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 18
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 22
+                    }
+                }
+            },
+            "body": {
+                "type": "BlockStatement",
+                "body": [
+                    {
+                        "type": "BreakStatement",
+                        "label": {
+                            "type": "Identifier",
+                            "name": "__proto__",
+                            "range": [
+                                32,
+                                41
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 32
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 41
+                                }
+                            }
+                        },
+                        "range": [
+                            26,
+                            42
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 26
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 42
+                            }
+                        }
+                    }
+                ],
+                "range": [
+                    24,
+                    44
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 24
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 44
+                    }
+                }
+            },
+            "range": [
+                11,
+                44
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 11
+                },
+                "end": {
+                    "line": 1,
+                    "column": 44
+                }
+            }
+        },
+        "range": [
+            0,
+            44
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 44
+            }
+        }
+    }
+}

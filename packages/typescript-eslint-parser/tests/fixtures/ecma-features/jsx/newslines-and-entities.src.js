@@ -1,0 +1,1 @@
+<AbC-def\n  test="&#x0026;&#38;">\nbar\nbaz\r\n</AbC-def>;

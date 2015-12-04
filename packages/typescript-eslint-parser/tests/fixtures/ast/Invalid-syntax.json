@@ -1,0 +1,1334 @@
+{
+    "{": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "}": {
+        "index": 0,
+        "lineNumber": 1,
+        "column": 1,
+        "message": "Error: Line 1: Unexpected token }"
+    },
+    "3ea": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "3in []": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "3e": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "3e+": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "3e-": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "3x": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "3x0": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "0x": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "09": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "018": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "01a": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "3in[]": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "0x3in[]": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "\"Hello\nWorld\"": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "x\\": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "x\\u005c": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "x\\u002a": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "var x = /(s/g": {
+        "index": 13,
+        "lineNumber": 1,
+        "column": 14,
+        "message": "Error: Line 1: Invalid regular expression"
+    },
+    "a\\u": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "\\ua": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "/": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Invalid regular expression: missing /"
+    },
+    "/test": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Invalid regular expression: missing /"
+    },
+    "/test\n/": {
+        "index": 6,
+        "lineNumber": 1,
+        "column": 7,
+        "message": "Error: Line 1: Invalid regular expression: missing /"
+    },
+    "var x = /[a-z]/\\ux": {
+        "index": 17,
+        "lineNumber": 1,
+        "column": 18,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "var x = /[a-z\n]/\\ux": {
+        "index": 14,
+        "lineNumber": 1,
+        "column": 15,
+        "message": "Error: Line 1: Invalid regular expression: missing /"
+    },
+    "var x = /[a-z]/\\\\ux": {
+        "index": 16,
+        "lineNumber": 1,
+        "column": 17,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "var x = /[P QR]/\\\\u0067": {
+        "index": 17,
+        "lineNumber": 1,
+        "column": 18,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "3 = 4": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Invalid left-hand side in assignment"
+    },
+    "func() = 4": {
+        "index": 6,
+        "lineNumber": 1,
+        "column": 7,
+        "message": "Error: Line 1: Invalid left-hand side in assignment"
+    },
+    "(1 + 1) = 10": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Invalid left-hand side in assignment"
+    },
+    "1++": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Invalid left-hand side in assignment"
+    },
+    "1--": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Invalid left-hand side in assignment"
+    },
+    "++1": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Invalid left-hand side in assignment"
+    },
+    "--1": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Invalid left-hand side in assignment"
+    },
+    "for((1 + 1) in list) process(x);": {
+        "index": 11,
+        "lineNumber": 1,
+        "column": 12,
+        "message": "Error: Line 1: Invalid left-hand side in for-in"
+    },
+    "[": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "[,": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "1 + {": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "1 + { t:t ": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "1 + { t:t,": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "var x = /\n/": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Invalid regular expression: missing /"
+    },
+    "var x = \"\n": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "var if = 42": {
+        "index": 4,
+        "lineNumber": 1,
+        "column": 5,
+        "message": "Error: Line 1: Unexpected token if"
+    },
+    "i #= 42": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "i + 2 = 42": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Invalid left-hand side in assignment"
+    },
+    "+i = 42": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Invalid left-hand side in assignment"
+    },
+    "1 + (": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "\n\n\n{": {
+        "index": 4,
+        "lineNumber": 4,
+        "column": 2,
+        "message": "Error: Line 4: Unexpected end of input"
+    },
+    "\n/* Some multiline\ncomment */\n)": {
+        "index": 30,
+        "lineNumber": 4,
+        "column": 1,
+        "message": "Error: Line 4: Unexpected token )"
+    },
+    "{ set 1 }": {
+        "index": 6,
+        "lineNumber": 1,
+        "column": 7,
+        "message": "Error: Line 1: Unexpected number"
+    },
+    "{ get 2 }": {
+        "index": 6,
+        "lineNumber": 1,
+        "column": 7,
+        "message": "Error: Line 1: Unexpected number"
+    },
+    "({ set: s(if) { } })": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Unexpected token if"
+    },
+    "({ set s(.) { } })": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected token ."
+    },
+    "({ set s() { } })": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected token )"
+    },
+    "({ set: s() { } })": {
+        "index": 12,
+        "lineNumber": 1,
+        "column": 13,
+        "message": "Error: Line 1: Unexpected token {"
+    },
+    "({ set: s(a, b) { } })": {
+        "index": 16,
+        "lineNumber": 1,
+        "column": 17,
+        "message": "Error: Line 1: Unexpected token {"
+    },
+    "({ get: g(d) { } })": {
+        "index": 13,
+        "lineNumber": 1,
+        "column": 14,
+        "message": "Error: Line 1: Unexpected token {"
+    },
+    "({ get i() { }, i: 42 })": {
+        "index": 21,
+        "lineNumber": 1,
+        "column": 22,
+        "message": "Error: Line 1: Object literal may not have data and accessor property with the same name"
+    },
+    "({ i: 42, get i() { } })": {
+        "index": 21,
+        "lineNumber": 1,
+        "column": 22,
+        "message": "Error: Line 1: Object literal may not have data and accessor property with the same name"
+    },
+    "({ set i(x) { }, i: 42 })": {
+        "index": 22,
+        "lineNumber": 1,
+        "column": 23,
+        "message": "Error: Line 1: Object literal may not have data and accessor property with the same name"
+    },
+    "({ i: 42, set i(x) { } })": {
+        "index": 22,
+        "lineNumber": 1,
+        "column": 23,
+        "message": "Error: Line 1: Object literal may not have data and accessor property with the same name"
+    },
+    "({ get i() { }, get i() { } })": {
+        "index": 27,
+        "lineNumber": 1,
+        "column": 28,
+        "message": "Error: Line 1: Object literal may not have multiple get/set accessors with the same name"
+    },
+    "({ set i(x) { }, set i(x) { } })": {
+        "index": 29,
+        "lineNumber": 1,
+        "column": 30,
+        "message": "Error: Line 1: Object literal may not have multiple get/set accessors with the same name"
+    },
+    "function t(if) { }": {
+        "index": 11,
+        "lineNumber": 1,
+        "column": 12,
+        "message": "Error: Line 1: Unexpected token if"
+    },
+    "function t(true) { }": {
+        "index": 11,
+        "lineNumber": 1,
+        "column": 12,
+        "message": "Error: Line 1: Unexpected token true"
+    },
+    "function t(false) { }": {
+        "index": 11,
+        "lineNumber": 1,
+        "column": 12,
+        "message": "Error: Line 1: Unexpected token false"
+    },
+    "function t(null) { }": {
+        "index": 11,
+        "lineNumber": 1,
+        "column": 12,
+        "message": "Error: Line 1: Unexpected token null"
+    },
+    "function null() { }": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected token null"
+    },
+    "function true() { }": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected token true"
+    },
+    "function false() { }": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected token false"
+    },
+    "function if() { }": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected token if"
+    },
+    "a b;": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected identifier"
+    },
+    "if.a;": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token ."
+    },
+    "a if;": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token if"
+    },
+    "a class;": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected reserved word"
+    },
+    "break\n": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Illegal break statement"
+    },
+    "break 1;": {
+        "index": 6,
+        "lineNumber": 1,
+        "column": 7,
+        "message": "Error: Line 1: Unexpected number"
+    },
+    "continue\n": {
+        "index": 8,
+        "lineNumber": 1,
+        "column": 9,
+        "message": "Error: Line 1: Illegal continue statement"
+    },
+    "continue 2;": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected number"
+    },
+    "throw": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "throw;": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Unexpected token ;"
+    },
+    "throw\n": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Illegal newline after throw"
+    },
+    "for (var i, i2 in {});": {
+        "index": 15,
+        "lineNumber": 1,
+        "column": 16,
+        "message": "Error: Line 1: Unexpected token in"
+    },
+    "for ((i in {}));": {
+        "index": 14,
+        "lineNumber": 1,
+        "column": 15,
+        "message": "Error: Line 1: Unexpected token )"
+    },
+    "for (i + 1 in {});": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Invalid left-hand side in for-in"
+    },
+    "for (+i in {});": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Invalid left-hand side in for-in"
+    },
+    "if(false)": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "if(false) doThis(); else": {
+        "index": 24,
+        "lineNumber": 1,
+        "column": 25,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "do": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "while(false)": {
+        "index": 12,
+        "lineNumber": 1,
+        "column": 13,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "for(;;)": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "with(x)": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "try { }": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Missing catch or finally after try"
+    },
+    "try {} catch (42) {} ": {
+        "index": 14,
+        "lineNumber": 1,
+        "column": 15,
+        "message": "Error: Line 1: Unexpected number"
+    },
+    "try {} catch (answer()) {} ": {
+        "index": 20,
+        "lineNumber": 1,
+        "column": 21,
+        "message": "Error: Line 1: Unexpected token ("
+    },
+    "try {} catch (-x) {} ": {
+        "index": 14,
+        "lineNumber": 1,
+        "column": 15,
+        "message": "Error: Line 1: Unexpected token -"
+    },
+    "‿ = 10": {
+        "index": 0,
+        "lineNumber": 1,
+        "column": 1,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "const x = 12, y;": {
+        "index": 15,
+        "lineNumber": 1,
+        "column": 16,
+        "message": "Error: Line 1: Const must be initialized"
+    },
+    "const x, y = 12;": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Const must be initialized"
+    },
+    "const x;": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Const must be initialized"
+    },
+    "if(true) let a = 1;": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected token let"
+    },
+    "if(true) const a = 1;": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected token const"
+    },
+    "switch (c) { default: default: }": {
+        "index": 30,
+        "lineNumber": 1,
+        "column": 31,
+        "message": "Error: Line 1: More than one default clause in switch statement"
+    },
+    "new X().\"s\"": {
+        "index": 8,
+        "lineNumber": 1,
+        "column": 9,
+        "message": "Error: Line 1: Unexpected string"
+    },
+    "/*": {
+        "index": 2,
+        "lineNumber": 1,
+        "column": 3,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "/*\n\n\n": {
+        "index": 5,
+        "lineNumber": 4,
+        "column": 1,
+        "message": "Error: Line 4: Unexpected token ILLEGAL"
+    },
+    "/**": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "/*\n\n*": {
+        "index": 5,
+        "lineNumber": 3,
+        "column": 2,
+        "message": "Error: Line 3: Unexpected token ILLEGAL"
+    },
+    "/*hello": {
+        "index": 7,
+        "lineNumber": 1,
+        "column": 8,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "/*hello  *": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "\n]": {
+        "index": 1,
+        "lineNumber": 2,
+        "column": 1,
+        "message": "Error: Line 2: Unexpected token ]"
+    },
+    "\r]": {
+        "index": 1,
+        "lineNumber": 2,
+        "column": 1,
+        "message": "Error: Line 2: Unexpected token ]"
+    },
+    "\r\n]": {
+        "index": 2,
+        "lineNumber": 2,
+        "column": 1,
+        "message": "Error: Line 2: Unexpected token ]"
+    },
+    "\n\r]": {
+        "index": 2,
+        "lineNumber": 3,
+        "column": 1,
+        "message": "Error: Line 3: Unexpected token ]"
+    },
+    "//\r\n]": {
+        "index": 4,
+        "lineNumber": 2,
+        "column": 1,
+        "message": "Error: Line 2: Unexpected token ]"
+    },
+    "//\n\r]": {
+        "index": 4,
+        "lineNumber": 3,
+        "column": 1,
+        "message": "Error: Line 3: Unexpected token ]"
+    },
+    "/a\\\n/": {
+        "index": 4,
+        "lineNumber": 1,
+        "column": 5,
+        "message": "Error: Line 1: Invalid regular expression: missing /"
+    },
+    "//\r \n]": {
+        "index": 5,
+        "lineNumber": 3,
+        "column": 1,
+        "message": "Error: Line 3: Unexpected token ]"
+    },
+    "/*\r\n*/]": {
+        "index": 6,
+        "lineNumber": 2,
+        "column": 3,
+        "message": "Error: Line 2: Unexpected token ]"
+    },
+    "/*\n\r*/]": {
+        "index": 6,
+        "lineNumber": 3,
+        "column": 3,
+        "message": "Error: Line 3: Unexpected token ]"
+    },
+    "/*\r \n*/]": {
+        "index": 7,
+        "lineNumber": 3,
+        "column": 3,
+        "message": "Error: Line 3: Unexpected token ]"
+    },
+    "\\\\": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "\\u005c": {
+        "index": 6,
+        "lineNumber": 1,
+        "column": 7,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "\\x": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "\\u0000": {
+        "index": 6,
+        "lineNumber": 1,
+        "column": 7,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "‌ = []": {
+        "index": 0,
+        "lineNumber": 1,
+        "column": 1,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "‍ = []": {
+        "index": 0,
+        "lineNumber": 1,
+        "column": 1,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "\"\\": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "\"\\u": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected token ILLEGAL"
+    },
+    "try { } catch() {}": {
+        "index": 14,
+        "lineNumber": 1,
+        "column": 15,
+        "message": "Error: Line 1: Unexpected token )"
+    },
+    "return": {
+        "index": 6,
+        "lineNumber": 1,
+        "column": 7,
+        "message": "Error: Line 1: Illegal return statement"
+    },
+    "break": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Illegal break statement"
+    },
+    "continue": {
+        "index": 8,
+        "lineNumber": 1,
+        "column": 9,
+        "message": "Error: Line 1: Illegal continue statement"
+    },
+    "switch (x) { default: continue; }": {
+        "index": 31,
+        "lineNumber": 1,
+        "column": 32,
+        "message": "Error: Line 1: Illegal continue statement"
+    },
+    "do { x } *": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Unexpected token *"
+    },
+    "while (true) { break x; }": {
+        "index": 22,
+        "lineNumber": 1,
+        "column": 23,
+        "message": "Error: Line 1: Undefined label 'x'"
+    },
+    "while (true) { continue x; }": {
+        "index": 25,
+        "lineNumber": 1,
+        "column": 26,
+        "message": "Error: Line 1: Undefined label 'x'"
+    },
+    "x: while (true) { (function () { break x; }); }": {
+        "index": 40,
+        "lineNumber": 1,
+        "column": 41,
+        "message": "Error: Line 1: Undefined label 'x'"
+    },
+    "x: while (true) { (function () { continue x; }); }": {
+        "index": 43,
+        "lineNumber": 1,
+        "column": 44,
+        "message": "Error: Line 1: Undefined label 'x'"
+    },
+    "x: while (true) { (function () { break; }); }": {
+        "index": 39,
+        "lineNumber": 1,
+        "column": 40,
+        "message": "Error: Line 1: Illegal break statement"
+    },
+    "x: while (true) { (function () { continue; }); }": {
+        "index": 42,
+        "lineNumber": 1,
+        "column": 43,
+        "message": "Error: Line 1: Illegal continue statement"
+    },
+    "x: while (true) { x: while (true) { } }": {
+        "index": 20,
+        "lineNumber": 1,
+        "column": 21,
+        "message": "Error: Line 1: Label 'x' has already been declared"
+    },
+    "(function () { 'use strict'; delete i; }())": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Delete of an unqualified identifier in strict mode."
+    },
+    "(function () { 'use strict'; with (i); }())": {
+        "index": 29,
+        "lineNumber": 1,
+        "column": 30,
+        "message": "Error: Line 1: Strict mode code may not include a with statement"
+    },
+    "function hello() {'use strict'; ({ i: 42, i: 42 }) }": {
+        "index": 47,
+        "lineNumber": 1,
+        "column": 48,
+        "message": "Error: Line 1: Duplicate data property in object literal not allowed in strict mode"
+    },
+    "function hello() {'use strict'; ({ hasOwnProperty: 42, hasOwnProperty: 42 }) }": {
+        "index": 73,
+        "lineNumber": 1,
+        "column": 74,
+        "message": "Error: Line 1: Duplicate data property in object literal not allowed in strict mode"
+    },
+    "function hello() {'use strict'; var eval = 10; }": {
+        "index": 40,
+        "lineNumber": 1,
+        "column": 41,
+        "message": "Error: Line 1: Variable name may not be eval or arguments in strict mode"
+    },
+    "function hello() {'use strict'; var arguments = 10; }": {
+        "index": 45,
+        "lineNumber": 1,
+        "column": 46,
+        "message": "Error: Line 1: Variable name may not be eval or arguments in strict mode"
+    },
+    "function hello() {'use strict'; try { } catch (eval) { } }": {
+        "index": 51,
+        "lineNumber": 1,
+        "column": 52,
+        "message": "Error: Line 1: Catch variable may not be eval or arguments in strict mode"
+    },
+    "function hello() {'use strict'; try { } catch (arguments) { } }": {
+        "index": 56,
+        "lineNumber": 1,
+        "column": 57,
+        "message": "Error: Line 1: Catch variable may not be eval or arguments in strict mode"
+    },
+    "function hello() {'use strict'; eval = 10; }": {
+        "index": 32,
+        "lineNumber": 1,
+        "column": 33,
+        "message": "Error: Line 1: Assignment to eval or arguments is not allowed in strict mode"
+    },
+    "function hello() {'use strict'; arguments = 10; }": {
+        "index": 32,
+        "lineNumber": 1,
+        "column": 33,
+        "message": "Error: Line 1: Assignment to eval or arguments is not allowed in strict mode"
+    },
+    "function hello() {'use strict'; ++eval; }": {
+        "index": 38,
+        "lineNumber": 1,
+        "column": 39,
+        "message": "Error: Line 1: Prefix increment/decrement may not have eval or arguments operand in strict mode"
+    },
+    "function hello() {'use strict'; --eval; }": {
+        "index": 38,
+        "lineNumber": 1,
+        "column": 39,
+        "message": "Error: Line 1: Prefix increment/decrement may not have eval or arguments operand in strict mode"
+    },
+    "function hello() {'use strict'; ++arguments; }": {
+        "index": 43,
+        "lineNumber": 1,
+        "column": 44,
+        "message": "Error: Line 1: Prefix increment/decrement may not have eval or arguments operand in strict mode"
+    },
+    "function hello() {'use strict'; --arguments; }": {
+        "index": 43,
+        "lineNumber": 1,
+        "column": 44,
+        "message": "Error: Line 1: Prefix increment/decrement may not have eval or arguments operand in strict mode"
+    },
+    "function hello() {'use strict'; eval++; }": {
+        "index": 36,
+        "lineNumber": 1,
+        "column": 37,
+        "message": "Error: Line 1: Postfix increment/decrement may not have eval or arguments operand in strict mode"
+    },
+    "function hello() {'use strict'; eval--; }": {
+        "index": 36,
+        "lineNumber": 1,
+        "column": 37,
+        "message": "Error: Line 1: Postfix increment/decrement may not have eval or arguments operand in strict mode"
+    },
+    "function hello() {'use strict'; arguments++; }": {
+        "index": 41,
+        "lineNumber": 1,
+        "column": 42,
+        "message": "Error: Line 1: Postfix increment/decrement may not have eval or arguments operand in strict mode"
+    },
+    "function hello() {'use strict'; arguments--; }": {
+        "index": 41,
+        "lineNumber": 1,
+        "column": 42,
+        "message": "Error: Line 1: Postfix increment/decrement may not have eval or arguments operand in strict mode"
+    },
+    "function hello() {'use strict'; function eval() { } }": {
+        "index": 41,
+        "lineNumber": 1,
+        "column": 42,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "function hello() {'use strict'; function arguments() { } }": {
+        "index": 41,
+        "lineNumber": 1,
+        "column": 42,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "function eval() {'use strict'; }": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "function arguments() {'use strict'; }": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "function hello() {'use strict'; (function eval() { }()) }": {
+        "index": 42,
+        "lineNumber": 1,
+        "column": 43,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "function hello() {'use strict'; (function arguments() { }()) }": {
+        "index": 42,
+        "lineNumber": 1,
+        "column": 43,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "(function eval() {'use strict'; })()": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "(function arguments() {'use strict'; })()": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "function hello() {'use strict'; ({ s: function eval() { } }); }": {
+        "index": 47,
+        "lineNumber": 1,
+        "column": 48,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "(function package() {'use strict'; })()": {
+        "index": 10,
+        "lineNumber": 1,
+        "column": 11,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello() {'use strict'; ({ i: 10, set s(eval) { } }); }": {
+        "index": 48,
+        "lineNumber": 1,
+        "column": 49,
+        "message": "Error: Line 1: Parameter name eval or arguments is not allowed in strict mode"
+    },
+    "function hello() {'use strict'; ({ set s(eval) { } }); }": {
+        "index": 41,
+        "lineNumber": 1,
+        "column": 42,
+        "message": "Error: Line 1: Parameter name eval or arguments is not allowed in strict mode"
+    },
+    "function hello() {'use strict'; ({ s: function s(eval) { } }); }": {
+        "index": 49,
+        "lineNumber": 1,
+        "column": 50,
+        "message": "Error: Line 1: Parameter name eval or arguments is not allowed in strict mode"
+    },
+    "function hello(eval) {'use strict';}": {
+        "index": 15,
+        "lineNumber": 1,
+        "column": 16,
+        "message": "Error: Line 1: Parameter name eval or arguments is not allowed in strict mode"
+    },
+    "function hello(arguments) {'use strict';}": {
+        "index": 15,
+        "lineNumber": 1,
+        "column": 16,
+        "message": "Error: Line 1: Parameter name eval or arguments is not allowed in strict mode"
+    },
+    "function hello() { 'use strict'; function inner(eval) {} }": {
+        "index": 48,
+        "lineNumber": 1,
+        "column": 49,
+        "message": "Error: Line 1: Parameter name eval or arguments is not allowed in strict mode"
+    },
+    "function hello() { 'use strict'; function inner(arguments) {} }": {
+        "index": 48,
+        "lineNumber": 1,
+        "column": 49,
+        "message": "Error: Line 1: Parameter name eval or arguments is not allowed in strict mode"
+    },
+    " \"\\1\"; 'use strict';": {
+        "index": 1,
+        "lineNumber": 1,
+        "column": 2,
+        "message": "Error: Line 1: Octal literals are not allowed in strict mode."
+    },
+    "function hello() { 'use strict'; \"\\1\"; }": {
+        "index": 33,
+        "lineNumber": 1,
+        "column": 34,
+        "message": "Error: Line 1: Octal literals are not allowed in strict mode."
+    },
+    "function hello() { 'use strict'; 021; }": {
+        "index": 33,
+        "lineNumber": 1,
+        "column": 34,
+        "message": "Error: Line 1: Octal literals are not allowed in strict mode."
+    },
+    "function hello() { 'use strict'; ({ \"\\1\": 42 }); }": {
+        "index": 36,
+        "lineNumber": 1,
+        "column": 37,
+        "message": "Error: Line 1: Octal literals are not allowed in strict mode."
+    },
+    "function hello() { 'use strict'; ({ 021: 42 }); }": {
+        "index": 36,
+        "lineNumber": 1,
+        "column": 37,
+        "message": "Error: Line 1: Octal literals are not allowed in strict mode."
+    },
+    "function hello() { \"octal directive\\1\"; \"use strict\"; }": {
+        "index": 19,
+        "lineNumber": 1,
+        "column": 20,
+        "message": "Error: Line 1: Octal literals are not allowed in strict mode."
+    },
+    "function hello() { \"octal directive\\1\"; \"octal directive\\2\"; \"use strict\"; }": {
+        "index": 19,
+        "lineNumber": 1,
+        "column": 20,
+        "message": "Error: Line 1: Octal literals are not allowed in strict mode."
+    },
+    "function hello() { \"use strict\"; function inner() { \"octal directive\\1\"; } }": {
+        "index": 52,
+        "lineNumber": 1,
+        "column": 53,
+        "message": "Error: Line 1: Octal literals are not allowed in strict mode."
+    },
+    "function hello() { \"use strict\"; var implements; }": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello() { \"use strict\"; var interface; }": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello() { \"use strict\"; var package; }": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello() { \"use strict\"; var private; }": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello() { \"use strict\"; var protected; }": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello() { \"use strict\"; var public; }": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello() { \"use strict\"; var static; }": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello() { \"use strict\"; var yield; }": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello() { \"use strict\"; var let; }": {
+        "index": 37,
+        "lineNumber": 1,
+        "column": 38,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function hello(static) { \"use strict\"; }": {
+        "index": 15,
+        "lineNumber": 1,
+        "column": 16,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function static() { \"use strict\"; }": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function eval(a) { \"use strict\"; }": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "function arguments(a) { \"use strict\"; }": {
+        "index": 9,
+        "lineNumber": 1,
+        "column": 10,
+        "message": "Error: Line 1: Function name may not be eval or arguments in strict mode"
+    },
+    "var yield": {
+        "index": 4,
+        "lineNumber": 1,
+        "column": 5,
+        "message": "Error: Line 1: Unexpected token yield"
+    },
+    "var let": {
+        "index": 4,
+        "lineNumber": 1,
+        "column": 5,
+        "message": "Error: Line 1: Unexpected token let"
+    },
+    "\"use strict\"; function static() { }": {
+        "index": 23,
+        "lineNumber": 1,
+        "column": 24,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function a(t, t) { \"use strict\"; }": {
+        "index": 14,
+        "lineNumber": 1,
+        "column": 15,
+        "message": "Error: Line 1: Strict mode function may not have duplicate parameter names"
+    },
+    "function a(eval) { \"use strict\"; }": {
+        "index": 11,
+        "lineNumber": 1,
+        "column": 12,
+        "message": "Error: Line 1: Parameter name eval or arguments is not allowed in strict mode"
+    },
+    "function a(package) { \"use strict\"; }": {
+        "index": 11,
+        "lineNumber": 1,
+        "column": 12,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "function a() { \"use strict\"; function b(t, t) { }; }": {
+        "index": 43,
+        "lineNumber": 1,
+        "column": 44,
+        "message": "Error: Line 1: Strict mode function may not have duplicate parameter names"
+    },
+    "(function a(t, t) { \"use strict\"; })": {
+        "index": 15,
+        "lineNumber": 1,
+        "column": 16,
+        "message": "Error: Line 1: Strict mode function may not have duplicate parameter names"
+    },
+    "function a() { \"use strict\"; (function b(t, t) { }); }": {
+        "index": 44,
+        "lineNumber": 1,
+        "column": 45,
+        "message": "Error: Line 1: Strict mode function may not have duplicate parameter names"
+    },
+    "(function a(eval) { \"use strict\"; })": {
+        "index": 12,
+        "lineNumber": 1,
+        "column": 13,
+        "message": "Error: Line 1: Parameter name eval or arguments is not allowed in strict mode"
+    },
+    "(function a(package) { \"use strict\"; })": {
+        "index": 12,
+        "lineNumber": 1,
+        "column": 13,
+        "message": "Error: Line 1: Use of future reserved word in strict mode"
+    },
+    "__proto__: __proto__: 42;": {
+        "index": 21,
+        "lineNumber": 1,
+        "column": 22,
+        "message": "Error: Line 1: Label '__proto__' has already been declared"
+    },
+    "\"use strict\"; function t(__proto__, __proto__) { }": {
+        "index": 36,
+        "lineNumber": 1,
+        "column": 37,
+        "message": "Error: Line 1: Strict mode function may not have duplicate parameter names"
+    },
+    "\"use strict\"; x = { __proto__: 42, __proto__: 43 }": {
+        "index": 48,
+        "lineNumber": 1,
+        "column": 49,
+        "message": "Error: Line 1: Duplicate data property in object literal not allowed in strict mode"
+    },
+    "\"use strict\"; x = { get __proto__() { }, __proto__: 43 }": {
+        "index": 54,
+        "lineNumber": 1,
+        "column": 55,
+        "message": "Error: Line 1: Object literal may not have data and accessor property with the same name"
+    },
+    "var": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "let": {
+        "index": 3,
+        "lineNumber": 1,
+        "column": 4,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "const": {
+        "index": 5,
+        "lineNumber": 1,
+        "column": 6,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "{ ;  ;  ": {
+        "index": 8,
+        "lineNumber": 1,
+        "column": 9,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "function t() { ;  ;  ": {
+        "index": 21,
+        "lineNumber": 1,
+        "column": 22,
+        "message": "Error: Line 1: Unexpected end of input"
+    },
+    "left = (aSize.width/2) - ()": {
+      "index": 26,
+      "lineNumber": 1,
+      "column": 27,
+      "message": "Error: Line 1: Unexpected token )"
+    },
+    "switch(x) {  case 'x':  break;\n": {
+        "index": 31,
+        "lineNumber": 2,
+        "column": 1,
+        "message": "Error: Line 2: Unexpected end of input"
+    }
+}

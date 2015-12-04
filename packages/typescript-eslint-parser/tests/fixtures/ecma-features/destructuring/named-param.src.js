@@ -1,0 +1,1 @@
+({ responseText: text }) = res;
