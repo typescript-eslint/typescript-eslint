@@ -28,8 +28,8 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "dateformat": "^1.0.11",
-    "eslint": "^1.8.0",
-    "eslint-config-eslint": "^1.0.1",
+    "eslint": "2.0.0-beta.1",
+    "eslint-config-eslint": "^2.0.0",
     "istanbul": "~0.2.6",
     "leche": "^1.0.1",
     "mocha": "^2.0.1",
