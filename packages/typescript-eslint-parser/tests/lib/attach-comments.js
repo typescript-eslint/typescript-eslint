@@ -48,6 +48,11 @@ var testFiles = shelljs.find("./tests/fixtures/attach-comments").filter(function
 //     return /line-and-block/.test(filename);
 });
 
+/**
+ * Returns a raw copy of the given AST
+ * @param  {object} ast the AST object
+ * @returns {object}     copy of the AST object
+ */
 function getRaw(ast) {
     return JSON.parse(JSON.stringify(ast));
 }

@@ -41,8 +41,8 @@ var assert = require("chai").assert,
 // Setup
 //------------------------------------------------------------------------------
 
-var FIXTURES_DIR = "./tests/fixtures/ecma-features",
-    FIXTURES_MIX_DIR = "./tests/fixtures/ecma-features-mix";
+var FIXTURES_DIR = "./tests/fixtures/ecma-features";
+// var FIXTURES_MIX_DIR = "./tests/fixtures/ecma-features-mix";
 
 var testFiles = shelljs.find(FIXTURES_DIR).filter(function(filename) {
     return filename.indexOf(".src.js") > -1;
@@ -52,21 +52,26 @@ var testFiles = shelljs.find(FIXTURES_DIR).filter(function(filename) {
     return !(/jsx|error\-|invalid\-|globalReturn|experimental|newTarget/.test(filename));
 });
 
-var moduleTestFiles = testFiles.filter(function(filename) {
-    return !/jsx|globalReturn|invalid|experimental|generators|not\-strict/.test(filename);
-});
+// var moduleTestFiles = testFiles.filter(function(filename) {
+//     return !/jsx|globalReturn|invalid|experimental|generators|not\-strict/.test(filename);
+// });
 
-var mixFiles = shelljs.find(FIXTURES_MIX_DIR).filter(function(filename) {
-    return filename.indexOf(".src.js") > -1;
-}).map(function(filename) {
-    return filename.substring(FIXTURES_MIX_DIR.length - 1, filename.length - 7);  // strip off ".src.js"
-// }).filter(function(filename) {
-//     return /template/.test(filename);
-});
+// var mixFiles = shelljs.find(FIXTURES_MIX_DIR).filter(function(filename) {
+//     return filename.indexOf(".src.js") > -1;
+// }).map(function(filename) {
+//     return filename.substring(FIXTURES_MIX_DIR.length - 1, filename.length - 7);  // strip off ".src.js"
+// // }).filter(function(filename) {
+// //     return /template/.test(filename);
+// });
 
 // console.dir(moduleTestFiles);
 // return;
 
+/**
+ * Returns a raw copy of the given AST
+ * @param  {object} ast the AST object
+ * @returns {object}     copy of the AST object
+ */
 function getRaw(ast) {
     return JSON.parse(JSON.stringify(ast));
 }
@@ -81,11 +86,11 @@ describe("ecmaFeatures", function() {
 
     beforeEach(function() {
         config = {
-                loc: true,
-                range: true,
-                tokens: true,
-                ecmaFeatures: {}
-            };
+            loc: true,
+            range: true,
+            tokens: true,
+            ecmaFeatures: {}
+        };
     });
 
     leche.withData(testFiles, function(filename) {

@@ -22,19 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/*eslint no-undefined:0, no-use-before-define: 0*/
+/* eslint no-undefined:0, no-use-before-define: 0 */
 
 "use strict";
 
 var astNodeTypes = require("./lib/ast-node-types"),
     commentAttachment = require("./lib/comment-attachment"),
-    TokenTranslator = require("./lib/token-translator"),
+   //  TokenTranslator = require("./lib/token-translator"),
     ts = require("typescript");
 
-var lookahead,
-    extra,
-    lastToken;
+// var lookahead;
+var extra;
+// var lastToken;
 
+/**
+ * Resets the extra config object
+ * @returns {void}
+ */
 function resetExtra() {
     extra = {
         tokens: null,
@@ -55,15 +59,20 @@ function resetExtra() {
 // Parser
 //------------------------------------------------------------------------------
 
-
+/**
+ * Parses the given source code to produce a valid AST
+ * @param  {mixed} code    TypeScript code
+ * @param  {object} options configuration object for the parser
+ * @returns {object}         the AST
+ */
 function parse(code, options) {
 
     var program,
-        toString = String,
-        translator,
-        acornOptions = {
-            ecmaVersion: 5
-        };
+        toString = String;
+   //  var acornOptions = {
+   //      ecmaVersion: 5
+   //  };
+   //  var translator;
 
     if (typeof code !== "string" && !(code instanceof String)) {
         code = toString(code);
@@ -132,7 +141,7 @@ function parse(code, options) {
             }
         };
 
-        var program = ts.createProgram([FILENAME], {
+        program = ts.createProgram([FILENAME], {
             noResolve: true,
             target: ts.ScriptTarget.Latest,
             jsx: extra.ecmaFeatures.jsx ? "preserve" : undefined
@@ -141,14 +150,14 @@ function parse(code, options) {
         var ast = program.getSourceFile(FILENAME);
 
         if (extra.attachComment || extra.comment) {
-            acornOptions.onComment = function() {
-                var comment = convertAcornCommentToEsprimaComment.apply(this, arguments);
-                extra.comments.push(comment);
-
-                if (extra.attachComment) {
-                    commentAttachment.addComment(comment);
-                }
-            };
+            // acornOptions.onComment = function() {
+            //     var comment = convertAcornCommentToEsprimaComment.apply(this, arguments);
+            //     extra.comments.push(comment);
+            //
+            //     if (extra.attachComment) {
+            //         commentAttachment.addComment(comment);
+            //     }
+            // };
         }
 
     }
@@ -167,7 +176,7 @@ exports.parse = parse;
 
 // Deep copy.
 /* istanbul ignore next */
-exports.Syntax = (function () {
+exports.Syntax = (function() {
     var name, types = {};
 
     if (typeof Object.create === "function") {
