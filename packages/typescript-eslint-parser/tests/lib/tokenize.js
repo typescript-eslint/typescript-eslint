@@ -37,6 +37,11 @@ var assert = require("chai").assert,
 // Helpers
 //------------------------------------------------------------------------------
 
+/**
+ * Returns a raw copy of the given AST
+ * @param  {object} ast the AST object
+ * @returns {object}     copy of the AST object
+ */
 function getRaw(ast) {
     return JSON.parse(JSON.stringify(ast));
 }

@@ -2,7 +2,7 @@
  * @fileoverview Build file
  * @author nzakas
  */
-/*global cat, cp, echo, exec, exit, find, mkdir, mv, rm, target, test*/
+/* global cat, cp, echo, exec, exit, find, mkdir, mv, rm, target, test */
 
 "use strict";
 
@@ -39,10 +39,10 @@ var NODE_MODULES = "./node_modules/",
 
     // Files
     MAKEFILE = "./Makefile.js",
-    /*eslint-disable no-use-before-define */
+    /* eslint-disable no-use-before-define */
     JS_FILES = find("lib/").filter(fileType("js")).join(" ") + " espree.js",
     TEST_FILES = find("tests/lib/").filter(fileType("js")).join(" ");
-    /*eslint-enable no-use-before-define */
+    /* eslint-enable no-use-before-define */
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -103,6 +103,10 @@ function splitCommandResultToLines(result) {
     return result.trim().split("\n");
 }
 
+/**
+ * Returns a list of sorted, valid semtantic-verisioning git tags
+ * @returns {array} The version tags
+ */
 function getVersionTags() {
     var tags = splitCommandResultToLines(exec("git tag", { silent: true }).output);
 
@@ -230,6 +234,11 @@ target.changelog = function() {
 
 target.checkLicenses = function() {
 
+    /**
+     * Returns true if the given dependency's licenses are all permissable for use in OSS
+     * @param  {object}  dependency object containing the name and licenses of the given dependency
+     * @returns {boolean} is permissable dependency
+     */
     function isPermissible(dependency) {
         var licenses = dependency.licenses;
 
@@ -262,7 +271,7 @@ target.checkLicenses = function() {
         });
 
         if (impermissible.length) {
-            impermissible.forEach(function (dependency) {
+            impermissible.forEach(function(dependency) {
                 console.error("%s license for %s is impermissible.",
                     dependency.licenses,
                     dependency.name

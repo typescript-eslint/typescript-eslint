@@ -37,8 +37,8 @@ var ts = require("typescript"),
 // Private
 //------------------------------------------------------------------------------
 
-var SyntaxKind = ts.SyntaxKind,
-    TokenClass = ts.TokenClass;
+var SyntaxKind = ts.SyntaxKind;
+// var TokenClass = ts.TokenClass;
 
 var ASSIGNMENT_OPERATORS = [
     SyntaxKind.EqualsToken,
@@ -115,22 +115,47 @@ TOKEN_TO_TEXT[SyntaxKind.CaretEqualsToken] = "^=";
 TOKEN_TO_TEXT[SyntaxKind.AtToken] = "@";
 TOKEN_TO_TEXT[SyntaxKind.InKeyword] = "in";
 
+/**
+ * Returns true if the given node is a valid ESTree class member
+ * @param  {object}  node AST node
+ * @returns {boolean}      is valid class member
+ */
 function isESTreeClassMember(node) {
     return node.kind !== SyntaxKind.PropertyDeclaration && node.kind !== SyntaxKind.SemicolonClassElement;
 }
 
+/**
+ * Returns true if the given token is a comma
+ * @param  {object}  token the syntax token
+ * @returns {boolean}       is comma
+ */
 function isComma(token) {
     return token.kind === SyntaxKind.CommaToken;
 }
 
+/**
+ * Returns true if the given operator is the assignment operator
+ * @param  {object}  operator the operator
+ * @returns {boolean}          is assignment
+ */
 function isAssignmentOperator(operator) {
     return ASSIGNMENT_OPERATORS.indexOf(operator.kind) > -1;
 }
 
+/**
+ * Returns true if the given operator is a logical operator
+ * @param  {object}  operator the operator
+ * @returns {boolean}          is a logical operator
+ */
 function isLogicalOperator(operator) {
     return LOGICAL_OPERATORS.indexOf(operator.kind) > -1;
 }
 
+/**
+ * Returns the binary expression type of the given operator
+ * @param  {object} operator the operator
+ * @returns {string}          the binary expression type
+ */
 function getBinaryExpressionType(operator) {
     if (isAssignmentOperator(operator)) {
         return "AssignmentExpression";
@@ -141,6 +166,14 @@ function getBinaryExpressionType(operator) {
     }
 }
 
+/**
+ * Returns line and column data for the given start and end positions,
+ * for the given AST
+ * @param  {object} start start data
+ * @param  {object} end   end data
+ * @param  {object} ast   the AST object
+ * @returns {object}       the loc data
+ */
 function getLocFor(start, end, ast) {
     var startLoc = ast.getLineAndCharacterOfPosition(start),
         endLoc = ast.getLineAndCharacterOfPosition(end);
@@ -157,6 +190,13 @@ function getLocFor(start, end, ast) {
     };
 }
 
+/**
+ * Returns line and column data for the given node or token,
+ * for the given AST
+ * @param  {object} nodeOrToken the node or token
+ * @param  {object} ast         the AST object
+ * @returns {object}             the loc data
+ */
 function getLoc(nodeOrToken, ast) {
     return getLocFor(nodeOrToken.getStart(), nodeOrToken.end, ast);
     // var start = nodeOrToken.getStart(),
@@ -175,6 +215,13 @@ function getLoc(nodeOrToken, ast) {
     // };
 }
 
+/**
+ * Fixes the exports of the given node
+ * @param  {object} node   the node
+ * @param  {object} result result
+ * @param  {[type]} ast    the AST
+ * @returns {object}        the node with fixed exports
+ */
 function fixExports(node, result, ast) {
     // check for exports
     if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
@@ -206,6 +253,11 @@ function fixExports(node, result, ast) {
     return result;
 }
 
+/**
+ * Extends and formats a given error object
+ * @param  {object} error the error object
+ * @returns {object}       converted error object
+ */
 function convertError(error) {
 
     var loc = error.file.getLineAndCharacterOfPosition(error.start);
@@ -218,8 +270,12 @@ function convertError(error) {
     };
 }
 
+/**
+ * Returns the type of a given token
+ * @param  {object} token the token
+ * @returns {string}       the token type
+ */
 function getTokenType(token) {
-
 
     // Need two checks for keywords since some are also identifiers
     if (token.originalKeywordKind) {
@@ -233,7 +289,7 @@ function getTokenType(token) {
                 return "Identifier";
 
             default:
-                return "Keyword"
+                return "Keyword";
         }
     }
 
@@ -264,19 +320,23 @@ function getTokenType(token) {
         case SyntaxKind.GetKeyword:
         case SyntaxKind.SetKeyword:
             // falls through
+        default:
     }
-
-
-
 
     return "Identifier";
 }
 
+/**
+ * Extends and formats a given token, for a given AST
+ * @param  {object} token the token
+ * @param  {object} ast   the AST object
+ * @returns {object}       the converted token
+ */
 function convertToken(token, ast) {
 
     var start = token.getStart(),
         value = ast.text.slice(start, token.end),
-        newToken =  {
+        newToken = {
             type: getTokenType(token),
             value: value,
             range: [start, token.end],
@@ -293,6 +353,11 @@ function convertToken(token, ast) {
     return newToken;
 }
 
+/**
+ * Converts all tokens for the given AST
+ * @param  {object} ast the AST object
+ * @returns {array}     the converted tokens
+ */
 function convertTokens(ast) {
     var token = ast.getFirstToken(),
         converted,
@@ -320,6 +385,12 @@ module.exports = function(ast, extra) {
         throw convertError(ast.parseDiagnostics[0]);
     }
 
+    /**
+     * Converts node
+     * @param  {object} node   the node
+     * @param  {object} parent the parent node
+     * @returns {object}        the converted node
+     */
     function convert(node, parent) {
 
         // exit early for null and undefined
@@ -333,12 +404,21 @@ module.exports = function(ast, extra) {
             loc: getLoc(node, ast)
         };
 
+        /**
+         * Copies the result object
+         * @returns {void}
+         */
         function simplyCopy() {
             assign(result, {
                 type: SyntaxKind[node.kind]
             });
         }
 
+        /**
+         * Converts child node
+         * @param  {object} child the child node
+         * @returns {object}       the converted child node
+         */
         function convertChild(child) {
             return convert(child, node);
         }
@@ -348,7 +428,7 @@ module.exports = function(ast, extra) {
                 assign(result, {
                     type: "Program",
                     body: [],
-                    sourceType: node.externalModuleIndicator ? "module": "script"
+                    sourceType: node.externalModuleIndicator ? "module" : "script"
                 });
 
                 // filter out unknown nodes for now
@@ -531,10 +611,18 @@ module.exports = function(ast, extra) {
 
             case SyntaxKind.VariableStatement:
 
+                var varStatementKind;
+
+                if (node.declarationList.flags) {
+                    varStatementKind = (node.declarationList.flags === ts.NodeFlags.Let) ? "let" : "const";
+                } else {
+                    varStatementKind = "var";
+                }
+
                 assign(result, {
                     type: "VariableDeclaration",
                     declarations: node.declarationList.declarations.map(convertChild),
-                    kind: (node.declarationList.flags ? (node.declarationList.flags === ts.NodeFlags.Let ? "let" : "const") : "var")
+                    kind: varStatementKind
                 });
 
                 // check for exports
@@ -543,10 +631,19 @@ module.exports = function(ast, extra) {
 
             // mostly for for-of, for-in
             case SyntaxKind.VariableDeclarationList:
+
+                var varDeclarationListKind;
+
+                if (node.flags) {
+                    varDeclarationListKind = (node.flags === ts.NodeFlags.Let) ? "let" : "const";
+                } else {
+                    varDeclarationListKind = "var";
+                }
+
                 assign(result, {
                     type: "VariableDeclaration",
                     declarations: node.declarations.map(convertChild),
-                    kind: (node.flags ? (node.flags === ts.NodeFlags.Let ? "let" : "const") : "var")
+                    kind: varDeclarationListKind
                 });
                 break;
 
@@ -719,7 +816,7 @@ module.exports = function(ast, extra) {
             // TypeScript uses this even for static methods named "constructor"
             case SyntaxKind.Constructor:
 
-                var constructorIsStatic =  Boolean(node.flags & ts.NodeFlags.Static),
+                var constructorIsStatic = Boolean(node.flags & ts.NodeFlags.Static),
                     firstConstructorToken = constructorIsStatic ? ts.findNextToken(node.getFirstToken(), ast) : node.getFirstToken(),
                     constructorOffset = 11,
                     constructorStartOffset = constructorOffset + firstConstructorToken.getStart() - node.getFirstToken().getStart(),
@@ -804,13 +901,6 @@ module.exports = function(ast, extra) {
             case SyntaxKind.SuperKeyword:
                 assign(result, {
                     type: "Super"
-                });
-                break;
-
-            case SyntaxKind.SpreadElementExpression:
-                assign(result, {
-                    type: "SpreadElement",
-                    argument: convertChild(node.expression)
                 });
                 break;
 
@@ -997,7 +1087,7 @@ module.exports = function(ast, extra) {
                         range: [ openBrace.getStart(), result.range[1] ],
                         loc: getLocFor(openBrace.getStart(), node.end, ast)
                     },
-                    superClass: (node.heritageClauses ? convertChild(node.heritageClauses[0].types[0].expression) : null),
+                    superClass: (node.heritageClauses ? convertChild(node.heritageClauses[0].types[0].expression) : null)
                 });
 
                 var filteredMembers = node.members.filter(isESTreeClassMember);
