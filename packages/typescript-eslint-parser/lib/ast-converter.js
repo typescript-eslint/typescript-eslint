@@ -116,17 +116,17 @@ TOKEN_TO_TEXT[SyntaxKind.AtToken] = "@";
 TOKEN_TO_TEXT[SyntaxKind.InKeyword] = "in";
 
 /**
- * Returns true if the given node is a valid ESTree class member
- * @param  {object}  node AST node
- * @returns {boolean}      is valid class member
+ * Returns true if the given TSNode is a valid ESTree class member
+ * @param  {TSNode}  node TypeScript AST node
+ * @returns {boolean}      is valid ESTree class member
  */
 function isESTreeClassMember(node) {
     return node.kind !== SyntaxKind.PropertyDeclaration && node.kind !== SyntaxKind.SemicolonClassElement;
 }
 
 /**
- * Returns true if the given token is a comma
- * @param  {object}  token the syntax token
+ * Returns true if the given TSToken is a comma
+ * @param  {TSToken}  token the TypeScript token
  * @returns {boolean}       is comma
  */
 function isComma(token) {
@@ -134,8 +134,8 @@ function isComma(token) {
 }
 
 /**
- * Returns true if the given operator is the assignment operator
- * @param  {object}  operator the operator
+ * Returns true if the given TSToken is the assignment operator
+ * @param  {TSToken}  operator the operator token
  * @returns {boolean}          is assignment
  */
 function isAssignmentOperator(operator) {
@@ -143,8 +143,8 @@ function isAssignmentOperator(operator) {
 }
 
 /**
- * Returns true if the given operator is a logical operator
- * @param  {object}  operator the operator
+ * Returns true if the given TSToken is a logical operator
+ * @param  {TSToken}  operator the operator token
  * @returns {boolean}          is a logical operator
  */
 function isLogicalOperator(operator) {
@@ -152,8 +152,8 @@ function isLogicalOperator(operator) {
 }
 
 /**
- * Returns the binary expression type of the given operator
- * @param  {object} operator the operator
+ * Returns the binary expression type of the given TSToken
+ * @param  {TSToken} operator the operator token
  * @returns {string}          the binary expression type
  */
 function getBinaryExpressionType(operator) {
@@ -169,10 +169,10 @@ function getBinaryExpressionType(operator) {
 /**
  * Returns line and column data for the given start and end positions,
  * for the given AST
- * @param  {object} start start data
- * @param  {object} end   end data
- * @param  {object} ast   the AST object
- * @returns {object}       the loc data
+ * @param  {Object} start start data
+ * @param  {Object} end   end data
+ * @param  {Object} ast   the AST object
+ * @returns {Object}       the loc data
  */
 function getLocFor(start, end, ast) {
     var startLoc = ast.getLineAndCharacterOfPosition(start),
@@ -191,11 +191,11 @@ function getLocFor(start, end, ast) {
 }
 
 /**
- * Returns line and column data for the given node or token,
+ * Returns line and column data for the given ESTreeNode or ESTreeToken,
  * for the given AST
- * @param  {object} nodeOrToken the node or token
- * @param  {object} ast         the AST object
- * @returns {object}             the loc data
+ * @param  {ESTreeToken|ESTreeNode} nodeOrToken the ESTreeNode or ESTreeToken
+ * @param  {Object} ast         the AST object
+ * @returns {Object}             the loc data
  */
 function getLoc(nodeOrToken, ast) {
     return getLocFor(nodeOrToken.getStart(), nodeOrToken.end, ast);
@@ -216,11 +216,11 @@ function getLoc(nodeOrToken, ast) {
 }
 
 /**
- * Fixes the exports of the given node
- * @param  {object} node   the node
- * @param  {object} result result
- * @param  {[type]} ast    the AST
- * @returns {object}        the node with fixed exports
+ * Fixes the exports of the given TSNode
+ * @param  {TSNode} node   the TSNode
+ * @param  {Object} result result
+ * @param  {Object} ast    the AST
+ * @returns {TSNode}        the TSNode with fixed exports
  */
 function fixExports(node, result, ast) {
     // check for exports
@@ -255,8 +255,8 @@ function fixExports(node, result, ast) {
 
 /**
  * Extends and formats a given error object
- * @param  {object} error the error object
- * @returns {object}       converted error object
+ * @param  {Object} error the error object
+ * @returns {Object}       converted error object
  */
 function convertError(error) {
 
@@ -271,8 +271,8 @@ function convertError(error) {
 }
 
 /**
- * Returns the type of a given token
- * @param  {object} token the token
+ * Returns the type of a given ESTreeToken
+ * @param  {ESTreeToken} token the ESTreeToken
  * @returns {string}       the token type
  */
 function getTokenType(token) {
@@ -327,10 +327,10 @@ function getTokenType(token) {
 }
 
 /**
- * Extends and formats a given token, for a given AST
- * @param  {object} token the token
- * @param  {object} ast   the AST object
- * @returns {object}       the converted token
+ * Extends and formats a given ESTreeToken, for a given AST
+ * @param  {ESTreeToken} token the ESTreeToken
+ * @param  {Object} ast   the AST object
+ * @returns {ESTreeToken}       the converted ESTreeToken
  */
 function convertToken(token, ast) {
 
@@ -355,8 +355,8 @@ function convertToken(token, ast) {
 
 /**
  * Converts all tokens for the given AST
- * @param  {object} ast the AST object
- * @returns {array}     the converted tokens
+ * @param  {Object} ast the AST object
+ * @returns {ESTreeToken[]}     the converted ESTreeTokens
  */
 function convertTokens(ast) {
     var token = ast.getFirstToken(),
@@ -386,10 +386,10 @@ module.exports = function(ast, extra) {
     }
 
     /**
-     * Converts node
-     * @param  {object} node   the node
-     * @param  {object} parent the parent node
-     * @returns {object}        the converted node
+     * Converts a TypeScript node into an ESTree node
+     * @param  {TSNode} node   the TSNode
+     * @param  {TSNode} parent the parent TSNode
+     * @returns {ESTreeNode}        the converted ESTreeNode
      */
     function convert(node, parent) {
 
@@ -405,7 +405,8 @@ module.exports = function(ast, extra) {
         };
 
         /**
-         * Copies the result object
+         * Copies the result object into an ESTree node with just a type property.
+         * This is used only for leaf nodes that have no other properties.
          * @returns {void}
          */
         function simplyCopy() {
@@ -415,9 +416,9 @@ module.exports = function(ast, extra) {
         }
 
         /**
-         * Converts child node
-         * @param  {object} child the child node
-         * @returns {object}       the converted child node
+         * Converts a TypeScript node into an ESTree node.
+         * @param  {TSNode} child the child TSNode
+         * @returns {ESTreeNode}       the converted ESTree node
          */
         function convertChild(child) {
             return convert(child, node);
