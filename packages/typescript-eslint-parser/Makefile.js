@@ -105,7 +105,7 @@ function splitCommandResultToLines(result) {
 
 /**
  * Returns a list of sorted, valid semtantic-verisioning git tags
- * @returns {array} The version tags
+ * @returns {string[]} The version tags
  */
 function getVersionTags() {
     var tags = splitCommandResultToLines(exec("git tag", { silent: true }).output);
