@@ -36,7 +36,6 @@ var assert = require("chai").assert,
     parser = require("../../parser"),
     shelljs = require("shelljs");
 
-// var parser = require("esprima-fb");
 //------------------------------------------------------------------------------
 // Setup
 //------------------------------------------------------------------------------
