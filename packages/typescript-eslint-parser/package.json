@@ -55,7 +55,9 @@
     "major": "node Makefile.js major"
   },
   "dependencies": {
-    "object-assign": "^4.0.1",
+    "object-assign": "^4.0.1"
+  },
+  "peerDependencies": {
     "typescript": "^1.6.2"
   }
 }
