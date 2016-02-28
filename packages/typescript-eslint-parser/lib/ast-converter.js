@@ -293,11 +293,11 @@ function getTokenType(token) {
         }
     }
 
-    if (token.kind >= 68 && token.kind <= 112) {
+    if (token.kind >= SyntaxKind.FirstKeyword && token.kind <= SyntaxKind.LastFutureReservedWord) {
         return "Keyword";
     }
 
-    if (token.kind >= 15 && token.kind <= 66) {
+    if (token.kind >= SyntaxKind.FirstPunctuation && token.kind <= SyntaxKind.LastBinaryOperator) {
         return "Punctuator";
     }
 

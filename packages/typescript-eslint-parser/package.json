@@ -58,6 +58,6 @@
     "object-assign": "^4.0.1"
   },
   "peerDependencies": {
-    "typescript": "^1.6.2"
+    "typescript": "^1.7.3"
   }
 }
