@@ -30,6 +30,7 @@
     "dateformat": "^1.0.11",
     "eslint": "^2.2.0",
     "eslint-config-eslint": "^3.0.0",
+    "eslint-release": "^0.3.0",
     "istanbul": "~0.2.6",
     "leche": "^1.0.1",
     "mocha": "^2.0.1",
@@ -50,9 +51,9 @@
   "scripts": {
     "test": "node Makefile.js test",
     "lint": "node Makefile.js lint",
-    "patch": "node Makefile.js patch",
-    "minor": "node Makefile.js minor",
-    "major": "node Makefile.js major"
+    "release": "eslint-release",
+    "alpharelease": "eslint-prerelease alpha",
+    "betarelease": "eslint-prerelease beta"
   },
   "dependencies": {
     "object-assign": "^4.0.1"
