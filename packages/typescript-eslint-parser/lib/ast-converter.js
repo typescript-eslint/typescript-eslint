@@ -1346,21 +1346,21 @@ module.exports = function(ast, extra) {
             case SyntaxKind.TrueKeyword:
                 assign(result, {
                     type: "Literal",
-                    value: "true"
+                    value: true
                 });
                 break;
 
             case SyntaxKind.FalseKeyword:
                 assign(result, {
                     type: "Literal",
-                    value: "false"
+                    value: false
                 });
                 break;
 
             case SyntaxKind.NullKeyword:
                 assign(result, {
                     type: "Literal",
-                    value: "null"
+                    value: null
                 });
                 break;
 
