@@ -43,12 +43,24 @@ var assert = require("chai").assert,
 var FIXTURES_DIR = "./tests/fixtures/ecma-features";
 // var FIXTURES_MIX_DIR = "./tests/fixtures/ecma-features-mix";
 
+var filesWithOutsandingTSIssues = [
+    "jsx/embedded-tags", // https://github.com/Microsoft/TypeScript/issues/7410
+    "jsx/namespaced-attribute-and-value-inserted", // https://github.com/Microsoft/TypeScript/issues/7411
+    "jsx/namespaced-name-and-attribute", // https://github.com/Microsoft/TypeScript/issues/7411
+    "jsx/test-content", // https://github.com/Microsoft/TypeScript/issues/7471
+    "jsx/multiple-blank-spaces"
+];
+
 var testFiles = shelljs.find(FIXTURES_DIR).filter(function(filename) {
     return filename.indexOf(".src.js") > -1;
+}).filter(function(filename) {
+    return filesWithOutsandingTSIssues.every(function(fileName) {
+        return filename.indexOf(fileName) === -1;
+    });
 }).map(function(filename) {
     return filename.substring(FIXTURES_DIR.length - 1, filename.length - 7);  // strip off ".src.js"
 }).filter(function(filename) {
-    return !(/jsx|error\-|invalid\-|globalReturn|experimental|newTarget/.test(filename));
+    return !(/error\-|invalid\-|globalReturn|experimental|newTarget/.test(filename));
 });
 
 // var moduleTestFiles = testFiles.filter(function(filename) {

@@ -107,7 +107,14 @@ function parse(code, options) {
             commentAttachment.reset();
         }
 
-        var FILENAME = "eslint.ts";
+        if (options.ecmaFeatures && typeof options.ecmaFeatures === "object") {
+            // pass through jsx option
+            extra.ecmaFeatures.jsx = options.ecmaFeatures.jsx;
+        }
+
+        // Even if jsx option is set in typescript compiler, filename still has to
+        // contain .tsx file extension
+        var FILENAME = (extra.ecmaFeatures.jsx) ? "eslint.tsx" : "eslint.ts";
 
         var compilerHost = {
             fileExists: function() {
