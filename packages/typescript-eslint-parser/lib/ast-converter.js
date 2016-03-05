@@ -31,7 +31,8 @@
 //------------------------------------------------------------------------------
 
 var ts = require("typescript"),
-    assign = require("object-assign");
+    assign = require("object-assign"),
+    unescape = require("lodash.unescape");
 
 //------------------------------------------------------------------------------
 // Private
@@ -309,7 +310,16 @@ function getTokenType(token) {
         case SyntaxKind.NumericLiteral:
             return "Numeric";
 
+        case SyntaxKind.JsxText:
+            return "JSXText";
+
         case SyntaxKind.StringLiteral:
+            // A TypeScript-StringLiteral token with a TypeScript-JsxAttribute or TypeScript-JsxElement parent,
+            // must actually be an ESTree-JSXText token
+            if (token.parent && (token.parent.kind === SyntaxKind.JsxAttribute || token.parent.kind === SyntaxKind.JsxElement)) {
+                return "JSXText";
+            }
+
             return "String";
 
         case SyntaxKind.RegularExpressionLiteral:
@@ -321,6 +331,23 @@ function getTokenType(token) {
         case SyntaxKind.SetKeyword:
             // falls through
         default:
+    }
+
+    // Some JSX tokens have to be determined based on their parent
+    if (token.parent) {
+        if (token.kind === SyntaxKind.Identifier && token.parent.kind === SyntaxKind.FirstNode) {
+            return "JSXIdentifier";
+        }
+
+        if (token.parent.kind >= SyntaxKind.JsxElement && token.parent.kind <= SyntaxKind.JsxAttribute) {
+            if (token.kind === SyntaxKind.FirstNode) {
+                return "JSXMemberExpression";
+            }
+
+            if (token.kind === SyntaxKind.Identifier) {
+                return "JSXIdentifier";
+            }
+        }
     }
 
     return "Identifier";
@@ -368,7 +395,6 @@ function convertTokens(ast) {
         if (converted) {
             result.push(converted);
         }
-
         token = ts.findNextToken(token, ast);
     }
 
@@ -422,6 +448,38 @@ module.exports = function(ast, extra) {
          */
         function convertChild(child) {
             return convert(child, node);
+        }
+
+        /**
+         * Converts a TypeScript JSX node.tagName into an ESTree node.name
+         * @param {Object} tagName  the tagName object from a JSX TSNode
+         * @param  {Object} ast   the AST object
+         * @returns {Object}    the converted ESTree name object
+         */
+        function convertTypeScriptJSXTagNameToESTreeName(tagName) {
+            var tagNameToken = convertToken(tagName, ast);
+
+            if (tagNameToken.type === "JSXMemberExpression") {
+
+                var isNestedMemberExpression = (node.tagName.left.kind === SyntaxKind.FirstNode);
+
+                // Convert TSNode left and right objects into ESTreeNode object
+                // and property objects
+                tagNameToken.object = convertChild(node.tagName.left);
+                tagNameToken.property = convertChild(node.tagName.right);
+
+                // Assign the appropriate types
+                tagNameToken.object.type = (isNestedMemberExpression) ? "JSXMemberExpression" : "JSXIdentifier";
+                tagNameToken.property.type = "JSXIdentifier";
+
+            } else {
+
+                tagNameToken.name = tagNameToken.value;
+            }
+
+            delete tagNameToken.value;
+
+            return tagNameToken;
         }
 
         switch (node.kind) {
@@ -1318,7 +1376,7 @@ module.exports = function(ast, extra) {
             case SyntaxKind.StringLiteral:
                 assign(result, {
                     type: "Literal",
-                    value: node.text,
+                    value: unescape(node.text),
                     raw: ast.text.slice(result.range[0], result.range[1])
                 });
                 break;
@@ -1369,13 +1427,132 @@ module.exports = function(ast, extra) {
                 simplyCopy();
                 break;
 
+            // JSX
+
+            case SyntaxKind.JsxElement:
+                assign(result, {
+                    type: "JSXElement",
+                    openingElement: convertChild(node.openingElement),
+                    closingElement: convertChild(node.closingElement),
+                    children: node.children.map(convertChild)
+                });
+
+                break;
+
+            case SyntaxKind.JsxSelfClosingElement:
+                // Convert SyntaxKind.JsxSelfClosingElement to SyntaxKind.JsxOpeningElement,
+                // TypeScript does not seem to have the idea of openingElement when tag is self-closing
+                node.kind = SyntaxKind.JsxOpeningElement;
+                assign(result, {
+                    type: "JSXElement",
+                    openingElement: convertChild(node),
+                    closingElement: null,
+                    children: []
+                });
+
+                break;
+
+            case SyntaxKind.JsxOpeningElement:
+                var openingTagName = convertTypeScriptJSXTagNameToESTreeName(node.tagName);
+                assign(result, {
+                    type: "JSXOpeningElement",
+                    selfClosing: !(node.parent && node.parent.closingElement),
+                    name: openingTagName,
+                    attributes: node.attributes.map(convertChild)
+                });
+
+                break;
+
+            case SyntaxKind.JsxClosingElement:
+                var closingTagName = convertTypeScriptJSXTagNameToESTreeName(node.tagName);
+                assign(result, {
+                    type: "JSXClosingElement",
+                    name: closingTagName
+                });
+
+                break;
+
+            case SyntaxKind.JsxExpression:
+                var eloc = ast.getLineAndCharacterOfPosition(result.range[0] + 1);
+                var expression = (node.expression) ? convertChild(node.expression) : {
+                    type: "JSXEmptyExpression",
+                    loc: {
+                        start: {
+                            line: eloc.line + 1,
+                            column: eloc.character
+                        },
+                        end: {
+                            line: result.loc.end.line,
+                            column: result.loc.end.column - 1
+                        }
+                    },
+                    range: [result.range[0] + 1, result.range[1] - 1]
+                };
+
+                assign(result, {
+                    type: "JSXExpressionContainer",
+                    expression: expression
+                });
+
+                break;
+
+            case SyntaxKind.JsxAttribute:
+                var attributeName = convertToken(node.name, ast);
+                attributeName.name = attributeName.value;
+                delete attributeName.value;
+
+                assign(result, {
+                    type: "JSXAttribute",
+                    name: attributeName,
+                    value: convertChild(node.initializer)
+                });
+
+                break;
+
+            case SyntaxKind.JsxText:
+                assign(result, {
+                    type: "Literal",
+                    value: ast.text.slice(node.pos, node.end),
+                    raw: ast.text.slice(node.pos, node.end)
+                });
+
+                result.loc.start.column = node.pos;
+                result.range[0] = node.pos;
+
+                break;
+
+            case SyntaxKind.JsxSpreadAttribute:
+                assign(result, {
+                    type: "JSXSpreadAttribute",
+                    argument: convertChild(node.expression)
+                });
+
+                break;
+
+            case SyntaxKind.FirstNode:
+                var jsxMemberExpressionObject = convertChild(node.left);
+                jsxMemberExpressionObject.type = "JSXIdentifier";
+                delete jsxMemberExpressionObject.value;
+
+                var jsxMemberExpressionProperty = convertChild(node.right);
+                jsxMemberExpressionProperty.type = "JSXIdentifier";
+                delete jsxMemberExpressionObject.value;
+
+                assign(result, {
+                    type: "JSXMemberExpression",
+                    object: jsxMemberExpressionObject,
+                    property: jsxMemberExpressionProperty
+                });
+
+                break;
+
             // TypeScript specific
 
             case SyntaxKind.ParenthesizedExpression:
                 return convert(node.expression, parent);
 
             default:
-                console.log(node.kind);
+                console.log("unsupported node.kind:", node.kind);
                 result = null;
         }
 

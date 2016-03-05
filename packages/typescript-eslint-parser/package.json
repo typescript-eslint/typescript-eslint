@@ -56,6 +56,7 @@
     "betarelease": "eslint-prerelease beta"
   },
   "dependencies": {
+    "lodash.unescape": "4.0.0",
     "object-assign": "^4.0.1"
   },
   "peerDependencies": {
