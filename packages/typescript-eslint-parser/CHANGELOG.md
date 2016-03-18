@@ -1,3 +1,10 @@
+v0.1.0-alpha.1 - March 18, 2016
+
+* 0eddb71 New: Implements JSX syntax (fixes #18) (James Henry)
+* e890743 Docs: PR validation check (Nicholas C. Zakas)
+* c314f77 Build: Don't test Node 0.10 (Nicholas C. Zakas)
+* bc05e1a Fix: Ensure true, false and null values are not stringifed (fixes #1) (James Henry)
+
 v0.1.0-alpha.0 - March 4, 2016
 
 * c05b5da Build: Add release tool (Nicholas C. Zakas)
