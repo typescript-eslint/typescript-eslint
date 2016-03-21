@@ -1552,7 +1552,6 @@ module.exports = function(ast, extra) {
                 return convert(node.expression, parent);
 
             default:
-                console.log("unsupported node.kind:", node.kind);
                 result = null;
         }
 
