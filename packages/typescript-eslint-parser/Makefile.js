@@ -156,7 +156,7 @@ target.lint = function() {
 };
 
 target.test = function() {
-    // target.lint();
+    target.lint();
 
     var errors = 0,
         lastReturn;
