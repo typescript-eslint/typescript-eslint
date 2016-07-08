@@ -432,6 +432,47 @@ module.exports = function(ast, extra) {
         }
 
         /**
+         * Converts a child into a type annotation. This creates an intermediary
+         * TypeAnnotation node to match what Flow does.
+         * @param {TSNode} child The TypeScript AST node to convert.
+         * @returns {ESTreeNode} The type annotation node.
+         */
+        function convertTypeAnnotation(child) {
+            var annotation = convertChild(child);
+            return {
+                type: "TypeAnnotation",
+                loc: annotation.loc,
+                range: annotation.range,
+                typeAnnotation: annotation
+            };
+        }
+
+        /**
+         * For nodes that are copied directly from the TypeScript AST into
+         * ESTree mostly as-is. The only difference is the addition of a type
+         * property instead of a kind property. Recursively copies all children.
+         * @returns {void}
+         */
+        function deeplyCopy() {
+            result.type = "TS" + SyntaxKind[node.kind];
+            Object.keys(node).filter(function(key) {
+                return !(/^(?:kind|parent|pos|end)$/.test(key));
+            }).forEach(function(key) {
+                if (key === "type") {
+                    result.typeAnnotation = convertTypeAnnotation(node.type);
+                } else {
+                    if (Array.isArray(node[key])) {
+                        result[key] = node[key].map(convertChild);
+                    } else if (node[key] && typeof node[key] === "object") {
+                        result[key] = convertChild(node[key]);
+                    } else {
+                        result[key] = node[key];
+                    }
+                }
+            });
+        }
+
+        /**
          * Converts a TypeScript JSX node.tagName into an ESTree node.name
          * @param {Object} tagName  the tagName object from a JSX TSNode
          * @param  {Object} ast   the AST object
@@ -636,6 +677,10 @@ module.exports = function(ast, extra) {
                     body: convertChild(node.body)
                 });
 
+                if (node.type) {
+                    result.returnType = convertTypeAnnotation(node.type);
+                }
+
                 // check for exports
                 result = fixExports(node, result, ast);
 
@@ -647,6 +692,10 @@ module.exports = function(ast, extra) {
                     id: convertChild(node.name),
                     init: convertChild(node.initializer)
                 });
+
+                if (node.type) {
+                    result.id.typeAnnotation = convertTypeAnnotation(node.type);
+                }
                 break;
 
             case SyntaxKind.VariableStatement:
@@ -821,6 +870,10 @@ module.exports = function(ast, extra) {
                         }
                     };
 
+                if (node.type) {
+                    method.returnType = convertTypeAnnotation(node.type);
+                }
+
                 if (parent.kind === SyntaxKind.ObjectLiteralExpression) {
                     assign(result, {
                         type: "Property",
@@ -936,6 +989,10 @@ module.exports = function(ast, extra) {
                     body: convertChild(node.body),
                     expression: false
                 });
+
+                if (node.type) {
+                    result.returnType = convertTypeAnnotation(node.type);
+                }
                 break;
 
             case SyntaxKind.SuperKeyword:
@@ -1010,6 +1067,11 @@ module.exports = function(ast, extra) {
                     body: convertChild(node.body),
                     expression: node.body.kind !== SyntaxKind.Block
                 });
+
+                if (node.type) {
+                    result.returnType = convertTypeAnnotation(node.type);
+                }
+
                 break;
 
             case SyntaxKind.YieldExpression:
@@ -1533,7 +1595,7 @@ module.exports = function(ast, extra) {
                 return convert(node.expression, parent);
 
             default:
-                result = null;
+                deeplyCopy();
         }
 
         return result;
