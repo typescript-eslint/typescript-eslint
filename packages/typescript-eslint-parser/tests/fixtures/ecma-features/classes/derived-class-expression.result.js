@@ -67,6 +67,7 @@ module.exports = {
                     "value": 0,
                     "raw": "0"
                 },
+                "implements": [],
                 "body": {
                     "type": "ClassBody",
                     "loc": {

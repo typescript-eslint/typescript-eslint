@@ -50,6 +50,7 @@ module.exports = {
                 "name": "A"
             },
             "superClass": null,
+            "implements": [],
             "body": {
                 "type": "ClassBody",
                 "loc": {
