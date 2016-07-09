@@ -448,6 +448,22 @@ module.exports = function(ast, extra) {
         }
 
         /**
+         * Converts a child into a class implements node. This creates an intermediary
+         * ClassImplements node to match what Flow does.
+         * @param {TSNode} child The TypeScript AST node to convert.
+         * @returns {ESTreeNode} The type annotation node.
+         */
+        function convertClassImplements(child) {
+            var id = convertChild(child.expression);
+            return {
+                type: "ClassImplements",
+                loc: id.loc,
+                range: id.range,
+                id: id
+            };
+        }
+
+        /**
          * For nodes that are copied directly from the TypeScript AST into
          * ESTree mostly as-is. The only difference is the addition of a type
          * property instead of a kind property. Recursively copies all children.
@@ -1171,12 +1187,22 @@ module.exports = function(ast, extra) {
 
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.ClassExpression:
-                var lastClassToken = node.heritageClauses ? node.heritageClauses[node.heritageClauses.length - 1] : node.name;
+                var heritageClauses = node.heritageClauses || [];
+                var lastClassToken = heritageClauses.length ? heritageClauses[heritageClauses.length - 1] : node.name;
                 if (!lastClassToken) { // no name
                     lastClassToken = node.getFirstToken();
                 }
 
-                var openBrace = ts.findNextToken(lastClassToken, ast);
+                var openBrace = ts.findNextToken(lastClassToken, ast),
+                    hasExtends = (heritageClauses.length && node.heritageClauses[0].token === SyntaxKind.ExtendsKeyword),
+                    superClass,
+                    hasImplements = false;
+
+                if (hasExtends) {
+                    superClass = heritageClauses.shift();
+                }
+
+                hasImplements = heritageClauses.length > 0;
 
                 assign(result, {
                     type: SyntaxKind[node.kind],
@@ -1189,7 +1215,8 @@ module.exports = function(ast, extra) {
                         range: [ openBrace.getStart(), result.range[1] ],
                         loc: getLocFor(openBrace.getStart(), node.end, ast)
                     },
-                    superClass: (node.heritageClauses ? convertChild(node.heritageClauses[0].types[0].expression) : null)
+                    superClass: (superClass ? convertChild(superClass.types[0].expression) : null),
+                    implements: hasImplements ? heritageClauses[0].types.map(convertClassImplements) : []
                 });
 
                 var filteredMembers = node.members.filter(isESTreeClassMember);

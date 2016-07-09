@@ -49,6 +49,7 @@ module.exports = {
                 ],
                 "id": null,
                 "superClass": null,
+                "implements": [],
                 "body": {
                     "type": "ClassBody",
                     "loc": {
