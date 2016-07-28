@@ -47,27 +47,7 @@ module.exports = {
                     25,
                     26
                 ],
-                "name": "a",
-                "leadingComments": [
-                    {
-                        "type": "Block",
-                        "value": " bar ",
-                        "range": [
-                            14,
-                            23
-                        ],
-                        "loc": {
-                            "start": {
-                                "line": 2,
-                                "column": 4
-                            },
-                            "end": {
-                                "line": 2,
-                                "column": 13
-                            }
-                        }
-                    }
-                ]
+                "name": "a"
             },
             "consequent": {
                 "type": "BlockStatement",
@@ -87,27 +67,7 @@ module.exports = {
                 ],
                 "body": []
             },
-            "alternate": null,
-            "leadingComments": [
-                {
-                    "type": "Block",
-                    "value": " foo ",
-                    "range": [
-                        0,
-                        9
-                    ],
-                    "loc": {
-                        "start": {
-                            "line": 1,
-                            "column": 0
-                        },
-                        "end": {
-                            "line": 1,
-                            "column": 9
-                        }
-                    }
-                }
-            ]
+            "alternate": null
         }
     ],
     "sourceType": "script",

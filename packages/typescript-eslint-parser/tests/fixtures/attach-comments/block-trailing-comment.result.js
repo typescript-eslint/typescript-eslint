@@ -83,27 +83,7 @@ module.exports = {
                             "name": "a"
                         },
                         "arguments": []
-                    },
-                    "trailingComments": [
-                        {
-                            "type": "Line",
-                            "value": "comment",
-                            "range": [
-                                15,
-                                24
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 3,
-                                    "column": 4
-                                },
-                                "end": {
-                                    "line": 3,
-                                    "column": 13
-                                }
-                            }
-                        }
-                    ]
+                    }
                 }
             ]
         }

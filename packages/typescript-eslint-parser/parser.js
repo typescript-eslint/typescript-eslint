@@ -9,13 +9,9 @@
 "use strict";
 
 var astNodeTypes = require("./lib/ast-node-types"),
-    commentAttachment = require("./lib/comment-attachment"),
-   //  TokenTranslator = require("./lib/token-translator"),
     ts = require("typescript");
 
-// var lookahead;
 var extra;
-// var lastToken;
 
 /**
  * Resets the extra config object
@@ -35,7 +31,60 @@ function resetExtra() {
     };
 }
 
+/**
+ * Converts a TypeScript comment to an Esprima comment.
+ * @param {boolean} block True if it's a block comment, false if not.
+ * @param {string} text The text of the comment.
+ * @param {int} start The index at which the comment starts.
+ * @param {int} end The index at which the comment ends.
+ * @param {Location} startLoc The location at which the comment starts.
+ * @param {Location} endLoc The location at which the comment ends.
+ * @returns {Object} The comment object.
+ * @private
+ */
+function convertTypeScriptCommentToEsprimaComment(block, text, start, end, startLoc, endLoc) {
+    var comment = {
+        type: block ? "Block" : "Line",
+        value: text
+    };
 
+    if (typeof start === "number") {
+        comment.range = [start, end];
+    }
+
+    if (typeof startLoc === "object") {
+        comment.loc = {
+            start: startLoc,
+            end: endLoc
+        };
+    }
+
+    return comment;
+}
+
+/**
+ * Returns line and column data for the given start and end positions,
+ * for the given AST
+ * @param  {Object} start start data
+ * @param  {Object} end   end data
+ * @param  {Object} ast   the AST object
+ * @returns {Object}       the loc data
+ */
+function getLocFor(start, end, ast) {
+    var startLoc = ast.getLineAndCharacterOfPosition(start),
+        endLoc = ast.getLineAndCharacterOfPosition(end);
+
+    return {
+        start: {
+            line: startLoc.line + 1,
+            column: startLoc.character
+        },
+        end: {
+            line: endLoc.line + 1,
+            column: endLoc.character
+        }
+    };
+}
 
 //------------------------------------------------------------------------------
 // Parser
@@ -51,17 +100,12 @@ function parse(code, options) {
 
     var program,
         toString = String;
-   //  var acornOptions = {
-   //      ecmaVersion: 5
-   //  };
-   //  var translator;
 
     if (typeof code !== "string" && !(code instanceof String)) {
         code = toString(code);
     }
 
     resetExtra();
-    commentAttachment.reset();
 
     if (typeof options !== "undefined") {
         extra.range = (typeof options.range === "boolean") && options.range;
@@ -74,7 +118,6 @@ function parse(code, options) {
 
         if (typeof options.tokens === "boolean" && options.tokens) {
             extra.tokens = [];
-            // translator = new TokenTranslator(tt, code);
         }
         if (typeof options.comment === "boolean" && options.comment) {
             extra.comment = true;
@@ -86,7 +129,6 @@ function parse(code, options) {
         if (extra.attachComment) {
             extra.range = true;
             extra.comments = [];
-            commentAttachment.reset();
         }
 
         if (options.ecmaFeatures && typeof options.ecmaFeatures === "object") {
@@ -139,19 +181,42 @@ function parse(code, options) {
         var ast = program.getSourceFile(FILENAME);
 
         if (extra.attachComment || extra.comment) {
-            // acornOptions.onComment = function() {
-            //     var comment = convertAcornCommentToEsprimaComment.apply(this, arguments);
-            //     extra.comments.push(comment);
-            //
-            //     if (extra.attachComment) {
-            //         commentAttachment.addComment(comment);
-            //     }
-            // };
+            /**
+             * Create a TypeScript Scanner, with skipTrivia set to false so that
+             * we can parse the comments
+             */
+            var triviaScanner = ts.createScanner(ast.languageVersion, false, 0, code);
+
+            var kind = triviaScanner.scan();
+            while (kind !== ts.SyntaxKind.EndOfFileToken) {
+                if (kind !== ts.SyntaxKind.SingleLineCommentTrivia && kind !== ts.SyntaxKind.MultiLineCommentTrivia) {
+                    kind = triviaScanner.scan();
+                    continue;
+                }
+
+                var isBlock = (kind === ts.SyntaxKind.MultiLineCommentTrivia);
+                var range = {
+                    pos: triviaScanner.getTokenPos(),
+                    end: triviaScanner.getTextPos(),
+                    kind: triviaScanner.getToken()
+                };
+
+                var comment = code.substring(range.pos, range.end);
+                var text = comment.replace("//", "").replace("/*", "").replace("*/", "");
+                var loc = getLocFor(range.pos, range.end, ast);
+
+                var esprimaComment = convertTypeScriptCommentToEsprimaComment(isBlock, text, range.pos, range.end, loc.start, loc.end);
+                extra.comments.push(esprimaComment);
+
+                kind = triviaScanner.scan();
+            }
+
         }
 
     }
 
     var convert = require("./lib/ast-converter");
+
     return convert(ast, extra);
 }
 

@@ -20,7 +20,6 @@ var ts = require("typescript"),
 //------------------------------------------------------------------------------
 
 var SyntaxKind = ts.SyntaxKind;
-// var TokenClass = ts.TokenClass;
 
 var ASSIGNMENT_OPERATORS = [
     SyntaxKind.EqualsToken,
@@ -268,6 +267,8 @@ function getTokenType(token) {
 
             case SyntaxKind.GetKeyword:
             case SyntaxKind.SetKeyword:
+            case SyntaxKind.TypeKeyword:
+            case SyntaxKind.ModuleKeyword:
                 return "Identifier";
 
             default:
@@ -276,6 +277,10 @@ function getTokenType(token) {
     }
 
     if (token.kind >= SyntaxKind.FirstKeyword && token.kind <= SyntaxKind.LastFutureReservedWord) {
+        if (token.kind === SyntaxKind.FalseKeyword || token.kind === SyntaxKind.TrueKeyword) {
+            return "Boolean";
+        }
+
         return "Keyword";
     }
 
@@ -1189,12 +1194,19 @@ module.exports = function(ast, extra) {
             case SyntaxKind.ClassExpression:
                 var heritageClauses = node.heritageClauses || [];
                 var lastClassToken = heritageClauses.length ? heritageClauses[heritageClauses.length - 1] : node.name;
-                if (!lastClassToken) { // no name
+                /**
+                 * We need check for modifiers, and use the last one, as there
+                 * could be multiple before the open brace
+                 */
+                if (node.modifiers && node.modifiers.length) {
+                    var lastModifier = node.modifiers[node.modifiers.length - 1];
+                    lastClassToken = ts.findNextToken(lastModifier, ast);
+                } else if (!lastClassToken) { // no name
                     lastClassToken = node.getFirstToken();
                 }
 
-                var openBrace = ts.findNextToken(lastClassToken, ast),
-                    hasExtends = (heritageClauses.length && node.heritageClauses[0].token === SyntaxKind.ExtendsKeyword),
+                var openBrace = ts.findNextToken(lastClassToken, ast);
+                var hasExtends = (heritageClauses.length && node.heritageClauses[0].token === SyntaxKind.ExtendsKeyword),
                     superClass,
                     hasImplements = false;
 
@@ -1474,21 +1486,24 @@ module.exports = function(ast, extra) {
             case SyntaxKind.TrueKeyword:
                 assign(result, {
                     type: "Literal",
-                    value: true
+                    value: true,
+                    raw: "true"
                 });
                 break;
 
             case SyntaxKind.FalseKeyword:
                 assign(result, {
                     type: "Literal",
-                    value: false
+                    value: false,
+                    raw: "false"
                 });
                 break;
 
             case SyntaxKind.NullKeyword:
                 assign(result, {
                     type: "Literal",
-                    value: null
+                    value: null,
+                    raw: "null"
                 });
                 break;
 
@@ -1628,16 +1643,19 @@ module.exports = function(ast, extra) {
         return result;
     }
 
-
-
     var estree = convert(ast);
 
     if (extra.tokens) {
         estree.tokens = convertTokens(ast);
     }
 
+    /**
+     * Add the comment nodes to the AST (that were parsed separately in parser.js)
+     * TODO: Track the progress of https://github.com/eslint/eslint/issues/6724
+     * regarding ESLint itself becoming responsible for attributing comment nodes
+     */
     if (extra.comment || extra.attachComment) {
-        estree.comments = [];
+        estree.comments = extra.comments || [];
     }
 
     return estree;

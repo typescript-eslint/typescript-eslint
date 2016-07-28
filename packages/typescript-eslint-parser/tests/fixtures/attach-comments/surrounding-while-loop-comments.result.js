@@ -49,6 +49,8 @@ module.exports = {
                 ],
                 "name": "f"
             },
+            "generator": false,
+            "expression": false,
             "params": [],
             "body": {
                 "type": "BlockStatement",
@@ -119,47 +121,7 @@ module.exports = {
                                 46
                             ],
                             "body": []
-                        },
-                        "leadingComments": [
-                            {
-                                "type": "Block",
-                                "value": " infinite ",
-                                "range": [
-                                    15,
-                                    29
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 1,
-                                        "column": 15
-                                    },
-                                    "end": {
-                                        "line": 1,
-                                        "column": 29
-                                    }
-                                }
-                            }
-                        ],
-                        "trailingComments": [
-                            {
-                                "type": "Block",
-                                "value": " bar ",
-                                "range": [
-                                    47,
-                                    56
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 1,
-                                        "column": 47
-                                    },
-                                    "end": {
-                                        "line": 1,
-                                        "column": 56
-                                    }
-                                }
-                            }
-                        ]
+                        }
                     },
                     {
                         "type": "VariableDeclaration",
@@ -215,32 +177,10 @@ module.exports = {
                                 "init": null
                             }
                         ],
-                        "kind": "var",
-                        "leadingComments": [
-                            {
-                                "type": "Block",
-                                "value": " bar ",
-                                "range": [
-                                    47,
-                                    56
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 1,
-                                        "column": 47
-                                    },
-                                    "end": {
-                                        "line": 1,
-                                        "column": 56
-                                    }
-                                }
-                            }
-                        ]
+                        "kind": "var"
                     }
                 ]
-            },
-            "expression": false,
-            "generator": false
+            }
         }
     ],
     "sourceType": "script",

@@ -231,27 +231,7 @@ module.exports = {
                                     ],
                                     "value": 1,
                                     "raw": "1"
-                                },
-                                "trailingComments": [
-                                    {
-                                        "type": "Line",
-                                        "value": "no default",
-                                        "range": [
-                                            113,
-                                            125
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 7,
-                                                "column": 8
-                                            },
-                                            "end": {
-                                                "line": 7,
-                                                "column": 20
-                                            }
-                                        }
-                                    }
-                                ]
+                                }
                             }
                         ]
                     }

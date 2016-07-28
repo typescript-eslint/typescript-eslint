@@ -118,47 +118,7 @@ module.exports = {
                                 "name": "foo"
                             },
                             "arguments": []
-                        },
-                        "leadingComments": [
-                            {
-                                "type": "Block",
-                                "value": " before ",
-                                "range": [
-                                    19,
-                                    31
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 2,
-                                        "column": 4
-                                    },
-                                    "end": {
-                                        "line": 2,
-                                        "column": 16
-                                    }
-                                }
-                            }
-                        ],
-                        "trailingComments": [
-                            {
-                                "type": "Block",
-                                "value": " after ",
-                                "range": [
-                                    47,
-                                    58
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 4,
-                                        "column": 4
-                                    },
-                                    "end": {
-                                        "line": 4,
-                                        "column": 15
-                                    }
-                                }
-                            }
-                        ]
+                        }
                     }
                 ]
             },
