@@ -85,47 +85,7 @@ module.exports = {
                         ],
                         "value": 1,
                         "raw": "1"
-                    },
-                    "leadingComments": [
-                        {
-                            "type": "Line",
-                            "value": " foo",
-                            "range": [
-                                18,
-                                24
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 2,
-                                    "column": 4
-                                },
-                                "end": {
-                                    "line": 2,
-                                    "column": 10
-                                }
-                            }
-                        }
-                    ],
-                    "trailingComments": [
-                        {
-                            "type": "Line",
-                            "value": " falls through",
-                            "range": [
-                                45,
-                                61
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 4,
-                                    "column": 8
-                                },
-                                "end": {
-                                    "line": 4,
-                                    "column": 24
-                                }
-                            }
-                        }
-                    ]
+                    }
                 },
                 {
                     "type": "SwitchCase",
@@ -216,27 +176,7 @@ module.exports = {
                         ],
                         "value": 2,
                         "raw": "2"
-                    },
-                    "leadingComments": [
-                        {
-                            "type": "Line",
-                            "value": " falls through",
-                            "range": [
-                                45,
-                                61
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 4,
-                                    "column": 8
-                                },
-                                "end": {
-                                    "line": 4,
-                                    "column": 24
-                                }
-                            }
-                        }
-                    ]
+                    }
                 }
             ]
         }

@@ -83,47 +83,7 @@ module.exports = {
                             36,
                             43
                         ],
-                        "argument": null,
-                        "leadingComments": [
-                            {
-                                "type": "Block",
-                                "value": " before ",
-                                "range": [
-                                    19,
-                                    31
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 2,
-                                        "column": 4
-                                    },
-                                    "end": {
-                                        "line": 2,
-                                        "column": 16
-                                    }
-                                }
-                            }
-                        ],
-                        "trailingComments": [
-                            {
-                                "type": "Block",
-                                "value": " after ",
-                                "range": [
-                                    48,
-                                    59
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 4,
-                                        "column": 4
-                                    },
-                                    "end": {
-                                        "line": 4,
-                                        "column": 15
-                                    }
-                                }
-                            }
-                        ]
+                        "argument": null
                     }
                 ]
             },

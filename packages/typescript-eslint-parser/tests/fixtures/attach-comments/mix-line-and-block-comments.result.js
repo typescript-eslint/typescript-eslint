@@ -64,27 +64,7 @@ module.exports = {
                             10,
                             13
                         ],
-                        "name": "zzz",
-                        "trailingComments": [
-                            {
-                                "type": "Block",
-                                "value": "aaa",
-                                "range": [
-                                    14,
-                                    21
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 2,
-                                        "column": 8
-                                    },
-                                    "end": {
-                                        "line": 2,
-                                        "column": 15
-                                    }
-                                }
-                            }
-                        ]
+                        "name": "zzz"
                     },
                     "init": {
                         "type": "Literal",
@@ -103,89 +83,11 @@ module.exports = {
                             27
                         ],
                         "value": 777,
-                        "raw": "777",
-                        "leadingComments": [
-                            {
-                                "type": "Line",
-                                "value": "foo",
-                                "range": [
-                                    0,
-                                    5
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 1,
-                                        "column": 0
-                                    },
-                                    "end": {
-                                        "line": 1,
-                                        "column": 5
-                                    }
-                                }
-                            },
-                            {
-                                "type": "Block",
-                                "value": "aaa",
-                                "range": [
-                                    14,
-                                    21
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 2,
-                                        "column": 8
-                                    },
-                                    "end": {
-                                        "line": 2,
-                                        "column": 15
-                                    }
-                                }
-                            }
-                        ]
+                        "raw": "777"
                     }
                 }
             ],
-            "kind": "var",
-            "leadingComments": [
-                {
-                    "type": "Line",
-                    "value": "foo",
-                    "range": [
-                        0,
-                        5
-                    ],
-                    "loc": {
-                        "start": {
-                            "line": 1,
-                            "column": 0
-                        },
-                        "end": {
-                            "line": 1,
-                            "column": 5
-                        }
-                    }
-                }
-            ],
-            "trailingComments": [
-                {
-                    "type": "Line",
-                    "value": "bar",
-                    "range": [
-                        29,
-                        34
-                    ],
-                    "loc": {
-                        "start": {
-                            "line": 3,
-                            "column": 0
-                        },
-                        "end": {
-                            "line": 3,
-                            "column": 5
-                        }
-                    }
-                }
-            ]
+            "kind": "var"
         }
     ],
     "sourceType": "script",

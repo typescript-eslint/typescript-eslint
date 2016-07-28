@@ -156,47 +156,7 @@ module.exports = {
                                     ],
                                     "value": 1,
                                     "raw": "1"
-                                },
-                                "leadingComments": [
-                                    {
-                                        "type": "Line",
-                                        "value": " foo",
-                                        "range": [
-                                            46,
-                                            52
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 3,
-                                                "column": 8
-                                            },
-                                            "end": {
-                                                "line": 3,
-                                                "column": 14
-                                            }
-                                        }
-                                    }
-                                ],
-                                "trailingComments": [
-                                    {
-                                        "type": "Line",
-                                        "value": " falls through",
-                                        "range": [
-                                            81,
-                                            97
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 5,
-                                                "column": 12
-                                            },
-                                            "end": {
-                                                "line": 5,
-                                                "column": 28
-                                            }
-                                        }
-                                    }
-                                ]
+                                }
                             },
                             {
                                 "type": "SwitchCase",
@@ -287,27 +247,7 @@ module.exports = {
                                     ],
                                     "value": 2,
                                     "raw": "2"
-                                },
-                                "leadingComments": [
-                                    {
-                                        "type": "Line",
-                                        "value": " falls through",
-                                        "range": [
-                                            81,
-                                            97
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 5,
-                                                "column": 12
-                                            },
-                                            "end": {
-                                                "line": 5,
-                                                "column": 28
-                                            }
-                                        }
-                                    }
-                                ]
+                                }
                             }
                         ]
                     }
