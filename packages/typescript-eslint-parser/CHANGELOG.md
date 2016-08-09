@@ -1,3 +1,14 @@
+v0.1.0 - August 9, 2016
+
+* d49b5f1 Build: Add CI build scripts (Nicholas C. Zakas)
+* 32a46b3 New: Attaches comments to the ESTree AST (fixes #31) (#49) (James Henry)
+* f4856f9 Fix: Class implements conversion (fixes #39) (#43) (Nicholas C. Zakas)
+* 795a418 Build: Add linting to npm test (Nicholas C. Zakas)
+* d26fec4 New: Automatically generate TS-specific nodes (#40) (Nicholas C. Zakas)
+* 46b9c87 Docs: Update README to have the correct phase order. (#35) (Dean Taub)
+* a8b00fe Chore: Add jQuery Foundation copyright (Nicholas C. Zakas)
+* 560bb99 Fix: Remove console logging of node.kind (fixes #29) (Tom X. Tobin)
+
 v0.1.0-alpha.1 - March 18, 2016
 
 * 0eddb71 New: Implements JSX syntax (fixes #18) (James Henry)
