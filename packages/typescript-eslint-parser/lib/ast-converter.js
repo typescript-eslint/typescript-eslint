@@ -453,6 +453,42 @@ module.exports = function(ast, extra) {
         }
 
         /**
+         * Converts a TSNode's typeArguments array to a flow-like typeParameters node
+         * @param {Array} typeArguments TSNode typeArguments
+         * @returns {TypeParameterInstantiation} TypeParameterInstantiation node
+         */
+        function convertTypeArgumentsToTypeParameters(typeArguments) {
+            var firstTypeArgument = typeArguments[0];
+            var lastTypeArgument = typeArguments[typeArguments.length - 1];
+            return {
+                type: "TypeParameterInstantiation",
+                range: [
+                    firstTypeArgument.pos - 1,
+                    lastTypeArgument.end + 1
+                ],
+                loc: getLocFor(firstTypeArgument.pos - 1, lastTypeArgument.end + 1, ast),
+                params: typeArguments.map(function(typeArgument) {
+                    /**
+                     * Have to manually calculate the start of the range,
+                     * because TypeScript includes leading whitespace but Flow does not
+                     */
+                    var typeArgumentStart = (typeArgument.typeName && typeArgument.typeName.text)
+                        ? typeArgument.end - typeArgument.typeName.text.length
+                        : typeArgument.pos;
+                    return {
+                        type: "GenericTypeAnnotation",
+                        range: [
+                            typeArgumentStart,
+                            typeArgument.end
+                        ],
+                        loc: getLocFor(typeArgumentStart, typeArgument.end, ast),
+                        id: convertChild(typeArgument.typeName)
+                    };
+                })
+            };
+        }
+
+        /**
          * Converts a child into a class implements node. This creates an intermediary
          * ClassImplements node to match what Flow does.
          * @param {TSNode} child The TypeScript AST node to convert.
@@ -460,12 +496,16 @@ module.exports = function(ast, extra) {
          */
         function convertClassImplements(child) {
             var id = convertChild(child.expression);
-            return {
+            var classImplementsNode = {
                 type: "ClassImplements",
                 loc: id.loc,
                 range: id.range,
                 id: id
             };
+            if (child.typeArguments && child.typeArguments.length) {
+                classImplementsNode.typeParameters = convertTypeArgumentsToTypeParameters(child.typeArguments);
+            }
+            return classImplementsNode;
         }
 
         /**
