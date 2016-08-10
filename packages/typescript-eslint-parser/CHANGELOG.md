@@ -1,3 +1,7 @@
+v0.1.1 - August 10, 2016
+
+* 62d14b4 Fix: Class implements generic syntax (fixes #44) (#53) (James Henry)
+
 v0.1.0 - August 9, 2016
 
 * d49b5f1 Build: Add CI build scripts (Nicholas C. Zakas)
