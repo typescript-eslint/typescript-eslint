@@ -454,7 +454,7 @@ module.exports = function(ast, extra) {
 
         /**
          * Converts a TSNode's typeArguments array to a flow-like typeParameters node
-         * @param {Array} typeArguments TSNode typeArguments
+         * @param {TSNode[]} typeArguments TSNode typeArguments
          * @returns {TypeParameterInstantiation} TypeParameterInstantiation node
          */
         function convertTypeArgumentsToTypeParameters(typeArguments) {
@@ -483,6 +483,42 @@ module.exports = function(ast, extra) {
                         ],
                         loc: getLocFor(typeArgumentStart, typeArgument.end, ast),
                         id: convertChild(typeArgument.typeName)
+                    };
+                })
+            };
+        }
+
+        /**
+         * Converts a TSNode's typeParameters array to a flow-like TypeParameterDeclaration node
+         * @param {TSNode[]} typeParameters TSNode typeParameters
+         * @returns {TypeParameterDeclaration} TypeParameterDeclaration node
+         */
+        function convertTSTypeParametersToTypeParametersDeclaration(typeParameters) {
+            var firstTypeParameter = typeParameters[0];
+            var lastTypeParameter = typeParameters[typeParameters.length - 1];
+            return {
+                type: "TypeParameterDeclaration",
+                range: [
+                    firstTypeParameter.pos - 1,
+                    lastTypeParameter.end + 1
+                ],
+                loc: getLocFor(firstTypeParameter.pos - 1, lastTypeParameter.end + 1, ast),
+                params: typeParameters.map(function(typeParameter) {
+                    /**
+                     * Have to manually calculate the start of the range,
+                     * because TypeScript includes leading whitespace but Flow does not
+                     */
+                    var typeParameterStart = (typeParameter.typeName && typeParameter.typeName.text)
+                        ? typeParameter.end - typeParameter.typeName.text.length
+                        : typeParameter.pos;
+                    return {
+                        type: "TypeParameter",
+                        range: [
+                            typeParameterStart,
+                            typeParameter.end
+                        ],
+                        loc: getLocFor(typeParameterStart, typeParameter.end, ast),
+                        name: typeParameter.name.text
                     };
                 })
             };
@@ -737,11 +773,14 @@ module.exports = function(ast, extra) {
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body)
                 });
-
+                // Process returnType
                 if (node.type) {
                     result.returnType = convertTypeAnnotation(node.type);
                 }
-
+                // Process typeParameters
+                if (node.typeParameters && node.typeParameters.length) {
+                    result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
+                }
                 // check for exports
                 result = fixExports(node, result, ast);
 
@@ -1050,9 +1089,13 @@ module.exports = function(ast, extra) {
                     body: convertChild(node.body),
                     expression: false
                 });
-
+                // Process returnType
                 if (node.type) {
                     result.returnType = convertTypeAnnotation(node.type);
+                }
+                // Process typeParameters
+                if (node.typeParameters && node.typeParameters.length) {
+                    result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
                 }
                 break;
 
@@ -1128,11 +1171,14 @@ module.exports = function(ast, extra) {
                     body: convertChild(node.body),
                     expression: node.body.kind !== SyntaxKind.Block
                 });
-
+                // Process returnType
                 if (node.type) {
                     result.returnType = convertTypeAnnotation(node.type);
                 }
-
+                // Process typeParameters
+                if (node.typeParameters && node.typeParameters.length) {
+                    result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
+                }
                 break;
 
             case SyntaxKind.YieldExpression:
