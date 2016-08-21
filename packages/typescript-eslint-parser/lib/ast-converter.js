@@ -1419,10 +1419,11 @@ module.exports = function(ast, extra) {
 
             case SyntaxKind.PrefixUnaryExpression:
             case SyntaxKind.PostfixUnaryExpression:
+                var operator = TOKEN_TO_TEXT[node.operator];
                 assign(result, {
                     // ESTree uses UpdateExpression for ++/--
-                    type: /^(?:\+\+|\-\-)$/.test(TOKEN_TO_TEXT[node.operator.kind]) ? "UpdateExpression" : "UnaryExpression",
-                    operator: SyntaxKind[node.operator],
+                    type: /^(?:\+\+|\-\-)$/.test(operator) ? "UpdateExpression" : "UnaryExpression",
+                    operator: operator,
                     prefix: node.kind === SyntaxKind.PrefixUnaryExpression,
                     argument: convertChild(node.operand)
                 });
