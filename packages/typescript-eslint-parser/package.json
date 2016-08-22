@@ -4,7 +4,7 @@
   "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
   "homepage": "https://github.com/eslint/typescript-eslint-parser",
   "main": "parser.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "files": [
     "lib",
     "parser.js"
@@ -22,7 +22,7 @@
     "dateformat": "^1.0.11",
     "eslint": "^2.2.0",
     "eslint-config-eslint": "^3.0.0",
-    "eslint-release": "^0.9.2",
+    "eslint-release": "^0.10.0",
     "istanbul": "~0.2.6",
     "leche": "^1.0.1",
     "mocha": "^2.0.1",
