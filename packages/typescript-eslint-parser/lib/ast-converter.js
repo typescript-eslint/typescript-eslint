@@ -1533,7 +1533,7 @@ module.exports = function(ast, extra) {
                     assign(result, {
                         type: "NewExpression",
                         callee: convertChild(node.expression),
-                        arguments: node.arguments.map(convertChild)
+                        arguments: (node.arguments) ? node.arguments.map(convertChild) : []
                     });
                 }
                 break;
