@@ -1,0 +1,4 @@
+extends: eslint
+env:
+  es6: true
+  node: true
