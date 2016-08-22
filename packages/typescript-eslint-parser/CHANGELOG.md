@@ -1,3 +1,11 @@
+v0.1.3 - August 22, 2016
+
+* da984bf Fix: manually update package.json after build failure (Nicholas C. Zakas)
+* 5bfb9bf Fix: Check for arguments property on NewExpression (fixes #60) (#62) (James Henry)
+* d323ee7 Docs: Add issue template (Nicholas C. Zakas)
+* 8f4964c Fix: UpdateExpression detection and operator format (fixes #58) (#59) (James Henry)
+* e09ebb3 Fix: Add function type parameters (fixes #52) (#56) (James Henry)
+
 v0.1.1 - August 10, 2016
 
 * 62d14b4 Fix: Class implements generic syntax (fixes #44) (#53) (James Henry)
