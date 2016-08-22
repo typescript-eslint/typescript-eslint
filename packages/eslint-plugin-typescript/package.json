@@ -1,0 +1,30 @@
+{
+  "name": "eslint-plugin-typescript",
+  "version": "0.0.1",
+  "description": "TypeScript plugin for ESLint",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin"
+  ],
+  "repository": "nzakas/eslint-plugin-typescript",
+  "author": "Nicholas C. Zakas",
+  "main": "lib/index.js",
+  "scripts": {
+    "lint": "eslint lib/",
+    "test": "npm run lint && mocha tests --recursive"
+  },
+  "dependencies": {
+    "requireindex": "~1.1.0"
+  },
+  "devDependencies": {
+    "eslint": "~3.0.0",
+    "eslint-config-eslint": "^3.0.0",
+    "mocha": "^2.4.5",
+    "typescript-eslint-parser": "~0.1.1"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "license": "MIT"
+}
