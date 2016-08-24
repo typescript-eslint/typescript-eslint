@@ -85,6 +85,7 @@ module.exports = {
                             26
                         ],
                         "computed": false,
+                        "decorators": [],
                         "key": {
                             "type": "Literal",
                             "loc": {
@@ -163,6 +164,7 @@ module.exports = {
                             46
                         ],
                         "computed": true,
+                        "decorators": [],
                         "key": {
                             "type": "Literal",
                             "loc": {

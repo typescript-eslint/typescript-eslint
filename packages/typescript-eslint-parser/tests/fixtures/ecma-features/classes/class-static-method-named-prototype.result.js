@@ -85,6 +85,7 @@ module.exports = {
                             33
                         ],
                         "computed": true,
+                        "decorators": [],
                         "key": {
                             "type": "Literal",
                             "loc": {

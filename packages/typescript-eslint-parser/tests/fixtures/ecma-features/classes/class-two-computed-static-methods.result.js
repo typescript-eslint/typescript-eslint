@@ -85,6 +85,7 @@ module.exports = {
                             22
                         ],
                         "computed": true,
+                        "decorators": [],
                         "key": {
                             "type": "Identifier",
                             "loc": {
@@ -162,6 +163,7 @@ module.exports = {
                             37
                         ],
                         "computed": true,
+                        "decorators": [],
                         "key": {
                             "type": "Identifier",
                             "loc": {

@@ -993,7 +993,10 @@ module.exports = function(ast, extra) {
                         value: method,
                         computed: methodNameIsComputed,
                         static: Boolean(node.flags & ts.NodeFlags.Static),
-                        kind: "method"
+                        kind: "method",
+                        decorators: (node.decorators) ? node.decorators.map(function(d) {
+                            return convertChild(d.expression);
+                        }) : []
                     });
                 }
 
