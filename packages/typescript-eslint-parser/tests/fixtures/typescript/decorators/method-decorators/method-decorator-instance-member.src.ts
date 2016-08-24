@@ -1,0 +1,4 @@
+class A {
+    @readonly
+    instanceMethod() {}
+}
