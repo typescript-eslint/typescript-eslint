@@ -17,6 +17,7 @@ module.exports = {
     "body": [
         {
             "type": "ClassDeclaration",
+            "decorators": [],
             "loc": {
                 "start": {
                     "line": 1,

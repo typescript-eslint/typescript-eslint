@@ -2,7 +2,7 @@ module.exports = {
     "type": "Program",
     "range": [
         0,
-        29
+        20
     ],
     "loc": {
         "start": {
@@ -10,8 +10,8 @@ module.exports = {
             "column": 0
         },
         "end": {
-            "line": 3,
-            "column": 1
+            "line": 2,
+            "column": 12
         }
     },
     "body": [
@@ -19,7 +19,7 @@ module.exports = {
             "type": "ClassDeclaration",
             "range": [
                 0,
-                29
+                20
             ],
             "loc": {
                 "start": {
@@ -27,95 +27,78 @@ module.exports = {
                     "column": 0
                 },
                 "end": {
-                    "line": 3,
-                    "column": 1
+                    "line": 2,
+                    "column": 12
                 }
             },
-            "decorators": [],
+            "decorators": [
+                {
+                    "loc": {
+                        "end": {
+                            "column": 7,
+                            "line": 1
+                        },
+                        "start": {
+                            "column": 1,
+                            "line": 1
+                        }
+                    },
+                    "name": "sealed",
+                    "range": [
+                        1,
+                        7
+                    ],
+                    "type": "Identifier"
+                }
+            ],
             "id": {
                 "type": "Identifier",
                 "range": [
-                    6,
-                    9
+                    14,
+                    17
                 ],
                 "loc": {
                     "start": {
-                        "line": 1,
+                        "line": 2,
                         "column": 6
                     },
                     "end": {
-                        "line": 1,
+                        "line": 2,
                         "column": 9
                     }
                 },
-                "name": "Foo"
+                "name": "Qux"
             },
             "body": {
                 "type": "ClassBody",
                 "body": [],
                 "range": [
-                    25,
-                    29
+                    18,
+                    20
                 ],
                 "loc": {
                     "start": {
-                        "line": 1,
-                        "column": 25
+                        "line": 2,
+                        "column": 10
                     },
                     "end": {
-                        "line": 3,
-                        "column": 1
+                        "line": 2,
+                        "column": 12
                     }
                 }
             },
             "superClass": null,
-            "implements": [
-                {
-                    "type": "ClassImplements",
-                    "loc": {
-                        "start": {
-                            "line": 1,
-                            "column": 21
-                        },
-                        "end": {
-                            "line": 1,
-                            "column": 24
-                        }
-                    },
-                    "range": [
-                        21,
-                        24
-                    ],
-                    "id": {
-                        "type": "Identifier",
-                        "range": [
-                            21,
-                            24
-                        ],
-                        "loc": {
-                            "start": {
-                                "line": 1,
-                                "column": 21
-                            },
-                            "end": {
-                                "line": 1,
-                                "column": 24
-                            }
-                        },
-                        "name": "Bar"
-                    }
-                }
-            ]
+            "implements": []
         }
     ],
     "sourceType": "script",
     "tokens": [
         {
-            "type": "Keyword",
-            "value": "class",
+            "type": "Punctuator",
+            "value": "@",
             "range": [
                 0,
-                5
+                1
             ],
             "loc": {
                 "start": {
@@ -124,61 +107,61 @@ module.exports = {
                 },
                 "end": {
                     "line": 1,
+                    "column": 1
+                }
+            }
+        },
+        {
+            "type": "Identifier",
+            "value": "sealed",
+            "range": [
+                1,
+                7
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1
+                },
+                "end": {
+                    "line": 1,
+                    "column": 7
+                }
+            }
+        },
+        {
+            "type": "Keyword",
+            "value": "class",
+            "range": [
+                8,
+                13
+            ],
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
                     "column": 5
                 }
             }
         },
         {
             "type": "Identifier",
-            "value": "Foo",
+            "value": "Qux",
             "range": [
-                6,
-                9
+                14,
+                17
             ],
             "loc": {
                 "start": {
-                    "line": 1,
+                    "line": 2,
                     "column": 6
                 },
                 "end": {
-                    "line": 1,
+                    "line": 2,
                     "column": 9
-                }
-            }
-        },
-        {
-            "type": "Keyword",
-            "value": "implements",
-            "range": [
-                10,
-                20
-            ],
-            "loc": {
-                "start": {
-                    "line": 1,
-                    "column": 10
-                },
-                "end": {
-                    "line": 1,
-                    "column": 20
-                }
-            }
-        },
-        {
-            "type": "Identifier",
-            "value": "Bar",
-            "range": [
-                21,
-                24
-            ],
-            "loc": {
-                "start": {
-                    "line": 1,
-                    "column": 21
-                },
-                "end": {
-                    "line": 1,
-                    "column": 24
                 }
             }
         },
@@ -186,17 +169,17 @@ module.exports = {
             "type": "Punctuator",
             "value": "{",
             "range": [
-                25,
-                26
+                18,
+                19
             ],
             "loc": {
                 "start": {
-                    "line": 1,
-                    "column": 25
+                    "line": 2,
+                    "column": 10
                 },
                 "end": {
-                    "line": 1,
-                    "column": 26
+                    "line": 2,
+                    "column": 11
                 }
             }
         },
@@ -204,17 +187,17 @@ module.exports = {
             "type": "Punctuator",
             "value": "}",
             "range": [
-                28,
-                29
+                19,
+                20
             ],
             "loc": {
                 "start": {
-                    "line": 3,
-                    "column": 0
+                    "line": 2,
+                    "column": 11
                 },
                 "end": {
-                    "line": 3,
-                    "column": 1
+                    "line": 2,
+                    "column": 12
                 }
             }
         }

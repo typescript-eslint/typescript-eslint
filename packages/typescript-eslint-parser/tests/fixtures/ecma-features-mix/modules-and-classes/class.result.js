@@ -5,6 +5,7 @@ module.exports = {
             "type": "ExportNamedDeclaration",
             "declaration": {
                 "type": "ClassDeclaration",
+                "decorators": [],
                 "id": {
                     "type": "Identifier",
                     "name": "foo",

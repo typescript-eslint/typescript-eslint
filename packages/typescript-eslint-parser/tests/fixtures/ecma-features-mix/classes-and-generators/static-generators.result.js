@@ -3,6 +3,7 @@ module.exports = {
     "body": [
         {
             "type": "ClassDeclaration",
+            "decorators": [],
             "id": {
                 "type": "Identifier",
                 "name": "Foo",

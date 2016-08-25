@@ -68,6 +68,7 @@ module.exports = {
                     },
                     "init": {
                         "type": "ClassExpression",
+                        "decorators": [],
                         "loc": {
                             "start": {
                                 "line": 1,

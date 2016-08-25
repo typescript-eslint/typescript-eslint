@@ -1317,7 +1317,10 @@ module.exports = function(ast, extra) {
                         loc: getLocFor(openBrace.getStart(), node.end, ast)
                     },
                     superClass: (superClass ? convertChild(superClass.types[0].expression) : null),
-                    implements: hasImplements ? heritageClauses[0].types.map(convertClassImplements) : []
+                    implements: hasImplements ? heritageClauses[0].types.map(convertClassImplements) : [],
+                    decorators: (node.decorators) ? node.decorators.map(function(d) {
+                        return convertChild(d.expression);
+                    }) : []
                 });
 
                 var filteredMembers = node.members.filter(isESTreeClassMember);
