@@ -299,7 +299,8 @@ module.exports = {
                                         52,
                                         53
                                     ],
-                                    "name": "b"
+                                    "name": "b",
+                                    "decorators": []
                                 }
                             ],
                             "body": {

@@ -956,7 +956,6 @@ module.exports = function(ast, extra) {
                     method = {
                         type: "FunctionExpression",
                         id: null,
-                        params: node.parameters.map(convertChild),
                         generator: false,
                         expression: false,
                         body: convertChild(node.body),
@@ -975,6 +974,9 @@ module.exports = function(ast, extra) {
                 }
 
                 if (parent.kind === SyntaxKind.ObjectLiteralExpression) {
+
+                    method.params = node.parameters.map(convertChild);
+
                     assign(result, {
                         type: "Property",
                         key: convertChild(node.name),
@@ -986,7 +988,20 @@ module.exports = function(ast, extra) {
                     });
 
                 } else { // class
+
+                    /**
+                     * Unlinke in object literal methods, class method params can have decorators
+                     */
+                    method.params = node.parameters.map(function(param) {
+                        var convertedParam = convertChild(param);
+                        convertedParam.decorators = (param.decorators) ? param.decorators.map(function(d) {
+                            return convertChild(d.expression);
+                        }) : [];
+                        return convertedParam;
+                    });
+
                     var methodNameIsComputed = (node.name.kind === SyntaxKind.ComputedPropertyName);
+
                     assign(result, {
                         type: "MethodDefinition",
                         key: convertChild(node.name),
@@ -998,6 +1013,7 @@ module.exports = function(ast, extra) {
                             return convertChild(d.expression);
                         }) : []
                     });
+
                 }
 
                 if (node.kind === SyntaxKind.GetAccessor) {
@@ -1020,7 +1036,13 @@ module.exports = function(ast, extra) {
                     constructor = {
                         type: "FunctionExpression",
                         id: null,
-                        params: node.parameters.map(convertChild),
+                        params: node.parameters.map(function(param) {
+                            var convertedParam = convertChild(param);
+                            convertedParam.decorators = (param.decorators) ? param.decorators.map(function(d) {
+                                return convertChild(d.expression);
+                            }) : [];
+                            return convertedParam;
+                        }),
                         generator: false,
                         expression: false,
                         body: convertChild(node.body),
