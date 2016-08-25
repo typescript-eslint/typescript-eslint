@@ -221,7 +221,8 @@ module.exports = {
                                         25,
                                         26
                                     ],
-                                    "name": "c"
+                                    "name": "c",
+                                    "decorators": []
                                 }
                             ],
                             "body": {
