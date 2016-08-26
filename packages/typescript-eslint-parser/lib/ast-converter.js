@@ -102,7 +102,7 @@ TOKEN_TO_TEXT[SyntaxKind.InKeyword] = "in";
  * @returns {boolean}      is valid ESTree class member
  */
 function isESTreeClassMember(node) {
-    return node.kind !== SyntaxKind.PropertyDeclaration && node.kind !== SyntaxKind.SemicolonClassElement;
+    return node.kind !== SyntaxKind.SemicolonClassElement;
 }
 
 /**
@@ -944,6 +944,19 @@ module.exports = function(ast, extra) {
                 } else {
                     return convertChild(node.expression);
                 }
+                break;
+
+            case SyntaxKind.PropertyDeclaration:
+                assign(result, {
+                    type: "ClassProperty",
+                    key: convertChild(node.name),
+                    value: convertChild(node.initializer),
+                    computed: (node.name.kind === SyntaxKind.ComputedPropertyName),
+                    static: Boolean(node.flags & ts.NodeFlags.Static),
+                    decorators: (node.decorators) ? node.decorators.map(function(d) {
+                        return convertChild(d.expression);
+                    }) : []
+                });
                 break;
 
             case SyntaxKind.GetAccessor:
