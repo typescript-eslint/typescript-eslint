@@ -1,3 +1,11 @@
+v0.2.0 - August 29, 2016
+
+* 138495f New: Add accessor decorators to AST (fixes #63) (#73) (James Henry)
+* f6a8e71 New: Add property decorators to AST (fixes #71) (#72) (James Henry)
+* 328259f New: Add param decorators to the AST (fixes #68) (#69) (James Henry)
+* 8b97fe7 New: Add class decorators to AST (fixes #66) (#67) (James Henry)
+* 7364cb9 New: Add method decorators to AST (fixes #65) (#64) (James Henry)
+
 v0.1.3 - August 22, 2016
 
 * da984bf Fix: manually update package.json after build failure (Nicholas C. Zakas)
