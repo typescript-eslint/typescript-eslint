@@ -765,22 +765,36 @@ module.exports = function(ast, extra) {
             // Declarations
 
             case SyntaxKind.FunctionDeclaration:
+
+                var functionDeclarationType = "FunctionDeclaration";
+                if (node.modifiers && node.modifiers.length) {
+                    var isDeclareFunction = node.modifiers.some(function(modifier) {
+                        return modifier.kind === ts.SyntaxKind.DeclareKeyword;
+                    });
+                    if (isDeclareFunction) {
+                        functionDeclarationType = "DeclareFunction";
+                    }
+                }
+
                 assign(result, {
-                    type: "FunctionDeclaration",
+                    type: functionDeclarationType,
                     id: convertChild(node.name),
                     generator: !!node.asteriskToken,
                     expression: false,
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body)
                 });
+
                 // Process returnType
                 if (node.type) {
                     result.returnType = convertTypeAnnotation(node.type);
                 }
+
                 // Process typeParameters
                 if (node.typeParameters && node.typeParameters.length) {
                     result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
                 }
+
                 // check for exports
                 result = fixExports(node, result, ast);
 
