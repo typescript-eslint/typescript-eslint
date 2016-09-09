@@ -18,7 +18,7 @@
     "requireindex": "~1.1.0"
   },
   "devDependencies": {
-    "eslint": "~3.0.0",
+    "eslint": "~3.7.0",
     "eslint-config-eslint": "^3.0.0",
     "mocha": "^2.4.5",
     "typescript-eslint-parser": "^0.4.0"
