@@ -1484,6 +1484,15 @@ module.exports = function(ast, extra) {
                 });
                 break;
 
+            case SyntaxKind.TypeOfExpression:
+                assign(result, {
+                    type: "UnaryExpression",
+                    operator: "typeof",
+                    prefix: true,
+                    argument: convertChild(node.expression)
+                });
+                break;
+
             // Binary Operations
 
             case SyntaxKind.BinaryExpression:
