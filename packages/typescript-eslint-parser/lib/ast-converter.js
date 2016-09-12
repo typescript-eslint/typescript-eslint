@@ -1787,6 +1787,19 @@ module.exports = function(ast, extra) {
             case SyntaxKind.ParenthesizedExpression:
                 return convert(node.expression, parent);
 
+            /**
+             * Convert TypeAliasDeclaration node into VariableDeclaration
+             * to allow core rules such as "semi" to work automatically
+             */
+            case SyntaxKind.TypeAliasDeclaration:
+                deeplyCopy();
+                assign(result, {
+                    type: "VariableDeclaration",
+                    kind: "type",
+                    declarations: []
+                });
+                break;
+
             default:
                 deeplyCopy();
         }
