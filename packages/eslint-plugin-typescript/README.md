@@ -50,8 +50,4 @@ Then configure the rules you want to use under the rules section.
 ## Supported Rules
 
 * `typescript/type-annotation-spacing` - enforces one space after the colon and zero spaces before the colon of a type annotation.
-
-
-
-
-
+* `typescript/explicit-member-accessibility` - enforces accessibility modifiers on class properties and methods.
