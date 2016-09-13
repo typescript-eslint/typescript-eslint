@@ -1,3 +1,9 @@
+v0.3.0 - September 13, 2016
+
+* e76f3b9 New: Convert type alias into variable declaration (refs #77) (#83) (James Henry)
+* 5c47ad5 Fix: Convert TSTypeOfExpression to UnaryExpression (fixes #85) (#86) (James Henry)
+* 799fd63 Fix: Distinguish between DeclareFunction and FunctionDeclaration (#79) (James Henry)
+
 v0.2.0 - August 29, 2016
 
 * 138495f New: Add accessor decorators to AST (fixes #63) (#73) (James Henry)
