@@ -215,8 +215,18 @@ function fixExports(node, result, ast) {
         result.range[0] = varToken.getStart();
         result.loc = getLocFor(result.range[0], result.range[1], ast);
 
+        var declarationType = declarationIsDefault ? "ExportDefaultDeclaration" : "ExportNamedDeclaration";
+
+        /**
+         * Prefix exports from TypeScript namespaces with "TS" to distinguish
+         * them from ES2015 exports
+         */
+        if (node.parent && node.parent.kind === SyntaxKind.ModuleBlock) {
+            declarationType = "TSNamespaceExportDeclaration";
+        }
+
         var newResult = {
-            type: declarationIsDefault ? "ExportDefaultDeclaration" : "ExportNamedDeclaration",
+            type: declarationType,
             declaration: result,
             range: [ exportKeyword.getStart(), result.range[1] ],
             loc: getLocFor(exportKeyword.getStart(), result.range[1], ast)
@@ -774,6 +784,13 @@ module.exports = function(ast, extra) {
                     if (isDeclareFunction) {
                         functionDeclarationType = "DeclareFunction";
                     }
+                }
+
+                /**
+                 * Prefix FunctionDeclarations within TypeScript namespaces with "TS"
+                 */
+                if (node.parent && node.parent.kind === SyntaxKind.ModuleBlock) {
+                    functionDeclarationType = "TSNamespaceFunctionDeclaration";
                 }
 
                 assign(result, {
