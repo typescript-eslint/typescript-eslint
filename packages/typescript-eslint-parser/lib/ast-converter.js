@@ -1027,13 +1027,26 @@ module.exports = function(ast, extra) {
                         return convertedParam;
                     });
 
-                    var methodNameIsComputed = (node.name.kind === SyntaxKind.ComputedPropertyName);
+                    var isMethodNameComputed = (node.name.kind === SyntaxKind.ComputedPropertyName);
+
+                    /**
+                     * TypeScript class methods can be defined as "abstract"
+                     */
+                    var methodDefinitionType = "MethodDefinition";
+                    if (node.modifiers && node.modifiers.length) {
+                        var isAbstractMethod = node.modifiers.some(function(modifier) {
+                            return modifier.kind === ts.SyntaxKind.AbstractKeyword;
+                        });
+                        if (isAbstractMethod) {
+                            methodDefinitionType = "TSAbstractMethodDefinition";
+                        }
+                    }
 
                     assign(result, {
-                        type: "MethodDefinition",
+                        type: methodDefinitionType,
                         key: convertChild(node.name),
                         value: method,
-                        computed: methodNameIsComputed,
+                        computed: isMethodNameComputed,
                         static: Boolean(node.flags & ts.NodeFlags.Static),
                         kind: "method",
                         decorators: (node.decorators) ? node.decorators.map(function(d) {
@@ -1330,15 +1343,32 @@ module.exports = function(ast, extra) {
 
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.ClassExpression:
+
                 var heritageClauses = node.heritageClauses || [];
                 var lastClassToken = heritageClauses.length ? heritageClauses[heritageClauses.length - 1] : node.name;
-                /**
-                 * We need check for modifiers, and use the last one, as there
-                 * could be multiple before the open brace
-                 */
+                var classNodeType = SyntaxKind[node.kind];
+
                 if (node.modifiers && node.modifiers.length) {
+
+                    /**
+                     * TypeScript class declarations can be defined as "abstract"
+                     */
+                    if (node.kind === SyntaxKind.ClassDeclaration) {
+                        var isAbstractClass = node.modifiers.some(function(modifier) {
+                            return modifier.kind === ts.SyntaxKind.AbstractKeyword;
+                        });
+                        if (isAbstractClass) {
+                            classNodeType = "TSAbstract" + classNodeType;
+                        }
+                    }
+
+                    /**
+                     * We need check for modifiers, and use the last one, as there
+                     * could be multiple before the open brace
+                     */
                     var lastModifier = node.modifiers[node.modifiers.length - 1];
                     lastClassToken = ts.findNextToken(lastModifier, ast);
+
                 } else if (!lastClassToken) { // no name
                     lastClassToken = node.getFirstToken();
                 }
@@ -1355,7 +1385,7 @@ module.exports = function(ast, extra) {
                 hasImplements = heritageClauses.length > 0;
 
                 assign(result, {
-                    type: SyntaxKind[node.kind],
+                    type: classNodeType,
                     id: convertChild(node.name),
                     body: {
                         type: "ClassBody",
