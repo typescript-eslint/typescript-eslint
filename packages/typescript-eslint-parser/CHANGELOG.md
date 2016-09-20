@@ -1,3 +1,9 @@
+v0.3.1 - September 20, 2016
+
+* e36d800 Fix: Convert TypeAliasDeclaration into VariableDeclarator (fixes #89) (#91) (James Henry)
+* ac0c95d Fix: Prefix function declarations in TS namespaces (fixes #78) (#82) (James Henry)
+* 7cc865e Fix: Support abstract classes and methods (fixes #80) (#81) (James Henry)
+
 v0.3.0 - September 13, 2016
 
 * e76f3b9 New: Convert type alias into variable declaration (refs #77) (#83) (James Henry)
