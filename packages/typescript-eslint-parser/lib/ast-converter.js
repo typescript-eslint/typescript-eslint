@@ -1839,11 +1839,19 @@ module.exports = function(ast, extra) {
              * to allow core rules such as "semi" to work automatically
              */
             case SyntaxKind.TypeAliasDeclaration:
-                deeplyCopy();
+                var typeAliasDeclarator = {
+                    type: "VariableDeclarator",
+                    id: convertChild(node.name),
+                    init: convertChild(node.type)
+                };
+                // Process typeParameters
+                if (node.typeParameters && node.typeParameters.length) {
+                    typeAliasDeclarator.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
+                }
                 assign(result, {
                     type: "VariableDeclaration",
                     kind: "type",
-                    declarations: []
+                    declarations: [typeAliasDeclarator]
                 });
                 break;
 
