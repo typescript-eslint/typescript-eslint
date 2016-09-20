@@ -18,7 +18,196 @@ module.exports = {
         {
             "type": "VariableDeclaration",
             "kind": "type",
-            "declarations": [],
+            "declarations": [
+                {
+                    "type": "VariableDeclarator",
+                    "id": {
+                        "type": "Identifier",
+                        "range": [
+                            5,
+                            11
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 5
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 11
+                            }
+                        },
+                        "name": "Result"
+                    },
+                    "typeParameters": {
+                        "loc": {
+                            "end": {
+                                "column": 14,
+                                "line": 1
+                            },
+                            "start": {
+                                "column": 11,
+                                "line": 1
+                            }
+                        },
+                        "params": [
+                            {
+                                "loc": {
+                                    "end": {
+                                        "column": 13,
+                                        "line": 1
+                                    },
+                                    "start": {
+                                        "column": 12,
+                                        "line": 1
+                                    }
+                                },
+                                "name": "T",
+                                "range": [
+                                    12,
+                                    13
+                                ],
+                                "type": "TypeParameter"
+                            }
+                        ],
+                        "range": [
+                            11,
+                            14
+                        ],
+                        "type": "TypeParameterDeclaration"
+                    },
+                    "init": {
+                        "flags": 0,
+                        "loc": {
+                            "end": {
+                                "column": 37,
+                                "line": 1
+                            },
+                            "start": {
+                                "column": 17,
+                                "line": 1
+                            }
+                        },
+                        "range": [
+                            17,
+                            37
+                        ],
+                        "type": "TSUnionType",
+                        "types": [
+                            {
+                                "flags": 0,
+                                "loc": {
+                                    "end": {
+                                        "column": 27,
+                                        "line": 1
+                                    },
+                                    "start": {
+                                        "column": 17,
+                                        "line": 1
+                                    }
+                                },
+                                "range": [
+                                    17,
+                                    27
+                                ],
+                                "type": "TSTypeReference",
+                                "typeArguments": [
+                                    {
+                                        "flags": 0,
+                                        "loc": {
+                                            "end": {
+                                                "column": 26,
+                                                "line": 1
+                                            },
+                                            "start": {
+                                                "column": 25,
+                                                "line": 1
+                                            }
+                                        },
+                                        "range": [
+                                            25,
+                                            26
+                                        ],
+                                        "type": "TSTypeReference",
+                                        "typeName": {
+                                            "loc": {
+                                                "end": {
+                                                    "column": 26,
+                                                    "line": 1
+                                                },
+                                                "start": {
+                                                    "column": 25,
+                                                    "line": 1
+                                                }
+                                            },
+                                            "name": "T",
+                                            "range": [
+                                                25,
+                                                26
+                                            ],
+                                            "type": "Identifier"
+                                        }
+                                    }
+                                ],
+                                "typeName": {
+                                    "loc": {
+                                        "end": {
+                                            "column": 24,
+                                            "line": 1
+                                        },
+                                        "start": {
+                                            "column": 17,
+                                            "line": 1
+                                        }
+                                    },
+                                    "name": "Success",
+                                    "range": [
+                                        17,
+                                        24
+                                    ],
+                                    "type": "Identifier"
+                                }
+                            },
+                            {
+                                "flags": 0,
+                                "loc": {
+                                    "end": {
+                                        "column": 37,
+                                        "line": 1
+                                    },
+                                    "start": {
+                                        "column": 30,
+                                        "line": 1
+                                    }
+                                },
+                                "range": [
+                                    30,
+                                    37
+                                ],
+                                "type": "TSTypeReference",
+                                "typeName": {
+                                    "loc": {
+                                        "end": {
+                                            "column": 37,
+                                            "line": 1
+                                        },
+                                        "start": {
+                                            "column": 30,
+                                            "line": 1
+                                        }
+                                    },
+                                    "name": "Failure",
+                                    "range": [
+                                        30,
+                                        37
+                                    ],
+                                    "type": "Identifier"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ],
             "range": [
                 0,
                 37
@@ -31,210 +220,6 @@ module.exports = {
                 "end": {
                     "line": 1,
                     "column": 37
-                }
-            },
-            "flags": 0,
-            "name": {
-                "type": "Identifier",
-                "range": [
-                    5,
-                    11
-                ],
-                "loc": {
-                    "start": {
-                        "line": 1,
-                        "column": 5
-                    },
-                    "end": {
-                        "line": 1,
-                        "column": 11
-                    }
-                },
-                "name": "Result"
-            },
-            "typeParameters": [
-                {
-                    "type": "TSTypeParameter",
-                    "range": [
-                        12,
-                        13
-                    ],
-                    "loc": {
-                        "start": {
-                            "line": 1,
-                            "column": 12
-                        },
-                        "end": {
-                            "line": 1,
-                            "column": 13
-                        }
-                    },
-                    "flags": 0,
-                    "name": {
-                        "type": "Identifier",
-                        "range": [
-                            12,
-                            13
-                        ],
-                        "loc": {
-                            "start": {
-                                "line": 1,
-                                "column": 12
-                            },
-                            "end": {
-                                "line": 1,
-                                "column": 13
-                            }
-                        },
-                        "name": "T"
-                    }
-                }
-            ],
-            "typeAnnotation": {
-                "type": "TypeAnnotation",
-                "loc": {
-                    "start": {
-                        "line": 1,
-                        "column": 17
-                    },
-                    "end": {
-                        "line": 1,
-                        "column": 37
-                    }
-                },
-                "range": [
-                    17,
-                    37
-                ],
-                "typeAnnotation": {
-                    "type": "TSUnionType",
-                    "range": [
-                        17,
-                        37
-                    ],
-                    "loc": {
-                        "start": {
-                            "line": 1,
-                            "column": 17
-                        },
-                        "end": {
-                            "line": 1,
-                            "column": 37
-                        }
-                    },
-                    "flags": 0,
-                    "types": [
-                        {
-                            "type": "TSTypeReference",
-                            "range": [
-                                17,
-                                27
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 1,
-                                    "column": 17
-                                },
-                                "end": {
-                                    "line": 1,
-                                    "column": 27
-                                }
-                            },
-                            "flags": 0,
-                            "typeName": {
-                                "type": "Identifier",
-                                "range": [
-                                    17,
-                                    24
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 1,
-                                        "column": 17
-                                    },
-                                    "end": {
-                                        "line": 1,
-                                        "column": 24
-                                    }
-                                },
-                                "name": "Success"
-                            },
-                            "typeArguments": [
-                                {
-                                    "type": "TSTypeReference",
-                                    "range": [
-                                        25,
-                                        26
-                                    ],
-                                    "loc": {
-                                        "start": {
-                                            "line": 1,
-                                            "column": 25
-                                        },
-                                        "end": {
-                                            "line": 1,
-                                            "column": 26
-                                        }
-                                    },
-                                    "flags": 0,
-                                    "typeName": {
-                                        "type": "Identifier",
-                                        "range": [
-                                            25,
-                                            26
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 1,
-                                                "column": 25
-                                            },
-                                            "end": {
-                                                "line": 1,
-                                                "column": 26
-                                            }
-                                        },
-                                        "name": "T"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "type": "TSTypeReference",
-                            "range": [
-                                30,
-                                37
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 1,
-                                    "column": 30
-                                },
-                                "end": {
-                                    "line": 1,
-                                    "column": 37
-                                }
-                            },
-                            "flags": 0,
-                            "typeName": {
-                                "type": "Identifier",
-                                "range": [
-                                    30,
-                                    37
-                                ],
-                                "loc": {
-                                    "start": {
-                                        "line": 1,
-                                        "column": 30
-                                    },
-                                    "end": {
-                                        "line": 1,
-                                        "column": 37
-                                    }
-                                },
-                                "name": "Failure"
-                            }
-                        }
-                    ]
                 }
             }
         }
