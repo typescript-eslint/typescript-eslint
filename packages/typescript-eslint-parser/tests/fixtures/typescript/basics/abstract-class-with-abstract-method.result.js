@@ -91,7 +91,6 @@ module.exports = {
                             "value": {
                                 "type": "FunctionExpression",
                                 "id": null,
-                                "params": [],
                                 "generator": false,
                                 "expression": false,
                                 "body": null,
@@ -181,11 +180,13 @@ module.exports = {
                                             }
                                         ]
                                     }
-                                }
+                                },
+                                "params": []
                             },
                             "computed": false,
                             "static": false,
                             "kind": "method",
+                            "accessibility": null,
                             "decorators": []
                         }
                     ],

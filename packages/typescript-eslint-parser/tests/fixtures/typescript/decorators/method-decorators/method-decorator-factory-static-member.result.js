@@ -31,7 +31,6 @@ module.exports = {
                     "column": 1
                 }
             },
-            "decorators": [],
             "id": {
                 "type": "Identifier",
                 "range": [
@@ -90,7 +89,6 @@ module.exports = {
                         "value": {
                             "type": "FunctionExpression",
                             "id": null,
-                            "params": [],
                             "generator": false,
                             "expression": false,
                             "body": {
@@ -124,67 +122,69 @@ module.exports = {
                                     "line": 3,
                                     "column": 28
                                 }
-                            }
+                            },
+                            "params": []
                         },
                         "computed": false,
                         "static": true,
                         "kind": "method",
+                        "accessibility": null,
                         "decorators": [
                             {
-                                "arguments": [
-                                    {
-                                        "loc": {
-                                            "end": {
-                                                "column": 14,
-                                                "line": 2
-                                            },
-                                            "start": {
-                                                "column": 9,
-                                                "line": 2
-                                            }
-                                        },
-                                        "range": [
-                                            19,
-                                            24
-                                        ],
-                                        "raw": "false",
-                                        "type": "Literal",
-                                        "value": false
-                                    }
-                                ],
-                                "callee": {
-                                    "loc": {
-                                        "end": {
-                                            "column": 8,
-                                            "line": 2
-                                        },
-                                        "start": {
-                                            "column": 5,
-                                            "line": 2
-                                        }
-                                    },
-                                    "name": "Foo",
-                                    "range": [
-                                        15,
-                                        18
-                                    ],
-                                    "type": "Identifier"
-                                },
-                                "loc": {
-                                    "end": {
-                                        "column": 15,
-                                        "line": 2
-                                    },
-                                    "start": {
-                                        "column": 5,
-                                        "line": 2
-                                    }
-                                },
+                                "type": "CallExpression",
                                 "range": [
                                     15,
                                     25
                                 ],
-                                "type": "CallExpression"
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 5
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 15
+                                    }
+                                },
+                                "callee": {
+                                    "type": "Identifier",
+                                    "range": [
+                                        15,
+                                        18
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 5
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 8
+                                        }
+                                    },
+                                    "name": "Foo"
+                                },
+                                "arguments": [
+                                    {
+                                        "type": "Literal",
+                                        "range": [
+                                            19,
+                                            24
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 9
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 14
+                                            }
+                                        },
+                                        "value": false,
+                                        "raw": "false"
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -205,7 +205,8 @@ module.exports = {
                 }
             },
             "superClass": null,
-            "implements": []
+            "implements": [],
+            "decorators": []
         }
     ],
     "sourceType": "script",
@@ -319,22 +320,22 @@ module.exports = {
             }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 14,
-                    "line": 2
-                },
-                "start": {
-                    "column": 9,
-                    "line": 2
-                }
-            },
+            "type": "Boolean",
+            "value": "false",
             "range": [
                 19,
                 24
             ],
-            "type": "Boolean",
-            "value": "false"
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 9
+                },
+                "end": {
+                    "line": 2,
+                    "column": 14
+                }
+            }
         },
         {
             "type": "Punctuator",

@@ -31,7 +31,6 @@ module.exports = {
                     "column": 1
                 }
             },
-            "decorators": [],
             "id": {
                 "type": "Identifier",
                 "range": [
@@ -90,7 +89,6 @@ module.exports = {
                         "value": {
                             "type": "FunctionExpression",
                             "id": null,
-                            "params": [],
                             "generator": false,
                             "expression": false,
                             "body": {
@@ -124,29 +122,31 @@ module.exports = {
                                     "line": 3,
                                     "column": 28
                                 }
-                            }
+                            },
+                            "params": []
                         },
                         "computed": false,
                         "static": true,
                         "kind": "method",
+                        "accessibility": null,
                         "decorators": [
                             {
-                                "loc": {
-                                    "end": {
-                                        "column": 8,
-                                        "line": 2
-                                    },
-                                    "start": {
-                                        "column": 5,
-                                        "line": 2
-                                    }
-                                },
-                                "name": "Foo",
+                                "type": "Identifier",
                                 "range": [
                                     15,
                                     18
                                 ],
-                                "type": "Identifier"
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 5
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 8
+                                    }
+                                },
+                                "name": "Foo"
                             }
                         ]
                     }
@@ -167,7 +167,8 @@ module.exports = {
                 }
             },
             "superClass": null,
-            "implements": []
+            "implements": [],
+            "decorators": []
         }
     ],
     "sourceType": "script",

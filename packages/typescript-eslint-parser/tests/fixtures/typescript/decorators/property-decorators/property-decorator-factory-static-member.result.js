@@ -89,6 +89,7 @@ module.exports = {
                         "value": null,
                         "computed": false,
                         "static": true,
+                        "accessibility": null,
                         "decorators": [
                             {
                                 "type": "CallExpression",
@@ -185,6 +186,7 @@ module.exports = {
                         "value": null,
                         "computed": false,
                         "static": true,
+                        "accessibility": null,
                         "decorators": [
                             {
                                 "type": "CallExpression",

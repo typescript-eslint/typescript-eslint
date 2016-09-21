@@ -17,7 +17,6 @@ module.exports = {
     "body": [
         {
             "type": "ClassDeclaration",
-            "decorators": [],
             "range": [
                 0,
                 110
@@ -90,46 +89,6 @@ module.exports = {
                         "value": {
                             "type": "FunctionExpression",
                             "id": null,
-                            "params": [
-                                {
-                                    "type": "Identifier",
-                                    "range": [
-                                        49,
-                                        53
-                                    ],
-                                    "loc": {
-                                        "start": {
-                                            "line": 2,
-                                            "column": 27
-                                        },
-                                        "end": {
-                                            "line": 2,
-                                            "column": 31
-                                        }
-                                    },
-                                    "name": "name",
-                                    "decorators": [
-                                        {
-                                            "loc": {
-                                                "end": {
-                                                    "column": 26,
-                                                    "line": 2
-                                                },
-                                                "start": {
-                                                    "column": 18,
-                                                    "line": 2
-                                                }
-                                            },
-                                            "name": "required",
-                                            "range": [
-                                                40,
-                                                48
-                                            ],
-                                            "type": "Identifier"
-                                        }
-                                    ]
-                                }
-                            ],
                             "generator": false,
                             "expression": false,
                             "body": {
@@ -273,11 +232,52 @@ module.exports = {
                                     "line": 4,
                                     "column": 5
                                 }
-                            }
+                            },
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "range": [
+                                        49,
+                                        53
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 27
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 31
+                                        }
+                                    },
+                                    "name": "name",
+                                    "decorators": [
+                                        {
+                                            "type": "Identifier",
+                                            "range": [
+                                                40,
+                                                48
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 18
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 26
+                                                }
+                                            },
+                                            "name": "required"
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         "computed": false,
                         "static": true,
                         "kind": "method",
+                        "accessibility": null,
                         "decorators": []
                     }
                 ],
@@ -297,7 +297,8 @@ module.exports = {
                 }
             },
             "superClass": null,
-            "implements": []
+            "implements": [],
+            "decorators": []
         }
     ],
     "sourceType": "script",

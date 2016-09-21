@@ -89,6 +89,7 @@ module.exports = {
                         "value": null,
                         "computed": false,
                         "static": false,
+                        "accessibility": null,
                         "decorators": [
                             {
                                 "type": "Identifier",
@@ -147,6 +148,7 @@ module.exports = {
                         "value": null,
                         "computed": false,
                         "static": false,
+                        "accessibility": null,
                         "decorators": [
                             {
                                 "type": "Identifier",

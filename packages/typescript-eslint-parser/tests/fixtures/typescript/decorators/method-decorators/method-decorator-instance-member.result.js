@@ -31,7 +31,6 @@ module.exports = {
                     "column": 1
                 }
             },
-            "decorators": [],
             "id": {
                 "type": "Identifier",
                 "range": [
@@ -90,7 +89,6 @@ module.exports = {
                         "value": {
                             "type": "FunctionExpression",
                             "id": null,
-                            "params": [],
                             "generator": false,
                             "expression": false,
                             "body": {
@@ -124,29 +122,31 @@ module.exports = {
                                     "line": 3,
                                     "column": 23
                                 }
-                            }
+                            },
+                            "params": []
                         },
                         "computed": false,
                         "static": false,
                         "kind": "method",
+                        "accessibility": null,
                         "decorators": [
                             {
-                                "loc": {
-                                    "end": {
-                                        "column": 13,
-                                        "line": 2
-                                    },
-                                    "start": {
-                                        "column": 5,
-                                        "line": 2
-                                    }
-                                },
-                                "name": "readonly",
+                                "type": "Identifier",
                                 "range": [
                                     15,
                                     23
                                 ],
-                                "type": "Identifier"
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 5
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 13
+                                    }
+                                },
+                                "name": "readonly"
                             }
                         ]
                     }
@@ -167,7 +167,8 @@ module.exports = {
                 }
             },
             "superClass": null,
-            "implements": []
+            "implements": [],
+            "decorators": []
         }
     ],
     "sourceType": "script",

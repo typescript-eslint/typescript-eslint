@@ -499,6 +499,32 @@ module.exports = function(ast, extra) {
         }
 
         /**
+         * Gets a TSNode's accessibility level
+         * @param {TSNode} tsNode The TSNode
+         * @returns {string | null} accessibility "public", "protected", "private", or null
+         */
+        function getTSNodeAccessibility(tsNode) {
+            var modifiers = tsNode.modifiers;
+            if (!modifiers) {
+                return null;
+            }
+            for (var i = 0; i < modifiers.length; i++) {
+                var modifier = modifiers[i];
+                switch (modifier.kind) {
+                    case SyntaxKind.PublicKeyword:
+                        return "public";
+                    case SyntaxKind.ProtectedKeyword:
+                        return "protected";
+                    case SyntaxKind.PrivateKeyword:
+                        return "private";
+                    default:
+                        continue;
+                }
+            }
+            return null;
+        }
+
+        /**
          * Converts a TSNode's typeParameters array to a flow-like TypeParameterDeclaration node
          * @param {TSNode[]} typeParameters TSNode typeParameters
          * @returns {TypeParameterDeclaration} TypeParameterDeclaration node
@@ -984,6 +1010,7 @@ module.exports = function(ast, extra) {
                     value: convertChild(node.initializer),
                     computed: (node.name.kind === SyntaxKind.ComputedPropertyName),
                     static: Boolean(node.flags & ts.NodeFlags.Static),
+                    accessibility: getTSNodeAccessibility(node),
                     decorators: (node.decorators) ? node.decorators.map(function(d) {
                         return convertChild(d.expression);
                     }) : []
@@ -1066,6 +1093,7 @@ module.exports = function(ast, extra) {
                         computed: isMethodNameComputed,
                         static: Boolean(node.flags & ts.NodeFlags.Static),
                         kind: "method",
+                        accessibility: getTSNodeAccessibility(node),
                         decorators: (node.decorators) ? node.decorators.map(function(d) {
                             return convertChild(d.expression);
                         }) : []
@@ -1157,6 +1185,7 @@ module.exports = function(ast, extra) {
                     key: constructorKey,
                     value: constructor,
                     computed: constructorIsComputed,
+                    accessibility: getTSNodeAccessibility(node),
                     static: constructorIsStatic,
                     kind: (constructorIsStatic || constructorIsComputed) ? "method" : "constructor"
                 });

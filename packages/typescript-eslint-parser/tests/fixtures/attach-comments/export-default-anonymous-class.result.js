@@ -73,6 +73,7 @@ module.exports = {
                             },
                             "kind": "method",
                             "computed": false,
+                            "accessibility": null,
                             "decorators": [],
                             "range": [
                                 103,
