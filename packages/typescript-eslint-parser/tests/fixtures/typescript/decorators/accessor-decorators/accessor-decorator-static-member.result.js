@@ -255,6 +255,7 @@ module.exports = {
                         "computed": false,
                         "static": true,
                         "kind": "set",
+                        "accessibility": null,
                         "decorators": [
                             {
                                 "type": "Identifier",

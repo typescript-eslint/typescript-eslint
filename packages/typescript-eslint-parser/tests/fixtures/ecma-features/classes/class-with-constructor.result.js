@@ -104,6 +104,7 @@ module.exports = {
                             ],
                             "name": "constructor"
                         },
+                        "accessibility": null,
                         "static": false,
                         "kind": "constructor",
                         "value": {

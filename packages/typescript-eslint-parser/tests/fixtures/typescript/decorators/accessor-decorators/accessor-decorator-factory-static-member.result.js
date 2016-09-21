@@ -199,6 +199,7 @@ module.exports = {
                         "computed": false,
                         "static": true,
                         "kind": "get",
+                        "accessibility": null,
                         "decorators": [
                             {
                                 "type": "CallExpression",

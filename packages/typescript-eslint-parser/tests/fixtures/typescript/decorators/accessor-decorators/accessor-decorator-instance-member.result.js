@@ -199,6 +199,7 @@ module.exports = {
                         "computed": false,
                         "static": false,
                         "kind": "get",
+                        "accessibility": null,
                         "decorators": [
                             {
                                 "type": "Identifier",

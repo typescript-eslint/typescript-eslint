@@ -53,191 +53,193 @@ module.exports = {
                 "type": "ClassBody",
                 "body": [
                     {
-                        "computed": false,
-                        "decorators": [
-                            {
-                                "arguments": [],
-                                "callee": {
-                                    "loc": {
-                                        "end": {
-                                            "column": 10,
-                                            "line": 2
-                                        },
-                                        "start": {
-                                            "column": 5,
-                                            "line": 2
-                                        }
-                                    },
-                                    "name": "Input",
-                                    "range": [
-                                        27,
-                                        32
-                                    ],
-                                    "type": "Identifier"
-                                },
-                                "loc": {
-                                    "end": {
-                                        "column": 12,
-                                        "line": 2
-                                    },
-                                    "start": {
-                                        "column": 5,
-                                        "line": 2
-                                    }
-                                },
-                                "range": [
-                                    27,
-                                    34
-                                ],
-                                "type": "CallExpression"
-                            }
-                        ],
-                        "key": {
-                            "loc": {
-                                "end": {
-                                    "column": 17,
-                                    "line": 2
-                                },
-                                "start": {
-                                    "column": 13,
-                                    "line": 2
-                                }
-                            },
-                            "name": "data",
-                            "range": [
-                                35,
-                                39
-                            ],
-                            "type": "Identifier"
-                        },
-                        "loc": {
-                            "end": {
-                                "column": 18,
-                                "line": 2
-                            },
-                            "start": {
-                                "column": 4,
-                                "line": 2
-                            }
-                        },
+                        "type": "ClassProperty",
                         "range": [
                             26,
                             40
                         ],
-                        "static": false,
-                        "type": "ClassProperty",
-                        "value": null
-                    },
-                    {
-                        "computed": false,
-                        "decorators": [
-                            {
-                                "arguments": [],
-                                "callee": {
-                                    "loc": {
-                                        "end": {
-                                            "column": 11,
-                                            "line": 3
-                                        },
-                                        "start": {
-                                            "column": 5,
-                                            "line": 3
-                                        }
-                                    },
-                                    "name": "Output",
-                                    "range": [
-                                        46,
-                                        52
-                                    ],
-                                    "type": "Identifier"
-                                },
-                                "loc": {
-                                    "end": {
-                                        "column": 13,
-                                        "line": 3
-                                    },
-                                    "start": {
-                                        "column": 5,
-                                        "line": 3
-                                    }
-                                },
-                                "range": [
-                                    46,
-                                    54
-                                ],
-                                "type": "CallExpression"
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 4
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 18
                             }
-                        ],
+                        },
                         "key": {
+                            "type": "Identifier",
+                            "range": [
+                                35,
+                                39
+                            ],
                             "loc": {
-                                "end": {
-                                    "column": 9,
-                                    "line": 4
-                                },
                                 "start": {
-                                    "column": 4,
-                                    "line": 4
+                                    "line": 2,
+                                    "column": 13
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 17
                                 }
                             },
-                            "name": "click",
-                            "range": [
-                                59,
-                                64
-                            ],
-                            "type": "Identifier"
+                            "name": "data"
                         },
-                        "loc": {
-                            "end": {
-                                "column": 31,
-                                "line": 4
-                            },
-                            "start": {
-                                "column": 4,
-                                "line": 3
+                        "value": null,
+                        "computed": false,
+                        "static": false,
+                        "accessibility": null,
+                        "decorators": [
+                            {
+                                "type": "CallExpression",
+                                "range": [
+                                    27,
+                                    34
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 5
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 12
+                                    }
+                                },
+                                "callee": {
+                                    "type": "Identifier",
+                                    "range": [
+                                        27,
+                                        32
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 5
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 10
+                                        }
+                                    },
+                                    "name": "Input"
+                                },
+                                "arguments": []
                             }
-                        },
+                        ]
+                    },
+                    {
+                        "type": "ClassProperty",
                         "range": [
                             45,
                             86
                         ],
-                        "static": false,
-                        "type": "ClassProperty",
-                        "value": {
-                            "arguments": [],
-                            "callee": {
-                                "loc": {
-                                    "end": {
-                                        "column": 28,
-                                        "line": 4
-                                    },
-                                    "start": {
-                                        "column": 16,
-                                        "line": 4
-                                    }
-                                },
-                                "name": "EventEmitter",
-                                "range": [
-                                    71,
-                                    83
-                                ],
-                                "type": "Identifier"
+                        "loc": {
+                            "start": {
+                                "line": 3,
+                                "column": 4
                             },
+                            "end": {
+                                "line": 4,
+                                "column": 31
+                            }
+                        },
+                        "key": {
+                            "type": "Identifier",
+                            "range": [
+                                59,
+                                64
+                            ],
                             "loc": {
-                                "end": {
-                                    "column": 30,
-                                    "line": 4
-                                },
                                 "start": {
-                                    "column": 12,
-                                    "line": 4
+                                    "line": 4,
+                                    "column": 4
+                                },
+                                "end": {
+                                    "line": 4,
+                                    "column": 9
                                 }
                             },
+                            "name": "click"
+                        },
+                        "value": {
+                            "type": "NewExpression",
                             "range": [
                                 67,
                                 85
                             ],
-                            "type": "NewExpression"
-                        }
+                            "loc": {
+                                "start": {
+                                    "line": 4,
+                                    "column": 12
+                                },
+                                "end": {
+                                    "line": 4,
+                                    "column": 30
+                                }
+                            },
+                            "callee": {
+                                "type": "Identifier",
+                                "range": [
+                                    71,
+                                    83
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 4,
+                                        "column": 16
+                                    },
+                                    "end": {
+                                        "line": 4,
+                                        "column": 28
+                                    }
+                                },
+                                "name": "EventEmitter"
+                            },
+                            "arguments": []
+                        },
+                        "computed": false,
+                        "static": false,
+                        "accessibility": null,
+                        "decorators": [
+                            {
+                                "type": "CallExpression",
+                                "range": [
+                                    46,
+                                    54
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 3,
+                                        "column": 5
+                                    },
+                                    "end": {
+                                        "line": 3,
+                                        "column": 13
+                                    }
+                                },
+                                "callee": {
+                                    "type": "Identifier",
+                                    "range": [
+                                        46,
+                                        52
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 3,
+                                            "column": 5
+                                        },
+                                        "end": {
+                                            "line": 3,
+                                            "column": 11
+                                        }
+                                    },
+                                    "name": "Output"
+                                },
+                                "arguments": []
+                            }
+                        ]
                     }
                 ],
                 "range": [

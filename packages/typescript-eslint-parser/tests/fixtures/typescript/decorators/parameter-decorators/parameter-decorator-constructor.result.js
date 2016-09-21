@@ -345,6 +345,7 @@ module.exports = {
                                 }
                             }
                         },
+                        "accessibility": null,
                         "computed": false,
                         "static": false,
                         "kind": "constructor"

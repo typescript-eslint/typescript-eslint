@@ -105,6 +105,7 @@ module.exports = {
                             "name": "constructor"
                         },
                         "static": true,
+                        "accessibility": null,
                         "kind": "method",
                         "value": {
                             "type": "FunctionExpression",
@@ -181,6 +182,7 @@ module.exports = {
                             ],
                             "name": "constructor"
                         },
+                        "accessibility": null,
                         "static": true,
                         "kind": "method",
                         "value": {
