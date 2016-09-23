@@ -1,3 +1,9 @@
+v0.4.0 - September 23, 2016
+
+* eb1ad9b Fix: Add loc and range data to generated VariableDeclarator node (#100) (James Henry)
+* 5dae849 New: Accessibility Modifiers (fixes #87) (#88) (Danny Fritz)
+* 68992eb Fix: Tests break with Windows line-endings (fixes #93) (#97) (Danny Fritz)
+
 v0.3.1 - September 20, 2016
 
 * e36d800 Fix: Convert TypeAliasDeclaration into VariableDeclarator (fixes #89) (#91) (James Henry)
