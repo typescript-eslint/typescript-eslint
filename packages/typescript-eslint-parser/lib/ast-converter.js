@@ -1871,8 +1871,10 @@ module.exports = function(ast, extra) {
                 var typeAliasDeclarator = {
                     type: "VariableDeclarator",
                     id: convertChild(node.name),
-                    init: convertChild(node.type)
+                    init: convertChild(node.type),
+                    range: [node.name.getStart(), node.end]
                 };
+                typeAliasDeclarator.loc = getLocFor(typeAliasDeclarator.range[0], typeAliasDeclarator.range[1], ast);
                 // Process typeParameters
                 if (node.typeParameters && node.typeParameters.length) {
                     typeAliasDeclarator.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);

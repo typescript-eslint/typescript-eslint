@@ -20,6 +20,20 @@ module.exports = {
             "kind": "type",
             "declarations": [
                 {
+                    "loc": {
+                        "end": {
+                            "column": 37,
+                            "line": 1
+                        },
+                        "start": {
+                            "column": 5,
+                            "line": 1
+                        }
+                    },
+                    "range": [
+                        5,
+                        37
+                    ],
                     "type": "VariableDeclarator",
                     "id": {
                         "type": "Identifier",
