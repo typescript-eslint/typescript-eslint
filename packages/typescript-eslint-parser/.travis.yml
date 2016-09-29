@@ -3,5 +3,9 @@ sudo: false
 node_js:
     - "0.12"
     - 4
+    - 6
+before_script:
+    - npm install -g npm-install-peers
+    - npm-install-peers
 after_success:
     - npm run coveralls
