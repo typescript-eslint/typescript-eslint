@@ -1,4 +1,4 @@
 class A {
-    @readonly
+    @onlyRead
     instanceMethod() {}
 }

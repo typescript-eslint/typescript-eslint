@@ -162,7 +162,7 @@ module.exports = {
                                             "column": 13
                                         }
                                     },
-                                    "name": "readonly"
+                                    "name": "onlyRead"
                                 },
                                 "arguments": [
                                     {
@@ -285,7 +285,7 @@ module.exports = {
         },
         {
             "type": "Identifier",
-            "value": "readonly",
+            "value": "onlyRead",
             "range": [
                 15,
                 23
