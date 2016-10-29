@@ -91,7 +91,6 @@ module.exports = {
                         "type": "TypeParameterDeclaration"
                     },
                     "init": {
-                        "flags": 0,
                         "loc": {
                             "end": {
                                 "column": 37,
@@ -109,7 +108,6 @@ module.exports = {
                         "type": "TSUnionType",
                         "types": [
                             {
-                                "flags": 0,
                                 "loc": {
                                     "end": {
                                         "column": 27,
@@ -127,7 +125,6 @@ module.exports = {
                                 "type": "TSTypeReference",
                                 "typeArguments": [
                                     {
-                                        "flags": 0,
                                         "loc": {
                                             "end": {
                                                 "column": 26,
@@ -183,7 +180,6 @@ module.exports = {
                                 }
                             },
                             {
-                                "flags": 0,
                                 "loc": {
                                     "end": {
                                         "column": 37,

@@ -156,8 +156,7 @@ module.exports = {
                             "line": 1,
                             "column": 36
                         }
-                    },
-                    "flags": 0
+                    }
                 }
             }
         }

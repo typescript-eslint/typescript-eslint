@@ -140,7 +140,6 @@ module.exports = {
                                                 "column": 44
                                             }
                                         },
-                                        "flags": 0,
                                         "typeName": {
                                             "type": "Identifier",
                                             "range": [
@@ -175,8 +174,7 @@ module.exports = {
                                                         "line": 2,
                                                         "column": 43
                                                     }
-                                                },
-                                                "flags": 0
+                                                }
                                             }
                                         ]
                                     }

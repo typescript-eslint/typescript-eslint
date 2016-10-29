@@ -164,7 +164,6 @@ module.exports = {
                 ],
                 "type": "TypeAnnotation",
                 "typeAnnotation": {
-                    "flags": 0,
                     "loc": {
                         "end": {
                             "column": 22,

@@ -96,8 +96,7 @@ module.exports = {
                                         "line": 1,
                                         "column": 15
                                     }
-                                },
-                                "flags": 0
+                                }
                             }
                         }
                     },
