@@ -31,7 +31,6 @@ module.exports = {
                     "column": 1
                 }
             },
-            "flags": 65540,
             "modifiers": [
                 {
                     "type": "TSDeclareKeyword",
@@ -48,8 +47,7 @@ module.exports = {
                             "line": 1,
                             "column": 7
                         }
-                    },
-                    "flags": 0
+                    }
                 }
             ],
             "name": {
@@ -86,7 +84,6 @@ module.exports = {
                         "column": 1
                     }
                 },
-                "flags": 0,
                 "statements": [
                     {
                         "type": "TSNamespaceExportDeclaration",
@@ -179,7 +176,6 @@ module.exports = {
                                             "column": 58
                                         }
                                     },
-                                    "flags": 0,
                                     "typeName": {
                                         "type": "Identifier",
                                         "range": [
@@ -214,8 +210,7 @@ module.exports = {
                                                     "line": 2,
                                                     "column": 57
                                                 }
-                                            },
-                                            "flags": 0
+                                            }
                                         }
                                     ]
                                 }

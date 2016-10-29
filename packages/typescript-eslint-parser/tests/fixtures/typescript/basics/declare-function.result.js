@@ -103,8 +103,7 @@ module.exports = {
                             "line": 1,
                             "column": 41
                         }
-                    },
-                    "flags": 0
+                    }
                 }
             }
         }
