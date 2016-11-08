@@ -17,7 +17,6 @@ module.exports = {
     "body": [
         {
             "type": "ClassDeclaration",
-            "decorators": [],
             "range": [
                 0,
                 115
@@ -108,61 +107,113 @@ module.exports = {
                                         }
                                     },
                                     "name": "config",
-                                    "decorators": [
-                                        {
-                                            "arguments": [
-                                                {
-                                                    "loc": {
-                                                        "end": {
-                                                            "column": 34,
-                                                            "line": 2
-                                                        },
-                                                        "start": {
-                                                            "column": 24,
-                                                            "line": 2
-                                                        }
-                                                    },
-                                                    "name": "APP_CONFIG",
-                                                    "range": [
-                                                        40,
-                                                        50
-                                                    ],
-                                                    "type": "Identifier"
-                                                }
+                                    "typeAnnotation": {
+                                        "type": "TypeAnnotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 44
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 53
+                                            }
+                                        },
+                                        "range": [
+                                            60,
+                                            69
+                                        ],
+                                        "typeAnnotation": {
+                                            "type": "TSTypeReference",
+                                            "range": [
+                                                60,
+                                                69
                                             ],
-                                            "callee": {
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 44
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 53
+                                                }
+                                            },
+                                            "typeName": {
+                                                "type": "Identifier",
+                                                "range": [
+                                                    60,
+                                                    69
+                                                ],
                                                 "loc": {
-                                                    "end": {
-                                                        "column": 23,
-                                                        "line": 2
-                                                    },
                                                     "start": {
-                                                        "column": 17,
-                                                        "line": 2
+                                                        "line": 2,
+                                                        "column": 44
+                                                    },
+                                                    "end": {
+                                                        "line": 2,
+                                                        "column": 53
                                                     }
                                                 },
-                                                "name": "Inject",
-                                                "range": [
-                                                    33,
-                                                    39
-                                                ],
-                                                "type": "Identifier"
-                                            },
-                                            "loc": {
-                                                "end": {
-                                                    "column": 35,
-                                                    "line": 2
-                                                },
-                                                "start": {
-                                                    "column": 17,
-                                                    "line": 2
-                                                }
-                                            },
+                                                "name": "AppConfig"
+                                            }
+                                        }
+                                    },
+                                    "decorators": [
+                                        {
+                                            "type": "CallExpression",
                                             "range": [
                                                 33,
                                                 51
                                             ],
-                                            "type": "CallExpression"
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 17
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 35
+                                                }
+                                            },
+                                            "callee": {
+                                                "type": "Identifier",
+                                                "range": [
+                                                    33,
+                                                    39
+                                                ],
+                                                "loc": {
+                                                    "start": {
+                                                        "line": 2,
+                                                        "column": 17
+                                                    },
+                                                    "end": {
+                                                        "line": 2,
+                                                        "column": 23
+                                                    }
+                                                },
+                                                "name": "Inject"
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "type": "Identifier",
+                                                    "range": [
+                                                        40,
+                                                        50
+                                                    ],
+                                                    "loc": {
+                                                        "start": {
+                                                            "line": 2,
+                                                            "column": 24
+                                                        },
+                                                        "end": {
+                                                            "line": 2,
+                                                            "column": 34
+                                                        }
+                                                    },
+                                                    "name": "APP_CONFIG"
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -345,8 +396,8 @@ module.exports = {
                                 }
                             }
                         },
-                        "accessibility": null,
                         "computed": false,
+                        "accessibility": null,
                         "static": false,
                         "kind": "constructor"
                     }
@@ -367,7 +418,8 @@ module.exports = {
                 }
             },
             "superClass": null,
-            "implements": []
+            "implements": [],
+            "decorators": []
         }
     ],
     "sourceType": "script",

@@ -245,6 +245,34 @@ function fixExports(node, result, ast) {
 }
 
 /**
+ * Returns true if a given TSNode is a JSX token
+ * @param  {TSNode} node TSNode to be checked
+ * @returns {boolean}       is a JSX token
+ */
+function isJSXToken(node) {
+    return (
+        node.kind >= SyntaxKind.JsxElement
+        && node.kind <= SyntaxKind.JsxAttribute
+    );
+}
+
+/**
+ * Returns true if a given TSNode has a JSX token within its hierarchy
+ * @param  {TSNode} node TSNode to be checked
+ * @returns {boolean}       has JSX ancestor
+ */
+function hasJSXAncestor(node) {
+    while (node) {
+        if (isJSXToken(node)) {
+            return true;
+        }
+        node = node.parent;
+    }
+    return false;
+}
+
+
+/**
  * Extends and formats a given error object
  * @param  {Object} error the error object
  * @returns {Object}       converted error object
@@ -331,12 +359,12 @@ function getTokenType(token) {
 
     // Some JSX tokens have to be determined based on their parent
     if (token.parent) {
-        if (token.kind === SyntaxKind.Identifier && token.parent.kind === SyntaxKind.FirstNode) {
+        if (token.kind === SyntaxKind.Identifier && token.parent.kind === SyntaxKind.PropertyAccessExpression && hasJSXAncestor(token)) {
             return "JSXIdentifier";
         }
 
-        if (token.parent.kind >= SyntaxKind.JsxElement && token.parent.kind <= SyntaxKind.JsxAttribute) {
-            if (token.kind === SyntaxKind.FirstNode) {
+        if (isJSXToken(token.parent)) {
+            if (token.kind === SyntaxKind.PropertyAccessExpression) {
                 return "JSXMemberExpression";
             }
 
@@ -616,12 +644,12 @@ module.exports = function(ast, extra) {
 
             if (tagNameToken.type === "JSXMemberExpression") {
 
-                var isNestedMemberExpression = (node.tagName.left.kind === SyntaxKind.FirstNode);
+                var isNestedMemberExpression = (node.tagName.expression.kind === SyntaxKind.PropertyAccessExpression);
 
                 // Convert TSNode left and right objects into ESTreeNode object
                 // and property objects
-                tagNameToken.object = convertChild(node.tagName.left);
-                tagNameToken.property = convertChild(node.tagName.right);
+                tagNameToken.object = convertChild(node.tagName.expression);
+                tagNameToken.property = convertChild(node.tagName.name);
 
                 // Assign the appropriate types
                 tagNameToken.object.type = (isNestedMemberExpression) ? "JSXMemberExpression" : "JSXIdentifier";
@@ -1061,7 +1089,7 @@ module.exports = function(ast, extra) {
                 } else { // class
 
                     /**
-                     * Unlinke in object literal methods, class method params can have decorators
+                     * Unlike in object literal methods, class method params can have decorators
                      */
                     method.params = node.parameters.map(function(param) {
                         var convertedParam = convertChild(param);
@@ -1380,7 +1408,11 @@ module.exports = function(ast, extra) {
                         right: convertChild(node.initializer)
                     });
                 } else {
-                    return convert(node.name, parent);
+                    var convertedParameter = convert(node.name, parent);
+                    if (node.type) {
+                        convertedParameter.typeAnnotation = convertTypeAnnotation(node.type);
+                    }
+                    return convertedParameter;
                 }
 
                 break;
@@ -1626,12 +1658,24 @@ module.exports = function(ast, extra) {
                 break;
 
             case SyntaxKind.PropertyAccessExpression:
-                assign(result, {
-                    type: "MemberExpression",
-                    object: convertChild(node.expression),
-                    property: convertChild(node.name),
-                    computed: false
-                });
+                if (isJSXToken(parent)) {
+                    var jsxMemberExpression = {
+                        type: "MemberExpression",
+                        object: convertChild(node.expression),
+                        property: convertChild(node.name)
+                    };
+                    var isNestedMemberExpression = (node.expression.kind === SyntaxKind.PropertyAccessExpression);
+                    jsxMemberExpression.object.type = (isNestedMemberExpression) ? "MemberExpression" : "JSXIdentifier";
+                    jsxMemberExpression.property.type = "JSXIdentifier";
+                    assign(result, jsxMemberExpression);
+                } else {
+                    assign(result, {
+                        type: "MemberExpression",
+                        object: convertChild(node.expression),
+                        property: convertChild(node.name),
+                        computed: false
+                    });
+                }
                 break;
 
             case SyntaxKind.ElementAccessExpression:

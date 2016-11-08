@@ -140,7 +140,41 @@ module.exports = {
                                             "column": 33
                                         }
                                     },
-                                    "name": "selector"
+                                    "name": "selector",
+                                    "typeAnnotation": {
+                                        "type": "TypeAnnotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 35
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 41
+                                            }
+                                        },
+                                        "range": [
+                                            58,
+                                            64
+                                        ],
+                                        "typeAnnotation": {
+                                            "type": "TSStringKeyword",
+                                            "range": [
+                                                58,
+                                                64
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 35
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 41
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             ],
                             "body": null,
