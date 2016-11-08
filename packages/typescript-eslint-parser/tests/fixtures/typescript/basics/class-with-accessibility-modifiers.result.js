@@ -478,6 +478,40 @@ module.exports = {
                                         }
                                     },
                                     "name": "bar",
+                                    "typeAnnotation": {
+                                        "type": "TypeAnnotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 7,
+                                                "column": 26
+                                            },
+                                            "end": {
+                                                "line": 7,
+                                                "column": 32
+                                            }
+                                        },
+                                        "range": [
+                                            138,
+                                            144
+                                        ],
+                                        "typeAnnotation": {
+                                            "type": "TSStringKeyword",
+                                            "range": [
+                                                138,
+                                                144
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 7,
+                                                    "column": 26
+                                                },
+                                                "end": {
+                                                    "line": 7,
+                                                    "column": 32
+                                                }
+                                            }
+                                        }
+                                    },
                                     "decorators": []
                                 }
                             ]

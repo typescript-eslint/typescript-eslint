@@ -31,7 +31,6 @@ module.exports = {
                     "column": 1
                 }
             },
-            "decorators": [],
             "id": {
                 "type": "Identifier",
                 "range": [
@@ -159,7 +158,8 @@ module.exports = {
                         ]
                     }
                 }
-            ]
+            ],
+            "decorators": []
         }
     ],
     "sourceType": "script",

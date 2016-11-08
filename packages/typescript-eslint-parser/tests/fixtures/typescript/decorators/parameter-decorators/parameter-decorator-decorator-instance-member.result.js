@@ -141,6 +141,40 @@ module.exports = {
                                         }
                                     },
                                     "name": "baz",
+                                    "typeAnnotation": {
+                                        "type": "TypeAnnotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 28
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 34
+                                            }
+                                        },
+                                        "range": [
+                                            40,
+                                            46
+                                        ],
+                                        "typeAnnotation": {
+                                            "type": "TSNumberKeyword",
+                                            "range": [
+                                                40,
+                                                46
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 28
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 34
+                                                }
+                                            }
+                                        }
+                                    },
                                     "decorators": [
                                         {
                                             "type": "CallExpression",

@@ -68,7 +68,41 @@ module.exports = {
                             "column": 24
                         }
                     },
-                    "name": "bar"
+                    "name": "bar",
+                    "typeAnnotation": {
+                        "type": "TypeAnnotation",
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 26
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 32
+                            }
+                        },
+                        "range": [
+                            26,
+                            32
+                        ],
+                        "typeAnnotation": {
+                            "type": "TSStringKeyword",
+                            "range": [
+                                26,
+                                32
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 26
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 32
+                                }
+                            }
+                        }
+                    }
                 }
             ],
             "body": null,

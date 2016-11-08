@@ -31,26 +31,6 @@ module.exports = {
                     "column": 12
                 }
             },
-            "decorators": [
-                {
-                    "loc": {
-                        "end": {
-                            "column": 7,
-                            "line": 1
-                        },
-                        "start": {
-                            "column": 1,
-                            "line": 1
-                        }
-                    },
-                    "name": "sealed",
-                    "range": [
-                        1,
-                        7
-                    ],
-                    "type": "Identifier"
-                }
-            ],
             "id": {
                 "type": "Identifier",
                 "range": [
@@ -88,7 +68,27 @@ module.exports = {
                 }
             },
             "superClass": null,
-            "implements": []
+            "implements": [],
+            "decorators": [
+                {
+                    "type": "Identifier",
+                    "range": [
+                        1,
+                        7
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 1
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 7
+                        }
+                    },
+                    "name": "sealed"
+                }
+            ]
         }
     ],
     "sourceType": "script",

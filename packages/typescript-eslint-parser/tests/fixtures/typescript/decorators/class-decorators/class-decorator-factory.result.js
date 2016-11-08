@@ -31,122 +31,6 @@ module.exports = {
                     "column": 21
                 }
             },
-            "decorators": [
-                {
-                    "arguments": [
-                        {
-                            "loc": {
-                                "end": {
-                                    "column": 1,
-                                    "line": 3
-                                },
-                                "start": {
-                                    "column": 11,
-                                    "line": 1
-                                }
-                            },
-                            "properties": [
-                                {
-                                    "computed": false,
-                                    "key": {
-                                        "loc": {
-                                            "end": {
-                                                "column": 12,
-                                                "line": 2
-                                            },
-                                            "start": {
-                                                "column": 4,
-                                                "line": 2
-                                            }
-                                        },
-                                        "name": "selector",
-                                        "range": [
-                                            17,
-                                            25
-                                        ],
-                                        "type": "Identifier"
-                                    },
-                                    "kind": "init",
-                                    "loc": {
-                                        "end": {
-                                            "column": 19,
-                                            "line": 2
-                                        },
-                                        "start": {
-                                            "column": 4,
-                                            "line": 2
-                                        }
-                                    },
-                                    "method": false,
-                                    "range": [
-                                        17,
-                                        32
-                                    ],
-                                    "shorthand": false,
-                                    "type": "Property",
-                                    "value": {
-                                        "loc": {
-                                            "end": {
-                                                "column": 19,
-                                                "line": 2
-                                            },
-                                            "start": {
-                                                "column": 14,
-                                                "line": 2
-                                            }
-                                        },
-                                        "range": [
-                                            27,
-                                            32
-                                        ],
-                                        "raw": "'foo'",
-                                        "type": "Literal",
-                                        "value": "foo"
-                                    }
-                                }
-                            ],
-                            "range": [
-                                11,
-                                35
-                            ],
-                            "type": "ObjectExpression"
-                        }
-                    ],
-                    "callee": {
-                        "loc": {
-                            "end": {
-                                "column": 10,
-                                "line": 1
-                            },
-                            "start": {
-                                "column": 1,
-                                "line": 1
-                            }
-                        },
-                        "name": "Component",
-                        "range": [
-                            1,
-                            10
-                        ],
-                        "type": "Identifier"
-                    },
-                    "loc": {
-                        "end": {
-                            "column": 2,
-                            "line": 3
-                        },
-                        "start": {
-                            "column": 1,
-                            "line": 1
-                        }
-                    },
-                    "range": [
-                        1,
-                        36
-                    ],
-                    "type": "CallExpression"
-                }
-            ],
             "id": {
                 "type": "Identifier",
                 "range": [
@@ -184,7 +68,123 @@ module.exports = {
                 }
             },
             "superClass": null,
-            "implements": []
+            "implements": [],
+            "decorators": [
+                {
+                    "type": "CallExpression",
+                    "range": [
+                        1,
+                        36
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 1
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 2
+                        }
+                    },
+                    "callee": {
+                        "type": "Identifier",
+                        "range": [
+                            1,
+                            10
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 1
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 10
+                            }
+                        },
+                        "name": "Component"
+                    },
+                    "arguments": [
+                        {
+                            "type": "ObjectExpression",
+                            "range": [
+                                11,
+                                35
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 11
+                                },
+                                "end": {
+                                    "line": 3,
+                                    "column": 1
+                                }
+                            },
+                            "properties": [
+                                {
+                                    "type": "Property",
+                                    "range": [
+                                        17,
+                                        32
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 4
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 19
+                                        }
+                                    },
+                                    "key": {
+                                        "type": "Identifier",
+                                        "range": [
+                                            17,
+                                            25
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 4
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 12
+                                            }
+                                        },
+                                        "name": "selector"
+                                    },
+                                    "value": {
+                                        "type": "Literal",
+                                        "range": [
+                                            27,
+                                            32
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 14
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 19
+                                            }
+                                        },
+                                        "value": "foo",
+                                        "raw": "'foo'"
+                                    },
+                                    "computed": false,
+                                    "method": false,
+                                    "shorthand": false,
+                                    "kind": "init"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "sourceType": "script",

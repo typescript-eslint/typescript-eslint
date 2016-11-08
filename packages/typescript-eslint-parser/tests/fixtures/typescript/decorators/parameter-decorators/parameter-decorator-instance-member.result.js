@@ -251,6 +251,40 @@ module.exports = {
                                         }
                                     },
                                     "name": "name",
+                                    "typeAnnotation": {
+                                        "type": "TypeAnnotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 26
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 32
+                                            }
+                                        },
+                                        "range": [
+                                            42,
+                                            48
+                                        ],
+                                        "typeAnnotation": {
+                                            "type": "TSStringKeyword",
+                                            "range": [
+                                                42,
+                                                48
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 26
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 32
+                                                }
+                                            }
+                                        }
+                                    },
                                     "decorators": [
                                         {
                                             "type": "Identifier",
