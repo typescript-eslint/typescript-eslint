@@ -1,3 +1,13 @@
+v1.0.0 - November 11, 2016
+
+* c60f216 Chore: Normalize .yml line endings (fixes #113) (#115) (James Henry)
+* 9521396 Breaking: Updated to TypeScript 2.x (fixes #105) (#112) (James Henry)
+* a7320df Docs: Update license copyright (Nicholas C. Zakas)
+* 51ec64d Fix: Exclude TSNode.flags when deeplyCopy fallback is used (refs #105) (#107) (James Henry)
+* 7ebf4d5 Fix: Rename decorator example to avoid issue in TS 2.x (refs #105) (#106) (James Henry)
+* 45b9874 Fix: Added missing yml lf gitattribute (#104) (James Henry)
+* 4dd3439 Build: Add Node 6.x to Travis (fixes #99) (#98) (Danny Fritz)
+
 v0.4.0 - September 23, 2016
 
 * eb1ad9b Fix: Add loc and range data to generated VariableDeclarator node (#100) (James Henry)
