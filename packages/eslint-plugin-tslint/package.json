@@ -1,0 +1,29 @@
+{
+  "name": "eslint-plugin-tslint",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "author": "James Henry <james@henry.sc>",
+  "description": "TSLint wrapper plugin for ESLint",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "tslint"
+  ],
+  "repository": "JamesHenry/eslint-plugin-tslint",
+  "license": "MIT",
+  "scripts": {
+    "test": "npm run build && mocha tests --recursive",
+    "build": "rm -rf lib/ && tsc"
+  },
+  "devDependencies": {
+    "@types/node": "6.0.54",
+    "eslint": "3.12.2",
+    "mocha": "3.2.0",
+    "typescript": "2.0.10",
+    "typescript-eslint-parser": "1.0.0"
+  },
+  "dependencies": {
+    "tslint": "4.2.0"
+  }
+}
