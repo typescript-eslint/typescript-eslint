@@ -18,5 +18,5 @@ script:
 after_success:
   - yarn semantic-release
 branches:
-  except:
-    - /^v\d+\.\d+\.\d+$/
+  only:
+	- master
