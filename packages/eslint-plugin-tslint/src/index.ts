@@ -13,6 +13,17 @@ import { Linter as TSLintLinter } from "tslint"
 // Plugin Definition
 //------------------------------------------------------------------------------
 
+interface LineAndColumn {
+    line: number
+    column: number
+}
+
+interface ESLintContext {
+    getSourceCode(): { text: string }
+    report(config: { message: string, loc: { start: LineAndColumn, end: LineAndColumn } }): void
+    options: { rules: {}, rulesDirectory: string[] }[]
+}
+
 export const rules = {
     /**
      * Expose a single rule called "config", which will be accessed in users' eslint config files
@@ -47,10 +58,10 @@ export const rules = {
                 }
             ]
         },
-        create: function(context: any) {
+        create: function(context: ESLintContext) {
 
-            const fakeFilename = 'x.ts'
-            const sourceCode: string = context.getSourceCode().text
+            const fakeFilename = 'eslint.ts'
+            const sourceCode = context.getSourceCode().text
 
             /**
              * The TSLint rules configuration passed in by the user

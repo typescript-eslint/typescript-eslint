@@ -13,9 +13,8 @@ notifications:
 node_js:
   - '7'
   - '6'
-  - '4'
-before_script:
-  - yarn prune
+script:
+  - yarn test
 after_success:
   - yarn semantic-release
 branches:
