@@ -19,4 +19,4 @@ after_success:
   - yarn semantic-release
 branches:
   only:
-	- master
+    - master
