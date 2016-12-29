@@ -15,7 +15,7 @@
   "scripts": {
     "test": "npm run build && mocha tests --recursive",
     "build": "rm -rf lib/ && tsc",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post",
     "commit": "git-cz"
   },
   "devDependencies": {
