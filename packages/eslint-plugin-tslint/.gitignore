@@ -37,4 +37,4 @@ jspm_packages
 .node_repl_history
 
 # Generated lib directory containing the final plugin code
-lib/
+lib
