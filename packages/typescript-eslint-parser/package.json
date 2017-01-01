@@ -29,7 +29,8 @@
     "npm-license": "^0.2.3",
     "semver": "^4.1.1",
     "shelljs": "^0.3.0",
-    "shelljs-nodecli": "^0.1.1"
+    "shelljs-nodecli": "^0.1.1",
+    "typescript": "~2.0.3"
   },
   "keywords": [
     "ast",
@@ -54,6 +55,6 @@
     "object-assign": "^4.0.1"
   },
   "peerDependencies": {
-    "typescript": "^2.0.3"
+    "typescript": "~2.0.3"
   }
 }
