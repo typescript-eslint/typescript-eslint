@@ -53,3 +53,4 @@ Then configure the rules you want to use under the rules section.
 * `typescript/explicit-member-accessibility` - enforces accessibility modifiers on class properties and methods.
 * `typescript/no-triple-slash-reference` - enforces `/// <reference />` is not used.
 * `typescript/no-explicit-any` - enforces the any type is not used.
+* `typescript/no-angle-bracket-type-assertion` - enforces the use of `as Type` assertions instead of `<Type>` assertions.
