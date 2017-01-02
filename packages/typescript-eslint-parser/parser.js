@@ -135,82 +135,81 @@ function parse(code, options) {
             // pass through jsx option
             extra.ecmaFeatures.jsx = options.ecmaFeatures.jsx;
         }
+    }
 
-        // Even if jsx option is set in typescript compiler, filename still has to
-        // contain .tsx file extension
-        var FILENAME = (extra.ecmaFeatures.jsx) ? "eslint.tsx" : "eslint.ts";
+    // Even if jsx option is set in typescript compiler, filename still has to
+    // contain .tsx file extension
+    var FILENAME = (extra.ecmaFeatures.jsx) ? "eslint.tsx" : "eslint.ts";
 
-        var compilerHost = {
-            fileExists: function() {
-                return true;
-            },
-            getCanonicalFileName: function() {
-                return FILENAME;
-            },
-            getCurrentDirectory: function() {
-                return "";
-            },
-            getDefaultLibFileName: function() {
-                return "lib.d.ts";
-            },
+    var compilerHost = {
+        fileExists: function() {
+            return true;
+        },
+        getCanonicalFileName: function() {
+            return FILENAME;
+        },
+        getCurrentDirectory: function() {
+            return "";
+        },
+        getDefaultLibFileName: function() {
+            return "lib.d.ts";
+        },
 
-            // TODO: Support Windows CRLF
-            getNewLine: function() {
-                return "\n";
-            },
-            getSourceFile: function(filename) {
-                return ts.createSourceFile(filename, code, ts.ScriptTarget.Latest, true);
-            },
-            readFile: function() {
-                return null;
-            },
-            useCaseSensitiveFileNames: function() {
-                return true;
-            },
-            writeFile: function() {
-                return null;
-            }
-        };
+        // TODO: Support Windows CRLF
+        getNewLine: function() {
+            return "\n";
+        },
+        getSourceFile: function(filename) {
+            return ts.createSourceFile(filename, code, ts.ScriptTarget.Latest, true);
+        },
+        readFile: function() {
+            return null;
+        },
+        useCaseSensitiveFileNames: function() {
+            return true;
+        },
+        writeFile: function() {
+            return null;
+        }
+    };
 
-        program = ts.createProgram([FILENAME], {
-            noResolve: true,
-            target: ts.ScriptTarget.Latest,
-            jsx: extra.ecmaFeatures.jsx ? "preserve" : undefined
-        }, compilerHost);
+    program = ts.createProgram([FILENAME], {
+        noResolve: true,
+        target: ts.ScriptTarget.Latest,
+        jsx: extra.ecmaFeatures.jsx ? "preserve" : undefined
+    }, compilerHost);
 
-        var ast = program.getSourceFile(FILENAME);
+    var ast = program.getSourceFile(FILENAME);
 
-        if (extra.attachComment || extra.comment) {
-            /**
-             * Create a TypeScript Scanner, with skipTrivia set to false so that
-             * we can parse the comments
-             */
-            var triviaScanner = ts.createScanner(ast.languageVersion, false, 0, code);
+    if (extra.attachComment || extra.comment) {
+        /**
+         * Create a TypeScript Scanner, with skipTrivia set to false so that
+         * we can parse the comments
+         */
+        var triviaScanner = ts.createScanner(ast.languageVersion, false, 0, code);
 
-            var kind = triviaScanner.scan();
-            while (kind !== ts.SyntaxKind.EndOfFileToken) {
-                if (kind !== ts.SyntaxKind.SingleLineCommentTrivia && kind !== ts.SyntaxKind.MultiLineCommentTrivia) {
-                    kind = triviaScanner.scan();
-                    continue;
-                }
-
-                var isBlock = (kind === ts.SyntaxKind.MultiLineCommentTrivia);
-                var range = {
-                    pos: triviaScanner.getTokenPos(),
-                    end: triviaScanner.getTextPos(),
-                    kind: triviaScanner.getToken()
-                };
-
-                var comment = code.substring(range.pos, range.end);
-                var text = comment.replace("//", "").replace("/*", "").replace("*/", "");
-                var loc = getLocFor(range.pos, range.end, ast);
-
-                var esprimaComment = convertTypeScriptCommentToEsprimaComment(isBlock, text, range.pos, range.end, loc.start, loc.end);
-                extra.comments.push(esprimaComment);
-
+        var kind = triviaScanner.scan();
+        while (kind !== ts.SyntaxKind.EndOfFileToken) {
+            if (kind !== ts.SyntaxKind.SingleLineCommentTrivia && kind !== ts.SyntaxKind.MultiLineCommentTrivia) {
                 kind = triviaScanner.scan();
+                continue;
             }
 
+            var isBlock = (kind === ts.SyntaxKind.MultiLineCommentTrivia);
+            var range = {
+                pos: triviaScanner.getTokenPos(),
+                end: triviaScanner.getTextPos(),
+                kind: triviaScanner.getToken()
+            };
+
+            var comment = code.substring(range.pos, range.end);
+            var text = comment.replace("//", "").replace("/*", "").replace("*/", "");
+            var loc = getLocFor(range.pos, range.end, ast);
+
+            var esprimaComment = convertTypeScriptCommentToEsprimaComment(isBlock, text, range.pos, range.end, loc.start, loc.end);
+            extra.comments.push(esprimaComment);
+
+            kind = triviaScanner.scan();
         }
 
     }

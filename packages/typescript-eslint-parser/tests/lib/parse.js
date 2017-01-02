@@ -33,10 +33,19 @@ function getRaw(ast) {
 
 describe("parse()", function() {
 
+
+    describe("basic functionality", function() {
+
+        it("should parse an empty string", function() {
+            assert.deepEqual(parser.parse("").body, []);
+            assert.deepEqual(parser.parse("", {}).body, []);
+        });
+
+    });
+
     describe("modules", function() {
 
         it("should have correct column number when strict mode error occurs", function() {
-
             try {
                 parser.parse("function fn(a, a) {\n}", { sourceType: "module" });
             } catch (err) {
@@ -47,6 +56,7 @@ describe("parse()", function() {
     });
 
     describe("general", function() {
+
         it("should output tokens, comments, locs, and ranges when called with those options", function() {
             var ast = parser.parse("let foo = bar;", {
                 ecmaFeatures: {
@@ -61,6 +71,7 @@ describe("parse()", function() {
             assert.deepEqual(getRaw(ast), require("../fixtures/parse/all-pieces.json"));
         });
 
-
     });
+
+
 });
