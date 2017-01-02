@@ -9,7 +9,7 @@ A parser that converts TypeScript into an [ESTree](https://github.com/estree/est
 Install:
 
 ```
-npm i typescript-eslint-parser --save
+npm i typescript-eslint-parser --save-dev
 ```
 
 And in your ESLint configuration file:
