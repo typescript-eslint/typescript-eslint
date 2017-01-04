@@ -1058,7 +1058,7 @@ module.exports = function(ast, extra) {
                         generator: false,
                         expression: false,
                         body: convertChild(node.body),
-                        range: [ node.name.end, result.range[1]],
+                        range: [ node.parameters.pos - 1, result.range[1]],
                         loc: {
                             start: {
                                 line: methodLoc.line + 1,
