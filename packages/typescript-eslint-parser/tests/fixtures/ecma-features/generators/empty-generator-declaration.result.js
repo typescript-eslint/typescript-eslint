@@ -51,6 +51,7 @@ module.exports = {
             },
             "generator": true,
             "expression": false,
+            "async": false,
             "params": [],
             "body": {
                 "type": "BlockStatement",

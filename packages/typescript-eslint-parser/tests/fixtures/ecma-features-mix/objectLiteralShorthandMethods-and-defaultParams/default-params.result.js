@@ -162,6 +162,7 @@ module.exports = {
                                     },
                                     "generator": false,
                                     "expression": false,
+                                    "async": false,
                                     "range": [
                                         29,
                                         40
@@ -313,6 +314,7 @@ module.exports = {
                                     },
                                     "generator": false,
                                     "expression": false,
+                                    "async": false,
                                     "range": [
                                         46,
                                         60
@@ -482,6 +484,7 @@ module.exports = {
                                     },
                                     "generator": false,
                                     "expression": false,
+                                    "async": false,
                                     "range": [
                                         68,
                                         85

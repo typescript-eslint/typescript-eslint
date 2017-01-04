@@ -125,6 +125,7 @@ module.exports = {
                                     },
                                     "generator": true,
                                     "expression": false,
+                                    "async": false,
                                     "range": [
                                         16,
                                         31

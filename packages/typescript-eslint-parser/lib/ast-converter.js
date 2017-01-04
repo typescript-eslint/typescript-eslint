@@ -106,6 +106,17 @@ function isESTreeClassMember(node) {
 }
 
 /**
+ * Returns true if the given node is an async function
+ * @param  {TSNode}  node TypeScript AST node
+ * @returns {boolean}     is an async function
+ */
+function isAsyncFunction(node) {
+    return !!node.modifiers && !!node.modifiers.length && node.modifiers.some(function(modifier) {
+        return modifier.kind === SyntaxKind.AsyncKeyword;
+    });
+}
+
+/**
  * Returns true if the given TSToken is a comma
  * @param  {TSToken}  token the TypeScript token
  * @returns {boolean}       is comma
@@ -852,6 +863,7 @@ module.exports = function(ast, extra) {
                     id: convertChild(node.name),
                     generator: !!node.asteriskToken,
                     expression: false,
+                    async: isAsyncFunction(node),
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body)
                 });
@@ -1057,6 +1069,7 @@ module.exports = function(ast, extra) {
                         id: null,
                         generator: false,
                         expression: false,
+                        async: isAsyncFunction(node),
                         body: convertChild(node.body),
                         range: [ node.parameters.pos - 1, result.range[1]],
                         loc: {
@@ -1158,6 +1171,7 @@ module.exports = function(ast, extra) {
                         }),
                         generator: false,
                         expression: false,
+                        async: false,
                         body: convertChild(node.body),
                         range: [ result.range[0] + constructorStartOffset, result.range[1]],
                         loc: {
@@ -1226,6 +1240,7 @@ module.exports = function(ast, extra) {
                     generator: !!node.asteriskToken,
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body),
+                    async: isAsyncFunction(node),
                     expression: false
                 });
                 // Process returnType
@@ -1308,6 +1323,7 @@ module.exports = function(ast, extra) {
                     id: null,
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body),
+                    async: isAsyncFunction(node),
                     expression: node.body.kind !== SyntaxKind.Block
                 });
                 // Process returnType
@@ -1325,6 +1341,13 @@ module.exports = function(ast, extra) {
                     type: "YieldExpression",
                     delegate: !!node.asteriskToken,
                     argument: convertChild(node.expression)
+                });
+                break;
+
+            case SyntaxKind.AwaitExpression:
+                assign(result, {
+                    type: "AwaitExpression",
+                    expression: convertChild(node.expression)
                 });
                 break;
 
