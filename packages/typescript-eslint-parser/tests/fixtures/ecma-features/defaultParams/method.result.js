@@ -139,6 +139,7 @@ module.exports = {
                                 "id": null,
                                 "generator": false,
                                 "expression": false,
+                                "async": false,
                                 "params": [
                                     {
                                         "type": "AssignmentPattern",

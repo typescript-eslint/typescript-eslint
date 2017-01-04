@@ -91,6 +91,7 @@ module.exports = {
                             "id": null,
                             "generator": false,
                             "expression": false,
+                            "async": false,
                             "body": {
                                 "type": "BlockStatement",
                                 "range": [
@@ -170,6 +171,7 @@ module.exports = {
                             "id": null,
                             "generator": false,
                             "expression": false,
+                            "async": false,
                             "body": {
                                 "type": "BlockStatement",
                                 "range": [

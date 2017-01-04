@@ -108,6 +108,7 @@ module.exports = {
                         rest: null,
                         generator: false,
                         expression: false,
+                        async: false,
                         range: [5, 31],
                         loc: {
                             start: { line: 1, column: 5 },

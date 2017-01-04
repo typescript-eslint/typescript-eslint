@@ -148,8 +148,9 @@ module.exports = {
                 ],
                 "type": "BlockStatement"
             },
-            "expression": false,
             "generator": false,
+            "expression": false,
+            "async": false,
             "id": {
                 "loc": {
                     "end": {

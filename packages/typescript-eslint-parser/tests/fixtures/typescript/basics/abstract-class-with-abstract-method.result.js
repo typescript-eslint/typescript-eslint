@@ -93,6 +93,7 @@ module.exports = {
                                 "id": null,
                                 "generator": false,
                                 "expression": false,
+                                "async": false,
                                 "body": null,
                                 "range": [
                                     64,

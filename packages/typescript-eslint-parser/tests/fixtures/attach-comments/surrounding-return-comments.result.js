@@ -88,6 +88,7 @@ module.exports = {
                 ]
             },
             "expression": false,
+            "async": false,
             "generator": false
         }
     ],

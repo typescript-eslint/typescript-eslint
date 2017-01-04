@@ -220,6 +220,7 @@ module.exports = {
                             ],
                             "generator": false,
                             "expression": false,
+                            "async": false,
                             "body": {
                                 "type": "BlockStatement",
                                 "range": [

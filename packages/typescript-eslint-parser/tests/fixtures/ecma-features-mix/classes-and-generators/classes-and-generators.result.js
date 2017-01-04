@@ -70,6 +70,7 @@ module.exports = {
                             },
                             "generator": true,
                             "expression": false,
+                            "async": false,
                             "range": [
                                 17,
                                 24

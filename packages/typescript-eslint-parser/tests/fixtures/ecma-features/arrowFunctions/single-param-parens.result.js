@@ -50,6 +50,7 @@ module.exports = {
                 "id": null,
                 "generator": false,
                 "expression": true,
+                "async": false,
                 "params": [
                     {
                         "type": "Identifier",

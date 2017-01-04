@@ -135,6 +135,7 @@ module.exports = {
             },
             "generator": false,
             "expression": false,
+            "async": false,
             "range": [
                 0,
                 24
