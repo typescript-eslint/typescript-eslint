@@ -1,3 +1,12 @@
+v1.0.1 - January 4, 2017
+
+* 9882a8e Fix: Add missing async property (#133) (James Henry)
+* 60843ad Fix: Handle async/await (fixes #119) (#129) (Philipp A)
+* 0ff19dd Fix: Exception thrown when space occurs after function name (fixes #123) (#124) (Reyad Attiyat)
+* ff283aa Fix: Allow running without options (fixes #121) (#120) (Philipp A)
+* dd03b2f Docs: Changed --save to --save-dev in readme (#132) (Amila Welihinda)
+* 41ccef5 Build: Add TS as dev-dep, only support minor range (#131) (James Henry)
+
 v1.0.0 - November 11, 2016
 
 * c60f216 Chore: Normalize .yml line endings (fixes #113) (#115) (James Henry)
