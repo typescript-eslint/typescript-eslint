@@ -29,7 +29,7 @@ ruleTester.run("type-annotation-spacing", rule, {
             parser: "typescript-eslint-parser"
         },
         {
-            code: "function foo(a:string) {}",
+            code: "function foo(a: string) {}",
             parser: "typescript-eslint-parser"
         }
     ],
