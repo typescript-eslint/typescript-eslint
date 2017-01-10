@@ -564,6 +564,34 @@ module.exports = function(ast, extra) {
         }
 
         /**
+         * Returns the declaration kind of the given TSNode
+         * @param  {TSNode}  tsNode TypeScript AST node
+         * @returns {string}     declaration kind
+         */
+        function getDeclarationKind(tsNode) {
+            var varDeclarationKind;
+
+            switch (tsNode.kind) {
+                case SyntaxKind.TypeAliasDeclaration:
+                    varDeclarationKind = "type";
+                    break;
+                case SyntaxKind.VariableDeclarationList:
+                    if (ts.isLet(tsNode)) {
+                        varDeclarationKind = "let";
+                    } else if (ts.isConst(tsNode)) {
+                        varDeclarationKind = "const";
+                    } else {
+                        varDeclarationKind = "var";
+                    }
+                    break;
+                default:
+                    throw "Unable to determine declaration kind.";
+            }
+
+            return varDeclarationKind;
+        }
+
+        /**
          * Converts a TSNode's typeParameters array to a flow-like TypeParameterDeclaration node
          * @param {TSNode[]} typeParameters TSNode typeParameters
          * @returns {TypeParameterDeclaration} TypeParameterDeclaration node
@@ -896,19 +924,10 @@ module.exports = function(ast, extra) {
                 break;
 
             case SyntaxKind.VariableStatement:
-
-                var varStatementKind;
-
-                if (node.declarationList.flags) {
-                    varStatementKind = (node.declarationList.flags === ts.NodeFlags.Let) ? "let" : "const";
-                } else {
-                    varStatementKind = "var";
-                }
-
                 assign(result, {
                     type: "VariableDeclaration",
                     declarations: node.declarationList.declarations.map(convertChild),
-                    kind: varStatementKind
+                    kind: getDeclarationKind(node.declarationList)
                 });
 
                 // check for exports
@@ -917,19 +936,10 @@ module.exports = function(ast, extra) {
 
             // mostly for for-of, for-in
             case SyntaxKind.VariableDeclarationList:
-
-                var varDeclarationListKind;
-
-                if (node.flags) {
-                    varDeclarationListKind = (node.flags === ts.NodeFlags.Let) ? "let" : "const";
-                } else {
-                    varDeclarationListKind = "var";
-                }
-
                 assign(result, {
                     type: "VariableDeclaration",
                     declarations: node.declarations.map(convertChild),
-                    kind: varDeclarationListKind
+                    kind: getDeclarationKind(node)
                 });
                 break;
 
@@ -1951,7 +1961,7 @@ module.exports = function(ast, extra) {
 
                 assign(result, {
                     type: "VariableDeclaration",
-                    kind: "type",
+                    kind: getDeclarationKind(node),
                     declarations: [typeAliasDeclarator]
                 });
 
