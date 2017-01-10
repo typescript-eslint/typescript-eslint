@@ -1941,16 +1941,23 @@ module.exports = function(ast, extra) {
                     init: convertChild(node.type),
                     range: [node.name.getStart(), node.end]
                 };
+
                 typeAliasDeclarator.loc = getLocFor(typeAliasDeclarator.range[0], typeAliasDeclarator.range[1], ast);
+
                 // Process typeParameters
                 if (node.typeParameters && node.typeParameters.length) {
                     typeAliasDeclarator.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
                 }
+
                 assign(result, {
                     type: "VariableDeclaration",
                     kind: "type",
                     declarations: [typeAliasDeclarator]
                 });
+
+                // check for exports
+                result = fixExports(node, result, ast);
+
                 break;
 
             default:
