@@ -1,3 +1,8 @@
+v1.0.2 - January 12, 2017
+
+* d53f1f8 Fix: Use ts utilities determine variable declaration type (fixes #136) (#138) (Reyad Attiyat)
+* 918190d Fix: export type alias ExportNamedDeclaration node generation (fixes #134) (#135) (patricio trevino)
+
 v1.0.1 - January 4, 2017
 
 * 9882a8e Fix: Add missing async property (#133) (James Henry)
