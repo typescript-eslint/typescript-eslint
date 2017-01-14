@@ -1166,9 +1166,7 @@ module.exports = function(ast, extra) {
 
                 var constructorIsStatic = Boolean(node.flags & ts.NodeFlags.Static),
                     firstConstructorToken = constructorIsStatic ? ts.findNextToken(node.getFirstToken(), ast) : node.getFirstToken(),
-                    constructorOffset = 11,
-                    constructorStartOffset = constructorOffset + firstConstructorToken.getStart() - node.getFirstToken().getStart(),
-                    constructorLoc = ast.getLineAndCharacterOfPosition(result.range[0] + constructorStartOffset),
+                    constructorLoc = ast.getLineAndCharacterOfPosition(node.parameters.pos - 1),
                     constructor = {
                         type: "FunctionExpression",
                         id: null,
@@ -1183,7 +1181,7 @@ module.exports = function(ast, extra) {
                         expression: false,
                         async: false,
                         body: convertChild(node.body),
-                        range: [ result.range[0] + constructorStartOffset, result.range[1]],
+                        range: [ node.parameters.pos - 1, result.range[1]],
                         loc: {
                             start: {
                                 line: constructorLoc.line + 1,
