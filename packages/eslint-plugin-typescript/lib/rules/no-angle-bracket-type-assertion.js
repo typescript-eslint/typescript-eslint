@@ -19,17 +19,18 @@ module.exports = {
 
     create: function(context) {
 
+        var sourceCode = context.getSourceCode();
+
         //----------------------------------------------------------------------
         // Public
         //----------------------------------------------------------------------
         return {
             TSTypeAssertionExpression: function(node) {
-                const type = node.typeAnnotation.typeAnnotation.typeName.name;
                 context.report({
                     node,
                     message: "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions",
                     data: {
-                        cast: type
+                        cast: sourceCode.getText(node.typeAnnotation.typeAnnotation)
                     }
                 });
             }
