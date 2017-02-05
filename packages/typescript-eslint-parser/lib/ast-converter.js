@@ -659,7 +659,7 @@ module.exports = function(ast, extra) {
                 return !(/^(?:kind|parent|pos|end|flags)$/.test(key));
             }).forEach(function(key) {
                 if (key === "type") {
-                    result.typeAnnotation = convertTypeAnnotation(node.type);
+                    result.typeAnnotation = (node.type) ? convertTypeAnnotation(node.type) : null;
                 } else {
                     if (Array.isArray(node[key])) {
                         result[key] = node[key].map(convertChild);
