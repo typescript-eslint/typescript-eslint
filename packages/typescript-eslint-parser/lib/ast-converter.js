@@ -1426,16 +1426,18 @@ module.exports = function(ast, extra) {
                 break;
 
             case SyntaxKind.Parameter:
-
+                var parameter;
                 if (node.dotDotDotToken) {
+                    parameter = convertChild(node.name);
                     assign(result, {
                         type: "RestElement",
-                        argument: convertChild(node.name)
+                        argument: parameter
                     });
                 } else if (node.initializer) {
+                    parameter = convertChild(node.name);
                     assign(result, {
                         type: "AssignmentPattern",
-                        left: convertChild(node.name),
+                        left: parameter,
                         right: convertChild(node.initializer)
                     });
                 } else {
@@ -1444,6 +1446,12 @@ module.exports = function(ast, extra) {
                         convertedParameter.typeAnnotation = convertTypeAnnotation(node.type);
                     }
                     return convertedParameter;
+                }
+
+                if (node.type) {
+                    assign(parameter, {
+                        typeAnnotation: convertTypeAnnotation(node.type)
+                    });
                 }
 
                 break;
