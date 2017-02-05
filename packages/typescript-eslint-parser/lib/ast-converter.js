@@ -1476,7 +1476,9 @@ module.exports = function(ast, extra) {
                      * could be multiple before the open brace
                      */
                     var lastModifier = node.modifiers[node.modifiers.length - 1];
-                    lastClassToken = ts.findNextToken(lastModifier, ast);
+                    if (!lastClassToken || lastModifier.pos > lastClassToken.pos) {
+                        lastClassToken = ts.findNextToken(lastModifier, ast);
+                    }
 
                 } else if (!lastClassToken) { // no name
                     lastClassToken = node.getFirstToken();
