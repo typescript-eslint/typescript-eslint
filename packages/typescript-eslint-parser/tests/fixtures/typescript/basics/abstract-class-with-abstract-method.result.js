@@ -190,13 +190,13 @@ module.exports = {
                         }
                     ],
                     "range": [
-                        22,
+                        37,
                         86
                     ],
                     "loc": {
                         "start": {
                             "line": 1,
-                            "column": 22
+                            "column": 37
                         },
                         "end": {
                             "line": 3,
