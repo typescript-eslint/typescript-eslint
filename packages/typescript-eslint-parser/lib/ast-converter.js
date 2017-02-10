@@ -1465,6 +1465,13 @@ module.exports = function(ast, extra) {
                 var lastClassToken = heritageClauses.length ? heritageClauses[heritageClauses.length - 1] : node.name;
                 var classNodeType = SyntaxKind[node.kind];
 
+                if (node.typeParameters && node.typeParameters.length) {
+                    var lastTypeParameter = node.typeParameters[node.typeParameters.length - 1];
+                    if (!lastClassToken || lastTypeParameter.pos > lastClassToken.pos) {
+                        lastClassToken = ts.findNextToken(lastTypeParameter, ast);
+                    }
+                }
+
                 if (node.modifiers && node.modifiers.length) {
 
                     /**
