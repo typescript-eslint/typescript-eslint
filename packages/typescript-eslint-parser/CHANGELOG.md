@@ -1,3 +1,12 @@
+v1.0.3 - February 10, 2017
+
+* 19e7f15 Docs: Show currently supported TypeScript version (#157) (James Henry)
+* e96ba1f Fix: Calculate range correctly for exported generic class (fixes #152) (#155) (Reyad Attiyat)
+* 11d5a7d Fix: Handle object types without annotations (fixes #148) (#154) (Reyad Attiyat)
+* fc1e6bb Fix: Parameter with assignation provide type annotations (fixes #146) (#147) (patricio trevino)
+* e5f378f Fix: Calculate range correctly when class is exported (fixes #152) (#153) (Reyad Attiyat)
+* 6312383 Fix: Calculate constructor range using node.parameters.pos (fixes #139) (#140) (Reyad Attiyat)
+
 v1.0.2 - January 12, 2017
 
 * d53f1f8 Fix: Use ts utilities determine variable declaration type (fixes #136) (#138) (Reyad Attiyat)
