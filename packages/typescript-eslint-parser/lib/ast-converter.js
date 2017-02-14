@@ -735,7 +735,7 @@ module.exports = function(ast, extra) {
             case SyntaxKind.Identifier:
                 assign(result, {
                     type: "Identifier",
-                    name: node.text
+                    name: ts.unescapeIdentifier(node.text)
                 });
                 break;
 
