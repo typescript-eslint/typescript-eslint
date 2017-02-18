@@ -51,7 +51,7 @@ module.exports = {
                         "type": "ExpressionStatement",
                         "expression": {
                             "type": "AwaitExpression",
-                            "expression": {
+                            "argument": {
                                 "type": "Identifier",
                                 "loc": {
                                     "end": {

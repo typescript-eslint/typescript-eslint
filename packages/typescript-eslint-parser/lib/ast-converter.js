@@ -1355,7 +1355,7 @@ module.exports = function(ast, extra) {
             case SyntaxKind.AwaitExpression:
                 assign(result, {
                     type: "AwaitExpression",
-                    expression: convertChild(node.expression)
+                    argument: convertChild(node.expression)
                 });
                 break;
 
