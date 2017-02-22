@@ -256,6 +256,26 @@ function fixExports(node, result, ast) {
 }
 
 /**
+ * Returns true if a given TSNode is a token
+ * @param  {TSNode} node the TSNode
+ * @returns {boolean}     is a token
+ */
+function isToken(node) {
+     /**
+     * Note: We treat JsxText like a token (TypeScript doesn't classify it as one),
+     * to prevent traversing into it and creating unintended addiontal tokens from
+     * its contents.
+     *
+     * It looks like this has been addressed in the master branch of TypeScript, so we can
+     * look to remove this extra check as part of the 2.2.x support
+     */
+    if (node.kind === ts.SyntaxKind.JsxText) {
+        return true;
+    }
+    return node.kind >= ts.SyntaxKind.FirstToken && node.kind <= ts.SyntaxKind.LastToken;
+}
+
+/**
  * Returns true if a given TSNode is a JSX token
  * @param  {TSNode} node TSNode to be checked
  * @returns {boolean}       is a JSX token
@@ -421,18 +441,22 @@ function convertToken(token, ast) {
  * @returns {ESTreeToken[]}     the converted ESTreeTokens
  */
 function convertTokens(ast) {
-    var token = ast.getFirstToken(),
-        converted,
-        result = [];
-
-    while (token) {
-        converted = convertToken(token, ast);
-        if (converted) {
-            result.push(converted);
+    var result = [];
+    /**
+     * @param  {TSNode} node the TSNode
+     * @returns {undefined}
+     */
+    function walk(node) {
+        if (isToken(node) && node.kind !== ts.SyntaxKind.EndOfFileToken) {
+            var converted = convertToken(node, ast);
+            if (converted) {
+                result.push(converted);
+            }
+        } else {
+            node.getChildren().forEach(walk);
         }
-        token = ts.findNextToken(token, ast);
     }
-
+    walk(ast);
     return result;
 }
 
