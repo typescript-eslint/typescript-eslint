@@ -1,3 +1,10 @@
+v2.0.0 - February 24, 2017
+
+* 38aef53 Breaking: Updated supported TypeScript version to ~2.2.1 (fixes #149) (#169) (James Henry)
+* 25207e0 Fix: Optimize convertTokens, treat JsxText as token (fixes #70) (#158) (James Henry)
+* 76c33f8 Fix: Await node should have argument property (fixes #160) (#161) (Reyad Attiyat)
+* 2f86bef Fix: Unescape identifiers typescript may prepend underscore (fixes #145) (#159) (Reyad Attiyat)
+
 v1.0.3 - February 10, 2017
 
 * 19e7f15 Docs: Show currently supported TypeScript version (#157) (James Henry)
