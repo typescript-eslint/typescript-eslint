@@ -6,9 +6,9 @@ A parser that converts TypeScript into an [ESTree](https://github.com/estree/est
 
 ## Supported TypeScript Version
 
-The version of TypeScript supported by this parser is `2.0.x`. Please ensure that you are using this version before submitting any issues.
+The version of TypeScript supported by this parser is `~2.2.1`. This is reflected in the `peerDependency` requirement within the package.json file.
 
-Due to a bug in the TypeScript Compiler it was not possible to officially support TypeScript `2.1.x`, please see this issue for more details on using `2.1.x`: https://github.com/eslint/typescript-eslint-parser/issues/149
+**Please ensure that you are using this version before submitting any issues.**
 
 ## Usage
 

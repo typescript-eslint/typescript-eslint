@@ -261,17 +261,6 @@ function fixExports(node, result, ast) {
  * @returns {boolean}     is a token
  */
 function isToken(node) {
-     /**
-     * Note: We treat JsxText like a token (TypeScript doesn't classify it as one),
-     * to prevent traversing into it and creating unintended addiontal tokens from
-     * its contents.
-     *
-     * It looks like this has been addressed in the master branch of TypeScript, so we can
-     * look to remove this extra check as part of the 2.2.x support
-     */
-    if (node.kind === ts.SyntaxKind.JsxText) {
-        return true;
-    }
     return node.kind >= ts.SyntaxKind.FirstToken && node.kind <= ts.SyntaxKind.LastToken;
 }
 
@@ -680,7 +669,7 @@ module.exports = function(ast, extra) {
         function deeplyCopy() {
             result.type = "TS" + SyntaxKind[node.kind];
             Object.keys(node).filter(function(key) {
-                return !(/^(?:kind|parent|pos|end|flags)$/.test(key));
+                return !(/^(?:kind|parent|pos|end|flags|modifierFlagsCache)$/.test(key));
             }).forEach(function(key) {
                 if (key === "type") {
                     result.typeAnnotation = (node.type) ? convertTypeAnnotation(node.type) : null;
@@ -1083,7 +1072,7 @@ module.exports = function(ast, extra) {
                     key: convertChild(node.name),
                     value: convertChild(node.initializer),
                     computed: (node.name.kind === SyntaxKind.ComputedPropertyName),
-                    static: Boolean(node.flags & ts.NodeFlags.Static),
+                    static: Boolean(ts.getModifierFlags(node) & ts.ModifierFlags.Static),
                     accessibility: getTSNodeAccessibility(node),
                     decorators: (node.decorators) ? node.decorators.map(function(d) {
                         return convertChild(d.expression);
@@ -1166,7 +1155,7 @@ module.exports = function(ast, extra) {
                         key: convertChild(node.name),
                         value: method,
                         computed: isMethodNameComputed,
-                        static: Boolean(node.flags & ts.NodeFlags.Static),
+                        static: Boolean(ts.getModifierFlags(node) & ts.ModifierFlags.Static),
                         kind: "method",
                         accessibility: getTSNodeAccessibility(node),
                         decorators: (node.decorators) ? node.decorators.map(function(d) {
@@ -1188,7 +1177,7 @@ module.exports = function(ast, extra) {
             // TypeScript uses this even for static methods named "constructor"
             case SyntaxKind.Constructor:
 
-                var constructorIsStatic = Boolean(node.flags & ts.NodeFlags.Static),
+                var constructorIsStatic = Boolean(ts.getModifierFlags(node) & ts.ModifierFlags.Static),
                     firstConstructorToken = constructorIsStatic ? ts.findNextToken(node.getFirstToken(), ast) : node.getFirstToken(),
                     constructorLoc = ast.getLineAndCharacterOfPosition(node.parameters.pos - 1),
                     constructor = {
@@ -1441,8 +1430,8 @@ module.exports = function(ast, extra) {
 
             // Patterns
 
-            // Note: TypeScript uses this for both spread and rest expressions
-            case SyntaxKind.SpreadElementExpression:
+            case SyntaxKind.SpreadElement:
+            case SyntaxKind.SpreadAssignment:
                 assign(result, {
                     type: "SpreadElement",
                     argument: convertChild(node.expression)
