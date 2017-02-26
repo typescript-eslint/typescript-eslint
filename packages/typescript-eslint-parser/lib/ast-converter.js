@@ -669,7 +669,7 @@ module.exports = function(ast, extra) {
         function deeplyCopy() {
             result.type = "TS" + SyntaxKind[node.kind];
             Object.keys(node).filter(function(key) {
-                return !(/^(?:kind|parent|pos|end|flags|modifierFlagsCache)$/.test(key));
+                return !(/^(?:kind|parent|pos|end|flags|modifierFlagsCache|jsDoc)$/.test(key));
             }).forEach(function(key) {
                 if (key === "type") {
                     result.typeAnnotation = (node.type) ? convertTypeAnnotation(node.type) : null;
