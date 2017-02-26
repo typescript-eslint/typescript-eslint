@@ -1653,6 +1653,24 @@ module.exports = function(ast, extra) {
                 });
                 break;
 
+            case SyntaxKind.DeleteExpression:
+                assign(result, {
+                    type: "UnaryExpression",
+                    operator: "delete",
+                    prefix: true,
+                    argument: convertChild(node.expression)
+                });
+                break;
+
+            case SyntaxKind.VoidExpression:
+                assign(result, {
+                    type: "UnaryExpression",
+                    operator: "void",
+                    prefix: true,
+                    argument: convertChild(node.expression)
+                });
+                break;
+
             case SyntaxKind.TypeOfExpression:
                 assign(result, {
                     type: "UnaryExpression",
