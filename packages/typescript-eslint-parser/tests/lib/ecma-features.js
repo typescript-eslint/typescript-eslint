@@ -15,7 +15,8 @@ var assert = require("chai").assert,
     leche = require("leche"),
     path = require("path"),
     parser = require("../../parser"),
-    shelljs = require("shelljs");
+    shelljs = require("shelljs"),
+    tester = require("./tester");
 
 //------------------------------------------------------------------------------
 // Setup
@@ -58,15 +59,6 @@ var testFiles = shelljs.find(FIXTURES_DIR).filter(function(filename) {
 // console.dir(moduleTestFiles);
 // return;
 
-/**
- * Returns a raw copy of the given AST
- * @param  {object} ast the AST object
- * @returns {object}     copy of the AST object
- */
-function getRaw(ast) {
-    return JSON.parse(JSON.stringify(ast));
-}
-
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
@@ -97,7 +89,7 @@ describe("ecmaFeatures", function() {
 
             try {
                 result = parser.parse(code, config);
-                result = getRaw(result);
+                result = tester.getRaw(result);
             } catch (ex) {
 
                 // format of error isn't exactly the same, just check if it's expected

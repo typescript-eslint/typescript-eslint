@@ -12,20 +12,8 @@
 //------------------------------------------------------------------------------
 
 var assert = require("chai").assert,
-    parser = require("../../parser");
-
-//------------------------------------------------------------------------------
-// Helpers
-//------------------------------------------------------------------------------
-
-/**
- * Returns a raw copy of the given AST
- * @param  {object} ast the AST object
- * @returns {object}     copy of the AST object
- */
-function getRaw(ast) {
-    return JSON.parse(JSON.stringify(ast));
-}
+    parser = require("../../parser"),
+    tester = require("./tester");
 
 //------------------------------------------------------------------------------
 // Tests
@@ -68,7 +56,7 @@ describe("parse()", function() {
                 loc: true
             });
 
-            assert.deepEqual(getRaw(ast), require("../fixtures/parse/all-pieces.json"));
+            assert.deepEqual(tester.getRaw(ast), require("../fixtures/parse/all-pieces.json"));
         });
 
     });
