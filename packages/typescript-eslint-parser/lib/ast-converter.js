@@ -1878,9 +1878,11 @@ module.exports = function(ast, extra) {
                 // Convert SyntaxKind.JsxSelfClosingElement to SyntaxKind.JsxOpeningElement,
                 // TypeScript does not seem to have the idea of openingElement when tag is self-closing
                 node.kind = SyntaxKind.JsxOpeningElement;
+                var openingElement = convertChild(node);
+                openingElement.selfClosing = true;
                 assign(result, {
                     type: "JSXElement",
-                    openingElement: convertChild(node),
+                    openingElement: openingElement,
                     closingElement: null,
                     children: []
                 });
@@ -1891,7 +1893,7 @@ module.exports = function(ast, extra) {
                 var openingTagName = convertTypeScriptJSXTagNameToESTreeName(node.tagName);
                 assign(result, {
                     type: "JSXOpeningElement",
-                    selfClosing: !(node.parent && node.parent.closingElement),
+                    selfClosing: false,
                     name: openingTagName,
                     attributes: node.attributes.map(convertChild)
                 });
@@ -1933,6 +1935,7 @@ module.exports = function(ast, extra) {
 
             case SyntaxKind.JsxAttribute:
                 var attributeName = convertToken(node.name, ast);
+                attributeName.type = "JSXIdentifier";
                 attributeName.name = attributeName.value;
                 delete attributeName.value;
 
