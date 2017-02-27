@@ -1187,10 +1187,27 @@ module.exports = function(ast, extra) {
                         id: null,
                         params: node.parameters.map(function(param) {
                             var convertedParam = convertChild(param);
-                            convertedParam.decorators = (param.decorators) ? param.decorators.map(function(d) {
+                            var decorators = (param.decorators) ? param.decorators.map(function(d) {
                                 return convertChild(d.expression);
                             }) : [];
-                            return convertedParam;
+
+                            if (param.modifiers) {
+                                return {
+                                    type: "TSParameterProperty",
+                                    range: [param.getStart(), param.end],
+                                    loc: getLoc(param, ast),
+                                    accessibility: getTSNodeAccessibility(param),
+                                    isReadonly: param.modifiers.some(function(modifier) {
+                                        return modifier.kind === SyntaxKind.ReadonlyKeyword;
+                                    }),
+                                    parameter: convertedParam,
+                                    decorators: decorators
+                                };
+                            }
+
+                            return assign(convertedParam, {
+                                decorators: decorators
+                            });
                         }),
                         generator: false,
                         expression: false,
