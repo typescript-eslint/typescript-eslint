@@ -852,7 +852,11 @@ module.exports = function(ast, extra) {
                 });
                 break;
 
-            case SyntaxKind.DoWhileStatement:
+            /**
+             * Unlike other parsers, TypeScript calls a "DoWhileStatement"
+             * a "DoStatement"
+             */
+            case SyntaxKind.DoStatement:
                 assign(result, {
                     type: "DoWhileStatement",
                     test: convertChild(node.expression),
