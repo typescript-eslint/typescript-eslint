@@ -1082,7 +1082,8 @@ module.exports = function(ast, extra) {
                     accessibility: getTSNodeAccessibility(node),
                     decorators: (node.decorators) ? node.decorators.map(function(d) {
                         return convertChild(d.expression);
-                    }) : []
+                    }) : [],
+                    typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null
                 });
                 break;
 

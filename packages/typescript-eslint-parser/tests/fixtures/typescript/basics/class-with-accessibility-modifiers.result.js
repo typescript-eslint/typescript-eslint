@@ -90,7 +90,41 @@ module.exports = {
                         "computed": false,
                         "static": false,
                         "accessibility": "private",
-                        "decorators": []
+                        "decorators": [],
+                        "typeAnnotation": {
+                            "loc": {
+                                "end": {
+                                    "column": 22,
+                                    "line": 2
+                                },
+                                "start": {
+                                    "column": 16,
+                                    "line": 2
+                                }
+                            },
+                            "range": [
+                                28,
+                                34
+                            ],
+                            "type": "TypeAnnotation",
+                            "typeAnnotation": {
+                                "loc": {
+                                    "end": {
+                                        "column": 22,
+                                        "line": 2
+                                    },
+                                    "start": {
+                                        "column": 16,
+                                        "line": 2
+                                    }
+                                },
+                                "range": [
+                                    28,
+                                    34
+                                ],
+                                "type": "TSStringKeyword"
+                            }
+                        }
                     },
                     {
                         "type": "ClassProperty",
@@ -130,7 +164,42 @@ module.exports = {
                         "computed": false,
                         "static": true,
                         "accessibility": "public",
-                        "decorators": []
+                        "decorators": [],
+                        "typeAnnotation": {
+                            "loc": {
+                                "end": {
+                                    "column": 28,
+                                    "line": 3
+                                },
+                                "start": {
+                                    "column": 22,
+                                    "line": 3
+                                }
+                            },
+                            "range": [
+                                58,
+                                64
+                            ],
+                            "type": "TypeAnnotation",
+                            "typeAnnotation": {
+                                "loc": {
+                                    "end": {
+                                        "column": 28,
+                                        "line": 3
+                                    },
+                                    "start": {
+                                        "column": 22,
+                                        "line": 3
+                                    }
+                                },
+                                "range": [
+                                    58,
+                                    64
+                                ],
+                                "type": "TSNumberKeyword"
+                            }
+                        }
+
                     },
                     {
                         "type": "MethodDefinition",

@@ -127,7 +127,8 @@ module.exports = {
                                 },
                                 "arguments": []
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null
                     },
                     {
                         "type": "ClassProperty",
@@ -239,7 +240,8 @@ module.exports = {
                                 },
                                 "arguments": []
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null
                     }
                 ],
                 "range": [

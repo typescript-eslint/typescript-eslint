@@ -109,7 +109,8 @@ module.exports = {
                                 },
                                 "name": "baz"
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null
                     },
                     {
                         "type": "ClassProperty",
@@ -168,7 +169,8 @@ module.exports = {
                                 },
                                 "name": "qux"
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null
                     }
                 ],
                 "range": [
