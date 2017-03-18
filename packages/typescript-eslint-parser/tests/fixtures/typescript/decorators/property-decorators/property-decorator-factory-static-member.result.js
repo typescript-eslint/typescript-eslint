@@ -147,7 +147,8 @@ module.exports = {
                                     }
                                 ]
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null
                     },
                     {
                         "type": "ClassProperty",
@@ -244,7 +245,8 @@ module.exports = {
                                     }
                                 ]
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null
                     }
                 ],
                 "range": [

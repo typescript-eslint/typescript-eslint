@@ -109,7 +109,8 @@ module.exports = {
                                 },
                                 "name": "foo"
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null
                     },
                     {
                         "type": "ClassProperty",
@@ -168,7 +169,8 @@ module.exports = {
                                 },
                                 "name": "bar"
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null
                     }
                 ],
                 "range": [
