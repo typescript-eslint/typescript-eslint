@@ -226,7 +226,8 @@ module.exports = {
                                         "column": 13
                                     }
                                 },
-                                "name": "T"
+                                "name": "T",
+                                "constraint": null
                             }
                         ]
                     }

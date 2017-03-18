@@ -636,7 +636,10 @@ module.exports = function(ast, extra) {
                             typeParameter.end
                         ],
                         loc: getLocFor(typeParameterStart, typeParameter.end, ast),
-                        name: typeParameter.name.text
+                        name: typeParameter.name.text,
+                        constraint: (typeParameter.constraint)
+                            ? convertTypeAnnotation(typeParameter.constraint)
+                            : null
                     };
                 })
             };
