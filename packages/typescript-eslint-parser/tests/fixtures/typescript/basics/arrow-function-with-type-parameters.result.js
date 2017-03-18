@@ -262,7 +262,8 @@ module.exports = {
                                     "column": 2
                                 }
                             },
-                            "name": "X"
+                            "name": "X",
+                            "constraint": null
                         }
                     ]
                 }
