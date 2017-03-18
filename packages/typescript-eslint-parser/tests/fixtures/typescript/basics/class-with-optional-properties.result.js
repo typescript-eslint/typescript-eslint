@@ -42,6 +42,7 @@ module.exports = {
                         ],
                         "static": false,
                         "type": "ClassProperty",
+                        "typeAnnotation": null,
                         "value": null
                     },
                     {
@@ -83,6 +84,40 @@ module.exports = {
                         ],
                         "static": false,
                         "type": "ClassProperty",
+                        "typeAnnotation": {
+                            "loc": {
+                                "end": {
+                                    "column": 15,
+                                    "line": 3
+                                },
+                                "start": {
+                                    "column": 9,
+                                    "line": 3
+                                }
+                            },
+                            "range": [
+                                29,
+                                35
+                            ],
+                            "type": "TypeAnnotation",
+                            "typeAnnotation": {
+                                "loc": {
+                                    "end": {
+                                        "column": 15,
+                                        "line": 3
+                                    },
+                                    "start": {
+                                        "column": 9,
+                                        "line": 3
+                                    }
+                                },
+                                "range": [
+                                    29,
+                                    35
+                                ],
+                                "type": "TSStringKeyword"
+                            }
+                        },
                         "value": null
                     },
                     {
@@ -124,6 +159,40 @@ module.exports = {
                         ],
                         "static": false,
                         "type": "ClassProperty",
+                        "typeAnnotation": {
+                            "loc": {
+                                "end": {
+                                    "column": 23,
+                                    "line": 4
+                                },
+                                "start": {
+                                    "column": 17,
+                                    "line": 4
+                                }
+                            },
+                            "range": [
+                                54,
+                                60
+                            ],
+                            "type": "TypeAnnotation",
+                            "typeAnnotation": {
+                                "loc": {
+                                    "end": {
+                                        "column": 23,
+                                        "line": 4
+                                    },
+                                    "start": {
+                                        "column": 17,
+                                        "line": 4
+                                    }
+                                },
+                                "range": [
+                                    54,
+                                    60
+                                ],
+                                "type": "TSStringKeyword"
+                            }
+                        },
                         "value": null
                     }
                 ],
