@@ -70,6 +70,7 @@ module.exports = {
                         }
                     },
                     "name": "e",
+                    "optional": true,
                     "typeAnnotation": {
                         "type": "TypeAnnotation",
                         "loc": {

@@ -752,6 +752,14 @@ module.exports = function(ast, extra) {
                     type: "Identifier",
                     name: ts.unescapeIdentifier(node.text)
                 });
+                if (node.parent.questionToken && (
+                    SyntaxKind.Parameter === node.parent.kind ||
+                    SyntaxKind.PropertyDeclaration === node.parent.kind ||
+                    SyntaxKind.PropertySignature === node.parent.kind ||
+                    SyntaxKind.MethodSignature === node.parent.kind
+                )) {
+                    result.optional = true;
+                }
                 break;
 
             case SyntaxKind.WithStatement:
