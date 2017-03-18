@@ -1819,23 +1819,27 @@ module.exports = function(ast, extra) {
                 break;
 
             case SyntaxKind.NewExpression:
-
-                // new.target
-                if (node.expression.kind === SyntaxKind.PropertyAccessExpression) {
-                    assign(result, {
-                        type: "MetaProperty",
-                        meta: convertChild(node.expression.name),
-                        property: convertChild(node.expression.propertyName)
-                    });
-                } else {
-                    assign(result, {
-                        type: "NewExpression",
-                        callee: convertChild(node.expression),
-                        arguments: (node.arguments) ? node.arguments.map(convertChild) : []
-                    });
-                }
+                assign(result, {
+                    type: "NewExpression",
+                    callee: convertChild(node.expression),
+                    arguments: (node.arguments) ? node.arguments.map(convertChild) : []
+                });
                 break;
 
+            case SyntaxKind.MetaProperty:
+                var newToken = convertToken(node.getFirstToken(), ast);
+
+                assign(result, {
+                    type: "MetaProperty",
+                    meta: {
+                        type: "Identifier",
+                        range: newToken.range,
+                        loc: newToken.loc,
+                        name: "new"
+                    },
+                    property: convertChild(node.name)
+                });
+                break;
 
 
             // Literals
