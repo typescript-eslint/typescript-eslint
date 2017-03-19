@@ -34,6 +34,44 @@ module.exports = {
                     }
                 },
                 "id": null,
+                "typeParameters": {
+                    "loc": {
+                        "end": {
+                            "column": 23,
+                            "line": 1
+                        },
+                        "start": {
+                            "column": 20,
+                            "line": 1
+                        }
+                    },
+                    "params": [
+                        {
+                            "loc": {
+                                "end": {
+                                    "column": 22,
+                                    "line": 1
+                                },
+                                "start": {
+                                    "column": 21,
+                                    "line": 1
+                                }
+                            },
+                            "name": "T",
+                            "range": [
+                                21,
+                                22
+                            ],
+                            "type": "TypeParameter",
+                            "constraint": null
+                        }
+                    ],
+                    "range": [
+                        20,
+                        23
+                    ],
+                    "type": "TypeParameterDeclaration"
+                },
                 "body": {
                     "type": "ClassBody",
                     "body": [],

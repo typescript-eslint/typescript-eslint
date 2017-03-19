@@ -546,7 +546,7 @@ module.exports = function(ast, extra) {
                             typeArgument.end
                         ],
                         loc: getLocFor(typeArgumentStart, typeArgument.end, ast),
-                        id: convertChild(typeArgument.typeName)
+                        id: convertChild(typeArgument.typeName || typeArgument)
                     };
                 })
             };
@@ -1518,6 +1518,7 @@ module.exports = function(ast, extra) {
                     if (!lastClassToken || lastTypeParameter.pos > lastClassToken.pos) {
                         lastClassToken = ts.findNextToken(lastTypeParameter, ast);
                     }
+                    result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
                 }
 
                 if (node.modifiers && node.modifiers.length) {
@@ -1816,6 +1817,9 @@ module.exports = function(ast, extra) {
                     callee: convertChild(node.expression),
                     arguments: node.arguments.map(convertChild)
                 });
+                if (node.typeArguments && node.typeArguments.length) {
+                    result.typeParameters = convertTypeArgumentsToTypeParameters(node.typeArguments);
+                }
                 break;
 
             case SyntaxKind.NewExpression:
@@ -1824,6 +1828,9 @@ module.exports = function(ast, extra) {
                     callee: convertChild(node.expression),
                     arguments: (node.arguments) ? node.arguments.map(convertChild) : []
                 });
+                if (node.typeArguments && node.typeArguments.length) {
+                    result.typeParameters = convertTypeArgumentsToTypeParameters(node.typeArguments);
+                }
                 break;
 
             case SyntaxKind.MetaProperty:
