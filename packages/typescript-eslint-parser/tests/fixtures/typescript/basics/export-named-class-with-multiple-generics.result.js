@@ -51,6 +51,63 @@ module.exports = {
                     },
                     "name": "Foo"
                 },
+                "typeParameters": {
+                    "loc": {
+                        "end": {
+                            "column": 22,
+                            "line": 1
+                        },
+                        "start": {
+                            "column": 16,
+                            "line": 1
+                        }
+                    },
+                    "params": [
+                        {
+                            "loc": {
+                                "end": {
+                                    "column": 18,
+                                    "line": 1
+                                },
+                                "start": {
+                                    "column": 17,
+                                    "line": 1
+                                }
+                            },
+                            "name": "T",
+                            "range": [
+                                17,
+                                18
+                            ],
+                            "type": "TypeParameter",
+                            "constraint": null
+                        },
+                        {
+                            "loc": {
+                                "end": {
+                                    "column": 21,
+                                    "line": 1
+                                },
+                                "start": {
+                                    "column": 19,
+                                    "line": 1
+                                }
+                            },
+                            "name": "U",
+                            "range": [
+                                19,
+                                21
+                            ],
+                            "type": "TypeParameter",
+                            "constraint": null
+                        }
+                    ],
+                    "range": [
+                        16,
+                        22
+                    ],
+                    "type": "TypeParameterDeclaration"
+                },
                 "body": {
                     "type": "ClassBody",
                     "body": [],
