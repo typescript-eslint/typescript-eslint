@@ -153,7 +153,8 @@ module.exports = {
                                         }
                                     },
                                     "name": "S"
-                                }
+                                },
+                                "typeParameters": null
                             }
                         ]
                     }

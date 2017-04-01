@@ -82,6 +82,7 @@ module.exports = {
                                 ],
                                 "type": "Identifier"
                             },
+                            "typeParameters": null,
                             "loc": {
                                 "end": {
                                     "column": 5,
@@ -188,6 +189,7 @@ module.exports = {
                                 ],
                                 "type": "TSNumberKeyword"
                             },
+                            "typeParameters": null,
                             "loc": {
                                 "end": {
                                     "column": 10,

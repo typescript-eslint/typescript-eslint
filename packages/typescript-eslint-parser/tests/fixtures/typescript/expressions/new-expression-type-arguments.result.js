@@ -87,6 +87,7 @@ module.exports = {
                                         ],
                                         "type": "Identifier"
                                     },
+                                    "typeParameters": null,
                                     "loc": {
                                         "end": {
                                             "column": 17,
