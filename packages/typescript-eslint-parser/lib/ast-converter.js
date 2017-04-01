@@ -1190,6 +1190,12 @@ module.exports = function(ast, extra) {
                 } else if (!result.static && node.name.kind === SyntaxKind.StringLiteral && node.name.text === "constructor") {
                     result.kind = "constructor";
                 }
+
+                // Process typeParameters
+                if (node.typeParameters && node.typeParameters.length) {
+                    method.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
+                }
+
                 break;
 
             // TypeScript uses this even for static methods named "constructor"
