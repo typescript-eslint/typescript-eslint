@@ -546,7 +546,10 @@ module.exports = function(ast, extra) {
                             typeArgument.end
                         ],
                         loc: getLocFor(typeArgumentStart, typeArgument.end, ast),
-                        id: convertChild(typeArgument.typeName || typeArgument)
+                        id: convertChild(typeArgument.typeName || typeArgument),
+                        typeParameters: (typeArgument.typeArguments)
+                            ? convertTypeArgumentsToTypeParameters(typeArgument.typeArguments)
+                            : null
                     };
                 })
             };

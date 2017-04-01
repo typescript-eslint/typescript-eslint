@@ -153,7 +153,8 @@ module.exports = {
                                         }
                                     },
                                     "name": "S"
-                                }
+                                },
+                                "typeParameters": null
                             },
                             {
                                 "type": "GenericTypeAnnotation",
@@ -188,7 +189,8 @@ module.exports = {
                                         }
                                     },
                                     "name": "T"
-                                }
+                                },
+                                "typeParameters": null
                             }
                         ]
                     }
