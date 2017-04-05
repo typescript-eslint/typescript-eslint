@@ -1,3 +1,23 @@
+v2.1.0 - April 4, 2017
+
+* d709fd8 Fix: Set root to true in eslintrc (fixes #211) (#212) (Reyad Attiyat)
+* 1e73711 Fix: Optional methods are not marked as optional (fixes #206) (#207) (Rasmus Eneman)
+* 1cee2e3 Fix: Nested type arguments are not preserved (fixes #204) (#205) (Rasmus Eneman)
+* 5a324a3 Fix: Preserve type parameters for methods (fixes #202) (#203) (Rasmus Eneman)
+* bfb1506 New: Add type parameters to more AST nodes (fixes #184) (#183) (Rasmus Eneman)
+* 0fadfc3 Fix: Convert MetaProperty (new.target) nodes correcly (fixes #194) (#195) (Reyad Attiyat)
+* 4d755ed New: Store type parameter constraints (fixes #188) (#189) (Rasmus Eneman)
+* 29d848c Fix: Updated broken class-with-optional-properties test result (#192) (James Henry)
+* 04f6556 New: Mark optional parameters and properties (fixes #186) (#187) (Rasmus Eneman)
+* cc9d4b3 Fix: Add missing typeAnnotation to class properties (fixes  #190) (#191) (Rasmus Eneman)
+* 215a012 Fix: Change DoWhileStatement to DoStatement to match TS (fixes #180) (#181) (James Henry)
+* 581a7a5 Fix: Missing parameter properties info in constructors (fixes #143) (#168) (patricio trevino)
+* 69d2537 Chore: Add test for constructor and methods with parameters (refs #168) (#178) (Reyad Attiyat)
+* c2a0b71 Fix: Add start and end property to tokens (fixes #172) (#176) (Reyad Attiyat)
+* 2640d81 Fix: Remove jsdoc node property from ts nodes (fixes #164) (#177) (Reyad Attiyat)
+* 701e2c5 Fix: Set name to type JSXIdentifier and fix selfClosing (fixes #172) (#175) (Reyad Attiyat)
+* 8b4e548 Fix: Convert Void and Delete expressions to UnaryExpression (fixes #171) (#174) (Reyad Attiyat)
+
 v2.0.0 - February 24, 2017
 
 * 38aef53 Breaking: Updated supported TypeScript version to ~2.2.1 (fixes #149) (#169) (James Henry)
