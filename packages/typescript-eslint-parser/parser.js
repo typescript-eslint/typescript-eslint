@@ -9,7 +9,27 @@
 "use strict";
 
 var astNodeTypes = require("./lib/ast-node-types"),
-    ts = require("typescript");
+    ts = require("typescript"),
+    semver = require("semver");
+
+var SUPPORTED_TYPESCRIPT_VERSIONS = require("./package.json").devDependencies.typescript;
+var ACTIVE_TYPESCRIPT_VERSION = ts.version;
+
+var isRunningSupportedTypeScriptVersion = semver.satisfies(ACTIVE_TYPESCRIPT_VERSION, SUPPORTED_TYPESCRIPT_VERSIONS);
+
+if (!isRunningSupportedTypeScriptVersion) {
+    var border = "=============";
+    var versionWarning = [
+        border,
+        "WARNING: You are currently running a version of TypeScript which is not officially supported by typescript-eslint-parser.",
+        "You may find that it works just fine, or you may not.",
+        "SUPPORTED TYPESCRIPT VERSIONS: " + SUPPORTED_TYPESCRIPT_VERSIONS,
+        "YOUR TYPESCRIPT VERSION: " + ACTIVE_TYPESCRIPT_VERSION,
+        "Please only submit bug reports when using the officially supported version.",
+        border
+    ];
+    console.warn(versionWarning.join("\n\n"));
+}
 
 var extra;
 
