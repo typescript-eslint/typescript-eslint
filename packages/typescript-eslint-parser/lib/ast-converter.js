@@ -1217,20 +1217,6 @@ module.exports = function(ast, extra) {
                                 return convertChild(d.expression);
                             }) : [];
 
-                            if (param.modifiers) {
-                                return {
-                                    type: "TSParameterProperty",
-                                    range: [param.getStart(), param.end],
-                                    loc: getLoc(param, ast),
-                                    accessibility: getTSNodeAccessibility(param),
-                                    isReadonly: param.modifiers.some(function(modifier) {
-                                        return modifier.kind === SyntaxKind.ReadonlyKeyword;
-                                    }),
-                                    parameter: convertedParam,
-                                    decorators: decorators
-                                };
-                            }
-
                             return assign(convertedParam, {
                                 decorators: decorators
                             });
@@ -1499,17 +1485,27 @@ module.exports = function(ast, extra) {
                         right: convertChild(node.initializer)
                     });
                 } else {
-                    var convertedParameter = convert(node.name, parent);
-                    if (node.type) {
-                        convertedParameter.typeAnnotation = convertTypeAnnotation(node.type);
-                    }
-                    return convertedParameter;
+                    parameter = convert(node.name, parent);
+                    result = parameter;
                 }
 
                 if (node.type) {
                     assign(parameter, {
                         typeAnnotation: convertTypeAnnotation(node.type)
                     });
+                }
+
+                if (node.modifiers) {
+                    return {
+                        type: "TSParameterProperty",
+                        range: [node.getStart(), node.end],
+                        loc: getLoc(node, ast),
+                        accessibility: getTSNodeAccessibility(node),
+                        isReadonly: node.modifiers.some(function(modifier) {
+                            return modifier.kind === SyntaxKind.ReadonlyKeyword;
+                        }),
+                        parameter: result
+                    };
                 }
 
                 break;
