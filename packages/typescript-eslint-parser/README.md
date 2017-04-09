@@ -6,9 +6,13 @@ A parser that converts TypeScript into an [ESTree](https://github.com/estree/est
 
 ## Supported TypeScript Version
 
-The version of TypeScript supported by this parser is `~2.2.1`. This is reflected in the `peerDependency` requirement within the package.json file.
+We will always endeavor to support the latest stable version of TypeScript.
 
-**Please ensure that you are using this version before submitting any issues.**
+The version of TypeScript currently supported by this parser is `~2.2.1`. This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+
+If you use a non-supported version of TypeScript, the parser will log a warning to the console.
+
+**Please ensure that you are using a supported version before submitting any issues/bug reports.**
 
 ## Usage
 
