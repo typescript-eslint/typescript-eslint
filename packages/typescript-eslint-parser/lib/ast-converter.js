@@ -106,13 +106,14 @@ function isESTreeClassMember(node) {
 }
 
 /**
- * Returns true if the given node is an async function
- * @param  {TSNode}  node TypeScript AST node
- * @returns {boolean}     is an async function
+ * Checks if a TSNode has a modifier
+ * @param {SyntaxKind} modifierKind TypeScript SyntaxKind modifier
+ * @param {TSNode} node TypeScript AST node
+ * @returns {boolean} has the modifier specified
  */
-function isAsyncFunction(node) {
+function hasModifier(modifierKind, node) {
     return !!node.modifiers && !!node.modifiers.length && node.modifiers.some(function(modifier) {
-        return modifier.kind === SyntaxKind.AsyncKeyword;
+        return modifier.kind === modifierKind;
     });
 }
 
@@ -905,9 +906,7 @@ module.exports = function(ast, extra) {
 
                 var functionDeclarationType = "FunctionDeclaration";
                 if (node.modifiers && node.modifiers.length) {
-                    var isDeclareFunction = node.modifiers.some(function(modifier) {
-                        return modifier.kind === ts.SyntaxKind.DeclareKeyword;
-                    });
+                    var isDeclareFunction = hasModifier(ts.SyntaxKind.DeclareKeyword, node);
                     if (isDeclareFunction) {
                         functionDeclarationType = "DeclareFunction";
                     }
@@ -925,7 +924,7 @@ module.exports = function(ast, extra) {
                     id: convertChild(node.name),
                     generator: !!node.asteriskToken,
                     expression: false,
-                    async: isAsyncFunction(node),
+                    async: hasModifier(SyntaxKind.AsyncKeyword, node),
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body)
                 });
@@ -1114,7 +1113,7 @@ module.exports = function(ast, extra) {
                         id: null,
                         generator: false,
                         expression: false,
-                        async: isAsyncFunction(node),
+                        async: hasModifier(SyntaxKind.AsyncKeyword, node),
                         body: convertChild(node.body),
                         range: [ node.parameters.pos - 1, result.range[1]],
                         loc: {
@@ -1162,15 +1161,9 @@ module.exports = function(ast, extra) {
                     /**
                      * TypeScript class methods can be defined as "abstract"
                      */
-                    var methodDefinitionType = "MethodDefinition";
-                    if (node.modifiers && node.modifiers.length) {
-                        var isAbstractMethod = node.modifiers.some(function(modifier) {
-                            return modifier.kind === ts.SyntaxKind.AbstractKeyword;
-                        });
-                        if (isAbstractMethod) {
-                            methodDefinitionType = "TSAbstractMethodDefinition";
-                        }
-                    }
+                    var methodDefinitionType = hasModifier(SyntaxKind.AbstractKeyword, node)
+                        ? "TSAbstractMethodDefinition"
+                        : "MethodDefinition";
 
                     assign(result, {
                         type: methodDefinitionType,
@@ -1206,6 +1199,7 @@ module.exports = function(ast, extra) {
             case SyntaxKind.Constructor:
 
                 var constructorIsStatic = Boolean(ts.getModifierFlags(node) & ts.ModifierFlags.Static),
+                    constructorIsAbstract = hasModifier(SyntaxKind.AbstractKeyword, node),
                     firstConstructorToken = constructorIsStatic ? ts.findNextToken(node.getFirstToken(), ast) : node.getFirstToken(),
                     constructorLoc = ast.getLineAndCharacterOfPosition(node.parameters.pos - 1),
                     constructor = {
@@ -1275,7 +1269,7 @@ module.exports = function(ast, extra) {
                 }
 
                 assign(result, {
-                    type: "MethodDefinition",
+                    type: constructorIsAbstract ? "TSAbstractMethodDefinition" : "MethodDefinition",
                     key: constructorKey,
                     value: constructor,
                     computed: constructorIsComputed,
@@ -1292,7 +1286,7 @@ module.exports = function(ast, extra) {
                     generator: !!node.asteriskToken,
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body),
-                    async: isAsyncFunction(node),
+                    async: hasModifier(SyntaxKind.AbstractKeyword, node),
                     expression: false
                 });
                 // Process returnType
@@ -1375,7 +1369,7 @@ module.exports = function(ast, extra) {
                     id: null,
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body),
-                    async: isAsyncFunction(node),
+                    async: hasModifier(SyntaxKind.AsyncKeyword, node),
                     expression: node.body.kind !== SyntaxKind.Block
                 });
                 // Process returnType
@@ -1501,9 +1495,7 @@ module.exports = function(ast, extra) {
                         range: [node.getStart(), node.end],
                         loc: getLoc(node, ast),
                         accessibility: getTSNodeAccessibility(node),
-                        isReadonly: node.modifiers.some(function(modifier) {
-                            return modifier.kind === SyntaxKind.ReadonlyKeyword;
-                        }),
+                        isReadonly: hasModifier(SyntaxKind.ReadonlyKeyword, node),
                         parameter: result
                     };
                 }
@@ -1533,10 +1525,7 @@ module.exports = function(ast, extra) {
                      * TypeScript class declarations can be defined as "abstract"
                      */
                     if (node.kind === SyntaxKind.ClassDeclaration) {
-                        var isAbstractClass = node.modifiers.some(function(modifier) {
-                            return modifier.kind === ts.SyntaxKind.AbstractKeyword;
-                        });
-                        if (isAbstractClass) {
+                        if (hasModifier(SyntaxKind.AbstractKeyword, node)) {
                             classNodeType = "TSAbstract" + classNodeType;
                         }
                     }
