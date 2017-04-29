@@ -1943,7 +1943,7 @@ module.exports = function(ast, extra) {
                     type: "JSXOpeningElement",
                     selfClosing: false,
                     name: openingTagName,
-                    attributes: node.attributes.map(convertChild)
+                    attributes: node.attributes.properties.map(convertChild)
                 });
 
                 break;
