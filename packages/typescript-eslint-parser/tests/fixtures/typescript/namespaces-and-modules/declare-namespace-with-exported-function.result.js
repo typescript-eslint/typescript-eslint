@@ -84,7 +84,7 @@ module.exports = {
                         "column": 1
                     }
                 },
-                "statements": [
+                "body": [
                     {
                         "type": "TSNamespaceExportDeclaration",
                         "declaration": {
