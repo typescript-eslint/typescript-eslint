@@ -1594,6 +1594,13 @@ module.exports = function(ast, extra) {
                 break;
 
             // Modules
+            case SyntaxKind.ModuleBlock:
+                assign(result, {
+                    type: "TSModuleBlock",
+                    body: node.statements.map(convertChild)
+                });
+                break;
+
             case SyntaxKind.ImportDeclaration:
                 assign(result, {
                     type: "ImportDeclaration",
