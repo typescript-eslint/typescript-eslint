@@ -1094,8 +1094,10 @@ module.exports = function(ast, extra) {
                 break;
 
             case SyntaxKind.PropertyDeclaration:
+                var isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
+
                 assign(result, {
-                    type: "ClassProperty",
+                    type: (isAbstract) ? "TSAbstractClassProperty" : "ClassProperty",
                     key: convertChild(node.name),
                     value: convertChild(node.initializer),
                     computed: (node.name.kind === SyntaxKind.ComputedPropertyName),
