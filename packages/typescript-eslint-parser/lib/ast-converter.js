@@ -1550,6 +1550,9 @@ module.exports = function(ast, extra) {
 
                 if (hasExtends) {
                     superClass = heritageClauses.shift();
+                    if (superClass.types[0] && superClass.types[0].typeArguments) {
+                        result.superTypeParameters = convertTypeArgumentsToTypeParameters(superClass.types[0].typeArguments);
+                    }
                 }
 
                 hasImplements = heritageClauses.length > 0;
