@@ -1295,7 +1295,7 @@ module.exports = function(ast, extra) {
                     generator: !!node.asteriskToken,
                     params: node.parameters.map(convertChild),
                     body: convertChild(node.body),
-                    async: hasModifier(SyntaxKind.AbstractKeyword, node),
+                    async: hasModifier(SyntaxKind.AsyncKeyword, node),
                     expression: false
                 });
                 // Process returnType
