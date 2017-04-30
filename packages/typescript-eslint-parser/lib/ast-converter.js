@@ -618,6 +618,7 @@ module.exports = function(ast, extra) {
         function convertTSTypeParametersToTypeParametersDeclaration(typeParameters) {
             var firstTypeParameter = typeParameters[0];
             var lastTypeParameter = typeParameters[typeParameters.length - 1];
+
             return {
                 type: "TypeParameterDeclaration",
                 range: [
@@ -633,6 +634,11 @@ module.exports = function(ast, extra) {
                     var typeParameterStart = (typeParameter.typeName && typeParameter.typeName.text)
                         ? typeParameter.end - typeParameter.typeName.text.length
                         : typeParameter.pos;
+
+                    var defaultParameter = typeParameter.default
+                        ? convert(typeParameter.default, typeParameter)
+                        : typeParameter.default;
+
                     return {
                         type: "TypeParameter",
                         range: [
@@ -643,7 +649,8 @@ module.exports = function(ast, extra) {
                         name: typeParameter.name.text,
                         constraint: (typeParameter.constraint)
                             ? convertTypeAnnotation(typeParameter.constraint)
-                            : null
+                            : null,
+                        default: defaultParameter
                     };
                 })
             };
