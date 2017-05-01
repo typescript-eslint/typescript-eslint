@@ -677,6 +677,25 @@ module.exports = function(ast, extra) {
         }
 
         /**
+         * Converts a child into a interface heritage node.
+         * @param {TSNode} child The TypeScript AST node to convert.
+         * @returns {ESTreeNode} The type annotation node.
+         */
+        function convertInterfaceHeritageClause(child) {
+            var id = convertChild(child.expression);
+            var classImplementsNode = {
+                type: "TSInterfaceHeritage",
+                loc: id.loc,
+                range: id.range,
+                id: id
+            };
+            if (child.typeArguments && child.typeArguments.length) {
+                classImplementsNode.typeParameters = convertTypeArgumentsToTypeParameters(child.typeArguments);
+            }
+            return classImplementsNode;
+        }
+
+        /**
          * For nodes that are copied directly from the TypeScript AST into
          * ESTree mostly as-is. The only difference is the addition of a type
          * property instead of a kind property. Recursively copies all children.
@@ -2081,6 +2100,38 @@ module.exports = function(ast, extra) {
                 // check for exports
                 result = fixExports(node, result, ast);
 
+                break;
+
+            case SyntaxKind.InterfaceDeclaration:
+                var interfaceHeritageClauses = node.heritageClauses || [];
+                var interfaceLastClassToken = interfaceHeritageClauses.length ? interfaceHeritageClauses[interfaceHeritageClauses.length - 1] : node.name;
+
+                if (node.typeParameters && node.typeParameters.length) {
+                    var interfaceLastTypeParameter = node.typeParameters[node.typeParameters.length - 1];
+                    if (!interfaceLastClassToken || interfaceLastTypeParameter.pos > interfaceLastClassToken.pos) {
+                        interfaceLastClassToken = ts.findNextToken(interfaceLastTypeParameter, ast);
+                    }
+                    result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
+                }
+
+                var hasImplementsClause = interfaceHeritageClauses.length > 0;
+                var interfaceOpenBrace = ts.findNextToken(interfaceLastClassToken, ast);
+
+                var interfaceBody = {
+                    type: "TSInterfaceBody",
+                    body: node.members.map(function(member) {
+                        return convertChild(member);
+                    }),
+                    range: [ interfaceOpenBrace.getStart(), result.range[1] ],
+                    loc: getLocFor(interfaceOpenBrace.getStart(), node.end, ast)
+                };
+
+                assign(result, {
+                    type: "TSInterfaceDeclaration",
+                    body: interfaceBody,
+                    id: convertChild(node.name),
+                    heritage: hasImplementsClause ? interfaceHeritageClauses[0].types.map(convertInterfaceHeritageClause) : []
+                });
                 break;
 
             default:

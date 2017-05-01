@@ -31,7 +31,307 @@ module.exports = {
                     "column": 1
                 }
             },
-            "name": {
+            "body": {
+                "type": "TSInterfaceBody",
+                "body": [
+                    {
+                        "type": "TSMethodSignature",
+                        "range": [
+                            23,
+                            87
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 1
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 65
+                            }
+                        },
+                        "name": {
+                            "type": "Identifier",
+                            "range": [
+                                23,
+                                39
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 1
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 17
+                                }
+                            },
+                            "name": "addClickListener"
+                        },
+                        "parameters": [
+                            {
+                                "type": "Identifier",
+                                "range": [
+                                    40,
+                                    47
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 18
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 25
+                                    }
+                                },
+                                "name": "onclick",
+                                "typeAnnotation": {
+                                    "type": "TypeAnnotation",
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 27
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 57
+                                        }
+                                    },
+                                    "range": [
+                                        49,
+                                        79
+                                    ],
+                                    "typeAnnotation": {
+                                        "type": "TSFunctionType",
+                                        "range": [
+                                            49,
+                                            79
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 27
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 57
+                                            }
+                                        },
+                                        "parameters": [
+                                            {
+                                                "type": "Identifier",
+                                                "range": [
+                                                    50,
+                                                    54
+                                                ],
+                                                "loc": {
+                                                    "start": {
+                                                        "line": 2,
+                                                        "column": 28
+                                                    },
+                                                    "end": {
+                                                        "line": 2,
+                                                        "column": 32
+                                                    }
+                                                },
+                                                "name": "this",
+                                                "typeAnnotation": {
+                                                    "type": "TypeAnnotation",
+                                                    "loc": {
+                                                        "start": {
+                                                            "line": 2,
+                                                            "column": 34
+                                                        },
+                                                        "end": {
+                                                            "line": 2,
+                                                            "column": 38
+                                                        }
+                                                    },
+                                                    "range": [
+                                                        56,
+                                                        60
+                                                    ],
+                                                    "typeAnnotation": {
+                                                        "type": "TSVoidKeyword",
+                                                        "range": [
+                                                            56,
+                                                            60
+                                                        ],
+                                                        "loc": {
+                                                            "start": {
+                                                                "line": 2,
+                                                                "column": 34
+                                                            },
+                                                            "end": {
+                                                                "line": 2,
+                                                                "column": 38
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "Identifier",
+                                                "range": [
+                                                    62,
+                                                    63
+                                                ],
+                                                "loc": {
+                                                    "start": {
+                                                        "line": 2,
+                                                        "column": 40
+                                                    },
+                                                    "end": {
+                                                        "line": 2,
+                                                        "column": 41
+                                                    }
+                                                },
+                                                "name": "e",
+                                                "typeAnnotation": {
+                                                    "type": "TypeAnnotation",
+                                                    "loc": {
+                                                        "start": {
+                                                            "line": 2,
+                                                            "column": 43
+                                                        },
+                                                        "end": {
+                                                            "line": 2,
+                                                            "column": 48
+                                                        }
+                                                    },
+                                                    "range": [
+                                                        65,
+                                                        70
+                                                    ],
+                                                    "typeAnnotation": {
+                                                        "type": "TSTypeReference",
+                                                        "range": [
+                                                            65,
+                                                            70
+                                                        ],
+                                                        "loc": {
+                                                            "start": {
+                                                                "line": 2,
+                                                                "column": 43
+                                                            },
+                                                            "end": {
+                                                                "line": 2,
+                                                                "column": 48
+                                                            }
+                                                        },
+                                                        "typeName": {
+                                                            "type": "Identifier",
+                                                            "range": [
+                                                                65,
+                                                                70
+                                                            ],
+                                                            "loc": {
+                                                                "start": {
+                                                                    "line": 2,
+                                                                    "column": 43
+                                                                },
+                                                                "end": {
+                                                                    "line": 2,
+                                                                    "column": 48
+                                                                }
+                                                            },
+                                                            "name": "Event"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "typeAnnotation": {
+                                            "type": "TypeAnnotation",
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 53
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 57
+                                                }
+                                            },
+                                            "range": [
+                                                75,
+                                                79
+                                            ],
+                                            "typeAnnotation": {
+                                                "type": "TSVoidKeyword",
+                                                "range": [
+                                                    75,
+                                                    79
+                                                ],
+                                                "loc": {
+                                                    "start": {
+                                                        "line": 2,
+                                                        "column": 53
+                                                    },
+                                                    "end": {
+                                                        "line": 2,
+                                                        "column": 57
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ],
+                        "typeAnnotation": {
+                            "type": "TypeAnnotation",
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 60
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 64
+                                }
+                            },
+                            "range": [
+                                82,
+                                86
+                            ],
+                            "typeAnnotation": {
+                                "type": "TSVoidKeyword",
+                                "range": [
+                                    82,
+                                    86
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 60
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 64
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "range": [
+                    20,
+                    89
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 20
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 1
+                    }
+                }
+            },
+            "id": {
                 "type": "Identifier",
                 "range": [
                     10,
@@ -49,289 +349,7 @@ module.exports = {
                 },
                 "name": "UIElement"
             },
-            "members": [
-                {
-                    "type": "TSMethodSignature",
-                    "range": [
-                        23,
-                        87
-                    ],
-                    "loc": {
-                        "start": {
-                            "line": 2,
-                            "column": 1
-                        },
-                        "end": {
-                            "line": 2,
-                            "column": 65
-                        }
-                    },
-                    "name": {
-                        "type": "Identifier",
-                        "range": [
-                            23,
-                            39
-                        ],
-                        "loc": {
-                            "start": {
-                                "line": 2,
-                                "column": 1
-                            },
-                            "end": {
-                                "line": 2,
-                                "column": 17
-                            }
-                        },
-                        "name": "addClickListener"
-                    },
-                    "parameters": [
-                        {
-                            "type": "Identifier",
-                            "range": [
-                                40,
-                                47
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 2,
-                                    "column": 18
-                                },
-                                "end": {
-                                    "line": 2,
-                                    "column": 25
-                                }
-                            },
-                            "name": "onclick",
-                            "typeAnnotation": {
-                                "type": "TypeAnnotation",
-                                "loc": {
-                                    "start": {
-                                        "line": 2,
-                                        "column": 27
-                                    },
-                                    "end": {
-                                        "line": 2,
-                                        "column": 57
-                                    }
-                                },
-                                "range": [
-                                    49,
-                                    79
-                                ],
-                                "typeAnnotation": {
-                                    "type": "TSFunctionType",
-                                    "range": [
-                                        49,
-                                        79
-                                    ],
-                                    "loc": {
-                                        "start": {
-                                            "line": 2,
-                                            "column": 27
-                                        },
-                                        "end": {
-                                            "line": 2,
-                                            "column": 57
-                                        }
-                                    },
-                                    "parameters": [
-                                        {
-                                            "type": "Identifier",
-                                            "range": [
-                                                50,
-                                                54
-                                            ],
-                                            "loc": {
-                                                "start": {
-                                                    "line": 2,
-                                                    "column": 28
-                                                },
-                                                "end": {
-                                                    "line": 2,
-                                                    "column": 32
-                                                }
-                                            },
-                                            "name": "this",
-                                            "typeAnnotation": {
-                                                "type": "TypeAnnotation",
-                                                "loc": {
-                                                    "start": {
-                                                        "line": 2,
-                                                        "column": 34
-                                                    },
-                                                    "end": {
-                                                        "line": 2,
-                                                        "column": 38
-                                                    }
-                                                },
-                                                "range": [
-                                                    56,
-                                                    60
-                                                ],
-                                                "typeAnnotation": {
-                                                    "type": "TSVoidKeyword",
-                                                    "range": [
-                                                        56,
-                                                        60
-                                                    ],
-                                                    "loc": {
-                                                        "start": {
-                                                            "line": 2,
-                                                            "column": 34
-                                                        },
-                                                        "end": {
-                                                            "line": 2,
-                                                            "column": 38
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "type": "Identifier",
-                                            "range": [
-                                                62,
-                                                63
-                                            ],
-                                            "loc": {
-                                                "start": {
-                                                    "line": 2,
-                                                    "column": 40
-                                                },
-                                                "end": {
-                                                    "line": 2,
-                                                    "column": 41
-                                                }
-                                            },
-                                            "name": "e",
-                                            "typeAnnotation": {
-                                                "type": "TypeAnnotation",
-                                                "loc": {
-                                                    "start": {
-                                                        "line": 2,
-                                                        "column": 43
-                                                    },
-                                                    "end": {
-                                                        "line": 2,
-                                                        "column": 48
-                                                    }
-                                                },
-                                                "range": [
-                                                    65,
-                                                    70
-                                                ],
-                                                "typeAnnotation": {
-                                                    "type": "TSTypeReference",
-                                                    "range": [
-                                                        65,
-                                                        70
-                                                    ],
-                                                    "loc": {
-                                                        "start": {
-                                                            "line": 2,
-                                                            "column": 43
-                                                        },
-                                                        "end": {
-                                                            "line": 2,
-                                                            "column": 48
-                                                        }
-                                                    },
-                                                    "typeName": {
-                                                        "type": "Identifier",
-                                                        "range": [
-                                                            65,
-                                                            70
-                                                        ],
-                                                        "loc": {
-                                                            "start": {
-                                                                "line": 2,
-                                                                "column": 43
-                                                            },
-                                                            "end": {
-                                                                "line": 2,
-                                                                "column": 48
-                                                            }
-                                                        },
-                                                        "name": "Event"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    ],
-                                    "typeAnnotation": {
-                                        "type": "TypeAnnotation",
-                                        "loc": {
-                                            "start": {
-                                                "line": 2,
-                                                "column": 53
-                                            },
-                                            "end": {
-                                                "line": 2,
-                                                "column": 57
-                                            }
-                                        },
-                                        "range": [
-                                            75,
-                                            79
-                                        ],
-                                        "typeAnnotation": {
-                                            "type": "TSVoidKeyword",
-                                            "range": [
-                                                75,
-                                                79
-                                            ],
-                                            "loc": {
-                                                "start": {
-                                                    "line": 2,
-                                                    "column": 53
-                                                },
-                                                "end": {
-                                                    "line": 2,
-                                                    "column": 57
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "typeAnnotation": {
-                        "type": "TypeAnnotation",
-                        "loc": {
-                            "start": {
-                                "line": 2,
-                                "column": 60
-                            },
-                            "end": {
-                                "line": 2,
-                                "column": 64
-                            }
-                        },
-                        "range": [
-                            82,
-                            86
-                        ],
-                        "typeAnnotation": {
-                            "type": "TSVoidKeyword",
-                            "range": [
-                                82,
-                                86
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 2,
-                                    "column": 60
-                                },
-                                "end": {
-                                    "line": 2,
-                                    "column": 64
-                                }
-                            }
-                        }
-                    }
-                }
-            ]
+            "heritage": []
         }
     ],
     "sourceType": "script",
