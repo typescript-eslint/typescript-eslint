@@ -899,11 +899,15 @@ module.exports = function(ast, extra) {
 
             case SyntaxKind.ForInStatement:
             case SyntaxKind.ForOfStatement:
+                var isAwait = node.awaitModifier
+                    && node.awaitModifier.kind === ts.SyntaxKind.AwaitKeyword;
+
                 assign(result, {
                     type: SyntaxKind[node.kind],
                     left: convertChild(node.initializer),
                     right: convertChild(node.expression),
-                    body: convertChild(node.statement)
+                    body: convertChild(node.statement),
+                    await: isAwait
                 });
                 break;
 
