@@ -2,7 +2,7 @@ module.exports = {
     "type": "Program",
     "range": [
         0,
-        27
+        21
     ],
     "loc": {
         "start": {
@@ -19,7 +19,7 @@ module.exports = {
             "type": "TSInterfaceDeclaration",
             "range": [
                 0,
-                27
+                21
             ],
             "loc": {
                 "start": {
@@ -31,54 +31,55 @@ module.exports = {
                     "column": 1
                 }
             },
-            "body": {
-                "type": "TSInterfaceBody",
-                "body": [
-                    {
-                        "type": "TSPropertySignature",
-                        "range": [
-                            21,
-                            25
-                        ],
-                        "loc": {
-                            "start": {
-                                "line": 2,
-                                "column": 4
-                            },
-                            "end": {
-                                "line": 2,
-                                "column": 8
-                            }
-                        },
-                        "name": {
-                            "type": "Identifier",
-                            "range": [
-                                21,
-                                24
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 2,
-                                    "column": 4
-                                },
-                                "end": {
-                                    "line": 2,
-                                    "column": 7
-                                }
-                            },
-                            "name": "foo"
-                        },
-                        "typeAnnotation": null
-                    }
-                ],
+            "typeParameters": {
+                "type": "TypeParameterDeclaration",
                 "range": [
-                    15,
-                    27
+                    13,
+                    16
                 ],
                 "loc": {
                     "start": {
                         "line": 1,
-                        "column": 15
+                        "column": 13
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 16
+                    }
+                },
+                "params": [
+                    {
+                        "type": "TypeParameter",
+                        "range": [
+                            14,
+                            15
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 14
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 15
+                            }
+                        },
+                        "name": "T",
+                        "constraint": null
+                    }
+                ]
+            },
+            "body": {
+                "type": "TSInterfaceBody",
+                "body": [],
+                "range": [
+                    17,
+                    21
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 17
                     },
                     "end": {
                         "line": 3,
@@ -90,7 +91,7 @@ module.exports = {
                 "type": "Identifier",
                 "range": [
                     10,
-                    14
+                    13
                 ],
                 "loc": {
                     "start": {
@@ -99,10 +100,10 @@ module.exports = {
                     },
                     "end": {
                         "line": 1,
-                        "column": 14
+                        "column": 13
                     }
                 },
-                "name": "test"
+                "name": "Foo"
             },
             "heritage": []
         }
@@ -129,10 +130,10 @@ module.exports = {
         },
         {
             "type": "Identifier",
-            "value": "test",
+            "value": "Foo",
             "range": [
                 10,
-                14
+                13
             ],
             "loc": {
                 "start": {
@@ -141,13 +142,49 @@ module.exports = {
                 },
                 "end": {
                     "line": 1,
-                    "column": 14
+                    "column": 13
                 }
             }
         },
         {
             "type": "Punctuator",
-            "value": "{",
+            "value": "<",
+            "range": [
+                13,
+                14
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 13
+                },
+                "end": {
+                    "line": 1,
+                    "column": 14
+                }
+            }
+        },
+        {
+            "type": "Identifier",
+            "value": "T",
+            "range": [
+                14,
+                15
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 14
+                },
+                "end": {
+                    "line": 1,
+                    "column": 15
+                }
+            }
+        },
+        {
+            "type": "Punctuator",
+            "value": ">",
             "range": [
                 15,
                 16
@@ -164,38 +201,20 @@ module.exports = {
             }
         },
         {
-            "type": "Identifier",
-            "value": "foo",
-            "range": [
-                21,
-                24
-            ],
-            "loc": {
-                "start": {
-                    "line": 2,
-                    "column": 4
-                },
-                "end": {
-                    "line": 2,
-                    "column": 7
-                }
-            }
-        },
-        {
             "type": "Punctuator",
-            "value": ";",
+            "value": "{",
             "range": [
-                24,
-                25
+                17,
+                18
             ],
             "loc": {
                 "start": {
-                    "line": 2,
-                    "column": 7
+                    "line": 1,
+                    "column": 17
                 },
                 "end": {
-                    "line": 2,
-                    "column": 8
+                    "line": 1,
+                    "column": 18
                 }
             }
         },
@@ -203,8 +222,8 @@ module.exports = {
             "type": "Punctuator",
             "value": "}",
             "range": [
-                26,
-                27
+                20,
+                21
             ],
             "loc": {
                 "start": {

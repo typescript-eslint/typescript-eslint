@@ -598,7 +598,25 @@ module.exports = {
                     "column": 15
                 }
             },
-            "name": {
+            "body": {
+                "type": "TSInterfaceBody",
+                "body": [],
+                "range": [
+                    154,
+                    157
+                ],
+                "loc": {
+                    "start": {
+                        "line": 8,
+                        "column": 12
+                    },
+                    "end": {
+                        "line": 8,
+                        "column": 15
+                    }
+                }
+            },
+            "id": {
                 "type": "Identifier",
                 "range": [
                     152,
@@ -616,7 +634,7 @@ module.exports = {
                 },
                 "name": "I"
             },
-            "members": []
+            "heritage": []
         },
         {
             "type": "VariableDeclaration",

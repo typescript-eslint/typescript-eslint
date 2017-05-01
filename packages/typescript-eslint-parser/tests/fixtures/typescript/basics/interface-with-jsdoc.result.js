@@ -31,7 +31,81 @@ module.exports = {
                     "column": 1
                 }
             },
-            "name": {
+            "body": {
+                "type": "TSInterfaceBody",
+                "body": [
+                    {
+                        "type": "TSMethodSignature",
+                        "range": [
+                            76,
+                            85
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 6,
+                                "column": 4
+                            },
+                            "end": {
+                                "line": 6,
+                                "column": 13
+                            }
+                        },
+                        "name": {
+                            "type": "Identifier",
+                            "range": [
+                                76,
+                                79
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 6,
+                                    "column": 4
+                                },
+                                "end": {
+                                    "line": 6,
+                                    "column": 7
+                                }
+                            },
+                            "name": "foo"
+                        },
+                        "parameters": [
+                            {
+                                "type": "Identifier",
+                                "range": [
+                                    80,
+                                    83
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 6,
+                                        "column": 8
+                                    },
+                                    "end": {
+                                        "line": 6,
+                                        "column": 11
+                                    }
+                                },
+                                "name": "bar"
+                            }
+                        ]
+                    }
+                ],
+                "range": [
+                    15,
+                    87
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 15
+                    },
+                    "end": {
+                        "line": 7,
+                        "column": 1
+                    }
+                }
+            },
+            "id": {
                 "type": "Identifier",
                 "range": [
                     10,
@@ -49,63 +123,7 @@ module.exports = {
                 },
                 "name": "Test"
             },
-            "members": [
-                {
-                    "type": "TSMethodSignature",
-                    "range": [
-                        76,
-                        85
-                    ],
-                    "loc": {
-                        "start": {
-                            "line": 6,
-                            "column": 4
-                        },
-                        "end": {
-                            "line": 6,
-                            "column": 13
-                        }
-                    },
-                    "name": {
-                        "type": "Identifier",
-                        "range": [
-                            76,
-                            79
-                        ],
-                        "loc": {
-                            "start": {
-                                "line": 6,
-                                "column": 4
-                            },
-                            "end": {
-                                "line": 6,
-                                "column": 7
-                            }
-                        },
-                        "name": "foo"
-                    },
-                    "parameters": [
-                        {
-                            "type": "Identifier",
-                            "range": [
-                                80,
-                                83
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 6,
-                                    "column": 8
-                                },
-                                "end": {
-                                    "line": 6,
-                                    "column": 11
-                                }
-                            },
-                            "name": "bar"
-                        }
-                    ]
-                }
-            ]
+            "heritage": []
         }
     ],
     "sourceType": "script",
