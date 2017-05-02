@@ -27,7 +27,6 @@
     "leche": "^1.0.1",
     "mocha": "^2.0.1",
     "npm-license": "^0.2.3",
-    "semver": "^4.1.1",
     "shelljs": "^0.3.0",
     "shelljs-nodecli": "^0.1.1",
     "typescript": "~2.3.2"
@@ -53,7 +52,7 @@
   "dependencies": {
     "lodash.unescape": "4.0.0",
     "object-assign": "^4.0.1",
-    "semver": "^4.3.6"
+    "semver": "^5.3.0"
   },
   "peerDependencies": {
     "typescript": "*"
