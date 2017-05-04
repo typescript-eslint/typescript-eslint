@@ -59,6 +59,7 @@ TOKEN_TO_TEXT[SyntaxKind.GreaterThanEqualsToken] = ">=";
 TOKEN_TO_TEXT[SyntaxKind.EqualsEqualsToken] = "==";
 TOKEN_TO_TEXT[SyntaxKind.ExclamationEqualsToken] = "!=";
 TOKEN_TO_TEXT[SyntaxKind.EqualsEqualsEqualsToken] = "===";
+TOKEN_TO_TEXT[SyntaxKind.InstanceOfKeyword] = "instanceof";
 TOKEN_TO_TEXT[SyntaxKind.ExclamationEqualsEqualsToken] = "!==";
 TOKEN_TO_TEXT[SyntaxKind.EqualsGreaterThanToken] = "=>";
 TOKEN_TO_TEXT[SyntaxKind.PlusToken] = "+";
