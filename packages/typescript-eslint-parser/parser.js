@@ -4,34 +4,34 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-/* eslint no-undefined:0, no-use-before-define: 0 */
 
 "use strict";
 
-var astNodeTypes = require("./lib/ast-node-types"),
+const astNodeTypes = require("./lib/ast-node-types"),
     ts = require("typescript"),
     semver = require("semver");
 
-var SUPPORTED_TYPESCRIPT_VERSIONS = require("./package.json").devDependencies.typescript;
-var ACTIVE_TYPESCRIPT_VERSION = ts.version;
+const SUPPORTED_TYPESCRIPT_VERSIONS = require("./package.json").devDependencies.typescript;
+const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 
-var isRunningSupportedTypeScriptVersion = semver.satisfies(ACTIVE_TYPESCRIPT_VERSION, SUPPORTED_TYPESCRIPT_VERSIONS);
+const isRunningSupportedTypeScriptVersion = semver.satisfies(ACTIVE_TYPESCRIPT_VERSION, SUPPORTED_TYPESCRIPT_VERSIONS);
 
 if (!isRunningSupportedTypeScriptVersion) {
-    var border = "=============";
-    var versionWarning = [
+    const border = "=============";
+    const versionWarning = [
         border,
         "WARNING: You are currently running a version of TypeScript which is not officially supported by typescript-eslint-parser.",
         "You may find that it works just fine, or you may not.",
-        "SUPPORTED TYPESCRIPT VERSIONS: " + SUPPORTED_TYPESCRIPT_VERSIONS,
-        "YOUR TYPESCRIPT VERSION: " + ACTIVE_TYPESCRIPT_VERSION,
+        `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
+        `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
         "Please only submit bug reports when using the officially supported version.",
         border
     ];
-    console.warn(versionWarning.join("\n\n"));
+
+    console.warn(versionWarning.join("\n\n")); // eslint-disable-line no-console
 }
 
-var extra;
+let extra;
 
 /**
  * Resets the extra config object
@@ -63,7 +63,7 @@ function resetExtra() {
  * @private
  */
 function convertTypeScriptCommentToEsprimaComment(block, text, start, end, startLoc, endLoc) {
-    var comment = {
+    const comment = {
         type: block ? "Block" : "Line",
         value: text
     };
@@ -91,7 +91,7 @@ function convertTypeScriptCommentToEsprimaComment(block, text, start, end, start
  * @returns {Object}       the loc data
  */
 function getLocFor(start, end, ast) {
-    var startLoc = ast.getLineAndCharacterOfPosition(start),
+    const startLoc = ast.getLineAndCharacterOfPosition(start),
         endLoc = ast.getLineAndCharacterOfPosition(end);
 
     return {
@@ -113,13 +113,12 @@ function getLocFor(start, end, ast) {
 /**
  * Parses the given source code to produce a valid AST
  * @param  {mixed} code    TypeScript code
- * @param  {object} options configuration object for the parser
- * @returns {object}         the AST
+ * @param  {Object} options configuration object for the parser
+ * @returns {Object}         the AST
  */
 function parse(code, options) {
 
-    var program,
-        toString = String;
+    const toString = String;
 
     if (typeof code !== "string" && !(code instanceof String)) {
         code = toString(code);
@@ -155,78 +154,89 @@ function parse(code, options) {
             // pass through jsx option
             extra.ecmaFeatures.jsx = options.ecmaFeatures.jsx;
         }
+
+        /**
+         * Allow the user to cause the parser to error if it encounters an unknown AST Node Type
+         * (used in testing).
+         */
+        if (options.errorOnUnknownASTType) {
+            extra.errorOnUnknownASTType = true;
+        }
+
     }
 
     // Even if jsx option is set in typescript compiler, filename still has to
     // contain .tsx file extension
-    var FILENAME = (extra.ecmaFeatures.jsx) ? "eslint.tsx" : "eslint.ts";
+    const FILENAME = (extra.ecmaFeatures.jsx) ? "eslint.tsx" : "eslint.ts";
 
-    var compilerHost = {
-        fileExists: function() {
+    const compilerHost = {
+        fileExists() {
             return true;
         },
-        getCanonicalFileName: function() {
+        getCanonicalFileName() {
             return FILENAME;
         },
-        getCurrentDirectory: function() {
+        getCurrentDirectory() {
             return "";
         },
-        getDefaultLibFileName: function() {
+        getDefaultLibFileName() {
             return "lib.d.ts";
         },
 
         // TODO: Support Windows CRLF
-        getNewLine: function() {
+        getNewLine() {
             return "\n";
         },
-        getSourceFile: function(filename) {
+        getSourceFile(filename) {
             return ts.createSourceFile(filename, code, ts.ScriptTarget.Latest, true);
         },
-        readFile: function() {
+        readFile() {
             return null;
         },
-        useCaseSensitiveFileNames: function() {
+        useCaseSensitiveFileNames() {
             return true;
         },
-        writeFile: function() {
+        writeFile() {
             return null;
         }
     };
 
-    program = ts.createProgram([FILENAME], {
+    const program = ts.createProgram([FILENAME], {
         noResolve: true,
         target: ts.ScriptTarget.Latest,
         jsx: extra.ecmaFeatures.jsx ? "preserve" : undefined
     }, compilerHost);
 
-    var ast = program.getSourceFile(FILENAME);
+    const ast = program.getSourceFile(FILENAME);
 
     if (extra.attachComment || extra.comment) {
         /**
          * Create a TypeScript Scanner, with skipTrivia set to false so that
          * we can parse the comments
          */
-        var triviaScanner = ts.createScanner(ast.languageVersion, false, 0, code);
+        const triviaScanner = ts.createScanner(ast.languageVersion, false, 0, code);
 
-        var kind = triviaScanner.scan();
+        let kind = triviaScanner.scan();
+
         while (kind !== ts.SyntaxKind.EndOfFileToken) {
             if (kind !== ts.SyntaxKind.SingleLineCommentTrivia && kind !== ts.SyntaxKind.MultiLineCommentTrivia) {
                 kind = triviaScanner.scan();
                 continue;
             }
 
-            var isBlock = (kind === ts.SyntaxKind.MultiLineCommentTrivia);
-            var range = {
+            const isBlock = (kind === ts.SyntaxKind.MultiLineCommentTrivia);
+            const range = {
                 pos: triviaScanner.getTokenPos(),
                 end: triviaScanner.getTextPos(),
                 kind: triviaScanner.getToken()
             };
 
-            var comment = code.substring(range.pos, range.end);
-            var text = comment.replace("//", "").replace("/*", "").replace("*/", "");
-            var loc = getLocFor(range.pos, range.end, ast);
+            const comment = code.substring(range.pos, range.end);
+            const text = comment.replace("//", "").replace("/*", "").replace("*/", "");
+            const loc = getLocFor(range.pos, range.end, ast);
 
-            var esprimaComment = convertTypeScriptCommentToEsprimaComment(isBlock, text, range.pos, range.end, loc.start, loc.end);
+            const esprimaComment = convertTypeScriptCommentToEsprimaComment(isBlock, text, range.pos, range.end, loc.start, loc.end);
+
             extra.comments.push(esprimaComment);
 
             kind = triviaScanner.scan();
@@ -234,9 +244,10 @@ function parse(code, options) {
 
     }
 
-    var convert = require("./lib/ast-converter");
+    const convert = require("./lib/ast-converter");
 
     return convert(ast, extra);
+
 }
 
 //------------------------------------------------------------------------------
@@ -250,7 +261,8 @@ exports.parse = parse;
 // Deep copy.
 /* istanbul ignore next */
 exports.Syntax = (function() {
-    var name, types = {};
+    let name,
+        types = {};
 
     if (typeof Object.create === "function") {
         types = Object.create(null);

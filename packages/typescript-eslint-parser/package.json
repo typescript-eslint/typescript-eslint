@@ -10,7 +10,7 @@
     "parser.js"
   ],
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=4"
   },
   "repository": "eslint/typescript-eslint-parser",
   "bugs": {
@@ -18,17 +18,18 @@
   },
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "chai": "^1.10.0",
-    "dateformat": "^1.0.11",
-    "eslint": "^2.2.0",
-    "eslint-config-eslint": "^3.0.0",
-    "eslint-release": "^0.10.0",
-    "istanbul": "~0.2.6",
-    "leche": "^1.0.1",
-    "mocha": "^2.0.1",
-    "npm-license": "^0.2.3",
-    "shelljs": "^0.3.0",
-    "shelljs-nodecli": "^0.1.1",
+    "chai": "3.5.0",
+    "dateformat": "2.0.0",
+    "eslint": "3.19.0",
+    "eslint-config-eslint": "4.0.0",
+    "eslint-plugin-node": "4.2.2",
+    "eslint-release": "0.10.3",
+    "istanbul": "0.4.5",
+    "leche": "2.1.2",
+    "mocha": "3.3.0",
+    "npm-license": "0.3.3",
+    "shelljs": "0.7.7",
+    "shelljs-nodecli": "0.1.1",
     "typescript": "~2.3.2"
   },
   "keywords": [
@@ -50,9 +51,8 @@
     "betarelease": "eslint-prerelease beta"
   },
   "dependencies": {
-    "lodash.unescape": "4.0.0",
-    "object-assign": "^4.0.1",
-    "semver": "^5.3.0"
+    "lodash.unescape": "4.0.1",
+    "semver": "5.3.0"
   },
   "peerDependencies": {
     "typescript": "*"
