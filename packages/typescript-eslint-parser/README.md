@@ -1,8 +1,8 @@
 # TypeScript ESLint Parser (Experimental)
 
-A parser that converts TypeScript into an [ESTree](https://github.com/estree/estree)-compatible form so it can be used in ESLint. The goal is to allow TypeScript files to be parsed by ESLint (though not necessarily pass all ESLint rules).
+A parser that converts TypeScript into an [ESTree](https://github.com/estree/estree)-compatible form so it can be used in ESLint.
 
-**Important:** This parser is still in the very early stages and is considered experimental. There are likely a lot of bugs. You should not rely on this in a production environment yet.
+**Important:** This parser is not fully compatbile with all ESLint rules and plugins. Some rules will improperly mark source code as failing or not find problems where it should.
 
 ## Supported TypeScript Version
 
@@ -13,6 +13,23 @@ The version of TypeScript currently supported by this parser is `~2.3.2`. This i
 If you use a non-supported version of TypeScript, the parser will log a warning to the console.
 
 **Please ensure that you are using a supported version before submitting any issues/bug reports.**
+
+## Known Issues
+
+The following ESLint rules will fail on acceptable code:
+ - no-undef [#77](https://github.com/eslint/typescript-eslint-parser/issues/77)
+ - no-unused-vars [#77](https://github.com/eslint/typescript-eslint-parser/issues/77)
+ - no-useless-constructor [#77](https://github.com/eslint/typescript-eslint-parser/issues/77)
+ - space-infix-ops [#224](https://github.com/eslint/typescript-eslint-parser/issues/224)
+ 
+The follow ESLint plugins have issues when used with this parser:
+ - eslint-plugin-react [#213](https://github.com/eslint/typescript-eslint-parser/issues/213)
+  
+The following TypeScript syntax will cause rules to fail or ESLint v3 to crash:
+ - Empty body functions
+   - Abstract methods
+   - Function overloading
+   - Declared functions
 
 ## Usage
 
@@ -34,12 +51,13 @@ If you're familiar with TypeScript and ESLint, and you'd like to see this projec
 
 ## Reporting Bugs
 
-**Do not** file bugs about ESLint rule failures. This is expected because ESLint doesn't know anything about TypeScript syntax. It's likely that many ESLint rules will have failures as a result. Longer-term, it's likely we'll need to create a custom set of ESLint rules that are TypeScript-specific.
-
-Bugs should be filed for:
-
-1. TypeScript syntax that fails to parse.
-1. TypeScript syntax that produces an unexpected AST.
+Please check the current list of open and known issues and ensure the bug has not been reported before. When creating a new issue provide as much information about your enviroment as possible. This includes:
+ - ESLint Version
+ - TypeScript version
+ - TypeScript parser version
+ - ESLint config or rules and plugins currently enabled
+ 
+As well include a small code sample that can be used to reproduce the issue. 
 
 ## Contributing
 
