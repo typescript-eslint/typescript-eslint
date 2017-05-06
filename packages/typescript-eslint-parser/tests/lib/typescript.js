@@ -11,7 +11,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var assert = require("chai").assert,
+const assert = require("chai").assert,
     leche = require("leche"),
     path = require("path"),
     parser = require("../../parser"),
@@ -22,39 +22,40 @@ var assert = require("chai").assert,
 // Setup
 //------------------------------------------------------------------------------
 
-var FIXTURES_DIR = "./tests/fixtures/typescript";
+const FIXTURES_DIR = "./tests/fixtures/typescript";
 
-var testFiles = shelljs.find(FIXTURES_DIR).filter(function(filename) {
-    return filename.indexOf(".src.ts") > -1;
-}).map(function(filename) {
-    return filename.substring(FIXTURES_DIR.length - 1, filename.length - 7);  // strip off ".src.ts"
-});
+const testFiles = shelljs.find(FIXTURES_DIR)
+    .filter(filename => filename.indexOf(".src.ts") > -1)
+     // strip off ".src.ts"
+    .map(filename => filename.substring(FIXTURES_DIR.length - 1, filename.length - 7));
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-describe("typescript", function() {
+describe("typescript", () => {
 
-    var config;
+    let config;
 
-    beforeEach(function() {
+    beforeEach(() => {
         config = {
             loc: true,
             range: true,
             tokens: true,
-            ecmaFeatures: {}
+            ecmaFeatures: {},
+            errorOnUnknownASTType: true
         };
     });
 
-    leche.withData(testFiles, function(filename) {
+    leche.withData(testFiles, filename => {
+
         // Uncomment and fill in filename to focus on a single file
         // var filename = "jsx/invalid-matching-placeholder-in-closing-tag";
-        var code = shelljs.cat(path.resolve(FIXTURES_DIR, filename) + ".src.ts");
+        const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.ts`);
 
-        it("should parse correctly", function() {
-            var expected = require(path.resolve(__dirname, "../../", FIXTURES_DIR, filename) + ".result.js");
-            var result;
+        it("should parse correctly", () => {
+            const expected = require(`${path.resolve(__dirname, "../../", FIXTURES_DIR, filename)}.result.js`);
+            let result;
 
             try {
                 result = parser.parse(code, config);
@@ -64,11 +65,12 @@ describe("typescript", function() {
                 // format of error isn't exactly the same, just check if it's expected
                 if (expected.message) {
                     return;
-                } else {
-                    throw ex;
                 }
+                throw ex;
+
 
             }
+
             // console.log(JSON.stringify(result, null, 4));
             assert.deepEqual(result, expected);
 

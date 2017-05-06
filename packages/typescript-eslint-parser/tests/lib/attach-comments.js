@@ -30,7 +30,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var assert = require("chai").assert,
+const assert = require("chai").assert,
     leche = require("leche"),
     path = require("path"),
     parser = require("../../parser"),
@@ -41,23 +41,22 @@ var assert = require("chai").assert,
 // Setup
 //------------------------------------------------------------------------------
 
-var FIXTURES_DIR = "./tests/fixtures/attach-comments";
+const FIXTURES_DIR = "./tests/fixtures/attach-comments";
 
-var testFiles = shelljs.find(FIXTURES_DIR).filter(function(filename) {
-    return filename.indexOf(".src.js") > -1;
-}).map(function(filename) {
-    return filename.substring(FIXTURES_DIR.length - 1, filename.length - 7);  // strip off ".src.js"
-});
+const testFiles = shelljs.find(FIXTURES_DIR)
+    .filter(filename => filename.indexOf(".src.js") > -1)
+    // strip off ".src.js"
+    .map(filename => filename.substring(FIXTURES_DIR.length - 1, filename.length - 7));
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-describe("attachComment: true", function() {
+describe("attachComment: true", () => {
 
-    var config;
+    let config;
 
-    beforeEach(function() {
+    beforeEach(() => {
         config = {
             loc: true,
             range: true,
@@ -67,12 +66,12 @@ describe("attachComment: true", function() {
         };
     });
 
-    leche.withData(testFiles, function(filename) {
-        var code = shelljs.cat(path.resolve(FIXTURES_DIR, filename) + ".src.js");
+    leche.withData(testFiles, filename => {
+        const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
 
-        it("should produce correct AST when parsed with attachComment", function() {
-            var expected = require(path.resolve(__dirname, "../../", FIXTURES_DIR, filename) + ".result.js");
-            var result;
+        it("should produce correct AST when parsed with attachComment", () => {
+            const expected = require(`${path.resolve(__dirname, "../../", FIXTURES_DIR, filename)}.result.js`);
+            let result;
 
             try {
                 result = parser.parse(code, config);
@@ -82,9 +81,9 @@ describe("attachComment: true", function() {
                 // format of error isn't exactly the same, just check if it's expected
                 if (expected.message) {
                     return;
-                } else {
-                    throw ex;
                 }
+                throw ex;
+
 
             }
             assert.deepEqual(result, expected);

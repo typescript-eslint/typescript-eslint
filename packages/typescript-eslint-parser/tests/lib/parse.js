@@ -11,7 +11,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var assert = require("chai").assert,
+const assert = require("chai").assert,
     parser = require("../../parser"),
     tester = require("./tester");
 
@@ -19,21 +19,21 @@ var assert = require("chai").assert,
 // Tests
 //------------------------------------------------------------------------------
 
-describe("parse()", function() {
+describe("parse()", () => {
 
 
-    describe("basic functionality", function() {
+    describe("basic functionality", () => {
 
-        it("should parse an empty string", function() {
+        it("should parse an empty string", () => {
             assert.deepEqual(parser.parse("").body, []);
             assert.deepEqual(parser.parse("", {}).body, []);
         });
 
     });
 
-    describe("modules", function() {
+    describe("modules", () => {
 
-        it("should have correct column number when strict mode error occurs", function() {
+        it("should have correct column number when strict mode error occurs", () => {
             try {
                 parser.parse("function fn(a, a) {\n}", { sourceType: "module" });
             } catch (err) {
@@ -43,10 +43,10 @@ describe("parse()", function() {
 
     });
 
-    describe("general", function() {
+    describe("general", () => {
 
-        it("should output tokens, comments, locs, and ranges when called with those options", function() {
-            var ast = parser.parse("let foo = bar;", {
+        it("should output tokens, comments, locs, and ranges when called with those options", () => {
+            const ast = parser.parse("let foo = bar;", {
                 ecmaFeatures: {
                     blockBindings: true
                 },

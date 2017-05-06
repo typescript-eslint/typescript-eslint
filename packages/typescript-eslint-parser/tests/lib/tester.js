@@ -13,13 +13,13 @@
 
 /**
  * Returns a raw copy of the given AST
- * @param  {object} ast the AST object
- * @returns {object}     copy of the AST object
+ * @param  {Object} ast the AST object
+ * @returns {Object}     copy of the AST object
  */
 function getRaw(ast) {
-    return JSON.parse(JSON.stringify(ast, function(key, value) {
+    return JSON.parse(JSON.stringify(ast, (key, value) => {
         if ((key === "start" || key === "end") && typeof value === "number") {
-            return undefined; // eslint-disable-line no-undefined
+            return undefined;
         }
 
         return value;
@@ -27,5 +27,5 @@ function getRaw(ast) {
 }
 
 module.exports = {
-    getRaw: getRaw
+    getRaw
 };

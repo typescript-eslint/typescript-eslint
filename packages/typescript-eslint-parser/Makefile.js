@@ -15,14 +15,14 @@
 
 require("shelljs/make");
 
-var checker = require("npm-license"),
+const checker = require("npm-license"),
     nodeCLI = require("shelljs-nodecli");
 
 //------------------------------------------------------------------------------
 // Settings
 //------------------------------------------------------------------------------
 
-var OPEN_SOURCE_LICENSES = [
+const OPEN_SOURCE_LICENSES = [
     /MIT/, /BSD/, /Apache/, /ISC/, /WTF/, /Public Domain/
 ];
 
@@ -30,15 +30,15 @@ var OPEN_SOURCE_LICENSES = [
 // Data
 //------------------------------------------------------------------------------
 
-var NODE_MODULES = "./node_modules/",
+const NODE_MODULES = "./node_modules/",
 
     // Utilities - intentional extra space at the end of each string
-    MOCHA = NODE_MODULES + "mocha/bin/_mocha ",
+    MOCHA = `${NODE_MODULES}mocha/bin/_mocha `,
 
     // Files
     MAKEFILE = "./Makefile.js",
     /* eslint-disable no-use-before-define */
-    JS_FILES = find("lib/").filter(fileType("js")).join(" ") + " parser.js",
+    JS_FILES = `${find("lib/").filter(fileType("js")).join(" ")} parser.js`,
     TEST_FILES = find("tests/lib/").filter(fileType("js")).join(" ");
     /* eslint-enable no-use-before-define */
 
@@ -67,7 +67,7 @@ target.all = function() {
 };
 
 target.lint = function() {
-    var errors = 0,
+    let errors = 0,
         lastReturn;
 
     echo("Validating Makefile.js");
@@ -96,10 +96,8 @@ target.lint = function() {
 target.test = function() {
     target.lint();
 
-    var errors = 0,
-        lastReturn;
-
-    lastReturn = nodeCLI.exec("istanbul", "cover", MOCHA, "-- -c", TEST_FILES);
+    const lastReturn = nodeCLI.exec("istanbul", "cover", MOCHA, "-- -c", TEST_FILES);
+    let errors = 0;
 
     if (lastReturn.code !== 0) {
         errors++;
@@ -122,42 +120,34 @@ target.checkLicenses = function() {
 
     /**
      * Returns true if the given dependency's licenses are all permissable for use in OSS
-     * @param  {object}  dependency object containing the name and licenses of the given dependency
+     * @param  {Object}  dependency object containing the name and licenses of the given dependency
      * @returns {boolean} is permissable dependency
      */
     function isPermissible(dependency) {
-        var licenses = dependency.licenses;
+        const licenses = dependency.licenses;
 
         if (Array.isArray(licenses)) {
-            return licenses.some(function(license) {
-                return isPermissible({
-                    name: dependency.name,
-                    licenses: license
-                });
-            });
+            return licenses.some(license => isPermissible({
+                name: dependency.name,
+                licenses: license
+            }));
         }
 
-        return OPEN_SOURCE_LICENSES.some(function(license) {
-            return license.test(licenses);
-        });
+        return OPEN_SOURCE_LICENSES.some(license => license.test(licenses));
     }
 
     echo("Validating licenses");
 
     checker.init({
         start: __dirname
-    }, function(deps) {
-        var impermissible = Object.keys(deps).map(function(dependency) {
-            return {
-                name: dependency,
-                licenses: deps[dependency].licenses
-            };
-        }).filter(function(dependency) {
-            return !isPermissible(dependency);
-        });
+    }, deps => {
+        const impermissible = Object.keys(deps).map(dependency => ({
+            name: dependency,
+            licenses: deps[dependency].licenses
+        })).filter(dependency => !isPermissible(dependency));
 
         if (impermissible.length) {
-            impermissible.forEach(function(dependency) {
+            impermissible.forEach(dependency => {
                 console.error("%s license for %s is impermissible.",
                     dependency.licenses,
                     dependency.name

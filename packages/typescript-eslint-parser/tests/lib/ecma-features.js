@@ -11,7 +11,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var assert = require("chai").assert,
+const assert = require("chai").assert,
     leche = require("leche"),
     path = require("path"),
     parser = require("../../parser"),
@@ -22,27 +22,23 @@ var assert = require("chai").assert,
 // Setup
 //------------------------------------------------------------------------------
 
-var FIXTURES_DIR = "./tests/fixtures/ecma-features";
+const FIXTURES_DIR = "./tests/fixtures/ecma-features";
+
 // var FIXTURES_MIX_DIR = "./tests/fixtures/ecma-features-mix";
 
-var filesWithOutsandingTSIssues = [
+const filesWithOutsandingTSIssues = [
     "jsx/embedded-tags", // https://github.com/Microsoft/TypeScript/issues/7410
     "jsx/namespaced-attribute-and-value-inserted", // https://github.com/Microsoft/TypeScript/issues/7411
     "jsx/namespaced-name-and-attribute", // https://github.com/Microsoft/TypeScript/issues/7411
     "jsx/multiple-blank-spaces"
 ];
 
-var testFiles = shelljs.find(FIXTURES_DIR).filter(function(filename) {
-    return filename.indexOf(".src.js") > -1;
-}).filter(function(filename) {
-    return filesWithOutsandingTSIssues.every(function(fileName) {
-        return filename.indexOf(fileName) === -1;
-    });
-}).map(function(filename) {
-    return filename.substring(FIXTURES_DIR.length - 1, filename.length - 7);  // strip off ".src.js"
-}).filter(function(filename) {
-    return !(/error\-|invalid\-|globalReturn/.test(filename));
-});
+const testFiles = shelljs.find(FIXTURES_DIR)
+    .filter(filename => filename.indexOf(".src.js") > -1)
+    .filter(filename => filesWithOutsandingTSIssues.every(fileName => filename.indexOf(fileName) === -1))
+    // strip off ".src.js"
+    .map(filename => filename.substring(FIXTURES_DIR.length - 1, filename.length - 7))
+    .filter(filename => !(/error-|invalid-|globalReturn/.test(filename)));
 
 // var moduleTestFiles = testFiles.filter(function(filename) {
 //     return !/jsx|globalReturn|invalid|experimental|generators|not\-strict/.test(filename);
@@ -63,29 +59,31 @@ var testFiles = shelljs.find(FIXTURES_DIR).filter(function(filename) {
 // Tests
 //------------------------------------------------------------------------------
 
-describe("ecmaFeatures", function() {
+describe("ecmaFeatures", () => {
 
-    var config;
+    let config;
 
-    beforeEach(function() {
+    beforeEach(() => {
         config = {
             loc: true,
             range: true,
             tokens: true,
-            ecmaFeatures: {}
+            ecmaFeatures: {},
+            errorOnUnknownASTType: true
         };
     });
 
-    leche.withData(testFiles, function(filename) {
+    leche.withData(testFiles, filename => {
+
         // Uncomment and fill in filename to focus on a single file
         // var filename = "jsx/invalid-matching-placeholder-in-closing-tag";
-        var feature = path.dirname(filename),
-            code = shelljs.cat(path.resolve(FIXTURES_DIR, filename) + ".src.js");
+        const feature = path.dirname(filename),
+            code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
 
-        it("should parse correctly when " + feature + " is true", function() {
+        it(`should parse correctly when ${feature} is true`, () => {
             config.ecmaFeatures[feature] = true;
-            var expected = require(path.resolve(__dirname, "../../", FIXTURES_DIR, filename) + ".result.js");
-            var result;
+            const expected = require(`${path.resolve(__dirname, "../../", FIXTURES_DIR, filename)}.result.js`);
+            let result;
 
             try {
                 result = parser.parse(code, config);
@@ -95,9 +93,9 @@ describe("ecmaFeatures", function() {
                 // format of error isn't exactly the same, just check if it's expected
                 if (expected.message) {
                     return;
-                } else {
-                    throw ex;
                 }
+                throw ex;
+
 
             }
             assert.deepEqual(result, expected);

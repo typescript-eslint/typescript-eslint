@@ -1,6 +1,11 @@
 root: true
 
-env:
-    node: true
-
-extends: eslint
+plugins:
+    - node
+extends:
+    - "eslint"
+    - "plugin:node/recommended"
+rules:
+    no-undefined: "off"
+    lines-around-comment: "off"
+    newline-after-var: "off"
