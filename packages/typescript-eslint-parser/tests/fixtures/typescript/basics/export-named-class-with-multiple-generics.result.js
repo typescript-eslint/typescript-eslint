@@ -89,13 +89,13 @@ module.exports = {
                                     "line": 1
                                 },
                                 "start": {
-                                    "column": 19,
+                                    "column": 20,
                                     "line": 1
                                 }
                             },
                             "name": "U",
                             "range": [
-                                19,
+                                20,
                                 21
                             ],
                             "type": "TypeParameter",

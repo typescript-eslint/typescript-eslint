@@ -632,8 +632,8 @@ module.exports = function(ast, extra) {
                      * Have to manually calculate the start of the range,
                      * because TypeScript includes leading whitespace but Flow does not
                      */
-                    var typeParameterStart = (typeParameter.typeName && typeParameter.typeName.text)
-                        ? typeParameter.end - typeParameter.typeName.text.length
+                    var typeParameterStart = (typeParameter.name && typeParameter.name.text)
+                        ? typeParameter.name.end - typeParameter.name.text.length
                         : typeParameter.pos;
 
                     var defaultParameter = typeParameter.default
