@@ -72,13 +72,13 @@ module.exports = {
                                     "line": 1
                                 },
                                 "start": {
-                                    "column": 23,
+                                    "column": 24,
                                     "line": 1
                                 }
                             },
                             "name": "U",
                             "range": [
-                                23,
+                                24,
                                 25
                             ],
                             "type": "TypeParameter",
