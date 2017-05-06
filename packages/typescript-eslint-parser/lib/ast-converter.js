@@ -1581,7 +1581,7 @@ module.exports = function(ast, extra) {
                     superClass,
                     hasImplements = false;
 
-                if (hasExtends) {
+                if (hasExtends && heritageClauses[0].types.length > 0) {
                     superClass = heritageClauses.shift();
                     if (superClass.types[0] && superClass.types[0].typeArguments) {
                         result.superTypeParameters = convertTypeArgumentsToTypeParameters(superClass.types[0].typeArguments);
