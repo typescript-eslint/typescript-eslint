@@ -709,6 +709,14 @@ module.exports = function(ast, extra) {
             }).forEach(function(key) {
                 if (key === "type") {
                     result.typeAnnotation = (node.type) ? convertTypeAnnotation(node.type) : null;
+                } else if (key === "typeArguments") {
+                    result.typeParameters = (node.typeArguments)
+                        ? convertTypeArgumentsToTypeParameters(node.typeArguments)
+                        : null;
+                } else if (key === "typeParameters") {
+                    result.typeParameters = (node.typeParameters)
+                        ? convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters)
+                        : null;
                 } else {
                     if (Array.isArray(node[key])) {
                         result[key] = node[key].map(convertChild);

@@ -36,6 +36,7 @@ module.exports = {
                 "body": [
                     {
                         "type": "TSMethodSignature",
+                        "typeParameters": null,
                         "range": [
                             76,
                             85

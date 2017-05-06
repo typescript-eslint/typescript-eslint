@@ -159,25 +159,60 @@ module.exports = {
                                             },
                                             "name": "Promise"
                                         },
-                                        "typeArguments": [
-                                            {
-                                                "type": "TSStringKeyword",
-                                                "range": [
-                                                    76,
-                                                    82
-                                                ],
-                                                "loc": {
-                                                    "start": {
-                                                        "line": 2,
-                                                        "column": 37
-                                                    },
-                                                    "end": {
-                                                        "line": 2,
-                                                        "column": 43
-                                                    }
+                                        "typeParameters": {
+                                            "loc": {
+                                                "end": {
+                                                    "column": 44,
+                                                    "line": 2
+                                                },
+                                                "start": {
+                                                    "column": 36,
+                                                    "line": 2
                                                 }
-                                            }
-                                        ]
+                                            },
+                                            "params": [
+                                                {
+                                                    "id": {
+                                                        "loc": {
+                                                            "end": {
+                                                                "column": 43,
+                                                                "line": 2
+                                                            },
+                                                            "start": {
+                                                                "column": 37,
+                                                                "line": 2
+                                                            }
+                                                        },
+                                                        "range": [
+                                                            76,
+                                                            82
+                                                        ],
+                                                        "type": "TSStringKeyword"
+                                                    },
+                                                    "loc": {
+                                                        "end": {
+                                                            "column": 43,
+                                                            "line": 2
+                                                        },
+                                                        "start": {
+                                                            "column": 37,
+                                                            "line": 2
+                                                        }
+                                                    },
+                                                    "range": [
+                                                        76,
+                                                        82
+                                                    ],
+                                                    "type": "GenericTypeAnnotation",
+                                                    "typeParameters": null
+                                                }
+                                            ],
+                                            "range": [
+                                                75,
+                                                83
+                                            ],
+                                            "type": "TypeParameterInstantiation"
+                                        }
                                     }
                                 },
                                 "params": []

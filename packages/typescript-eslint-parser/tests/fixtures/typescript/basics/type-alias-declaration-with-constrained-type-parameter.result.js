@@ -54,43 +54,6 @@ module.exports = {
                                     38
                                 ],
                                 "type": "TSTypeReference",
-                                "typeArguments": [
-                                    {
-                                        "loc": {
-                                            "end": {
-                                                "column": 37,
-                                                "line": 1
-                                            },
-                                            "start": {
-                                                "column": 36,
-                                                "line": 1
-                                            }
-                                        },
-                                        "range": [
-                                            36,
-                                            37
-                                        ],
-                                        "type": "TSTypeReference",
-                                        "typeName": {
-                                            "loc": {
-                                                "end": {
-                                                    "column": 37,
-                                                    "line": 1
-                                                },
-                                                "start": {
-                                                    "column": 36,
-                                                    "line": 1
-                                                }
-                                            },
-                                            "name": "T",
-                                            "range": [
-                                                36,
-                                                37
-                                            ],
-                                            "type": "Identifier"
-                                        }
-                                    }
-                                ],
                                 "typeName": {
                                     "loc": {
                                         "end": {
@@ -108,6 +71,61 @@ module.exports = {
                                         35
                                     ],
                                     "type": "Identifier"
+                                },
+                                "typeParameters": {
+                                    "type": "TypeParameterInstantiation",
+                                    "range": [
+                                        35,
+                                        38
+                                    ],
+                                    "loc": {
+                                        "end": {
+                                            "column": 38,
+                                            "line": 1
+                                        },
+                                        "start": {
+                                            "column": 35,
+                                            "line": 1
+                                        }
+                                    },
+                                    "params": [
+                                        {
+                                            "loc": {
+                                                "end": {
+                                                    "column": 37,
+                                                    "line": 1
+                                                },
+                                                "start": {
+                                                    "column": 36,
+                                                    "line": 1
+                                                }
+                                            },
+                                            "range": [
+                                                36,
+                                                37
+                                            ],
+                                            "id": {
+                                                "loc": {
+                                                    "end": {
+                                                        "column": 37,
+                                                        "line": 1
+                                                    },
+                                                    "start": {
+                                                        "column": 36,
+                                                        "line": 1
+                                                    }
+                                                },
+                                                "name": "T",
+                                                "range": [
+                                                    36,
+                                                    37
+                                                ],
+                                                "type": "Identifier"
+                                            },
+                                            "type": "GenericTypeAnnotation",
+                                            "typeParameters": null
+                                        }
+                                    ]
                                 }
                             },
                             {

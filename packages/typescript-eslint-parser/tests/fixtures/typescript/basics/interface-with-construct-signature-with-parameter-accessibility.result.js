@@ -36,6 +36,7 @@ module.exports = {
                 "body": [
                     {
                         "type": "TSConstructSignature",
+                        "typeParameters": null,
                         "range": [
                             21,
                             47

@@ -104,43 +104,61 @@ module.exports = {
                                     },
                                     "name": "Success"
                                 },
-                                "typeArguments": [
-                                    {
-                                        "type": "TSTypeReference",
-                                        "range": [
-                                            25,
-                                            26
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 1,
-                                                "column": 25
-                                            },
-                                            "end": {
-                                                "line": 1,
-                                                "column": 26
-                                            }
+                                "typeParameters": {
+                                    "loc": {
+                                        "end": {
+                                            "column": 27,
+                                            "line": 1
                                         },
-                                        "typeName": {
-                                            "type": "Identifier",
+                                        "start": {
+                                            "column": 24,
+                                            "line": 1
+                                        }
+                                    },
+                                    "range": [
+                                        24,
+                                        27
+                                    ],
+                                    "params": [
+                                        {
+                                            "loc": {
+                                                "end": {
+                                                    "column": 26,
+                                                    "line": 1
+                                                },
+                                                "start": {
+                                                    "column": 25,
+                                                    "line": 1
+                                                }
+                                            },
                                             "range": [
                                                 25,
                                                 26
                                             ],
-                                            "loc": {
-                                                "start": {
-                                                    "line": 1,
-                                                    "column": 25
+                                            "id": {
+                                                "loc": {
+                                                    "end": {
+                                                        "column": 26,
+                                                        "line": 1
+                                                    },
+                                                    "start": {
+                                                        "column": 25,
+                                                        "line": 1
+                                                    }
                                                 },
-                                                "end": {
-                                                    "line": 1,
-                                                    "column": 26
-                                                }
+                                                "name": "T",
+                                                "range": [
+                                                    25,
+                                                    26
+                                                ],
+                                                "type": "Identifier"
                                             },
-                                            "name": "T"
+                                            "type": "GenericTypeAnnotation",
+                                            "typeParameters": null
                                         }
-                                    }
-                                ]
+                                    ],
+                                    "type": "TypeParameterInstantiation"
+                                }
                             },
                             {
                                 "type": "TSTypeReference",
