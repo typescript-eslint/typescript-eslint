@@ -300,26 +300,61 @@ module.exports = {
                                     },
                                     "name": "Constructor"
                                 },
-                                "typeArguments": [
-                                    {
-                                        "type": "TSTypeLiteral",
-                                        "range": [
-                                            33,
-                                            35
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 1,
-                                                "column": 33
-                                            },
-                                            "end": {
-                                                "line": 1,
-                                                "column": 35
-                                            }
+                                "typeParameters": {
+                                    "loc": {
+                                        "end": {
+                                            "column": 36,
+                                            "line": 1
                                         },
-                                        "members": []
-                                    }
-                                ]
+                                        "start": {
+                                            "column": 32,
+                                            "line": 1
+                                        }
+                                    },
+                                    "params": [
+                                        {
+                                            "id": {
+                                                "loc": {
+                                                    "end": {
+                                                        "column": 35,
+                                                        "line": 1
+                                                    },
+                                                    "start": {
+                                                        "column": 33,
+                                                        "line": 1
+                                                    }
+                                                },
+                                                "members": [],
+                                                "range": [
+                                                    33,
+                                                    35
+                                                ],
+                                                "type": "TSTypeLiteral"
+                                            },
+                                            "loc": {
+                                                "end": {
+                                                    "column": 35,
+                                                    "line": 1
+                                                },
+                                                "start": {
+                                                    "column": 33,
+                                                    "line": 1
+                                                }
+                                            },
+                                            "range": [
+                                                33,
+                                                35
+                                            ],
+                                            "type": "GenericTypeAnnotation",
+                                            "typeParameters": null
+                                        }
+                                    ],
+                                    "range": [
+                                        32,
+                                        36
+                                    ],
+                                    "type": "TypeParameterInstantiation"
+                                }
                             }
                         }
                     }
@@ -656,6 +691,7 @@ module.exports = {
             "declarations": [
                 {
                     "type": "VariableDeclarator",
+                    "typeParameters": null,
                     "id": {
                         "type": "Identifier",
                         "range": [
@@ -778,6 +814,7 @@ module.exports = {
                                 }
                             }
                         ],
+                        "typeParameters": null,
                         "typeAnnotation": {
                             "type": "TypeAnnotation",
                             "loc": {

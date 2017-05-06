@@ -97,25 +97,6 @@ module.exports = {
                                             75
                                         ],
                                         "type": "TSTypeReference",
-                                        "typeArguments": [
-                                            {
-                                                "loc": {
-                                                    "end": {
-                                                        "column": 35,
-                                                        "line": 2
-                                                    },
-                                                    "start": {
-                                                        "column": 29,
-                                                        "line": 2
-                                                    }
-                                                },
-                                                "range": [
-                                                    68,
-                                                    74
-                                                ],
-                                                "type": "TSStringKeyword"
-                                            }
-                                        ],
                                         "typeName": {
                                             "loc": {
                                                 "end": {
@@ -133,6 +114,60 @@ module.exports = {
                                                 67
                                             ],
                                             "type": "Identifier"
+                                        },
+                                        "typeParameters": {
+                                            "loc": {
+                                                "end": {
+                                                    "column": 36,
+                                                    "line": 2
+                                                },
+                                                "start": {
+                                                    "column": 28,
+                                                    "line": 2
+                                                }
+                                            },
+                                            "params": [
+                                                {
+                                                    "id": {
+                                                        "loc": {
+                                                            "end": {
+                                                                "column": 35,
+                                                                "line": 2
+                                                            },
+                                                            "start": {
+                                                                "column": 29,
+                                                                "line": 2
+                                                            }
+                                                        },
+                                                        "range": [
+                                                            68,
+                                                            74
+                                                        ],
+                                                        "type": "TSStringKeyword"
+                                                    },
+                                                    "loc": {
+                                                        "end": {
+                                                            "column": 35,
+                                                            "line": 2
+                                                        },
+                                                        "start": {
+                                                            "column": 29,
+                                                            "line": 2
+                                                        }
+                                                    },
+                                                    "range": [
+                                                        68,
+                                                        74
+                                                    ],
+                                                    "type": "GenericTypeAnnotation",
+                                                    "typeParameters": null
+                                                }
+                                            ],
+                                            "range": [
+                                                67,
+                                                75
+                                            ],
+                                            "type": "TypeParameterInstantiation"
                                         }
                                     }
                                 },

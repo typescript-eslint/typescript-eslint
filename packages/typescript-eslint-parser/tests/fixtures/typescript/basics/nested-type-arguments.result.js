@@ -52,99 +52,168 @@ module.exports = {
                                     44
                                 ],
                                 "type": "TSTypeReference",
-                                "typeArguments": [
-                                    {
-                                        "loc": {
-                                            "end": {
-                                                "column": 43,
-                                                "line": 1
-                                            },
-                                            "start": {
-                                                "column": 23,
-                                                "line": 1
-                                            }
+                                "typeParameters": {
+                                    "loc": {
+                                        "end": {
+                                            "column": 44,
+                                            "line": 1
                                         },
-                                        "range": [
-                                            23,
-                                            43
-                                        ],
-                                        "type": "TSTypeReference",
-                                        "typeArguments": [
-                                            {
+                                        "start": {
+                                            "column": 22,
+                                            "line": 1
+                                        }
+                                    },
+                                    "params": [
+                                        {
+                                            "id": {
                                                 "loc": {
                                                     "end": {
-                                                        "column": 42,
+                                                        "column": 28,
                                                         "line": 1
                                                     },
                                                     "start": {
-                                                        "column": 29,
+                                                        "column": 23,
                                                         "line": 1
                                                     }
                                                 },
+                                                "name": "Array",
                                                 "range": [
-                                                    29,
-                                                    42
+                                                    23,
+                                                    28
                                                 ],
-                                                "type": "TSTypeReference",
-                                                "typeArguments": [
+                                                "type": "Identifier"
+                                            },
+                                            "loc": {
+                                                "end": {
+                                                    "column": 43,
+                                                    "line": 1
+                                                },
+                                                "start": {
+                                                    "column": 38,
+                                                    "line": 1
+                                                }
+                                            },
+                                            "range": [
+                                                38,
+                                                43
+                                            ],
+                                            "type": "GenericTypeAnnotation",
+                                            "typeParameters": {
+                                                "loc": {
+                                                    "end": {
+                                                        "column": 43,
+                                                        "line": 1
+                                                    },
+                                                    "start": {
+                                                        "column": 28,
+                                                        "line": 1
+                                                    }
+                                                },
+                                                "params": [
                                                     {
+                                                        "id": {
+                                                            "loc": {
+                                                                "end": {
+                                                                    "column": 34,
+                                                                    "line": 1
+                                                                },
+                                                                "start": {
+                                                                    "column": 29,
+                                                                    "line": 1
+                                                                }
+                                                            },
+                                                            "name": "Array",
+                                                            "range": [
+                                                                29,
+                                                                34
+                                                            ],
+                                                            "type": "Identifier"
+                                                        },
                                                         "loc": {
                                                             "end": {
-                                                                "column": 41,
+                                                                "column": 42,
                                                                 "line": 1
                                                             },
                                                             "start": {
-                                                                "column": 35,
+                                                                "column": 37,
                                                                 "line": 1
                                                             }
                                                         },
                                                         "range": [
-                                                            35,
-                                                            41
+                                                            37,
+                                                            42
                                                         ],
-                                                        "type": "TSStringKeyword"
+                                                        "type": "GenericTypeAnnotation",
+                                                        "typeParameters": {
+                                                            "loc": {
+                                                                "end": {
+                                                                    "column": 42,
+                                                                    "line": 1
+                                                                },
+                                                                "start": {
+                                                                    "column": 34,
+                                                                    "line": 1
+                                                                }
+                                                            },
+                                                            "params": [
+                                                                {
+                                                                    "id": {
+                                                                        "loc": {
+                                                                            "end": {
+                                                                                "column": 41,
+                                                                                "line": 1
+                                                                            },
+                                                                            "start": {
+                                                                                "column": 35,
+                                                                                "line": 1
+                                                                            }
+                                                                        },
+                                                                        "range": [
+                                                                            35,
+                                                                            41
+                                                                        ],
+                                                                        "type": "TSStringKeyword"
+                                                                    },
+                                                                    "loc": {
+                                                                        "end": {
+                                                                            "column": 41,
+                                                                            "line": 1
+                                                                        },
+                                                                        "start": {
+                                                                            "column": 35,
+                                                                            "line": 1
+                                                                        }
+                                                                    },
+                                                                    "range": [
+                                                                        35,
+                                                                        41
+                                                                    ],
+                                                                    "type": "GenericTypeAnnotation",
+                                                                    "typeParameters": null
+                                                                }
+                                                            ],
+                                                            "range": [
+                                                                34,
+                                                                42
+                                                            ],
+                                                            "type": "TypeParameterInstantiation"
+                                                        }
                                                     }
                                                 ],
-                                                "typeName": {
-                                                    "loc": {
-                                                        "end": {
-                                                            "column": 34,
-                                                            "line": 1
-                                                        },
-                                                        "start": {
-                                                            "column": 29,
-                                                            "line": 1
-                                                        }
-                                                    },
-                                                    "name": "Array",
-                                                    "range": [
-                                                        29,
-                                                        34
-                                                    ],
-                                                    "type": "Identifier"
-                                                }
+                                                "range": [
+                                                    28,
+                                                    43
+                                                ],
+                                                "type": "TypeParameterInstantiation"
                                             }
-                                        ],
-                                        "typeName": {
-                                            "loc": {
-                                                "end": {
-                                                    "column": 28,
-                                                    "line": 1
-                                                },
-                                                "start": {
-                                                    "column": 23,
-                                                    "line": 1
-                                                }
-                                            },
-                                            "name": "Array",
-                                            "range": [
-                                                23,
-                                                28
-                                            ],
-                                            "type": "Identifier"
                                         }
-                                    }
-                                ],
+                                    ],
+                                    "range": [
+                                        22,
+                                        44
+                                    ],
+                                    "type": "TypeParameterInstantiation"
+                                },
                                 "typeName": {
                                     "loc": {
                                         "end": {

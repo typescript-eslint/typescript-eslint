@@ -275,7 +275,8 @@ module.exports = {
                                                     }
                                                 }
                                             }
-                                        }
+                                        },
+                                        "typeParameters": null
                                     }
                                 }
                             }
@@ -313,7 +314,8 @@ module.exports = {
                                     }
                                 }
                             }
-                        }
+                        },
+                        "typeParameters": null
                     }
                 ],
                 "range": [

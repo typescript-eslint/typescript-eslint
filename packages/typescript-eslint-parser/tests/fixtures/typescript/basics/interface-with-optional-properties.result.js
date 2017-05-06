@@ -177,6 +177,7 @@ module.exports = {
                     },
                     {
                         "type": "TSMethodSignature",
+                        "typeParameters": null,
                         "range": [
                             49,
                             79

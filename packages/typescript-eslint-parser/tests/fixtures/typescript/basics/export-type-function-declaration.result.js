@@ -99,6 +99,7 @@ module.exports = {
                                     "column": 27
                                 }
                             },
+                            "typeParameters": null,
                             "parameters": [
                                 {
                                     "type": "Identifier",
