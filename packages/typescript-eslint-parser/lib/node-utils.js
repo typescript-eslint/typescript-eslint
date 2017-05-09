@@ -187,7 +187,8 @@ module.exports = {
     fixExports,
     getTokenType,
     convertToken,
-    convertTokens
+    convertTokens,
+    getNodeContainer
 };
 /* eslint-enable no-use-before-define */
 
@@ -632,4 +633,36 @@ function convertTokens(ast) {
     }
     walk(ast);
     return result;
+}
+
+/**
+ * Get container token node between range
+ * @param  {Object} ast the AST object
+ * @param {int} start The index at which the comment starts.
+ * @param {int} end The index at which the comment ends.
+ * @returns {TSToken}       typescript container token
+ * @private
+ */
+function getNodeContainer(ast, start, end) {
+    let container = null;
+
+    /**
+     * @param  {TSNode} node the TSNode
+     * @returns {undefined}
+     */
+    function walk(node) {
+        const nodeStart = node.pos;
+        const nodeEnd = node.end;
+
+        if (start >= nodeStart && end <= nodeEnd) {
+            if (isToken(node)) {
+                container = node;
+            } else {
+                node.getChildren().forEach(walk);
+            }
+        }
+    }
+    walk(ast);
+
+    return container;
 }
