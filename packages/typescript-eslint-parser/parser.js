@@ -9,6 +9,7 @@
 
 const astNodeTypes = require("./lib/ast-node-types"),
     ts = require("typescript"),
+    convert = require("./lib/ast-converter"),
     semver = require("semver");
 
 const SUPPORTED_TYPESCRIPT_VERSIONS = require("./package.json").devDependencies.typescript;
@@ -51,61 +52,6 @@ function resetExtra() {
     };
 }
 
-/**
- * Converts a TypeScript comment to an Esprima comment.
- * @param {boolean} block True if it's a block comment, false if not.
- * @param {string} text The text of the comment.
- * @param {int} start The index at which the comment starts.
- * @param {int} end The index at which the comment ends.
- * @param {Location} startLoc The location at which the comment starts.
- * @param {Location} endLoc The location at which the comment ends.
- * @returns {Object} The comment object.
- * @private
- */
-function convertTypeScriptCommentToEsprimaComment(block, text, start, end, startLoc, endLoc) {
-    const comment = {
-        type: block ? "Block" : "Line",
-        value: text
-    };
-
-    if (typeof start === "number") {
-        comment.range = [start, end];
-    }
-
-    if (typeof startLoc === "object") {
-        comment.loc = {
-            start: startLoc,
-            end: endLoc
-        };
-    }
-
-    return comment;
-}
-
-/**
- * Returns line and column data for the given start and end positions,
- * for the given AST
- * @param  {Object} start start data
- * @param  {Object} end   end data
- * @param  {Object} ast   the AST object
- * @returns {Object}       the loc data
- */
-function getLocFor(start, end, ast) {
-    const startLoc = ast.getLineAndCharacterOfPosition(start),
-        endLoc = ast.getLineAndCharacterOfPosition(end);
-
-    return {
-        start: {
-            line: startLoc.line + 1,
-            column: startLoc.character
-        },
-        end: {
-            line: endLoc.line + 1,
-            column: endLoc.character
-        }
-    };
-}
-
 //------------------------------------------------------------------------------
 // Parser
 //------------------------------------------------------------------------------
@@ -129,7 +75,6 @@ function parse(code, options) {
     if (typeof options !== "undefined") {
         extra.range = (typeof options.range === "boolean") && options.range;
         extra.loc = (typeof options.loc === "boolean") && options.loc;
-        extra.attachComment = (typeof options.attachComment === "boolean") && options.attachComment;
 
         if (extra.loc && options.source !== null && options.source !== undefined) {
             extra.source = toString(options.source);
@@ -144,10 +89,6 @@ function parse(code, options) {
         }
         if (typeof options.tolerant === "boolean" && options.tolerant) {
             extra.errors = [];
-        }
-        if (extra.attachComment) {
-            extra.range = true;
-            extra.comments = [];
         }
 
         if (options.ecmaFeatures && typeof options.ecmaFeatures === "object") {
@@ -209,45 +150,8 @@ function parse(code, options) {
 
     const ast = program.getSourceFile(FILENAME);
 
-    if (extra.attachComment || extra.comment) {
-        /**
-         * Create a TypeScript Scanner, with skipTrivia set to false so that
-         * we can parse the comments
-         */
-        const triviaScanner = ts.createScanner(ast.languageVersion, false, 0, code);
-
-        let kind = triviaScanner.scan();
-
-        while (kind !== ts.SyntaxKind.EndOfFileToken) {
-            if (kind !== ts.SyntaxKind.SingleLineCommentTrivia && kind !== ts.SyntaxKind.MultiLineCommentTrivia) {
-                kind = triviaScanner.scan();
-                continue;
-            }
-
-            const isBlock = (kind === ts.SyntaxKind.MultiLineCommentTrivia);
-            const range = {
-                pos: triviaScanner.getTokenPos(),
-                end: triviaScanner.getTextPos(),
-                kind: triviaScanner.getToken()
-            };
-
-            const comment = code.substring(range.pos, range.end);
-            const text = comment.replace("//", "").replace("/*", "").replace("*/", "");
-            const loc = getLocFor(range.pos, range.end, ast);
-
-            const esprimaComment = convertTypeScriptCommentToEsprimaComment(isBlock, text, range.pos, range.end, loc.start, loc.end);
-
-            extra.comments.push(esprimaComment);
-
-            kind = triviaScanner.scan();
-        }
-
-    }
-
-    const convert = require("./lib/ast-converter");
-
+    extra.code = code;
     return convert(ast, extra);
-
 }
 
 //------------------------------------------------------------------------------

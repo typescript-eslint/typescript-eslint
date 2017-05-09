@@ -12,6 +12,7 @@
 //------------------------------------------------------------------------------
 
 const convert = require("./convert"),
+    convertComments = require("./convert-comments").convertComments,
     nodeUtils = require("./node-utils");
 
 //------------------------------------------------------------------------------
@@ -67,10 +68,10 @@ module.exports = (ast, extra) => {
     }
 
     /**
-     * Add the comment nodes to the AST (that were parsed separately in parser.js)
+     * Optionally convert and include all comments in the AST
      */
-    if (extra.comment || extra.attachComment) {
-        estree.comments = extra.comments || [];
+    if (extra.comment) {
+        estree.comments = convertComments(ast, extra.code);
     }
 
     return estree;
