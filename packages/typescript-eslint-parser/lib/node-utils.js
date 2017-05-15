@@ -588,15 +588,16 @@ function getTokenType(token) {
  * @returns {ESTreeToken}       the converted ESTreeToken
  */
 function convertToken(token, ast) {
-    const start = token.getStart(),
-        value = ast.text.slice(start, token.end),
+    const start = (token.kind === SyntaxKind.JsxText) ? token.getFullStart() : token.getStart(),
+        end = token.getEnd(),
+        value = ast.text.slice(start, end),
         newToken = {
             type: getTokenType(token),
             value,
             start,
-            end: token.end,
-            range: [start, token.end],
-            loc: getLoc(token, ast)
+            end,
+            range: [start, end],
+            loc: getLocFor(start, end, ast)
         };
 
     if (newToken.type === "RegularExpression") {
