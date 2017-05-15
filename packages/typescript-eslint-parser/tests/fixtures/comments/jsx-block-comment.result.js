@@ -512,15 +512,15 @@ module.exports = {
         },
         {
             "type": "JSXText",
-            "value": "",
+            "value": "\n            ",
             "range": [
-                60,
+                47,
                 60
             ],
             "loc": {
                 "start": {
-                    "line": 4,
-                    "column": 12
+                    "line": 3,
+                    "column": 13
                 },
                 "end": {
                     "line": 4,
@@ -566,15 +566,15 @@ module.exports = {
         },
         {
             "type": "JSXText",
-            "value": "",
+            "value": "\n        ",
             "range": [
-                82,
+                73,
                 82
             ],
             "loc": {
                 "start": {
-                    "line": 5,
-                    "column": 8
+                    "line": 4,
+                    "column": 25
                 },
                 "end": {
                     "line": 5,
