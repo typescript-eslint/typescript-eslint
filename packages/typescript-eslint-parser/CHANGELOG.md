@@ -1,3 +1,29 @@
+v3.0.0 - May 17, 2017
+
+* 6b56bfe Fix: Use correct starting range and loc for JSXText tokens (fixes #227) (#271) (Reyad Attiyat)
+* f5fcc87 Breaking: Allow comment scanner to rescan tokens (fixes #216) (#219) (Reyad Attiyat)
+* f836bb9 Chore: Refactor the codebase (fixes #220) (#261) (James Henry)
+* aade6bd Chore: Update README with list of known issues (#247) (Reyad Attiyat)
+* c8e881a Breaking: Normalize type parameters (fixes #197) (#196) (Rasmus Eneman)
+* d37bf04 Fix: Type parameter start location calculation (fixes #260) (#259) (Igor Oleinikov)
+* 1a97650 Fix: Handle case where class has extends but no super class (fixes #249) (#254) (Reyad Attiyat)
+* 00ad71d Fix: add `instanceof` to ast-converter (fixes #252) (#251) (Danny Arnold)
+* 2989f8b Upgrade: Update semver package (#246) (Simen Bekkhus)
+* b1efe69 Breaking: Change how interface node gets converted (fixes #201) (#241) (Reyad Attiyat)
+* e311620 Fix: Set await property on async iterators (for await) (fixes #236) (#239) (Reyad Attiyat)
+* a294afa Fix: Set async on async FunctionExpressions (fixes #244) (#245) (Lucas Azzola)
+* 7c00f16 Chore: Add tests for object spread and async generator (refs #236) (#237) (Reyad Attiyat)
+* 7b69bc9 Fix: Label abstract class properties (fixes #234) (#238) (Reyad Attiyat)
+* a330ec6 New: Add support for default type parameters (fixes #235) (#240) (Reyad Attiyat)
+* e1ef800 Fix: Support superTypeParameters (fixes #242) (#243) (Lucas Azzola)
+* 65c2e0a Breaking: Support TypeScript 2.3 (fixes #232) (#233) (Lucas Azzola)
+* 15f1173 Fix: Use TSAbsractMethodDefinition for abstract constructor (fixes #228) (#229) (Lucas Azzola)
+* 8fb71d2 Breaking: Add .body to TSModuleBlock nodes (fixes #217) (#218) (Philipp A)
+* 471f403 Chore: Remove before_script from .travis.yml (fixes #231) (#230) (James Henry)
+* 9397c5c Chore: Cleanup Makefile (#221) (Reyad Attiyat)
+* dd57f81 Update: Open TS peerDependency, warn non-supported version (fixes #167) (#193) (James Henry)
+* a37d5ed Fix: Wrap any parameter with modifiers, not just in constructors (#214) (Rasmus Eneman)
+
 v2.1.0 - April 4, 2017
 
 * d709fd8 Fix: Set root to true in eslintrc (fixes #211) (#212) (Reyad Attiyat)
