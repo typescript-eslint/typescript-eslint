@@ -31,6 +31,7 @@ module.exports = {
                     "column": 1
                 }
             },
+            "abstract": false,
             "body": {
                 "type": "TSInterfaceBody",
                 "body": [
@@ -68,6 +69,7 @@ module.exports = {
                             },
                             "name": "addClickListener"
                         },
+                        "typeParameters": null,
                         "parameters": [
                             {
                                 "type": "Identifier",
@@ -118,6 +120,7 @@ module.exports = {
                                                 "column": 57
                                             }
                                         },
+                                        "typeParameters": null,
                                         "parameters": [
                                             {
                                                 "type": "Identifier",
@@ -275,8 +278,7 @@ module.exports = {
                                                     }
                                                 }
                                             }
-                                        },
-                                        "typeParameters": null
+                                        }
                                     }
                                 }
                             }
@@ -314,8 +316,7 @@ module.exports = {
                                     }
                                 }
                             }
-                        },
-                        "typeParameters": null
+                        }
                     }
                 ],
                 "range": [

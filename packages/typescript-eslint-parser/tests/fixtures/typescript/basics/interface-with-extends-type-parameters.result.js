@@ -69,6 +69,7 @@ module.exports = {
                     }
                 ]
             },
+            "abstract": false,
             "body": {
                 "type": "TSInterfaceBody",
                 "body": [],

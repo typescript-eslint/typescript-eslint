@@ -31,6 +31,7 @@ module.exports = {
                     "column": 1
                 }
             },
+            "abstract": false,
             "body": {
                 "type": "TSInterfaceBody",
                 "body": [],

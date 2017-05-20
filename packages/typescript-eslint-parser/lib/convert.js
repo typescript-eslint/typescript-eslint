@@ -1703,6 +1703,7 @@ module.exports = function convert(config) {
             }
 
             const hasImplementsClause = interfaceHeritageClauses.length > 0;
+            const hasAbstractKeyword = nodeUtils.hasModifier(SyntaxKind.AbstractKeyword, node);
             const interfaceOpenBrace = nodeUtils.findNextToken(interfaceLastClassToken, ast);
 
             const interfaceBody = {
@@ -1713,11 +1714,16 @@ module.exports = function convert(config) {
             };
 
             Object.assign(result, {
+                abstract: hasAbstractKeyword,
                 type: AST_NODE_TYPES.TSInterfaceDeclaration,
                 body: interfaceBody,
                 id: convertChild(node.name),
                 heritage: hasImplementsClause ? interfaceHeritageClauses[0].types.map(convertInterfaceHeritageClause) : []
             });
+
+            // check for exports
+            result = nodeUtils.fixExports(node, result, ast);
+
             break;
 
         }

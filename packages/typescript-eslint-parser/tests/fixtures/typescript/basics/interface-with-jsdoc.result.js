@@ -31,12 +31,12 @@ module.exports = {
                     "column": 1
                 }
             },
+            "abstract": false,
             "body": {
                 "type": "TSInterfaceBody",
                 "body": [
                     {
                         "type": "TSMethodSignature",
-                        "typeParameters": null,
                         "range": [
                             76,
                             85
@@ -69,6 +69,7 @@ module.exports = {
                             },
                             "name": "foo"
                         },
+                        "typeParameters": null,
                         "parameters": [
                             {
                                 "type": "Identifier",
