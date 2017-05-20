@@ -31,12 +31,12 @@ module.exports = {
                     "column": 1
                 }
             },
+            "abstract": false,
             "body": {
                 "type": "TSInterfaceBody",
                 "body": [
                     {
                         "type": "TSConstructSignature",
-                        "typeParameters": null,
                         "range": [
                             21,
                             47
@@ -51,6 +51,7 @@ module.exports = {
                                 "column": 30
                             }
                         },
+                        "typeParameters": null,
                         "parameters": [
                             {
                                 "type": "TSParameterProperty",

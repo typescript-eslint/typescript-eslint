@@ -1,240 +1,241 @@
 module.exports = {
-    "body": [
-        {
-            "body": {
-                "body": [],
-                "loc": {
-                    "end": {
-                        "column": 1,
-                        "line": 2
-                    },
-                    "start": {
-                        "column": 18,
-                        "line": 1
-                    }
-                },
-                "range": [
-                    18,
-                    21
-                ],
-                "type": "TSInterfaceBody"
-            },
-            "heritage": [],
-            "id": {
-                "loc": {
-                    "end": {
-                        "column": 14,
-                        "line": 1
-                    },
-                    "start": {
-                        "column": 10,
-                        "line": 1
-                    }
-                },
-                "name": "Test",
-                "range": [
-                    10,
-                    14
-                ],
-                "type": "Identifier"
-            },
-            "loc": {
-                "end": {
-                    "column": 1,
-                    "line": 2
-                },
-                "start": {
-                    "column": 0,
-                    "line": 1
-                }
-            },
-            "range": [
-                0,
-                21
-            ],
-            "type": "TSInterfaceDeclaration",
-            "typeParameters": {
-                "loc": {
-                    "end": {
-                        "column": 17,
-                        "line": 1
-                    },
-                    "start": {
-                        "column": 14,
-                        "line": 1
-                    }
-                },
-                "params": [
-                    {
-                        "constraint": null,
-                        "loc": {
-                            "end": {
-                                "column": 16,
-                                "line": 1
-                            },
-                            "start": {
-                                "column": 15,
-                                "line": 1
-                            }
-                        },
-                        "name": "T",
-                        "range": [
-                            15,
-                            16
-                        ],
-                        "type": "TypeParameter"
-                    }
-                ],
-                "range": [
-                    14,
-                    17
-                ],
-                "type": "TypeParameterDeclaration"
-            }
-        }
-    ],
-    "loc": {
-        "end": {
-            "column": 1,
-            "line": 2
-        },
-        "start": {
-            "column": 0,
-            "line": 1
-        }
-    },
+    "type": "Program",
     "range": [
         0,
         21
     ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 2,
+            "column": 1
+        }
+    },
+    "body": [
+        {
+            "type": "TSInterfaceDeclaration",
+            "range": [
+                0,
+                21
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 1
+                }
+            },
+            "typeParameters": {
+                "type": "TypeParameterDeclaration",
+                "range": [
+                    14,
+                    17
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 14
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 17
+                    }
+                },
+                "params": [
+                    {
+                        "type": "TypeParameter",
+                        "range": [
+                            15,
+                            16
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 15
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 16
+                            }
+                        },
+                        "name": "T",
+                        "constraint": null
+                    }
+                ]
+            },
+            "abstract": false,
+            "body": {
+                "type": "TSInterfaceBody",
+                "body": [],
+                "range": [
+                    18,
+                    21
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 18
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 1
+                    }
+                }
+            },
+            "id": {
+                "type": "Identifier",
+                "range": [
+                    10,
+                    14
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 10
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 14
+                    }
+                },
+                "name": "Test"
+            },
+            "heritage": []
+        }
+    ],
     "sourceType": "script",
     "tokens": [
         {
-            "loc": {
-                "end": {
-                    "column": 9,
-                    "line": 1
-                },
-                "start": {
-                    "column": 0,
-                    "line": 1
-                }
-            },
+            "type": "Keyword",
+            "value": "interface",
             "range": [
                 0,
                 9
             ],
-            "type": "Keyword",
-            "value": "interface"
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 9
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 14,
-                    "line": 1
-                },
-                "start": {
-                    "column": 10,
-                    "line": 1
-                }
-            },
+            "type": "Identifier",
+            "value": "Test",
             "range": [
                 10,
                 14
             ],
-            "type": "Identifier",
-            "value": "Test"
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 10
+                },
+                "end": {
+                    "line": 1,
+                    "column": 14
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 15,
-                    "line": 1
-                },
-                "start": {
-                    "column": 14,
-                    "line": 1
-                }
-            },
+            "type": "Punctuator",
+            "value": "<",
             "range": [
                 14,
                 15
             ],
-            "type": "Punctuator",
-            "value": "<"
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 14
+                },
+                "end": {
+                    "line": 1,
+                    "column": 15
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 16,
-                    "line": 1
-                },
-                "start": {
-                    "column": 15,
-                    "line": 1
-                }
-            },
+            "type": "Identifier",
+            "value": "T",
             "range": [
                 15,
                 16
             ],
-            "type": "Identifier",
-            "value": "T"
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 15
+                },
+                "end": {
+                    "line": 1,
+                    "column": 16
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 17,
-                    "line": 1
-                },
-                "start": {
-                    "column": 16,
-                    "line": 1
-                }
-            },
+            "type": "Punctuator",
+            "value": ">",
             "range": [
                 16,
                 17
             ],
-            "type": "Punctuator",
-            "value": ">"
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 16
+                },
+                "end": {
+                    "line": 1,
+                    "column": 17
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 19,
-                    "line": 1
-                },
-                "start": {
-                    "column": 18,
-                    "line": 1
-                }
-            },
+            "type": "Punctuator",
+            "value": "{",
             "range": [
                 18,
                 19
             ],
-            "type": "Punctuator",
-            "value": "{"
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 18
+                },
+                "end": {
+                    "line": 1,
+                    "column": 19
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 1,
-                    "line": 2
-                },
-                "start": {
-                    "column": 0,
-                    "line": 2
-                }
-            },
+            "type": "Punctuator",
+            "value": "}",
             "range": [
                 20,
                 21
             ],
-            "type": "Punctuator",
-            "value": "}"
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 1
+                }
+            }
         }
-    ],
-    "type": "Program"
+    ]
 };

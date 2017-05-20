@@ -17,6 +17,7 @@
 
 var shelljs = require("shelljs"),
     parser = require("../parser"),
+    tester = require("../tests/lib/tester"),
     path = require("path");
 
 //------------------------------------------------------------------------------
@@ -35,7 +36,7 @@ function getRaw(ast) {
 
 function getExpectedResult(code, config) {
     try {
-        return getRaw(parser.parse(code, config));
+        return tester.getRaw(parser.parse(code, config));
     } catch (ex) {
         var raw = getRaw(ex);
         raw.message = ex.message;
@@ -52,7 +53,7 @@ function getTestFilenames(directory) {
 }
 
 function outputResult(result, testResultFilename) {
-    ("module.exports = " + JSON.stringify(result, null, "    ") + ";").to(testResultFilename);
+    shelljs.echo("module.exports = " + JSON.stringify(result, null, "    ") + ";").to(testResultFilename);
 }
 
 //------------------------------------------------------------------------------
@@ -72,7 +73,9 @@ testFiles.forEach(function(filename) {
         config = {
             loc: true,
             range: true,
-            tokens: true
+            tokens: true,
+            ecmaFeatures: {},
+            errorOnUnknownASTType: true
         };
 
     var testResultFilename = path.resolve(__dirname, "..", FIXTURES_DIR, filename) + ".result.js";
