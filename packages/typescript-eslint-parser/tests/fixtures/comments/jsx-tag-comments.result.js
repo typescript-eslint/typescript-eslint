@@ -215,8 +215,8 @@ module.exports = {
                                                 ],
                                                 "loc": {
                                                     "start": {
-                                                        "line": 7,
-                                                        "column": 103
+                                                        "line": 6,
+                                                        "column": 9
                                                     },
                                                     "end": {
                                                         "line": 7,
