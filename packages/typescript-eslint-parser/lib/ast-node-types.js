@@ -122,6 +122,7 @@ module.exports = {
     TSQuestionToken: "TSQuestionToken",
     TSStringKeyword: "TSStringKeyword",
     TSTypeLiteral: "TSTypeLiteral",
+    TSTypePredicate: "TSTypePredicate",
     TSTypeReference: "TSTypeReference",
     TSUnionType: "TSUnionType",
     TSVoidKeyword: "TSVoidKeyword",

@@ -1733,6 +1733,14 @@ module.exports = function convert(config) {
 
         }
 
+        case SyntaxKind.FirstTypeNode:
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSTypePredicate,
+                parameterName: convertChild(node.parameterName),
+                typeAnnotation: convertTypeAnnotation(node.type)
+            });
+            break;
+
         default:
             deeplyCopy();
     }
