@@ -48,7 +48,8 @@ function resetExtra() {
         tolerant: false,
         errors: [],
         strict: false,
-        ecmaFeatures: {}
+        ecmaFeatures: {},
+        useJSXTextNode: false
     };
 }
 
@@ -102,6 +103,10 @@ function parse(code, options) {
          */
         if (options.errorOnUnknownASTType) {
             extra.errorOnUnknownASTType = true;
+        }
+
+        if (typeof options.useJSXTextNode === "boolean" && options.useJSXTextNode) {
+            extra.useJSXTextNode = true;
         }
 
     }
