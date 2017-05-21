@@ -118,6 +118,7 @@ module.exports = {
     TSNumberKeyword: "TSNumberKeyword",
     TSParameterProperty: "TSParameterProperty",
     TSPropertySignature: "TSPropertySignature",
+    TSQualifiedName: "TSQualifiedName",
     TSQuestionToken: "TSQuestionToken",
     TSStringKeyword: "TSStringKeyword",
     TSTypeLiteral: "TSTypeLiteral",
