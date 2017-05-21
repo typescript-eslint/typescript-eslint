@@ -1638,18 +1638,10 @@ module.exports = function convert(config) {
             break;
 
         case SyntaxKind.FirstNode: {
-            const jsxMemberExpressionObject = convertChild(node.left);
-            jsxMemberExpressionObject.type = AST_NODE_TYPES.JSXIdentifier;
-            delete jsxMemberExpressionObject.value;
-
-            const jsxMemberExpressionProperty = convertChild(node.right);
-            jsxMemberExpressionProperty.type = AST_NODE_TYPES.JSXIdentifier;
-            delete jsxMemberExpressionObject.value;
-
             Object.assign(result, {
-                type: AST_NODE_TYPES.JSXMemberExpression,
-                object: jsxMemberExpressionObject,
-                property: jsxMemberExpressionProperty
+                type: AST_NODE_TYPES.TSQualifiedName,
+                left: convertChild(node.left),
+                right: convertChild(node.right)
             });
 
             break;
