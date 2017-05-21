@@ -1613,15 +1613,24 @@ module.exports = function convert(config) {
 
         }
 
+        /**
+         * The JSX AST changed the node type for string literals
+         * inside a JSX Element from `Literal` to `JSXText`. We
+         * provide a flag to support both types until `Literal`
+         * node type is deprecated in ESLint v5.
+         */
         case SyntaxKind.JsxText: {
-            Object.assign(result, {
-                type: AST_NODE_TYPES.Literal,
-                value: ast.text.slice(node.pos, node.end),
-                raw: ast.text.slice(node.pos, node.end)
-            });
-
             const start = node.getFullStart();
             const end = node.getEnd();
+
+            const type = (additionalOptions.useJSXTextNode)
+                ? AST_NODE_TYPES.JSXText : AST_NODE_TYPES.Literal;
+
+            Object.assign(result, {
+                type,
+                value: ast.text.slice(start, end),
+                raw: ast.text.slice(start, end)
+            });
 
             result.loc = nodeUtils.getLocFor(start, end, ast);
             result.range = [start, end];

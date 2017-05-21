@@ -26,15 +26,8 @@ const FIXTURES_DIR = "./tests/fixtures/ecma-features";
 
 // var FIXTURES_MIX_DIR = "./tests/fixtures/ecma-features-mix";
 
-const filesWithOutsandingTSIssues = [
-    "jsx/embedded-tags", // https://github.com/Microsoft/TypeScript/issues/7410
-    "jsx/namespaced-attribute-and-value-inserted", // https://github.com/Microsoft/TypeScript/issues/7411
-    "jsx/namespaced-name-and-attribute" // https://github.com/Microsoft/TypeScript/issues/7411
-];
-
 const testFiles = shelljs.find(FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.js") > -1)
-    .filter(filename => filesWithOutsandingTSIssues.every(fileName => filename.indexOf(fileName) === -1))
     // strip off ".src.js"
     .map(filename => filename.substring(FIXTURES_DIR.length - 1, filename.length - 7))
     .filter(filename => !(/error-|invalid-|globalReturn/.test(filename)));
