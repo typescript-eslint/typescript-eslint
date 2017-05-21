@@ -1613,17 +1613,21 @@ module.exports = function convert(config) {
 
         }
 
-        case SyntaxKind.JsxText:
+        case SyntaxKind.JsxText: {
             Object.assign(result, {
                 type: AST_NODE_TYPES.Literal,
                 value: ast.text.slice(node.pos, node.end),
                 raw: ast.text.slice(node.pos, node.end)
             });
 
-            result.loc.start.column = node.pos;
-            result.range[0] = node.pos;
+            const start = node.getFullStart();
+            const end = node.getEnd();
+
+            result.loc = nodeUtils.getLocFor(start, end, ast);
+            result.range = [start, end];
 
             break;
+        }
 
         case SyntaxKind.JsxSpreadAttribute:
             Object.assign(result, {
