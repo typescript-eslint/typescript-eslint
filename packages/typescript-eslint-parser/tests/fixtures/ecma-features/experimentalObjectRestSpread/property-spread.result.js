@@ -326,7 +326,7 @@ module.exports = {
                                 "kind": "init"
                             },
                             {
-                                "type": "SpreadElement",
+                                "type": "ExperimentalSpreadProperty",
                                 "loc": {
                                     "start": {
                                         "line": 8,

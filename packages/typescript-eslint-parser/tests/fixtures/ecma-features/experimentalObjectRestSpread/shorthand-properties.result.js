@@ -12,7 +12,7 @@ module.exports = {
     },
     "range": [
         0,
-        77
+        69
     ],
     "body": [
         {
@@ -157,7 +157,7 @@ module.exports = {
             },
             "range": [
                 28,
-                77
+                69
             ],
             "declarations": [
                 {
@@ -174,7 +174,7 @@ module.exports = {
                     },
                     "range": [
                         32,
-                        76
+                        68
                     ],
                     "id": {
                         "type": "Identifier",
@@ -208,7 +208,7 @@ module.exports = {
                         },
                         "range": [
                             36,
-                            76
+                            68
                         ],
                         "properties": [
                             {
@@ -220,15 +220,15 @@ module.exports = {
                                     },
                                     "end": {
                                         "line": 6,
-                                        "column": 12
+                                        "column": 7
                                     }
                                 },
                                 "range": [
                                     42,
-                                    50
+                                    45
                                 ],
                                 "method": false,
-                                "shorthand": false,
+                                "shorthand": true,
                                 "computed": false,
                                 "key": {
                                     "type": "Identifier",
@@ -248,28 +248,28 @@ module.exports = {
                                     ],
                                     "name": "foo"
                                 },
+                                "kind": "init",
                                 "value": {
                                     "type": "Identifier",
                                     "loc": {
                                         "start": {
                                             "line": 6,
-                                            "column": 9
+                                            "column": 4
                                         },
                                         "end": {
                                             "line": 6,
-                                            "column": 12
+                                            "column": 7
                                         }
                                     },
                                     "range": [
-                                        47,
-                                        50
+                                        42,
+                                        45
                                     ],
                                     "name": "foo"
-                                },
-                                "kind": "init"
+                                }
                             },
                             {
-                                "type": "ExperimentalSpreadProperty",
+                                "type": "Property",
                                 "loc": {
                                     "start": {
                                         "line": 7,
@@ -277,28 +277,50 @@ module.exports = {
                                     },
                                     "end": {
                                         "line": 7,
-                                        "column": 10
+                                        "column": 7
                                     }
                                 },
                                 "range": [
-                                    56,
-                                    62
+                                    51,
+                                    54
                                 ],
-                                "argument": {
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false,
+                                "key": {
                                     "type": "Identifier",
                                     "loc": {
                                         "start": {
                                             "line": 7,
-                                            "column": 7
+                                            "column": 4
                                         },
                                         "end": {
                                             "line": 7,
-                                            "column": 10
+                                            "column": 7
                                         }
                                     },
                                     "range": [
-                                        59,
-                                        62
+                                        51,
+                                        54
+                                    ],
+                                    "name": "get"
+                                },
+                                "kind": "init",
+                                "value": {
+                                    "type": "Identifier",
+                                    "loc": {
+                                        "start": {
+                                            "line": 7,
+                                            "column": 4
+                                        },
+                                        "end": {
+                                            "line": 7,
+                                            "column": 7
+                                        }
+                                    },
+                                    "range": [
+                                        51,
+                                        54
                                     ],
                                     "name": "get"
                                 }
@@ -316,8 +338,8 @@ module.exports = {
                                     }
                                 },
                                 "range": [
-                                    68,
-                                    74
+                                    60,
+                                    66
                                 ],
                                 "argument": {
                                     "type": "Identifier",
@@ -332,8 +354,8 @@ module.exports = {
                                         }
                                     },
                                     "range": [
-                                        71,
-                                        74
+                                        63,
+                                        66
                                     ],
                                     "name": "set"
                                 }
@@ -565,7 +587,7 @@ module.exports = {
         },
         {
             "type": "Punctuator",
-            "value": ":",
+            "value": ",",
             "loc": {
                 "start": {
                     "line": 6,
@@ -583,74 +605,20 @@ module.exports = {
         },
         {
             "type": "Identifier",
-            "value": "foo",
-            "loc": {
-                "start": {
-                    "line": 6,
-                    "column": 9
-                },
-                "end": {
-                    "line": 6,
-                    "column": 12
-                }
-            },
-            "range": [
-                47,
-                50
-            ]
-        },
-        {
-            "type": "Punctuator",
-            "value": ",",
-            "loc": {
-                "start": {
-                    "line": 6,
-                    "column": 12
-                },
-                "end": {
-                    "line": 6,
-                    "column": 13
-                }
-            },
-            "range": [
-                50,
-                51
-            ]
-        },
-        {
-            "type": "Punctuator",
-            "value": "...",
-            "loc": {
-                "start": {
-                    "line": 7,
-                    "column": 4
-                },
-                "end": {
-                    "line": 7,
-                    "column": 7
-                }
-            },
-            "range": [
-                56,
-                59
-            ]
-        },
-        {
-            "type": "Identifier",
             "value": "get",
             "loc": {
                 "start": {
                     "line": 7,
-                    "column": 7
+                    "column": 4
                 },
                 "end": {
                     "line": 7,
-                    "column": 10
+                    "column": 7
                 }
             },
             "range": [
-                59,
-                62
+                51,
+                54
             ]
         },
         {
@@ -659,16 +627,16 @@ module.exports = {
             "loc": {
                 "start": {
                     "line": 7,
-                    "column": 10
+                    "column": 7
                 },
                 "end": {
                     "line": 7,
-                    "column": 11
+                    "column": 8
                 }
             },
             "range": [
-                62,
-                63
+                54,
+                55
             ]
         },
         {
@@ -685,8 +653,8 @@ module.exports = {
                 }
             },
             "range": [
-                68,
-                71
+                60,
+                63
             ]
         },
         {
@@ -703,8 +671,8 @@ module.exports = {
                 }
             },
             "range": [
-                71,
-                74
+                63,
+                66
             ]
         },
         {
@@ -721,8 +689,8 @@ module.exports = {
                 }
             },
             "range": [
-                75,
-                76
+                67,
+                68
             ]
         },
         {
@@ -739,8 +707,8 @@ module.exports = {
                 }
             },
             "range": [
-                76,
-                77
+                68,
+                69
             ]
         }
     ]
