@@ -930,17 +930,26 @@ module.exports = function convert(config) {
                 } else {
                     return arrayItem;
                 }
-            } else {
+            } else if (parent.kind === SyntaxKind.ObjectBindingPattern) {
 
-                Object.assign(result, {
-                    type: AST_NODE_TYPES.Property,
-                    key: convertChild(node.propertyName || node.name),
-                    value: convertChild(node.name),
-                    computed: false,
-                    method: false,
-                    shorthand: !node.propertyName,
-                    kind: "init"
-                });
+                if (node.dotDotDotToken) {
+                    Object.assign(result, {
+                        type: AST_NODE_TYPES.ExperimentalRestProperty,
+                        argument: convertChild(node.propertyName || node.name),
+                        computed: Boolean(node.propertyName && node.propertyName.kind === SyntaxKind.ComputedPropertyName),
+                        shorthand: !node.propertyName
+                    });
+                } else {
+                    Object.assign(result, {
+                        type: AST_NODE_TYPES.Property,
+                        key: convertChild(node.propertyName || node.name),
+                        value: convertChild(node.name),
+                        computed: Boolean(node.propertyName && node.propertyName.kind === SyntaxKind.ComputedPropertyName),
+                        method: false,
+                        shorthand: !node.propertyName,
+                        kind: "init"
+                    });
+                }
 
                 if (node.initializer) {
                     result.value = {
@@ -951,7 +960,6 @@ module.exports = function convert(config) {
                         loc: nodeUtils.getLocFor(node.name.getStart(), node.initializer.end, ast)
                     };
                 }
-
             }
             break;
 
@@ -1053,12 +1061,30 @@ module.exports = function convert(config) {
         // Patterns
 
         case SyntaxKind.SpreadElement:
-        case SyntaxKind.SpreadAssignment:
             Object.assign(result, {
                 type: AST_NODE_TYPES.SpreadElement,
                 argument: convertChild(node.expression)
             });
             break;
+        case SyntaxKind.SpreadAssignment: {
+            let type = AST_NODE_TYPES.ExperimentalSpreadProperty;
+
+            if (node.parent &&
+                node.parent.parent.kind === SyntaxKind.BinaryExpression
+            ) {
+                if (node.parent.parent.right === node.parent) {
+                    type = AST_NODE_TYPES.ExperimentalSpreadProperty;
+                } else if (node.parent.parent.left === node.parent) {
+                    type = AST_NODE_TYPES.ExperimentalRestProperty;
+                }
+            }
+
+            Object.assign(result, {
+                type,
+                argument: convertChild(node.expression)
+            });
+            break;
+        }
 
         case SyntaxKind.Parameter: {
             let parameter;
