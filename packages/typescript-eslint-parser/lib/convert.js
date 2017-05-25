@@ -1507,17 +1507,28 @@ module.exports = function convert(config) {
             });
             break;
 
-        case SyntaxKind.RegularExpressionLiteral:
+        case SyntaxKind.RegularExpressionLiteral: {
+            const pattern = node.text.slice(1, node.text.lastIndexOf("/"));
+            const flags = node.text.slice(node.text.lastIndexOf("/") + 1);
+
+            let regex = null;
+            try {
+                regex = new RegExp(pattern, flags);
+            } catch (exception) {
+                regex = null;
+            }
+
             Object.assign(result, {
                 type: AST_NODE_TYPES.Literal,
-                value: Number(node.text),
+                value: regex,
                 raw: node.text,
                 regex: {
-                    pattern: node.text.slice(1, node.text.lastIndexOf("/")),
-                    flags: node.text.slice(node.text.lastIndexOf("/") + 1)
+                    pattern,
+                    flags
                 }
             });
             break;
+        }
 
         case SyntaxKind.TrueKeyword:
             Object.assign(result, {

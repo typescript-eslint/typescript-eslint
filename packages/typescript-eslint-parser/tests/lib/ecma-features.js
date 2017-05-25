@@ -74,7 +74,26 @@ describe("ecmaFeatures", () => {
 
         it(`should parse correctly when ${feature} is true`, () => {
             config.ecmaFeatures[feature] = true;
-            const expected = require(`${path.resolve(__dirname, "../../", FIXTURES_DIR, filename)}.result.js`);
+            let expected = null;
+
+            const regexFilenames = [
+                "regexYFlag/regexp-y-simple",
+                "regexUFlag/regex-u-simple",
+                "regexUFlag/regex-u-extended-escape"
+            ];
+            if (regexFilenames.indexOf(filename) !== -1) {
+                const nodeVersions = process.versions;
+                const nodeVersionParts = nodeVersions.node.split(".");
+                const nodeMajorVersion = parseInt(nodeVersionParts[0], 10);
+
+                if (nodeMajorVersion >= 6) {
+                    expected = require(`${path.resolve(__dirname, "../../", FIXTURES_DIR, filename)}.supported.result.js`);
+                } else {
+                    expected = require(`${path.resolve(__dirname, "../../", FIXTURES_DIR, filename)}.unsupported.result.js`);
+                }
+            } else {
+                expected = require(`${path.resolve(__dirname, "../../", FIXTURES_DIR, filename)}.result.js`);
+            }
             let result;
 
             try {
