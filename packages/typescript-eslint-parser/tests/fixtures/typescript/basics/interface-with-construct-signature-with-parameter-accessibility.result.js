@@ -71,6 +71,8 @@ module.exports = {
                                 },
                                 "accessibility": "public",
                                 "isReadonly": false,
+                                "static": false,
+                                "export": false,
                                 "parameter": {
                                     "type": "Identifier",
                                     "range": [
@@ -108,6 +110,8 @@ module.exports = {
                                 },
                                 "accessibility": "private",
                                 "isReadonly": false,
+                                "static": false,
+                                "export": false,
                                 "parameter": {
                                     "type": "Identifier",
                                     "range": [

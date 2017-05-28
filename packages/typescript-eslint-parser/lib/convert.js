@@ -1104,6 +1104,8 @@ module.exports = function convert(config) {
                     loc: nodeUtils.getLoc(node, ast),
                     accessibility: nodeUtils.getTSNodeAccessibility(node),
                     isReadonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
+                    static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
+                    export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node),
                     parameter: result
                 };
             }
