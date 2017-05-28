@@ -114,6 +114,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": "private",
                                     "isReadonly": false,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "type": "Identifier",
                                         "range": [
@@ -186,6 +188,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": "private",
                                     "isReadonly": true,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "type": "Identifier",
                                         "range": [
@@ -258,6 +262,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": "private",
                                     "isReadonly": false,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "left": {
                                             "type": "Identifier",
@@ -366,6 +372,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": "private",
                                     "isReadonly": true,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "left": {
                                             "type": "Identifier",

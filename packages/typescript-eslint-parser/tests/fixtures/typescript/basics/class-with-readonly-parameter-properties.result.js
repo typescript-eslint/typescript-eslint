@@ -144,6 +144,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": null,
                                     "isReadonly": true,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "type": "Identifier",
                                         "range": [
@@ -216,6 +218,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": null,
                                     "isReadonly": true,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "type": "AssignmentPattern",
                                         "range": [

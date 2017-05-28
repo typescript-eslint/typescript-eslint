@@ -144,6 +144,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": "protected",
                                     "isReadonly": false,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "type": "Identifier",
                                         "range": [
@@ -216,6 +218,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": "protected",
                                     "isReadonly": true,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "type": "Identifier",
                                         "range": [
@@ -288,6 +292,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": "protected",
                                     "isReadonly": false,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "type": "AssignmentPattern",
                                         "range": [
@@ -396,6 +402,8 @@ module.exports = {
                                     "decorators": [],
                                     "accessibility": "protected",
                                     "isReadonly": true,
+                                    "static": false,
+                                    "export": false,
                                     "parameter": {
                                         "type": "AssignmentPattern",
                                         "range": [
