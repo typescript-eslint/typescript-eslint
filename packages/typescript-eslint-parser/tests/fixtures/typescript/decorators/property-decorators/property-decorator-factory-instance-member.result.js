@@ -92,26 +92,26 @@ module.exports = {
                         "accessibility": null,
                         "decorators": [
                             {
-                                "type": "CallExpression",
+                                "type": "Decorator",
                                 "range": [
-                                    27,
+                                    26,
                                     34
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 2,
-                                        "column": 5
+                                        "column": 4
                                     },
                                     "end": {
                                         "line": 2,
                                         "column": 12
                                     }
                                 },
-                                "callee": {
-                                    "type": "Identifier",
+                                "expression": {
+                                    "type": "CallExpression",
                                     "range": [
                                         27,
-                                        32
+                                        34
                                     ],
                                     "loc": {
                                         "start": {
@@ -120,12 +120,29 @@ module.exports = {
                                         },
                                         "end": {
                                             "line": 2,
-                                            "column": 10
+                                            "column": 12
                                         }
                                     },
-                                    "name": "Input"
-                                },
-                                "arguments": []
+                                    "callee": {
+                                        "type": "Identifier",
+                                        "range": [
+                                            27,
+                                            32
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 5
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 10
+                                            }
+                                        },
+                                        "name": "Input"
+                                    },
+                                    "arguments": []
+                                }
                             }
                         ],
                         "typeAnnotation": null
@@ -205,26 +222,26 @@ module.exports = {
                         "accessibility": null,
                         "decorators": [
                             {
-                                "type": "CallExpression",
+                                "type": "Decorator",
                                 "range": [
-                                    46,
+                                    45,
                                     54
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 3,
-                                        "column": 5
+                                        "column": 4
                                     },
                                     "end": {
                                         "line": 3,
                                         "column": 13
                                     }
                                 },
-                                "callee": {
-                                    "type": "Identifier",
+                                "expression": {
+                                    "type": "CallExpression",
                                     "range": [
                                         46,
-                                        52
+                                        54
                                     ],
                                     "loc": {
                                         "start": {
@@ -233,12 +250,29 @@ module.exports = {
                                         },
                                         "end": {
                                             "line": 3,
-                                            "column": 11
+                                            "column": 13
                                         }
                                     },
-                                    "name": "Output"
-                                },
-                                "arguments": []
+                                    "callee": {
+                                        "type": "Identifier",
+                                        "range": [
+                                            46,
+                                            52
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 3,
+                                                "column": 5
+                                            },
+                                            "end": {
+                                                "line": 3,
+                                                "column": 11
+                                            }
+                                        },
+                                        "name": "Output"
+                                    },
+                                    "arguments": []
+                                }
                             }
                         ],
                         "typeAnnotation": null

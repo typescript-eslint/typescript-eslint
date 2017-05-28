@@ -39,7 +39,8 @@ const NODE_MODULES = "./node_modules/",
     MAKEFILE = "./Makefile.js",
     /* eslint-disable no-use-before-define */
     JS_FILES = `${find("lib/").filter(fileType("js")).join(" ")} parser.js`,
-    TEST_FILES = find("tests/lib/").filter(fileType("js")).join(" ");
+    TEST_FILES = find("tests/lib/").filter(fileType("js")).join(" "),
+    TOOLS_FILES = find("tools/").filter(fileType("js")).join(" ");
     /* eslint-enable no-use-before-define */
 
 //------------------------------------------------------------------------------
@@ -84,6 +85,12 @@ target.lint = function() {
 
     echo("Validating JavaScript test files");
     lastReturn = nodeCLI.exec("eslint", TEST_FILES);
+    if (lastReturn.code !== 0) {
+        errors++;
+    }
+
+    echo("Validating JavaScript tools files");
+    lastReturn = nodeCLI.exec("eslint", TOOLS_FILES);
     if (lastReturn.code !== 0) {
         errors++;
     }

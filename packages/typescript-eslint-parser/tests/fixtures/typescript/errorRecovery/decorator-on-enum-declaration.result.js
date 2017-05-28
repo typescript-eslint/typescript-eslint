@@ -2,7 +2,7 @@ module.exports = {
     "type": "Program",
     "range": [
         0,
-        20
+        14
     ],
     "loc": {
         "start": {
@@ -10,16 +10,16 @@ module.exports = {
             "column": 0
         },
         "end": {
-            "line": 2,
-            "column": 12
+            "line": 1,
+            "column": 14
         }
     },
     "body": [
         {
-            "type": "ClassDeclaration",
+            "type": "TSEnumDeclaration",
             "range": [
                 0,
-                20
+                14
             ],
             "loc": {
                 "start": {
@@ -27,54 +27,16 @@ module.exports = {
                     "column": 0
                 },
                 "end": {
-                    "line": 2,
-                    "column": 12
+                    "line": 1,
+                    "column": 14
                 }
             },
-            "id": {
-                "type": "Identifier",
-                "range": [
-                    14,
-                    17
-                ],
-                "loc": {
-                    "start": {
-                        "line": 2,
-                        "column": 6
-                    },
-                    "end": {
-                        "line": 2,
-                        "column": 9
-                    }
-                },
-                "name": "Qux"
-            },
-            "body": {
-                "type": "ClassBody",
-                "body": [],
-                "range": [
-                    18,
-                    20
-                ],
-                "loc": {
-                    "start": {
-                        "line": 2,
-                        "column": 10
-                    },
-                    "end": {
-                        "line": 2,
-                        "column": 12
-                    }
-                }
-            },
-            "superClass": null,
-            "implements": [],
             "decorators": [
                 {
                     "type": "Decorator",
                     "range": [
                         0,
-                        7
+                        4
                     ],
                     "loc": {
                         "start": {
@@ -83,14 +45,14 @@ module.exports = {
                         },
                         "end": {
                             "line": 1,
-                            "column": 7
+                            "column": 4
                         }
                     },
                     "expression": {
                         "type": "Identifier",
                         "range": [
                             1,
-                            7
+                            4
                         ],
                         "loc": {
                             "start": {
@@ -99,13 +61,32 @@ module.exports = {
                             },
                             "end": {
                                 "line": 1,
-                                "column": 7
+                                "column": 4
                             }
                         },
-                        "name": "sealed"
+                        "name": "dec"
                     }
                 }
-            ]
+            ],
+            "name": {
+                "type": "Identifier",
+                "range": [
+                    10,
+                    11
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 10
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 11
+                    }
+                },
+                "name": "E"
+            },
+            "members": []
         }
     ],
     "sourceType": "script",
@@ -130,10 +111,10 @@ module.exports = {
         },
         {
             "type": "Identifier",
-            "value": "sealed",
+            "value": "dec",
             "range": [
                 1,
-                7
+                4
             ],
             "loc": {
                 "start": {
@@ -142,43 +123,43 @@ module.exports = {
                 },
                 "end": {
                     "line": 1,
-                    "column": 7
+                    "column": 4
                 }
             }
         },
         {
             "type": "Keyword",
-            "value": "class",
+            "value": "enum",
             "range": [
-                8,
-                13
+                5,
+                9
             ],
             "loc": {
                 "start": {
-                    "line": 2,
-                    "column": 0
+                    "line": 1,
+                    "column": 5
                 },
                 "end": {
-                    "line": 2,
-                    "column": 5
+                    "line": 1,
+                    "column": 9
                 }
             }
         },
         {
             "type": "Identifier",
-            "value": "Qux",
+            "value": "E",
             "range": [
-                14,
-                17
+                10,
+                11
             ],
             "loc": {
                 "start": {
-                    "line": 2,
-                    "column": 6
+                    "line": 1,
+                    "column": 10
                 },
                 "end": {
-                    "line": 2,
-                    "column": 9
+                    "line": 1,
+                    "column": 11
                 }
             }
         },
@@ -186,17 +167,17 @@ module.exports = {
             "type": "Punctuator",
             "value": "{",
             "range": [
-                18,
-                19
+                12,
+                13
             ],
             "loc": {
                 "start": {
-                    "line": 2,
-                    "column": 10
+                    "line": 1,
+                    "column": 12
                 },
                 "end": {
-                    "line": 2,
-                    "column": 11
+                    "line": 1,
+                    "column": 13
                 }
             }
         },
@@ -204,17 +185,17 @@ module.exports = {
             "type": "Punctuator",
             "value": "}",
             "range": [
-                19,
-                20
+                13,
+                14
             ],
             "loc": {
                 "start": {
-                    "line": 2,
-                    "column": 11
+                    "line": 1,
+                    "column": 13
                 },
                 "end": {
-                    "line": 2,
-                    "column": 12
+                    "line": 1,
+                    "column": 14
                 }
             }
         }

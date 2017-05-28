@@ -71,26 +71,26 @@ module.exports = {
             "implements": [],
             "decorators": [
                 {
-                    "type": "CallExpression",
+                    "type": "Decorator",
                     "range": [
-                        1,
+                        0,
                         36
                     ],
                     "loc": {
                         "start": {
                             "line": 1,
-                            "column": 1
+                            "column": 0
                         },
                         "end": {
                             "line": 3,
                             "column": 2
                         }
                     },
-                    "callee": {
-                        "type": "Identifier",
+                    "expression": {
+                        "type": "CallExpression",
                         "range": [
                             1,
-                            10
+                            36
                         ],
                         "loc": {
                             "start": {
@@ -98,51 +98,51 @@ module.exports = {
                                 "column": 1
                             },
                             "end": {
-                                "line": 1,
-                                "column": 10
+                                "line": 3,
+                                "column": 2
                             }
                         },
-                        "name": "Component"
-                    },
-                    "arguments": [
-                        {
-                            "type": "ObjectExpression",
+                        "callee": {
+                            "type": "Identifier",
                             "range": [
-                                11,
-                                35
+                                1,
+                                10
                             ],
                             "loc": {
                                 "start": {
                                     "line": 1,
-                                    "column": 11
+                                    "column": 1
                                 },
                                 "end": {
-                                    "line": 3,
-                                    "column": 1
+                                    "line": 1,
+                                    "column": 10
                                 }
                             },
-                            "properties": [
-                                {
-                                    "type": "Property",
-                                    "range": [
-                                        17,
-                                        32
-                                    ],
-                                    "loc": {
-                                        "start": {
-                                            "line": 2,
-                                            "column": 4
-                                        },
-                                        "end": {
-                                            "line": 2,
-                                            "column": 19
-                                        }
+                            "name": "Component"
+                        },
+                        "arguments": [
+                            {
+                                "type": "ObjectExpression",
+                                "range": [
+                                    11,
+                                    35
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 11
                                     },
-                                    "key": {
-                                        "type": "Identifier",
+                                    "end": {
+                                        "line": 3,
+                                        "column": 1
+                                    }
+                                },
+                                "properties": [
+                                    {
+                                        "type": "Property",
                                         "range": [
                                             17,
-                                            25
+                                            32
                                         ],
                                         "loc": {
                                             "start": {
@@ -151,38 +151,55 @@ module.exports = {
                                             },
                                             "end": {
                                                 "line": 2,
-                                                "column": 12
-                                            }
-                                        },
-                                        "name": "selector"
-                                    },
-                                    "value": {
-                                        "type": "Literal",
-                                        "range": [
-                                            27,
-                                            32
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 2,
-                                                "column": 14
-                                            },
-                                            "end": {
-                                                "line": 2,
                                                 "column": 19
                                             }
                                         },
-                                        "value": "foo",
-                                        "raw": "'foo'"
-                                    },
-                                    "computed": false,
-                                    "method": false,
-                                    "shorthand": false,
-                                    "kind": "init"
-                                }
-                            ]
-                        }
-                    ]
+                                        "key": {
+                                            "type": "Identifier",
+                                            "range": [
+                                                17,
+                                                25
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 4
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 12
+                                                }
+                                            },
+                                            "name": "selector"
+                                        },
+                                        "value": {
+                                            "type": "Literal",
+                                            "range": [
+                                                27,
+                                                32
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 14
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 19
+                                                }
+                                            },
+                                            "value": "foo",
+                                            "raw": "'foo'"
+                                        },
+                                        "computed": false,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "kind": "init"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         }

@@ -178,26 +178,26 @@ module.exports = {
                                     },
                                     "decorators": [
                                         {
-                                            "type": "CallExpression",
+                                            "type": "Decorator",
                                             "range": [
-                                                34,
+                                                33,
                                                 47
                                             ],
                                             "loc": {
                                                 "start": {
                                                     "line": 2,
-                                                    "column": 16
+                                                    "column": 15
                                                 },
                                                 "end": {
                                                     "line": 2,
                                                     "column": 29
                                                 }
                                             },
-                                            "callee": {
-                                                "type": "Identifier",
+                                            "expression": {
+                                                "type": "CallExpression",
                                                 "range": [
                                                     34,
-                                                    41
+                                                    47
                                                 ],
                                                 "loc": {
                                                     "start": {
@@ -206,32 +206,49 @@ module.exports = {
                                                     },
                                                     "end": {
                                                         "line": 2,
-                                                        "column": 23
+                                                        "column": 29
                                                     }
                                                 },
-                                                "name": "special"
-                                            },
-                                            "arguments": [
-                                                {
-                                                    "type": "Literal",
+                                                "callee": {
+                                                    "type": "Identifier",
                                                     "range": [
-                                                        42,
-                                                        46
+                                                        34,
+                                                        41
                                                     ],
                                                     "loc": {
                                                         "start": {
                                                             "line": 2,
-                                                            "column": 24
+                                                            "column": 16
                                                         },
                                                         "end": {
                                                             "line": 2,
-                                                            "column": 28
+                                                            "column": 23
                                                         }
                                                     },
-                                                    "value": true,
-                                                    "raw": "true"
-                                                }
-                                            ]
+                                                    "name": "special"
+                                                },
+                                                "arguments": [
+                                                    {
+                                                        "type": "Literal",
+                                                        "range": [
+                                                            42,
+                                                            46
+                                                        ],
+                                                        "loc": {
+                                                            "start": {
+                                                                "line": 2,
+                                                                "column": 24
+                                                            },
+                                                            "end": {
+                                                                "line": 2,
+                                                                "column": 28
+                                                            }
+                                                        },
+                                                        "value": true,
+                                                        "raw": "true"
+                                                    }
+                                                ]
+                                            }
                                         }
                                     ]
                                 }

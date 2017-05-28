@@ -92,26 +92,26 @@ module.exports = {
                         "accessibility": null,
                         "decorators": [
                             {
-                                "type": "CallExpression",
+                                "type": "Decorator",
                                 "range": [
-                                    15,
+                                    14,
                                     33
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 2,
-                                        "column": 5
+                                        "column": 4
                                     },
                                     "end": {
                                         "line": 2,
                                         "column": 23
                                     }
                                 },
-                                "callee": {
-                                    "type": "Identifier",
+                                "expression": {
+                                    "type": "CallExpression",
                                     "range": [
                                         15,
-                                        27
+                                        33
                                     ],
                                     "loc": {
                                         "start": {
@@ -120,32 +120,49 @@ module.exports = {
                                         },
                                         "end": {
                                             "line": 2,
-                                            "column": 17
+                                            "column": 23
                                         }
                                     },
-                                    "name": "configurable"
-                                },
-                                "arguments": [
-                                    {
-                                        "type": "Literal",
+                                    "callee": {
+                                        "type": "Identifier",
                                         "range": [
-                                            28,
-                                            32
+                                            15,
+                                            27
                                         ],
                                         "loc": {
                                             "start": {
                                                 "line": 2,
-                                                "column": 18
+                                                "column": 5
                                             },
                                             "end": {
                                                 "line": 2,
-                                                "column": 22
+                                                "column": 17
                                             }
                                         },
-                                        "value": true,
-                                        "raw": "true"
-                                    }
-                                ]
+                                        "name": "configurable"
+                                    },
+                                    "arguments": [
+                                        {
+                                            "type": "Literal",
+                                            "range": [
+                                                28,
+                                                32
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 18
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 22
+                                                }
+                                            },
+                                            "value": true,
+                                            "raw": "true"
+                                        }
+                                    ]
+                                }
                             }
                         ],
                         "typeAnnotation": null
@@ -190,26 +207,26 @@ module.exports = {
                         "accessibility": null,
                         "decorators": [
                             {
-                                "type": "CallExpression",
+                                "type": "Decorator",
                                 "range": [
-                                    54,
+                                    53,
                                     73
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 4,
-                                        "column": 5
+                                        "column": 4
                                     },
                                     "end": {
                                         "line": 4,
                                         "column": 24
                                     }
                                 },
-                                "callee": {
-                                    "type": "Identifier",
+                                "expression": {
+                                    "type": "CallExpression",
                                     "range": [
                                         54,
-                                        66
+                                        73
                                     ],
                                     "loc": {
                                         "start": {
@@ -218,32 +235,49 @@ module.exports = {
                                         },
                                         "end": {
                                             "line": 4,
-                                            "column": 17
+                                            "column": 24
                                         }
                                     },
-                                    "name": "configurable"
-                                },
-                                "arguments": [
-                                    {
-                                        "type": "Literal",
+                                    "callee": {
+                                        "type": "Identifier",
                                         "range": [
-                                            67,
-                                            72
+                                            54,
+                                            66
                                         ],
                                         "loc": {
                                             "start": {
                                                 "line": 4,
-                                                "column": 18
+                                                "column": 5
                                             },
                                             "end": {
                                                 "line": 4,
-                                                "column": 23
+                                                "column": 17
                                             }
                                         },
-                                        "value": false,
-                                        "raw": "false"
-                                    }
-                                ]
+                                        "name": "configurable"
+                                    },
+                                    "arguments": [
+                                        {
+                                            "type": "Literal",
+                                            "range": [
+                                                67,
+                                                72
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 4,
+                                                    "column": 18
+                                                },
+                                                "end": {
+                                                    "line": 4,
+                                                    "column": 23
+                                                }
+                                            },
+                                            "value": false,
+                                            "raw": "false"
+                                        }
+                                    ]
+                                }
                             }
                         ],
                         "typeAnnotation": null
