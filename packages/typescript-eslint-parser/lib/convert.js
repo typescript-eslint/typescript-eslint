@@ -618,7 +618,7 @@ module.exports = function convert(config) {
                 type: AST_NODE_TYPES.Property,
                 key: convertChild(node.name),
                 value: convertChild(node.initializer),
-                computed: (node.name.kind === SyntaxKind.ComputedPropertyName),
+                computed: nodeUtils.isComputedProperty(node.name),
                 method: false,
                 shorthand: false,
                 kind: "init"
@@ -660,7 +660,7 @@ module.exports = function convert(config) {
                 type: (isAbstract) ? AST_NODE_TYPES.TSAbstractClassProperty : AST_NODE_TYPES.ClassProperty,
                 key: convertChild(node.name),
                 value: convertChild(node.initializer),
-                computed: (node.name.kind === SyntaxKind.ComputedPropertyName),
+                computed: nodeUtils.isComputedProperty(node.name),
                 static: nodeUtils.hasStaticModifierFlag(node),
                 accessibility: nodeUtils.getTSNodeAccessibility(node),
                 decorators: convertDecorators(node.decorators),
@@ -713,7 +713,7 @@ module.exports = function convert(config) {
                     type: AST_NODE_TYPES.Property,
                     key: convertChild(node.name),
                     value: method,
-                    computed: (node.name.kind === SyntaxKind.ComputedPropertyName),
+                    computed: nodeUtils.isComputedProperty(node.name),
                     method: nodeIsMethod,
                     shorthand: false,
                     kind: "init"
@@ -730,8 +730,6 @@ module.exports = function convert(config) {
                     return convertedParam;
                 });
 
-                const isMethodNameComputed = (node.name.kind === SyntaxKind.ComputedPropertyName);
-
                 /**
                  * TypeScript class methods can be defined as "abstract"
                  */
@@ -743,7 +741,7 @@ module.exports = function convert(config) {
                     type: methodDefinitionType,
                     key: convertChild(node.name),
                     value: method,
-                    computed: isMethodNameComputed,
+                    computed: nodeUtils.isComputedProperty(node.name),
                     static: nodeUtils.hasStaticModifierFlag(node),
                     kind: "method",
                     accessibility: nodeUtils.getTSNodeAccessibility(node),
@@ -805,7 +803,7 @@ module.exports = function convert(config) {
                 };
 
             const constructorIdentifierLoc = ast.getLineAndCharacterOfPosition(firstConstructorToken.getStart()),
-                constructorIsComputed = !!node.name && (node.name.kind === SyntaxKind.ComputedPropertyName);
+                constructorIsComputed = !!node.name && nodeUtils.isComputedProperty(node.name);
 
             let constructorKey;
 
@@ -1723,6 +1721,72 @@ module.exports = function convert(config) {
 
         }
 
+        case SyntaxKind.MethodSignature: {
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSMethodSignature,
+                optional: nodeUtils.isOptional(node),
+                computed: nodeUtils.isComputedProperty(node.name),
+                key: convertChild(node.name),
+                params: node.parameters.map(parameter => convertChild(parameter)),
+                typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null,
+                accessibility: nodeUtils.getTSNodeAccessibility(node),
+                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
+                static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
+                export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
+            });
+
+            if (node.typeParameters) {
+                result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
+            }
+
+            break;
+        }
+
+        case SyntaxKind.PropertySignature: {
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSPropertySignature,
+                optional: nodeUtils.isOptional(node),
+                computed: nodeUtils.isComputedProperty(node.name),
+                key: convertChild(node.name),
+                typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null,
+                initializer: convertChild(node.initializer),
+                accessibility: nodeUtils.getTSNodeAccessibility(node),
+                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
+                static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
+                export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
+            });
+
+            break;
+        }
+
+        case SyntaxKind.IndexSignature: {
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSIndexSignature,
+                index: convertChild(node.parameters[0]),
+                typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null,
+                accessibility: nodeUtils.getTSNodeAccessibility(node),
+                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
+                static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
+                export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
+            });
+
+            break;
+        }
+
+        case SyntaxKind.ConstructSignature: {
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSConstructSignature,
+                params: node.parameters.map(parameter => convertChild(parameter)),
+                typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null
+            });
+
+            if (node.typeParameters) {
+                result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
+            }
+
+            break;
+        }
+
         case SyntaxKind.InterfaceDeclaration: {
             const interfaceHeritageClauses = node.heritageClauses || [];
 
@@ -1769,15 +1833,6 @@ module.exports = function convert(config) {
                 parameterName: convertChild(node.parameterName),
                 typeAnnotation: convertTypeAnnotation(node.type)
             });
-            break;
-
-        case SyntaxKind.PropertySignature:
-        case SyntaxKind.MethodSignature:
-            deeplyCopy();
-
-            if (node.questionToken) {
-                result.name.optional = true;
-            }
             break;
 
         default:

@@ -212,145 +212,123 @@ module.exports = {
                             },
                             "members": [
                                 {
-                                    "loc": {
-                                        "end": {
-                                            "column": 39,
-                                            "line": 1
-                                        },
-                                        "start": {
-                                            "column": 26,
-                                            "line": 1
-                                        }
-                                    },
-                                    "name": {
-                                        "loc": {
-                                            "end": {
-                                                "column": 29,
-                                                "line": 1
-                                            },
-                                            "start": {
-                                                "column": 26,
-                                                "line": 1
-                                            }
-                                        },
-                                        "name": "bar",
-                                        "optional": true,
-                                        "range": [
-                                            26,
-                                            29
-                                        ],
-                                        "type": "Identifier"
-                                    },
-                                    "questionToken": {
-                                        "loc": {
-                                            "end": {
-                                                "column": 30,
-                                                "line": 1
-                                            },
-                                            "start": {
-                                                "column": 29,
-                                                "line": 1
-                                            }
-                                        },
-                                        "range": [
-                                            29,
-                                            30
-                                        ],
-                                        "type": "TSQuestionToken"
-                                    },
+                                    "type": "TSPropertySignature",
                                     "range": [
                                         26,
                                         39
                                     ],
-                                    "type": "TSPropertySignature",
-                                    "typeAnnotation": {
+                                    "loc": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 26
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 39
+                                        }
+                                    },
+                                    "optional": true,
+                                    "computed": false,
+                                    "key": {
+                                        "type": "Identifier",
+                                        "range": [
+                                            26,
+                                            29
+                                        ],
                                         "loc": {
-                                            "end": {
-                                                "column": 38,
-                                                "line": 1
-                                            },
                                             "start": {
-                                                "column": 32,
-                                                "line": 1
+                                                "line": 1,
+                                                "column": 26
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 29
+                                            }
+                                        },
+                                        "name": "bar"
+                                    },
+                                    "typeAnnotation": {
+                                        "type": "TypeAnnotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 32
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 38
                                             }
                                         },
                                         "range": [
                                             32,
                                             38
                                         ],
-                                        "type": "TypeAnnotation",
                                         "typeAnnotation": {
-                                            "loc": {
-                                                "end": {
-                                                    "column": 38,
-                                                    "line": 1
-                                                },
-                                                "start": {
-                                                    "column": 32,
-                                                    "line": 1
-                                                }
-                                            },
+                                            "type": "TSStringKeyword",
                                             "range": [
                                                 32,
                                                 38
                                             ],
-                                            "type": "TSStringKeyword"
+                                            "loc": {
+                                                "start": {
+                                                    "line": 1,
+                                                    "column": 32
+                                                },
+                                                "end": {
+                                                    "line": 1,
+                                                    "column": 38
+                                                }
+                                            }
                                         }
-                                    }
+                                    },
+                                    "initializer": null,
+                                    "accessibility": null,
+                                    "readonly": false,
+                                    "static": false,
+                                    "export": false
                                 },
                                 {
-                                    "loc": {
-                                        "end": {
-                                            "column": 44,
-                                            "line": 1
-                                        },
-                                        "start": {
-                                            "column": 40,
-                                            "line": 1
-                                        }
-                                    },
-                                    "name": {
-                                        "loc": {
-                                            "end": {
-                                                "column": 43,
-                                                "line": 1
-                                            },
-                                            "start": {
-                                                "column": 40,
-                                                "line": 1
-                                            }
-                                        },
-                                        "name": "baz",
-                                        "optional": true,
-                                        "range": [
-                                            40,
-                                            43
-                                        ],
-                                        "type": "Identifier"
-                                    },
-                                    "questionToken": {
-                                        "loc": {
-                                            "end": {
-                                                "column": 44,
-                                                "line": 1
-                                            },
-                                            "start": {
-                                                "column": 43,
-                                                "line": 1
-                                            }
-                                        },
-                                        "range": [
-                                            43,
-                                            44
-                                        ],
-                                        "type": "TSQuestionToken"
-                                    },
+                                    "type": "TSPropertySignature",
                                     "range": [
                                         40,
                                         44
                                     ],
-                                    "type": "TSPropertySignature",
-                                    "typeAnnotation": null
+                                    "loc": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 40
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 44
+                                        }
+                                    },
+                                    "optional": true,
+                                    "computed": false,
+                                    "key": {
+                                        "type": "Identifier",
+                                        "range": [
+                                            40,
+                                            43
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 40
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 43
+                                            }
+                                        },
+                                        "name": "baz"
+                                    },
+                                    "typeAnnotation": null,
+                                    "initializer": null,
+                                    "accessibility": null,
+                                    "readonly": false,
+                                    "static": false,
+                                    "export": false
                                 }
                             ],
                             "range": [

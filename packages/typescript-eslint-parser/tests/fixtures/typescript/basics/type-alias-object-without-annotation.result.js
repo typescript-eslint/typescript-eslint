@@ -86,7 +86,9 @@ module.exports = {
                                         "column": 24
                                     }
                                 },
-                                "name": {
+                                "optional": false,
+                                "computed": false,
+                                "key": {
                                     "type": "Identifier",
                                     "range": [
                                         12,
@@ -137,7 +139,12 @@ module.exports = {
                                             }
                                         }
                                     }
-                                }
+                                },
+                                "initializer": null,
+                                "accessibility": null,
+                                "readonly": false,
+                                "static": false,
+                                "export": false
                             },
                             {
                                 "type": "TSPropertySignature",
@@ -155,7 +162,9 @@ module.exports = {
                                         "column": 28
                                     }
                                 },
-                                "name": {
+                                "optional": false,
+                                "computed": false,
+                                "key": {
                                     "type": "Identifier",
                                     "range": [
                                         25,
@@ -173,7 +182,12 @@ module.exports = {
                                     },
                                     "name": "baz"
                                 },
-                                "typeAnnotation": null
+                                "typeAnnotation": null,
+                                "initializer": null,
+                                "accessibility": null,
+                                "readonly": false,
+                                "static": false,
+                                "export": false
                             }
                         ]
                     },

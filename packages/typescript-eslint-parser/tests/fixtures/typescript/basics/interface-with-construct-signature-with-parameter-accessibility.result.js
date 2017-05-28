@@ -51,8 +51,7 @@ module.exports = {
                                 "column": 30
                             }
                         },
-                        "typeParameters": null,
-                        "parameters": [
+                        "params": [
                             {
                                 "type": "TSParameterProperty",
                                 "range": [
@@ -131,7 +130,8 @@ module.exports = {
                                     "name": "y"
                                 }
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null
                     }
                 ],
                 "range": [

@@ -106,6 +106,7 @@ module.exports = {
     TSConstructorType: "TSConstructorType",
     TSConstructSignature: "TSConstructSignature",
     TSDeclareKeyword: "TSDeclareKeyword",
+    TSIndexSignature: "TSIndexSignature",
     TSInterfaceBody: "TSInterfaceBody",
     TSInterfaceDeclaration: "TSInterfaceDeclaration",
     TSInterfaceHeritage: "TSInterfaceHeritage",
