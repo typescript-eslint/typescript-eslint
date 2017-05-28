@@ -92,22 +92,39 @@ module.exports = {
                         "accessibility": null,
                         "decorators": [
                             {
-                                "type": "Identifier",
+                                "type": "Decorator",
                                 "range": [
-                                    15,
+                                    14,
                                     18
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 2,
-                                        "column": 5
+                                        "column": 4
                                     },
                                     "end": {
                                         "line": 2,
                                         "column": 8
                                     }
                                 },
-                                "name": "baz"
+                                "expression": {
+                                    "type": "Identifier",
+                                    "range": [
+                                        15,
+                                        18
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 5
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 8
+                                        }
+                                    },
+                                    "name": "baz"
+                                }
                             }
                         ],
                         "typeAnnotation": null
@@ -152,22 +169,39 @@ module.exports = {
                         "accessibility": null,
                         "decorators": [
                             {
-                                "type": "Identifier",
+                                "type": "Decorator",
                                 "range": [
-                                    34,
+                                    33,
                                     37
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 3,
-                                        "column": 5
+                                        "column": 4
                                     },
                                     "end": {
                                         "line": 3,
                                         "column": 8
                                     }
                                 },
-                                "name": "qux"
+                                "expression": {
+                                    "type": "Identifier",
+                                    "range": [
+                                        34,
+                                        37
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 3,
+                                            "column": 5
+                                        },
+                                        "end": {
+                                            "line": 3,
+                                            "column": 8
+                                        }
+                                    },
+                                    "name": "qux"
+                                }
                             }
                         ],
                         "typeAnnotation": null

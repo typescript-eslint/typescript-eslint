@@ -203,26 +203,26 @@ module.exports = {
                         "accessibility": null,
                         "decorators": [
                             {
-                                "type": "CallExpression",
+                                "type": "Decorator",
                                 "range": [
-                                    19,
+                                    18,
                                     38
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 2,
-                                        "column": 5
+                                        "column": 4
                                     },
                                     "end": {
                                         "line": 2,
                                         "column": 24
                                     }
                                 },
-                                "callee": {
-                                    "type": "Identifier",
+                                "expression": {
+                                    "type": "CallExpression",
                                     "range": [
                                         19,
-                                        31
+                                        38
                                     ],
                                     "loc": {
                                         "start": {
@@ -231,32 +231,49 @@ module.exports = {
                                         },
                                         "end": {
                                             "line": 2,
-                                            "column": 17
+                                            "column": 24
                                         }
                                     },
-                                    "name": "configurable"
-                                },
-                                "arguments": [
-                                    {
-                                        "type": "Literal",
+                                    "callee": {
+                                        "type": "Identifier",
                                         "range": [
-                                            32,
-                                            37
+                                            19,
+                                            31
                                         ],
                                         "loc": {
                                             "start": {
                                                 "line": 2,
-                                                "column": 18
+                                                "column": 5
                                             },
                                             "end": {
                                                 "line": 2,
-                                                "column": 23
+                                                "column": 17
                                             }
                                         },
-                                        "value": false,
-                                        "raw": "false"
-                                    }
-                                ]
+                                        "name": "configurable"
+                                    },
+                                    "arguments": [
+                                        {
+                                            "type": "Literal",
+                                            "range": [
+                                                32,
+                                                37
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 18
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 23
+                                                }
+                                            },
+                                            "value": false,
+                                            "raw": "false"
+                                        }
+                                    ]
+                                }
                             }
                         ]
                     }

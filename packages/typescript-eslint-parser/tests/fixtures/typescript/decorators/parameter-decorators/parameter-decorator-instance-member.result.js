@@ -288,22 +288,39 @@ module.exports = {
                                     },
                                     "decorators": [
                                         {
-                                            "type": "Identifier",
+                                            "type": "Decorator",
                                             "range": [
-                                                27,
+                                                26,
                                                 35
                                             ],
                                             "loc": {
                                                 "start": {
                                                     "line": 2,
-                                                    "column": 11
+                                                    "column": 10
                                                 },
                                                 "end": {
                                                     "line": 2,
                                                     "column": 19
                                                 }
                                             },
-                                            "name": "required"
+                                            "expression": {
+                                                "type": "Identifier",
+                                                "range": [
+                                                    27,
+                                                    35
+                                                ],
+                                                "loc": {
+                                                    "start": {
+                                                        "line": 2,
+                                                        "column": 11
+                                                    },
+                                                    "end": {
+                                                        "line": 2,
+                                                        "column": 19
+                                                    }
+                                                },
+                                                "name": "required"
+                                            }
                                         }
                                     ]
                                 }

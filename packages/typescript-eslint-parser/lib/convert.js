@@ -203,6 +203,26 @@ module.exports = function convert(config) {
     }
 
     /**
+     * Converts an array of TSNode decorators into an array of ESTreeNode decorators
+     * @param  {TSNode[]} decorators An array of TSNode decorators to be converted
+     * @returns {ESTreeNode[]}       an array of converted ESTreeNode decorators
+     */
+    function convertDecorators(decorators) {
+        if (!decorators || !decorators.length) {
+            return [];
+        }
+        return decorators.map(decorator => {
+            const expression = convertChild(decorator.expression);
+            return {
+                type: AST_NODE_TYPES.Decorator,
+                range: [decorator.getStart(), decorator.end],
+                loc: nodeUtils.getLoc(decorator, ast),
+                expression
+            };
+        });
+    }
+
+    /**
      * For nodes that are copied directly from the TypeScript AST into
      * ESTree mostly as-is. The only difference is the addition of a type
      * property instead of a kind property. Recursively copies all children.
@@ -232,6 +252,11 @@ module.exports = function convert(config) {
                     result.typeParameters = (node.typeParameters)
                         ? convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters)
                         : null;
+                } else if (key === "decorators") {
+                    const decorators = convertDecorators(node.decorators);
+                    if (decorators && decorators.length) {
+                        result.decorators = decorators;
+                    }
                 } else {
                     if (Array.isArray(node[key])) {
                         result[key] = node[key].map(convertChild);
@@ -274,18 +299,6 @@ module.exports = function convert(config) {
         delete tagNameToken.value;
 
         return tagNameToken;
-    }
-
-    /**
-     * Converts an array of TSNode decorators into an array of ESTreeNode decorators
-     * @param  {TSNode[]} decorators An array of TSNode decorators to be converted
-     * @returns {ESTreeNode[]}       an array of converted ESTreeNode decorators
-     */
-    function convertDecorators(decorators) {
-        if (!decorators || !decorators.length) {
-            return [];
-        }
-        return decorators.map(decorator => convertChild(decorator.expression));
     }
 
     /**

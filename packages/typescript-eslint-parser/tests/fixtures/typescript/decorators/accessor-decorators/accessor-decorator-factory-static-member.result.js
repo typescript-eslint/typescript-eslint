@@ -203,26 +203,26 @@ module.exports = {
                         "accessibility": null,
                         "decorators": [
                             {
-                                "type": "CallExpression",
+                                "type": "Decorator",
                                 "range": [
-                                    19,
+                                    18,
                                     37
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 2,
-                                        "column": 5
+                                        "column": 4
                                     },
                                     "end": {
                                         "line": 2,
                                         "column": 23
                                     }
                                 },
-                                "callee": {
-                                    "type": "Identifier",
+                                "expression": {
+                                    "type": "CallExpression",
                                     "range": [
                                         19,
-                                        22
+                                        37
                                     ],
                                     "loc": {
                                         "start": {
@@ -231,50 +231,50 @@ module.exports = {
                                         },
                                         "end": {
                                             "line": 2,
-                                            "column": 8
+                                            "column": 23
                                         }
                                     },
-                                    "name": "foo"
-                                },
-                                "arguments": [
-                                    {
-                                        "type": "ObjectExpression",
+                                    "callee": {
+                                        "type": "Identifier",
                                         "range": [
-                                            23,
-                                            36
+                                            19,
+                                            22
                                         ],
                                         "loc": {
                                             "start": {
                                                 "line": 2,
-                                                "column": 9
+                                                "column": 5
                                             },
                                             "end": {
                                                 "line": 2,
-                                                "column": 22
+                                                "column": 8
                                             }
                                         },
-                                        "properties": [
-                                            {
-                                                "type": "Property",
-                                                "range": [
-                                                    25,
-                                                    34
-                                                ],
-                                                "loc": {
-                                                    "start": {
-                                                        "line": 2,
-                                                        "column": 11
-                                                    },
-                                                    "end": {
-                                                        "line": 2,
-                                                        "column": 20
-                                                    }
+                                        "name": "foo"
+                                    },
+                                    "arguments": [
+                                        {
+                                            "type": "ObjectExpression",
+                                            "range": [
+                                                23,
+                                                36
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 9
                                                 },
-                                                "key": {
-                                                    "type": "Identifier",
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 22
+                                                }
+                                            },
+                                            "properties": [
+                                                {
+                                                    "type": "Property",
                                                     "range": [
                                                         25,
-                                                        28
+                                                        34
                                                     ],
                                                     "loc": {
                                                         "start": {
@@ -283,38 +283,55 @@ module.exports = {
                                                         },
                                                         "end": {
                                                             "line": 2,
-                                                            "column": 14
-                                                        }
-                                                    },
-                                                    "name": "baz"
-                                                },
-                                                "value": {
-                                                    "type": "Literal",
-                                                    "range": [
-                                                        30,
-                                                        34
-                                                    ],
-                                                    "loc": {
-                                                        "start": {
-                                                            "line": 2,
-                                                            "column": 16
-                                                        },
-                                                        "end": {
-                                                            "line": 2,
                                                             "column": 20
                                                         }
                                                     },
-                                                    "value": true,
-                                                    "raw": "true"
-                                                },
-                                                "computed": false,
-                                                "method": false,
-                                                "shorthand": false,
-                                                "kind": "init"
-                                            }
-                                        ]
-                                    }
-                                ]
+                                                    "key": {
+                                                        "type": "Identifier",
+                                                        "range": [
+                                                            25,
+                                                            28
+                                                        ],
+                                                        "loc": {
+                                                            "start": {
+                                                                "line": 2,
+                                                                "column": 11
+                                                            },
+                                                            "end": {
+                                                                "line": 2,
+                                                                "column": 14
+                                                            }
+                                                        },
+                                                        "name": "baz"
+                                                    },
+                                                    "value": {
+                                                        "type": "Literal",
+                                                        "range": [
+                                                            30,
+                                                            34
+                                                        ],
+                                                        "loc": {
+                                                            "start": {
+                                                                "line": 2,
+                                                                "column": 16
+                                                            },
+                                                            "end": {
+                                                                "line": 2,
+                                                                "column": 20
+                                                            }
+                                                        },
+                                                        "value": true,
+                                                        "raw": "true"
+                                                    },
+                                                    "computed": false,
+                                                    "method": false,
+                                                    "shorthand": false,
+                                                    "kind": "init"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
                             }
                         ]
                     }

@@ -161,26 +161,26 @@ module.exports = {
                                     },
                                     "decorators": [
                                         {
-                                            "type": "CallExpression",
+                                            "type": "Decorator",
                                             "range": [
-                                                33,
+                                                32,
                                                 51
                                             ],
                                             "loc": {
                                                 "start": {
                                                     "line": 2,
-                                                    "column": 17
+                                                    "column": 16
                                                 },
                                                 "end": {
                                                     "line": 2,
                                                     "column": 35
                                                 }
                                             },
-                                            "callee": {
-                                                "type": "Identifier",
+                                            "expression": {
+                                                "type": "CallExpression",
                                                 "range": [
                                                     33,
-                                                    39
+                                                    51
                                                 ],
                                                 "loc": {
                                                     "start": {
@@ -189,31 +189,48 @@ module.exports = {
                                                     },
                                                     "end": {
                                                         "line": 2,
-                                                        "column": 23
+                                                        "column": 35
                                                     }
                                                 },
-                                                "name": "Inject"
-                                            },
-                                            "arguments": [
-                                                {
+                                                "callee": {
                                                     "type": "Identifier",
                                                     "range": [
-                                                        40,
-                                                        50
+                                                        33,
+                                                        39
                                                     ],
                                                     "loc": {
                                                         "start": {
                                                             "line": 2,
-                                                            "column": 24
+                                                            "column": 17
                                                         },
                                                         "end": {
                                                             "line": 2,
-                                                            "column": 34
+                                                            "column": 23
                                                         }
                                                     },
-                                                    "name": "APP_CONFIG"
-                                                }
-                                            ]
+                                                    "name": "Inject"
+                                                },
+                                                "arguments": [
+                                                    {
+                                                        "type": "Identifier",
+                                                        "range": [
+                                                            40,
+                                                            50
+                                                        ],
+                                                        "loc": {
+                                                            "start": {
+                                                                "line": 2,
+                                                                "column": 24
+                                                            },
+                                                            "end": {
+                                                                "line": 2,
+                                                                "column": 34
+                                                            }
+                                                        },
+                                                        "name": "APP_CONFIG"
+                                                    }
+                                                ]
+                                            }
                                         }
                                     ]
                                 }

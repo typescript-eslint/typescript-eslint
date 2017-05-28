@@ -132,22 +132,39 @@ module.exports = {
                         "accessibility": null,
                         "decorators": [
                             {
-                                "type": "Identifier",
+                                "type": "Decorator",
                                 "range": [
-                                    15,
+                                    14,
                                     18
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 2,
-                                        "column": 5
+                                        "column": 4
                                     },
                                     "end": {
                                         "line": 2,
                                         "column": 8
                                     }
                                 },
-                                "name": "Foo"
+                                "expression": {
+                                    "type": "Identifier",
+                                    "range": [
+                                        15,
+                                        18
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 5
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 8
+                                        }
+                                    },
+                                    "name": "Foo"
+                                }
                             }
                         ]
                     }
