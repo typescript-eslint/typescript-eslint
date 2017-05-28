@@ -326,15 +326,6 @@ module.exports = function convert(config) {
                 type: AST_NODE_TYPES.Identifier,
                 name: nodeUtils.unescapeIdentifier(node.text)
             });
-            if (node.parent.questionToken && (
-                SyntaxKind.Parameter === node.parent.kind ||
-                SyntaxKind.PropertyDeclaration === node.parent.kind ||
-                SyntaxKind.PropertySignature === node.parent.kind ||
-                SyntaxKind.MethodDeclaration === node.parent.kind ||
-                SyntaxKind.MethodSignature === node.parent.kind
-            )) {
-                result.optional = true;
-            }
             break;
 
         case SyntaxKind.WithStatement:
@@ -675,6 +666,14 @@ module.exports = function convert(config) {
                 decorators: convertDecorators(node.decorators),
                 typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null
             });
+
+            if (node.name.kind === SyntaxKind.Identifier && node.questionToken) {
+                result.key.optional = true;
+            }
+
+            if (result.key.type === AST_NODE_TYPES.Literal && node.questionToken) {
+                result.optional = true;
+            }
             break;
         }
 
@@ -751,6 +750,10 @@ module.exports = function convert(config) {
                     decorators: convertDecorators(node.decorators)
                 });
 
+            }
+
+            if (result.key.type === AST_NODE_TYPES.Identifier && node.questionToken) {
+                result.key.optional = true;
             }
 
             if (node.kind === SyntaxKind.GetAccessor) {
@@ -1095,6 +1098,10 @@ module.exports = function convert(config) {
                 Object.assign(parameter, {
                     typeAnnotation: convertTypeAnnotation(node.type)
                 });
+            }
+
+            if (node.questionToken) {
+                parameter.optional = true;
             }
 
             if (node.modifiers) {
@@ -1762,6 +1769,15 @@ module.exports = function convert(config) {
                 parameterName: convertChild(node.parameterName),
                 typeAnnotation: convertTypeAnnotation(node.type)
             });
+            break;
+
+        case SyntaxKind.PropertySignature:
+        case SyntaxKind.MethodSignature:
+            deeplyCopy();
+
+            if (node.questionToken) {
+                result.name.optional = true;
+            }
             break;
 
         default:
