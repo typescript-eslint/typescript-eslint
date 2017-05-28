@@ -108,27 +108,18 @@ module.exports = function convert(config) {
                 lastTypeArgument.end + 1
             ],
             loc: nodeUtils.getLocFor(firstTypeArgument.pos - 1, lastTypeArgument.end + 1, ast),
-            params: typeArguments.map(typeArgument => {
-                /**
-                 * Have to manually calculate the start of the range,
-                 * because TypeScript includes leading whitespace but Flow does not
-                 */
-                const typeArgumentStart = (typeArgument.typeName && typeArgument.typeName.text)
-                    ? typeArgument.end - typeArgument.typeName.text.length
-                    : typeArgument.pos;
-                return {
-                    type: AST_NODE_TYPES.GenericTypeAnnotation,
-                    range: [
-                        typeArgumentStart,
-                        typeArgument.end
-                    ],
-                    loc: nodeUtils.getLocFor(typeArgumentStart, typeArgument.end, ast),
-                    id: convertChild(typeArgument.typeName || typeArgument),
-                    typeParameters: (typeArgument.typeArguments)
-                        ? convertTypeArgumentsToTypeParameters(typeArgument.typeArguments)
-                        : null
-                };
-            })
+            params: typeArguments.map(typeArgument => ({
+                type: AST_NODE_TYPES.GenericTypeAnnotation,
+                range: [
+                    typeArgument.getStart(),
+                    typeArgument.getEnd()
+                ],
+                loc: nodeUtils.getLoc(typeArgument, ast),
+                id: convertChild(typeArgument.typeName || typeArgument),
+                typeParameters: (typeArgument.typeArguments)
+                    ? convertTypeArgumentsToTypeParameters(typeArgument.typeArguments)
+                    : null
+            }))
         };
     }
 
@@ -148,14 +139,7 @@ module.exports = function convert(config) {
             ],
             loc: nodeUtils.getLocFor(firstTypeParameter.pos - 1, lastTypeParameter.end + 1, ast),
             params: typeParameters.map(typeParameter => {
-
-                /**
-                 * Have to manually calculate the start of the range,
-                 * because TypeScript includes leading whitespace but Flow does not
-                 */
-                const typeParameterStart = (typeParameter.name && typeParameter.name.text)
-                    ? typeParameter.name.end - typeParameter.name.text.length
-                    : typeParameter.pos;
+                const name = nodeUtils.unescapeIdentifier(typeParameter.name.text);
 
                 const defaultParameter = typeParameter.default
                     ? convert({ node: typeParameter.default, parent: typeParameter, ast, additionalOptions })
@@ -164,11 +148,11 @@ module.exports = function convert(config) {
                 return {
                     type: AST_NODE_TYPES.TypeParameter,
                     range: [
-                        typeParameterStart,
-                        typeParameter.end
+                        typeParameter.getStart(),
+                        typeParameter.getEnd()
                     ],
-                    loc: nodeUtils.getLocFor(typeParameterStart, typeParameter.end, ast),
-                    name: typeParameter.name.text,
+                    loc: nodeUtils.getLoc(typeParameter, ast),
+                    name,
                     constraint: (typeParameter.constraint)
                         ? convertTypeAnnotation(typeParameter.constraint)
                         : null,
