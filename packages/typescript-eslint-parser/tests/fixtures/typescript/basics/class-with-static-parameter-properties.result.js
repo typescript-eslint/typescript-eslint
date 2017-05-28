@@ -107,7 +107,7 @@ module.exports = {
                                         }
                                     },
                                     "accessibility": null,
-                                    "isReadonly": false,
+                                    "readonly": false,
                                     "static": true,
                                     "export": false,
                                     "parameter": {
