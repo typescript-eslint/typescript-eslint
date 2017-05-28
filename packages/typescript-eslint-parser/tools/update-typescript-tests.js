@@ -12,7 +12,7 @@
 
 const shelljs = require("shelljs"),
     parser = require("../parser"),
-    tester = require("../tests/lib/tester"),
+    testUtils = require("./test-utils"),
     path = require("path");
 
 //------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ function getRaw(ast) {
  */
 function getExpectedResult(code, config) {
     try {
-        return tester.getRaw(parser.parse(code, config));
+        return testUtils.getRaw(parser.parse(code, config));
     } catch (ex) {
         const raw = getRaw(ex);
         raw.message = ex.message;
@@ -70,7 +70,6 @@ function outputResult(result, testResultFilename) {
 
 const FIXTURES_DIR = "./tests/fixtures/typescript";
 const testFiles = getTestFilenames(FIXTURES_DIR);
-const assert = require("chai").assert;
 
 testFiles.forEach(filename => {
 
@@ -86,13 +85,6 @@ testFiles.forEach(filename => {
     const testResultFilename = `${path.resolve(__dirname, "..", FIXTURES_DIR, filename)}.result.js`;
     const result = getExpectedResult(code, config);
 
-    const expected = require(testResultFilename);
-
-    try {
-        assert.deepEqual(result, expected);
-    } catch (e) {
-        shelljs.echo("DIFFERENT", e);
-        outputResult(result, testResultFilename);
-    }
+    outputResult(result, testResultFilename);
 
 });
