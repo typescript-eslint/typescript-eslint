@@ -51,7 +51,9 @@ module.exports = {
                                 "column": 13
                             }
                         },
-                        "name": {
+                        "optional": false,
+                        "computed": false,
+                        "key": {
                             "type": "Identifier",
                             "range": [
                                 76,
@@ -69,8 +71,7 @@ module.exports = {
                             },
                             "name": "foo"
                         },
-                        "typeParameters": null,
-                        "parameters": [
+                        "params": [
                             {
                                 "type": "Identifier",
                                 "range": [
@@ -89,7 +90,12 @@ module.exports = {
                                 },
                                 "name": "bar"
                             }
-                        ]
+                        ],
+                        "typeAnnotation": null,
+                        "accessibility": null,
+                        "readonly": false,
+                        "static": false,
+                        "export": false
                     }
                 ],
                 "range": [

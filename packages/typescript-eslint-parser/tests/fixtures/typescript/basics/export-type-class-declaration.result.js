@@ -107,49 +107,51 @@ module.exports = {
                                         48
                                     ],
                                     "loc": {
-                                        "end": {
-                                            "line": 2,
-                                            "column": 17
-                                        },
                                         "start": {
                                             "line": 2,
                                             "column": 4
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 17
                                         }
                                     },
-                                    "name": {
+                                    "optional": false,
+                                    "computed": false,
+                                    "key": {
                                         "type": "Identifier",
                                         "range": [
                                             35,
                                             40
                                         ],
                                         "loc": {
-                                            "end": {
-                                                "line": 2,
-                                                "column": 9
-                                            },
                                             "start": {
                                                 "line": 2,
                                                 "column": 4
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 9
                                             }
                                         },
                                         "name": "count"
                                     },
                                     "typeAnnotation": {
                                         "type": "TypeAnnotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 11
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 17
+                                            }
+                                        },
                                         "range": [
                                             42,
                                             48
                                         ],
-                                        "loc": {
-                                            "end": {
-                                                "line": 2,
-                                                "column": 17
-                                            },
-                                            "start": {
-                                                "line": 2,
-                                                "column": 11
-                                            }
-                                        },
                                         "typeAnnotation": {
                                             "type": "TSNumberKeyword",
                                             "range": [
@@ -157,17 +159,22 @@ module.exports = {
                                                 48
                                             ],
                                             "loc": {
-                                                "end": {
-                                                    "line": 2,
-                                                    "column": 17
-                                                },
                                                 "start": {
                                                     "line": 2,
                                                     "column": 11
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 17
                                                 }
                                             }
                                         }
-                                    }
+                                    },
+                                    "initializer": null,
+                                    "accessibility": null,
+                                    "readonly": false,
+                                    "static": false,
+                                    "export": false
                                 }
                             ]
                         }

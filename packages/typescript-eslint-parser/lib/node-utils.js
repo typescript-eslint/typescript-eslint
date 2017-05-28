@@ -186,6 +186,8 @@ module.exports = {
     hasJSXAncestor,
     unescapeIdentifier,
     unescapeStringLiteralText,
+    isComputedProperty,
+    isOptional,
     fixExports,
     getTokenType,
     convertToken,
@@ -444,6 +446,25 @@ function unescapeIdentifier(identifier) {
  */
 function unescapeStringLiteralText(text) {
     return unescape(text);
+}
+
+/**
+ * Returns true if a given TSNode is a computed property
+ * @param  {TSNode} node TSNode to be checked
+ * @returns {boolean}       is Computed Property
+ */
+function isComputedProperty(node) {
+    return node.kind === SyntaxKind.ComputedPropertyName;
+}
+
+/**
+ * Returns true if a given TSNode is optional (has QuestionToken)
+ * @param  {TSNode} node TSNode to be checked
+ * @returns {boolean}       is Optional
+ */
+function isOptional(node) {
+    return (node.questionToken)
+        ? (node.questionToken.kind === SyntaxKind.QuestionToken) : false;
 }
 
 /**
