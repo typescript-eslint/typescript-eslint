@@ -704,7 +704,7 @@ module.exports = function convert(config) {
                 method = {
                     type: AST_NODE_TYPES.FunctionExpression,
                     id: null,
-                    generator: false,
+                    generator: !!node.asteriskToken,
                     expression: false,
                     async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
                     body: convertChild(node.body),
