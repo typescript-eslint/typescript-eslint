@@ -89,12 +89,12 @@ module.exports = {
                                                     "line": 1
                                                 },
                                                 "start": {
-                                                    "column": 38,
+                                                    "column": 23,
                                                     "line": 1
                                                 }
                                             },
                                             "range": [
-                                                38,
+                                                23,
                                                 43
                                             ],
                                             "type": "GenericTypeAnnotation",
@@ -135,12 +135,12 @@ module.exports = {
                                                                 "line": 1
                                                             },
                                                             "start": {
-                                                                "column": 37,
+                                                                "column": 29,
                                                                 "line": 1
                                                             }
                                                         },
                                                         "range": [
-                                                            37,
+                                                            29,
                                                             42
                                                         ],
                                                         "type": "GenericTypeAnnotation",
