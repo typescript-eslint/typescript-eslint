@@ -11,12 +11,10 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("chai").assert,
-    leche = require("leche"),
-    path = require("path"),
+const path = require("path"),
     parser = require("../../parser"),
     shelljs = require("shelljs"),
-    tester = require("./tester");
+    testUtils = require("../../tools/test-utils");
 
 //------------------------------------------------------------------------------
 // Setup
@@ -84,7 +82,7 @@ describe("JSX", () => {
 
                 try {
                     result = parser.parse(code, config);
-                    result = tester.getRaw(result);
+                    result = testUtils.getRaw(result);
                 } catch (ex) {
 
                     // format of error isn't exactly the same, just check if it's expected
@@ -95,15 +93,15 @@ describe("JSX", () => {
 
 
                 }
-                assert.deepEqual(result, expected);
+                expect(result).toEqual(expected);
             });
         };
     }
 
     describe("useJSXTextNode: false", () => {
-        leche.withData(jsxTestFiles, testFixture(JSX_FIXTURES_DIR, false));
+        jsxTestFiles.forEach(testFixture(JSX_FIXTURES_DIR, false));
     });
     describe("useJSXTextNode: true", () => {
-        leche.withData(jsxTextTestFiles, testFixture(JSX_JSXTEXT_FIXTURES_DIR, true));
+        jsxTextTestFiles.forEach(testFixture(JSX_JSXTEXT_FIXTURES_DIR, true));
     });
 });

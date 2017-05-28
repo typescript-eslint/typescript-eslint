@@ -11,12 +11,10 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("chai").assert,
-    leche = require("leche"),
-    path = require("path"),
+const path = require("path"),
     parser = require("../../parser"),
     shelljs = require("shelljs"),
-    tester = require("./tester");
+    testUtils = require("../../tools/test-utils");
 
 //------------------------------------------------------------------------------
 // Setup
@@ -65,7 +63,7 @@ describe("ecmaFeatures", () => {
         };
     });
 
-    leche.withData(testFiles, filename => {
+    testFiles.forEach(filename => {
 
         // Uncomment and fill in filename to focus on a single file
         // var filename = "jsx/invalid-matching-placeholder-in-closing-tag";
@@ -98,7 +96,7 @@ describe("ecmaFeatures", () => {
 
             try {
                 result = parser.parse(code, config);
-                result = tester.getRaw(result);
+                result = testUtils.getRaw(result);
             } catch (ex) {
 
                 // format of error isn't exactly the same, just check if it's expected
@@ -109,7 +107,7 @@ describe("ecmaFeatures", () => {
 
 
             }
-            assert.deepEqual(result, expected);
+            expect(result).toEqual(expected);
         });
 
     });

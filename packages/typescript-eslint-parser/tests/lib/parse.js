@@ -11,9 +11,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("chai").assert,
-    parser = require("../../parser"),
-    tester = require("./tester");
+const parser = require("../../parser"),
+    testUtils = require("../../tools/test-utils");
 
 //------------------------------------------------------------------------------
 // Tests
@@ -25,8 +24,8 @@ describe("parse()", () => {
     describe("basic functionality", () => {
 
         it("should parse an empty string", () => {
-            assert.deepEqual(parser.parse("").body, []);
-            assert.deepEqual(parser.parse("", {}).body, []);
+            expect(parser.parse("").body).toEqual([]);
+            expect(parser.parse("", {}).body).toEqual([]);
         });
 
     });
@@ -37,7 +36,7 @@ describe("parse()", () => {
             try {
                 parser.parse("function fn(a, a) {\n}", { sourceType: "module" });
             } catch (err) {
-                assert.equal(err.column, 16);
+                expect(err.column).toEqual(16);
             }
         });
 
@@ -56,7 +55,7 @@ describe("parse()", () => {
                 loc: true
             });
 
-            assert.deepEqual(tester.getRaw(ast), require("../fixtures/parse/all-pieces.json"));
+            expect(testUtils.getRaw(ast)).toEqual(require("../fixtures/parse/all-pieces.json"));
         });
 
     });

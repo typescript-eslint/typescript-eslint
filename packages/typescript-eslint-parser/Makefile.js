@@ -33,7 +33,7 @@ const OPEN_SOURCE_LICENSES = [
 const NODE_MODULES = "./node_modules/",
 
     // Utilities - intentional extra space at the end of each string
-    MOCHA = `${NODE_MODULES}mocha/bin/_mocha `,
+    JEST = `${NODE_MODULES}jest/bin/jest.js`,
 
     // Files
     MAKEFILE = "./Makefile.js",
@@ -103,7 +103,7 @@ target.lint = function() {
 target.test = function() {
     target.lint();
 
-    const lastReturn = nodeCLI.exec("istanbul", "cover", MOCHA, "-- -c", TEST_FILES);
+    const lastReturn = nodeCLI.exec(JEST);
     let errors = 0;
 
     if (lastReturn.code !== 0) {
