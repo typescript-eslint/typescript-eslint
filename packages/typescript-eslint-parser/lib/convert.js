@@ -302,7 +302,7 @@ module.exports = function convert(config) {
     }
 
     /**
-     * The core of the conervsion logic:
+     * The core of the conversion logic:
      * Identify and convert each relevant TypeScript SyntaxKind
      */
     switch (node.kind) {
