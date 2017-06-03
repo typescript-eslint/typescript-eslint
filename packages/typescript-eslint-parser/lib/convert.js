@@ -678,6 +678,7 @@ module.exports = function convert(config) {
                 computed: nodeUtils.isComputedProperty(node.name),
                 static: nodeUtils.hasStaticModifierFlag(node),
                 accessibility: nodeUtils.getTSNodeAccessibility(node),
+                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
                 decorators: convertDecorators(node.decorators),
                 typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null
             });

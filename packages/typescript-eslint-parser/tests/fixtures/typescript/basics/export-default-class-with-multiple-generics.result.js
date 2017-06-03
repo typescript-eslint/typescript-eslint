@@ -33,64 +33,64 @@ module.exports = {
                         "column": 1
                     }
                 },
-                "id": null,
                 "typeParameters": {
-                    "loc": {
-                        "end": {
-                            "column": 26,
-                            "line": 1
-                        },
-                        "start": {
-                            "column": 20,
-                            "line": 1
-                        }
-                    },
-                    "params": [
-                        {
-                            "loc": {
-                                "end": {
-                                    "column": 22,
-                                    "line": 1
-                                },
-                                "start": {
-                                    "column": 21,
-                                    "line": 1
-                                }
-                            },
-                            "name": "T",
-                            "range": [
-                                21,
-                                22
-                            ],
-                            "type": "TypeParameter",
-                            "constraint": null
-                        },
-                        {
-                            "loc": {
-                                "end": {
-                                    "column": 25,
-                                    "line": 1
-                                },
-                                "start": {
-                                    "column": 24,
-                                    "line": 1
-                                }
-                            },
-                            "name": "U",
-                            "range": [
-                                24,
-                                25
-                            ],
-                            "type": "TypeParameter",
-                            "constraint": null
-                        }
-                    ],
+                    "type": "TypeParameterDeclaration",
                     "range": [
                         20,
                         26
                     ],
-                    "type": "TypeParameterDeclaration"
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 20
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 26
+                        }
+                    },
+                    "params": [
+                        {
+                            "type": "TypeParameter",
+                            "range": [
+                                21,
+                                22
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 21
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 22
+                                }
+                            },
+                            "name": "T",
+                            "constraint": null
+                        },
+                        {
+                            "type": "TypeParameter",
+                            "range": [
+                                24,
+                                25
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 24
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 25
+                                }
+                            },
+                            "name": "U",
+                            "constraint": null
+                        }
+                    ]
                 },
+                "id": null,
                 "body": {
                     "type": "ClassBody",
                     "body": [],

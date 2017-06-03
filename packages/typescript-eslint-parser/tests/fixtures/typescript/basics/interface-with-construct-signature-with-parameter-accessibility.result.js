@@ -69,9 +69,9 @@ module.exports = {
                                     }
                                 },
                                 "accessibility": "public",
+                                "readonly": false,
                                 "static": false,
                                 "export": false,
-                                "readonly": false,
                                 "parameter": {
                                     "type": "Identifier",
                                     "range": [
@@ -108,9 +108,9 @@ module.exports = {
                                     }
                                 },
                                 "accessibility": "private",
+                                "readonly": false,
                                 "static": false,
                                 "export": false,
-                                "readonly": false,
                                 "parameter": {
                                     "type": "Identifier",
                                     "range": [

@@ -226,7 +226,6 @@ module.exports = {
                                     }
                                 },
                                 "name": "bar",
-                                "optional": true,
                                 "typeAnnotation": {
                                     "type": "TypeAnnotation",
                                     "loc": {
@@ -260,7 +259,8 @@ module.exports = {
                                             }
                                         }
                                     }
-                                }
+                                },
+                                "optional": true
                             },
                             {
                                 "type": "Identifier",

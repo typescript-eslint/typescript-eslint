@@ -70,7 +70,6 @@ module.exports = {
                         }
                     },
                     "name": "e",
-                    "optional": true,
                     "typeAnnotation": {
                         "type": "TypeAnnotation",
                         "loc": {
@@ -122,7 +121,8 @@ module.exports = {
                                 "name": "Entity"
                             }
                         }
-                    }
+                    },
+                    "optional": true
                 }
             ],
             "body": {

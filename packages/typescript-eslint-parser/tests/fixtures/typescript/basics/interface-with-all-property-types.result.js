@@ -17,7 +17,6 @@ module.exports = {
     "body": [
         {
             "type": "TSInterfaceDeclaration",
-            "abstract": false,
             "range": [
                 0,
                 295
@@ -32,6 +31,7 @@ module.exports = {
                     "column": 1
                 }
             },
+            "abstract": false,
             "body": {
                 "type": "TSInterfaceBody",
                 "body": [
@@ -479,7 +479,6 @@ module.exports = {
                                 }
                             },
                             "name": "fff",
-                            "optional": true,
                             "typeAnnotation": {
                                 "type": "TypeAnnotation",
                                 "loc": {
@@ -513,7 +512,8 @@ module.exports = {
                                         }
                                     }
                                 }
-                            }
+                            },
+                            "optional": true
                         },
                         "typeAnnotation": {
                             "type": "TypeAnnotation",
@@ -1018,6 +1018,10 @@ module.exports = {
                                 }
                             }
                         },
+                        "accessibility": null,
+                        "readonly": false,
+                        "static": false,
+                        "export": false,
                         "typeParameters": {
                             "type": "TypeParameterDeclaration",
                             "range": [
@@ -1055,11 +1059,7 @@ module.exports = {
                                     "constraint": null
                                 }
                             ]
-                        },
-                        "accessibility": null,
-                        "readonly": false,
-                        "static": false,
-                        "export": false
+                        }
                     },
                     {
                         "type": "TSConstructSignature",

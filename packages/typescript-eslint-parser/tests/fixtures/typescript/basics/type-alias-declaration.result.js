@@ -105,59 +105,59 @@ module.exports = {
                                     "name": "Success"
                                 },
                                 "typeParameters": {
-                                    "loc": {
-                                        "end": {
-                                            "column": 27,
-                                            "line": 1
-                                        },
-                                        "start": {
-                                            "column": 24,
-                                            "line": 1
-                                        }
-                                    },
+                                    "type": "TypeParameterInstantiation",
                                     "range": [
                                         24,
                                         27
                                     ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 24
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 27
+                                        }
+                                    },
                                     "params": [
                                         {
-                                            "loc": {
-                                                "end": {
-                                                    "column": 26,
-                                                    "line": 1
-                                                },
-                                                "start": {
-                                                    "column": 25,
-                                                    "line": 1
-                                                }
-                                            },
+                                            "type": "GenericTypeAnnotation",
                                             "range": [
                                                 25,
                                                 26
                                             ],
-                                            "id": {
-                                                "loc": {
-                                                    "end": {
-                                                        "column": 26,
-                                                        "line": 1
-                                                    },
-                                                    "start": {
-                                                        "column": 25,
-                                                        "line": 1
-                                                    }
+                                            "loc": {
+                                                "start": {
+                                                    "line": 1,
+                                                    "column": 25
                                                 },
-                                                "name": "T",
+                                                "end": {
+                                                    "line": 1,
+                                                    "column": 26
+                                                }
+                                            },
+                                            "id": {
+                                                "type": "Identifier",
                                                 "range": [
                                                     25,
                                                     26
                                                 ],
-                                                "type": "Identifier"
+                                                "loc": {
+                                                    "start": {
+                                                        "line": 1,
+                                                        "column": 25
+                                                    },
+                                                    "end": {
+                                                        "line": 1,
+                                                        "column": 26
+                                                    }
+                                                },
+                                                "name": "T"
                                             },
-                                            "type": "GenericTypeAnnotation",
                                             "typeParameters": null
                                         }
-                                    ],
-                                    "type": "TypeParameterInstantiation"
+                                    ]
                                 }
                             },
                             {

@@ -90,6 +90,7 @@ module.exports = {
                         "computed": false,
                         "static": false,
                         "accessibility": null,
+                        "readonly": false,
                         "decorators": [],
                         "typeAnnotation": null
                     },
@@ -149,6 +150,7 @@ module.exports = {
                         "computed": false,
                         "static": false,
                         "accessibility": null,
+                        "readonly": false,
                         "decorators": [],
                         "typeAnnotation": null
                     }

@@ -90,39 +90,40 @@ module.exports = {
                         "computed": false,
                         "static": false,
                         "accessibility": "private",
+                        "readonly": false,
                         "decorators": [],
                         "typeAnnotation": {
+                            "type": "TypeAnnotation",
                             "loc": {
-                                "end": {
-                                    "column": 22,
-                                    "line": 2
-                                },
                                 "start": {
-                                    "column": 16,
-                                    "line": 2
+                                    "line": 2,
+                                    "column": 16
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 22
                                 }
                             },
                             "range": [
                                 28,
                                 34
                             ],
-                            "type": "TypeAnnotation",
                             "typeAnnotation": {
-                                "loc": {
-                                    "end": {
-                                        "column": 22,
-                                        "line": 2
-                                    },
-                                    "start": {
-                                        "column": 16,
-                                        "line": 2
-                                    }
-                                },
+                                "type": "TSStringKeyword",
                                 "range": [
                                     28,
                                     34
                                 ],
-                                "type": "TSStringKeyword"
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 16
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 22
+                                    }
+                                }
                             }
                         }
                     },
@@ -164,42 +165,42 @@ module.exports = {
                         "computed": false,
                         "static": true,
                         "accessibility": "public",
+                        "readonly": false,
                         "decorators": [],
                         "typeAnnotation": {
+                            "type": "TypeAnnotation",
                             "loc": {
-                                "end": {
-                                    "column": 28,
-                                    "line": 3
-                                },
                                 "start": {
-                                    "column": 22,
-                                    "line": 3
+                                    "line": 3,
+                                    "column": 22
+                                },
+                                "end": {
+                                    "line": 3,
+                                    "column": 28
                                 }
                             },
                             "range": [
                                 58,
                                 64
                             ],
-                            "type": "TypeAnnotation",
                             "typeAnnotation": {
-                                "loc": {
-                                    "end": {
-                                        "column": 28,
-                                        "line": 3
-                                    },
-                                    "start": {
-                                        "column": 22,
-                                        "line": 3
-                                    }
-                                },
+                                "type": "TSNumberKeyword",
                                 "range": [
                                     58,
                                     64
                                 ],
-                                "type": "TSNumberKeyword"
+                                "loc": {
+                                    "start": {
+                                        "line": 3,
+                                        "column": 22
+                                    },
+                                    "end": {
+                                        "line": 3,
+                                        "column": 28
+                                    }
+                                }
                             }
                         }
-
                     },
                     {
                         "type": "MethodDefinition",

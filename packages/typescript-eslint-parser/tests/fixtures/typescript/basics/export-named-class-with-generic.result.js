@@ -33,6 +33,44 @@ module.exports = {
                         "column": 1
                     }
                 },
+                "typeParameters": {
+                    "type": "TypeParameterDeclaration",
+                    "range": [
+                        16,
+                        19
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 16
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 19
+                        }
+                    },
+                    "params": [
+                        {
+                            "type": "TypeParameter",
+                            "range": [
+                                17,
+                                18
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 17
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 18
+                                }
+                            },
+                            "name": "T",
+                            "constraint": null
+                        }
+                    ]
+                },
                 "id": {
                     "type": "Identifier",
                     "range": [
@@ -50,44 +88,6 @@ module.exports = {
                         }
                     },
                     "name": "Foo"
-                },
-                "typeParameters": {
-                    "loc": {
-                        "end": {
-                            "column": 19,
-                            "line": 1
-                        },
-                        "start": {
-                            "column": 16,
-                            "line": 1
-                        }
-                    },
-                    "params": [
-                        {
-                            "loc": {
-                                "end": {
-                                    "column": 18,
-                                    "line": 1
-                                },
-                                "start": {
-                                    "column": 17,
-                                    "line": 1
-                                }
-                            },
-                            "name": "T",
-                            "range": [
-                                17,
-                                18
-                            ],
-                            "type": "TypeParameter",
-                            "constraint": null
-                        }
-                    ],
-                    "range": [
-                        16,
-                        19
-                    ],
-                    "type": "TypeParameterDeclaration"
                 },
                 "body": {
                     "type": "ClassBody",
