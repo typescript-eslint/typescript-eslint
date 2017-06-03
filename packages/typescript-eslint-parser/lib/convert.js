@@ -570,6 +570,8 @@ module.exports = function convert(config) {
         case SyntaxKind.ArrayLiteralExpression: {
 
             const arrayAssignNode = nodeUtils.findAncestorOfKind(node, SyntaxKind.BinaryExpression);
+            const arrayIsInForOf = node.parent && node.parent.kind === SyntaxKind.ForOfStatement;
+            const arrayIsInForIn = node.parent && node.parent.kind === SyntaxKind.ForInStatement;
             let arrayIsInAssignment;
 
             if (arrayAssignNode) {
@@ -581,7 +583,7 @@ module.exports = function convert(config) {
             }
 
             // TypeScript uses ArrayLiteralExpression in destructuring assignment, too
-            if (arrayIsInAssignment) {
+            if (arrayIsInAssignment || arrayIsInForOf || arrayIsInForIn) {
                 Object.assign(result, {
                     type: AST_NODE_TYPES.ArrayPattern,
                     elements: node.elements.map(convertChild)
@@ -925,6 +927,11 @@ module.exports = function convert(config) {
                         left: arrayItem,
                         right: convertChild(node.initializer)
                     });
+                } else if (node.dotDotDotToken) {
+                    Object.assign(result, {
+                        type: AST_NODE_TYPES.RestElement,
+                        argument: arrayItem
+                    });
                 } else {
                     return arrayItem;
                 }
@@ -1058,16 +1065,31 @@ module.exports = function convert(config) {
 
         // Patterns
 
-        case SyntaxKind.SpreadElement:
+        case SyntaxKind.SpreadElement: {
+            let type = AST_NODE_TYPES.SpreadElement;
+
+            if (node.parent &&
+                node.parent.parent &&
+                node.parent.parent.kind === SyntaxKind.BinaryExpression
+            ) {
+                if (node.parent.parent.left === node.parent) {
+                    type = AST_NODE_TYPES.RestElement;
+                } else if (node.parent.parent.right === node.parent) {
+                    type = AST_NODE_TYPES.SpreadElement;
+                }
+            }
+
             Object.assign(result, {
-                type: AST_NODE_TYPES.SpreadElement,
+                type,
                 argument: convertChild(node.expression)
             });
             break;
+        }
         case SyntaxKind.SpreadAssignment: {
             let type = AST_NODE_TYPES.ExperimentalSpreadProperty;
 
             if (node.parent &&
+                node.parent.parent &&
                 node.parent.parent.kind === SyntaxKind.BinaryExpression
             ) {
                 if (node.parent.parent.right === node.parent) {

@@ -112,6 +112,11 @@ function findFirstMatchingChild(node, sourceFile, predicate) {
         if (child && predicate(child)) {
             return child;
         }
+
+        const grandChild = findFirstMatchingChild(child, sourceFile, predicate);
+        if (grandChild) {
+            return grandChild;
+        }
     }
     return undefined;
 }

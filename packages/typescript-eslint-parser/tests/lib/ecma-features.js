@@ -70,7 +70,7 @@ describe("ecmaFeatures", () => {
         const feature = path.dirname(filename),
             code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
 
-        it(`should parse correctly when ${feature} is true`, () => {
+        it(`should parse correctly when ${feature} is true ${filename}`, () => {
             config.ecmaFeatures[feature] = true;
             let expected = null;
 
