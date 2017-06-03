@@ -86,7 +86,7 @@ module.exports = {
                 },
                 "body": [
                     {
-                        "type": "TSNamespaceExportDeclaration",
+                        "type": "ExportNamedDeclaration",
                         "declaration": {
                             "type": "TSNamespaceFunctionDeclaration",
                             "range": [
