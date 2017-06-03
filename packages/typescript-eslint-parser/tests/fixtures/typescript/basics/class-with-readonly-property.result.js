@@ -2,7 +2,7 @@ module.exports = {
     "type": "Program",
     "range": [
         0,
-        39
+        49
     ],
     "loc": {
         "start": {
@@ -19,7 +19,7 @@ module.exports = {
             "type": "ClassDeclaration",
             "range": [
                 0,
-                39
+                49
             ],
             "loc": {
                 "start": {
@@ -35,7 +35,7 @@ module.exports = {
                 "type": "Identifier",
                 "range": [
                     6,
-                    7
+                    9
                 ],
                 "loc": {
                     "start": {
@@ -44,10 +44,10 @@ module.exports = {
                     },
                     "end": {
                         "line": 1,
-                        "column": 7
+                        "column": 9
                     }
                 },
-                "name": "X"
+                "name": "Foo"
             },
             "body": {
                 "type": "ClassBody",
@@ -55,72 +55,72 @@ module.exports = {
                     {
                         "type": "ClassProperty",
                         "range": [
-                            12,
-                            37
+                            16,
+                            47
                         ],
                         "loc": {
                             "start": {
                                 "line": 2,
-                                "column": 2
+                                "column": 4
                             },
                             "end": {
                                 "line": 2,
-                                "column": 27
+                                "column": 35
                             }
                         },
                         "key": {
                             "type": "Identifier",
                             "range": [
-                                20,
-                                23
+                                32,
+                                35
                             ],
                             "loc": {
                                 "start": {
                                     "line": 2,
-                                    "column": 10
+                                    "column": 20
                                 },
                                 "end": {
                                     "line": 2,
-                                    "column": 13
+                                    "column": 23
                                 }
                             },
-                            "name": "foo",
-                            "optional": true
+                            "name": "foo"
                         },
                         "value": {
-                            "type": "Identifier",
+                            "type": "Literal",
                             "range": [
-                                27,
-                                36
+                                38,
+                                46
                             ],
                             "loc": {
                                 "start": {
                                     "line": 2,
-                                    "column": 17
+                                    "column": 26
                                 },
                                 "end": {
                                     "line": 2,
-                                    "column": 26
+                                    "column": 34
                                 }
                             },
-                            "name": "undefined"
+                            "value": "string",
+                            "raw": "'string'"
                         },
                         "computed": false,
                         "static": false,
-                        "accessibility": "private",
-                        "readonly": false,
+                        "accessibility": "public",
+                        "readonly": true,
                         "decorators": [],
                         "typeAnnotation": null
                     }
                 ],
                 "range": [
-                    8,
-                    39
+                    10,
+                    49
                 ],
                 "loc": {
                     "start": {
                         "line": 1,
-                        "column": 8
+                        "column": 10
                     },
                     "end": {
                         "line": 3,
@@ -155,10 +155,10 @@ module.exports = {
         },
         {
             "type": "Identifier",
-            "value": "X",
+            "value": "Foo",
             "range": [
                 6,
-                7
+                9
             ],
             "loc": {
                 "start": {
@@ -167,7 +167,7 @@ module.exports = {
                 },
                 "end": {
                     "line": 1,
-                    "column": 7
+                    "column": 9
                 }
             }
         },
@@ -175,35 +175,53 @@ module.exports = {
             "type": "Punctuator",
             "value": "{",
             "range": [
-                8,
-                9
+                10,
+                11
             ],
             "loc": {
                 "start": {
                     "line": 1,
-                    "column": 8
+                    "column": 10
                 },
                 "end": {
                     "line": 1,
-                    "column": 9
+                    "column": 11
                 }
             }
         },
         {
             "type": "Keyword",
-            "value": "private",
+            "value": "public",
             "range": [
-                12,
-                19
+                16,
+                22
             ],
             "loc": {
                 "start": {
                     "line": 2,
-                    "column": 2
+                    "column": 4
                 },
                 "end": {
                     "line": 2,
-                    "column": 9
+                    "column": 10
+                }
+            }
+        },
+        {
+            "type": "Identifier",
+            "value": "readonly",
+            "range": [
+                23,
+                31
+            ],
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 11
+                },
+                "end": {
+                    "line": 2,
+                    "column": 19
                 }
             }
         },
@@ -211,35 +229,17 @@ module.exports = {
             "type": "Identifier",
             "value": "foo",
             "range": [
-                20,
-                23
+                32,
+                35
             ],
             "loc": {
                 "start": {
                     "line": 2,
-                    "column": 10
+                    "column": 20
                 },
                 "end": {
                     "line": 2,
-                    "column": 13
-                }
-            }
-        },
-        {
-            "type": "Punctuator",
-            "value": "?",
-            "range": [
-                23,
-                24
-            ],
-            "loc": {
-                "start": {
-                    "line": 2,
-                    "column": 13
-                },
-                "end": {
-                    "line": 2,
-                    "column": 14
+                    "column": 23
                 }
             }
         },
@@ -247,35 +247,35 @@ module.exports = {
             "type": "Punctuator",
             "value": "=",
             "range": [
-                25,
-                26
+                36,
+                37
             ],
             "loc": {
                 "start": {
                     "line": 2,
-                    "column": 15
+                    "column": 24
                 },
                 "end": {
                     "line": 2,
-                    "column": 16
+                    "column": 25
                 }
             }
         },
         {
-            "type": "Keyword",
-            "value": "undefined",
+            "type": "String",
+            "value": "'string'",
             "range": [
-                27,
-                36
+                38,
+                46
             ],
             "loc": {
                 "start": {
                     "line": 2,
-                    "column": 17
+                    "column": 26
                 },
                 "end": {
                     "line": 2,
-                    "column": 26
+                    "column": 34
                 }
             }
         },
@@ -283,17 +283,17 @@ module.exports = {
             "type": "Punctuator",
             "value": ";",
             "range": [
-                36,
-                37
+                46,
+                47
             ],
             "loc": {
                 "start": {
                     "line": 2,
-                    "column": 26
+                    "column": 34
                 },
                 "end": {
                     "line": 2,
-                    "column": 27
+                    "column": 35
                 }
             }
         },
@@ -301,8 +301,8 @@ module.exports = {
             "type": "Punctuator",
             "value": "}",
             "range": [
-                38,
-                39
+                48,
+                49
             ],
             "loc": {
                 "start": {

@@ -230,59 +230,58 @@ module.exports = {
                                         "name": "Selection"
                                     },
                                     "typeParameters": {
-                                        "loc": {
-                                            "end": {
-                                                "column": 58,
-                                                "line": 2
-                                            },
-                                            "start": {
-                                                "column": 53,
-                                                "line": 2
-                                            }
-                                        },
-                                        "params": [
-                                            {
-                                                "id": {
-                                                    "loc": {
-                                                        "end": {
-                                                            "column": 57,
-                                                            "line": 2
-                                                        },
-                                                        "start": {
-                                                            "column": 54,
-                                                            "line": 2
-                                                        }
-                                                    },
-                                                    "range": [
-                                                        77,
-                                                        80
-                                                    ],
-                                                    "type": "TSAnyKeyword"
-                                                },
-
-                                                "loc": {
-                                                    "end": {
-                                                        "column": 57,
-                                                        "line": 2
-                                                    },
-                                                    "start": {
-                                                        "column": 54,
-                                                        "line": 2
-                                                    }
-                                                },
-                                                "range": [
-                                                    77,
-                                                    80
-                                                ],
-                                                "type": "GenericTypeAnnotation",
-                                                "typeParameters": null
-                                            }
-                                        ],
+                                        "type": "TypeParameterInstantiation",
                                         "range": [
                                             76,
                                             81
                                         ],
-                                        "type": "TypeParameterInstantiation"
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 53
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 58
+                                            }
+                                        },
+                                        "params": [
+                                            {
+                                                "type": "GenericTypeAnnotation",
+                                                "range": [
+                                                    77,
+                                                    80
+                                                ],
+                                                "loc": {
+                                                    "start": {
+                                                        "line": 2,
+                                                        "column": 54
+                                                    },
+                                                    "end": {
+                                                        "line": 2,
+                                                        "column": 57
+                                                    }
+                                                },
+                                                "id": {
+                                                    "type": "TSAnyKeyword",
+                                                    "range": [
+                                                        77,
+                                                        80
+                                                    ],
+                                                    "loc": {
+                                                        "start": {
+                                                            "line": 2,
+                                                            "column": 54
+                                                        },
+                                                        "end": {
+                                                            "line": 2,
+                                                            "column": 57
+                                                        }
+                                                    }
+                                                },
+                                                "typeParameters": null
+                                            }
+                                        ]
                                     }
                                 }
                             }

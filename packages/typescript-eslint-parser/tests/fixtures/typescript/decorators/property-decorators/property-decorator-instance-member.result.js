@@ -90,6 +90,7 @@ module.exports = {
                         "computed": false,
                         "static": false,
                         "accessibility": null,
+                        "readonly": false,
                         "decorators": [
                             {
                                 "type": "Decorator",
@@ -167,6 +168,7 @@ module.exports = {
                         "computed": false,
                         "static": false,
                         "accessibility": null,
+                        "readonly": false,
                         "decorators": [
                             {
                                 "type": "Decorator",

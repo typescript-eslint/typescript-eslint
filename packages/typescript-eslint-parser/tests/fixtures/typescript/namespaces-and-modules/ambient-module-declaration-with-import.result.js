@@ -1,349 +1,349 @@
 module.exports = {
-    "body": [
-        {
-            "body": {
-                "body": [
-                    {
-                        "loc": {
-                            "end": {
-                                "column": 22,
-                                "line": 2
-                            },
-                            "start": {
-                                "column": 2,
-                                "line": 2
-                            }
-                        },
-                        "range": [
-                            34,
-                            54
-                        ],
-                        "source": {
-                            "loc": {
-                                "end": {
-                                    "column": 21,
-                                    "line": 2
-                                },
-                                "start": {
-                                    "column": 17,
-                                    "line": 2
-                                }
-                            },
-                            "range": [
-                                49,
-                                53
-                            ],
-                            "raw": "'fs'",
-                            "type": "Literal",
-                            "value": "fs"
-                        },
-                        "specifiers": [
-                            {
-                                "loc": {
-                                    "end": {
-                                        "column": 11,
-                                        "line": 2
-                                    },
-                                    "start": {
-                                        "column": 9,
-                                        "line": 2
-                                    }
-                                },
-                                "local": {
-                                    "loc": {
-                                        "end": {
-                                            "column": 11,
-                                            "line": 2
-                                        },
-                                        "start": {
-                                            "column": 9,
-                                            "line": 2
-                                        }
-                                    },
-                                    "name": "fs",
-                                    "range": [
-                                        41,
-                                        43
-                                    ],
-                                    "type": "Identifier"
-                                },
-                                "range": [
-                                    41,
-                                    43
-                                ],
-                                "type": "ImportDefaultSpecifier"
-                            }
-                        ],
-                        "type": "ImportDeclaration"
-                    }
-                ],
-                "loc": {
-                    "end": {
-                        "column": 1,
-                        "line": 3
-                    },
-                    "start": {
-                        "column": 30,
-                        "line": 1
-                    }
-                },
-                "range": [
-                    30,
-                    56
-                ],
-                "type": "TSModuleBlock"
-            },
-            "loc": {
-                "end": {
-                    "column": 1,
-                    "line": 3
-                },
-                "start": {
-                    "column": 0,
-                    "line": 1
-                }
-            },
-            "modifiers": [
-                {
-                    "loc": {
-                        "end": {
-                            "column": 7,
-                            "line": 1
-                        },
-                        "start": {
-                            "column": 0,
-                            "line": 1
-                        }
-                    },
-                    "range": [
-                        0,
-                        7
-                    ],
-                    "type": "TSDeclareKeyword"
-                }
-            ],
-            "name": {
-                "loc": {
-                    "end": {
-                        "column": 29,
-                        "line": 1
-                    },
-                    "start": {
-                        "column": 15,
-                        "line": 1
-                    }
-                },
-                "range": [
-                    15,
-                    29
-                ],
-                "raw": "\"i-use-things\"",
-                "type": "Literal",
-                "value": "i-use-things"
-            },
-            "range": [
-                0,
-                56
-            ],
-            "type": "TSModuleDeclaration"
-        }
-    ],
-    "loc": {
-        "end": {
-            "column": 1,
-            "line": 3
-        },
-        "start": {
-            "column": 0,
-            "line": 1
-        }
-    },
+    "type": "Program",
     "range": [
         0,
         56
     ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 3,
+            "column": 1
+        }
+    },
+    "body": [
+        {
+            "type": "TSModuleDeclaration",
+            "range": [
+                0,
+                56
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 1
+                }
+            },
+            "modifiers": [
+                {
+                    "type": "TSDeclareKeyword",
+                    "range": [
+                        0,
+                        7
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 0
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 7
+                        }
+                    }
+                }
+            ],
+            "name": {
+                "type": "Literal",
+                "range": [
+                    15,
+                    29
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 15
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 29
+                    }
+                },
+                "value": "i-use-things",
+                "raw": "\"i-use-things\""
+            },
+            "body": {
+                "type": "TSModuleBlock",
+                "range": [
+                    30,
+                    56
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 30
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 1
+                    }
+                },
+                "body": [
+                    {
+                        "type": "ImportDeclaration",
+                        "range": [
+                            34,
+                            54
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 2
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 22
+                            }
+                        },
+                        "source": {
+                            "type": "Literal",
+                            "range": [
+                                49,
+                                53
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 17
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 21
+                                }
+                            },
+                            "value": "fs",
+                            "raw": "'fs'"
+                        },
+                        "specifiers": [
+                            {
+                                "type": "ImportDefaultSpecifier",
+                                "range": [
+                                    41,
+                                    43
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 9
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 11
+                                    }
+                                },
+                                "local": {
+                                    "type": "Identifier",
+                                    "range": [
+                                        41,
+                                        43
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 9
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 11
+                                        }
+                                    },
+                                    "name": "fs"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
     "sourceType": "script",
     "tokens": [
         {
-            "loc": {
-                "end": {
-                    "column": 7,
-                    "line": 1
-                },
-                "start": {
-                    "column": 0,
-                    "line": 1
-                }
-            },
+            "type": "Identifier",
+            "value": "declare",
             "range": [
                 0,
                 7
             ],
-            "type": "Identifier",
-            "value": "declare"
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 7
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 14,
-                    "line": 1
-                },
-                "start": {
-                    "column": 8,
-                    "line": 1
-                }
-            },
+            "type": "Identifier",
+            "value": "module",
             "range": [
                 8,
                 14
             ],
-            "type": "Identifier",
-            "value": "module"
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 8
+                },
+                "end": {
+                    "line": 1,
+                    "column": 14
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 29,
-                    "line": 1
-                },
-                "start": {
-                    "column": 15,
-                    "line": 1
-                }
-            },
+            "type": "String",
+            "value": "\"i-use-things\"",
             "range": [
                 15,
                 29
             ],
-            "type": "String",
-            "value": "\"i-use-things\""
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 15
+                },
+                "end": {
+                    "line": 1,
+                    "column": 29
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 31,
-                    "line": 1
-                },
-                "start": {
-                    "column": 30,
-                    "line": 1
-                }
-            },
+            "type": "Punctuator",
+            "value": "{",
             "range": [
                 30,
                 31
             ],
-            "type": "Punctuator",
-            "value": "{"
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 30
+                },
+                "end": {
+                    "line": 1,
+                    "column": 31
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 8,
-                    "line": 2
-                },
-                "start": {
-                    "column": 2,
-                    "line": 2
-                }
-            },
+            "type": "Keyword",
+            "value": "import",
             "range": [
                 34,
                 40
             ],
-            "type": "Keyword",
-            "value": "import"
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 2
+                },
+                "end": {
+                    "line": 2,
+                    "column": 8
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 11,
-                    "line": 2
-                },
-                "start": {
-                    "column": 9,
-                    "line": 2
-                }
-            },
+            "type": "Identifier",
+            "value": "fs",
             "range": [
                 41,
                 43
             ],
-            "type": "Identifier",
-            "value": "fs"
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 9
+                },
+                "end": {
+                    "line": 2,
+                    "column": 11
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 16,
-                    "line": 2
-                },
-                "start": {
-                    "column": 12,
-                    "line": 2
-                }
-            },
+            "type": "Identifier",
+            "value": "from",
             "range": [
                 44,
                 48
             ],
-            "type": "Identifier",
-            "value": "from"
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 12
+                },
+                "end": {
+                    "line": 2,
+                    "column": 16
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 21,
-                    "line": 2
-                },
-                "start": {
-                    "column": 17,
-                    "line": 2
-                }
-            },
+            "type": "String",
+            "value": "'fs'",
             "range": [
                 49,
                 53
             ],
-            "type": "String",
-            "value": "'fs'"
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 17
+                },
+                "end": {
+                    "line": 2,
+                    "column": 21
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 22,
-                    "line": 2
-                },
-                "start": {
-                    "column": 21,
-                    "line": 2
-                }
-            },
+            "type": "Punctuator",
+            "value": ";",
             "range": [
                 53,
                 54
             ],
-            "type": "Punctuator",
-            "value": ";"
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 21
+                },
+                "end": {
+                    "line": 2,
+                    "column": 22
+                }
+            }
         },
         {
-            "loc": {
-                "end": {
-                    "column": 1,
-                    "line": 3
-                },
-                "start": {
-                    "column": 0,
-                    "line": 3
-                }
-            },
+            "type": "Punctuator",
+            "value": "}",
             "range": [
                 55,
                 56
             ],
-            "type": "Punctuator",
-            "value": "}"
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 1
+                }
+            }
         }
-    ],
-    "type": "Program"
-}
+    ]
+};

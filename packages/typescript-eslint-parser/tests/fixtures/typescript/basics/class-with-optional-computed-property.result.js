@@ -108,6 +108,7 @@ module.exports = {
                         "computed": true,
                         "static": false,
                         "accessibility": "private",
+                        "readonly": false,
                         "decorators": [],
                         "typeAnnotation": null,
                         "optional": true

@@ -175,8 +175,8 @@ module.exports = {
                         }
                     ]
                 },
-                "expression": false,
                 "async": false,
+                "expression": false,
                 "returnType": {
                     "type": "TypeAnnotation",
                     "loc": {
