@@ -2,7 +2,7 @@
 
 A parser that converts TypeScript into an [ESTree](https://github.com/estree/estree)-compatible form so it can be used in ESLint.
 
-**Important:** This parser is not fully compatbile with all ESLint rules and plugins. Some rules will improperly mark source code as failing or not find problems where it should.
+**Important:** This parser is not fully compatible with all ESLint rules and plugins. Some rules will improperly mark source code as failing or not find problems where it should.
 
 ## Supported TypeScript Version
 
@@ -24,6 +24,8 @@ The following ESLint rules will fail on acceptable code:
  
 The follow ESLint plugins have issues when used with this parser:
  - eslint-plugin-react [#213](https://github.com/eslint/typescript-eslint-parser/issues/213)
+ - eslint-plugin-import
+    - prefer-default-export - Will fail exports inside of Namespaces or Modules
   
 The following TypeScript syntax will cause rules to fail or ESLint v3 to crash:
  - Empty body functions
@@ -51,7 +53,7 @@ If you're familiar with TypeScript and ESLint, and you'd like to see this projec
 
 ## Reporting Bugs
 
-Please check the current list of open and known issues and ensure the bug has not been reported before. When creating a new issue provide as much information about your enviroment as possible. This includes:
+Please check the current list of open and known issues and ensure the bug has not been reported before. When creating a new issue provide as much information about your environment as possible. This includes:
  - ESLint Version
  - TypeScript version
  - TypeScript parser version
