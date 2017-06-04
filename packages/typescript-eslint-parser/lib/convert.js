@@ -290,9 +290,7 @@ module.exports = function convert(config) {
             // Assign the appropriate types
             tagNameToken.object.type = (isNestedMemberExpression) ? AST_NODE_TYPES.JSXMemberExpression : AST_NODE_TYPES.JSXIdentifier;
             tagNameToken.property.type = AST_NODE_TYPES.JSXIdentifier;
-
         } else {
-
             tagNameToken.name = tagNameToken.value;
         }
 
@@ -1447,6 +1445,9 @@ module.exports = function convert(config) {
                     property: convertChild(node.name)
                 };
                 const isNestedMemberExpression = (node.expression.kind === SyntaxKind.PropertyAccessExpression);
+                if (node.expression.kind === SyntaxKind.ThisKeyword) {
+                    jsxMemberExpression.object.name = "this";
+                }
 
                 jsxMemberExpression.object.type = (isNestedMemberExpression) ? AST_NODE_TYPES.MemberExpression : AST_NODE_TYPES.JSXIdentifier;
                 jsxMemberExpression.property.type = AST_NODE_TYPES.JSXIdentifier;
