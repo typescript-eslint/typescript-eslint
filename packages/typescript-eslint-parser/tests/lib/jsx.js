@@ -12,7 +12,6 @@
 //------------------------------------------------------------------------------
 
 const path = require("path"),
-    parser = require("../../parser"),
     shelljs = require("shelljs"),
     testUtils = require("../../tools/test-utils");
 
@@ -48,20 +47,6 @@ const jsxTextTestFiles = shelljs.find(JSX_JSXTEXT_FIXTURES_DIR)
 
 describe("JSX", () => {
 
-    let config;
-
-    beforeEach(() => {
-        config = {
-            loc: true,
-            range: true,
-            tokens: true,
-            errorOnUnknownASTType: true,
-            ecmaFeatures: {
-                jsx: true
-            }
-        };
-    });
-
     /**
      * Test each fixture file
      * @param {string} fixturesDir Fixtures Directory
@@ -75,26 +60,18 @@ describe("JSX", () => {
             // var filename = "jsx/invalid-matching-placeholder-in-closing-tag";
             const code = shelljs.cat(`${path.resolve(fixturesDir, filename)}.src.js`);
 
-            it(`should parse correctly when ${filename} is true`, () => {
-                config.useJSXTextNode = useJSXTextNode;
-                const expected = require(`${path.resolve(__dirname, "../../", fixturesDir, filename)}.result.js`);
-                let result;
-
-                try {
-                    result = parser.parse(code, config);
-                    result = testUtils.getRaw(result);
-                } catch (ex) {
-
-                    // format of error isn't exactly the same, just check if it's expected
-                    if (expected.message) {
-                        return;
-                    }
-                    throw ex;
-
-
+            const config = {
+                loc: true,
+                range: true,
+                tokens: true,
+                errorOnUnknownASTType: true,
+                useJSXTextNode,
+                ecmaFeatures: {
+                    jsx: true
                 }
-                expect(result).toEqual(expected);
-            });
+            };
+
+            test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code, config));
         };
     }
 

@@ -44,19 +44,18 @@ describe("parse()", () => {
 
     describe("general", () => {
 
-        it("should output tokens, comments, locs, and ranges when called with those options", () => {
-            const ast = parser.parse("let foo = bar;", {
-                ecmaFeatures: {
-                    blockBindings: true
-                },
-                comment: true,
-                tokens: true,
-                range: true,
-                loc: true
-            });
+        const code = "let foo = bar;";
+        const config = {
+            ecmaFeatures: {
+                blockBindings: true
+            },
+            comment: true,
+            tokens: true,
+            range: true,
+            loc: true
+        };
 
-            expect(testUtils.getRaw(ast)).toEqual(require("../fixtures/parse/all-pieces.json"));
-        });
+        test("output tokens, comments, locs, and ranges when called with those options", testUtils.createSnapshotTestBlock(code, config));
 
     });
 

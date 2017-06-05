@@ -31,7 +31,6 @@
 //------------------------------------------------------------------------------
 
 const path = require("path"),
-    parser = require("../../parser"),
     shelljs = require("shelljs"),
     testUtils = require("../../tools/test-utils");
 
@@ -68,28 +67,7 @@ describe("Comments", () => {
 
     testFiles.forEach(filename => {
         const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
-
-        it("should produce correct AST when parsed with comment", () => {
-            const expected = require(`${path.resolve(__dirname, "../../", FIXTURES_DIR, filename)}.result.js`);
-            let result;
-
-            try {
-                result = parser.parse(code, config);
-                result = testUtils.getRaw(result);
-            } catch (ex) {
-
-                // format of error isn't exactly the same, just check if it's expected
-                if (expected.message) {
-                    return;
-                }
-                throw ex;
-
-
-            }
-            expect(result).toEqual(expected);
-        });
-
+        test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code, config));
     });
-
 
 });
