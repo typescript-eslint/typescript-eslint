@@ -1,0 +1,3039 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comments fixtures/block-trailing-comment.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "body": Array [
+        Object {
+          "expression": Object {
+            "arguments": Array [],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 2,
+                },
+              },
+              "name": "a",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              6,
+              9,
+            ],
+            "type": "CallExpression",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 8,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            6,
+            10,
+          ],
+          "type": "ExpressionStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        26,
+      ],
+      "type": "BlockStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 4,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    26,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/comment-within-condition.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "alternate": null,
+      "consequent": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 20,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 18,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          28,
+          30,
+        ],
+        "type": "BlockStatement",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 20,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        10,
+        30,
+      ],
+      "test": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 15,
+            "line": 2,
+          },
+        },
+        "name": "a",
+        "range": Array [
+          25,
+          26,
+        ],
+        "type": "Identifier",
+      },
+      "type": "IfStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 20,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 2,
+    },
+  },
+  "range": Array [
+    10,
+    30,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/export-default-anonymous-class.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declaration": Object {
+        "body": Object {
+          "body": Array [
+            Object {
+              "accessibility": null,
+              "computed": false,
+              "decorators": Array [],
+              "key": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 11,
+                    "line": 8,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 8,
+                  },
+                },
+                "name": "method1",
+                "range": Array [
+                  103,
+                  110,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "method",
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 9,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 8,
+                },
+              },
+              "range": Array [
+                103,
+                119,
+              ],
+              "static": false,
+              "type": "MethodDefinition",
+              "value": Object {
+                "async": false,
+                "body": Object {
+                  "body": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 5,
+                      "line": 9,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 8,
+                    },
+                  },
+                  "range": Array [
+                    112,
+                    119,
+                  ],
+                  "type": "BlockStatement",
+                },
+                "expression": false,
+                "generator": false,
+                "id": null,
+                "loc": Object {
+                  "end": Object {
+                    "column": 5,
+                    "line": 9,
+                  },
+                  "start": Object {
+                    "column": 11,
+                    "line": 8,
+                  },
+                },
+                "params": Array [],
+                "range": Array [
+                  110,
+                  119,
+                ],
+                "type": "FunctionExpression",
+              },
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 10,
+            },
+            "start": Object {
+              "column": 21,
+              "line": 4,
+            },
+          },
+          "range": Array [
+            57,
+            121,
+          ],
+          "type": "ClassBody",
+        },
+        "decorators": Array [],
+        "id": null,
+        "implements": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 10,
+          },
+          "start": Object {
+            "column": 15,
+            "line": 4,
+          },
+        },
+        "range": Array [
+          51,
+          121,
+        ],
+        "superClass": null,
+        "type": "ClassDeclaration",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 10,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        36,
+        121,
+      ],
+      "type": "ExportDefaultDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 10,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 4,
+    },
+  },
+  "range": Array [
+    36,
+    121,
+  ],
+  "sourceType": "module",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/jsx-block-comment.src 1`] = `"Unterminated regular expression literal."`;
+
+exports[`Comments fixtures/jsx-tag-comments.src 1`] = `"Type expected."`;
+
+exports[`Comments fixtures/line-comment-with-block-syntax.src 1`] = `
+Object {
+  "body": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 2,
+    },
+  },
+  "range": Array [
+    12,
+    0,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/mix-line-and-block-comments.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "name": "zzz",
+            "range": Array [
+              10,
+              13,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 21,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 18,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              24,
+              27,
+            ],
+            "raw": "777",
+            "type": "Literal",
+            "value": 777,
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 21,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            10,
+            27,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "var",
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        6,
+        28,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 22,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 2,
+    },
+  },
+  "range": Array [
+    6,
+    28,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/no-comment-regex.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "name": "regex",
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 33,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 14,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              14,
+              33,
+            ],
+            "raw": "/no comment\\\\/**foo/",
+            "regex": Object {
+              "flags": "",
+              "pattern": "no comment\\\\/**foo",
+            },
+            "type": "Literal",
+            "value": null,
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 33,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 6,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            6,
+            33,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "loc": Object {
+        "end": Object {
+          "column": 34,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        34,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 34,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    34,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/no-comment-template.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "name": "str",
+            "range": Array [
+              6,
+              9,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "expressions": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 24,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 15,
+                    "line": 1,
+                  },
+                },
+                "name": "__dirname",
+                "range": Array [
+                  15,
+                  24,
+                ],
+                "type": "Identifier",
+              },
+            ],
+            "loc": Object {
+              "end": Object {
+                "column": 36,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 12,
+                "line": 1,
+              },
+            },
+            "quasis": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 15,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 12,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  12,
+                  15,
+                ],
+                "tail": false,
+                "type": "TemplateElement",
+                "value": Object {
+                  "cooked": "",
+                  "raw": "",
+                },
+              },
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 36,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 24,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  24,
+                  36,
+                ],
+                "tail": true,
+                "type": "TemplateElement",
+                "value": Object {
+                  "cooked": "/test/*.js",
+                  "raw": "/test/*.js",
+                },
+              },
+            ],
+            "range": Array [
+              12,
+              36,
+            ],
+            "type": "TemplateLiteral",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 36,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 6,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            6,
+            36,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "loc": Object {
+        "end": Object {
+          "column": 37,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        37,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 37,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    37,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/surrounding-call-comments.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "arguments": Array [],
+              "callee": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 7,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 3,
+                  },
+                },
+                "name": "foo",
+                "range": Array [
+                  36,
+                  39,
+                ],
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                36,
+                41,
+              ],
+              "type": "CallExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 10,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              36,
+              42,
+            ],
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          13,
+          60,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "a",
+        "range": Array [
+          9,
+          10,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        0,
+        60,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    60,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/surrounding-debugger-comments.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 13,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              36,
+              45,
+            ],
+            "type": "DebuggerStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          13,
+          63,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "a",
+        "range": Array [
+          9,
+          10,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        0,
+        63,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    63,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/surrounding-return-comments.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [
+          Object {
+            "argument": null,
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              36,
+              43,
+            ],
+            "type": "ReturnStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          13,
+          61,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "a",
+        "range": Array [
+          9,
+          10,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        0,
+        61,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    61,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/surrounding-throw-comments.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [
+          Object {
+            "argument": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                42,
+                44,
+              ],
+              "raw": "55",
+              "type": "Literal",
+              "value": 55,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 13,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              36,
+              45,
+            ],
+            "type": "ThrowStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          13,
+          63,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "a",
+        "range": Array [
+          9,
+          10,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        0,
+        63,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    63,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/surrounding-while-loop-comments.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [
+          Object {
+            "body": Object {
+              "body": Array [],
+              "loc": Object {
+                "end": Object {
+                  "column": 46,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 43,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                43,
+                46,
+              ],
+              "type": "BlockStatement",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 46,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 30,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              30,
+              46,
+            ],
+            "test": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 41,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 37,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                37,
+                41,
+              ],
+              "raw": "true",
+              "type": "Literal",
+              "value": true,
+            },
+            "type": "WhileStatement",
+          },
+          Object {
+            "declarations": Array [
+              Object {
+                "id": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 65,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 61,
+                      "line": 1,
+                    },
+                  },
+                  "name": "each",
+                  "range": Array [
+                    61,
+                    65,
+                  ],
+                  "type": "Identifier",
+                },
+                "init": null,
+                "loc": Object {
+                  "end": Object {
+                    "column": 65,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 61,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  61,
+                  65,
+                ],
+                "type": "VariableDeclarator",
+              },
+            ],
+            "kind": "var",
+            "loc": Object {
+              "end": Object {
+                "column": 66,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 57,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              57,
+              66,
+            ],
+            "type": "VariableDeclaration",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 68,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          13,
+          68,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "f",
+        "range": Array [
+          9,
+          10,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 68,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        0,
+        68,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 68,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    68,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/switch-fallthrough-comment.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "cases": Array [
+        Object {
+          "consequent": Array [],
+          "loc": Object {
+            "end": Object {
+              "column": 11,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 3,
+            },
+          },
+          "range": Array [
+            29,
+            36,
+          ],
+          "test": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 10,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 9,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              34,
+              35,
+            ],
+            "raw": "1",
+            "type": "Literal",
+            "value": 1,
+          },
+          "type": "SwitchCase",
+        },
+        Object {
+          "consequent": Array [
+            Object {
+              "expression": Object {
+                "arguments": Array [],
+                "callee": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 12,
+                      "line": 6,
+                    },
+                    "start": Object {
+                      "column": 8,
+                      "line": 6,
+                    },
+                  },
+                  "name": "doIt",
+                  "range": Array [
+                    82,
+                    86,
+                  ],
+                  "type": "Identifier",
+                },
+                "loc": Object {
+                  "end": Object {
+                    "column": 14,
+                    "line": 6,
+                  },
+                  "start": Object {
+                    "column": 8,
+                    "line": 6,
+                  },
+                },
+                "range": Array [
+                  82,
+                  88,
+                ],
+                "type": "CallExpression",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 15,
+                  "line": 6,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 6,
+                },
+              },
+              "range": Array [
+                82,
+                89,
+              ],
+              "type": "ExpressionStatement",
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 15,
+              "line": 6,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 5,
+            },
+          },
+          "range": Array [
+            66,
+            89,
+          ],
+          "test": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 10,
+                "line": 5,
+              },
+              "start": Object {
+                "column": 9,
+                "line": 5,
+              },
+            },
+            "range": Array [
+              71,
+              72,
+            ],
+            "raw": "2",
+            "type": "Literal",
+            "value": 2,
+          },
+          "type": "SwitchCase",
+        },
+      ],
+      "discriminant": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 1,
+          },
+        },
+        "name": "foo",
+        "range": Array [
+          7,
+          10,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        91,
+      ],
+      "type": "SwitchStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 7,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    91,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/switch-fallthrough-comment-in-function.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [
+          Object {
+            "cases": Array [
+              Object {
+                "consequent": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 15,
+                    "line": 4,
+                  },
+                  "start": Object {
+                    "column": 8,
+                    "line": 4,
+                  },
+                },
+                "range": Array [
+                  61,
+                  68,
+                ],
+                "test": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 4,
+                    },
+                  },
+                  "range": Array [
+                    66,
+                    67,
+                  ],
+                  "raw": "1",
+                  "type": "Literal",
+                  "value": 1,
+                },
+                "type": "SwitchCase",
+              },
+              Object {
+                "consequent": Array [
+                  Object {
+                    "expression": Object {
+                      "arguments": Array [],
+                      "callee": Object {
+                        "loc": Object {
+                          "end": Object {
+                            "column": 16,
+                            "line": 7,
+                          },
+                          "start": Object {
+                            "column": 12,
+                            "line": 7,
+                          },
+                        },
+                        "name": "doIt",
+                        "range": Array [
+                          126,
+                          130,
+                        ],
+                        "type": "Identifier",
+                      },
+                      "loc": Object {
+                        "end": Object {
+                          "column": 18,
+                          "line": 7,
+                        },
+                        "start": Object {
+                          "column": 12,
+                          "line": 7,
+                        },
+                      },
+                      "range": Array [
+                        126,
+                        132,
+                      ],
+                      "type": "CallExpression",
+                    },
+                    "loc": Object {
+                      "end": Object {
+                        "column": 19,
+                        "line": 7,
+                      },
+                      "start": Object {
+                        "column": 12,
+                        "line": 7,
+                      },
+                    },
+                    "range": Array [
+                      126,
+                      133,
+                    ],
+                    "type": "ExpressionStatement",
+                  },
+                ],
+                "loc": Object {
+                  "end": Object {
+                    "column": 19,
+                    "line": 7,
+                  },
+                  "start": Object {
+                    "column": 8,
+                    "line": 6,
+                  },
+                },
+                "range": Array [
+                  106,
+                  133,
+                ],
+                "test": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 6,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 6,
+                    },
+                  },
+                  "range": Array [
+                    111,
+                    112,
+                  ],
+                  "raw": "2",
+                  "type": "Literal",
+                  "value": 2,
+                },
+                "type": "SwitchCase",
+              },
+            ],
+            "discriminant": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 14,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 11,
+                  "line": 2,
+                },
+              },
+              "name": "foo",
+              "range": Array [
+                31,
+                34,
+              ],
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 5,
+                "line": 8,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              24,
+              139,
+            ],
+            "type": "SwitchStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 9,
+          },
+          "start": Object {
+            "column": 18,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          18,
+          141,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "bar",
+        "range": Array [
+          9,
+          12,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 9,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [
+        Object {
+          "loc": Object {
+            "end": Object {
+              "column": 16,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 1,
+            },
+          },
+          "name": "foo",
+          "range": Array [
+            13,
+            16,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "range": Array [
+        0,
+        141,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 9,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    141,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/switch-no-default-comment.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "cases": Array [
+        Object {
+          "consequent": Array [
+            Object {
+              "label": null,
+              "loc": Object {
+                "end": Object {
+                  "column": 14,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                33,
+                39,
+              ],
+              "type": "BreakStatement",
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            17,
+            39,
+          ],
+          "test": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 10,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 9,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              22,
+              23,
+            ],
+            "raw": "1",
+            "type": "Literal",
+            "value": 1,
+          },
+          "type": "SwitchCase",
+        },
+      ],
+      "discriminant": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "name": "a",
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        58,
+      ],
+      "type": "SwitchStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    58,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/switch-no-default-comment-in-function.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [
+          Object {
+            "cases": Array [
+              Object {
+                "consequent": Array [
+                  Object {
+                    "label": null,
+                    "loc": Object {
+                      "end": Object {
+                        "column": 18,
+                        "line": 4,
+                      },
+                      "start": Object {
+                        "column": 12,
+                        "line": 4,
+                      },
+                    },
+                    "range": Array [
+                      63,
+                      69,
+                    ],
+                    "type": "BreakStatement",
+                  },
+                ],
+                "loc": Object {
+                  "end": Object {
+                    "column": 18,
+                    "line": 4,
+                  },
+                  "start": Object {
+                    "column": 8,
+                    "line": 3,
+                  },
+                },
+                "range": Array [
+                  43,
+                  69,
+                ],
+                "test": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 3,
+                    },
+                  },
+                  "range": Array [
+                    48,
+                    49,
+                  ],
+                  "raw": "2",
+                  "type": "Literal",
+                  "value": 2,
+                },
+                "type": "SwitchCase",
+              },
+              Object {
+                "consequent": Array [
+                  Object {
+                    "label": null,
+                    "loc": Object {
+                      "end": Object {
+                        "column": 18,
+                        "line": 6,
+                      },
+                      "start": Object {
+                        "column": 12,
+                        "line": 6,
+                      },
+                    },
+                    "range": Array [
+                      98,
+                      104,
+                    ],
+                    "type": "BreakStatement",
+                  },
+                ],
+                "loc": Object {
+                  "end": Object {
+                    "column": 18,
+                    "line": 6,
+                  },
+                  "start": Object {
+                    "column": 8,
+                    "line": 5,
+                  },
+                },
+                "range": Array [
+                  78,
+                  104,
+                ],
+                "test": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 5,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 5,
+                    },
+                  },
+                  "range": Array [
+                    83,
+                    84,
+                  ],
+                  "raw": "1",
+                  "type": "Literal",
+                  "value": 1,
+                },
+                "type": "SwitchCase",
+              },
+            ],
+            "discriminant": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 13,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 12,
+                  "line": 2,
+                },
+              },
+              "name": "a",
+              "range": Array [
+                30,
+                31,
+              ],
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 5,
+                "line": 8,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              22,
+              131,
+            ],
+            "type": "SwitchStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 9,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          16,
+          133,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "bar",
+        "range": Array [
+          9,
+          12,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 9,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [
+        Object {
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 1,
+            },
+          },
+          "name": "a",
+          "range": Array [
+            13,
+            14,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "range": Array [
+        0,
+        133,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 9,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    133,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/switch-no-default-comment-in-nested-functions.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "left": Object {
+          "computed": false,
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "object": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 6,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "name": "module",
+            "range": Array [
+              0,
+              6,
+            ],
+            "type": "Identifier",
+          },
+          "property": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 7,
+                "line": 1,
+              },
+            },
+            "name": "exports",
+            "range": Array [
+              7,
+              14,
+            ],
+            "type": "Identifier",
+          },
+          "range": Array [
+            0,
+            14,
+          ],
+          "type": "MemberExpression",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 12,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "operator": "=",
+        "range": Array [
+          0,
+          286,
+        ],
+        "right": Object {
+          "async": false,
+          "body": Object {
+            "body": Array [
+              Object {
+                "async": false,
+                "body": Object {
+                  "body": Array [
+                    Object {
+                      "cases": Array [
+                        Object {
+                          "consequent": Array [
+                            Object {
+                              "argument": Object {
+                                "arguments": Array [
+                                  Object {
+                                    "computed": true,
+                                    "loc": Object {
+                                      "end": Object {
+                                        "column": 79,
+                                        "line": 6,
+                                      },
+                                      "start": Object {
+                                        "column": 34,
+                                        "line": 6,
+                                      },
+                                    },
+                                    "object": Object {
+                                      "computed": false,
+                                      "loc": Object {
+                                        "end": Object {
+                                          "column": 50,
+                                          "line": 6,
+                                        },
+                                        "start": Object {
+                                          "column": 34,
+                                          "line": 6,
+                                        },
+                                      },
+                                      "object": Object {
+                                        "loc": Object {
+                                          "end": Object {
+                                            "column": 38,
+                                            "line": 6,
+                                          },
+                                          "start": Object {
+                                            "column": 34,
+                                            "line": 6,
+                                          },
+                                        },
+                                        "name": "node",
+                                        "range": Array [
+                                          172,
+                                          176,
+                                        ],
+                                        "type": "Identifier",
+                                      },
+                                      "property": Object {
+                                        "loc": Object {
+                                          "end": Object {
+                                            "column": 50,
+                                            "line": 6,
+                                          },
+                                          "start": Object {
+                                            "column": 39,
+                                            "line": 6,
+                                          },
+                                        },
+                                        "name": "expressions",
+                                        "range": Array [
+                                          177,
+                                          188,
+                                        ],
+                                        "type": "Identifier",
+                                      },
+                                      "range": Array [
+                                        172,
+                                        188,
+                                      ],
+                                      "type": "MemberExpression",
+                                    },
+                                    "property": Object {
+                                      "left": Object {
+                                        "computed": false,
+                                        "loc": Object {
+                                          "end": Object {
+                                            "column": 74,
+                                            "line": 6,
+                                          },
+                                          "start": Object {
+                                            "column": 51,
+                                            "line": 6,
+                                          },
+                                        },
+                                        "object": Object {
+                                          "computed": false,
+                                          "loc": Object {
+                                            "end": Object {
+                                              "column": 67,
+                                              "line": 6,
+                                            },
+                                            "start": Object {
+                                              "column": 51,
+                                              "line": 6,
+                                            },
+                                          },
+                                          "object": Object {
+                                            "loc": Object {
+                                              "end": Object {
+                                                "column": 55,
+                                                "line": 6,
+                                              },
+                                              "start": Object {
+                                                "column": 51,
+                                                "line": 6,
+                                              },
+                                            },
+                                            "name": "node",
+                                            "range": Array [
+                                              189,
+                                              193,
+                                            ],
+                                            "type": "Identifier",
+                                          },
+                                          "property": Object {
+                                            "loc": Object {
+                                              "end": Object {
+                                                "column": 67,
+                                                "line": 6,
+                                              },
+                                              "start": Object {
+                                                "column": 56,
+                                                "line": 6,
+                                              },
+                                            },
+                                            "name": "expressions",
+                                            "range": Array [
+                                              194,
+                                              205,
+                                            ],
+                                            "type": "Identifier",
+                                          },
+                                          "range": Array [
+                                            189,
+                                            205,
+                                          ],
+                                          "type": "MemberExpression",
+                                        },
+                                        "property": Object {
+                                          "loc": Object {
+                                            "end": Object {
+                                              "column": 74,
+                                              "line": 6,
+                                            },
+                                            "start": Object {
+                                              "column": 68,
+                                              "line": 6,
+                                            },
+                                          },
+                                          "name": "length",
+                                          "range": Array [
+                                            206,
+                                            212,
+                                          ],
+                                          "type": "Identifier",
+                                        },
+                                        "range": Array [
+                                          189,
+                                          212,
+                                        ],
+                                        "type": "MemberExpression",
+                                      },
+                                      "loc": Object {
+                                        "end": Object {
+                                          "column": 78,
+                                          "line": 6,
+                                        },
+                                        "start": Object {
+                                          "column": 51,
+                                          "line": 6,
+                                        },
+                                      },
+                                      "operator": "-",
+                                      "range": Array [
+                                        189,
+                                        216,
+                                      ],
+                                      "right": Object {
+                                        "loc": Object {
+                                          "end": Object {
+                                            "column": 78,
+                                            "line": 6,
+                                          },
+                                          "start": Object {
+                                            "column": 77,
+                                            "line": 6,
+                                          },
+                                        },
+                                        "range": Array [
+                                          215,
+                                          216,
+                                        ],
+                                        "raw": "1",
+                                        "type": "Literal",
+                                        "value": 1,
+                                      },
+                                      "type": "BinaryExpression",
+                                    },
+                                    "range": Array [
+                                      172,
+                                      217,
+                                    ],
+                                    "type": "MemberExpression",
+                                  },
+                                ],
+                                "callee": Object {
+                                  "loc": Object {
+                                    "end": Object {
+                                      "column": 33,
+                                      "line": 6,
+                                    },
+                                    "start": Object {
+                                      "column": 23,
+                                      "line": 6,
+                                    },
+                                  },
+                                  "name": "isConstant",
+                                  "range": Array [
+                                    161,
+                                    171,
+                                  ],
+                                  "type": "Identifier",
+                                },
+                                "loc": Object {
+                                  "end": Object {
+                                    "column": 80,
+                                    "line": 6,
+                                  },
+                                  "start": Object {
+                                    "column": 23,
+                                    "line": 6,
+                                  },
+                                },
+                                "range": Array [
+                                  161,
+                                  218,
+                                ],
+                                "type": "CallExpression",
+                              },
+                              "loc": Object {
+                                "end": Object {
+                                  "column": 81,
+                                  "line": 6,
+                                },
+                                "start": Object {
+                                  "column": 16,
+                                  "line": 6,
+                                },
+                              },
+                              "range": Array [
+                                154,
+                                219,
+                              ],
+                              "type": "ReturnStatement",
+                            },
+                          ],
+                          "loc": Object {
+                            "end": Object {
+                              "column": 81,
+                              "line": 6,
+                            },
+                            "start": Object {
+                              "column": 12,
+                              "line": 5,
+                            },
+                          },
+                          "range": Array [
+                            111,
+                            219,
+                          ],
+                          "test": Object {
+                            "loc": Object {
+                              "end": Object {
+                                "column": 37,
+                                "line": 5,
+                              },
+                              "start": Object {
+                                "column": 17,
+                                "line": 5,
+                              },
+                            },
+                            "range": Array [
+                              116,
+                              136,
+                            ],
+                            "raw": "\\"SequenceExpression\\"",
+                            "type": "Literal",
+                            "value": "SequenceExpression",
+                          },
+                          "type": "SwitchCase",
+                        },
+                      ],
+                      "discriminant": Object {
+                        "computed": false,
+                        "loc": Object {
+                          "end": Object {
+                            "column": 25,
+                            "line": 4,
+                          },
+                          "start": Object {
+                            "column": 16,
+                            "line": 4,
+                          },
+                        },
+                        "object": Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 20,
+                              "line": 4,
+                            },
+                            "start": Object {
+                              "column": 16,
+                              "line": 4,
+                            },
+                          },
+                          "name": "node",
+                          "range": Array [
+                            86,
+                            90,
+                          ],
+                          "type": "Identifier",
+                        },
+                        "property": Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 25,
+                              "line": 4,
+                            },
+                            "start": Object {
+                              "column": 21,
+                              "line": 4,
+                            },
+                          },
+                          "name": "type",
+                          "range": Array [
+                            91,
+                            95,
+                          ],
+                          "type": "Identifier",
+                        },
+                        "range": Array [
+                          86,
+                          95,
+                        ],
+                        "type": "MemberExpression",
+                      },
+                      "loc": Object {
+                        "end": Object {
+                          "column": 9,
+                          "line": 8,
+                        },
+                        "start": Object {
+                          "column": 8,
+                          "line": 4,
+                        },
+                      },
+                      "range": Array [
+                        78,
+                        255,
+                      ],
+                      "type": "SwitchStatement",
+                    },
+                    Object {
+                      "argument": Object {
+                        "loc": Object {
+                          "end": Object {
+                            "column": 20,
+                            "line": 9,
+                          },
+                          "start": Object {
+                            "column": 15,
+                            "line": 9,
+                          },
+                        },
+                        "range": Array [
+                          271,
+                          276,
+                        ],
+                        "raw": "false",
+                        "type": "Literal",
+                        "value": false,
+                      },
+                      "loc": Object {
+                        "end": Object {
+                          "column": 21,
+                          "line": 9,
+                        },
+                        "start": Object {
+                          "column": 8,
+                          "line": 9,
+                        },
+                      },
+                      "range": Array [
+                        264,
+                        277,
+                      ],
+                      "type": "ReturnStatement",
+                    },
+                  ],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 5,
+                      "line": 10,
+                    },
+                    "start": Object {
+                      "column": 30,
+                      "line": 3,
+                    },
+                  },
+                  "range": Array [
+                    68,
+                    283,
+                  ],
+                  "type": "BlockStatement",
+                },
+                "expression": false,
+                "generator": false,
+                "id": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 23,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 3,
+                    },
+                  },
+                  "name": "isConstant",
+                  "range": Array [
+                    51,
+                    61,
+                  ],
+                  "type": "Identifier",
+                },
+                "loc": Object {
+                  "end": Object {
+                    "column": 5,
+                    "line": 10,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 3,
+                  },
+                },
+                "params": Array [
+                  Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 28,
+                        "line": 3,
+                      },
+                      "start": Object {
+                        "column": 24,
+                        "line": 3,
+                      },
+                    },
+                    "name": "node",
+                    "range": Array [
+                      62,
+                      66,
+                    ],
+                    "type": "Identifier",
+                  },
+                ],
+                "range": Array [
+                  42,
+                  283,
+                ],
+                "type": "FunctionDeclaration",
+              },
+            ],
+            "loc": Object {
+              "end": Object {
+                "column": 1,
+                "line": 12,
+              },
+              "start": Object {
+                "column": 35,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              35,
+              286,
+            ],
+            "type": "BlockStatement",
+          },
+          "expression": false,
+          "generator": false,
+          "id": null,
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 12,
+            },
+            "start": Object {
+              "column": 17,
+              "line": 1,
+            },
+          },
+          "params": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 33,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 26,
+                  "line": 1,
+                },
+              },
+              "name": "context",
+              "range": Array [
+                26,
+                33,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "range": Array [
+            17,
+            286,
+          ],
+          "type": "FunctionExpression",
+        },
+        "type": "AssignmentExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 12,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        287,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 2,
+      "line": 12,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    287,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Comments fixtures/template-string-block.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "expressions": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 3,
+                "line": 1,
+              },
+            },
+            "name": "name",
+            "range": Array [
+              3,
+              7,
+            ],
+            "type": "Identifier",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "quasis": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 3,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              0,
+              3,
+            ],
+            "tail": false,
+            "type": "TemplateElement",
+            "value": Object {
+              "cooked": "",
+              "raw": "",
+            },
+          },
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 7,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              7,
+              9,
+            ],
+            "tail": true,
+            "type": "TemplateElement",
+            "value": Object {
+              "cooked": "",
+              "raw": "",
+            },
+          },
+        ],
+        "range": Array [
+          0,
+          9,
+        ],
+        "type": "TemplateLiteral",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        10,
+      ],
+      "type": "ExpressionStatement",
+    },
+    Object {
+      "body": Array [
+        Object {
+          "expression": Object {
+            "left": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 4,
+                },
+              },
+              "range": Array [
+                56,
+                57,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 4,
+              },
+            },
+            "operator": "+",
+            "range": Array [
+              56,
+              61,
+            ],
+            "right": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 4,
+                },
+              },
+              "range": Array [
+                60,
+                61,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "type": "BinaryExpression",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 10,
+              "line": 4,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 4,
+            },
+          },
+          "range": Array [
+            56,
+            62,
+          ],
+          "type": "ExpressionStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        11,
+        64,
+      ],
+      "type": "BlockStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    64,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;

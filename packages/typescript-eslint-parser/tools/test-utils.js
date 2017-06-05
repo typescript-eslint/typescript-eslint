@@ -7,6 +7,14 @@
 
 "use strict";
 
+/* global expect */
+
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+const parser = require("../parser");
+
 //------------------------------------------------------------------------------
 //   Private
 //--------------------------------------------------------------------------------
@@ -26,6 +34,35 @@ function getRaw(ast) {
     }));
 }
 
+/**
+ * Returns a function which can be used as the callback of a Jest test() block,
+ * and which performs an assertion on the snapshot for the given code and config.
+ * @param {string} code The source code to parse
+ * @param {*} config the parser configuration
+ * @returns {Function} callback for Jest test() block
+ */
+function createSnapshotTestBlock(code, config) {
+
+    /**
+     * @returns {Object} the AST object
+     */
+    function parse() {
+        const ast = parser.parse(code, config);
+        return getRaw(ast);
+    }
+
+    return () => {
+        try {
+            const result = parse();
+            expect(result).toMatchSnapshot();
+        } catch (e) {
+            expect(parse).toThrowErrorMatchingSnapshot();
+        }
+    };
+
+}
+
 module.exports = {
-    getRaw
+    getRaw,
+    createSnapshotTestBlock
 };
