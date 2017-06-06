@@ -1574,13 +1574,20 @@ module.exports = function convert(config) {
             });
             break;
 
-        case SyntaxKind.NullKeyword:
-            Object.assign(result, {
-                type: AST_NODE_TYPES.Literal,
-                value: null,
-                raw: "null"
-            });
+        case SyntaxKind.NullKeyword: {
+            if (nodeUtils.isWithinTypeAnnotation(node)) {
+                Object.assign(result, {
+                    type: AST_NODE_TYPES.TSNullKeyword
+                });
+            } else {
+                Object.assign(result, {
+                    type: AST_NODE_TYPES.Literal,
+                    value: null,
+                    raw: "null"
+                });
+            }
             break;
+        }
 
         case SyntaxKind.EmptyStatement:
         case SyntaxKind.DebuggerStatement:

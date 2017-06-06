@@ -118,6 +118,7 @@ module.exports = {
     TSModuleDeclaration: "TSModuleDeclaration",
     TSNamespaceFunctionDeclaration: "TSNamespaceFunctionDeclaration",
     TSNonNullExpression: "TSNonNullExpression",
+    TSNullKeyword: "TSNullKeyword",
     TSNumberKeyword: "TSNumberKeyword",
     TSParameterProperty: "TSParameterProperty",
     TSPropertySignature: "TSPropertySignature",
