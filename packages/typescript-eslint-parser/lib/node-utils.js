@@ -197,7 +197,8 @@ module.exports = {
     getTokenType,
     convertToken,
     convertTokens,
-    getNodeContainer
+    getNodeContainer,
+    isWithinTypeAnnotation
 };
 /* eslint-enable no-use-before-define */
 
@@ -470,6 +471,16 @@ function isComputedProperty(node) {
 function isOptional(node) {
     return (node.questionToken)
         ? (node.questionToken.kind === SyntaxKind.QuestionToken) : false;
+}
+
+/**
+ * Returns true if the given TSNode is within the context of a "typeAnnotation",
+ * which effectively means - is it coming from its parent's `type` or `types` property
+ * @param  {TSNode} node TSNode to be checked
+ * @returns {boolean}       is within "typeAnnotation context"
+ */
+function isWithinTypeAnnotation(node) {
+    return node.parent.type === node || (node.parent.types && node.parent.types.indexOf(node) > -1);
 }
 
 /**

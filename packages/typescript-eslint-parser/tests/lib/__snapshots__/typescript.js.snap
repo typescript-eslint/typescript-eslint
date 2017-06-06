@@ -15659,6 +15659,209 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/null-and-undefined-type-annotations.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 5,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "x",
+            "range": Array [
+              4,
+              5,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                7,
+                11,
+              ],
+              "type": "TypeAnnotation",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 11,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  7,
+                  11,
+                ],
+                "type": "TSNullKeyword",
+              },
+            },
+          },
+          "init": null,
+          "loc": Object {
+            "end": Object {
+              "column": 11,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            4,
+            11,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "let",
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        12,
+      ],
+      "type": "VariableDeclaration",
+    },
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 5,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "name": "y",
+            "range": Array [
+              17,
+              18,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 16,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                20,
+                29,
+              ],
+              "type": "TypeAnnotation",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 16,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 7,
+                    "line": 2,
+                  },
+                },
+                "range": Array [
+                  20,
+                  29,
+                ],
+                "type": "TSUndefinedKeyword",
+              },
+            },
+          },
+          "init": null,
+          "loc": Object {
+            "end": Object {
+              "column": 16,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            17,
+            29,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "let",
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        13,
+        30,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 17,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    30,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
 exports[`typescript fixtures/basics/type-alias-declaration.src 1`] = `
 Object {
   "body": Array [
