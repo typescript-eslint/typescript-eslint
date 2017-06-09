@@ -1330,10 +1330,17 @@ module.exports = function convert(config) {
             break;
 
         case SyntaxKind.ExportAssignment:
-            Object.assign(result, {
-                type: AST_NODE_TYPES.ExportDefaultDeclaration,
-                declaration: convertChild(node.expression)
-            });
+            if (node.isExportEquals) {
+                Object.assign(result, {
+                    type: AST_NODE_TYPES.TSExportAssignment,
+                    expression: convertChild(node.expression)
+                });
+            } else {
+                Object.assign(result, {
+                    type: AST_NODE_TYPES.ExportDefaultDeclaration,
+                    declaration: convertChild(node.expression)
+                });
+            }
             break;
 
         // Unary Operations

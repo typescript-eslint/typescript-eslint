@@ -8898,6 +8898,64 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/export-assignment.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "foo",
+        "range": Array [
+          9,
+          12,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        13,
+      ],
+      "type": "TSExportAssigment",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 13,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    13,
+  ],
+  "sourceType": "module",
+  "type": "Program",
+}
+`;
+
 exports[`typescript fixtures/basics/export-default-class-with-generic.src 1`] = `
 Object {
   "body": Array [
