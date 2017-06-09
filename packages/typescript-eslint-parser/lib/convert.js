@@ -291,6 +291,7 @@ module.exports = function convert(config) {
             tagNameToken.object.type = (isNestedMemberExpression) ? AST_NODE_TYPES.JSXMemberExpression : AST_NODE_TYPES.JSXIdentifier;
             tagNameToken.property.type = AST_NODE_TYPES.JSXIdentifier;
         } else {
+            tagNameToken.type = AST_NODE_TYPES.JSXIdentifier;
             tagNameToken.name = tagNameToken.value;
         }
 
