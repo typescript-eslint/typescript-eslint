@@ -17001,6 +17001,362 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/type-parameters-comments.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "arguments": Array [],
+        "callee": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 3,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "name": "foo",
+          "range": Array [
+            0,
+            3,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 42,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          42,
+        ],
+        "type": "CallExpression",
+        "typeParameters": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 40,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 3,
+              "line": 1,
+            },
+          },
+          "params": Array [
+            Object {
+              "id": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 22,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 21,
+                    "line": 1,
+                  },
+                },
+                "name": "A",
+                "range": Array [
+                  21,
+                  22,
+                ],
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 22,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                21,
+                22,
+              ],
+              "type": "GenericTypeAnnotation",
+              "typeParameters": null,
+            },
+          ],
+          "range": Array [
+            3,
+            40,
+          ],
+          "type": "TypeParameterInstantiation",
+        },
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 43,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        43,
+      ],
+      "type": "ExpressionStatement",
+    },
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 43,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 40,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          84,
+          87,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 2,
+          },
+        },
+        "name": "bar",
+        "range": Array [
+          53,
+          56,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 43,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        44,
+        87,
+      ],
+      "type": "FunctionDeclaration",
+      "typeParameters": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 37,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "params": Array [
+          Object {
+            "constraint": null,
+            "loc": Object {
+              "end": Object {
+                "column": 25,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 24,
+                "line": 2,
+              },
+            },
+            "name": "A",
+            "range": Array [
+              68,
+              69,
+            ],
+            "type": "TypeParameter",
+          },
+        ],
+        "range": Array [
+          56,
+          81,
+        ],
+        "type": "TypeParameterDeclaration",
+      },
+    },
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 49,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 46,
+            "line": 3,
+          },
+        },
+        "range": Array [
+          134,
+          137,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 3,
+          },
+        },
+        "name": "baz",
+        "range": Array [
+          97,
+          100,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 49,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        88,
+        137,
+      ],
+      "type": "FunctionDeclaration",
+      "typeParameters": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 43,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 12,
+            "line": 3,
+          },
+        },
+        "params": Array [
+          Object {
+            "constraint": null,
+            "default": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 41,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 38,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                126,
+                129,
+              ],
+              "type": "TSTypeReference",
+              "typeName": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 41,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 38,
+                    "line": 3,
+                  },
+                },
+                "name": "Foo",
+                "range": Array [
+                  126,
+                  129,
+                ],
+                "type": "Identifier",
+              },
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 41,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 24,
+                "line": 3,
+              },
+            },
+            "name": "A",
+            "range": Array [
+              112,
+              129,
+            ],
+            "type": "TypeParameter",
+          },
+        ],
+        "range": Array [
+          100,
+          131,
+        ],
+        "type": "TypeParameterDeclaration",
+      },
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 49,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    137,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
 exports[`typescript fixtures/basics/typed-this.src 1`] = `
 Object {
   "body": Array [

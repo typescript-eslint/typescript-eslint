@@ -101,13 +101,15 @@ module.exports = function convert(config) {
     function convertTypeArgumentsToTypeParameters(typeArguments) {
         const firstTypeArgument = typeArguments[0];
         const lastTypeArgument = typeArguments[typeArguments.length - 1];
+        const greaterThanToken = nodeUtils.findNextToken(lastTypeArgument, ast);
+
         return {
             type: AST_NODE_TYPES.TypeParameterInstantiation,
             range: [
                 firstTypeArgument.pos - 1,
-                lastTypeArgument.end + 1
+                greaterThanToken.end
             ],
-            loc: nodeUtils.getLocFor(firstTypeArgument.pos - 1, lastTypeArgument.end + 1, ast),
+            loc: nodeUtils.getLocFor(firstTypeArgument.pos - 1, greaterThanToken.end, ast),
             params: typeArguments.map(typeArgument => ({
                 type: AST_NODE_TYPES.GenericTypeAnnotation,
                 range: [
@@ -131,13 +133,16 @@ module.exports = function convert(config) {
     function convertTSTypeParametersToTypeParametersDeclaration(typeParameters) {
         const firstTypeParameter = typeParameters[0];
         const lastTypeParameter = typeParameters[typeParameters.length - 1];
+
+        const greaterThanToken = nodeUtils.findNextToken(lastTypeParameter, ast);
+
         return {
             type: AST_NODE_TYPES.TypeParameterDeclaration,
             range: [
                 firstTypeParameter.pos - 1,
-                lastTypeParameter.end + 1
+                greaterThanToken.end
             ],
-            loc: nodeUtils.getLocFor(firstTypeParameter.pos - 1, lastTypeParameter.end + 1, ast),
+            loc: nodeUtils.getLocFor(firstTypeParameter.pos - 1, greaterThanToken.end, ast),
             params: typeParameters.map(typeParameter => {
                 const name = nodeUtils.unescapeIdentifier(typeParameter.name.text);
 
