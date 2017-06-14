@@ -14,23 +14,7 @@ const astNodeTypes = require("./lib/ast-node-types"),
 
 const SUPPORTED_TYPESCRIPT_VERSIONS = require("./package.json").devDependencies.typescript;
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
-
 const isRunningSupportedTypeScriptVersion = semver.satisfies(ACTIVE_TYPESCRIPT_VERSION, SUPPORTED_TYPESCRIPT_VERSIONS);
-
-if (!isRunningSupportedTypeScriptVersion) {
-    const border = "=============";
-    const versionWarning = [
-        border,
-        "WARNING: You are currently running a version of TypeScript which is not officially supported by typescript-eslint-parser.",
-        "You may find that it works just fine, or you may not.",
-        `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
-        `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
-        "Please only submit bug reports when using the officially supported version.",
-        border
-    ];
-
-    console.warn(versionWarning.join("\n\n")); // eslint-disable-line no-console
-}
 
 let extra;
 
@@ -49,7 +33,8 @@ function resetExtra() {
         errors: [],
         strict: false,
         ecmaFeatures: {},
-        useJSXTextNode: false
+        useJSXTextNode: false,
+        log: console.log // eslint-disable-line no-console
     };
 }
 
@@ -109,6 +94,27 @@ function parse(code, options) {
             extra.useJSXTextNode = true;
         }
 
+        /**
+         * Allow the user to override the function used for logging
+         */
+        if (typeof options.loggerFn === "function") {
+            extra.log = options.loggerFn;
+        }
+
+    }
+
+    if (!isRunningSupportedTypeScriptVersion) {
+        const border = "=============";
+        const versionWarning = [
+            border,
+            "WARNING: You are currently running a version of TypeScript which is not officially supported by typescript-eslint-parser.",
+            "You may find that it works just fine, or you may not.",
+            `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
+            `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
+            "Please only submit bug reports when using the officially supported version.",
+            border
+        ];
+        extra.log(versionWarning.join("\n\n"));
     }
 
     // Even if jsx option is set in typescript compiler, filename still has to
