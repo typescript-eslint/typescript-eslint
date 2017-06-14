@@ -39,24 +39,19 @@ const regexFilenames = [
 
 describe("ecmaFeatures", () => {
 
-    let config;
-
-    beforeEach(() => {
-        config = {
-            loc: true,
-            range: true,
-            tokens: true,
-            ecmaFeatures: {},
-            errorOnUnknownASTType: true
-        };
-    });
-
     testFiles.forEach(filename => {
 
         // Uncomment and fill in filename to focus on a single file
         // var filename = "jsx/invalid-matching-placeholder-in-closing-tag";
         const feature = path.dirname(filename),
-            code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
+            code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`),
+            config = {
+                loc: true,
+                range: true,
+                tokens: true,
+                ecmaFeatures: {},
+                errorOnUnknownASTType: true
+            };
 
         if (regexFilenames.indexOf(filename) === -1) {
             test(`fixtures/${filename}.src`, () => {
