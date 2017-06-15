@@ -146,6 +146,10 @@ module.exports = function convert(config) {
             params: typeParameters.map(typeParameter => {
                 const name = nodeUtils.unescapeIdentifier(typeParameter.name.text);
 
+                const constraint = typeParameter.constraint
+                    ? convert({ node: typeParameter.constraint, parent: typeParameter, ast, additionalOptions })
+                    : null;
+
                 const defaultParameter = typeParameter.default
                     ? convert({ node: typeParameter.default, parent: typeParameter, ast, additionalOptions })
                     : typeParameter.default;
@@ -158,9 +162,7 @@ module.exports = function convert(config) {
                     ],
                     loc: nodeUtils.getLoc(typeParameter, ast),
                     name,
-                    constraint: (typeParameter.constraint)
-                        ? convertTypeAnnotation(typeParameter.constraint)
-                        : null,
+                    constraint,
                     default: defaultParameter
                 };
             })

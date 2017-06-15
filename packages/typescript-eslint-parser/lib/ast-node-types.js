@@ -121,6 +121,7 @@ module.exports = {
     TSNonNullExpression: "TSNonNullExpression",
     TSNullKeyword: "TSNullKeyword",
     TSNumberKeyword: "TSNumberKeyword",
+    TSObjectKeyword: "TSObjectKeyword",
     TSParameterProperty: "TSParameterProperty",
     TSPropertySignature: "TSPropertySignature",
     TSQualifiedName: "TSQualifiedName",
@@ -130,6 +131,7 @@ module.exports = {
     TSTypePredicate: "TSTypePredicate",
     TSTypeReference: "TSTypeReference",
     TSUnionType: "TSUnionType",
+    TSUndefinedKeyword: "TSUndefinedKeyword",
     TSVoidKeyword: "TSVoidKeyword",
 
     TypeAnnotation: "TypeAnnotation",
