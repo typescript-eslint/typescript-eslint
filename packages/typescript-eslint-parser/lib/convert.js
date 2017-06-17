@@ -1537,9 +1537,13 @@ module.exports = function convert(config) {
         case SyntaxKind.StringLiteral:
             Object.assign(result, {
                 type: AST_NODE_TYPES.Literal,
-                value: nodeUtils.unescapeStringLiteralText(node.text),
                 raw: ast.text.slice(result.range[0], result.range[1])
             });
+            if (parent.name && parent.name === node) {
+                result.value = nodeUtils.unescapeIdentifier(node.text);
+            } else {
+                result.value = nodeUtils.unescapeStringLiteralText(node.text);
+            }
             break;
 
         case SyntaxKind.NumericLiteral:
