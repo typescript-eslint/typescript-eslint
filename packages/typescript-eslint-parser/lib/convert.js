@@ -666,17 +666,36 @@ module.exports = function convert(config) {
             });
             break;
 
-        case SyntaxKind.ShorthandPropertyAssignment:
-            Object.assign(result, {
-                type: AST_NODE_TYPES.Property,
-                key: convertChild(node.name),
-                value: convertChild(node.name),
-                computed: false,
-                method: false,
-                shorthand: true,
-                kind: "init"
-            });
+        case SyntaxKind.ShorthandPropertyAssignment: {
+            if (node.objectAssignmentInitializer) {
+                Object.assign(result, {
+                    type: AST_NODE_TYPES.Property,
+                    key: convertChild(node.name),
+                    value: {
+                        type: AST_NODE_TYPES.AssignmentPattern,
+                        left: convertChild(node.name),
+                        right: convertChild(node.objectAssignmentInitializer),
+                        loc: result.loc,
+                        range: result.range
+                    },
+                    computed: false,
+                    method: false,
+                    shorthand: true,
+                    kind: "init"
+                });
+            } else {
+                Object.assign(result, {
+                    type: AST_NODE_TYPES.Property,
+                    key: convertChild(node.name),
+                    value: convertChild(node.initializer || node.name),
+                    computed: false,
+                    method: false,
+                    shorthand: true,
+                    kind: "init"
+                });
+            }
             break;
+        }
 
         case SyntaxKind.ComputedPropertyName:
 
