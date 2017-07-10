@@ -526,7 +526,7 @@ module.exports = function convert(config) {
 
         }
 
-        case SyntaxKind.VariableDeclaration:
+        case SyntaxKind.VariableDeclaration: {
             Object.assign(result, {
                 type: AST_NODE_TYPES.VariableDeclarator,
                 id: convertChild(node.name),
@@ -535,8 +535,18 @@ module.exports = function convert(config) {
 
             if (node.type) {
                 result.id.typeAnnotation = convertTypeAnnotation(node.type);
+                result.id.range[1] = node.type.getEnd();
+
+                const identifierEnd = node.name.getEnd();
+                const numCharsBetweenTypeAndIdentifier = node.type.getStart() - (node.type.getFullStart() - identifierEnd - ":".length) - identifierEnd;
+
+                result.id.typeAnnotation.range = [
+                    result.id.typeAnnotation.range[0] - numCharsBetweenTypeAndIdentifier,
+                    result.id.typeAnnotation.range[1]
+                ];
             }
             break;
+        }
 
         case SyntaxKind.VariableStatement:
             Object.assign(result, {
@@ -1145,9 +1155,8 @@ module.exports = function convert(config) {
             }
 
             if (node.type) {
-                Object.assign(parameter, {
-                    typeAnnotation: convertTypeAnnotation(node.type)
-                });
+                parameter.typeAnnotation = convertTypeAnnotation(node.type);
+                parameter.range[1] = node.type.getEnd();
             }
 
             if (node.questionToken) {
