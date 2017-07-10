@@ -122,22 +122,6 @@ function findFirstMatchingChild(node, sourceFile, predicate) {
 }
 
 /**
- * Find the first matching ancestor based on the given predicate function.
- * @param {TSNode} node The current TSNode
- * @param {Function} predicate The predicate function to apply to each checked ancestor
- * @returns {TSNode|undefined} a matching parent TSNode
- */
-function findFirstMatchingAncestor(node, predicate) {
-    while (node) {
-        if (predicate(node)) {
-            return node;
-        }
-        node = node.parent;
-    }
-    return undefined;
-}
-
-/**
  * Returns true if the given TSNode is a let variable declaration
  * @param {TSNode} node The TSNode
  * @returns {boolean} whether or not the given node is a let variable declaration
@@ -187,6 +171,7 @@ module.exports = {
     hasStaticModifierFlag,
     findNextToken,
     findChildOfKind,
+    findFirstMatchingAncestor,
     findAncestorOfKind,
     hasJSXAncestor,
     unescapeIdentifier,
@@ -418,6 +403,22 @@ function findChildOfKind(node, kind, sourceFile) {
 }
 
 /**
+ * Find the first matching ancestor based on the given predicate function.
+ * @param {TSNode} node The current TSNode
+ * @param {Function} predicate The predicate function to apply to each checked ancestor
+ * @returns {TSNode|undefined} a matching parent TSNode
+ */
+function findFirstMatchingAncestor(node, predicate) {
+    while (node) {
+        if (predicate(node)) {
+            return node;
+        }
+        node = node.parent;
+    }
+    return undefined;
+}
+
+/**
  * Finds the first parent TSNode which mastches the given kind
  * @param {TSNode} node The current TSNode
  * @param {number} kind The TSNode kind to match against
@@ -426,6 +427,7 @@ function findChildOfKind(node, kind, sourceFile) {
 function findAncestorOfKind(node, kind) {
     return findFirstMatchingAncestor(node, parent => parent.kind === kind);
 }
+
 
 /**
  * Returns true if a given TSNode has a JSX token within its hierarchy
