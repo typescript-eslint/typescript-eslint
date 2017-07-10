@@ -606,8 +606,18 @@ module.exports = function convert(config) {
 
         case SyntaxKind.ObjectLiteralExpression: {
 
-            const objectAssignNode = nodeUtils.findAncestorOfKind(node, SyntaxKind.BinaryExpression);
-            let objectIsInAssignment;
+            const ancestorNode = nodeUtils.findFirstMatchingAncestor(
+                node,
+                parentNode =>
+                    (parentNode.kind === SyntaxKind.BinaryExpression || parentNode.kind === SyntaxKind.ArrowFunction)
+                );
+            const objectAssignNode = (
+                ancestorNode &&
+                ancestorNode.kind === SyntaxKind.BinaryExpression &&
+                ancestorNode.operatorToken.kind === SyntaxKind.FirstAssignment
+            ) ? ancestorNode : null;
+
+            let objectIsInAssignment = false;
 
             if (objectAssignNode) {
                 if (objectAssignNode.left === node) {
