@@ -2936,7 +2936,7 @@ Object {
             "name": "b",
             "range": Array [
               4,
-              5,
+              8,
             ],
             "type": "Identifier",
             "typeAnnotation": Object {
@@ -4951,7 +4951,7 @@ Object {
                   "name": "bar",
                   "range": Array [
                     132,
-                    135,
+                    144,
                   ],
                   "type": "Identifier",
                   "typeAnnotation": Object {
@@ -5917,7 +5917,7 @@ Object {
                     "name": "a",
                     "range": Array [
                       35,
-                      36,
+                      44,
                     ],
                     "type": "Identifier",
                     "typeAnnotation": Object {
@@ -9247,7 +9247,7 @@ Object {
           "name": "Base",
           "range": Array [
             38,
-            42,
+            45,
           ],
           "type": "Identifier",
           "typeAnnotation": Object {
@@ -9796,7 +9796,7 @@ Object {
                   "name": "args",
                   "range": Array [
                     188,
-                    192,
+                    199,
                   ],
                   "type": "Identifier",
                   "typeAnnotation": Object {
@@ -13335,7 +13335,7 @@ Object {
                     "name": "firstName",
                     "range": Array [
                       34,
-                      43,
+                      51,
                     ],
                     "type": "Identifier",
                     "typeAnnotation": Object {
@@ -13409,7 +13409,7 @@ Object {
                     "name": "lastName",
                     "range": Array [
                       84,
-                      92,
+                      100,
                     ],
                     "type": "Identifier",
                     "typeAnnotation": Object {
@@ -13484,7 +13484,7 @@ Object {
                       "name": "age",
                       "range": Array [
                         124,
-                        127,
+                        135,
                       ],
                       "type": "Identifier",
                       "typeAnnotation": Object {
@@ -13594,7 +13594,7 @@ Object {
                       "name": "student",
                       "range": Array [
                         173,
-                        180,
+                        189,
                       ],
                       "type": "Identifier",
                       "typeAnnotation": Object {
@@ -14477,7 +14477,7 @@ Object {
                     "name": "firstName",
                     "range": Array [
                       36,
-                      45,
+                      53,
                     ],
                     "type": "Identifier",
                     "typeAnnotation": Object {
@@ -14551,7 +14551,7 @@ Object {
                     "name": "lastName",
                     "range": Array [
                       88,
-                      96,
+                      104,
                     ],
                     "type": "Identifier",
                     "typeAnnotation": Object {
@@ -14626,7 +14626,7 @@ Object {
                       "name": "age",
                       "range": Array [
                         130,
-                        133,
+                        141,
                       ],
                       "type": "Identifier",
                       "typeAnnotation": Object {
@@ -14736,7 +14736,7 @@ Object {
                       "name": "student",
                       "range": Array [
                         181,
-                        188,
+                        197,
                       ],
                       "type": "Identifier",
                       "typeAnnotation": Object {
@@ -15619,7 +15619,7 @@ Object {
                     "name": "firstName",
                     "range": Array [
                       33,
-                      42,
+                      50,
                     ],
                     "type": "Identifier",
                     "typeAnnotation": Object {
@@ -15693,7 +15693,7 @@ Object {
                     "name": "lastName",
                     "range": Array [
                       82,
-                      90,
+                      98,
                     ],
                     "type": "Identifier",
                     "typeAnnotation": Object {
@@ -15768,7 +15768,7 @@ Object {
                       "name": "age",
                       "range": Array [
                         121,
-                        124,
+                        132,
                       ],
                       "type": "Identifier",
                       "typeAnnotation": Object {
@@ -15878,7 +15878,7 @@ Object {
                       "name": "student",
                       "range": Array [
                         169,
-                        176,
+                        185,
                       ],
                       "type": "Identifier",
                       "typeAnnotation": Object {
@@ -16761,7 +16761,7 @@ Object {
                     "name": "firstName",
                     "range": Array [
                       35,
-                      44,
+                      52,
                     ],
                     "type": "Identifier",
                     "typeAnnotation": Object {
@@ -16836,7 +16836,7 @@ Object {
                       "name": "lastName",
                       "range": Array [
                         77,
-                        85,
+                        93,
                       ],
                       "type": "Identifier",
                       "typeAnnotation": Object {
@@ -17789,7 +17789,7 @@ Object {
                     "name": "a",
                     "range": Array [
                       35,
-                      36,
+                      44,
                     ],
                     "type": "Identifier",
                     "typeAnnotation": Object {
@@ -19406,7 +19406,7 @@ Object {
           "name": "bar",
           "range": Array [
             21,
-            24,
+            32,
           ],
           "type": "Identifier",
           "typeAnnotation": Object {
@@ -21758,7 +21758,7 @@ Object {
                   "name": "a",
                   "range": Array [
                     28,
-                    29,
+                    37,
                   ],
                   "type": "Identifier",
                   "typeAnnotation": Object {
@@ -22663,7 +22663,7 @@ Object {
           ],
           "range": Array [
             13,
-            23,
+            45,
           ],
           "type": "ObjectPattern",
           "typeAnnotation": Object {
@@ -23412,7 +23412,7 @@ Object {
           ],
           "range": Array [
             13,
-            23,
+            43,
           ],
           "type": "ObjectPattern",
           "typeAnnotation": Object {
@@ -24046,7 +24046,7 @@ Object {
           "name": "b",
           "range": Array [
             14,
-            15,
+            18,
           ],
           "type": "Identifier",
           "typeAnnotation": Object {
@@ -24913,7 +24913,7 @@ Object {
           "name": "b",
           "range": Array [
             25,
-            26,
+            29,
           ],
           "type": "Identifier",
           "typeAnnotation": Object {
@@ -25569,7 +25569,7 @@ Object {
           "name": "name",
           "range": Array [
             17,
-            21,
+            28,
           ],
           "type": "Identifier",
           "typeAnnotation": Object {
@@ -26026,7 +26026,7 @@ Object {
           "name": "name",
           "range": Array [
             17,
-            21,
+            28,
           ],
           "type": "Identifier",
           "typeAnnotation": Object {
@@ -26079,7 +26079,7 @@ Object {
             "name": "age",
             "range": Array [
               30,
-              33,
+              40,
             ],
             "type": "Identifier",
             "typeAnnotation": Object {
@@ -26167,7 +26167,7 @@ Object {
             "name": "args",
             "range": Array [
               51,
-              55,
+              69,
             ],
             "type": "Identifier",
             "typeAnnotation": Object {
@@ -27951,7 +27951,7 @@ Object {
               "name": "eee",
               "range": Array [
                 95,
-                98,
+                106,
               ],
               "type": "Identifier",
               "typeAnnotation": Object {
@@ -28059,7 +28059,7 @@ Object {
               "optional": true,
               "range": Array [
                 122,
-                125,
+                134,
               ],
               "type": "Identifier",
               "typeAnnotation": Object {
@@ -32922,7 +32922,7 @@ Object {
                 "optional": true,
                 "range": Array [
                   59,
-                  62,
+                  71,
                 ],
                 "type": "Identifier",
                 "typeAnnotation": Object {
@@ -33783,7 +33783,7 @@ Object {
             "name": "nestedArray",
             "range": Array [
               4,
-              15,
+              44,
             ],
             "type": "Identifier",
             "typeAnnotation": Object {
@@ -33798,7 +33798,7 @@ Object {
                 },
               },
               "range": Array [
-                17,
+                15,
                 44,
               ],
               "type": "TypeAnnotation",
@@ -34560,7 +34560,7 @@ Object {
           "optional": true,
           "range": Array [
             23,
-            24,
+            33,
           ],
           "type": "Identifier",
           "typeAnnotation": Object {
@@ -35079,7 +35079,7 @@ Object {
             "name": "x",
             "range": Array [
               4,
-              5,
+              11,
             ],
             "type": "Identifier",
             "typeAnnotation": Object {
@@ -35094,7 +35094,7 @@ Object {
                 },
               },
               "range": Array [
-                7,
+                5,
                 11,
               ],
               "type": "TypeAnnotation",
@@ -35169,7 +35169,7 @@ Object {
             "name": "y",
             "range": Array [
               17,
-              18,
+              29,
             ],
             "type": "Identifier",
             "typeAnnotation": Object {
@@ -35184,7 +35184,7 @@ Object {
                 },
               },
               "range": Array [
-                20,
+                18,
                 29,
               ],
               "type": "TypeAnnotation",
@@ -38126,7 +38126,7 @@ Object {
           "name": "x",
           "range": Array [
             18,
-            19,
+            24,
           ],
           "type": "Identifier",
           "typeAnnotation": Object {
@@ -39502,7 +39502,7 @@ Object {
                 "name": "onclick",
                 "range": Array [
                   40,
-                  47,
+                  79,
                 ],
                 "type": "Identifier",
                 "typeAnnotation": Object {
@@ -39547,7 +39547,7 @@ Object {
                         "name": "this",
                         "range": Array [
                           50,
-                          54,
+                          60,
                         ],
                         "type": "Identifier",
                         "typeAnnotation": Object {
@@ -39599,7 +39599,7 @@ Object {
                         "name": "e",
                         "range": Array [
                           62,
-                          63,
+                          70,
                         ],
                         "type": "Identifier",
                         "typeAnnotation": Object {
@@ -40250,7 +40250,7 @@ Object {
             "name": "foo",
             "range": Array [
               4,
-              7,
+              14,
             ],
             "type": "Identifier",
             "typeAnnotation": Object {
@@ -40265,7 +40265,7 @@ Object {
                 },
               },
               "range": Array [
-                9,
+                7,
                 14,
               ],
               "type": "TypeAnnotation",
@@ -40615,7 +40615,7 @@ Object {
             "name": "name",
             "range": Array [
               4,
-              8,
+              15,
             ],
             "type": "Identifier",
             "typeAnnotation": Object {
@@ -40630,7 +40630,7 @@ Object {
                 },
               },
               "range": Array [
-                9,
+                8,
                 15,
               ],
               "type": "TypeAnnotation",
@@ -40706,11 +40706,119 @@ Object {
       ],
       "type": "VariableDeclaration",
     },
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "name": "foo",
+            "range": Array [
+              34,
+              45,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 15,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 9,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                37,
+                45,
+              ],
+              "type": "TypeAnnotation",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 15,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 9,
+                    "line": 2,
+                  },
+                },
+                "range": Array [
+                  39,
+                  45,
+                ],
+                "type": "TSStringKeyword",
+              },
+            },
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 23,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 18,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              48,
+              53,
+            ],
+            "raw": "\\"Bar\\"",
+            "type": "Literal",
+            "value": "Bar",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 23,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            34,
+            53,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "var",
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        30,
+        54,
+      ],
+      "type": "VariableDeclaration",
+    },
   ],
   "loc": Object {
     "end": Object {
-      "column": 29,
-      "line": 1,
+      "column": 24,
+      "line": 2,
     },
     "start": Object {
       "column": 0,
@@ -40719,7 +40827,7 @@ Object {
   },
   "range": Array [
     0,
-    29,
+    54,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -40845,6 +40953,337 @@ Object {
       "range": Array [
         28,
         29,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        30,
+        33,
+      ],
+      "type": "Keyword",
+      "value": "var",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        34,
+        37,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        37,
+        38,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        39,
+        45,
+      ],
+      "type": "Identifier",
+      "value": "string",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        46,
+        47,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        48,
+        53,
+      ],
+      "type": "String",
+      "value": "\\"Bar\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        53,
+        54,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`typescript fixtures/basics/variable-declaration-type-annotation-spacing.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 5,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "x",
+            "range": Array [
+              4,
+              21,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 15,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                8,
+                21,
+              ],
+              "type": "TypeAnnotation",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 21,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 15,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  15,
+                  21,
+                ],
+                "type": "TSStringKeyword",
+              },
+            },
+          },
+          "init": null,
+          "loc": Object {
+            "end": Object {
+              "column": 21,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            4,
+            21,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "let",
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        22,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 22,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    22,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "Keyword",
+      "value": "let",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        5,
+      ],
+      "type": "Identifier",
+      "value": "x",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        9,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 21,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        15,
+        21,
+      ],
+      "type": "Identifier",
+      "value": "string",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 21,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        21,
+        22,
       ],
       "type": "Punctuator",
       "value": ";",
@@ -46399,7 +46838,7 @@ Object {
                   "name": "config",
                   "range": Array [
                     52,
-                    58,
+                    69,
                   ],
                   "type": "Identifier",
                   "typeAnnotation": Object {
@@ -47157,7 +47596,7 @@ Object {
                   "name": "baz",
                   "range": Array [
                     35,
-                    38,
+                    46,
                   ],
                   "type": "Identifier",
                   "typeAnnotation": Object {
@@ -47753,7 +48192,7 @@ Object {
                   "name": "baz",
                   "range": Array [
                     48,
-                    51,
+                    59,
                   ],
                   "type": "Identifier",
                   "typeAnnotation": Object {
@@ -48439,7 +48878,7 @@ Object {
                   "name": "name",
                   "range": Array [
                     36,
-                    40,
+                    48,
                   ],
                   "type": "Identifier",
                   "typeAnnotation": Object {
@@ -49179,7 +49618,7 @@ Object {
                   "name": "name",
                   "range": Array [
                     49,
-                    53,
+                    61,
                   ],
                   "type": "Identifier",
                   "typeAnnotation": Object {
@@ -53554,7 +53993,7 @@ Object {
               "name": "baz",
               "range": Array [
                 190,
-                193,
+                201,
               ],
               "type": "Identifier",
               "typeAnnotation": Object {
@@ -53661,7 +54100,7 @@ Object {
               "name": "baz",
               "range": Array [
                 225,
-                228,
+                236,
               ],
               "type": "Identifier",
               "typeAnnotation": Object {
@@ -53768,7 +54207,7 @@ Object {
               "name": "baz",
               "range": Array [
                 262,
-                265,
+                273,
               ],
               "type": "Identifier",
               "typeAnnotation": Object {
@@ -53875,7 +54314,7 @@ Object {
               "name": "baz",
               "range": Array [
                 296,
-                299,
+                307,
               ],
               "type": "Identifier",
               "typeAnnotation": Object {
@@ -53982,7 +54421,7 @@ Object {
               "name": "baz",
               "range": Array [
                 330,
-                333,
+                341,
               ],
               "type": "Identifier",
               "typeAnnotation": Object {
@@ -54089,7 +54528,7 @@ Object {
               "name": "baz",
               "range": Array [
                 366,
-                369,
+                377,
               ],
               "type": "Identifier",
               "typeAnnotation": Object {
@@ -54227,7 +54666,7 @@ Object {
                 "name": "bar",
                 "range": Array [
                   402,
-                  405,
+                  413,
                 ],
                 "type": "Identifier",
                 "typeAnnotation": Object {
@@ -54356,7 +54795,7 @@ Object {
                 "name": "bar",
                 "range": Array [
                   436,
-                  439,
+                  447,
                 ],
                 "type": "Identifier",
                 "typeAnnotation": Object {
@@ -54485,7 +54924,7 @@ Object {
                 "name": "bar",
                 "range": Array [
                   472,
-                  475,
+                  483,
                 ],
                 "type": "Identifier",
                 "typeAnnotation": Object {
@@ -54614,7 +55053,7 @@ Object {
                 "name": "bar",
                 "range": Array [
                   505,
-                  508,
+                  516,
                 ],
                 "type": "Identifier",
                 "typeAnnotation": Object {
@@ -54743,7 +55182,7 @@ Object {
                 "name": "bar",
                 "range": Array [
                   538,
-                  541,
+                  549,
                 ],
                 "type": "Identifier",
                 "typeAnnotation": Object {
@@ -54872,7 +55311,7 @@ Object {
                 "name": "bar",
                 "range": Array [
                   573,
-                  576,
+                  584,
                 ],
                 "type": "Identifier",
                 "typeAnnotation": Object {
@@ -59067,7 +59506,7 @@ Object {
                   "name": "selector",
                   "range": Array [
                     48,
-                    56,
+                    64,
                   ],
                   "type": "Identifier",
                   "typeAnnotation": Object {
