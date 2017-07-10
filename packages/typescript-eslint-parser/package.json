@@ -4,7 +4,7 @@
   "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
   "homepage": "https://github.com/eslint/typescript-eslint-parser",
   "main": "parser.js",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "files": [
     "lib",
     "parser.js"
@@ -55,9 +55,11 @@
     "typescript": "*"
   },
   "jest": {
-    "testRegex": "tests\/lib\/.+\\.js$",
+    "testRegex": "tests/lib/.+\\.js$",
     "testPathIgnorePatterns": [],
     "collectCoverage": true,
-    "coverageReporters": ["text-summary"]
+    "coverageReporters": [
+      "text-summary"
+    ]
   }
 }
