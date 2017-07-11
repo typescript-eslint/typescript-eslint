@@ -17,9 +17,9 @@ module.exports = {
         schema: []
     },
 
-    create: function(context) {
-        var referenceRegExp = /^\/\s*<reference/;
-        var sourceCode = context.getSourceCode();
+    create(context) {
+        const referenceRegExp = /^\/\s*<reference/;
+        const sourceCode = context.getSourceCode();
 
         //----------------------------------------------------------------------
         // Helpers
@@ -32,8 +32,9 @@ module.exports = {
          * @private
          */
         function checkTripleSlashReference(program) {
-            var leading = sourceCode.getComments(program).leading;
-            leading.forEach(function(comment) {
+            const leading = sourceCode.getComments(program).leading;
+
+            leading.forEach(comment => {
                 if (comment.type !== "Line") {
                     return;
                 }

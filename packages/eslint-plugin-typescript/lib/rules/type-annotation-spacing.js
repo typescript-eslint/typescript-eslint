@@ -18,7 +18,7 @@ module.exports = {
         schema: []
     },
 
-    create: function(context) {
+    create(context) {
 
         const sourceCode = context.getSourceCode();
 
@@ -34,17 +34,32 @@ module.exports = {
          * @private
          */
         function checkTypeAnnotationSpacing(typeAnnotation) {
-            const colonToken = sourceCode.getTokenBefore(typeAnnotation),
+            let colonToken = typeAnnotation,
+                previousToken = sourceCode.getTokenBefore(typeAnnotation);
+
+            if (previousToken.type === "Punctuator") {
+                colonToken = previousToken;
                 previousToken = sourceCode.getTokenBefore(colonToken);
 
-            if (typeAnnotation.range[0] - colonToken.range[1] === 0) {
-                context.report({
-                    node: typeAnnotation,
-                    message: "Expected a space after the colon.",
-                    fix(fixer) {
-                        return fixer.insertTextAfter(colonToken, " ");
-                    }
-                });
+                if (typeAnnotation.range[0] - colonToken.range[1] === 0) {
+                    context.report({
+                        node: typeAnnotation,
+                        message: "Expected a space after the colon.",
+                        fix(fixer) {
+                            return fixer.insertTextAfter(colonToken, " ");
+                        }
+                    });
+                }
+            } else {
+                if (typeAnnotation.typeAnnotation.range[0] - typeAnnotation.range[0] === 1) {
+                    context.report({
+                        node: typeAnnotation,
+                        message: "Expected a space after the colon.",
+                        fix(fixer) {
+                            return fixer.insertTextAfterRange([typeAnnotation.range[0], typeAnnotation.typeAnnotation.range[0]], " ");
+                        }
+                    });
+                }
             }
 
             if (colonToken.range[0] - previousToken.range[1] > 0) {

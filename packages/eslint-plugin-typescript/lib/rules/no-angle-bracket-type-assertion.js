@@ -17,15 +17,15 @@ module.exports = {
         schema: []
     },
 
-    create: function(context) {
+    create(context) {
 
-        var sourceCode = context.getSourceCode();
+        const sourceCode = context.getSourceCode();
 
         //----------------------------------------------------------------------
         // Public
         //----------------------------------------------------------------------
         return {
-            TSTypeAssertionExpression: function(node) {
+            TSTypeAssertionExpression(node) {
                 context.report({
                     node,
                     message: "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions",

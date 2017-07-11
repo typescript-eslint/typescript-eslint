@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var rule = require("../../../lib/rules/prefer-namespace-keyword"),
+let rule = require("../../../lib/rules/prefer-namespace-keyword"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,7 +16,7 @@ var rule = require("../../../lib/rules/prefer-namespace-keyword"),
 // Tests
 //------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+let ruleTester = new RuleTester();
 ruleTester.run("prefer-namespace-keyword", rule, {
     valid: [
         {
@@ -60,7 +60,7 @@ ruleTester.run("prefer-namespace-keyword", rule, {
         {
             code: `
 declare module foo {
-    declare module bar { } 
+    declare module bar { }
 }
             `,
             parser: "typescript-eslint-parser",
@@ -75,7 +75,7 @@ declare module foo {
                     message: "Use namespace instead of module to declare custom TypeScript modules",
                     output: `
 declare namespace foo {
-    declare namespace bar { } 
+    declare namespace bar { }
 }
             `,
                     row: 3,

@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var rule = require("../../../lib/rules/no-explicit-any"),
+let rule = require("../../../lib/rules/no-explicit-any"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,7 +16,7 @@ var rule = require("../../../lib/rules/no-explicit-any"),
 // Tests
 //------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+let ruleTester = new RuleTester();
 ruleTester.run("no-explicit-any", rule, {
 
     valid: [

@@ -12,24 +12,24 @@ const rule = require("../../../lib/rules/no-unused-vars");
 const ruleNoUnusedVars = require("eslint/lib/rules/no-unused-vars");
 const RuleTester = require("eslint").RuleTester;
 
-const eslint = require("eslint").linter;
-eslint.defineRule("typescript/no-unused-vars", rule);
-
 const parser = "typescript-eslint-parser";
-const parserOptions = {
-    ecmaVersion: 6,
-    sourceType: "module",
-    ecmaFeatures: {}
-};
-const rules = {
-    "typescript/no-unused-vars": "error"
-};
+
+const ruleTester = new RuleTester({
+    parserOptions: {
+        ecmaVersion: 6,
+        sourceType: "module",
+        ecmaFeatures: {}
+    },
+    rules: {
+        "typescript/no-unused-vars": "error"
+    }
+});
+
+ruleTester.defineRule("typescript/no-unused-vars", rule);
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
-
-const ruleTester = new RuleTester();
 
 ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
 
@@ -41,8 +41,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "export class Foo {}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -51,8 +49,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "export class Foo {}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -63,8 +59,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -75,8 +69,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -87,8 +79,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -99,8 +89,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -112,8 +100,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -125,8 +111,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -138,8 +122,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -151,8 +133,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -164,8 +144,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -178,8 +156,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -192,8 +168,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
         {
             code: [
@@ -202,8 +176,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "new Thing()",
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
         },
     ],
 
@@ -214,8 +186,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "export class Foo {}"
             ].join("\n"),
             parser,
-            parserOptions,
-            rules,
             errors: [{
                 message: "'ClassDecoratorFactory' is defined but never used.",
                 line: 1,

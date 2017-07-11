@@ -21,8 +21,9 @@ module.exports = {
         ]
     },
 
-    create: function(context) {
-        var never = context.options[0] !== "always";
+    create(context) {
+        const never = context.options[0] !== "always";
+
         //----------------------------------------------------------------------
         // Helpers
         //----------------------------------------------------------------------
@@ -40,8 +41,9 @@ module.exports = {
             if (name.length === 0) {
                 return false;
             }
-            var first = name.charAt(0);
-            var second = name.charAt(1);
+            const first = name.charAt(0);
+            const second = name.charAt(1);
+
             if (second === "") {
                 return false;
             }
@@ -59,16 +61,16 @@ module.exports = {
          */
         function checkInterfacePrefix(interfaceNode) {
             if (never) {
-                if (isPrefixedWithI(interfaceNode.name.name)) {
+                if (isPrefixedWithI(interfaceNode.id.name)) {
                     context.report({
-                        node: interfaceNode.name,
+                        node: interfaceNode.id,
                         message: "Interface name must not be prefixed with \"I\""
                     });
                 }
             } else {
-                if (!isPrefixedWithI(interfaceNode.name.name)) {
+                if (!isPrefixedWithI(interfaceNode.id.name)) {
                     context.report({
-                        node: interfaceNode.name,
+                        node: interfaceNode.id,
                         message: "Interface name must be prefixed with \"I\""
                     });
                 }

@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var rule = require("../../../lib/rules/no-triple-slash-reference"),
+let rule = require("../../../lib/rules/no-triple-slash-reference"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,7 +16,7 @@ var rule = require("../../../lib/rules/no-triple-slash-reference"),
 // Tests
 //------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+let ruleTester = new RuleTester();
 ruleTester.run("no-triple-slash-reference", rule, {
 
     valid: [

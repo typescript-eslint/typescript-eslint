@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var rule = require("../../../lib/rules/interface-name-prefix"),
+let rule = require("../../../lib/rules/interface-name-prefix"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,7 +16,7 @@ var rule = require("../../../lib/rules/interface-name-prefix"),
 // Tests
 //------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+let ruleTester = new RuleTester();
 ruleTester.run("interface-name-prefix", rule, {
 
     valid: [

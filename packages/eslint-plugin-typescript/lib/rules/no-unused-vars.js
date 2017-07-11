@@ -8,15 +8,15 @@
  * Record that a particular variable has been used in code
  *
  * @param {Object} context The current rule context.
- * @param {String} name The name of the variable to mark as used.
- * @returns {Boolean} True if the variable was found and marked as used, false if not.
+ * @param {string} name The name of the variable to mark as used.
+ * @returns {boolean} True if the variable was found and marked as used, false if not.
  */
 function markVariableAsUsed(context, name) {
-    var scope = context.getScope();
-    var variables;
-    var i;
-    var len;
-    var found = false;
+    let scope = context.getScope();
+    let variables;
+    let i;
+    let len;
+    let found = false;
 
     // Special Node.js scope means we need to start one level deeper
     if (scope.type === "global") {
@@ -53,7 +53,7 @@ module.exports = {
         schema: []
     },
 
-    create: function(context) {
+    create(context) {
 
         //----------------------------------------------------------------------
         // Helpers
@@ -69,7 +69,8 @@ module.exports = {
             if (!node.decorators || !node.decorators.length) {
                 return;
             }
-            node.decorators.forEach(function(decorator) {
+            node.decorators.forEach(decorator => {
+
                 /**
                  * Decorator
                  */
@@ -77,13 +78,23 @@ module.exports = {
                     markVariableAsUsed(context, decorator.name);
                     return;
                 }
+
+                if (decorator.expression && decorator.expression.name) {
+                    markVariableAsUsed(context, decorator.expression.name);
+                    return;
+                }
+
                 /**
                  * Decorator Factory
                  */
                 if (decorator.callee && decorator.callee.name) {
                     markVariableAsUsed(context, decorator.callee.name);
-                    return;
                 }
+
+                if (decorator.expression && decorator.expression.callee && decorator.expression.callee.name) {
+                    markVariableAsUsed(context, decorator.expression.callee.name);
+                }
+
             });
         }
 
@@ -97,7 +108,7 @@ module.exports = {
             if (!node.implements || !node.implements.length) {
                 return;
             }
-            node.implements.forEach(function(implementedInterface) {
+            node.implements.forEach(implementedInterface => {
                 if (!implementedInterface || !implementedInterface.id || !implementedInterface.id.name) {
                     return;
                 }
@@ -110,24 +121,28 @@ module.exports = {
         //----------------------------------------------------------------------
         return {
             ClassProperty: markDecoratorsAsUsed,
-            ClassDeclaration: function(node) {
+            ClassDeclaration(node) {
                 markDecoratorsAsUsed(node);
                 markImplementedInterfacesAsUsed(node);
             },
-            MethodDefinition: function(node) {
+            MethodDefinition(node) {
+
                 /**
                  * Decorators are only supported on class methods, so exit early
                  * if the parent is not a ClassBody
                  */
                 const anc = context.getAncestors();
                 const tAnc = anc.length;
+
                 if (!tAnc || !anc[tAnc - 1] || anc[tAnc - 1].type !== "ClassBody") {
                     return;
                 }
+
                 /**
                  * Mark any of the method's own decorators as used
                  */
                 markDecoratorsAsUsed(node);
+
                 /**
                  * Mark any parameter decorators as used
                  */
@@ -135,7 +150,7 @@ module.exports = {
                     return;
                 }
                 node.value.params.forEach(markDecoratorsAsUsed);
-            },
+            }
         };
 
     }

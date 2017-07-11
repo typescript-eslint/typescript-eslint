@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var rule = require("../../../lib/rules/no-namespace"),
+let rule = require("../../../lib/rules/no-namespace"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,7 +16,7 @@ var rule = require("../../../lib/rules/no-namespace"),
 // Tests
 //------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+let ruleTester = new RuleTester();
 ruleTester.run("no-namespace", rule, {
     valid: [
         {
