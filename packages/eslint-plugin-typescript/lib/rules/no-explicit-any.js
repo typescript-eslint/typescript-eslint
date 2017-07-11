@@ -17,7 +17,7 @@ module.exports = {
         schema: []
     },
 
-    create: function(context) {
+    create(context) {
 
         //----------------------------------------------------------------------
         // Helpers

@@ -30,10 +30,10 @@ module.exports = {
         ]
     },
 
-    create: function(context) {
+    create(context) {
 
-        var allowDeclarations = context.options[0] ? context.options[0].allowDeclarations : false;
-        var allowDefinitionFiles = context.options[0] ? context.options[0].allowDefinitionFiles : false;
+        const allowDeclarations = context.options[0] ? context.options[0].allowDeclarations : false;
+        const allowDefinitionFiles = context.options[0] ? context.options[0].allowDefinitionFiles : false;
 
         //----------------------------------------------------------------------
         // Helpers
@@ -56,7 +56,8 @@ module.exports = {
          * @private
          */
         function isDeclaration(node) {
-            var hasDeclareModifier = (node.modifiers || []).filter(m => m.type === "TSDeclareKeyword").length > 0;
+            const hasDeclareModifier = (node.modifiers || []).filter(m => m.type === "TSDeclareKeyword").length > 0;
+
             return hasDeclareModifier && !isTypeScriptModuleDeclaration(node);
         }
 
@@ -66,7 +67,8 @@ module.exports = {
          * @private
          */
         function isDefinitionFile() {
-            var filename = context.getFilename();
+            const filename = context.getFilename();
+
             return filename ? filename.slice(-5).toLowerCase() === ".d.ts" : false;
         }
 
@@ -74,7 +76,7 @@ module.exports = {
         // Public
         //----------------------------------------------------------------------
         return {
-            TSModuleDeclaration: function(node) {
+            TSModuleDeclaration(node) {
                 if (isTypeScriptModuleDeclaration(node) ||
                     (allowDefinitionFiles && isDefinitionFile()) ||
                     (allowDeclarations && isDeclaration(node))) {

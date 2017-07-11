@@ -8,8 +8,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var requireIndex = require("requireindex"),
-    path = require("path");
+const requireIndex = require("requireindex");
+const path = require("path");
 
 //------------------------------------------------------------------------------
 // Plugin Definition

@@ -3,7 +3,7 @@
 Type annotations in TypeScript tend to have a very specific format, where the colon appears directly after the identifier or function, followed by a space, followed by the type. For example:
 
 ```ts
-var foo: string = "bar";
+let foo: string = "bar";
 
 function foo(a: string): string {
     // code
@@ -19,7 +19,7 @@ This rule aims to enforce specific spacing patterns around type annotations. As 
 The following patterns are considered warnings:
 
 ```ts
-var foo:string = "bar";
+let foo:string = "bar";
 
 function foo(a : string):string {
     // code
@@ -29,7 +29,7 @@ function foo(a : string):string {
 The following patterns are not warnings:
 
 ```js
-var foo: string = "bar";
+let foo: string = "bar";
 
 function foo(a: string): string {
     // code

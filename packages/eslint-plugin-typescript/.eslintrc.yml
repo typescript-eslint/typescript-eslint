@@ -1,4 +1,7 @@
-extends: eslint
-env:
-  es6: true
-  node: true
+root: true
+
+plugins:
+    - node
+extends:
+    - "eslint"
+    - "plugin:node/recommended"

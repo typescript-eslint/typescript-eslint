@@ -18,9 +18,9 @@ module.exports = {
         schema: []
     },
 
-    create: function(context) {
+    create(context) {
 
-        var sourceCode = context.getSourceCode();
+        const sourceCode = context.getSourceCode();
 
         //----------------------------------------------------------------------
         // Helpers
@@ -53,8 +53,9 @@ module.exports = {
         // Public
         //----------------------------------------------------------------------
         return {
-            TSModuleDeclaration: function(node) {
-                var declaration = sourceCode.getText(node);
+            TSModuleDeclaration(node) {
+                const declaration = sourceCode.getText(node);
+
                 if (isTypeScriptModuleDeclaration(node) || /\bnamespace\b/.test(declaration)) {
                     return;
                 }
@@ -63,7 +64,8 @@ module.exports = {
                     node,
                     message: "Use namespace instead of module to declare custom TypeScript modules",
                     fix(fixer) {
-                        var start = getStartIndex(node);
+                        const start = getStartIndex(node);
+
                         return fixer.replaceTextRange([start, start + "module".length], "namespace");
                     }
                 });

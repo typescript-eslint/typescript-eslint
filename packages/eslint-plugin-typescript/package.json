@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-typescript",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -12,16 +12,20 @@
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint lib/",
-    "test": "npm run lint && mocha tests --recursive"
+    "lint:fix": "eslint --fix lib/",
+    "mocha": "mocha tests --recursive",
+    "test": "npm run lint && npm run mocha"
   },
   "dependencies": {
     "requireindex": "~1.1.0"
   },
   "devDependencies": {
-    "eslint": "~3.7.0",
-    "eslint-config-eslint": "^3.0.0",
-    "mocha": "^2.4.5",
-    "typescript-eslint-parser": "^1.0.0"
+    "eslint": "^4.1.1",
+    "eslint-config-eslint": "^4.0.0",
+    "eslint-plugin-node": "^5.1.0",
+    "mocha": "^3.4.2",
+    "typescript": "~2.3.0",
+    "typescript-eslint-parser": "^4.0.0"
   },
   "engines": {
     "node": ">=4"

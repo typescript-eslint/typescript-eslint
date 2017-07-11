@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var rule = require("../../../lib/rules/type-annotation-spacing"),
+let rule = require("../../../lib/rules/type-annotation-spacing"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,12 +16,12 @@ var rule = require("../../../lib/rules/type-annotation-spacing"),
 // Tests
 //------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+let ruleTester = new RuleTester();
 ruleTester.run("type-annotation-spacing", rule, {
 
     valid: [
         {
-            code: "var foo: string;",
+            code: "let foo: string;",
             parser: "typescript-eslint-parser"
         },
         {
@@ -36,9 +36,9 @@ ruleTester.run("type-annotation-spacing", rule, {
 
     invalid: [
         {
-            code: "var foo : string;",
+            code: "let foo : string;",
             parser: "typescript-eslint-parser",
-            output: "var foo: string;",
+            output: "let foo: string;",
             errors: [{
                 message: "Unexpected space before the colon.",
                 line: 1,
@@ -46,9 +46,9 @@ ruleTester.run("type-annotation-spacing", rule, {
             }]
         },
         {
-            code: "var foo:string;",
+            code: "let foo:string;",
             parser: "typescript-eslint-parser",
-            output: "var foo: string;",
+            output: "let foo: string;",
             errors: [{
                 message: "Expected a space after the colon.",
                 line: 1,
@@ -66,9 +66,9 @@ ruleTester.run("type-annotation-spacing", rule, {
             }]
         },
         {
-            code: "var foo = function():string {}",
+            code: "let foo = function():string {}",
             parser: "typescript-eslint-parser",
-            output: "var foo = function(): string {}",
+            output: "let foo = function(): string {}",
             errors: [{
                 message: "Expected a space after the colon.",
                 line: 1,
@@ -76,9 +76,9 @@ ruleTester.run("type-annotation-spacing", rule, {
             }]
         },
         {
-            code: "var foo = ():string => {}",
+            code: "let foo = ():string => {}",
             parser: "typescript-eslint-parser",
-            output: "var foo = (): string => {}",
+            output: "let foo = (): string => {}",
             errors: [{
                 message: "Expected a space after the colon.",
                 line: 1,
