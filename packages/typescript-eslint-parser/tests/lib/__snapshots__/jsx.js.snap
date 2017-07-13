@@ -5504,11 +5504,119 @@ Object {
       ],
       "type": "ExpressionStatement",
     },
+    Object {
+      "expression": Object {
+        "children": Array [],
+        "closingElement": null,
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 2,
+          },
+        },
+        "openingElement": Object {
+          "attributes": Array [],
+          "loc": Object {
+            "end": Object {
+              "column": 18,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 2,
+            },
+          },
+          "name": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 15,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 1,
+                "line": 2,
+              },
+            },
+            "object": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 1,
+                  "line": 2,
+                },
+              },
+              "name": "this",
+              "range": Array [
+                27,
+                31,
+              ],
+              "type": "JSXIdentifier",
+            },
+            "property": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 15,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 2,
+                },
+              },
+              "name": "Component",
+              "range": Array [
+                32,
+                41,
+              ],
+              "type": "JSXIdentifier",
+            },
+            "range": Array [
+              27,
+              41,
+            ],
+            "type": "JSXMemberExpression",
+          },
+          "range": Array [
+            26,
+            44,
+          ],
+          "selfClosing": true,
+          "type": "JSXOpeningElement",
+        },
+        "range": Array [
+          26,
+          44,
+        ],
+        "type": "JSXElement",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        26,
+        45,
+      ],
+      "type": "ExpressionStatement",
+    },
   ],
   "loc": Object {
     "end": Object {
-      "column": 25,
-      "line": 1,
+      "column": 19,
+      "line": 2,
     },
     "start": Object {
       "column": 0,
@@ -5517,7 +5625,7 @@ Object {
   },
   "range": Array [
     0,
-    25,
+    45,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -5679,6 +5787,132 @@ Object {
       "range": Array [
         24,
         25,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        26,
+        27,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        27,
+        31,
+      ],
+      "type": "Keyword",
+      "value": "this",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        31,
+        32,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        32,
+        41,
+      ],
+      "type": "JSXIdentifier",
+      "value": "Component",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        42,
+        43,
+      ],
+      "type": "Punctuator",
+      "value": "/",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        43,
+        44,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        44,
+        45,
       ],
       "type": "Punctuator",
       "value": ";",
