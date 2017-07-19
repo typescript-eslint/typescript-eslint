@@ -878,7 +878,22 @@ Object {
                       },
                       "params": Array [
                         Object {
-                          "id": Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 43,
+                              "line": 2,
+                            },
+                            "start": Object {
+                              "column": 37,
+                              "line": 2,
+                            },
+                          },
+                          "range": Array [
+                            76,
+                            82,
+                          ],
+                          "type": "TSTypeReference",
+                          "typeName": Object {
                             "loc": Object {
                               "end": Object {
                                 "column": 43,
@@ -895,21 +910,6 @@ Object {
                             ],
                             "type": "TSStringKeyword",
                           },
-                          "loc": Object {
-                            "end": Object {
-                              "column": 43,
-                              "line": 2,
-                            },
-                            "start": Object {
-                              "column": 37,
-                              "line": 2,
-                            },
-                          },
-                          "range": Array [
-                            76,
-                            82,
-                          ],
-                          "type": "GenericTypeAnnotation",
                           "typeParameters": null,
                         },
                       ],
@@ -2213,7 +2213,22 @@ Object {
                       },
                       "params": Array [
                         Object {
-                          "id": Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 35,
+                              "line": 2,
+                            },
+                            "start": Object {
+                              "column": 29,
+                              "line": 2,
+                            },
+                          },
+                          "range": Array [
+                            68,
+                            74,
+                          ],
+                          "type": "TSTypeReference",
+                          "typeName": Object {
                             "loc": Object {
                               "end": Object {
                                 "column": 35,
@@ -2230,21 +2245,6 @@ Object {
                             ],
                             "type": "TSStringKeyword",
                           },
-                          "loc": Object {
-                            "end": Object {
-                              "column": 35,
-                              "line": 2,
-                            },
-                            "start": Object {
-                              "column": 29,
-                              "line": 2,
-                            },
-                          },
-                          "range": Array [
-                            68,
-                            74,
-                          ],
-                          "type": "GenericTypeAnnotation",
                           "typeParameters": null,
                         },
                       ],
@@ -6368,7 +6368,22 @@ Object {
         },
         "params": Array [
           Object {
-            "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 26,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 25,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              25,
+              26,
+            ],
+            "type": "TSTypeReference",
+            "typeName": Object {
               "loc": Object {
                 "end": Object {
                   "column": 26,
@@ -6386,21 +6401,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "loc": Object {
-              "end": Object {
-                "column": 26,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 25,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              25,
-              26,
-            ],
-            "type": "GenericTypeAnnotation",
             "typeParameters": null,
           },
         ],
@@ -6775,7 +6775,22 @@ Object {
         },
         "params": Array [
           Object {
-            "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 36,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 35,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              35,
+              36,
+            ],
+            "type": "TSTypeReference",
+            "typeName": Object {
               "loc": Object {
                 "end": Object {
                   "column": 36,
@@ -6793,25 +6808,25 @@ Object {
               ],
               "type": "Identifier",
             },
+            "typeParameters": null,
+          },
+          Object {
             "loc": Object {
               "end": Object {
-                "column": 36,
+                "column": 39,
                 "line": 1,
               },
               "start": Object {
-                "column": 35,
+                "column": 38,
                 "line": 1,
               },
             },
             "range": Array [
-              35,
-              36,
+              38,
+              39,
             ],
-            "type": "GenericTypeAnnotation",
-            "typeParameters": null,
-          },
-          Object {
-            "id": Object {
+            "type": "TSTypeReference",
+            "typeName": Object {
               "loc": Object {
                 "end": Object {
                   "column": 39,
@@ -6829,21 +6844,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "loc": Object {
-              "end": Object {
-                "column": 39,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 38,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              38,
-              39,
-            ],
-            "type": "GenericTypeAnnotation",
             "typeParameters": null,
           },
         ],
@@ -8454,7 +8454,22 @@ Object {
             },
             "params": Array [
               Object {
-                "id": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 26,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 25,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  25,
+                  26,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
                   "loc": Object {
                     "end": Object {
                       "column": 26,
@@ -8472,21 +8487,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "loc": Object {
-                  "end": Object {
-                    "column": 26,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 25,
-                    "line": 1,
-                  },
-                },
-                "range": Array [
-                  25,
-                  26,
-                ],
-                "type": "GenericTypeAnnotation",
                 "typeParameters": null,
               },
             ],
@@ -8788,7 +8788,22 @@ Object {
             },
             "params": Array [
               Object {
-                "id": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 26,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 25,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  25,
+                  26,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
                   "loc": Object {
                     "end": Object {
                       "column": 26,
@@ -8806,25 +8821,25 @@ Object {
                   ],
                   "type": "Identifier",
                 },
+                "typeParameters": null,
+              },
+              Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 26,
+                    "column": 29,
                     "line": 1,
                   },
                   "start": Object {
-                    "column": 25,
+                    "column": 28,
                     "line": 1,
                   },
                 },
                 "range": Array [
-                  25,
-                  26,
+                  28,
+                  29,
                 ],
-                "type": "GenericTypeAnnotation",
-                "typeParameters": null,
-              },
-              Object {
-                "id": Object {
+                "type": "TSTypeReference",
+                "typeName": Object {
                   "loc": Object {
                     "end": Object {
                       "column": 29,
@@ -8842,21 +8857,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "loc": Object {
-                  "end": Object {
-                    "column": 29,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 28,
-                    "line": 1,
-                  },
-                },
-                "range": Array [
-                  28,
-                  29,
-                ],
-                "type": "GenericTypeAnnotation",
                 "typeParameters": null,
               },
             ],
@@ -9369,7 +9369,22 @@ Object {
                 },
                 "params": Array [
                   Object {
-                    "id": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 35,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 33,
+                        "line": 1,
+                      },
+                    },
+                    "range": Array [
+                      33,
+                      35,
+                    ],
+                    "type": "TSTypeReference",
+                    "typeName": Object {
                       "loc": Object {
                         "end": Object {
                           "column": 35,
@@ -9387,21 +9402,6 @@ Object {
                       ],
                       "type": "TSTypeLiteral",
                     },
-                    "loc": Object {
-                      "end": Object {
-                        "column": 35,
-                        "line": 1,
-                      },
-                      "start": Object {
-                        "column": 33,
-                        "line": 1,
-                      },
-                    },
-                    "range": Array [
-                      33,
-                      35,
-                    ],
-                    "type": "GenericTypeAnnotation",
                     "typeParameters": null,
                   },
                 ],
@@ -9593,7 +9593,22 @@ Object {
           },
           "params": Array [
             Object {
-              "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 21,
+                  "line": 5,
+                },
+                "start": Object {
+                  "column": 18,
+                  "line": 5,
+                },
+              },
+              "range": Array [
+                104,
+                107,
+              ],
+              "type": "TSTypeReference",
+              "typeName": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 21,
@@ -9610,21 +9625,6 @@ Object {
                 ],
                 "type": "TSAnyKeyword",
               },
-              "loc": Object {
-                "end": Object {
-                  "column": 21,
-                  "line": 5,
-                },
-                "start": Object {
-                  "column": 18,
-                  "line": 5,
-                },
-              },
-              "range": Array [
-                104,
-                107,
-              ],
-              "type": "GenericTypeAnnotation",
               "typeParameters": null,
             },
           ],
@@ -26620,7 +26620,22 @@ Object {
                   },
                   "params": Array [
                     Object {
-                      "id": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 68,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 62,
+                          "line": 1,
+                        },
+                      },
+                      "range": Array [
+                        62,
+                        68,
+                      ],
+                      "type": "TSTypeReference",
+                      "typeName": Object {
                         "loc": Object {
                           "end": Object {
                             "column": 68,
@@ -26637,21 +26652,6 @@ Object {
                         ],
                         "type": "TSStringKeyword",
                       },
-                      "loc": Object {
-                        "end": Object {
-                          "column": 68,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 62,
-                          "line": 1,
-                        },
-                      },
-                      "range": Array [
-                        62,
-                        68,
-                      ],
-                      "type": "GenericTypeAnnotation",
                       "typeParameters": null,
                     },
                   ],
@@ -31835,7 +31835,22 @@ Object {
             },
             "params": Array [
               Object {
-                "id": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 30,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 29,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  29,
+                  30,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
                   "loc": Object {
                     "end": Object {
                       "column": 30,
@@ -31853,21 +31868,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "loc": Object {
-                  "end": Object {
-                    "column": 30,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 29,
-                    "line": 1,
-                  },
-                },
-                "range": Array [
-                  29,
-                  30,
-                ],
-                "type": "GenericTypeAnnotation",
                 "typeParameters": null,
               },
             ],
@@ -34236,7 +34236,22 @@ Object {
                   },
                   "params": Array [
                     Object {
-                      "id": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 43,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 23,
+                          "line": 1,
+                        },
+                      },
+                      "range": Array [
+                        23,
+                        43,
+                      ],
+                      "type": "TSTypeReference",
+                      "typeName": Object {
                         "loc": Object {
                           "end": Object {
                             "column": 28,
@@ -34254,21 +34269,6 @@ Object {
                         ],
                         "type": "Identifier",
                       },
-                      "loc": Object {
-                        "end": Object {
-                          "column": 43,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 23,
-                          "line": 1,
-                        },
-                      },
-                      "range": Array [
-                        23,
-                        43,
-                      ],
-                      "type": "GenericTypeAnnotation",
                       "typeParameters": Object {
                         "loc": Object {
                           "end": Object {
@@ -34282,7 +34282,22 @@ Object {
                         },
                         "params": Array [
                           Object {
-                            "id": Object {
+                            "loc": Object {
+                              "end": Object {
+                                "column": 42,
+                                "line": 1,
+                              },
+                              "start": Object {
+                                "column": 29,
+                                "line": 1,
+                              },
+                            },
+                            "range": Array [
+                              29,
+                              42,
+                            ],
+                            "type": "TSTypeReference",
+                            "typeName": Object {
                               "loc": Object {
                                 "end": Object {
                                   "column": 34,
@@ -34300,21 +34315,6 @@ Object {
                               ],
                               "type": "Identifier",
                             },
-                            "loc": Object {
-                              "end": Object {
-                                "column": 42,
-                                "line": 1,
-                              },
-                              "start": Object {
-                                "column": 29,
-                                "line": 1,
-                              },
-                            },
-                            "range": Array [
-                              29,
-                              42,
-                            ],
-                            "type": "GenericTypeAnnotation",
                             "typeParameters": Object {
                               "loc": Object {
                                 "end": Object {
@@ -34328,7 +34328,22 @@ Object {
                               },
                               "params": Array [
                                 Object {
-                                  "id": Object {
+                                  "loc": Object {
+                                    "end": Object {
+                                      "column": 41,
+                                      "line": 1,
+                                    },
+                                    "start": Object {
+                                      "column": 35,
+                                      "line": 1,
+                                    },
+                                  },
+                                  "range": Array [
+                                    35,
+                                    41,
+                                  ],
+                                  "type": "TSTypeReference",
+                                  "typeName": Object {
                                     "loc": Object {
                                       "end": Object {
                                         "column": 41,
@@ -34345,21 +34360,6 @@ Object {
                                     ],
                                     "type": "TSStringKeyword",
                                   },
-                                  "loc": Object {
-                                    "end": Object {
-                                      "column": 41,
-                                      "line": 1,
-                                    },
-                                    "start": Object {
-                                      "column": 35,
-                                      "line": 1,
-                                    },
-                                  },
-                                  "range": Array [
-                                    35,
-                                    41,
-                                  ],
-                                  "type": "GenericTypeAnnotation",
                                   "typeParameters": null,
                                 },
                               ],
@@ -36998,7 +36998,22 @@ Object {
                   },
                   "params": Array [
                     Object {
-                      "id": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 26,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 25,
+                          "line": 1,
+                        },
+                      },
+                      "range": Array [
+                        25,
+                        26,
+                      ],
+                      "type": "TSTypeReference",
+                      "typeName": Object {
                         "loc": Object {
                           "end": Object {
                             "column": 26,
@@ -37016,21 +37031,6 @@ Object {
                         ],
                         "type": "Identifier",
                       },
-                      "loc": Object {
-                        "end": Object {
-                          "column": 26,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 25,
-                          "line": 1,
-                        },
-                      },
-                      "range": Array [
-                        25,
-                        26,
-                      ],
-                      "type": "GenericTypeAnnotation",
                       "typeParameters": null,
                     },
                   ],
@@ -37476,7 +37476,22 @@ Object {
                   },
                   "params": Array [
                     Object {
-                      "id": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 37,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 36,
+                          "line": 1,
+                        },
+                      },
+                      "range": Array [
+                        36,
+                        37,
+                      ],
+                      "type": "TSTypeReference",
+                      "typeName": Object {
                         "loc": Object {
                           "end": Object {
                             "column": 37,
@@ -37494,21 +37509,6 @@ Object {
                         ],
                         "type": "Identifier",
                       },
-                      "loc": Object {
-                        "end": Object {
-                          "column": 37,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 36,
-                          "line": 1,
-                        },
-                      },
-                      "range": Array [
-                        36,
-                        37,
-                      ],
-                      "type": "GenericTypeAnnotation",
                       "typeParameters": null,
                     },
                   ],
@@ -39042,7 +39042,22 @@ Object {
           },
           "params": Array [
             Object {
-              "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 22,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                21,
+                22,
+              ],
+              "type": "TSTypeReference",
+              "typeName": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 22,
@@ -39060,21 +39075,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "loc": Object {
-                "end": Object {
-                  "column": 22,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 21,
-                  "line": 1,
-                },
-              },
-              "range": Array [
-                21,
-                22,
-              ],
-              "type": "GenericTypeAnnotation",
               "typeParameters": null,
             },
           ],
@@ -58677,7 +58677,22 @@ Object {
           },
           "params": Array [
             Object {
-              "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                4,
+                5,
+              ],
+              "type": "TSTypeReference",
+              "typeName": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 5,
@@ -58695,21 +58710,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "loc": Object {
-                "end": Object {
-                  "column": 5,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 4,
-                  "line": 1,
-                },
-              },
-              "range": Array [
-                4,
-                5,
-              ],
-              "type": "GenericTypeAnnotation",
               "typeParameters": null,
             },
           ],
@@ -58785,7 +58785,22 @@ Object {
           },
           "params": Array [
             Object {
-              "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 10,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                14,
+                20,
+              ],
+              "type": "TSTypeReference",
+              "typeName": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 10,
@@ -58802,21 +58817,6 @@ Object {
                 ],
                 "type": "TSNumberKeyword",
               },
-              "loc": Object {
-                "end": Object {
-                  "column": 10,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 4,
-                  "line": 2,
-                },
-              },
-              "range": Array [
-                14,
-                20,
-              ],
-              "type": "GenericTypeAnnotation",
               "typeParameters": null,
             },
           ],
@@ -59189,7 +59189,22 @@ Object {
               },
               "params": Array [
                 Object {
-                  "id": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 16,
+                      "line": 1,
+                    },
+                  },
+                  "range": Array [
+                    16,
+                    17,
+                  ],
+                  "type": "TSTypeReference",
+                  "typeName": Object {
                     "loc": Object {
                       "end": Object {
                         "column": 17,
@@ -59207,21 +59222,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "loc": Object {
-                    "end": Object {
-                      "column": 17,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 16,
-                      "line": 1,
-                    },
-                  },
-                  "range": Array [
-                    16,
-                    17,
-                  ],
-                  "type": "GenericTypeAnnotation",
                   "typeParameters": null,
                 },
               ],
@@ -59999,7 +59999,22 @@ Object {
                     },
                     "params": Array [
                       Object {
-                        "id": Object {
+                        "loc": Object {
+                          "end": Object {
+                            "column": 57,
+                            "line": 2,
+                          },
+                          "start": Object {
+                            "column": 54,
+                            "line": 2,
+                          },
+                        },
+                        "range": Array [
+                          77,
+                          80,
+                        ],
+                        "type": "TSTypeReference",
+                        "typeName": Object {
                           "loc": Object {
                             "end": Object {
                               "column": 57,
@@ -60016,21 +60031,6 @@ Object {
                           ],
                           "type": "TSAnyKeyword",
                         },
-                        "loc": Object {
-                          "end": Object {
-                            "column": 57,
-                            "line": 2,
-                          },
-                          "start": Object {
-                            "column": 54,
-                            "line": 2,
-                          },
-                        },
-                        "range": Array [
-                          77,
-                          80,
-                        ],
-                        "type": "GenericTypeAnnotation",
                         "typeParameters": null,
                       },
                     ],
