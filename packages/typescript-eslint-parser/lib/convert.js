@@ -111,13 +111,13 @@ module.exports = function convert(config) {
             ],
             loc: nodeUtils.getLocFor(firstTypeArgument.pos - 1, greaterThanToken.end, ast),
             params: typeArguments.map(typeArgument => ({
-                type: AST_NODE_TYPES.GenericTypeAnnotation,
+                type: AST_NODE_TYPES.TSTypeReference,
                 range: [
                     typeArgument.getStart(),
                     typeArgument.getEnd()
                 ],
                 loc: nodeUtils.getLoc(typeArgument, ast),
-                id: convertChild(typeArgument.typeName || typeArgument),
+                typeName: convertChild(typeArgument.typeName || typeArgument),
                 typeParameters: (typeArgument.typeArguments)
                     ? convertTypeArgumentsToTypeParameters(typeArgument.typeArguments)
                     : null
