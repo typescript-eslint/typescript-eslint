@@ -57916,6 +57916,356 @@ Object {
 }
 `;
 
+exports[`ecmaFeatures fixtures/experimentalDynamicImport/dynamic-import.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "arguments": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 23,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 19,
+                "line": 1,
+              },
+            },
+            "name": "main",
+            "range": Array [
+              19,
+              23,
+            ],
+            "type": "Identifier",
+          },
+        ],
+        "callee": Object {
+          "computed": false,
+          "loc": Object {
+            "end": Object {
+              "column": 18,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "object": Object {
+            "arguments": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 12,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  7,
+                  12,
+                ],
+                "raw": "'foo'",
+                "type": "Literal",
+                "value": "foo",
+              },
+            ],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                0,
+                6,
+              ],
+              "type": "Import",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 13,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              0,
+              13,
+            ],
+            "type": "CallExpression",
+          },
+          "property": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 18,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 14,
+                "line": 1,
+              },
+            },
+            "name": "then",
+            "range": Array [
+              14,
+              18,
+            ],
+            "type": "Identifier",
+          },
+          "range": Array [
+            0,
+            18,
+          ],
+          "type": "MemberExpression",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 24,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          24,
+        ],
+        "type": "CallExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        25,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 25,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    25,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "import",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        12,
+      ],
+      "type": "String",
+      "value": "'foo'",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        12,
+        13,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        13,
+        14,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        14,
+        18,
+      ],
+      "type": "Identifier",
+      "value": "then",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        18,
+        19,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 19,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        19,
+        23,
+      ],
+      "type": "Identifier",
+      "value": "main",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        23,
+        24,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        24,
+        25,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/arg-spread.src 1`] = `
 Object {
   "body": Array [

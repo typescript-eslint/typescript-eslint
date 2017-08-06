@@ -56,6 +56,7 @@ module.exports = {
     GenericTypeAnnotation: "GenericTypeAnnotation",
     Identifier: "Identifier",
     IfStatement: "IfStatement",
+    Import: "Import",
     ImportDeclaration: "ImportDeclaration",
     ImportDefaultSpecifier: "ImportDefaultSpecifier",
     ImportNamespaceSpecifier: "ImportNamespaceSpecifier",

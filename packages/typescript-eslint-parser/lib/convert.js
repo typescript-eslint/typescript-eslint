@@ -1649,6 +1649,12 @@ module.exports = function convert(config) {
             break;
         }
 
+        case SyntaxKind.ImportKeyword:
+            Object.assign(result, {
+                type: AST_NODE_TYPES.Import
+            });
+            break;
+
         case SyntaxKind.EmptyStatement:
         case SyntaxKind.DebuggerStatement:
             simplyCopy();
