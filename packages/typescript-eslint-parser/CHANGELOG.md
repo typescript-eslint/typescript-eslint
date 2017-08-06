@@ -1,3 +1,10 @@
+v5.0.0 - August 6, 2017
+
+* 271b4f1 New: Support TypeScript 2.4 (fixes #321) (#322) (#326) (James Henry)
+* ea6c3bb Breaking: Use TSTypeReference for TypeParameters (#340) (James Henry)
+* a9ca775 Fix: Use name 'this' in JSXMemberExpression (fixes #337) (#338) (Reyad Attiyat)
+* ef2687b Fix: Handle assignment within property destructuring (fixes #332) (#336) (James Henry)
+
 v4.0.0 - July 10, 2017
 
 * 6a612cd Breaking: Include type annotation range for Identifiers (fixes #314) (#319) (Reyad Attiyat)
