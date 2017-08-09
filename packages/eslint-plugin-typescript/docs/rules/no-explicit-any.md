@@ -14,21 +14,77 @@ an `any` type from being implied by the compiler, but doesn't prevent
 The following patterns are considered warnings:
 
 ```ts
-const age : any = "seventeen"
+const age: any = "seventeen"
 ```
 
 ```ts
-function greet () : any {}
+const ages: any[] = ["seventeen"]
+```
+
+```ts
+const ages: Array<any> = ["seventeen"]
+```
+
+```ts
+function greet(): any {}
+```
+
+```ts
+function greet(): any[] {}
+```
+
+```ts
+function greet(): Array<any> {}
+```
+
+```ts
+function greet(): Array<Array<any>> {}
+```
+
+```ts
+function greet(param: Array<any>): string {}
+```
+
+```ts
+function greet(param: Array<any>): Array<any> {}
 ```
 
 The following patterns are not warnings:
 
 ```ts
-const age : number = 17
+const age: number = 17
 ```
 
 ```ts
-function greet () : string {}
+const ages: number[] = [17]
+```
+
+```ts
+const ages: Array<number> = [17]
+```
+
+```ts
+function greet(): string {}
+```
+
+```ts
+function greet(): string[] {}
+```
+
+```ts
+function greet(): Array<string> {}
+```
+
+```ts
+function greet(): Array<Array<string>> {}
+```
+
+```ts
+function greet(param: Array<string>): string {}
+```
+
+```ts
+function greet(param: Array<string>): Array<string> {}
 ```
 
 ## When Not To Use It

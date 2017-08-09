@@ -1,6 +1,7 @@
 /**
  * @fileoverview Enforces the any type is not used.
  * @author Danny Fritz
+ * @author Patricio Trevino
  */
 "use strict";
 
@@ -24,17 +25,35 @@ module.exports = {
         //----------------------------------------------------------------------
 
         /**
-         * Checks if the any type is used
-         * @param {ASTNode} typeAnnotation The TypeAnnotation node.
+         * Checks if the node has a type annotation of type any.
+         * @param {ASTNode} node The node being validated.
          * @returns {void}
          * @private
          */
-        function checkTypeAnnotationForAny(typeAnnotation) {
-            if (typeAnnotation.typeAnnotation.type === "TSAnyKeyword") {
+        function checkGenericNodeForAnnotation(node) {
+            if (node.type === "TSAnyKeyword") {
                 context.report({
-                    node: typeAnnotation,
+                    node,
                     message: "Unexpected any. Specify a different type."
                 });
+            } else if (node.type === "TSArrayType") {
+                checkGenericNodeForAnnotation(node.elementType);
+            } else if (node.type === "TSUnionType" || node.type === "TSIntersectionType") {
+                node.types.forEach(type => {
+                    checkGenericNodeForAnnotation(type);
+                });
+            } else if (node.type === "TSTypeReference" && node.typeParameters) {
+                node.typeParameters.params.forEach(param => {
+                    checkGenericNodeForAnnotation(param);
+                });
+            } else if (node.type === "GenericTypeAnnotation") {
+                if (node.typeParameters) {
+                    node.typeParameters.params.forEach(param => {
+                        checkGenericNodeForAnnotation(param);
+                    });
+                } else {
+                    checkGenericNodeForAnnotation(node.id);
+                }
             }
         }
 
@@ -44,9 +63,9 @@ module.exports = {
          * @returns {void}
          * @private
          */
-        function checkFunctionReturnTypeForAny(node) {
+        function checkFunctionReturnTypeForAnnotation(node) {
             if (node.returnType) {
-                checkTypeAnnotationForAny(node.returnType);
+                checkGenericNodeForAnnotation(node.returnType.typeAnnotation);
             }
         }
 
@@ -54,16 +73,19 @@ module.exports = {
         // Public
         //----------------------------------------------------------------------
         return {
-
             Identifier(node) {
                 if (node.typeAnnotation) {
-                    checkTypeAnnotationForAny(node.typeAnnotation);
+                    checkGenericNodeForAnnotation(node.typeAnnotation.typeAnnotation);
                 }
             },
-
-            FunctionDeclaration: checkFunctionReturnTypeForAny,
-            FunctionExpression: checkFunctionReturnTypeForAny,
-            ArrowFunctionExpression: checkFunctionReturnTypeForAny
+            TypeAnnotation(node) {
+                if (node.typeAnnotation) {
+                    checkGenericNodeForAnnotation(node.typeAnnotation);
+                }
+            },
+            FunctionDeclaration: checkFunctionReturnTypeForAnnotation,
+            FunctionExpression: checkFunctionReturnTypeForAnnotation,
+            ArrowFunctionExpression: checkFunctionReturnTypeForAnnotation
         };
     }
 };
