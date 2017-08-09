@@ -1,3 +1,8 @@
+v5.0.1 - August 9, 2017
+
+* 81e20c0 Fix: Only warn about an unsupported TypeScript version once (#347) (Jed Fox)
+* 5e22fac Chore: AST alignment testing against Babylon (#342) (James Henry)
+
 v5.0.0 - August 6, 2017
 
 * 271b4f1 New: Support TypeScript 2.4 (fixes #321) (#322) (#326) (James Henry)
