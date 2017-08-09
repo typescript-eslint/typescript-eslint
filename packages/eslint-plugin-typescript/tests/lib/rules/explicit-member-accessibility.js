@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-let rule = require("../../../lib/rules/explicit-member-accessibility"),
+const rule = require("../../../lib/rules/explicit-member-accessibility"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,7 +16,8 @@ let rule = require("../../../lib/rules/explicit-member-accessibility"),
 // Tests
 //------------------------------------------------------------------------------
 
-let ruleTester = new RuleTester();
+const ruleTester = new RuleTester();
+
 ruleTester.run("explicit-member-accessibility", rule, {
 
     valid: [

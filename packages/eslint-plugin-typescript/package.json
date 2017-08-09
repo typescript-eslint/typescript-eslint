@@ -11,8 +11,8 @@
   "author": "Nicholas C. Zakas",
   "main": "lib/index.js",
   "scripts": {
-    "lint": "eslint lib/",
-    "lint:fix": "eslint --fix lib/",
+    "lint": "eslint lib/ tests/",
+    "lint:fix": "eslint lib/ test/ --fix",
     "mocha": "mocha tests --recursive",
     "test": "npm run lint && npm run mocha"
   },

@@ -56,6 +56,7 @@ Then configure the rules you want to use under the rules section.
 * `typescript/no-explicit-any` - enforces the any type is not used.
 * `typescript/no-angle-bracket-type-assertion` - enforces the use of `as Type` assertions instead of `<Type>` assertions.
 * `typescript/no-namespace` - disallows the use of custom TypeScript modules and namespaces.
+* `typescript/no-use-before-define` - disallows the use of variables before they are defined
 * `typescript/prefer-namespace-keyword` - enforces the use of the keyword `namespace` over `module` to declare custom TypeScript modules.
 * `typescript/no-type-literal` - disallows the use of type aliases.
 * `typescript/member-ordering` - enforces a standard member declaration order.

@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var rule = require("../../../lib/rules/no-type-alias"),
+const rule = require("../../../lib/rules/no-type-alias"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,7 +16,8 @@ var rule = require("../../../lib/rules/no-type-alias"),
 // Tests
 //------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+const ruleTester = new RuleTester();
+
 ruleTester.run("no-type-alias", rule, {
 
     valid: [
@@ -32,7 +33,7 @@ ruleTester.run("no-type-alias", rule, {
         },
         {
             code: "type Foo = 'a' | 'b';",
-            options: [{ allowAliases: true}],
+            options: [{ allowAliases: true }],
             parser: "typescript-eslint-parser"
         },
         {
