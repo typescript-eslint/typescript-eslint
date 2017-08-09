@@ -1,6 +1,7 @@
 /**
  * @fileoverview Enforces spacing around type annotations.
  * @author Nicholas C. Zakas
+ * @author Patricio Trevino
  */
 "use strict";
 
@@ -15,12 +16,25 @@ module.exports = {
             category: "TypeScript"
         },
         fixable: "code",
-        schema: []
+        schema: [
+            {
+                type: "object",
+                properties: {
+                    before: { type: "boolean" },
+                    after: { type: "boolean" }
+                },
+                additionalProperties: false
+            }
+        ]
     },
 
     create(context) {
 
         const sourceCode = context.getSourceCode();
+
+        const options = context.options[0] || {};
+        const before = typeof options.before === "boolean" ? options.before : false;
+        const after = typeof options.after === "boolean" ? options.after : true;
 
         //----------------------------------------------------------------------
         // Helpers
@@ -34,37 +48,62 @@ module.exports = {
          * @private
          */
         function checkTypeAnnotationSpacing(typeAnnotation) {
-            let colonToken = typeAnnotation,
-                previousToken = sourceCode.getTokenBefore(typeAnnotation);
+            const nextToken = typeAnnotation.typeAnnotation || typeAnnotation;
+            const colonToken = sourceCode.getTokenBefore(nextToken);
+            const previousToken = sourceCode.getTokenBefore(colonToken);
 
-            if (previousToken.type === "Punctuator") {
-                colonToken = previousToken;
-                previousToken = sourceCode.getTokenBefore(colonToken);
+            const previousDelta = colonToken.range[0] - previousToken.range[1];
+            const nextDelta = nextToken.range[0] - colonToken.range[1];
 
-                if (typeAnnotation.range[0] - colonToken.range[1] === 0) {
-                    context.report({
-                        node: typeAnnotation,
-                        message: "Expected a space after the colon.",
-                        fix(fixer) {
-                            return fixer.insertTextAfter(colonToken, " ");
-                        }
-                    });
-                }
-            } else {
-                if (typeAnnotation.typeAnnotation.range[0] - typeAnnotation.range[0] === 1) {
-                    context.report({
-                        node: typeAnnotation,
-                        message: "Expected a space after the colon.",
-                        fix(fixer) {
-                            return fixer.insertTextAfterRange([typeAnnotation.range[0], typeAnnotation.typeAnnotation.range[0]], " ");
-                        }
-                    });
-                }
+            if (after && nextDelta === 0) {
+                context.report({
+                    node: colonToken,
+                    message: "Expected a space after the colon.",
+                    fix(fixer) {
+                        return fixer.insertTextAfter(colonToken, " ");
+                    }
+                });
+            } else if (!after && nextDelta > 0) {
+                context.report({
+                    node: colonToken,
+                    message: "Unexpected space after the colon.",
+                    fix(fixer) {
+                        return fixer.removeRange([colonToken.range[1], nextToken.range[0]]);
+                    }
+                });
             }
 
-            if (colonToken.range[0] - previousToken.range[1] > 0) {
+            if (before && previousDelta === 0) {
                 context.report({
-                    node: typeAnnotation,
+                    node: colonToken,
+                    loc: {
+                        start: {
+                            line: colonToken.loc.start.line,
+                            column: colonToken.loc.start.column - 1
+                        },
+                        end: {
+                            line: colonToken.loc.start.line,
+                            column: colonToken.loc.start.column
+                        }
+                    },
+                    message: "Expected a space before the colon.",
+                    fix(fixer) {
+                        return fixer.insertTextAfter(previousToken, " ");
+                    }
+                });
+            } else if (!before && previousDelta > 0) {
+                context.report({
+                    node: colonToken,
+                    loc: {
+                        start: {
+                            line: colonToken.loc.start.line,
+                            column: colonToken.loc.start.column - 1
+                        },
+                        end: {
+                            line: colonToken.loc.start.line,
+                            column: colonToken.loc.start.column
+                        }
+                    },
                     message: "Unexpected space before the colon.",
                     fix(fixer) {
                         return fixer.removeRange([previousToken.range[1], colonToken.range[0]]);
@@ -91,6 +130,12 @@ module.exports = {
         return {
 
             Identifier(node) {
+                if (node.typeAnnotation) {
+                    checkTypeAnnotationSpacing(node.typeAnnotation);
+                }
+            },
+
+            TypeAnnotation(node) {
                 if (node.typeAnnotation) {
                     checkTypeAnnotationSpacing(node.typeAnnotation);
                 }
