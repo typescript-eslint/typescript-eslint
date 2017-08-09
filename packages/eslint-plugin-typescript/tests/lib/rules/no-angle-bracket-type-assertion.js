@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-let rule = require("../../../lib/rules/no-angle-bracket-type-assertion"),
+const rule = require("../../../lib/rules/no-angle-bracket-type-assertion"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,7 +16,8 @@ let rule = require("../../../lib/rules/no-angle-bracket-type-assertion"),
 // Tests
 //------------------------------------------------------------------------------
 
-let ruleTester = new RuleTester();
+const ruleTester = new RuleTester();
+
 ruleTester.run("no-angle-bracket-type-assertion", rule, {
 
     valid: [
@@ -127,7 +128,7 @@ const bar = <Foo>new Generic<int>();
                     message: "Prefer 'as Foo' instead of '<Foo>' when doing type assertions",
                     row: 9,
                     column: 13
-                },
+                }
             ]
         },
         {

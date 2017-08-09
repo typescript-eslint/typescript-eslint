@@ -40,7 +40,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "@ClassDecoratorFactory()",
                 "export class Foo {}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -48,7 +48,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "@ClassDecorator",
                 "export class Foo {}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -58,7 +58,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   get bar() {}",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -68,7 +68,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   set bar() {}",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -78,7 +78,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   bar() {}",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -88,7 +88,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   static bar() {}",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -99,7 +99,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   }",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -110,7 +110,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   }",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -121,7 +121,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   }",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -132,7 +132,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   }",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -143,7 +143,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   click = new EventEmitter();",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -155,7 +155,7 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   static prop2;",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
@@ -167,16 +167,16 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "   y;",
                 "}"
             ].join("\n"),
-            parser,
+            parser
         },
         {
             code: [
                 "interface Base {}",
                 "class Thing implements Base {}",
-                "new Thing()",
+                "new Thing()"
             ].join("\n"),
-            parser,
-        },
+            parser
+        }
     ],
 
     invalid: [
@@ -191,6 +191,6 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 line: 1,
                 column: 10
             }]
-        },
+        }
     ]
 });

@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-let rule = require("../../../lib/rules/prefer-namespace-keyword"),
+const rule = require("../../../lib/rules/prefer-namespace-keyword"),
     RuleTester = require("eslint").RuleTester;
 
 
@@ -16,7 +16,8 @@ let rule = require("../../../lib/rules/prefer-namespace-keyword"),
 // Tests
 //------------------------------------------------------------------------------
 
-let ruleTester = new RuleTester();
+const ruleTester = new RuleTester();
+
 ruleTester.run("prefer-namespace-keyword", rule, {
     valid: [
         {
@@ -41,7 +42,7 @@ ruleTester.run("prefer-namespace-keyword", rule, {
                     message: "Use namespace instead of module to declare custom TypeScript modules",
                     output: "namespace foo { }",
                     row: 1,
-                    column: 1,
+                    column: 1
                 }
             ]
         },
