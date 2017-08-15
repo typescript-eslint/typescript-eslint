@@ -1038,8 +1038,8 @@ Object {
   ],
   "loc": Object {
     "end": Object {
-      "column": 6,
-      "line": 5,
+      "column": 0,
+      "line": 6,
     },
     "start": Object {
       "column": 0,
@@ -1048,7 +1048,7 @@ Object {
   },
   "range": Array [
     0,
-    59,
+    60,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -5070,8 +5070,8 @@ Object {
   ],
   "loc": Object {
     "end": Object {
-      "column": 11,
-      "line": 1,
+      "column": 0,
+      "line": 2,
     },
     "start": Object {
       "column": 0,
@@ -5080,7 +5080,7 @@ Object {
   },
   "range": Array [
     0,
-    11,
+    12,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -5544,8 +5544,8 @@ Object {
   ],
   "loc": Object {
     "end": Object {
-      "column": 19,
-      "line": 2,
+      "column": 0,
+      "line": 3,
     },
     "start": Object {
       "column": 0,
@@ -5554,7 +5554,7 @@ Object {
   },
   "range": Array [
     0,
-    45,
+    46,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -6567,8 +6567,8 @@ Object {
   ],
   "loc": Object {
     "end": Object {
-      "column": 6,
-      "line": 3,
+      "column": 0,
+      "line": 4,
     },
     "start": Object {
       "column": 0,
@@ -6577,7 +6577,7 @@ Object {
   },
   "range": Array [
     0,
-    24,
+    25,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -9925,8 +9925,8 @@ Object {
   ],
   "loc": Object {
     "end": Object {
-      "column": 6,
-      "line": 3,
+      "column": 0,
+      "line": 4,
     },
     "start": Object {
       "column": 0,
@@ -9935,7 +9935,7 @@ Object {
   },
   "range": Array [
     0,
-    24,
+    25,
   ],
   "sourceType": "script",
   "tokens": Array [
