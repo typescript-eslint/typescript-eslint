@@ -627,8 +627,6 @@ function convertToken(token, ast) {
         newToken = {
             type: getTokenType(token),
             value,
-            start,
-            end,
             range: [start, end],
             loc: getLocFor(start, end, ast)
         };
