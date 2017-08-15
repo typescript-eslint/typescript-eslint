@@ -46,6 +46,8 @@ function parseWithTypeScriptESLintParser(text) { // eslint-disable-line
             range: true,
             tokens: false,
             comment: false,
+            useJSXTextNode: true,
+            errorOnUnknownASTType: true,
             ecmaFeatures: {
                 jsx: true
             }

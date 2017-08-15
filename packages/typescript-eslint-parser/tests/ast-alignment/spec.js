@@ -11,7 +11,8 @@ const fixturePatternsToTest = [
     "basics/instanceof.src.js",
     "basics/update-expression.src.js",
     "basics/new-without-parens.src.js",
-    "ecma-features/arrowFunctions/**/as*.src.js"
+    "ecma-features/arrowFunctions/**/as*.src.js",
+    "jsx/attributes.src.js"
 ];
 
 const fixturesToTest = [];
