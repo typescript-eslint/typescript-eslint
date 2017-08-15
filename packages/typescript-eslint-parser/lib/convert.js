@@ -331,8 +331,7 @@ module.exports = function convert(config) {
                 }
             });
 
-            // fix end location
-            result.range[1] = node.endOfFileToken.pos;
+            result.range[1] = node.endOfFileToken.end;
             result.loc = nodeUtils.getLocFor(node.getStart(), result.range[1], ast);
             break;
 
