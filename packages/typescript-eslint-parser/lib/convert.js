@@ -1461,6 +1461,13 @@ module.exports = function convert(config) {
                     result.expressions.push(right);
                 }
 
+            } else if (node.operatorToken && node.operatorToken.kind === SyntaxKind.AsteriskAsteriskEqualsToken) {
+                Object.assign(result, {
+                    type: AST_NODE_TYPES.AssignmentExpression,
+                    operator: nodeUtils.getTextForTokenKind(node.operatorToken.kind),
+                    left: convertChild(node.left),
+                    right: convertChild(node.right)
+                });
             } else {
                 Object.assign(result, {
                     type: nodeUtils.getBinaryExpressionType(node.operatorToken),
