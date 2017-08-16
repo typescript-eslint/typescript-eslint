@@ -1084,7 +1084,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -1103,7 +1102,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
