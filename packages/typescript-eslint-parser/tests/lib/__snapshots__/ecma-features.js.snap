@@ -10441,7 +10441,7 @@ Object {
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 18,
+                  "column": 19,
                   "line": 1,
                 },
               },
@@ -18360,7 +18360,7 @@ Object {
             "key": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 21,
+                  "column": 20,
                   "line": 1,
                 },
                 "start": Object {
