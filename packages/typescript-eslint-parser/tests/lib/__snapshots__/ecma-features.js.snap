@@ -65558,7 +65558,7 @@ Object {
           "type": "Literal",
           "value": 4,
         },
-        "type": "BinaryExpression",
+        "type": "AssignmentExpression",
       },
       "loc": Object {
         "end": Object {
