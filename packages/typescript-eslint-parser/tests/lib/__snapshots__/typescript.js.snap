@@ -400,7 +400,7 @@ Object {
               "key": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 24,
+                    "column": 12,
                     "line": 2,
                   },
                   "start": Object {
@@ -4744,7 +4744,7 @@ Object {
                   "line": 6,
                 },
                 "start": Object {
-                  "column": 15,
+                  "column": 16,
                   "line": 4,
                 },
               },
@@ -4931,7 +4931,7 @@ Object {
                   "line": 9,
                 },
                 "start": Object {
-                  "column": 18,
+                  "column": 19,
                   "line": 7,
                 },
               },

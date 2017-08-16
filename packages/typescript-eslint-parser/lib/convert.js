@@ -744,8 +744,9 @@ module.exports = function convert(config) {
         case SyntaxKind.SetAccessor:
         case SyntaxKind.MethodDeclaration: {
 
-            // TODO: double-check that these positions are correct
-            const methodLoc = ast.getLineAndCharacterOfPosition(node.name.end + 1),
+            const openingParen = nodeUtils.findNextToken(node.name, ast);
+
+            const methodLoc = ast.getLineAndCharacterOfPosition(openingParen.getStart()),
                 nodeIsMethod = (node.kind === SyntaxKind.MethodDeclaration),
                 method = {
                     type: AST_NODE_TYPES.FunctionExpression,
@@ -758,7 +759,7 @@ module.exports = function convert(config) {
                     loc: {
                         start: {
                             line: methodLoc.line + 1,
-                            column: methodLoc.character - 1
+                            column: methodLoc.character
                         },
                         end: result.loc.end
                     }
@@ -865,7 +866,8 @@ module.exports = function convert(config) {
                     }
                 };
 
-            const constructorIdentifierLoc = ast.getLineAndCharacterOfPosition(firstConstructorToken.getStart()),
+            const constructorIdentifierLocStart = ast.getLineAndCharacterOfPosition(firstConstructorToken.getStart()),
+                constructorIdentifierLocEnd = ast.getLineAndCharacterOfPosition(firstConstructorToken.getEnd()),
                 constructorIsComputed = !!node.name && nodeUtils.isComputedProperty(node.name);
 
             let constructorKey;
@@ -878,12 +880,12 @@ module.exports = function convert(config) {
                     range: [firstConstructorToken.getStart(), firstConstructorToken.end],
                     loc: {
                         start: {
-                            line: constructorIdentifierLoc.line + 1,
-                            column: constructorIdentifierLoc.character
+                            line: constructorIdentifierLocStart.line + 1,
+                            column: constructorIdentifierLocStart.character
                         },
                         end: {
-                            line: constructor.loc.start.line,
-                            column: constructor.loc.start.column
+                            line: constructorIdentifierLocEnd.line + 1,
+                            column: constructorIdentifierLocEnd.character
                         }
                     }
                 };
@@ -894,12 +896,12 @@ module.exports = function convert(config) {
                     range: [firstConstructorToken.getStart(), firstConstructorToken.end],
                     loc: {
                         start: {
-                            line: constructorIdentifierLoc.line + 1,
-                            column: constructorIdentifierLoc.character
+                            line: constructorIdentifierLocStart.line + 1,
+                            column: constructorIdentifierLocStart.character
                         },
                         end: {
-                            line: constructor.loc.start.line,
-                            column: constructor.loc.start.column
+                            line: constructorIdentifierLocEnd.line + 1,
+                            column: constructorIdentifierLocEnd.character
                         }
                     }
                 };
