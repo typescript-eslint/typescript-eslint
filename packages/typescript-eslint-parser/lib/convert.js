@@ -230,6 +230,26 @@ module.exports = function convert(config) {
     }
 
     /**
+     * Converts an array of TSNode parameters into an array of ESTreeNode params
+     * @param  {TSNode[]} parameters An array of TSNode params to be converted
+     * @returns {ESTreeNode[]}       an array of converted ESTreeNode params
+     */
+    function convertParameters(parameters) {
+        if (!parameters || !parameters.length) {
+            return [];
+        }
+        return parameters.map(param => {
+            const convertedParam = convertChild(param);
+            if (!param.decorators || !param.decorators.length) {
+                return convertedParam;
+            }
+            return Object.assign(convertedParam, {
+                decorators: convertDecorators(param.decorators)
+            });
+        });
+    }
+
+    /**
      * For nodes that are copied directly from the TypeScript AST into
      * ESTree mostly as-is. The only difference is the addition of a type
      * property instead of a kind property. Recursively copies all children.
@@ -470,7 +490,7 @@ module.exports = function convert(config) {
 
         case SyntaxKind.ForInStatement:
         case SyntaxKind.ForOfStatement: {
-            const isAwait = node.awaitModifier && node.awaitModifier.kind === SyntaxKind.AwaitKeyword;
+            const isAwait = !!(node.awaitModifier && node.awaitModifier.kind === SyntaxKind.AwaitKeyword);
             Object.assign(result, {
                 type: SyntaxKind[node.kind],
                 left: convertChild(node.initializer),
@@ -507,7 +527,7 @@ module.exports = function convert(config) {
                 generator: !!node.asteriskToken,
                 expression: false,
                 async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
-                params: node.parameters.map(convertChild),
+                params: convertParameters(node.parameters),
                 body: convertChild(node.body)
             });
 
@@ -724,11 +744,18 @@ module.exports = function convert(config) {
                 value: convertChild(node.initializer),
                 computed: nodeUtils.isComputedProperty(node.name),
                 static: nodeUtils.hasStaticModifierFlag(node),
-                accessibility: nodeUtils.getTSNodeAccessibility(node),
                 readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
-                decorators: convertDecorators(node.decorators),
                 typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null
             });
+
+            if (node.decorators) {
+                result.decorators = convertDecorators(node.decorators);
+            }
+
+            const accessibility = nodeUtils.getTSNodeAccessibility(node);
+            if (accessibility) {
+                result.accessibility = accessibility;
+            }
 
             if (node.name.kind === SyntaxKind.Identifier && node.questionToken) {
                 result.key.optional = true;
@@ -788,11 +815,7 @@ module.exports = function convert(config) {
                 /**
                  * Unlike in object literal methods, class method params can have decorators
                  */
-                method.params = node.parameters.map(param => {
-                    const convertedParam = convertChild(param);
-                    convertedParam.decorators = convertDecorators(param.decorators);
-                    return convertedParam;
-                });
+                method.params = convertParameters(node.parameters);
 
                 /**
                  * TypeScript class methods can be defined as "abstract"
@@ -807,10 +830,17 @@ module.exports = function convert(config) {
                     value: method,
                     computed: nodeUtils.isComputedProperty(node.name),
                     static: nodeUtils.hasStaticModifierFlag(node),
-                    kind: "method",
-                    accessibility: nodeUtils.getTSNodeAccessibility(node),
-                    decorators: convertDecorators(node.decorators)
+                    kind: "method"
                 });
+
+                if (node.decorators) {
+                    result.decorators = convertDecorators(node.decorators);
+                }
+
+                const accessibility = nodeUtils.getTSNodeAccessibility(node);
+                if (accessibility) {
+                    result.accessibility = accessibility;
+                }
 
             }
 
@@ -845,13 +875,7 @@ module.exports = function convert(config) {
                 constructor = {
                     type: AST_NODE_TYPES.FunctionExpression,
                     id: null,
-                    params: node.parameters.map(param => {
-                        const convertedParam = convertChild(param);
-                        const decorators = convertDecorators(param.decorators);
-                        return Object.assign(convertedParam, {
-                            decorators
-                        });
-                    }),
+                    params: convertParameters(node.parameters),
                     generator: false,
                     expression: false,
                     async: false,
@@ -912,10 +936,15 @@ module.exports = function convert(config) {
                 key: constructorKey,
                 value: constructor,
                 computed: constructorIsComputed,
-                accessibility: nodeUtils.getTSNodeAccessibility(node),
                 static: constructorIsStatic,
                 kind: (constructorIsStatic || constructorIsComputed) ? "method" : "constructor"
             });
+
+            const accessibility = nodeUtils.getTSNodeAccessibility(node);
+            if (accessibility) {
+                result.accessibility = accessibility;
+            }
+
             break;
 
         }
@@ -925,7 +954,7 @@ module.exports = function convert(config) {
                 type: AST_NODE_TYPES.FunctionExpression,
                 id: convertChild(node.name),
                 generator: !!node.asteriskToken,
-                params: node.parameters.map(convertChild),
+                params: convertParameters(node.parameters),
                 body: convertChild(node.body),
                 async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
                 expression: false
@@ -1024,7 +1053,7 @@ module.exports = function convert(config) {
                 type: AST_NODE_TYPES.ArrowFunctionExpression,
                 generator: false,
                 id: null,
-                params: node.parameters.map(convertChild),
+                params: convertParameters(node.parameters),
                 body: convertChild(node.body),
                 async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
                 expression: node.body.kind !== SyntaxKind.Block
@@ -1273,10 +1302,16 @@ module.exports = function convert(config) {
                     range: [openBrace.getStart(), result.range[1]],
                     loc: nodeUtils.getLocFor(openBrace.getStart(), node.end, ast)
                 },
-                superClass: (superClass ? convertChild(superClass.types[0].expression) : null),
-                implements: hasImplements ? heritageClauses[0].types.map(convertClassImplements) : [],
-                decorators: convertDecorators(node.decorators)
+                superClass: (superClass ? convertChild(superClass.types[0].expression) : null)
             });
+
+            if (hasImplements) {
+                result.implements = heritageClauses[0].types.map(convertClassImplements);
+            }
+
+            if (node.decorators) {
+                result.decorators = convertDecorators(node.decorators);
+            }
 
             const filteredMembers = node.members.filter(nodeUtils.isESTreeClassMember);
 
@@ -1845,13 +1880,17 @@ module.exports = function convert(config) {
                 optional: nodeUtils.isOptional(node),
                 computed: nodeUtils.isComputedProperty(node.name),
                 key: convertChild(node.name),
-                params: node.parameters.map(parameter => convertChild(parameter)),
+                params: convertParameters(node.parameters),
                 typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null,
-                accessibility: nodeUtils.getTSNodeAccessibility(node),
                 readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
                 static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
                 export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
             });
+
+            const accessibility = nodeUtils.getTSNodeAccessibility(node);
+            if (accessibility) {
+                result.accessibility = accessibility;
+            }
 
             if (node.typeParameters) {
                 result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
@@ -1868,11 +1907,15 @@ module.exports = function convert(config) {
                 key: convertChild(node.name),
                 typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null,
                 initializer: convertChild(node.initializer),
-                accessibility: nodeUtils.getTSNodeAccessibility(node),
                 readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
                 static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
                 export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
             });
+
+            const accessibility = nodeUtils.getTSNodeAccessibility(node);
+            if (accessibility) {
+                result.accessibility = accessibility;
+            }
 
             break;
         }
@@ -1882,11 +1925,15 @@ module.exports = function convert(config) {
                 type: AST_NODE_TYPES.TSIndexSignature,
                 index: convertChild(node.parameters[0]),
                 typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null,
-                accessibility: nodeUtils.getTSNodeAccessibility(node),
                 readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
                 static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
                 export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
             });
+
+            const accessibility = nodeUtils.getTSNodeAccessibility(node);
+            if (accessibility) {
+                result.accessibility = accessibility;
+            }
 
             break;
         }
@@ -1894,7 +1941,7 @@ module.exports = function convert(config) {
         case SyntaxKind.ConstructSignature: {
             Object.assign(result, {
                 type: AST_NODE_TYPES.TSConstructSignature,
-                params: node.parameters.map(parameter => convertChild(parameter)),
+                params: convertParameters(node.parameters),
                 typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null
             });
 

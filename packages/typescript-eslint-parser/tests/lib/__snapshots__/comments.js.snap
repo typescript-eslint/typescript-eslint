@@ -458,9 +458,7 @@ Object {
         "body": Object {
           "body": Array [
             Object {
-              "accessibility": null,
               "computed": false,
-              "decorators": Array [],
               "key": Object {
                 "loc": Object {
                   "end": Object {
@@ -554,9 +552,7 @@ Object {
           ],
           "type": "ClassBody",
         },
-        "decorators": Array [],
         "id": null,
-        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,

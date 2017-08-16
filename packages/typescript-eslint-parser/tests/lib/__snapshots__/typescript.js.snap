@@ -395,7 +395,6 @@ Object {
         "body": Object {
           "body": Array [
             Object {
-              "accessibility": null,
               "computed": false,
               "key": Object {
                 "loc": Object {
@@ -473,7 +472,6 @@ Object {
           ],
           "type": "ClassBody",
         },
-        "decorators": Array [],
         "id": Object {
           "loc": Object {
             "end": Object {
@@ -492,7 +490,6 @@ Object {
           ],
           "type": "Identifier",
         },
-        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -756,9 +753,7 @@ Object {
         "body": Object {
           "body": Array [
             Object {
-              "accessibility": null,
               "computed": false,
-              "decorators": Array [],
               "key": Object {
                 "loc": Object {
                   "end": Object {
@@ -941,7 +936,6 @@ Object {
           ],
           "type": "ClassBody",
         },
-        "decorators": Array [],
         "id": Object {
           "loc": Object {
             "end": Object {
@@ -960,7 +954,6 @@ Object {
           ],
           "type": "Identifier",
         },
-        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -1313,9 +1306,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -1355,9 +1346,7 @@ Object {
             "value": null,
           },
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -1431,7 +1420,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -1450,7 +1438,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -1733,7 +1720,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -1807,7 +1793,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -1826,7 +1811,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -2090,9 +2074,7 @@ Object {
         "body": Object {
           "body": Array [
             Object {
-              "accessibility": null,
               "computed": false,
-              "decorators": Array [],
               "key": Object {
                 "loc": Object {
                   "end": Object {
@@ -2276,7 +2258,6 @@ Object {
           ],
           "type": "ClassBody",
         },
-        "decorators": Array [],
         "id": Object {
           "loc": Object {
             "end": Object {
@@ -2295,7 +2276,6 @@ Object {
           ],
           "type": "Identifier",
         },
-        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -4458,7 +4438,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -4533,7 +4512,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -4608,7 +4586,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -4759,7 +4736,6 @@ Object {
           Object {
             "accessibility": "protected",
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -4937,7 +4913,6 @@ Object {
               },
               "params": Array [
                 Object {
-                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 23,
@@ -5014,7 +4989,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -5033,7 +5007,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -5818,7 +5791,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "key": Object {
               "loc": Object {
@@ -5891,7 +5863,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": null,
-                  "decorators": Array [],
                   "export": true,
                   "loc": Object {
                     "end": Object {
@@ -5988,7 +5959,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -6007,7 +5977,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -6303,7 +6272,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -6322,7 +6290,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -6710,7 +6677,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -6729,7 +6695,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -7244,9 +7209,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -7378,7 +7341,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -7397,7 +7359,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -7660,9 +7621,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -7829,7 +7788,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -7848,7 +7806,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -8162,7 +8119,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -8387,7 +8343,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -8721,7 +8676,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -9132,9 +9086,7 @@ Object {
                 ],
                 "type": "ClassBody",
               },
-              "decorators": Array [],
               "id": null,
-              "implements": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 33,
@@ -9456,7 +9408,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -9656,7 +9607,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -9675,7 +9625,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 11,
@@ -11182,7 +11131,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": true,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -11257,7 +11205,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -11276,7 +11223,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -11539,9 +11485,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -11603,9 +11547,7 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -11703,7 +11645,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -11815,7 +11756,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -11834,7 +11774,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -12313,9 +12252,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -12356,9 +12293,7 @@ Object {
             "value": null,
           },
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -12434,7 +12369,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -12524,7 +12458,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -12543,7 +12476,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -12916,7 +12848,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -12990,7 +12921,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -13009,7 +12939,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -13236,7 +13165,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "key": Object {
               "loc": Object {
@@ -13309,7 +13237,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "private",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -13383,7 +13310,6 @@ Object {
                 },
                 Object {
                   "accessibility": "private",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -13457,7 +13383,6 @@ Object {
                 },
                 Object {
                   "accessibility": "private",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -13567,7 +13492,6 @@ Object {
                 },
                 Object {
                   "accessibility": "private",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -13700,7 +13624,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -13719,7 +13642,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -14378,7 +14300,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "key": Object {
               "loc": Object {
@@ -14451,7 +14372,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "protected",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -14525,7 +14445,6 @@ Object {
                 },
                 Object {
                   "accessibility": "protected",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -14599,7 +14518,6 @@ Object {
                 },
                 Object {
                   "accessibility": "protected",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -14709,7 +14627,6 @@ Object {
                 },
                 Object {
                   "accessibility": "protected",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -14842,7 +14759,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -14861,7 +14777,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -15520,7 +15435,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "key": Object {
               "loc": Object {
@@ -15593,7 +15507,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "public",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -15667,7 +15580,6 @@ Object {
                 },
                 Object {
                   "accessibility": "public",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -15741,7 +15653,6 @@ Object {
                 },
                 Object {
                   "accessibility": "public",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -15851,7 +15762,6 @@ Object {
                 },
                 Object {
                   "accessibility": "public",
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -15984,7 +15894,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16003,7 +15912,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -16662,7 +16570,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "key": Object {
               "loc": Object {
@@ -16735,7 +16642,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": null,
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -16809,7 +16715,6 @@ Object {
                 },
                 Object {
                   "accessibility": null,
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -16942,7 +16847,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16961,7 +16865,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -17370,7 +17273,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -17444,7 +17346,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -17463,7 +17364,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -17690,7 +17590,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "key": Object {
               "loc": Object {
@@ -17763,7 +17662,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": null,
-                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -17860,7 +17758,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -17879,7 +17776,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -18175,7 +18071,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -18194,7 +18089,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -18420,7 +18314,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -18439,7 +18332,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -18736,7 +18628,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -18755,7 +18646,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 15,
@@ -18966,9 +18856,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -19080,7 +18968,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -19099,7 +18986,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -20247,9 +20133,7 @@ Object {
           ],
           "type": "ClassBody",
         },
-        "decorators": Array [],
         "id": null,
-        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -20510,9 +20394,7 @@ Object {
           ],
           "type": "ClassBody",
         },
-        "decorators": Array [],
         "id": null,
-        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -20828,7 +20710,6 @@ Object {
           ],
           "type": "ClassBody",
         },
-        "decorators": Array [],
         "id": Object {
           "loc": Object {
             "end": Object {
@@ -20847,7 +20728,6 @@ Object {
           ],
           "type": "Identifier",
         },
-        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -21110,7 +20990,6 @@ Object {
           ],
           "type": "ClassBody",
         },
-        "decorators": Array [],
         "id": Object {
           "loc": Object {
             "end": Object {
@@ -21129,7 +21008,6 @@ Object {
           ],
           "type": "Identifier",
         },
-        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -21758,7 +21636,6 @@ Object {
               },
               "members": Array [
                 Object {
-                  "accessibility": null,
                   "computed": false,
                   "export": false,
                   "initializer": null,
@@ -23082,7 +22959,6 @@ Object {
               },
               "members": Array [
                 Object {
-                  "accessibility": null,
                   "computed": false,
                   "export": false,
                   "initializer": null,
@@ -23158,7 +23034,6 @@ Object {
                   },
                 },
                 Object {
-                  "accessibility": null,
                   "computed": false,
                   "export": false,
                   "initializer": null,
@@ -23831,7 +23706,6 @@ Object {
               },
               "members": Array [
                 Object {
-                  "accessibility": null,
                   "computed": false,
                   "export": false,
                   "initializer": null,
@@ -23907,7 +23781,6 @@ Object {
                   },
                 },
                 Object {
-                  "accessibility": null,
                   "computed": false,
                   "export": false,
                   "initializer": null,
@@ -28018,7 +27891,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "initializer": null,
@@ -28094,7 +27966,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "initializer": null,
@@ -28170,7 +28041,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": true,
             "export": false,
             "initializer": null,
@@ -28246,7 +28116,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": true,
             "export": false,
             "initializer": null,
@@ -28322,7 +28191,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "export": false,
             "index": Object {
               "loc": Object {
@@ -28429,7 +28297,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "export": false,
             "index": Object {
               "loc": Object {
@@ -28537,7 +28404,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "key": Object {
@@ -28613,7 +28479,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "key": Object {
@@ -28744,7 +28609,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": true,
             "export": false,
             "key": Object {
@@ -28875,7 +28739,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "key": Object {
@@ -32441,7 +32304,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "key": Object {
@@ -32746,7 +32608,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "initializer": null,
@@ -32789,7 +32650,6 @@ Object {
             "typeAnnotation": null,
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "initializer": null,
@@ -32865,7 +32725,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "key": Object {
@@ -33548,7 +33407,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "initializer": null,
@@ -35766,9 +35624,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -35843,7 +35699,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -35862,7 +35717,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 23,
@@ -37596,7 +37450,6 @@ Object {
             },
             "members": Array [
               Object {
-                "accessibility": null,
                 "computed": false,
                 "export": false,
                 "initializer": null,
@@ -37672,7 +37525,6 @@ Object {
                 },
               },
               Object {
-                "accessibility": null,
                 "computed": false,
                 "export": false,
                 "initializer": null,
@@ -39464,7 +39316,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "key": Object {
@@ -41309,7 +41160,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -41550,7 +41400,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -41569,7 +41418,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -41976,7 +41824,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -42275,7 +42122,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -42294,7 +42140,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -42791,7 +42636,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -42994,7 +42838,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -43013,7 +42856,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -43366,7 +43208,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -43582,7 +43423,6 @@ Object {
               },
               "params": Array [
                 Object {
-                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 18,
@@ -43625,7 +43465,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -43644,7 +43483,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -44121,7 +43959,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 12,
@@ -44442,7 +44279,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 21,
@@ -44741,7 +44577,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -44911,7 +44746,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -44930,7 +44764,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -45229,7 +45062,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -45399,7 +45231,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -45418,7 +45249,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -45735,7 +45565,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -45867,7 +45696,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -45886,7 +45714,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -46131,7 +45958,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -46263,7 +46089,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -46282,7 +46107,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -46545,7 +46369,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "key": Object {
               "loc": Object {
@@ -46928,7 +46751,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -46947,7 +46769,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -47444,9 +47265,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -47668,7 +47487,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -47687,7 +47505,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -48040,9 +47857,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -48264,7 +48079,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -48283,7 +48097,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -48654,9 +48467,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -48950,7 +48761,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -48969,7 +48779,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -49394,9 +49203,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
-            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -49690,7 +49497,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -49709,7 +49515,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -50152,7 +49957,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -50248,7 +50052,6 @@ Object {
             "value": null,
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -50395,7 +50198,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -50414,7 +50216,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -50839,7 +50640,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -50955,7 +50755,6 @@ Object {
             "value": null,
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -51087,7 +50886,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -51106,7 +50904,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -51513,7 +51310,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -51591,7 +51387,6 @@ Object {
             "value": null,
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -51685,7 +51480,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -51704,7 +51498,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -51967,7 +51760,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -52045,7 +51837,6 @@ Object {
             "value": null,
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "decorators": Array [
               Object {
@@ -52139,7 +51930,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -52158,7 +51948,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -52472,7 +52261,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -52643,7 +52431,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -52850,7 +52637,6 @@ Object {
         ],
         "type": "ClassBody",
       },
-      "decorators": Array [],
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -53436,7 +53222,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "initializer": Object {
@@ -53758,7 +53543,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "initializer": null,
@@ -53834,7 +53618,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": true,
             "initializer": null,
@@ -53910,7 +53693,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "initializer": null,
@@ -54307,7 +54089,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "export": false,
             "index": Object {
               "loc": Object {
@@ -54414,7 +54195,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "export": true,
             "index": Object {
               "loc": Object {
@@ -54521,7 +54301,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "export": false,
             "index": Object {
               "loc": Object {
@@ -55015,7 +54794,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "key": Object {
@@ -55144,7 +54922,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": true,
             "key": Object {
@@ -55273,7 +55050,6 @@ Object {
             },
           },
           Object {
-            "accessibility": null,
             "computed": false,
             "export": false,
             "key": Object {
@@ -60129,9 +59905,7 @@ Object {
               "body": Object {
                 "body": Array [
                   Object {
-                    "accessibility": null,
                     "computed": false,
-                    "decorators": Array [],
                     "key": Object {
                       "loc": Object {
                         "end": Object {
@@ -60277,7 +60051,6 @@ Object {
                 ],
                 "type": "ClassBody",
               },
-              "decorators": Array [],
               "id": Object {
                 "loc": Object {
                   "end": Object {
@@ -60296,7 +60069,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "implements": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
