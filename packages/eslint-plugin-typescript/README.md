@@ -49,16 +49,16 @@ Then configure the rules you want to use under the rules section.
 
 ## Supported Rules
 
-* `typescript/type-annotation-spacing` - enforces one space after the colon and zero spaces before the colon of a type annotation.
-* `typescript/explicit-member-accessibility` - enforces accessibility modifiers on class properties and methods.
-* `typescript/interface-name-prefix` - enforces interface names are prefixed.
-* `typescript/no-triple-slash-reference` - enforces `/// <reference />` is not used.
-* `typescript/no-explicit-any` - enforces the any type is not used.
-* `typescript/no-angle-bracket-type-assertion` - enforces the use of `as Type` assertions instead of `<Type>` assertions.
-* `typescript/no-namespace` - disallows the use of custom TypeScript modules and namespaces.
-* `typescript/no-use-before-define` - disallows the use of variables before they are defined
-* `typescript/prefer-namespace-keyword` - enforces the use of the keyword `namespace` over `module` to declare custom TypeScript modules.
-* `typescript/no-type-literal` - disallows the use of type aliases.
-* `typescript/member-ordering` - enforces a standard member declaration order.
-* `typescript/no-unused-vars` - prevents TypeScript-specific constructs from being erroneously flagged as unused
-* `typescript/adjacent-overload-signatures` - enforces member overloads to be consecutive.
+* [`typescript/type-annotation-spacing`](./docs/rules/type-annotation-spacing.md) — enforces one space after the colon and zero spaces before the colon of a type annotation.
+* [`typescript/explicit-member-accessibility`](./docs/rules/explicit-member-accessibility.md) — enforces accessibility modifiers on class properties and methods. (`member-access` from TSLint)
+* [`typescript/interface-name-prefix`](./docs/rules/interface-name-prefix.md) — enforces interface names are prefixed. (`interface-name` from TSLint)
+* [`typescript/no-triple-slash-reference`](./docs/rules/no-triple-slash-reference.md) — enforces `/// <reference />` is not used. (`no-reference` from TSLint)
+* [`typescript/no-explicit-any`](./docs/rules/no-explicit-any.md) — enforces the `any` type is not used. (`no-any` from TSLint)
+* [`typescript/no-angle-bracket-type-assertion`](./docs/rules/no-angle-bracket-type-assertion.md) — enforces the use of `as Type` assertions instead of `<Type>` assertions. (`no-angle-bracket-type-assertion` from TSLint)
+* [`typescript/no-namespace`](./docs/rules/no-namespace.md) — disallows the use of custom TypeScript modules and namespaces.
+* [`typescript/no-use-before-define`](./docs/rules/no-use-before-define.md) — disallows the use of variables before they are defined.
+* [`typescript/prefer-namespace-keyword`](./docs/rules/prefer-namespace-keyword.md) — enforces the use of the keyword `namespace` over `module` to declare custom TypeScript modules. (`no-internal-module` from TSLint)
+* [`typescript/no-type-alias`](./docs/rules/no-type-alias.md) — disallows the use of type aliases. (`interface-over-type-literal` from TSLint)
+* [`typescript/member-ordering`](./docs/rules/member-ordering.md) — enforces a standard member declaration order. (`member-ordering` from TSLint)
+* [`typescript/no-unused-vars`](./docs/rules/no-unused-vars.md) — prevents TypeScript-specific constructs from being erroneously flagged as unused
+* [`typescript/adjacent-overload-signatures`](./docs/rules/adjacent-overload-signatures.md) — enforces member overloads to be consecutive.
