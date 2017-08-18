@@ -24,7 +24,7 @@ ruleTester.run("member-ordering", rule, {
             code: `
 // no accessibility === public
 interface Foo {
-    A: string; 
+    A: string;
     B: string;
     C: string;
     D: string;
@@ -57,7 +57,7 @@ interface Foo {
     B: string;
     C: string;
     I();
-    L();        
+    L();
 }
             `,
             options: [{ default: "never" }],
@@ -79,7 +79,7 @@ interface Foo {
     I();
     J();
     K();
-    L();        
+    L();
 }
             `,
             options: [{ default: ["field", "constructor", "method"] }],
@@ -102,7 +102,7 @@ interface Foo {
     C: string;
     H();
     I();
-    L();        
+    L();
 }
             `,
             options: [{ interfaces: "never" }],
@@ -124,7 +124,7 @@ interface Foo {
     C: string;
     D: string;
     E: string;
-    F: string;    
+    F: string;
 }
             `,
             options: [{ interfaces: ["method", "constructor", "field"] }],
@@ -146,7 +146,7 @@ interface Foo {
     C: string;
     D: string;
     E: string;
-    F: string;    
+    F: string;
 }
             `,
             options: [
@@ -173,7 +173,7 @@ interface Foo {
     L();
     A: string;
     B: string;
-    C: string;        
+    C: string;
 }
             `,
             options: [{ default: ["private-instance-method", "public-constructor", "protected-static-field"] }],
@@ -185,17 +185,17 @@ interface Foo {
 interface Foo {
     G();
     H();
-    I();    
+    I();
     J();
     K();
     L();
     D: string;
     E: string;
-    F: string;    
+    F: string;
     new();
     A: string;
     B: string;
-    C: string;        
+    C: string;
 }
             `,
             options: [{ default: ["method", "public-constructor", "protected-static-field"] }],
@@ -295,13 +295,13 @@ type Foo = {
     K();
     L();
     A: string;
-    B: string;    
+    B: string;
     I();
     J();
     C: string;
     D: string;
     E: string;
-    F: string;    
+    F: string;
 }
             `,
             options: [{ typeLiterals: "never" }],
@@ -322,7 +322,7 @@ type Foo = {
     C: string;
     D: string;
     E: string;
-    F: string;    
+    F: string;
 }
             `,
             options: [{ typeLiterals: ["method", "field"] }],
@@ -364,7 +364,7 @@ type Foo = {
     C: string;
     D: string;
     E: string;
-    F: string;    
+    F: string;
 }
             `,
             options: [
@@ -387,10 +387,10 @@ type Foo = {
     C: string;
     G();
     H();
-    I();    
+    I();
     J();
     K();
-    L();           
+    L();
 }
             `,
             options: [
@@ -478,7 +478,7 @@ class Foo {
     private static I() {}
     public J() {}
     protected K() {}
-    private L() {}    
+    private L() {}
 }
             `,
             options: [{ default: ["field", "method"] }],
@@ -499,7 +499,7 @@ class Foo {
     constructor() {}
     private static C: string = "";
     protected E: string = "";
-    private F: string = "";    
+    private F: string = "";
 }
             `,
             options: [{ classes: "never" }],
@@ -582,7 +582,7 @@ class Foo {
     private static I() {}
     protected K() {}
     private L() {}
-    constructor() {}    
+    constructor() {}
     public D: string = "";
     public static A: string;
     private static C: string = "";
@@ -603,17 +603,17 @@ class Foo {
 class Foo {
     public static G() {}
     private static I() {}
-    protected static H() {}    
+    protected static H() {}
     public J() {}
     private L() {}
     protected K() {}
-    constructor() {}    
+    constructor() {}
     public D: string = "";
     public static A: string;
     protected static B: string = "";
     protected E: string = "";
     private static C: string = "";
-    private F: string = "";    
+    private F: string = "";
 }
             `,
             options: [
@@ -661,7 +661,7 @@ class Foo {
     private static I() {}
     protected K() {}
     private L() {}
-    constructor() {}    
+    constructor() {}
     public static A: string;
     private F: string = "";
     protected static B: string = "";
@@ -691,7 +691,7 @@ class Foo {
     private L() {}
     private static I() {}
     protected static H() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     public static G() {}
     public J() {}
     protected K() {}
@@ -701,7 +701,7 @@ class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-    
+
 }
             `,
             options: [{ classes: ["private-instance-method", "protected-static-field"] }],
@@ -715,7 +715,7 @@ class Foo {
     protected static H() {}
     public static G() {}
     public J() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     protected K() {}
     private static C: string = "";
     private F: string = "";
@@ -723,7 +723,7 @@ class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-    
+
 }
             `,
             options: [{ default: ["public-instance-method", "protected-static-field"] }],
@@ -737,7 +737,7 @@ class Foo {
     protected static H() {}
     public static G() {}
     public J() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     protected K() {}
     private static C: string = "";
     private F: string = "";
@@ -745,7 +745,7 @@ class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-    
+
 }
             `,
             options: [{ classes: ["public-instance-method", "protected-static-field"] }],
@@ -761,12 +761,12 @@ class Foo {
     public static G() {}
     public J() {}
     private constructor() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     protected K() {}
     private static C: string = "";
     private F: string = "";
     protected E: string = "";
-    public static A: string;        
+    public static A: string;
 }
             `,
             options: [
@@ -786,13 +786,13 @@ class Foo {
     private static I() {}
     protected static H() {}
     public static G() {}
-    public J() {}    
-    protected static B: string = "";    
+    public J() {}
+    protected static B: string = "";
     protected K() {}
     private static C: string = "";
     private F: string = "";
     protected E: string = "";
-    public static A: string;        
+    public static A: string;
 }
             `,
             options: [
@@ -880,7 +880,7 @@ const foo = class Foo {
     private static I() {}
     public J() {}
     protected K() {}
-    private L() {}    
+    private L() {}
 }
             `,
             options: [{ default: ["field", "method"] }],
@@ -901,7 +901,7 @@ const foo = class Foo {
     public static A: string;
     protected static B: string = "";
     protected E: string = "";
-    private F: string = "";    
+    private F: string = "";
 }
             `,
             options: [{ classExpressions: "never" }],
@@ -981,7 +981,7 @@ const foo = class Foo {
     private L() {}
     private static I() {}
     protected static H() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     public static G() {}
     public J() {}
     protected K() {}
@@ -991,7 +991,7 @@ const foo = class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-    
+
 }
             `,
             options: [{ classExpressions: ["private-instance-method", "protected-static-field"] }],
@@ -1005,7 +1005,7 @@ const foo = class Foo {
     protected static H() {}
     public static G() {}
     public J() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     protected K() {}
     private static C: string = "";
     private F: string = "";
@@ -1013,7 +1013,7 @@ const foo = class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-    
+
 }
             `,
             options: [{ default: ["public-instance-method", "protected-static-field"] }],
@@ -1027,7 +1027,7 @@ const foo = class Foo {
     protected static H() {}
     public static G() {}
     public J() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     protected K() {}
     private static C: string = "";
     private F: string = "";
@@ -1035,7 +1035,7 @@ const foo = class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-    
+
 }
             `,
             options: [{ classExpressions: ["public-instance-method", "protected-static-field"] }],
@@ -1051,12 +1051,12 @@ const foo = class Foo {
     public static G() {}
     public J() {}
     private constructor() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     protected K() {}
     private static C: string = "";
     private F: string = "";
     protected E: string = "";
-    public static A: string;        
+    public static A: string;
 }
             `,
             options: [
@@ -1077,13 +1077,13 @@ const foo = class Foo {
     private static I() {}
     protected static H() {}
     public static G() {}
-    public J() {}    
-    protected static B: string = "";    
+    public J() {}
+    protected static B: string = "";
     protected K() {}
     private static C: string = "";
     private F: string = "";
     protected E: string = "";
-    public static A: string;        
+    public static A: string;
 }
             `,
             options: [
@@ -1093,6 +1093,84 @@ const foo = class Foo {
                     classExpressions: ["public-instance-field", "private-constructor", "protected-instance-method"]
                 }
             ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+class Foo {
+    A: string;
+    constructor () {}
+    J() {}
+    K = () => {}
+}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+class Foo {
+    J() {}
+    K = () => {}
+    constructor () {}
+    A: string;
+}
+            `,
+            options: [{ default: ["method", "constructor", "field"] }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+class Foo {
+    J() {}
+    K = () => {}
+    L: () => {}
+    constructor () {}
+    A: string;
+}
+            `,
+            options: [{ default: ["method", "constructor", "field"] }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+interface Foo {
+    A: string;
+    J();
+    K: () => {}
+}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+interface Foo {
+    J();
+    K: () => {}
+    A: string;
+}
+            `,
+            options: [{ default: ["method", "constructor", "field"] }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+type Foo = {
+    A: string;
+    J();
+    K: () => {}
+}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+type Foo = {
+    J();
+    K: () => {}
+    A: string;
+}
+            `,
+            options: [{ default: ["method", "constructor", "field"] }],
             parser: "typescript-eslint-parser"
         }
     ],
@@ -1323,7 +1401,7 @@ interface Foo {
     E: string;
     K();
     F: string;
-    L();    
+    L();
 }
             `,
             parser: "typescript-eslint-parser",
@@ -1586,7 +1664,7 @@ type Foo = {
     E: string;
     K();
     F: string;
-    L();    
+    L();
 }
             `,
             parser: "typescript-eslint-parser",
@@ -1638,7 +1716,7 @@ class Foo {
     private L() {}
     public static G() {}
     protected static H() {}
-    private static I() {}    
+    private static I() {}
 }
             `,
             parser: "typescript-eslint-parser",
@@ -1675,7 +1753,7 @@ class Foo {
     private L() {}
     public static G() {}
     protected static H() {}
-    private static I() {}    
+    private static I() {}
 }
             `,
             parser: "typescript-eslint-parser",
@@ -1728,7 +1806,7 @@ class Foo {
     private static I() {}
     public J() {}
     protected K() {}
-    private L() {}    
+    private L() {}
 }
             `,
             options: [{ default: ["field", "method"] }],
@@ -1780,7 +1858,7 @@ class Foo {
     protected K() {}
     private L() {}
     public static A: string;
-    constructor() {}    
+    constructor() {}
     private static C: string = "";
     public D: string = "";
     protected E: string = "";
@@ -1888,8 +1966,8 @@ class Foo {
     public static G() {}
     protected static H() {}
     private static I() {}
-    protected K() {}    
-    constructor() {}    
+    protected K() {}
+    constructor() {}
     public D: string = "";
     private static C: string = "";
     public static A: string;
@@ -1925,16 +2003,16 @@ class Foo {
     public static G() {}
     private static I() {}
     public J() {}
-    protected static H() {}    
+    protected static H() {}
     private L() {}
     protected K() {}
     public D: string = "";
-    constructor() {}        
+    constructor() {}
     public static A: string;
     protected static B: string = "";
     protected E: string = "";
     private static C: string = "";
-    private F: string = "";    
+    private F: string = "";
 }
             `,
             options: [
@@ -1998,10 +2076,10 @@ class Foo {
     public J() {}
     private static I() {}
     public static G() {}
-    protected static H() {}    
+    protected static H() {}
     protected K() {}
     private L() {}
-    constructor() {}    
+    constructor() {}
     public static A: string;
     private F: string = "";
     protected static B: string = "";
@@ -2042,7 +2120,7 @@ class Foo {
 class Foo {
     private static I() {}
     protected static H() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     public static G() {}
     public J() {}
     protected K() {}
@@ -2072,7 +2150,7 @@ class Foo {
     private static I() {}
     protected static H() {}
     public static G() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     public J() {}
     protected K() {}
     private static C: string = "";
@@ -2081,7 +2159,7 @@ class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-    
+
 }
             `,
             options: [{ default: ["public-instance-method", "protected-static-field"] }],
@@ -2109,7 +2187,7 @@ const foo = class Foo {
     private L() {}
     public static G() {}
     protected static H() {}
-    private static I() {}    
+    private static I() {}
 }
             `,
             parser: "typescript-eslint-parser",
@@ -2146,7 +2224,7 @@ const foo = class {
     private L() {}
     public static G() {}
     protected static H() {}
-    private static I() {}    
+    private static I() {}
 }
             `,
             parser: "typescript-eslint-parser",
@@ -2199,7 +2277,7 @@ const foo = class {
     private static I() {}
     public J() {}
     protected K() {}
-    private L() {}    
+    private L() {}
 }
             `,
             options: [{ default: ["field", "method"] }],
@@ -2251,7 +2329,7 @@ const foo = class {
     protected K() {}
     private L() {}
     public static A: string;
-    constructor() {}    
+    constructor() {}
     private static C: string = "";
     public D: string = "";
     protected E: string = "";
@@ -2359,8 +2437,8 @@ const foo = class {
     public static G() {}
     protected static H() {}
     private static I() {}
-    protected K() {}    
-    constructor() {}    
+    protected K() {}
+    constructor() {}
     public D: string = "";
     private static C: string = "";
     public static A: string;
@@ -2396,16 +2474,16 @@ const foo = class {
     public static G() {}
     private static I() {}
     public J() {}
-    protected static H() {}    
+    protected static H() {}
     private L() {}
     protected K() {}
     public D: string = "";
-    constructor() {}        
+    constructor() {}
     public static A: string;
     protected static B: string = "";
     protected E: string = "";
     private static C: string = "";
-    private F: string = "";    
+    private F: string = "";
 }
             `,
             options: [
@@ -2469,10 +2547,10 @@ const foo = class {
     public J() {}
     private static I() {}
     public static G() {}
-    protected static H() {}    
+    protected static H() {}
     protected K() {}
     private L() {}
-    constructor() {}    
+    constructor() {}
     public static A: string;
     private F: string = "";
     protected static B: string = "";
@@ -2513,7 +2591,7 @@ const foo = class {
 const foo = class {
     private static I() {}
     protected static H() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     public static G() {}
     public J() {}
     protected K() {}
@@ -2524,7 +2602,7 @@ const foo = class {
     public static A: string;
     public D: string = "";
     constructor() {}
-    
+
 }
             `,
             options: [{ classExpressions: ["private-instance-method", "protected-static-field"] }],
@@ -2544,7 +2622,7 @@ const foo = class {
     private static I() {}
     protected static H() {}
     public static G() {}
-    protected static B: string = "";    
+    protected static B: string = "";
     public J() {}
     protected K() {}
     private static C: string = "";
@@ -2553,7 +2631,7 @@ const foo = class {
     public static A: string;
     public D: string = "";
     constructor() {}
-    
+
 }
             `,
             options: [{ default: ["public-instance-method", "protected-static-field"] }],
@@ -2562,6 +2640,148 @@ const foo = class {
                 {
                     message: "Member J should be declared before all protected static field definitions.",
                     line: 8,
+                    column: 5
+                }
+            ]
+        },
+
+
+
+
+
+        {
+            code: `
+class Foo {
+    K = () => {}
+    A: string;
+    constructor () {}
+    J() {}
+}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Member A should be declared before all public instance method definitions.",
+                    line: 4,
+                    column: 5
+                },
+                {
+                    message: "Member constructor should be declared before all public instance method definitions.",
+                    line: 5,
+                    column: 5
+                }
+            ]
+        },
+        {
+            code: `
+class Foo {
+    J() {}
+    constructor () {}
+    K = () => {}
+    A: string;
+}
+            `,
+            options: [{ default: ["method", "constructor", "field"] }],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Member K should be declared before all constructor definitions.",
+                    line: 5,
+                    column: 5
+                }
+            ]
+        },
+        {
+            code: `
+class Foo {
+    J() {}
+    constructor () {}
+    K = () => {}
+    L: () => {}
+    A: string;
+}
+            `,
+            options: [{ default: ["method", "constructor", "field"] }],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Member K should be declared before all constructor definitions.",
+                    line: 5,
+                    column: 5
+                },
+                {
+                    message: "Member L should be declared before all constructor definitions.",
+                    line: 6,
+                    column: 5
+                }
+            ]
+        },
+        {
+            code: `
+interface Foo {
+    K: () => {}
+    A: string;
+    J();
+}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Member A should be declared before all method definitions.",
+                    line: 4,
+                    column: 5
+                }
+            ]
+        },
+        {
+            code: `
+interface Foo {
+    J();
+    A: string;
+    K: () => {}
+}
+            `,
+            options: [{ default: ["method", "constructor", "field"] }],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Member K should be declared before all field definitions.",
+                    line: 5,
+                    column: 5
+                }
+            ]
+        },
+        {
+            code: `
+type Foo = {
+    K: () => {}
+    A: string;
+    J();
+}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Member A should be declared before all method definitions.",
+                    line: 4,
+                    column: 5
+                }
+            ]
+        },
+        {
+            code: `
+type Foo = {
+    J();
+    A: string;
+    K: () => {}
+}
+            `,
+            options: [{ default: ["method", "constructor", "field"] }],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Member K should be declared before all field definitions.",
+                    line: 5,
                     column: 5
                 }
             ]
