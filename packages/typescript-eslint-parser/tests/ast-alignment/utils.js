@@ -34,6 +34,7 @@ function omitDeep(obj, keysToOmit) {
         }
         return false;
     }
+
     for (const key in obj) {
         if (!obj.hasOwnProperty(key)) {
             continue;
@@ -42,19 +43,26 @@ function omitDeep(obj, keysToOmit) {
         if (isPlainObject(val)) {
             if (shouldOmit(key, val)) {
                 delete obj[key];
-                break;
+                // re-run with the same arguments
+                // in case the object has multiple keys to omit
+                return omitDeep(obj, keysToOmit);
             }
             omitDeep(val, keysToOmit);
         } else if (Array.isArray(val)) {
             if (shouldOmit(key, val)) {
                 delete obj[key];
-                break;
+                // re-run with the same arguments
+                // in case the object has multiple keys to omit
+                return omitDeep(obj, keysToOmit);
             }
             for (const i of val) {
                 omitDeep(i, keysToOmit);
             }
         } else if (shouldOmit(key, val)) {
             delete obj[key];
+            // re-run with the same arguments
+            // in case the object has multiple keys to omit
+            return omitDeep(obj, keysToOmit);
         }
     }
     return obj;
