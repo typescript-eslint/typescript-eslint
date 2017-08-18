@@ -31,8 +31,9 @@ module.exports = {
          */
         function getMemberName(member) {
             switch (member.type) {
+                case "ExportDefaultDeclaration":
                 case "ExportNamedDeclaration": {
-                    return member.declaration.id.name;
+                    return getMemberName(member.declaration);
                 }
                 case "DeclareFunction":
                 case "FunctionDeclaration":
@@ -45,6 +46,9 @@ module.exports = {
                 }
                 case "TSCallSignature": {
                     return "call";
+                }
+                case "TSConstructSignature": {
+                    return "new";
                 }
                 case "MethodDefinition": {
                     return member.key.name || member.key.value;
@@ -65,11 +69,14 @@ module.exports = {
             const members = node.body || node.members;
 
             if (members) {
+                let name;
+                let index;
+                let lastName;
                 const seen = [];
-                let index, name, lastName;
 
                 members.forEach(member => {
                     name = getMemberName(member);
+
                     index = seen.indexOf(name);
                     if (index > -1 && lastName !== name) {
                         context.report({
