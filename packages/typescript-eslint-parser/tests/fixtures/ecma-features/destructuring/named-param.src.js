@@ -1,1 +1,1 @@
-({ responseText: text }) = res;
+({ responseText: text } = res);

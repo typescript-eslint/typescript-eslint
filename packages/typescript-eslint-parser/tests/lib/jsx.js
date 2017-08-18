@@ -13,7 +13,8 @@
 
 const path = require("path"),
     shelljs = require("shelljs"),
-    testUtils = require("../../tools/test-utils");
+    testUtils = require("../../tools/test-utils"),
+    filesWithKnownIssues = require("../jsx-known-issues");
 
 //------------------------------------------------------------------------------
 // Setup
@@ -21,16 +22,9 @@ const path = require("path"),
 
 const JSX_FIXTURES_DIR = "./tests/fixtures/jsx";
 
-const filesWithOutsandingTSIssues = [
-    "jsx/embedded-tags", // https://github.com/Microsoft/TypeScript/issues/7410
-    "jsx/namespaced-attribute-and-value-inserted", // https://github.com/Microsoft/TypeScript/issues/7411
-    "jsx/namespaced-name-and-attribute", // https://github.com/Microsoft/TypeScript/issues/7411
-    "jsx/invalid-namespace-value-with-dots" // https://github.com/Microsoft/TypeScript/issues/7411
-];
-
 const jsxTestFiles = shelljs.find(JSX_FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.js") > -1)
-    .filter(filename => filesWithOutsandingTSIssues.every(fileName => filename.indexOf(fileName) === -1))
+    .filter(filename => filesWithKnownIssues.every(fileName => filename.indexOf(fileName) === -1))
     // strip off ".src.js"
     .map(filename => filename.substring(JSX_FIXTURES_DIR.length - 1, filename.length - 7));
 

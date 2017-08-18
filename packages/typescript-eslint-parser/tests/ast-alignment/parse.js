@@ -13,9 +13,10 @@ function createError(message, line, column) { // eslint-disable-line
     return error;
 }
 
-function parseWithBabylonPluginTypescript(text) { // eslint-disable-line
+function parseWithBabylonPluginTypescript(text, parserOptions) { // eslint-disable-line
+    parserOptions = parserOptions || {};
     const babylon = require("babylon");
-    return babylon.parse(text, {
+    return babylon.parse(text, Object.assign({
         sourceType: "script",
         allowImportExportEverywhere: true,
         allowReturnOutsideFunction: true,
@@ -35,13 +36,14 @@ function parseWithBabylonPluginTypescript(text) { // eslint-disable-line
             "numericSeparator",
             "estree"
         ]
-    });
+    }, parserOptions));
 }
 
-function parseWithTypeScriptESLintParser(text) { // eslint-disable-line
+function parseWithTypeScriptESLintParser(text, parserOptions) { // eslint-disable-line
+    parserOptions = parserOptions || {};
     const parser = require("../../parser");
     try {
-        return parser.parse(text, {
+        return parser.parse(text, Object.assign({
             loc: true,
             range: true,
             tokens: false,
@@ -51,7 +53,7 @@ function parseWithTypeScriptESLintParser(text) { // eslint-disable-line
             ecmaFeatures: {
                 jsx: true
             }
-        });
+        }, parserOptions));
     } catch (e) {
         throw createError(
             e.message,
@@ -63,21 +65,26 @@ function parseWithTypeScriptESLintParser(text) { // eslint-disable-line
 
 module.exports = function parse(text, opts) {
 
-    let parseFunction;
-
-    switch (opts.parser) {
-        case "typescript-eslint-parser":
-            parseFunction = parseWithTypeScriptESLintParser;
-            break;
-        case "babylon-plugin-typescript":
-            parseFunction = parseWithBabylonPluginTypescript;
-            break;
-        default:
-            throw new Error("Please provide a valid parser: either \"typescript-eslint-parser\" or \"babylon-plugin-typescript\"");
-    }
+    /**
+     * Always return a consistent interface, there will be times when we expect both
+     * parsers to fail to parse the invalid source.
+     */
+    const result = {
+        parseError: null,
+        ast: null
+    };
 
     try {
-        return parseUtils.normalizeNodeTypes(parseFunction(text));
+        switch (opts.parser) {
+            case "typescript-eslint-parser":
+                result.ast = parseUtils.normalizeNodeTypes(parseWithTypeScriptESLintParser(text, opts.typeScriptESLintParserOptions));
+                break;
+            case "babylon-plugin-typescript":
+                result.ast = parseUtils.normalizeNodeTypes(parseWithBabylonPluginTypescript(text, opts.babylonParserOptions));
+                break;
+            default:
+                throw new Error("Please provide a valid parser: either \"typescript-eslint-parser\" or \"babylon-plugin-typescript\"");
+        }
     } catch (error) {
         const loc = error.loc;
         if (loc) {
@@ -86,7 +93,9 @@ module.exports = function parse(text, opts) {
             });
             error.message += `\n${error.codeFrame}`;
         }
-        throw error;
+        result.parseError = error;
     }
+
+    return result;
 
 };
