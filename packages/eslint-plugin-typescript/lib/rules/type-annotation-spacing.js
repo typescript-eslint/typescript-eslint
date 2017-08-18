@@ -9,6 +9,15 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const definition = {
+    type: "object",
+    properties: {
+        before: { type: "boolean" },
+        after: { type: "boolean" }
+    },
+    additionalProperties: false
+};
+
 module.exports = {
     meta: {
         docs: {
@@ -21,9 +30,16 @@ module.exports = {
                 type: "object",
                 properties: {
                     before: { type: "boolean" },
-                    after: { type: "boolean" }
-                },
-                additionalProperties: false
+                    after: { type: "boolean" },
+                    overrides: {
+                        type: "object",
+                        properties: {
+                            colon: definition,
+                            arrow: definition
+                        },
+                        additionalProperties: false
+                    }
+                }
             }
         ]
     },
@@ -31,10 +47,12 @@ module.exports = {
     create(context) {
 
         const sourceCode = context.getSourceCode();
-
         const options = context.options[0] || {};
-        const before = typeof options.before === "boolean" ? options.before : false;
-        const after = typeof options.after === "boolean" ? options.after : true;
+
+        const overrides = options.overrides || {};
+
+        const colonOptions = Object.assign({}, { before: false, after: true }, options, overrides.colon);
+        const arrowOptions = Object.assign({}, { before: true, after: true }, options, overrides.arrow);
 
         //----------------------------------------------------------------------
         // Helpers
@@ -49,64 +67,48 @@ module.exports = {
          */
         function checkTypeAnnotationSpacing(typeAnnotation) {
             const nextToken = typeAnnotation.typeAnnotation || typeAnnotation;
-            const colonToken = sourceCode.getTokenBefore(nextToken);
-            const previousToken = sourceCode.getTokenBefore(colonToken);
+            const punctuatorToken = sourceCode.getTokenBefore(nextToken);
+            const previousToken = sourceCode.getTokenBefore(punctuatorToken);
 
-            const previousDelta = colonToken.range[0] - previousToken.range[1];
-            const nextDelta = nextToken.range[0] - colonToken.range[1];
+            const previousDelta = punctuatorToken.range[0] - previousToken.range[1];
+            const nextDelta = nextToken.range[0] - punctuatorToken.range[1];
+
+            const type = punctuatorToken.value;
+            const before = type === ":" ? colonOptions.before : arrowOptions.before;
+            const after = type === ":" ? colonOptions.after : arrowOptions.after;
 
             if (after && nextDelta === 0) {
                 context.report({
-                    node: colonToken,
-                    message: "Expected a space after the colon.",
+                    node: punctuatorToken,
+                    message: `Expected a space after the '${type}'`,
                     fix(fixer) {
-                        return fixer.insertTextAfter(colonToken, " ");
+                        return fixer.insertTextAfter(punctuatorToken, " ");
                     }
                 });
             } else if (!after && nextDelta > 0) {
                 context.report({
-                    node: colonToken,
-                    message: "Unexpected space after the colon.",
+                    node: punctuatorToken,
+                    message: `Unexpected space after the '${type}'`,
                     fix(fixer) {
-                        return fixer.removeRange([colonToken.range[1], nextToken.range[0]]);
+                        return fixer.removeRange([punctuatorToken.range[1], nextToken.range[0]]);
                     }
                 });
             }
 
             if (before && previousDelta === 0) {
                 context.report({
-                    node: colonToken,
-                    loc: {
-                        start: {
-                            line: colonToken.loc.start.line,
-                            column: colonToken.loc.start.column - 1
-                        },
-                        end: {
-                            line: colonToken.loc.start.line,
-                            column: colonToken.loc.start.column
-                        }
-                    },
-                    message: "Expected a space before the colon.",
+                    node: punctuatorToken,
+                    message: `Expected a space before the '${type}'`,
                     fix(fixer) {
                         return fixer.insertTextAfter(previousToken, " ");
                     }
                 });
             } else if (!before && previousDelta > 0) {
                 context.report({
-                    node: colonToken,
-                    loc: {
-                        start: {
-                            line: colonToken.loc.start.line,
-                            column: colonToken.loc.start.column - 1
-                        },
-                        end: {
-                            line: colonToken.loc.start.line,
-                            column: colonToken.loc.start.column
-                        }
-                    },
-                    message: "Unexpected space before the colon.",
+                    node: punctuatorToken,
+                    message: `Unexpected space before the '${type}'`,
                     fix(fixer) {
-                        return fixer.removeRange([previousToken.range[1], colonToken.range[0]]);
+                        return fixer.removeRange([previousToken.range[1], punctuatorToken.range[0]]);
                     }
                 });
             }
@@ -136,7 +138,9 @@ module.exports = {
             },
 
             TypeAnnotation(node) {
-                if (node.typeAnnotation) {
+                if (node.typeAnnotation &&
+                    node.typeAnnotation.type !== "TSFunctionType" &&
+                    node.parent.type !== "TSAsExpression") {
                     checkTypeAnnotationSpacing(node.typeAnnotation);
                 }
             },
