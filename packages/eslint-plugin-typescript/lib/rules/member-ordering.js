@@ -111,6 +111,7 @@ module.exports = {
 
         const options = context.options[0] || {};
 
+        const functionExpressions = ["FunctionExpression", "ArrowFunctionExpression"];
         const defaultOrder = [
             "public-static-field",
             "protected-static-field",
@@ -154,6 +155,29 @@ module.exports = {
         //----------------------------------------------------------------------
 
         /**
+         * Determines if `node` should be processed as a method instead of a field.
+         * @param {ASTNode} node the node to be inspected.
+         * @returns {boolean} `true` if node should be processed as a method; `false` for fields.
+         * @private
+         */
+        function shouldBeProcessedAsMethod(node) {
+
+            // check for bound methods in ClassProperty nodes.
+            if (node.value && functionExpressions.indexOf(node.value.type) > -1) {
+                return true;
+            }
+
+            // check for bound methods in TSPropertySignature nodes.
+            if (node.typeAnnotation &&
+                node.typeAnnotation.typeAnnotation &&
+                node.typeAnnotation.typeAnnotation.type === "TSFunctionType") {
+                return true;
+            }
+
+            return false;
+        }
+
+        /**
          * Gets the node type.
          * @param {ASTNode} node the node to be evaluated.
          * @returns {string|null} the type of the node.
@@ -169,7 +193,7 @@ module.exports = {
                     return "constructor";
                 case "ClassProperty":
                 case "TSPropertySignature":
-                    return "field";
+                    return shouldBeProcessedAsMethod(node) ? "method" : "field";
                 default:
                     return null;
             }
