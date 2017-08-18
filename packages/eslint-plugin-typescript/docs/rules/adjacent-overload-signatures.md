@@ -1,6 +1,6 @@
 # Enforces member overloads to be consecutive.
 
-Grouping overloaded members (methods and functions) together can improve readability of the code.
+Grouping overloaded members together can improve readability of the code.
 
 ## Rule Details
 
@@ -36,6 +36,11 @@ class Foo {
   bar(): void {}
   foo(sn: string | number): void {}
 }
+
+export function foo(s: string): void;
+export function foo(n: number): void;
+export function bar(): void;
+export function foo(sn: string | number): void;
 ```
 
 The following patterns are not warnings:
@@ -45,29 +50,34 @@ declare namespace Foo {
     export function foo(s: string): void;
     export function foo(n: number): void;
     export function foo(sn: string | number): void;
-    export function bar(): void;    
+    export function bar(): void;
 }
 
 type Foo = {
   foo(s: string): void;
-  foo(n: number): void;  
+  foo(n: number): void;
   foo(sn: string | number): void;
   bar(): void;
 }
 
 interface Foo {
   foo(s: string): void;
-  foo(n: number): void;  
+  foo(n: number): void;
   foo(sn: string | number): void;
   bar(): void;
 }
 
 class Foo {
   foo(s: string): void;
-  foo(n: number): void;  
+  foo(n: number): void;
   foo(sn: string | number): void {}
   bar(): void {}
 }
+
+export function bar(): void;
+export function foo(s: string): void;
+export function foo(n: number): void;
+export function foo(sn: string | number): void;
 ```
 
 ## When Not To Use It

@@ -22,8 +22,69 @@ ruleTester.run("adjacent-overload-signatures", rule, {
     valid: [
         {
             code: `
-function foo(s: string) {}
-function foo(n: number) {}
+export const foo = "a", bar = "b";
+export interface Foo {}
+export class Foo {}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+export interface Foo {}
+export const foo = "a", bar = "b";
+export class Foo {}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+const foo = "a", bar = "b";
+interface Foo {}
+class Foo {}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+interface Foo {}
+const foo = "a", bar = "b";
+class Foo {}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+export class Foo {}
+export class Bar {}
+
+export type FooBar = Foo | Bar;
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+export interface Foo {}
+export class Foo {}
+export class Bar {}
+
+export type FooBar = Foo | Bar;
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+export function foo(s: string);
+export function foo(n: number);
+export function foo(sn: string | number) {}
+export function bar(): void {}
+export function baz(): void {}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+function foo(s: string);
+function foo(n: number);
 function foo(sn: string | number) {}
 function bar(): void {}
 function baz(): void {}
@@ -140,6 +201,17 @@ interface Foo {
         },
         {
             code: `
+interface Foo {
+    new(s: string);
+    new(n: number);
+    new(sn: string | number);
+    foo(): void;
+}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
 class Foo {
     constructor(s: string);
     constructor(n: number);
@@ -191,10 +263,61 @@ class Foo {
     invalid: [
         {
             code: `
-function foo(s: string) {}
-function foo(n: number) {}
+export function foo(s: string);
+export function foo(n: number);
+export function bar(): void {}
+export function baz(): void {}
+export function foo(sn: string | number) {}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "All 'foo' signatures should be adjacent",
+                    line: 6,
+                    column: 1
+                }
+            ]
+        },
+        {
+            code: `
+export function foo(s: string);
+export function foo(n: number);
+export type bar = number;
+export type baz = number | string;
+export function foo(sn: string | number) {}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "All 'foo' signatures should be adjacent",
+                    line: 6,
+                    column: 1
+                }
+            ]
+        },
+        {
+            code: `
+function foo(s: string);
+function foo(n: number);
 function bar(): void {}
 function baz(): void {}
+function foo(sn: string | number) {}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "All 'foo' signatures should be adjacent",
+                    line: 6,
+                    column: 1
+                }
+            ]
+        },
+        {
+            code: `
+function foo(s: string);
+function foo(n: number);
+type bar = number;
+type baz = number | string;
 function foo(sn: string | number) {}
             `,
             parser: "typescript-eslint-parser",
@@ -220,6 +343,43 @@ function foo(sn: string | number) {}
                     message: "All 'foo' signatures should be adjacent",
                     line: 6,
                     column: 1
+                }
+            ]
+        },
+        {
+            code: `
+function foo(s: string) {}
+function foo(n: number) {}
+class Bar {}
+function foo(sn: string | number) {}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "All 'foo' signatures should be adjacent",
+                    line: 5,
+                    column: 1
+                }
+            ]
+        },
+        {
+            code: `
+function foo(s: string) {}
+function foo(n: number) {}
+function foo(sn: string | number) {}
+class Bar {
+    foo(s: string);
+    foo(n: number);
+    name: string;
+    foo(sn: string | number) { }
+}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "All 'foo' signatures should be adjacent",
+                    line: 9,
+                    column: 5
                 }
             ]
         },
@@ -263,7 +423,7 @@ declare module "Foo" {
     export function foo(s: string): void;
     export function foo(n: number): void;
     export function bar(): void;
-    export function baz(): void;    
+    export function baz(): void;
     export function foo(sn: string | number): void;
 }
             `,
@@ -300,7 +460,7 @@ declare module "Foo" {
         {
             code: `
 declare namespace Foo {
-    export function foo(s: string): void;    
+    export function foo(s: string): void;
     export function foo(n: number): void;
     export function bar(): void;
     export function baz(): void;
@@ -510,6 +670,49 @@ interface Foo {
                     message: "All 'baz' signatures should be adjacent",
                     line: 8,
                     column: 9
+                }
+            ]
+        },
+        {
+            code: `
+interface Foo {
+    new(s: string);
+    new(n: number);
+    foo(): void;
+    bar(): void;
+    new(sn: string | number);
+}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "All 'new' signatures should be adjacent",
+                    line: 7,
+                    column: 5
+                }
+            ]
+        },
+        {
+            code: `
+interface Foo {
+    new(s: string);
+    foo(): void;
+    new(n: number);
+    bar(): void;
+    new(sn: string | number);
+}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "All 'new' signatures should be adjacent",
+                    line: 5,
+                    column: 5
+                },
+                {
+                    message: "All 'new' signatures should be adjacent",
+                    line: 7,
+                    column: 5
                 }
             ]
         },
