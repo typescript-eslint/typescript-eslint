@@ -1,3 +1,15 @@
+v6.0.0 - August 19, 2017
+
+* 32c0cc8 Breaking: Explicitly handle TSEnumDeclaration (fixes #345) (#364) (James Henry)
+* 5f741a9 Fix: Allow other orderings of implements/extends clauses (fixes #361) (#363) (Jed Fox)
+* f5bd145 Chore: Breakout and label TS-specific AST comparison tests (#360) (James Henry)
+* f6e56b3 Chore: Build out AST comparison tests and categorize issues (#358) (James Henry)
+* ab4e05e Breaking: Only add .implements/.accessibility/.decorators if truthy (#354) (James Henry)
+* 275897b Fix: Location data for methods and constructors (#357) (James Henry)
+* 5fce5e7 Fix: Exp. operator assignment is AssignmentExpression (fixes #355) (#356) (James Henry)
+* 67971de Fix: Include newlines at the end of source in AST (fixes #352) (#353) (James Henry)
+* 8406209 Fix: Remove start and end values from JSX tokens (fixes #341) (#351) (James Henry)
+
 v5.0.1 - August 9, 2017
 
 * 81e20c0 Fix: Only warn about an unsupported TypeScript version once (#347) (Jed Fox)
