@@ -1994,6 +1994,36 @@ module.exports = function convert(config) {
             });
             break;
 
+        case SyntaxKind.EnumDeclaration: {
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSEnumDeclaration,
+                id: convertChild(node.name),
+                members: node.members.map(convertChild)
+            });
+            // check for exports
+            result = nodeUtils.fixExports(node, result, ast);
+            /**
+             * Semantically, decorators are not allowed on enum declarations,
+             * but the TypeScript compiler will parse them and produce a valid AST,
+             * so we handle them here too.
+             */
+            if (node.decorators) {
+                result.decorators = convertDecorators(node.decorators);
+            }
+            break;
+        }
+
+        case SyntaxKind.EnumMember: {
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSEnumMember,
+                id: convertChild(node.name)
+            });
+            if (node.initializer) {
+                result.initializer = convertChild(node.initializer);
+            }
+            break;
+        }
+
         default:
             deeplyCopy();
     }

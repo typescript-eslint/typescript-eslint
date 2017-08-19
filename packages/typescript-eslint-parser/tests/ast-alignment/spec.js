@@ -421,7 +421,12 @@ const fixturePatternsToTest = [
     "typescript/basics/async-function-expression.src.ts",
     "typescript/basics/async-function-with-var-declaration.src.ts",
     "typescript/basics/function-with-await.src.ts",
-    "typescript/errorRecovery/class-extends-empty-implements.src.ts"
+    "typescript/errorRecovery/class-extends-empty-implements.src.ts",
+
+    {
+        pattern: "typescript/basics/export-named-enum.src.ts",
+        config: { babylonParserOptions: { sourceType: "module" } }
+    }
 
     /**
      * TypeScript-specific tests taken from "errorRecovery". Babylon is not being as forgiving as the TypeScript compiler here.

@@ -109,6 +109,7 @@ module.exports = {
     TSConstructSignature: "TSConstructSignature",
     TSDeclareKeyword: "TSDeclareKeyword",
     TSEnumDeclaration: "TSEnumDeclaration",
+    TSEnumMember: "TSEnumMember",
     TSExportAssignment: "TSExportAssigment",
     TSIndexSignature: "TSIndexSignature",
     TSInterfaceBody: "TSInterfaceBody",
