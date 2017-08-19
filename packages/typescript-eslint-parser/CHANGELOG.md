@@ -1,3 +1,7 @@
+v6.0.1 - August 19, 2017
+
+* 7bcc0d6 Fix: Ensure modifiers are applied to enums (fixes #365) (#366) (James Henry)
+
 v6.0.0 - August 19, 2017
 
 * 32c0cc8 Breaking: Explicitly handle TSEnumDeclaration (fixes #345) (#364) (James Henry)
