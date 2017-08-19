@@ -331,6 +331,52 @@ module.exports = function convert(config) {
     }
 
     /**
+     * Applies the given TS modifiers to the given result object.
+     * @param {TSNode[]} modifiers original TSNodes from the node.modifiers array
+     * @returns {void} (the current result object will be mutated)
+     */
+    function applyModifiersToResult(modifiers) {
+        if (!modifiers || !modifiers.length) {
+            return;
+        }
+        /**
+         * Some modifiers are explicitly handled by applying them as
+         * boolean values on the result node. As well as adding them
+         * to the result, we remove them from the array, so that they
+         * are not handled twice.
+         */
+        const handledModifierIndices = {};
+        for (let i = 0; i < modifiers.length; i++) {
+            const modifier = modifiers[i];
+            switch (modifier.kind) {
+                /**
+                 * Ignore ExportKeyword and DefaultKeyword, they are handled
+                 * via the fixExports utility function
+                 */
+                case SyntaxKind.ExportKeyword:
+                case SyntaxKind.DefaultKeyword:
+                    handledModifierIndices[i] = true;
+                    break;
+                case SyntaxKind.ConstKeyword:
+                    result.const = true;
+                    handledModifierIndices[i] = true;
+                    break;
+                default:
+            }
+        }
+        /**
+         * If there are still valid modifiers available which have
+         * not been explicitly handled above, we just convert and
+         * add the modifiers array to the result node.
+         */
+        const remainingModifiers = modifiers.filter((_, i) => !handledModifierIndices[i]);
+        if (!remainingModifiers || !remainingModifiers.length) {
+            return;
+        }
+        result.modifiers = remainingModifiers.map(convertChild);
+    }
+
+    /**
      * The core of the conversion logic:
      * Identify and convert each relevant TypeScript SyntaxKind
      */
@@ -2000,7 +2046,9 @@ module.exports = function convert(config) {
                 id: convertChild(node.name),
                 members: node.members.map(convertChild)
             });
-            // check for exports
+            // apply modifiers first...
+            applyModifiersToResult(node.modifiers);
+            // ...then check for exports
             result = nodeUtils.fixExports(node, result, ast);
             /**
              * Semantically, decorators are not allowed on enum declarations,

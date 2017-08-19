@@ -19403,6 +19403,338 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/const-enum.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "const": true,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+          },
+        },
+        "name": "Foo",
+        "range": Array [
+          11,
+          14,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "members": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "name": "foo",
+            "range": Array [
+              21,
+              24,
+            ],
+            "type": "Identifier",
+          },
+          "initializer": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 10,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              27,
+              28,
+            ],
+            "raw": "1",
+            "type": "Literal",
+            "value": 1,
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 11,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            21,
+            28,
+          ],
+          "type": "TSEnumMember",
+        },
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 3,
+              },
+            },
+            "name": "bar",
+            "range": Array [
+              34,
+              37,
+            ],
+            "type": "Identifier",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 7,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 3,
+            },
+          },
+          "range": Array [
+            34,
+            37,
+          ],
+          "type": "TSEnumMember",
+        },
+      ],
+      "range": Array [
+        0,
+        39,
+      ],
+      "type": "TSEnumDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 4,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    39,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "Keyword",
+      "value": "const",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        10,
+      ],
+      "type": "Keyword",
+      "value": "enum",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        14,
+      ],
+      "type": "Identifier",
+      "value": "Foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        15,
+        16,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        21,
+        24,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        25,
+        26,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        27,
+        28,
+      ],
+      "type": "Numeric",
+      "value": "1",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        28,
+        29,
+      ],
+      "type": "Punctuator",
+      "value": ",",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        34,
+        37,
+      ],
+      "type": "Identifier",
+      "value": "bar",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        38,
+        39,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`typescript fixtures/basics/declare-class-with-optional-method.src 1`] = `
 Object {
   "body": Array [
@@ -53974,6 +54306,423 @@ Object {
       "range": Array [
         13,
         14,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`typescript fixtures/errorRecovery/enum-with-keywords.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declaration": Object {
+        "id": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 69,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 68,
+              "line": 1,
+            },
+          },
+          "name": "X",
+          "range": Array [
+            68,
+            69,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 72,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 63,
+            "line": 1,
+          },
+        },
+        "members": Array [],
+        "modifiers": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 7,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              7,
+              14,
+            ],
+            "type": "TSPrivateKeyword",
+          },
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 21,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 15,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              15,
+              21,
+            ],
+            "type": "TSPublicKeyword",
+          },
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 31,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 22,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              22,
+              31,
+            ],
+            "type": "TSProtectedKeyword",
+          },
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 38,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 32,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              32,
+              38,
+            ],
+            "type": "TSStaticKeyword",
+          },
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 47,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 39,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              39,
+              47,
+            ],
+            "type": "TSReadonlyKeyword",
+          },
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 56,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 48,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              48,
+              56,
+            ],
+            "type": "TSAbstractKeyword",
+          },
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 62,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 57,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              57,
+              62,
+            ],
+            "type": "TSAsyncKeyword",
+          },
+        ],
+        "range": Array [
+          63,
+          72,
+        ],
+        "type": "TSEnumDeclaration",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 72,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        72,
+      ],
+      "source": null,
+      "specifiers": Array [],
+      "type": "ExportNamedDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 72,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    72,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "export",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        14,
+      ],
+      "type": "Keyword",
+      "value": "private",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 21,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        15,
+        21,
+      ],
+      "type": "Keyword",
+      "value": "public",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 22,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        22,
+        31,
+      ],
+      "type": "Keyword",
+      "value": "protected",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 38,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 32,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        32,
+        38,
+      ],
+      "type": "Keyword",
+      "value": "static",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 47,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 39,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        39,
+        47,
+      ],
+      "type": "Identifier",
+      "value": "readonly",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 56,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 48,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        48,
+        56,
+      ],
+      "type": "Identifier",
+      "value": "abstract",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 62,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 57,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        57,
+        62,
+      ],
+      "type": "Identifier",
+      "value": "async",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 67,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 63,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        63,
+        67,
+      ],
+      "type": "Keyword",
+      "value": "enum",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 69,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 68,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        68,
+        69,
+      ],
+      "type": "Identifier",
+      "value": "X",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 71,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 70,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        70,
+        71,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 72,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 71,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        71,
+        72,
       ],
       "type": "Punctuator",
       "value": "}",
