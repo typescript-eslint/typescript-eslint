@@ -422,6 +422,7 @@ const fixturePatternsToTest = [
     "typescript/basics/async-function-with-var-declaration.src.ts",
     "typescript/basics/function-with-await.src.ts",
     "typescript/errorRecovery/class-extends-empty-implements.src.ts",
+    "typescript/basics/const-enum.src.ts",
 
     {
         pattern: "typescript/basics/export-named-enum.src.ts",
@@ -435,6 +436,7 @@ const fixturePatternsToTest = [
     // "typescript/errorRecovery/class-empty-extends.src.ts", // babylon parse errors
     // "typescript/errorRecovery/decorator-on-enum-declaration.src.ts", // babylon parse errors
     // "typescript/errorRecovery/interface-property-modifiers.src.ts", // babylon parse errors
+    // "typescript/errorRecovery/enum-with-keywords.src.ts" // babylon parse errors
 
     /**
      * Other babylon parse errors. TODO: Need to coordinate with TS Team.
