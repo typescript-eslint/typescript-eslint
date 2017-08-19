@@ -1277,19 +1277,13 @@ module.exports = function convert(config) {
             }
 
             const openBrace = nodeUtils.findNextToken(lastClassToken, ast);
-            const hasExtends = (heritageClauses.length && node.heritageClauses[0].token === SyntaxKind.ExtendsKeyword);
+            const superClass = heritageClauses.find(clause => clause.token === SyntaxKind.ExtendsKeyword);
 
-            let hasImplements = false;
-            let superClass;
-
-            if (hasExtends && heritageClauses[0].types.length > 0) {
-                superClass = heritageClauses.shift();
-                if (superClass.types[0] && superClass.types[0].typeArguments) {
-                    result.superTypeParameters = convertTypeArgumentsToTypeParameters(superClass.types[0].typeArguments);
-                }
+            if (superClass && superClass.types[0] && superClass.types[0].typeArguments) {
+                result.superTypeParameters = convertTypeArgumentsToTypeParameters(superClass.types[0].typeArguments);
             }
 
-            hasImplements = heritageClauses.length > 0;
+            const implementsClause = heritageClauses.find(clause => clause.token === SyntaxKind.ImplementsKeyword);
 
             Object.assign(result, {
                 type: classNodeType,
@@ -1302,11 +1296,11 @@ module.exports = function convert(config) {
                     range: [openBrace.getStart(), result.range[1]],
                     loc: nodeUtils.getLocFor(openBrace.getStart(), node.end, ast)
                 },
-                superClass: (superClass ? convertChild(superClass.types[0].expression) : null)
+                superClass: (superClass && superClass.types[0] ? convertChild(superClass.types[0].expression) : null)
             });
 
-            if (hasImplements) {
-                result.implements = heritageClauses[0].types.map(convertClassImplements);
+            if (implementsClause) {
+                result.implements = implementsClause.types.map(convertClassImplements);
             }
 
             if (node.decorators) {
