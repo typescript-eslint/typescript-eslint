@@ -20,12 +20,12 @@
     "requireindex": "~1.1.0"
   },
   "devDependencies": {
-    "eslint": "^4.1.1",
+    "eslint": "^4.5.0",
     "eslint-config-eslint": "^4.0.0",
-    "eslint-plugin-node": "^5.1.0",
-    "mocha": "^3.4.2",
-    "typescript": "~2.3.0",
-    "typescript-eslint-parser": "^4.0.0"
+    "eslint-plugin-node": "^5.1.1",
+    "mocha": "^3.5.0",
+    "typescript": "~2.4.2",
+    "typescript-eslint-parser": "^6.0.1"
   },
   "engines": {
     "node": ">=4"
