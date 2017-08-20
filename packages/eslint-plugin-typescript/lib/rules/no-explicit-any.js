@@ -42,10 +42,14 @@ module.exports = {
                 node.types.forEach(type => {
                     checkGenericNodeForAnnotation(type);
                 });
-            } else if (node.type === "TSTypeReference" && node.typeParameters) {
-                node.typeParameters.params.forEach(param => {
-                    checkGenericNodeForAnnotation(param);
-                });
+            } else if (node.type === "TSTypeReference") {
+                if (node.typeParameters) { // handles generics
+                    node.typeParameters.params.forEach(param => {
+                        checkGenericNodeForAnnotation(param);
+                    });
+                } else if (node.typeName) { // handles non generics
+                    checkGenericNodeForAnnotation(node.typeName);
+                }
             } else if (node.type === "GenericTypeAnnotation") {
                 if (node.typeParameters) {
                     node.typeParameters.params.forEach(param => {
