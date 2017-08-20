@@ -427,6 +427,10 @@ const fixturePatternsToTest = [
     {
         pattern: "typescript/basics/export-named-enum.src.ts",
         config: { babylonParserOptions: { sourceType: "module" } }
+    },
+    {
+        pattern: "typescript/basics/export-assignment.src.ts",
+        config: { babylonParserOptions: { sourceType: "module" } }
     }
 
     /**
@@ -488,7 +492,6 @@ const fixturePatternsToTest = [
     // "typescript/basics/class-with-type-parameter.src.ts",
     // "typescript/basics/declare-function.src.ts",
     // "typescript/basics/destructuring-assignment.src.ts",
-    // "typescript/basics/export-assignment.src.ts",
     // "typescript/basics/export-default-class-with-generic.src.ts",
     // "typescript/basics/export-default-class-with-multiple-generics.src.ts",
     // "typescript/basics/export-named-class-with-generic.src.ts",

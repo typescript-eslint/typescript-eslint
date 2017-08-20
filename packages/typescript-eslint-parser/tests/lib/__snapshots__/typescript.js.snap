@@ -20900,7 +20900,7 @@ Object {
         0,
         13,
       ],
-      "type": "TSExportAssigment",
+      "type": "TSExportAssignment",
     },
   ],
   "loc": Object {
