@@ -461,6 +461,7 @@ const fixturePatternsToTest = [
     // "typescript/basics/export-type-function-declaration.src.ts", // babylon parse errors
     // "typescript/basics/interface-with-all-property-types.src.ts", // babylon parse errors
     // "typescript/basics/interface-with-construct-signature-with-parameter-accessibility.src.ts", // babylon parse errors
+    // "typescript/namespaces-and-modules/nested-internal-module.src.ts", // babylon parse errors
 
     /**
      * typescript-eslint-parser erroring, but babylon not.

@@ -2096,10 +2096,13 @@ module.exports = function convert(config) {
                 type: AST_NODE_TYPES.TSModuleDeclaration,
                 id: convertChild(node.name)
             });
-            applyModifiersToResult(node.modifiers);
             if (node.body) {
                 result.body = convertChild(node.body);
             }
+            // apply modifiers first...
+            applyModifiersToResult(node.modifiers);
+            // ...then check for exports
+            result = nodeUtils.fixExports(node, result, ast);
             break;
         }
 
