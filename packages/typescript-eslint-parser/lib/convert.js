@@ -361,6 +361,10 @@ module.exports = function convert(config) {
                     result.const = true;
                     handledModifierIndices[i] = true;
                     break;
+                case SyntaxKind.DeclareKeyword:
+                    result.declare = true;
+                    handledModifierIndices[i] = true;
+                    break;
                 default:
             }
         }
@@ -2068,6 +2072,18 @@ module.exports = function convert(config) {
             });
             if (node.initializer) {
                 result.initializer = convertChild(node.initializer);
+            }
+            break;
+        }
+
+        case SyntaxKind.ModuleDeclaration: {
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSModuleDeclaration,
+                id: convertChild(node.name)
+            });
+            applyModifiersToResult(node.modifiers);
+            if (node.body) {
+                result.body = convertChild(node.body);
             }
             break;
         }

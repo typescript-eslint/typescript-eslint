@@ -60668,36 +60668,8 @@ Object {
         ],
         "type": "TSModuleBlock",
       },
-      "loc": Object {
-        "end": Object {
-          "column": 1,
-          "line": 3,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "modifiers": Array [
-        Object {
-          "loc": Object {
-            "end": Object {
-              "column": 7,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 0,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            0,
-            7,
-          ],
-          "type": "TSDeclareKeyword",
-        },
-      ],
-      "name": Object {
+      "declare": true,
+      "id": Object {
         "loc": Object {
           "end": Object {
             "column": 29,
@@ -60715,6 +60687,16 @@ Object {
         "raw": "\\"i-use-things\\"",
         "type": "Literal",
         "value": "i-use-things",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
       },
       "range": Array [
         0,
@@ -61165,36 +61147,8 @@ Object {
         ],
         "type": "TSModuleBlock",
       },
-      "loc": Object {
-        "end": Object {
-          "column": 1,
-          "line": 3,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "modifiers": Array [
-        Object {
-          "loc": Object {
-            "end": Object {
-              "column": 7,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 0,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            0,
-            7,
-          ],
-          "type": "TSDeclareKeyword",
-        },
-      ],
-      "name": Object {
+      "declare": true,
+      "id": Object {
         "loc": Object {
           "end": Object {
             "column": 20,
@@ -61211,6 +61165,16 @@ Object {
           20,
         ],
         "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
       },
       "range": Array [
         0,
@@ -61881,17 +61845,7 @@ Object {
         ],
         "type": "TSModuleBlock",
       },
-      "loc": Object {
-        "end": Object {
-          "column": 1,
-          "line": 6,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "name": Object {
+      "id": Object {
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -61909,6 +61863,16 @@ Object {
         "raw": "\\"foo\\"",
         "type": "Literal",
         "value": "foo",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
       },
       "range": Array [
         0,
@@ -62410,36 +62374,8 @@ exports[`typescript fixtures/namespaces-and-modules/shorthand-ambient-module-dec
 Object {
   "body": Array [
     Object {
-      "loc": Object {
-        "end": Object {
-          "column": 32,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "modifiers": Array [
-        Object {
-          "loc": Object {
-            "end": Object {
-              "column": 7,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 0,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            0,
-            7,
-          ],
-          "type": "TSDeclareKeyword",
-        },
-      ],
-      "name": Object {
+      "declare": true,
+      "id": Object {
         "loc": Object {
           "end": Object {
             "column": 31,
@@ -62457,6 +62393,16 @@ Object {
         "raw": "\\"hot-new-module\\"",
         "type": "Literal",
         "value": "hot-new-module",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 32,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
       },
       "range": Array [
         0,
