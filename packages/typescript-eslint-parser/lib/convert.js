@@ -110,18 +110,30 @@ module.exports = function convert(config) {
                 greaterThanToken.end
             ],
             loc: nodeUtils.getLocFor(firstTypeArgument.pos - 1, greaterThanToken.end, ast),
-            params: typeArguments.map(typeArgument => ({
-                type: AST_NODE_TYPES.TSTypeReference,
-                range: [
-                    typeArgument.getStart(),
-                    typeArgument.getEnd()
-                ],
-                loc: nodeUtils.getLoc(typeArgument, ast),
-                typeName: convertChild(typeArgument.typeName || typeArgument),
-                typeParameters: (typeArgument.typeArguments)
-                    ? convertTypeArgumentsToTypeParameters(typeArgument.typeArguments)
-                    : null
-            }))
+            params: typeArguments.map(typeArgument => {
+                if (nodeUtils.isTypeKeyword(typeArgument.kind)) {
+                    return {
+                        type: AST_NODE_TYPES[`TS${SyntaxKind[typeArgument.kind]}`],
+                        range: [
+                            typeArgument.getStart(),
+                            typeArgument.getEnd()
+                        ],
+                        loc: nodeUtils.getLoc(typeArgument, ast)
+                    };
+                }
+                return {
+                    type: AST_NODE_TYPES.TSTypeReference,
+                    range: [
+                        typeArgument.getStart(),
+                        typeArgument.getEnd()
+                    ],
+                    loc: nodeUtils.getLoc(typeArgument, ast),
+                    typeName: convertChild(typeArgument.typeName || typeArgument),
+                    typeParameters: (typeArgument.typeArguments)
+                        ? convertTypeArgumentsToTypeParameters(typeArgument.typeArguments)
+                        : undefined
+                };
+            })
         };
     }
 
@@ -794,9 +806,12 @@ module.exports = function convert(config) {
                 value: convertChild(node.initializer),
                 computed: nodeUtils.isComputedProperty(node.name),
                 static: nodeUtils.hasStaticModifierFlag(node),
-                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
-                typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null
+                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node)
             });
+
+            if (node.type) {
+                result.typeAnnotation = convertTypeAnnotation(node.type);
+            }
 
             if (node.decorators) {
                 result.decorators = convertDecorators(node.decorators);
