@@ -423,6 +423,9 @@ const fixturePatternsToTest = [
     "typescript/basics/function-with-await.src.ts",
     "typescript/errorRecovery/class-extends-empty-implements.src.ts",
     "typescript/basics/const-enum.src.ts",
+    "typescript/basics/class-with-readonly-property.src.ts",
+    "typescript/expressions/call-expression-type-arguments.src.ts",
+    "typescript/expressions/new-expression-type-arguments.src.ts",
 
     {
         pattern: "typescript/basics/export-named-enum.src.ts",
@@ -486,7 +489,6 @@ const fixturePatternsToTest = [
     // "typescript/basics/class-with-protected-parameter-properties.src.ts",
     // "typescript/basics/class-with-public-parameter-properties.src.ts",
     // "typescript/basics/class-with-readonly-parameter-properties.src.ts",
-    // "typescript/basics/class-with-readonly-property.src.ts",
     // "typescript/basics/class-with-type-parameter-default.src.ts",
     // "typescript/basics/class-with-type-parameter-underscore.src.ts",
     // "typescript/basics/class-with-type-parameter.src.ts",
@@ -544,8 +546,6 @@ const fixturePatternsToTest = [
     // "typescript/decorators/property-decorators/property-decorator-instance-member.src.ts",
     // "typescript/decorators/property-decorators/property-decorator-static-member.src.ts",
     // "typescript/errorRecovery/interface-empty-extends.src.ts",
-    // "typescript/expressions/call-expression-type-arguments.src.ts",
-    // "typescript/expressions/new-expression-type-arguments.src.ts",
     // "typescript/namespaces-and-modules/ambient-module-declaration-with-import.src.ts",
     // "typescript/namespaces-and-modules/declare-namespace-with-exported-function.src.ts",
     // "typescript/namespaces-and-modules/module-with-default-exports.src.ts",

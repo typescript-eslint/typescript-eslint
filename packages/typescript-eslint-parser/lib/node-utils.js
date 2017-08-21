@@ -183,7 +183,8 @@ module.exports = {
     convertToken,
     convertTokens,
     getNodeContainer,
-    isWithinTypeAnnotation
+    isWithinTypeAnnotation,
+    isTypeKeyword
 };
 /* eslint-enable no-use-before-define */
 
@@ -311,6 +312,27 @@ function isJSXToken(node) {
         node.kind >= SyntaxKind.JsxElement &&
         node.kind <= SyntaxKind.JsxAttribute
     );
+}
+
+/**
+ * Returns true if the given TSNode.kind value corresponds to a type keyword
+ * @param {number} kind TypeScript SyntaxKind
+ * @returns {boolean} is a type keyword
+ */
+function isTypeKeyword(kind) {
+    switch (kind) {
+        case SyntaxKind.AnyKeyword:
+        case SyntaxKind.BooleanKeyword:
+        case SyntaxKind.NeverKeyword:
+        case SyntaxKind.NumberKeyword:
+        case SyntaxKind.ObjectKeyword:
+        case SyntaxKind.StringKeyword:
+        case SyntaxKind.SymbolKeyword:
+        case SyntaxKind.VoidKeyword:
+            return true;
+        default:
+            return false;
+    }
 }
 
 /**
