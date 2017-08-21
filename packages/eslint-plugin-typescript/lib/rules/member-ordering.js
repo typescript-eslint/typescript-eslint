@@ -8,7 +8,11 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const schemaOptions = ["field", "method", "constructor"].reduce((options, type) => {
+const schemaOptions = [
+    "field",
+    "method",
+    "constructor"
+].reduce((options, type) => {
     options.push(type);
 
     ["public", "protected", "private"].forEach(accessibility => {
@@ -108,10 +112,12 @@ module.exports = {
     },
 
     create(context) {
-
         const options = context.options[0] || {};
 
-        const functionExpressions = ["FunctionExpression", "ArrowFunctionExpression"];
+        const functionExpressions = [
+            "FunctionExpression",
+            "ArrowFunctionExpression"
+        ];
         const defaultOrder = [
             "public-static-field",
             "protected-static-field",
@@ -161,16 +167,20 @@ module.exports = {
          * @private
          */
         function shouldBeProcessedAsMethod(node) {
-
             // check for bound methods in ClassProperty nodes.
-            if (node.value && functionExpressions.indexOf(node.value.type) > -1) {
+            if (
+                node.value &&
+                functionExpressions.indexOf(node.value.type) > -1
+            ) {
                 return true;
             }
 
             // check for bound methods in TSPropertySignature nodes.
-            if (node.typeAnnotation &&
+            if (
+                node.typeAnnotation &&
                 node.typeAnnotation.typeAnnotation &&
-                node.typeAnnotation.typeAnnotation.type === "TSFunctionType") {
+                node.typeAnnotation.typeAnnotation.type === "TSFunctionType"
+            ) {
                 return true;
             }
 
@@ -324,10 +334,15 @@ module.exports = {
                         if (rank < previousRanks[previousRanks.length - 1]) {
                             context.report({
                                 node: member,
-                                message: "Member {{name}} should be declared before all {{rank}} definitions.",
+                                message:
+                                    "Member {{name}} should be declared before all {{rank}} definitions.",
                                 data: {
                                     name: getMemberName(member),
-                                    rank: getLowestRank(previousRanks, rank, order)
+                                    rank: getLowestRank(
+                                        previousRanks,
+                                        rank,
+                                        order
+                                    )
                                 }
                             });
                         } else {
@@ -343,16 +358,32 @@ module.exports = {
         //----------------------------------------------------------------------
         return {
             ClassDeclaration(node) {
-                validateMembers(node.body.body, options.classes || options.default || defaultOrder, true);
+                validateMembers(
+                    node.body.body,
+                    options.classes || options.default || defaultOrder,
+                    true
+                );
             },
             ClassExpression(node) {
-                validateMembers(node.body.body, options.classExpressions || options.default || defaultOrder, true);
+                validateMembers(
+                    node.body.body,
+                    options.classExpressions || options.default || defaultOrder,
+                    true
+                );
             },
             TSInterfaceDeclaration(node) {
-                validateMembers(node.body.body, options.interfaces || options.default || defaultOrder, false);
+                validateMembers(
+                    node.body.body,
+                    options.interfaces || options.default || defaultOrder,
+                    false
+                );
             },
             TSTypeLiteral(node) {
-                validateMembers(node.members, options.typeLiterals || options.default || defaultOrder, false);
+                validateMembers(
+                    node.members,
+                    options.typeLiterals || options.default || defaultOrder,
+                    false
+                );
             }
         };
     }

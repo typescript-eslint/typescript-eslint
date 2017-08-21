@@ -11,7 +11,8 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Disallows parameter properties in class constructors.",
+            description:
+                "Disallows parameter properties in class constructors.",
             category: "TypeScript"
         },
         schema: [
@@ -74,7 +75,8 @@ module.exports = {
                 if (allows.indexOf(modifiers) === -1) {
                     context.report({
                         node,
-                        message: "Property {{parameter}} cannot be declared in the constructor",
+                        message:
+                            "Property {{parameter}} cannot be declared in the constructor",
                         data: {
                             parameter: node.parameter.name
                         }

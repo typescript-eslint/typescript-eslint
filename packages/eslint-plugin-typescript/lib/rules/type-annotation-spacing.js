@@ -45,14 +45,23 @@ module.exports = {
     },
 
     create(context) {
-
         const sourceCode = context.getSourceCode();
         const options = context.options[0] || {};
 
         const overrides = options.overrides || {};
 
-        const colonOptions = Object.assign({}, { before: false, after: true }, options, overrides.colon);
-        const arrowOptions = Object.assign({}, { before: true, after: true }, options, overrides.arrow);
+        const colonOptions = Object.assign(
+            {},
+            { before: false, after: true },
+            options,
+            overrides.colon
+        );
+        const arrowOptions = Object.assign(
+            {},
+            { before: true, after: true },
+            options,
+            overrides.arrow
+        );
 
         //----------------------------------------------------------------------
         // Helpers
@@ -70,12 +79,15 @@ module.exports = {
             const punctuatorToken = sourceCode.getTokenBefore(nextToken);
             const previousToken = sourceCode.getTokenBefore(punctuatorToken);
 
-            const previousDelta = punctuatorToken.range[0] - previousToken.range[1];
+            const previousDelta =
+                punctuatorToken.range[0] - previousToken.range[1];
             const nextDelta = nextToken.range[0] - punctuatorToken.range[1];
 
             const type = punctuatorToken.value;
-            const before = type === ":" ? colonOptions.before : arrowOptions.before;
-            const after = type === ":" ? colonOptions.after : arrowOptions.after;
+            const before =
+                type === ":" ? colonOptions.before : arrowOptions.before;
+            const after =
+                type === ":" ? colonOptions.after : arrowOptions.after;
 
             if (after && nextDelta === 0) {
                 context.report({
@@ -90,7 +102,10 @@ module.exports = {
                     node: punctuatorToken,
                     message: `Unexpected space after the '${type}'`,
                     fix(fixer) {
-                        return fixer.removeRange([punctuatorToken.range[1], nextToken.range[0]]);
+                        return fixer.removeRange([
+                            punctuatorToken.range[1],
+                            nextToken.range[0]
+                        ]);
                     }
                 });
             }
@@ -108,7 +123,10 @@ module.exports = {
                     node: punctuatorToken,
                     message: `Unexpected space before the '${type}'`,
                     fix(fixer) {
-                        return fixer.removeRange([previousToken.range[1], punctuatorToken.range[0]]);
+                        return fixer.removeRange([
+                            previousToken.range[1],
+                            punctuatorToken.range[0]
+                        ]);
                     }
                 });
             }
@@ -130,7 +148,6 @@ module.exports = {
         // Public
         //----------------------------------------------------------------------
         return {
-
             Identifier(node) {
                 if (node.typeAnnotation) {
                     checkTypeAnnotationSpacing(node.typeAnnotation);
@@ -138,9 +155,11 @@ module.exports = {
             },
 
             TypeAnnotation(node) {
-                if (node.typeAnnotation &&
+                if (
+                    node.typeAnnotation &&
                     node.typeAnnotation.type !== "TSFunctionType" &&
-                    node.parent.type !== "TSAsExpression") {
+                    node.parent.type !== "TSAsExpression"
+                ) {
                     checkTypeAnnotationSpacing(node.typeAnnotation);
                 }
             },

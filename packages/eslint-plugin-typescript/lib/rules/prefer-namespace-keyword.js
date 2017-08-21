@@ -11,7 +11,8 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces the use of the keyword namespace over module to declare custom TypeScript modules.",
+            description:
+                "Enforces the use of the keyword namespace over module to declare custom TypeScript modules.",
             category: "TypeScript"
         },
         fixable: "code",
@@ -19,7 +20,6 @@ module.exports = {
     },
 
     create(context) {
-
         const sourceCode = context.getSourceCode();
 
         //----------------------------------------------------------------------
@@ -43,7 +43,11 @@ module.exports = {
          * @private
          */
         function getStartIndex(node) {
-            if (node.modifiers && node.modifiers.length > 0 && node.modifiers[0].type === "TSDeclareKeyword") {
+            if (
+                node.modifiers &&
+                node.modifiers.length > 0 &&
+                node.modifiers[0].type === "TSDeclareKeyword"
+            ) {
                 return node.range[0] + "declare".length + 1;
             }
             return node.range[0];
@@ -56,17 +60,24 @@ module.exports = {
             TSModuleDeclaration(node) {
                 const declaration = sourceCode.getText(node);
 
-                if (isTypeScriptModuleDeclaration(node) || /\bnamespace\b/.test(declaration)) {
+                if (
+                    isTypeScriptModuleDeclaration(node) ||
+                    /\bnamespace\b/.test(declaration)
+                ) {
                     return;
                 }
 
                 context.report({
                     node,
-                    message: "Use namespace instead of module to declare custom TypeScript modules",
+                    message:
+                        "Use namespace instead of module to declare custom TypeScript modules",
                     fix(fixer) {
                         const start = getStartIndex(node);
 
-                        return fixer.replaceTextRange([start, start + "module".length], "namespace");
+                        return fixer.replaceTextRange(
+                            [start, start + "module".length],
+                            "namespace"
+                        );
                     }
                 });
             }

@@ -11,14 +11,14 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces explicity accessibility modifiers for class members",
+            description:
+                "Enforces explicity accessibility modifiers for class members",
             category: "TypeScript"
         },
         schema: []
     },
 
     create(context) {
-
         //----------------------------------------------------------------------
         // Helpers
         //----------------------------------------------------------------------
@@ -33,7 +33,8 @@ module.exports = {
             if (!methodDefinition.accessibility) {
                 context.report({
                     node: methodDefinition,
-                    message: `Missing accessibility modifier on method definition ${methodDefinition.key.name}.`
+                    message: `Missing accessibility modifier on method definition ${methodDefinition
+                        .key.name}.`
                 });
             }
         }
@@ -48,7 +49,8 @@ module.exports = {
             if (!classProperty.accessibility) {
                 context.report({
                     node: classProperty,
-                    message: `Missing accessibility modifier on class property ${classProperty.key.name}.`
+                    message: `Missing accessibility modifier on class property ${classProperty
+                        .key.name}.`
                 });
             }
         }

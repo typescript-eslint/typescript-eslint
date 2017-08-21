@@ -11,7 +11,6 @@
 const rule = require("../../../lib/rules/no-type-alias"),
     RuleTester = require("eslint").RuleTester;
 
-
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
@@ -19,7 +18,6 @@ const rule = require("../../../lib/rules/no-type-alias"),
 const ruleTester = new RuleTester();
 
 ruleTester.run("no-type-alias", rule, {
-
     valid: [
         {
             code: "type Foo = 'a';",
@@ -736,7 +734,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' | 'b';",
-            options: [{ allowAliases: "in-intersections", allowLiterals: "in-unions" }],
+            options: [
+                { allowAliases: "in-intersections", allowLiterals: "in-unions" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -906,7 +906,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' | 'b' | 'c';",
-            options: [{ allowAliases: "in-intersections", allowLiterals: "in-unions" }],
+            options: [
+                { allowAliases: "in-intersections", allowLiterals: "in-unions" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -978,7 +980,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' & 'b';",
-            options: [{ allowAliases: false, allowLiterals: "in-intersections" }],
+            options: [
+                { allowAliases: false, allowLiterals: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1012,7 +1016,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' & 'b';",
-            options: [{ allowAliases: "never", allowLiterals: "in-intersections" }],
+            options: [
+                { allowAliases: "never", allowLiterals: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1046,7 +1052,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' & 'b';",
-            options: [{ allowAliases: "in-unions", allowLiterals: "in-intersections" }],
+            options: [
+                { allowAliases: "in-unions", allowLiterals: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1128,7 +1136,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' & 'b' & 'c';",
-            options: [{ allowAliases: false, allowLiterals: "in-intersections" }],
+            options: [
+                { allowAliases: false, allowLiterals: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1172,7 +1182,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' & 'b' & 'c';",
-            options: [{ allowAliases: "never", allowLiterals: "in-intersections" }],
+            options: [
+                { allowAliases: "never", allowLiterals: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1216,7 +1228,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' & 'b' & 'c';",
-            options: [{ allowAliases: "in-unions", allowLiterals: "in-intersections" }],
+            options: [
+                { allowAliases: "in-unions", allowLiterals: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1303,7 +1317,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' | 'b' & 'c';",
-            options: [{ allowAliases: false, allowLiterals: "in-intersections" }],
+            options: [
+                { allowAliases: false, allowLiterals: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1347,7 +1363,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' | 'b' & 'c';",
-            options: [{ allowAliases: "never", allowLiterals: "in-intersections" }],
+            options: [
+                { allowAliases: "never", allowLiterals: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1386,7 +1404,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' | 'b' & 'c';",
-            options: [{ allowAliases: "in-unions", allowLiterals: "in-intersections" }],
+            options: [
+                { allowAliases: "in-unions", allowLiterals: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1415,7 +1435,12 @@ type Foo<T> = {
         },
         {
             code: "type Foo = 'a' | 'b' & 'c';",
-            options: [{ allowAliases: "in-intersections", allowLiterals: "in-intersections" }],
+            options: [
+                {
+                    allowAliases: "in-intersections",
+                    allowLiterals: "in-intersections"
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1616,7 +1641,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = string | string[];",
-            options: [{ allowAliases: "in-intersections", allowLiterals: "in-unions" }],
+            options: [
+                { allowAliases: "in-intersections", allowLiterals: "in-unions" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1786,7 +1813,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = string | string[] | number;",
-            options: [{ allowAliases: "in-intersections", allowLiterals: "in-unions" }],
+            options: [
+                { allowAliases: "in-intersections", allowLiterals: "in-unions" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1956,7 +1985,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = string | string[] & number;",
-            options: [{ allowAliases: "in-unions", allowLiterals: "in-unions" }],
+            options: [
+                { allowAliases: "in-unions", allowLiterals: "in-unions" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -1985,7 +2016,9 @@ type Foo<T> = {
         },
         {
             code: "type Foo = string | string[] & number;",
-            options: [{ allowAliases: "in-intersections", allowLiterals: "in-unions" }],
+            options: [
+                { allowAliases: "in-intersections", allowLiterals: "in-unions" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -2422,7 +2455,9 @@ type Foo = Bar & {};
         },
         {
             code: "type Foo = {};",
-            options: [{ allowLiterals: false, allowAliases: "in-intersections" }],
+            options: [
+                { allowLiterals: false, allowAliases: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -2434,7 +2469,9 @@ type Foo = Bar & {};
         },
         {
             code: "type Foo = {};",
-            options: [{ allowLiterals: "never", allowAliases: "in-intersections" }],
+            options: [
+                { allowLiterals: "never", allowAliases: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -2446,7 +2483,9 @@ type Foo = Bar & {};
         },
         {
             code: "type Foo = {};",
-            options: [{ allowLiterals: "in-unions", allowAliases: "in-intersections" }],
+            options: [
+                { allowLiterals: "in-unions", allowAliases: "in-intersections" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -2458,7 +2497,12 @@ type Foo = Bar & {};
         },
         {
             code: "type Foo = {};",
-            options: [{ allowLiterals: "in-intersections", allowAliases: "in-intersections" }],
+            options: [
+                {
+                    allowLiterals: "in-intersections",
+                    allowAliases: "in-intersections"
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -2470,7 +2514,12 @@ type Foo = Bar & {};
         },
         {
             code: "type Foo = {};",
-            options: [{ allowLiterals: "in-unions-and-intersections", allowAliases: "in-intersections" }],
+            options: [
+                {
+                    allowLiterals: "in-unions-and-intersections",
+                    allowAliases: "in-intersections"
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -2616,7 +2665,9 @@ type Foo = Bar & {};
         },
         {
             code: "type Foo = string & {} | 'a' | 1;",
-            options: [{ allowAliases: "in-unions", allowLiterals: "in-unions" }],
+            options: [
+                { allowAliases: "in-unions", allowLiterals: "in-unions" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -2633,7 +2684,9 @@ type Foo = Bar & {};
         },
         {
             code: "type Foo = string & {} | 'a' | 1;",
-            options: [{ allowAliases: "in-intersections", allowLiterals: "in-unions" }],
+            options: [
+                { allowAliases: "in-intersections", allowLiterals: "in-unions" }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
@@ -2850,12 +2903,14 @@ type Foo<T> = {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Mapped types in intersection types are not allowed",
+                    message:
+                        "Mapped types in intersection types are not allowed",
                     row: 1,
                     column: 15
                 },
                 {
-                    message: "Mapped types in intersection types are not allowed",
+                    message:
+                        "Mapped types in intersection types are not allowed",
                     row: 4,
                     column: 5
                 }
@@ -2873,12 +2928,14 @@ type Foo<T> = {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Mapped types in intersection types are not allowed",
+                    message:
+                        "Mapped types in intersection types are not allowed",
                     row: 1,
                     column: 15
                 },
                 {
-                    message: "Mapped types in intersection types are not allowed",
+                    message:
+                        "Mapped types in intersection types are not allowed",
                     row: 4,
                     column: 5
                 }
@@ -2896,12 +2953,14 @@ type Foo<T> = {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Mapped types in intersection types are not allowed",
+                    message:
+                        "Mapped types in intersection types are not allowed",
                     row: 1,
                     column: 15
                 },
                 {
-                    message: "Mapped types in intersection types are not allowed",
+                    message:
+                        "Mapped types in intersection types are not allowed",
                     row: 4,
                     column: 5
                 }
@@ -2919,12 +2978,14 @@ type Foo<T> = {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Mapped types in intersection types are not allowed",
+                    message:
+                        "Mapped types in intersection types are not allowed",
                     row: 1,
                     column: 15
                 },
                 {
-                    message: "Mapped types in intersection types are not allowed",
+                    message:
+                        "Mapped types in intersection types are not allowed",
                     row: 4,
                     column: 5
                 }

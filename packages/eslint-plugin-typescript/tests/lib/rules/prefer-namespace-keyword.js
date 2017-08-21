@@ -11,7 +11,6 @@
 const rule = require("../../../lib/rules/prefer-namespace-keyword"),
     RuleTester = require("eslint").RuleTester;
 
-
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
@@ -39,7 +38,8 @@ ruleTester.run("prefer-namespace-keyword", rule, {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Use namespace instead of module to declare custom TypeScript modules",
+                    message:
+                        "Use namespace instead of module to declare custom TypeScript modules",
                     output: "namespace foo { }",
                     row: 1,
                     column: 1
@@ -51,7 +51,8 @@ ruleTester.run("prefer-namespace-keyword", rule, {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Use namespace instead of module to declare custom TypeScript modules",
+                    message:
+                        "Use namespace instead of module to declare custom TypeScript modules",
                     output: "declare namespace foo { }",
                     row: 1,
                     column: 1
@@ -67,13 +68,15 @@ declare module foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Use namespace instead of module to declare custom TypeScript modules",
+                    message:
+                        "Use namespace instead of module to declare custom TypeScript modules",
                     output: "declare namespace foo { }",
                     row: 2,
                     column: 1
                 },
                 {
-                    message: "Use namespace instead of module to declare custom TypeScript modules",
+                    message:
+                        "Use namespace instead of module to declare custom TypeScript modules",
                     output: `
 declare namespace foo {
     declare namespace bar { }

@@ -11,7 +11,6 @@
 const rule = require("../../../lib/rules/class-name-casing"),
     RuleTester = require("eslint").RuleTester;
 
-
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
@@ -21,7 +20,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run("class-name-casing", rule, {
-
     valid: [
         "class ValidClassName {}",
         {
@@ -37,43 +35,54 @@ ruleTester.run("class-name-casing", rule, {
     invalid: [
         {
             code: "class invalidClassName {}",
-            errors: [{
-                message: "Class 'invalidClassName' must be PascalCased",
-                line: 1,
-                column: 7
-            }]
+            errors: [
+                {
+                    message: "Class 'invalidClassName' must be PascalCased",
+                    line: 1,
+                    column: 7
+                }
+            ]
         },
         {
             code: "class Another_Invalid_Class_Name {}",
-            errors: [{
-                message: "Class 'Another_Invalid_Class_Name' must be PascalCased",
-                line: 1,
-                column: 7
-            }]
+            errors: [
+                {
+                    message:
+                        "Class 'Another_Invalid_Class_Name' must be PascalCased",
+                    line: 1,
+                    column: 7
+                }
+            ]
         },
         {
             code: "var foo = class {};",
-            errors: [{
-                message: "Class 'foo' must be PascalCased",
-                line: 1,
-                column: 5
-            }]
+            errors: [
+                {
+                    message: "Class 'foo' must be PascalCased",
+                    line: 1,
+                    column: 5
+                }
+            ]
         },
         {
             code: "var bar = class invalidName {}",
-            errors: [{
-                message: "Class 'invalidName' must be PascalCased",
-                line: 1,
-                column: 17
-            }]
+            errors: [
+                {
+                    message: "Class 'invalidName' must be PascalCased",
+                    line: 1,
+                    column: 17
+                }
+            ]
         },
         {
             code: "interface someInterface {}",
-            errors: [{
-                message: "Interface 'someInterface' must be PascalCased",
-                line: 1,
-                column: 11
-            }]
+            errors: [
+                {
+                    message: "Interface 'someInterface' must be PascalCased",
+                    line: 1,
+                    column: 11
+                }
+            ]
         }
     ]
 });

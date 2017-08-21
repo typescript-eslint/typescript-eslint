@@ -11,7 +11,6 @@
 const rule = require("../../../lib/rules/adjacent-overload-signatures"),
     RuleTester = require("eslint").RuleTester;
 
-
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------

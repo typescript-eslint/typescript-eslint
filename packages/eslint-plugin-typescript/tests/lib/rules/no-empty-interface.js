@@ -77,7 +77,8 @@ interface Bar extends Foo {}
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "An interface declaring no members is equivalent to its supertype.",
+                    message:
+                        "An interface declaring no members is equivalent to its supertype.",
                     line: 6,
                     column: 11
                 }

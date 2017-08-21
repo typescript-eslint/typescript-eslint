@@ -28,7 +28,7 @@ function parseOptions(options) {
     let typedefs = true;
 
     if (typeof options === "string") {
-        functions = (options !== "nofunc");
+        functions = options !== "nofunc";
     } else if (typeof options === "object" && options !== null) {
         functions = options.functions !== false;
         classes = options.classes !== false;
@@ -127,7 +127,8 @@ function isInInitializer(variable, reference) {
             if (isInRange(node.init, location)) {
                 return true;
             }
-            if (FOR_IN_OF_TYPE.test(node.parent.parent.type) &&
+            if (
+                FOR_IN_OF_TYPE.test(node.parent.parent.type) &&
                 isInRange(node.parent.parent.right, location)
             ) {
                 return true;
@@ -154,7 +155,8 @@ function isInInitializer(variable, reference) {
 module.exports = {
     meta: {
         docs: {
-            description: "disallow the use of variables before they are defined",
+            description:
+                "disallow the use of variables before they are defined",
             category: "Variables",
             recommended: false
         },
@@ -221,10 +223,13 @@ module.exports = {
                 // - referring to a global environment variable (there're no identifiers).
                 // - located preceded by the variable (except in initializers).
                 // - allowed by options.
-                if (reference.init ||
+                if (
+                    reference.init ||
                     !variable ||
                     variable.identifiers.length === 0 ||
-                    (variable.identifiers[0].range[1] < reference.identifier.range[1] && !isInInitializer(variable, reference)) ||
+                    (variable.identifiers[0].range[1] <
+                        reference.identifier.range[1] &&
+                        !isInInitializer(variable, reference)) ||
                     !isForbidden(variable, reference)
                 ) {
                     return;
@@ -266,8 +271,8 @@ module.exports = {
         };
 
         if (context.parserOptions.ecmaVersion >= 6) {
-            ruleDefinition["BlockStatement:exit"] =
-                ruleDefinition["SwitchStatement:exit"] = findVariables;
+            ruleDefinition["BlockStatement:exit"] = findVariables;
+            ruleDefinition["SwitchStatement:exit"] = findVariables;
 
             ruleDefinition["ArrowFunctionExpression:exit"] = function(node) {
                 if (node.body.type !== "BlockStatement") {
@@ -275,9 +280,9 @@ module.exports = {
                 }
             };
         } else {
-            ruleDefinition["FunctionExpression:exit"] =
-                ruleDefinition["FunctionDeclaration:exit"] =
-                ruleDefinition["ArrowFunctionExpression:exit"] = findVariables;
+            ruleDefinition["FunctionExpression:exit"] = findVariables;
+            ruleDefinition["FunctionDeclaration:exit"] = findVariables;
+            ruleDefinition["ArrowFunctionExpression:exit"] = findVariables;
         }
 
         return ruleDefinition;

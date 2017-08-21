@@ -11,7 +11,6 @@
 const rule = require("../../../lib/rules/explicit-member-accessibility"),
     RuleTester = require("eslint").RuleTester;
 
-
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
@@ -19,7 +18,6 @@ const rule = require("../../../lib/rules/explicit-member-accessibility"),
 const ruleTester = new RuleTester();
 
 ruleTester.run("explicit-member-accessibility", rule, {
-
     valid: [
         {
             code: `
@@ -45,11 +43,14 @@ class Test {
 }
           `,
             parser: "typescript-eslint-parser",
-            errors: [{
-                message: "Missing accessibility modifier on class property x.",
-                line: 3,
-                column: 3
-            }]
+            errors: [
+                {
+                    message:
+                        "Missing accessibility modifier on class property x.",
+                    line: 3,
+                    column: 3
+                }
+            ]
         },
         {
             code: `
@@ -61,11 +62,14 @@ class Test {
 }
           `,
             parser: "typescript-eslint-parser",
-            errors: [{
-                message: "Missing accessibility modifier on method definition getX.",
-                line: 4,
-                column: 3
-            }]
+            errors: [
+                {
+                    message:
+                        "Missing accessibility modifier on method definition getX.",
+                    line: 4,
+                    column: 3
+                }
+            ]
         }
     ]
 });

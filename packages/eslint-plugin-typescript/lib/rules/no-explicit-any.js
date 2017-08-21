@@ -19,7 +19,6 @@ module.exports = {
     },
 
     create(context) {
-
         //----------------------------------------------------------------------
         // Helpers
         //----------------------------------------------------------------------
@@ -38,16 +37,21 @@ module.exports = {
                 });
             } else if (node.type === "TSArrayType") {
                 checkGenericNodeForAnnotation(node.elementType);
-            } else if (node.type === "TSUnionType" || node.type === "TSIntersectionType") {
+            } else if (
+                node.type === "TSUnionType" ||
+                node.type === "TSIntersectionType"
+            ) {
                 node.types.forEach(type => {
                     checkGenericNodeForAnnotation(type);
                 });
             } else if (node.type === "TSTypeReference") {
-                if (node.typeParameters) { // handles generics
+                if (node.typeParameters) {
+                    // handles generics
                     node.typeParameters.params.forEach(param => {
                         checkGenericNodeForAnnotation(param);
                     });
-                } else if (node.typeName) { // handles non generics
+                } else if (node.typeName) {
+                    // handles non generics
                     checkGenericNodeForAnnotation(node.typeName);
                 }
             } else if (node.type === "GenericTypeAnnotation") {
@@ -79,7 +83,9 @@ module.exports = {
         return {
             Identifier(node) {
                 if (node.typeAnnotation) {
-                    checkGenericNodeForAnnotation(node.typeAnnotation.typeAnnotation);
+                    checkGenericNodeForAnnotation(
+                        node.typeAnnotation.typeAnnotation
+                    );
                 }
             },
             TypeAnnotation(node) {

@@ -11,14 +11,14 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces the use of as Type assertions instead of <Type> assertions.",
+            description:
+                "Enforces the use of as Type assertions instead of <Type> assertions.",
             category: "Style"
         },
         schema: []
     },
 
     create(context) {
-
         const sourceCode = context.getSourceCode();
 
         //----------------------------------------------------------------------
@@ -28,9 +28,12 @@ module.exports = {
             TSTypeAssertionExpression(node) {
                 context.report({
                     node,
-                    message: "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions",
+                    message:
+                        "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions",
                     data: {
-                        cast: sourceCode.getText(node.typeAnnotation.typeAnnotation)
+                        cast: sourceCode.getText(
+                            node.typeAnnotation.typeAnnotation
+                        )
                     }
                 });
             }

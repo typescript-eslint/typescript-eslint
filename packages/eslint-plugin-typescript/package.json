@@ -12,7 +12,7 @@
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint lib/ tests/",
-    "lint:fix": "eslint lib/ test/ --fix",
+    "lint:fix": "eslint lib/ tests/ --fix",
     "mocha": "mocha tests --recursive",
     "test": "npm run lint && npm run mocha"
   },
@@ -22,8 +22,11 @@
   "devDependencies": {
     "eslint": "^4.5.0",
     "eslint-config-eslint": "^4.0.0",
+    "eslint-config-prettier": "^2.3.0",
     "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-prettier": "^2.2.0",
     "mocha": "^3.5.0",
+    "prettier": "^1.5.3",
     "typescript": "~2.4.2",
     "typescript-eslint-parser": "^6.0.1"
   },

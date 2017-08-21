@@ -32,7 +32,6 @@ ruleTester.defineRule("typescript/no-unused-vars", rule);
 //------------------------------------------------------------------------------
 
 ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
-
     valid: [
         {
             code: [
@@ -186,11 +185,14 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "export class Foo {}"
             ].join("\n"),
             parser,
-            errors: [{
-                message: "'ClassDecoratorFactory' is defined but never used.",
-                line: 1,
-                column: 10
-            }]
+            errors: [
+                {
+                    message:
+                        "'ClassDecoratorFactory' is defined but never used.",
+                    line: 1,
+                    column: 10
+                }
+            ]
         }
     ]
 });

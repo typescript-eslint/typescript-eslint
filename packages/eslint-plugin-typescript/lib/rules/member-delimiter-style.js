@@ -20,7 +20,8 @@ const definition = {
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces a member delimiter style for interfaces and type literals.",
+            description:
+                "Enforces a member delimiter style for interfaces and type literals.",
             category: "TypeScript"
         },
         fixable: "code",
@@ -45,15 +46,24 @@ module.exports = {
     },
 
     create(context) {
-
         const sourceCode = context.getSourceCode();
         const options = context.options[0] || {};
 
         const overrides = options.overrides || {};
         const defaults = { delimiter: "semi", requireLast: true };
 
-        const interfaceOptions = Object.assign({}, defaults, options, overrides.interface);
-        const typeLiteralOptions = Object.assign({}, defaults, options, overrides.typeLiteral);
+        const interfaceOptions = Object.assign(
+            {},
+            defaults,
+            options,
+            overrides.interface
+        );
+        const typeLiteralOptions = Object.assign(
+            {},
+            defaults,
+            options,
+            overrides.typeLiteral
+        );
 
         //----------------------------------------------------------------------
         // Helpers
@@ -69,15 +79,30 @@ module.exports = {
          */
         function checkLastToken(member, opts, isLast) {
             let message;
-            const lastToken = sourceCode.getLastToken(member, { includeComments: false });
+            const lastToken = sourceCode.getLastToken(member, {
+                includeComments: false
+            });
 
             if (lastToken.value === ";" && opts.delimiter !== "semi") {
-                message = opts.delimiter === "comma" ? "Expected a comma." : "Unexpected separator (;).";
+                message =
+                    opts.delimiter === "comma"
+                        ? "Expected a comma."
+                        : "Unexpected separator (;).";
             } else if (lastToken.value === "," && opts.delimiter !== "comma") {
-                message = opts.delimiter === "semi" ? "Expected a semicolon." : "Unexpected separator (,).";
-            } else if (lastToken.value !== ";" && lastToken.value !== "," && opts.delimiter !== "none") {
+                message =
+                    opts.delimiter === "semi"
+                        ? "Expected a semicolon."
+                        : "Unexpected separator (,).";
+            } else if (
+                lastToken.value !== ";" &&
+                lastToken.value !== "," &&
+                opts.delimiter !== "none"
+            ) {
                 if (!isLast || (isLast && opts.requireLast)) {
-                    message = opts.delimiter === "semi" ? "Expected a semicolon." : "Expected a comma.";
+                    message =
+                        opts.delimiter === "semi"
+                            ? "Expected a semicolon."
+                            : "Expected a comma.";
                 }
             }
 

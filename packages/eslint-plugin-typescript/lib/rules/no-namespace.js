@@ -11,7 +11,8 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Disallows the use of custom TypeScript modules and namespaces.",
+            description:
+                "Disallows the use of custom TypeScript modules and namespaces.",
             category: "TypeScript"
         },
         schema: [
@@ -31,9 +32,12 @@ module.exports = {
     },
 
     create(context) {
-
-        const allowDeclarations = context.options[0] ? context.options[0].allowDeclarations : false;
-        const allowDefinitionFiles = context.options[0] ? context.options[0].allowDefinitionFiles : false;
+        const allowDeclarations = context.options[0]
+            ? context.options[0].allowDeclarations
+            : false;
+        const allowDefinitionFiles = context.options[0]
+            ? context.options[0].allowDefinitionFiles
+            : false;
 
         //----------------------------------------------------------------------
         // Helpers
@@ -56,7 +60,9 @@ module.exports = {
          * @private
          */
         function isDeclaration(node) {
-            const hasDeclareModifier = (node.modifiers || []).filter(m => m.type === "TSDeclareKeyword").length > 0;
+            const hasDeclareModifier =
+                (node.modifiers || [])
+                    .filter(m => m.type === "TSDeclareKeyword").length > 0;
 
             return hasDeclareModifier && !isTypeScriptModuleDeclaration(node);
         }
@@ -69,7 +75,9 @@ module.exports = {
         function isDefinitionFile() {
             const filename = context.getFilename();
 
-            return filename ? filename.slice(-5).toLowerCase() === ".d.ts" : false;
+            return filename
+                ? filename.slice(-5).toLowerCase() === ".d.ts"
+                : false;
         }
 
         //----------------------------------------------------------------------
@@ -77,15 +85,18 @@ module.exports = {
         //----------------------------------------------------------------------
         return {
             TSModuleDeclaration(node) {
-                if (isTypeScriptModuleDeclaration(node) ||
+                if (
+                    isTypeScriptModuleDeclaration(node) ||
                     (allowDefinitionFiles && isDefinitionFile()) ||
-                    (allowDeclarations && isDeclaration(node))) {
+                    (allowDeclarations && isDeclaration(node))
+                ) {
                     return;
                 }
 
                 context.report({
                     node,
-                    message: "ES2015 module syntax is preferred over custom TypeScript modules and namespaces"
+                    message:
+                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces"
                 });
             }
         };

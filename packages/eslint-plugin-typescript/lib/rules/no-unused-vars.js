@@ -46,7 +46,8 @@ function markVariableAsUsed(context, name) {
 module.exports = {
     meta: {
         docs: {
-            description: "Prevent TypeScript-specific variables being falsely marked as unused.",
+            description:
+                "Prevent TypeScript-specific variables being falsely marked as unused.",
             category: "TypeScript",
             recommended: true
         },
@@ -54,7 +55,6 @@ module.exports = {
     },
 
     create(context) {
-
         //----------------------------------------------------------------------
         // Helpers
         //----------------------------------------------------------------------
@@ -70,7 +70,6 @@ module.exports = {
                 return;
             }
             node.decorators.forEach(decorator => {
-
                 /**
                  * Decorator
                  */
@@ -91,10 +90,16 @@ module.exports = {
                     markVariableAsUsed(context, decorator.callee.name);
                 }
 
-                if (decorator.expression && decorator.expression.callee && decorator.expression.callee.name) {
-                    markVariableAsUsed(context, decorator.expression.callee.name);
+                if (
+                    decorator.expression &&
+                    decorator.expression.callee &&
+                    decorator.expression.callee.name
+                ) {
+                    markVariableAsUsed(
+                        context,
+                        decorator.expression.callee.name
+                    );
                 }
-
             });
         }
 
@@ -109,7 +114,11 @@ module.exports = {
                 return;
             }
             node.implements.forEach(implementedInterface => {
-                if (!implementedInterface || !implementedInterface.id || !implementedInterface.id.name) {
+                if (
+                    !implementedInterface ||
+                    !implementedInterface.id ||
+                    !implementedInterface.id.name
+                ) {
                     return;
                 }
                 markVariableAsUsed(context, implementedInterface.id.name);
@@ -126,7 +135,6 @@ module.exports = {
                 markImplementedInterfacesAsUsed(node);
             },
             MethodDefinition(node) {
-
                 /**
                  * Decorators are only supported on class methods, so exit early
                  * if the parent is not a ClassBody
@@ -134,7 +142,11 @@ module.exports = {
                 const anc = context.getAncestors();
                 const tAnc = anc.length;
 
-                if (!tAnc || !anc[tAnc - 1] || anc[tAnc - 1].type !== "ClassBody") {
+                if (
+                    !tAnc ||
+                    !anc[tAnc - 1] ||
+                    anc[tAnc - 1].type !== "ClassBody"
+                ) {
                     return;
                 }
 
@@ -146,12 +158,15 @@ module.exports = {
                 /**
                  * Mark any parameter decorators as used
                  */
-                if (!node.value || !node.value.params || !node.value.params.length) {
+                if (
+                    !node.value ||
+                    !node.value.params ||
+                    !node.value.params.length
+                ) {
                     return;
                 }
                 node.value.params.forEach(markDecoratorsAsUsed);
             }
         };
-
     }
 };
