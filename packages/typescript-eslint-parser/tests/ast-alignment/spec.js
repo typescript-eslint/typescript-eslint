@@ -549,6 +549,10 @@ const fixturePatternsToTest = [
     // "typescript/namespaces-and-modules/ambient-module-declaration-with-import.src.ts",
     // "typescript/namespaces-and-modules/declare-namespace-with-exported-function.src.ts",
     // "typescript/namespaces-and-modules/module-with-default-exports.src.ts",
+
+    /**
+     * Requires fix in https://github.com/babel/babylon/pull/684
+     */
     // "typescript/namespaces-and-modules/shorthand-ambient-module-declaration.src.ts"
 
 ];
