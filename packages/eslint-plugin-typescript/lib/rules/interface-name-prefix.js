@@ -11,7 +11,7 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces interface names are prefixed with \"I\".",
+            description: 'Enforces interface names are prefixed with "I".',
             category: "TypeScript"
         },
         schema: [
@@ -64,14 +64,14 @@ module.exports = {
                 if (isPrefixedWithI(interfaceNode.id.name)) {
                     context.report({
                         node: interfaceNode.id,
-                        message: "Interface name must not be prefixed with \"I\""
+                        message: 'Interface name must not be prefixed with "I"'
                     });
                 }
             } else {
                 if (!isPrefixedWithI(interfaceNode.id.name)) {
                     context.report({
                         node: interfaceNode.id,
-                        message: "Interface name must be prefixed with \"I\""
+                        message: 'Interface name must be prefixed with "I"'
                     });
                 }
             }

@@ -724,17 +724,35 @@ type Foo = {
         },
         {
             code: "let foo : string;",
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
             code: "function foo() : string {}",
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
             code: "function foo(a : string) {}",
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -743,7 +761,13 @@ class Foo {
     name : string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -752,7 +776,13 @@ class Foo {
     constructor(message : string);
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -761,7 +791,13 @@ class Foo {
     greet() : string { return "hello"; }
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -770,7 +806,13 @@ class Foo {
     greet(name : string) : string { return name; }
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -779,7 +821,13 @@ interface Foo {
     name : string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -788,7 +836,13 @@ interface Foo {
     greet() : string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -797,7 +851,13 @@ interface Foo {
     greet(name : string) : string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -806,7 +866,13 @@ type Foo = {
     name : string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -815,7 +881,13 @@ type Foo = {
     greet() : string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -824,12 +896,24 @@ type Foo = {
     greet(name : string) : string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
             code: "type Foo = (name : string)=>string;",
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -838,7 +922,13 @@ type Foo = {
     greet: (name : string)=>string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -933,31 +1023,37 @@ type Foo = {
             code: "let foo : string;",
             parser: "typescript-eslint-parser",
             output: "let foo: string;",
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 1,
-                column: 9
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 1,
+                    column: 9
+                }
+            ]
         },
         {
             code: "function foo() : string {}",
             parser: "typescript-eslint-parser",
             output: "function foo(): string {}",
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 1,
-                column: 16
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 1,
+                    column: 16
+                }
+            ]
         },
         {
             code: "function foo(a : string) {}",
             parser: "typescript-eslint-parser",
             output: "function foo(a: string) {}",
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 1,
-                column: 16
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 1,
+                    column: 16
+                }
+            ]
         },
         {
             code: `
@@ -971,11 +1067,13 @@ class Foo {
     name: string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 10
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 10
+                }
+            ]
         },
         {
             code: `
@@ -989,11 +1087,13 @@ class Foo {
     constructor(message: string);
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 25
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 25
+                }
+            ]
         },
         {
             code: `
@@ -1007,11 +1107,13 @@ class Foo {
     greet(): string { return "hello"; }
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 13
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 13
+                }
+            ]
         },
         {
             code: `
@@ -1050,11 +1152,13 @@ interface Foo {
     name: string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 10
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 10
+                }
+            ]
         },
         {
             code: `
@@ -1068,11 +1172,13 @@ interface Foo {
     greet(): string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 13
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 13
+                }
+            ]
         },
         {
             code: `
@@ -1111,11 +1217,13 @@ type Foo = {
     name: string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 10
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 10
+                }
+            ]
         },
         {
             code: `
@@ -1129,11 +1237,13 @@ type Foo = {
     greet(): string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 13
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 13
+                }
+            ]
         },
         {
             code: `
@@ -1239,33 +1349,39 @@ type Foo = {
             options: [{ after: true }],
             parser: "typescript-eslint-parser",
             output: "let foo: string;",
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 1,
-                column: 9
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 1,
+                    column: 9
+                }
+            ]
         },
         {
             code: "function foo() : string {}",
             options: [{ after: true }],
             parser: "typescript-eslint-parser",
             output: "function foo(): string {}",
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 1,
-                column: 16
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 1,
+                    column: 16
+                }
+            ]
         },
         {
             code: "function foo(a : string) {}",
             options: [{ after: true }],
             parser: "typescript-eslint-parser",
             output: "function foo(a: string) {}",
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 1,
-                column: 16
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 1,
+                    column: 16
+                }
+            ]
         },
         {
             code: `
@@ -1280,11 +1396,13 @@ class Foo {
     name: string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 10
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 10
+                }
+            ]
         },
         {
             code: `
@@ -1299,11 +1417,13 @@ class Foo {
     constructor(message: string);
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 25
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 25
+                }
+            ]
         },
         {
             code: `
@@ -1318,11 +1438,13 @@ class Foo {
     greet(): string { return "hello"; }
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 13
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 13
+                }
+            ]
         },
         {
             code: `
@@ -1363,11 +1485,13 @@ interface Foo {
     name: string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 10
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 10
+                }
+            ]
         },
         {
             code: `
@@ -1382,11 +1506,13 @@ interface Foo {
     greet(): string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 13
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 13
+                }
+            ]
         },
         {
             code: `
@@ -1427,11 +1553,13 @@ type Foo = {
     name: string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 10
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 10
+                }
+            ]
         },
         {
             code: `
@@ -1446,11 +1574,13 @@ type Foo = {
     greet(): string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 13
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 13
+                }
+            ]
         },
         {
             code: `
@@ -1561,33 +1691,39 @@ type Foo = {
             options: [{ after: true, before: false }],
             parser: "typescript-eslint-parser",
             output: "let foo: string;",
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 1,
-                column: 9
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 1,
+                    column: 9
+                }
+            ]
         },
         {
             code: "function foo() : string {}",
             options: [{ after: true, before: false }],
             parser: "typescript-eslint-parser",
             output: "function foo(): string {}",
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 1,
-                column: 16
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 1,
+                    column: 16
+                }
+            ]
         },
         {
             code: "function foo(a : string) {}",
             options: [{ after: true, before: false }],
             parser: "typescript-eslint-parser",
             output: "function foo(a: string) {}",
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 1,
-                column: 16
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 1,
+                    column: 16
+                }
+            ]
         },
         {
             code: `
@@ -1602,11 +1738,13 @@ class Foo {
     name: string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 10
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 10
+                }
+            ]
         },
         {
             code: `
@@ -1621,11 +1759,13 @@ class Foo {
     constructor(message: string);
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 25
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 25
+                }
+            ]
         },
         {
             code: `
@@ -1640,11 +1780,13 @@ class Foo {
     greet(): string { return "hello"; }
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 13
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 13
+                }
+            ]
         },
         {
             code: `
@@ -1685,11 +1827,13 @@ interface Foo {
     name: string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 10
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 10
+                }
+            ]
         },
         {
             code: `
@@ -1704,11 +1848,13 @@ interface Foo {
     greet(): string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 13
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 13
+                }
+            ]
         },
         {
             code: `
@@ -1749,11 +1895,13 @@ type Foo = {
     name: string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 10
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 10
+                }
+            ]
         },
         {
             code: `
@@ -1768,11 +1916,13 @@ type Foo = {
     greet(): string;
 }
             `,
-            errors: [{
-                message: "Unexpected space before the ':'",
-                line: 3,
-                column: 13
-            }]
+            errors: [
+                {
+                    message: "Unexpected space before the ':'",
+                    line: 3,
+                    column: 13
+                }
+            ]
         },
         {
             code: `
@@ -2724,7 +2874,13 @@ type Foo = {
         },
         {
             code: "let foo:string;",
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: "let foo : string;",
             errors: [
@@ -2742,7 +2898,13 @@ type Foo = {
         },
         {
             code: "function foo():string {}",
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: "function foo() : string {}",
             errors: [
@@ -2760,7 +2922,13 @@ type Foo = {
         },
         {
             code: "function foo(a:string) {}",
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: "function foo(a : string) {}",
             errors: [
@@ -2782,7 +2950,13 @@ class Foo {
     name:string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 class Foo {
@@ -2808,7 +2982,13 @@ class Foo {
     constructor(message:string);
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 class Foo {
@@ -2834,7 +3014,13 @@ class Foo {
     greet():string { return "hello"; }
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 class Foo {
@@ -2860,7 +3046,13 @@ class Foo {
     greet(name:string):string { return name; }
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 class Foo {
@@ -2896,7 +3088,13 @@ interface Foo {
     name:string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 interface Foo {
@@ -2922,7 +3120,13 @@ interface Foo {
     greet():string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 interface Foo {
@@ -2948,7 +3152,13 @@ interface Foo {
     greet(name:string):string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 interface Foo {
@@ -2984,7 +3194,13 @@ type Foo = {
     name:string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 type Foo = {
@@ -3010,7 +3226,13 @@ type Foo = {
     greet():string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 type Foo = {
@@ -3036,7 +3258,13 @@ type Foo = {
     greet(name:string):string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 type Foo = {
@@ -3068,7 +3296,13 @@ type Foo = {
         },
         {
             code: "type Foo = (name:string)=>string;",
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: "type Foo = (name : string)=>string;",
             errors: [
@@ -3090,7 +3324,13 @@ type Foo = {
     greet: (name:string)=>string;
 }
             `,
-            options: [{ before: false, after: false, overrides: { colon: { before: true, after: true } } }],
+            options: [
+                {
+                    before: false,
+                    after: false,
+                    overrides: { colon: { before: true, after: true } }
+                }
+            ],
             parser: "typescript-eslint-parser",
             output: `
 type Foo = {

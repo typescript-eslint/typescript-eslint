@@ -29,9 +29,10 @@ module.exports = {
                 if (node.body.body.length === 0 && heritage < 2) {
                     context.report({
                         node: node.id,
-                        message: heritage === 0
-                            ? "An empty interface is equivalent to `{}`"
-                            : "An interface declaring no members is equivalent to its supertype."
+                        message:
+                            heritage === 0
+                                ? "An empty interface is equivalent to `{}`"
+                                : "An interface declaring no members is equivalent to its supertype."
                     });
                 }
             }

@@ -136,7 +136,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -151,7 +152,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -166,7 +168,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -181,7 +184,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -196,7 +200,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -211,7 +216,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -226,7 +232,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -241,7 +248,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -256,12 +264,14 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 },
                 {
-                    message: "Property age cannot be declared in the constructor",
+                    message:
+                        "Property age cannot be declared in the constructor",
                     line: 3,
                     column: 39
                 }
@@ -276,12 +286,14 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 },
                 {
-                    message: "Property age cannot be declared in the constructor",
+                    message:
+                        "Property age cannot be declared in the constructor",
                     line: 3,
                     column: 41
                 }
@@ -296,12 +308,14 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 },
                 {
-                    message: "Property age cannot be declared in the constructor",
+                    message:
+                        "Property age cannot be declared in the constructor",
                     line: 3,
                     column: 38
                 }
@@ -317,7 +331,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 4,
                     column: 17
                 }
@@ -333,12 +348,14 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 },
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 4,
                     column: 17
                 }
@@ -354,17 +371,20 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 },
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 4,
                     column: 17
                 },
                 {
-                    message: "Property age cannot be declared in the constructor",
+                    message:
+                        "Property age cannot be declared in the constructor",
                     line: 4,
                     column: 39
                 }
@@ -380,7 +400,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 4,
                     column: 17
                 }
@@ -396,12 +417,14 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 },
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 4,
                     column: 17
                 }
@@ -417,17 +440,20 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 },
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 4,
                     column: 17
                 },
                 {
-                    message: "Property age cannot be declared in the constructor",
+                    message:
+                        "Property age cannot be declared in the constructor",
                     line: 4,
                     column: 41
                 }
@@ -443,7 +469,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 4,
                     column: 17
                 }
@@ -459,12 +486,14 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 },
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 4,
                     column: 17
                 }
@@ -480,24 +509,25 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 },
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 4,
                     column: 17
                 },
                 {
-                    message: "Property age cannot be declared in the constructor",
+                    message:
+                        "Property age cannot be declared in the constructor",
                     line: 4,
                     column: 38
                 }
             ]
         },
-
-
 
         {
             code: `
@@ -509,7 +539,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -525,7 +556,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -537,11 +569,21 @@ class Foo {
     constructor(protected name: string) {}
 }
             `,
-            options: [{ allows: ["readonly", "private", "public", "protected readonly"] }],
+            options: [
+                {
+                    allows: [
+                        "readonly",
+                        "private",
+                        "public",
+                        "protected readonly"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -553,11 +595,22 @@ class Foo {
     constructor(public name: string) {}
 }
             `,
-            options: [{ allows: ["readonly", "private", "protected", "protected readonly", "public readonly"] }],
+            options: [
+                {
+                    allows: [
+                        "readonly",
+                        "private",
+                        "protected",
+                        "protected readonly",
+                        "public readonly"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -573,7 +626,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -585,11 +639,21 @@ class Foo {
     constructor(protected readonly name: string) {}
 }
             `,
-            options: [{ allows: ["readonly", "protected", "private readonly", "public readonly"] }],
+            options: [
+                {
+                    allows: [
+                        "readonly",
+                        "protected",
+                        "private readonly",
+                        "public readonly"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property name cannot be declared in the constructor",
+                    message:
+                        "Property name cannot be declared in the constructor",
                     line: 3,
                     column: 17
                 }
@@ -606,7 +670,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Property age cannot be declared in the constructor",
+                    message:
+                        "Property age cannot be declared in the constructor",
                     line: 4,
                     column: 39
                 }

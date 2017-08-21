@@ -30,12 +30,7 @@ module.exports = {
                         ]
                     },
                     allowCallbacks: {
-                        enum: [
-                            true,
-                            false,
-                            "always",
-                            "never"
-                        ]
+                        enum: [true, false, "always", "never"]
                     },
                     allowLiterals: {
                         enum: [
@@ -68,14 +63,29 @@ module.exports = {
     create(context) {
         const options = context.options[0];
 
-        const allowAliases = options && options.allowAliases || "never";
-        const allowCallbacks = options && options.allowCallbacks || "never";
-        const allowLiterals = options && options.allowLiterals || "never";
-        const allowMappedTypes = options && options.allowMappedTypes || "never";
+        const allowAliases = (options && options.allowAliases) || "never";
+        const allowCallbacks = (options && options.allowCallbacks) || "never";
+        const allowLiterals = (options && options.allowLiterals) || "never";
+        const allowMappedTypes =
+            (options && options.allowMappedTypes) || "never";
 
-        const unions = [true, "always", "in-unions", "in-unions-and-intersections"];
-        const intersections = [true, "always", "in-intersections", "in-unions-and-intersections"];
-        const compositions = ["in-unions", "in-intersections", "in-unions-and-intersections"];
+        const unions = [
+            true,
+            "always",
+            "in-unions",
+            "in-unions-and-intersections"
+        ];
+        const intersections = [
+            true,
+            "always",
+            "in-intersections",
+            "in-unions-and-intersections"
+        ];
+        const compositions = [
+            "in-unions",
+            "in-intersections",
+            "in-unions-and-intersections"
+        ];
         const aliasTypes = ["TSLastTypeNode", "TSArrayType", "TSTypeReference"];
 
         //----------------------------------------------------------------------
@@ -89,7 +99,11 @@ module.exports = {
          * @private
          */
         function isComposition(node) {
-            return node && (node.type === "TSUnionType" || node.type === "TSIntersectionType");
+            return (
+                node &&
+                (node.type === "TSUnionType" ||
+                    node.type === "TSIntersectionType")
+            );
         }
 
         /**
@@ -101,10 +115,14 @@ module.exports = {
          * @private
          */
         function isSupportedComposition(isTopLevel, compositionType, allowed) {
-            return compositions.indexOf(allowed) === -1 || (!isTopLevel && (
-                (compositionType === "TSUnionType" && unions.indexOf(allowed) > -1) ||
-                (compositionType === "TSIntersectionType" && intersections.indexOf(allowed) > -1)
-            ));
+            return (
+                compositions.indexOf(allowed) === -1 ||
+                (!isTopLevel &&
+                    ((compositionType === "TSUnionType" &&
+                        unions.indexOf(allowed) > -1) ||
+                        (compositionType === "TSIntersectionType" &&
+                            intersections.indexOf(allowed) > -1)))
+            );
         }
 
         /**
@@ -114,7 +132,11 @@ module.exports = {
          * @private
          */
         function isAlias(node) {
-            return node && (/Keyword$/.test(node.type) || aliasTypes.indexOf(node.type) > -1);
+            return (
+                node &&
+                (/Keyword$/.test(node.type) ||
+                    aliasTypes.indexOf(node.type) > -1)
+            );
         }
 
         /**
@@ -158,12 +180,18 @@ module.exports = {
          */
         function getMessage(compositionType, isRoot, type) {
             if (isRoot) {
-                return type ? `Type ${type} are not allowed` : "Type aliases are not allowed";
+                return type
+                    ? `Type ${type} are not allowed`
+                    : "Type aliases are not allowed";
             }
 
             return compositionType === "TSUnionType"
-                ? `${type[0].toUpperCase()}${type.substring(1)} in union types are not allowed`
-                : `${type[0].toUpperCase()}${type.substring(1)} in intersection types are not allowed`;
+                ? `${type[0].toUpperCase()}${type.substring(
+                      1
+                  )} in union types are not allowed`
+                : `${type[0].toUpperCase()}${type.substring(
+                      1
+                  )} in intersection types are not allowed`;
         }
 
         /**
@@ -177,31 +205,68 @@ module.exports = {
          */
         function validateTypeAliases(node, isTopLevel, compositionType) {
             if (isAlias(node)) {
-                if (allowAliases === "never" || (!isSupportedComposition(isTopLevel, compositionType, allowAliases))) {
+                if (
+                    allowAliases === "never" ||
+                    !isSupportedComposition(
+                        isTopLevel,
+                        compositionType,
+                        allowAliases
+                    )
+                ) {
                     context.report({
                         node,
-                        message: getMessage(compositionType, isTopLevel, "aliases")
+                        message: getMessage(
+                            compositionType,
+                            isTopLevel,
+                            "aliases"
+                        )
                     });
                 }
             } else if (isCallback(node)) {
                 if (allowCallbacks === "never") {
                     context.report({
                         node,
-                        message: getMessage(compositionType, isTopLevel, "callbacks")
+                        message: getMessage(
+                            compositionType,
+                            isTopLevel,
+                            "callbacks"
+                        )
                     });
                 }
             } else if (isLiteral(node)) {
-                if (allowLiterals === "never" || (!isSupportedComposition(isTopLevel, compositionType, allowLiterals))) {
+                if (
+                    allowLiterals === "never" ||
+                    !isSupportedComposition(
+                        isTopLevel,
+                        compositionType,
+                        allowLiterals
+                    )
+                ) {
                     context.report({
                         node,
-                        message: getMessage(compositionType, isTopLevel, "literals")
+                        message: getMessage(
+                            compositionType,
+                            isTopLevel,
+                            "literals"
+                        )
                     });
                 }
             } else if (isMappedType(node)) {
-                if (allowMappedTypes === "never" || (!isSupportedComposition(isTopLevel, compositionType, allowMappedTypes))) {
+                if (
+                    allowMappedTypes === "never" ||
+                    !isSupportedComposition(
+                        isTopLevel,
+                        compositionType,
+                        allowMappedTypes
+                    )
+                ) {
                     context.report({
                         node,
-                        message: getMessage(compositionType, isTopLevel, "mapped types")
+                        message: getMessage(
+                            compositionType,
+                            isTopLevel,
+                            "mapped types"
+                        )
                     });
                 }
             } else {

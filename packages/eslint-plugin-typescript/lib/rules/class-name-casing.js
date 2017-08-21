@@ -18,7 +18,6 @@ module.exports = {
     },
 
     create(context) {
-
         // variables should be defined here
 
         //----------------------------------------------------------------------
@@ -31,7 +30,9 @@ module.exports = {
          * @returns {boolean}      Is the name PascalCased?
          */
         function isPascalCase(name) {
-            return name[0].toUpperCase() === name[0] && /^[A-Za-z]+$/.test(name);
+            return (
+                name[0].toUpperCase() === name[0] && /^[A-Za-z]+$/.test(name)
+            );
         }
 
         /**
@@ -68,9 +69,7 @@ module.exports = {
         //----------------------------------------------------------------------
 
         return {
-
             "ClassDeclaration, TSInterfaceDeclaration"(node) {
-
                 // class expressions (i.e. export default class {}) are OK
                 if (node.id && !isPascalCase(node.id.name)) {
                     report(node);
@@ -87,7 +86,6 @@ module.exports = {
                     }
                 }
             }
-
         };
     }
 };

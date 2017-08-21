@@ -18,7 +18,6 @@ module.exports = {
     },
 
     create(context) {
-
         //----------------------------------------------------------------------
         // Helpers
         //----------------------------------------------------------------------
@@ -41,8 +40,10 @@ module.exports = {
                     return member.id.name;
                 }
                 case "TSMethodSignature": {
-                    return member.key && (member.key.name || member.key.value) ||
-                           member.name && (member.name.name || member.name.value);
+                    return (
+                        (member.key && (member.key.name || member.key.value)) ||
+                        (member.name && (member.name.name || member.name.value))
+                    );
                 }
                 case "TSCallSignature": {
                     return "call";

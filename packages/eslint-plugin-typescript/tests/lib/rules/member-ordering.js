@@ -11,7 +11,6 @@
 const rule = require("../../../lib/rules/member-ordering"),
     RuleTester = require("eslint").RuleTester;
 
-
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
@@ -176,7 +175,15 @@ interface Foo {
     C: string;
 }
             `,
-            options: [{ default: ["private-instance-method", "public-constructor", "protected-static-field"] }],
+            options: [
+                {
+                    default: [
+                        "private-instance-method",
+                        "public-constructor",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -198,7 +205,15 @@ interface Foo {
     C: string;
 }
             `,
-            options: [{ default: ["method", "public-constructor", "protected-static-field"] }],
+            options: [
+                {
+                    default: [
+                        "method",
+                        "public-constructor",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -395,7 +410,11 @@ type Foo = {
             `,
             options: [
                 {
-                    default: ["public-instance-method", "public-constructor", "protected-static-field"],
+                    default: [
+                        "public-instance-method",
+                        "public-constructor",
+                        "protected-static-field"
+                    ],
                     typeLiterals: ["field", "method"]
                 }
             ],
@@ -593,7 +612,13 @@ class Foo {
             `,
             options: [
                 {
-                    classes: ["public-method", "constructor", "public-field", "private-field", "protected-field"]
+                    classes: [
+                        "public-method",
+                        "constructor",
+                        "public-field",
+                        "private-field",
+                        "protected-field"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser"
@@ -626,7 +651,8 @@ class Foo {
                         "constructor",
                         "public-field",
                         "protected-field",
-                        "private-field"]
+                        "private-field"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser"
@@ -650,7 +676,17 @@ class Foo {
 }
             `,
             parser: "typescript-eslint-parser",
-            options: [{ default: ["public-method", "public-field", "constructor", "method", "field"] }]
+            options: [
+                {
+                    default: [
+                        "public-method",
+                        "public-field",
+                        "constructor",
+                        "method",
+                        "field"
+                    ]
+                }
+            ]
         },
         {
             code: `
@@ -704,7 +740,14 @@ class Foo {
 
 }
             `,
-            options: [{ classes: ["private-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    classes: [
+                        "private-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -726,7 +769,14 @@ class Foo {
 
 }
             `,
-            options: [{ default: ["public-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    default: [
+                        "public-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -748,7 +798,14 @@ class Foo {
 
 }
             `,
-            options: [{ classes: ["public-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    classes: [
+                        "public-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -771,8 +828,16 @@ class Foo {
             `,
             options: [
                 {
-                    default: ["public-instance-method", "public-constructor", "protected-static-field"],
-                    classes: ["public-instance-field", "private-constructor", "protected-instance-method"]
+                    default: [
+                        "public-instance-method",
+                        "public-constructor",
+                        "protected-static-field"
+                    ],
+                    classes: [
+                        "public-instance-field",
+                        "private-constructor",
+                        "protected-instance-method"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser"
@@ -797,8 +862,16 @@ class Foo {
             `,
             options: [
                 {
-                    default: ["public-instance-method", "public-constructor", "protected-static-field"],
-                    classes: ["public-instance-field", "private-constructor", "protected-instance-method"]
+                    default: [
+                        "public-instance-method",
+                        "public-constructor",
+                        "protected-static-field"
+                    ],
+                    classes: [
+                        "public-instance-field",
+                        "private-constructor",
+                        "protected-instance-method"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser"
@@ -994,7 +1067,14 @@ const foo = class Foo {
 
 }
             `,
-            options: [{ classExpressions: ["private-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    classExpressions: [
+                        "private-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -1016,7 +1096,14 @@ const foo = class Foo {
 
 }
             `,
-            options: [{ default: ["public-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    default: [
+                        "public-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -1038,7 +1125,14 @@ const foo = class Foo {
 
 }
             `,
-            options: [{ classExpressions: ["public-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    classExpressions: [
+                        "public-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser"
         },
         {
@@ -1061,9 +1155,21 @@ const foo = class Foo {
             `,
             options: [
                 {
-                    default: ["public-instance-method", "public-constructor", "protected-static-field"],
-                    classes: ["public-instance-method", "protected-constructor", "protected-static-method"],
-                    classExpressions: ["public-instance-field", "private-constructor", "protected-instance-method"]
+                    default: [
+                        "public-instance-method",
+                        "public-constructor",
+                        "protected-static-field"
+                    ],
+                    classes: [
+                        "public-instance-method",
+                        "protected-constructor",
+                        "protected-static-method"
+                    ],
+                    classExpressions: [
+                        "public-instance-field",
+                        "private-constructor",
+                        "protected-instance-method"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser"
@@ -1088,9 +1194,21 @@ const foo = class Foo {
             `,
             options: [
                 {
-                    default: ["public-instance-method", "public-constructor", "protected-static-field"],
-                    classes: ["public-instance-method", "protected-constructor", "protected-static-method"],
-                    classExpressions: ["public-instance-field", "private-constructor", "protected-instance-method"]
+                    default: [
+                        "public-instance-method",
+                        "public-constructor",
+                        "protected-static-field"
+                    ],
+                    classes: [
+                        "public-instance-method",
+                        "protected-constructor",
+                        "protected-static-method"
+                    ],
+                    classExpressions: [
+                        "public-instance-field",
+                        "private-constructor",
+                        "protected-instance-method"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser"
@@ -1197,7 +1315,8 @@ interface Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member new should be declared before all method definitions.",
+                    message:
+                        "Member new should be declared before all method definitions.",
                     line: 16,
                     column: 5
                 }
@@ -1226,37 +1345,44 @@ interface Foo {
             options: [{ default: ["method", "constructor", "field"] }],
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 10,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all field definitions.",
+                    message:
+                        "Member H should be declared before all field definitions.",
                     line: 11,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 12,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 14,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 15,
                     column: 5
                 },
                 {
-                    message: "Member new should be declared before all field definitions.",
+                    message:
+                        "Member new should be declared before all field definitions.",
                     line: 16,
                     column: 5
                 }
@@ -1285,37 +1411,44 @@ interface Foo {
             options: [{ interfaces: ["method", "constructor", "field"] }],
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 10,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all field definitions.",
+                    message:
+                        "Member H should be declared before all field definitions.",
                     line: 11,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 12,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 14,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 15,
                     column: 5
                 },
                 {
-                    message: "Member new should be declared before all field definitions.",
+                    message:
+                        "Member new should be declared before all field definitions.",
                     line: 16,
                     column: 5
                 }
@@ -1349,37 +1482,44 @@ interface Foo {
             ],
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 10,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all field definitions.",
+                    message:
+                        "Member H should be declared before all field definitions.",
                     line: 11,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 12,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 14,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 15,
                     column: 5
                 },
                 {
-                    message: "Member new should be declared before all field definitions.",
+                    message:
+                        "Member new should be declared before all field definitions.",
                     line: 16,
                     column: 5
                 }
@@ -1412,27 +1552,32 @@ interface Foo {
             ],
             errors: [
                 {
-                    message: "Member B should be declared before all method definitions.",
+                    message:
+                        "Member B should be declared before all method definitions.",
                     line: 7,
                     column: 5
                 },
                 {
-                    message: "Member C should be declared before all method definitions.",
+                    message:
+                        "Member C should be declared before all method definitions.",
                     line: 9,
                     column: 5
                 },
                 {
-                    message: "Member D should be declared before all method definitions.",
+                    message:
+                        "Member D should be declared before all method definitions.",
                     line: 11,
                     column: 5
                 },
                 {
-                    message: "Member E should be declared before all method definitions.",
+                    message:
+                        "Member E should be declared before all method definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member F should be declared before all method definitions.",
+                    message:
+                        "Member F should be declared before all method definitions.",
                     line: 15,
                     column: 5
                 }
@@ -1460,7 +1605,8 @@ type Foo = {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member new should be declared before all method definitions.",
+                    message:
+                        "Member new should be declared before all method definitions.",
                     line: 16,
                     column: 5
                 }
@@ -1489,37 +1635,44 @@ type Foo = {
             options: [{ default: ["method", "constructor", "field"] }],
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 10,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all field definitions.",
+                    message:
+                        "Member H should be declared before all field definitions.",
                     line: 11,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 12,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 14,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 15,
                     column: 5
                 },
                 {
-                    message: "Member new should be declared before all field definitions.",
+                    message:
+                        "Member new should be declared before all field definitions.",
                     line: 16,
                     column: 5
                 }
@@ -1548,37 +1701,44 @@ type Foo = {
             options: [{ typeLiterals: ["method", "constructor", "field"] }],
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 10,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all field definitions.",
+                    message:
+                        "Member H should be declared before all field definitions.",
                     line: 11,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 12,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 14,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 15,
                     column: 5
                 },
                 {
-                    message: "Member new should be declared before all field definitions.",
+                    message:
+                        "Member new should be declared before all field definitions.",
                     line: 16,
                     column: 5
                 }
@@ -1612,37 +1772,44 @@ type Foo = {
             ],
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 10,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all field definitions.",
+                    message:
+                        "Member H should be declared before all field definitions.",
                     line: 11,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 12,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 14,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 15,
                     column: 5
                 },
                 {
-                    message: "Member new should be declared before all field definitions.",
+                    message:
+                        "Member new should be declared before all field definitions.",
                     line: 16,
                     column: 5
                 }
@@ -1675,27 +1842,32 @@ type Foo = {
             ],
             errors: [
                 {
-                    message: "Member B should be declared before all method definitions.",
+                    message:
+                        "Member B should be declared before all method definitions.",
                     line: 7,
                     column: 5
                 },
                 {
-                    message: "Member C should be declared before all method definitions.",
+                    message:
+                        "Member C should be declared before all method definitions.",
                     line: 9,
                     column: 5
                 },
                 {
-                    message: "Member D should be declared before all method definitions.",
+                    message:
+                        "Member D should be declared before all method definitions.",
                     line: 11,
                     column: 5
                 },
                 {
-                    message: "Member E should be declared before all method definitions.",
+                    message:
+                        "Member E should be declared before all method definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member F should be declared before all method definitions.",
+                    message:
+                        "Member F should be declared before all method definitions.",
                     line: 15,
                     column: 5
                 }
@@ -1722,17 +1894,20 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member G should be declared before all public instance method definitions.",
+                    message:
+                        "Member G should be declared before all public instance method definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all public instance method definitions.",
+                    message:
+                        "Member H should be declared before all public instance method definitions.",
                     line: 14,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all public instance method definitions.",
+                    message:
+                        "Member I should be declared before all public instance method definitions.",
                     line: 15,
                     column: 5
                 }
@@ -1760,32 +1935,38 @@ class Foo {
             options: [{ default: ["field", "constructor", "method"] }],
             errors: [
                 {
-                    message: "Member A should be declared before all constructor definitions.",
+                    message:
+                        "Member A should be declared before all constructor definitions.",
                     line: 4,
                     column: 5
                 },
                 {
-                    message: "Member B should be declared before all constructor definitions.",
+                    message:
+                        "Member B should be declared before all constructor definitions.",
                     line: 5,
                     column: 5
                 },
                 {
-                    message: "Member C should be declared before all constructor definitions.",
+                    message:
+                        "Member C should be declared before all constructor definitions.",
                     line: 6,
                     column: 5
                 },
                 {
-                    message: "Member D should be declared before all constructor definitions.",
+                    message:
+                        "Member D should be declared before all constructor definitions.",
                     line: 7,
                     column: 5
                 },
                 {
-                    message: "Member E should be declared before all constructor definitions.",
+                    message:
+                        "Member E should be declared before all constructor definitions.",
                     line: 8,
                     column: 5
                 },
                 {
-                    message: "Member F should be declared before all constructor definitions.",
+                    message:
+                        "Member F should be declared before all constructor definitions.",
                     line: 9,
                     column: 5
                 }
@@ -1813,7 +1994,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member A should be declared before all method definitions.",
+                    message:
+                        "Member A should be declared before all method definitions.",
                     line: 10,
                     column: 5
                 }
@@ -1841,7 +2023,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 9,
                     column: 5
                 }
@@ -1869,27 +2052,32 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 6,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 7,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 8,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 9,
                     column: 5
                 },
                 {
-                    message: "Member constructor should be declared before all field definitions.",
+                    message:
+                        "Member constructor should be declared before all field definitions.",
                     line: 11,
                     column: 5
                 }
@@ -1922,37 +2110,44 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 4,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all field definitions.",
+                    message:
+                        "Member H should be declared before all field definitions.",
                     line: 5,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 6,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 7,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 8,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 9,
                     column: 5
                 },
                 {
-                    message: "Member constructor should be declared before all field definitions.",
+                    message:
+                        "Member constructor should be declared before all field definitions.",
                     line: 10,
                     column: 5
                 }
@@ -1980,18 +2175,26 @@ class Foo {
             `,
             options: [
                 {
-                    classes: ["public-method", "constructor", "public-field", "private-field", "protected-field"]
+                    classes: [
+                        "public-method",
+                        "constructor",
+                        "public-field",
+                        "private-field",
+                        "protected-field"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member A should be declared before all private field definitions.",
+                    message:
+                        "Member A should be declared before all private field definitions.",
                     line: 12,
                     column: 5
                 },
                 {
-                    message: "Member F should be declared before all protected field definitions.",
+                    message:
+                        "Member F should be declared before all protected field definitions.",
                     line: 15,
                     column: 5
                 }
@@ -2025,18 +2228,21 @@ class Foo {
                         "constructor",
                         "public-field",
                         "protected-field",
-                        "private-field"]
+                        "private-field"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member H should be declared before all public instance method definitions.",
+                    message:
+                        "Member H should be declared before all public instance method definitions.",
                     line: 6,
                     column: 5
                 },
                 {
-                    message: "Member constructor should be declared before all public field definitions.",
+                    message:
+                        "Member constructor should be declared before all public field definitions.",
                     line: 10,
                     column: 5
                 }
@@ -2061,10 +2267,21 @@ class Foo {
 }
             `,
             parser: "typescript-eslint-parser",
-            options: [{ default: ["public-method", "public-field", "constructor", "method", "field"] }],
+            options: [
+                {
+                    default: [
+                        "public-method",
+                        "public-field",
+                        "constructor",
+                        "method",
+                        "field"
+                    ]
+                }
+            ],
             errors: [
                 {
-                    message: "Member constructor should be declared before all method definitions.",
+                    message:
+                        "Member constructor should be declared before all method definitions.",
                     line: 8,
                     column: 5
                 }
@@ -2104,12 +2321,14 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member G should be declared before all private static method definitions.",
+                    message:
+                        "Member G should be declared before all private static method definitions.",
                     line: 5,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all private static method definitions.",
+                    message:
+                        "Member H should be declared before all private static method definitions.",
                     line: 6,
                     column: 5
                 }
@@ -2133,11 +2352,19 @@ class Foo {
     constructor() {}
 }
             `,
-            options: [{ classes: ["private-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    classes: [
+                        "private-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member L should be declared before all protected static field definitions.",
+                    message:
+                        "Member L should be declared before all protected static field definitions.",
                     line: 10,
                     column: 5
                 }
@@ -2162,11 +2389,19 @@ class Foo {
 
 }
             `,
-            options: [{ default: ["public-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    default: [
+                        "public-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member J should be declared before all protected static field definitions.",
+                    message:
+                        "Member J should be declared before all protected static field definitions.",
                     line: 8,
                     column: 5
                 }
@@ -2193,17 +2428,20 @@ const foo = class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member G should be declared before all public instance method definitions.",
+                    message:
+                        "Member G should be declared before all public instance method definitions.",
                     line: 13,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all public instance method definitions.",
+                    message:
+                        "Member H should be declared before all public instance method definitions.",
                     line: 14,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all public instance method definitions.",
+                    message:
+                        "Member I should be declared before all public instance method definitions.",
                     line: 15,
                     column: 5
                 }
@@ -2231,32 +2469,38 @@ const foo = class {
             options: [{ default: ["field", "constructor", "method"] }],
             errors: [
                 {
-                    message: "Member A should be declared before all constructor definitions.",
+                    message:
+                        "Member A should be declared before all constructor definitions.",
                     line: 4,
                     column: 5
                 },
                 {
-                    message: "Member B should be declared before all constructor definitions.",
+                    message:
+                        "Member B should be declared before all constructor definitions.",
                     line: 5,
                     column: 5
                 },
                 {
-                    message: "Member C should be declared before all constructor definitions.",
+                    message:
+                        "Member C should be declared before all constructor definitions.",
                     line: 6,
                     column: 5
                 },
                 {
-                    message: "Member D should be declared before all constructor definitions.",
+                    message:
+                        "Member D should be declared before all constructor definitions.",
                     line: 7,
                     column: 5
                 },
                 {
-                    message: "Member E should be declared before all constructor definitions.",
+                    message:
+                        "Member E should be declared before all constructor definitions.",
                     line: 8,
                     column: 5
                 },
                 {
-                    message: "Member F should be declared before all constructor definitions.",
+                    message:
+                        "Member F should be declared before all constructor definitions.",
                     line: 9,
                     column: 5
                 }
@@ -2284,7 +2528,8 @@ const foo = class {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member A should be declared before all method definitions.",
+                    message:
+                        "Member A should be declared before all method definitions.",
                     line: 10,
                     column: 5
                 }
@@ -2312,7 +2557,8 @@ const foo = class {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 9,
                     column: 5
                 }
@@ -2340,27 +2586,32 @@ const foo = class {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 6,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 7,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 8,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 9,
                     column: 5
                 },
                 {
-                    message: "Member constructor should be declared before all field definitions.",
+                    message:
+                        "Member constructor should be declared before all field definitions.",
                     line: 11,
                     column: 5
                 }
@@ -2393,37 +2644,44 @@ const foo = class {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member G should be declared before all field definitions.",
+                    message:
+                        "Member G should be declared before all field definitions.",
                     line: 4,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all field definitions.",
+                    message:
+                        "Member H should be declared before all field definitions.",
                     line: 5,
                     column: 5
                 },
                 {
-                    message: "Member I should be declared before all field definitions.",
+                    message:
+                        "Member I should be declared before all field definitions.",
                     line: 6,
                     column: 5
                 },
                 {
-                    message: "Member J should be declared before all field definitions.",
+                    message:
+                        "Member J should be declared before all field definitions.",
                     line: 7,
                     column: 5
                 },
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 8,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all field definitions.",
+                    message:
+                        "Member L should be declared before all field definitions.",
                     line: 9,
                     column: 5
                 },
                 {
-                    message: "Member constructor should be declared before all field definitions.",
+                    message:
+                        "Member constructor should be declared before all field definitions.",
                     line: 10,
                     column: 5
                 }
@@ -2451,18 +2709,26 @@ const foo = class {
             `,
             options: [
                 {
-                    classExpressions: ["public-method", "constructor", "public-field", "private-field", "protected-field"]
+                    classExpressions: [
+                        "public-method",
+                        "constructor",
+                        "public-field",
+                        "private-field",
+                        "protected-field"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member A should be declared before all private field definitions.",
+                    message:
+                        "Member A should be declared before all private field definitions.",
                     line: 12,
                     column: 5
                 },
                 {
-                    message: "Member F should be declared before all protected field definitions.",
+                    message:
+                        "Member F should be declared before all protected field definitions.",
                     line: 15,
                     column: 5
                 }
@@ -2496,18 +2762,21 @@ const foo = class {
                         "constructor",
                         "public-field",
                         "protected-field",
-                        "private-field"]
+                        "private-field"
+                    ]
                 }
             ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member H should be declared before all public instance method definitions.",
+                    message:
+                        "Member H should be declared before all public instance method definitions.",
                     line: 6,
                     column: 5
                 },
                 {
-                    message: "Member constructor should be declared before all public field definitions.",
+                    message:
+                        "Member constructor should be declared before all public field definitions.",
                     line: 10,
                     column: 5
                 }
@@ -2532,10 +2801,21 @@ const foo = class {
 }
             `,
             parser: "typescript-eslint-parser",
-            options: [{ default: ["public-method", "public-field", "constructor", "method", "field"] }],
+            options: [
+                {
+                    default: [
+                        "public-method",
+                        "public-field",
+                        "constructor",
+                        "method",
+                        "field"
+                    ]
+                }
+            ],
             errors: [
                 {
-                    message: "Member constructor should be declared before all method definitions.",
+                    message:
+                        "Member constructor should be declared before all method definitions.",
                     line: 8,
                     column: 5
                 }
@@ -2575,12 +2855,14 @@ const foo = class {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member G should be declared before all private static method definitions.",
+                    message:
+                        "Member G should be declared before all private static method definitions.",
                     line: 5,
                     column: 5
                 },
                 {
-                    message: "Member H should be declared before all private static method definitions.",
+                    message:
+                        "Member H should be declared before all private static method definitions.",
                     line: 6,
                     column: 5
                 }
@@ -2605,11 +2887,19 @@ const foo = class {
 
 }
             `,
-            options: [{ classExpressions: ["private-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    classExpressions: [
+                        "private-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member L should be declared before all protected static field definitions.",
+                    message:
+                        "Member L should be declared before all protected static field definitions.",
                     line: 10,
                     column: 5
                 }
@@ -2634,20 +2924,24 @@ const foo = class {
 
 }
             `,
-            options: [{ default: ["public-instance-method", "protected-static-field"] }],
+            options: [
+                {
+                    default: [
+                        "public-instance-method",
+                        "protected-static-field"
+                    ]
+                }
+            ],
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member J should be declared before all protected static field definitions.",
+                    message:
+                        "Member J should be declared before all protected static field definitions.",
                     line: 8,
                     column: 5
                 }
             ]
         },
-
-
-
-
 
         {
             code: `
@@ -2661,12 +2955,14 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member A should be declared before all public instance method definitions.",
+                    message:
+                        "Member A should be declared before all public instance method definitions.",
                     line: 4,
                     column: 5
                 },
                 {
-                    message: "Member constructor should be declared before all public instance method definitions.",
+                    message:
+                        "Member constructor should be declared before all public instance method definitions.",
                     line: 5,
                     column: 5
                 }
@@ -2685,7 +2981,8 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member K should be declared before all constructor definitions.",
+                    message:
+                        "Member K should be declared before all constructor definitions.",
                     line: 5,
                     column: 5
                 }
@@ -2705,12 +3002,14 @@ class Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member K should be declared before all constructor definitions.",
+                    message:
+                        "Member K should be declared before all constructor definitions.",
                     line: 5,
                     column: 5
                 },
                 {
-                    message: "Member L should be declared before all constructor definitions.",
+                    message:
+                        "Member L should be declared before all constructor definitions.",
                     line: 6,
                     column: 5
                 }
@@ -2727,7 +3026,8 @@ interface Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member A should be declared before all method definitions.",
+                    message:
+                        "Member A should be declared before all method definitions.",
                     line: 4,
                     column: 5
                 }
@@ -2745,7 +3045,8 @@ interface Foo {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 5,
                     column: 5
                 }
@@ -2762,7 +3063,8 @@ type Foo = {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member A should be declared before all method definitions.",
+                    message:
+                        "Member A should be declared before all method definitions.",
                     line: 4,
                     column: 5
                 }
@@ -2780,7 +3082,8 @@ type Foo = {
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Member K should be declared before all field definitions.",
+                    message:
+                        "Member K should be declared before all field definitions.",
                     line: 5,
                     column: 5
                 }
