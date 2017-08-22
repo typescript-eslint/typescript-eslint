@@ -12,7 +12,8 @@ const definition = {
     type: "object",
     properties: {
         delimiter: { enum: ["none", "semi", "comma"] },
-        requireLast: { type: "boolean" }
+        requireLast: { type: "boolean" },
+        ignoreSingleLine: { type: "boolean" }
     },
     additionalProperties: false
 };
@@ -31,6 +32,7 @@ module.exports = {
                 properties: {
                     delimiter: { enum: ["none", "semi", "comma"] },
                     requireLast: { type: "boolean" },
+                    ignoreSingleLine: { type: "boolean" },
                     overrides: {
                         type: "object",
                         properties: {
@@ -50,7 +52,11 @@ module.exports = {
         const options = context.options[0] || {};
 
         const overrides = options.overrides || {};
-        const defaults = { delimiter: "semi", requireLast: true };
+        const defaults = {
+            delimiter: "semi",
+            requireLast: true,
+            ignoreSingleLine: true
+        };
 
         const interfaceOptions = Object.assign(
             {},
@@ -73,11 +79,14 @@ module.exports = {
          * Check the last token in the given member.
          * @param {ASTNode} member the member to be evaluated.
          * @param {Object} opts the options to be validated.
-         * @param {boolean} isLast a flag indicating `member` is the last in the interface or type literal.
+         * @param {boolean} isLast a flag indicating `member` is the last in the
+         *                         interface or type literal.
+         * @param {boolean} isSameLine a flag indicating the interface or type
+         *                             literal was declared in a single line.
          * @returns {void}
          * @private
          */
-        function checkLastToken(member, opts, isLast) {
+        function checkLastToken(member, opts, isLast, isSameLine) {
             let message;
             const lastToken = sourceCode.getLastToken(member, {
                 includeComments: false
@@ -98,7 +107,15 @@ module.exports = {
                 lastToken.value !== "," &&
                 opts.delimiter !== "none"
             ) {
-                if (!isLast || (isLast && opts.requireLast)) {
+                let canOmit = isLast;
+
+                if (canOmit) {
+                    canOmit =
+                        !opts.requireLast ||
+                        (isSameLine && opts.ignoreSingleLine);
+                }
+
+                if (!canOmit) {
                     message =
                         opts.delimiter === "semi"
                             ? "Expected a semicolon."
@@ -131,6 +148,7 @@ module.exports = {
          * @private
          */
         function checkMemberSeparatorStyle(node) {
+            const isSingleLine = node.loc.start.line === node.loc.end.line;
             const isInterface = node.type === "TSInterfaceBody";
             const members = isInterface ? node.body : node.members;
 
@@ -138,7 +156,8 @@ module.exports = {
                 checkLastToken(
                     member,
                     isInterface ? interfaceOptions : typeLiteralOptions,
-                    index === members.length - 1
+                    index === members.length - 1,
+                    isSingleLine
                 );
             });
         }

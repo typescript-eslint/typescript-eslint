@@ -622,6 +622,168 @@ type Bar = {
                 }
             ],
             parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any }",
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any; }",
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any }",
+            options: [
+                {
+                    ignoreSingleLine: true
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any }",
+            options: [
+                {
+                    delimiter: "comma",
+                    ignoreSingleLine: true
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any; }",
+            options: [
+                {
+                    ignoreSingleLine: false
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any, }",
+            options: [
+                {
+                    delimiter: "comma",
+                    ignoreSingleLine: false
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any }",
+            options: [
+                {
+                    ignoreSingleLine: false,
+                    overrides: {
+                        interface: { ignoreSingleLine: true }
+                    }
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: true
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any; }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: false
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "interface Foo { [key: string]: any }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: false,
+                    overrides: {
+                        interface: { ignoreSingleLine: true }
+                    }
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "type Foo = { [key: string]: any }",
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "type Foo = { [key: string]: any; }",
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "type Foo = { [key: string]: any }",
+            options: [
+                {
+                    ignoreSingleLine: true
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "type Foo = { [key: string]: any; }",
+            options: [
+                {
+                    ignoreSingleLine: false
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "type Foo = { [key: string]: any }",
+            options: [
+                {
+                    ignoreSingleLine: false,
+                    overrides: {
+                        typeLiteral: { ignoreSingleLine: true }
+                    }
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "type Foo = { [key: string]: any }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: true
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "type Foo = { [key: string]: any; }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: false
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: "type Foo = { [key: string]: any }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: false,
+                    overrides: {
+                        typeLiteral: { ignoreSingleLine: true }
+                    }
+                }
+            ],
+            parser: "typescript-eslint-parser"
         }
     ],
     invalid: [
@@ -2412,6 +2574,166 @@ type Bar = {
                     message: "Expected a semicolon.",
                     line: 9,
                     column: 17
+                }
+            ]
+        },
+        {
+            code: `
+interface Foo {
+    [key: string]: any
+}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 3,
+                    column: 23
+                }
+            ]
+        },
+        {
+            code: `
+interface Foo {
+    [key: string]: any
+}
+            `,
+            parser: "typescript-eslint-parser",
+            options: [{ ignoreSingleLine: true }],
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 3,
+                    column: 23
+                }
+            ]
+        },
+        {
+            code: "interface Foo { [key: string]: any }",
+            options: [{ ignoreSingleLine: false }],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 1,
+                    column: 35
+                }
+            ]
+        },
+        {
+            code: "interface Foo { [key: string]: any }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: false
+                }
+            ],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 1,
+                    column: 35
+                }
+            ]
+        },
+        {
+            code: "interface Foo { [key: string]: any }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: true,
+                    overrides: {
+                        interface: { ignoreSingleLine: false }
+                    }
+                }
+            ],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 1,
+                    column: 35
+                }
+            ]
+        },
+        {
+            code: `
+type Foo = {
+    [key: string]: any
+}
+            `,
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 3,
+                    column: 23
+                }
+            ]
+        },
+        {
+            code: `
+type Foo = {
+    [key: string]: any
+}
+            `,
+            parser: "typescript-eslint-parser",
+            options: [{ ignoreSingleLine: true }],
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 3,
+                    column: 23
+                }
+            ]
+        },
+        {
+            code: "type Foo = { [key: string]: any }",
+            options: [{ ignoreSingleLine: false }],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 1,
+                    column: 32
+                }
+            ]
+        },
+        {
+            code: "type Foo = { [key: string]: any }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: false
+                }
+            ],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 1,
+                    column: 32
+                }
+            ]
+        },
+        {
+            code: "type Foo = { [key: string]: any }",
+            options: [
+                {
+                    requireLast: true,
+                    ignoreSingleLine: true,
+                    overrides: {
+                        typeLiteral: { ignoreSingleLine: false }
+                    }
+                }
+            ],
+            parser: "typescript-eslint-parser",
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 1,
+                    column: 32
                 }
             ]
         }
