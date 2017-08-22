@@ -14,7 +14,8 @@
     "lint": "eslint lib/ tests/",
     "lint:fix": "eslint lib/ tests/ --fix",
     "mocha": "mocha tests --recursive",
-    "test": "npm run lint && npm run mocha"
+    "test": "npm run lint && npm run mocha",
+    "precommit": "npm test && lint-staged"
   },
   "dependencies": {
     "requireindex": "~1.1.0"
@@ -25,10 +26,18 @@
     "eslint-config-prettier": "^2.3.0",
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-prettier": "^2.2.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.0.3",
     "mocha": "^3.5.0",
     "prettier": "^1.5.3",
     "typescript": "~2.4.2",
     "typescript-eslint-parser": "^6.0.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "engines": {
     "node": ">=4"
