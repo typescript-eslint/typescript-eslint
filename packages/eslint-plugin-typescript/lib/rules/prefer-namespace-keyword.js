@@ -33,7 +33,7 @@ module.exports = {
          * @private
          */
         function isTypeScriptModuleDeclaration(node) {
-            return node.name && node.name.type === "Literal";
+            return node.id && node.id.type === "Literal";
         }
 
         /**

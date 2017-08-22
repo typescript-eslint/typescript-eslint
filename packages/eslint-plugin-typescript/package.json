@@ -31,11 +31,11 @@
     "mocha": "^3.5.0",
     "prettier": "^1.5.3",
     "typescript": "~2.4.2",
-    "typescript-eslint-parser": "^6.0.1"
+    "typescript-eslint-parser": "^7.0.0"
   },
   "lint-staged": {
     "*.js": [
-      "prettier --write",
+      "prettier --write --tab-width 4",
       "git add"
     ]
   },

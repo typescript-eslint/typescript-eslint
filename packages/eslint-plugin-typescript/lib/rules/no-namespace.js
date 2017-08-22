@@ -50,7 +50,7 @@ module.exports = {
          * @private
          */
         function isTypeScriptModuleDeclaration(node) {
-            return node.name && node.name.type === "Literal";
+            return node.id && node.id.type === "Literal";
         }
 
         /**
@@ -60,11 +60,9 @@ module.exports = {
          * @private
          */
         function isDeclaration(node) {
-            const hasDeclareModifier =
-                (node.modifiers || [])
-                    .filter(m => m.type === "TSDeclareKeyword").length > 0;
-
-            return hasDeclareModifier && !isTypeScriptModuleDeclaration(node);
+            return (
+                node.declare === true && !isTypeScriptModuleDeclaration(node)
+            );
         }
 
         /**
