@@ -1,3 +1,10 @@
+v7.0.0 - August 22, 2017
+
+* 01c34f4 Fix: Ensure exports applied to TSModuleDeclaration (#375) (James Henry)
+* 38bd1ae Breaking: Check for isTypeKeyword in type params (fixes #373) (#374) (James Henry)
+* 3727956 Breaking: Handle TSModuleDeclaration and refactor (fixes #371) (#372) (James Henry)
+* d67ee6c Fix: Typo in TSExportAssignment node type (#367) (James Henry)
+
 v6.0.1 - August 19, 2017
 
 * 7bcc0d6 Fix: Ensure modifiers are applied to enums (fixes #365) (#366) (James Henry)
