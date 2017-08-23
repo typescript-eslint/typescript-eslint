@@ -125,10 +125,80 @@ module.exports = {
             });
         }
 
+        /**
+         * Checks if the given node has a type annotation and marks it as used.
+         * @param {ASTNode} node the relevant AST node.
+         * @returns {void}
+         * @private
+         */
+        function markTypeAnnotationAsUsed(node) {
+            const annotation = node.typeAnnotation || node;
+
+            switch (annotation.type) {
+                case "TSTypeReference": {
+                    if (annotation.typeName.type === "TSArrayType") {
+                        markTypeAnnotationAsUsed(
+                            annotation.typeName.elementType
+                        );
+                    } else {
+                        markVariableAsUsed(context, annotation.typeName.name);
+                        if (
+                            annotation.typeParameters &&
+                            annotation.typeParameters.params
+                        ) {
+                            annotation.typeParameters.params.forEach(param => {
+                                markTypeAnnotationAsUsed(param);
+                            });
+                        }
+                    }
+
+                    break;
+                }
+                case "TSUnionType":
+                case "TSIntersectionType":
+                    annotation.types.forEach(type => {
+                        markTypeAnnotationAsUsed(type);
+                    });
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        /**
+         * Checks if the given node has a return type and marks it as used.
+         * @param {ASTNode} node the relevant AST node.
+         * @returns {void}
+         * @private
+         */
+        function markFunctionReturnTypeAsUsed(node) {
+            if (node.returnType) {
+                markTypeAnnotationAsUsed(node.returnType);
+            }
+        }
+
         //----------------------------------------------------------------------
         // Public
         //----------------------------------------------------------------------
         return {
+            Identifier(node) {
+                if (node.typeAnnotation) {
+                    markTypeAnnotationAsUsed(node.typeAnnotation);
+                }
+            },
+
+            TypeAnnotation(node) {
+                if (node.typeAnnotation) {
+                    markTypeAnnotationAsUsed(node.typeAnnotation);
+                }
+            },
+
+            FunctionDeclaration: markFunctionReturnTypeAsUsed,
+            FunctionExpression: markFunctionReturnTypeAsUsed,
+            ArrowFunctionExpression: markFunctionReturnTypeAsUsed,
+
             ClassProperty: markDecoratorsAsUsed,
             ClassDeclaration(node) {
                 markDecoratorsAsUsed(node);
