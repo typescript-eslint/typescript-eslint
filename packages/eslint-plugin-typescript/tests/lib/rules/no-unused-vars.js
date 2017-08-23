@@ -175,6 +175,98 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "new Thing()"
             ].join("\n"),
             parser
+        },
+        {
+            code: [
+                "interface Base {}",
+                "const a: Base = {}",
+                "console.log(a);"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "const a: Nullable<string> = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'other'",
+                "const a: Nullable<SomeOther> = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "const a: Nullable | undefined = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "const a: Nullable & undefined = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'other'",
+                "const a: Nullable<SomeOther[]> = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'other'",
+                "const a: Nullable<Array<SomeOther>> = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "const a: Array<Nullable> = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "const a: Array<Nullable[]> = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "const a: Array<Array<Nullable>> = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'other'",
+                "const a: Array<Nullable<SomeOther>> = 'hello'",
+                "console.log(a)"
+            ].join("\n"),
+            parser
         }
     ],
 
@@ -190,6 +282,37 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                     message:
                         "'ClassDecoratorFactory' is defined but never used.",
                     line: 1,
+                    column: 10
+                }
+            ]
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable';",
+                "const a: string = 'hello';",
+                "console.log(a);"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'Nullable' is defined but never used.",
+                    line: 1,
+                    column: 10
+                }
+            ]
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable';",
+                "import { SomeOther } from 'other';",
+                "const a: Nullable<string> = 'hello';",
+                "console.log(a);"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'SomeOther' is defined but never used.",
+                    line: 2,
                     column: 10
                 }
             ]
