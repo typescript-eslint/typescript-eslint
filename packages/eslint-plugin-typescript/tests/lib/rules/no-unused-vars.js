@@ -267,6 +267,149 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "console.log(a)"
             ].join("\n"),
             parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Component } from 'react'",
+                "class Foo implements Component<Nullable>{}",
+                "new Foo()"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Component } from 'react'",
+                "class Foo extends Component<Nullable, {}>{}",
+                "new Foo()"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'some'",
+                "import { Component } from 'react'",
+                "class Foo extends Component<Nullable<SomeOther>, {}>{}",
+                "new Foo()"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "class A {",
+                "    do = (a: Nullable<Another>) => { console.log(a); }",
+                "}",
+                "new A();"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "class A {",
+                "    do(a: Nullable<Another>) { console.log(a); }",
+                "}",
+                "new A();"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "class A {",
+                "    do(): Nullable<Another> { return null; }",
+                "}",
+                "new A();"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "interface A {",
+                "    do(a: Nullable<Another>);",
+                "}"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "interface A {",
+                "    other: Nullable<Another>;",
+                "}"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "function foo(a: Nullable) { console.log(a); }",
+                "foo()"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "function foo(): Nullable { return null; }",
+                "foo()"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'some'",
+                "import { Another } from 'some'",
+                "class A extends Nullable<SomeOther> {",
+                "    other: Nullable<Another>;",
+                "}",
+                "new A();"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'some'",
+                "import { Another } from 'some'",
+                "class A extends Nullable<SomeOther> {",
+                "    do(a: Nullable<Another>){ console.log(a); }",
+                "}",
+                "new A();"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'some'",
+                "import { Another } from 'some'",
+                "interface A extends Nullable<SomeOther> {",
+                "    other: Nullable<Another>;",
+                "}"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'some'",
+                "import { Another } from 'some'",
+                "interface A extends Nullable<SomeOther> {",
+                "    do(a: Nullable<Another>);",
+                "}"
+            ].join("\n"),
+            parser
         }
     ],
 
@@ -307,6 +450,144 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "import { SomeOther } from 'other';",
                 "const a: Nullable<string> = 'hello';",
                 "console.log(a);"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'SomeOther' is defined but never used.",
+                    line: 2,
+                    column: 10
+                }
+            ]
+        },
+
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "class A {",
+                "    do = (a: Nullable) => { console.log(a); }",
+                "}",
+                "new A();"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'Another' is defined but never used.",
+                    line: 2,
+                    column: 10
+                }
+            ]
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "class A {",
+                "    do(a: Nullable) { console.log(a); }",
+                "}",
+                "new A();"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'Another' is defined but never used.",
+                    line: 2,
+                    column: 10
+                }
+            ]
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "class A {",
+                "    do(): Nullable { return null; }",
+                "}",
+                "new A();"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'Another' is defined but never used.",
+                    line: 2,
+                    column: 10
+                }
+            ]
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "interface A {",
+                "    do(a: Nullable);",
+                "}"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'Another' is defined but never used.",
+                    line: 2,
+                    column: 10
+                }
+            ]
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { Another } from 'some'",
+                "interface A {",
+                "    other: Nullable;",
+                "}"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'Another' is defined but never used.",
+                    line: 2,
+                    column: 10
+                }
+            ]
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "function foo(a: string) { console.log(a); }",
+                "foo()"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'Nullable' is defined but never used.",
+                    line: 1,
+                    column: 10
+                }
+            ]
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "function foo(): string | null { return null; }",
+                "foo()"
+            ].join("\n"),
+            parser,
+            errors: [
+                {
+                    message: "'Nullable' is defined but never used.",
+                    line: 1,
+                    column: 10
+                }
+            ]
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
+                "import { SomeOther } from 'some'",
+                "import { Another } from 'some'",
+                "class A extends Nullable {",
+                "    other: Nullable<Another>;",
+                "}",
+                "new A();"
             ].join("\n"),
             parser,
             errors: [

@@ -60,73 +60,7 @@ module.exports = {
         //----------------------------------------------------------------------
 
         /**
-         * Checks if the given node has any decorators and marks them as used.
-         * @param {ASTNode} node The relevant AST node.
-         * @returns {void}
-         * @private
-         */
-        function markDecoratorsAsUsed(node) {
-            if (!node.decorators || !node.decorators.length) {
-                return;
-            }
-            node.decorators.forEach(decorator => {
-                /**
-                 * Decorator
-                 */
-                if (decorator.name) {
-                    markVariableAsUsed(context, decorator.name);
-                    return;
-                }
-
-                if (decorator.expression && decorator.expression.name) {
-                    markVariableAsUsed(context, decorator.expression.name);
-                    return;
-                }
-
-                /**
-                 * Decorator Factory
-                 */
-                if (decorator.callee && decorator.callee.name) {
-                    markVariableAsUsed(context, decorator.callee.name);
-                }
-
-                if (
-                    decorator.expression &&
-                    decorator.expression.callee &&
-                    decorator.expression.callee.name
-                ) {
-                    markVariableAsUsed(
-                        context,
-                        decorator.expression.callee.name
-                    );
-                }
-            });
-        }
-
-        /**
-         * Checks if the given node has any implemented interfaces and marks them as used.
-         * @param {ASTNode} node The relevant AST node.
-         * @returns {void}
-         * @private
-         */
-        function markImplementedInterfacesAsUsed(node) {
-            if (!node.implements || !node.implements.length) {
-                return;
-            }
-            node.implements.forEach(implementedInterface => {
-                if (
-                    !implementedInterface ||
-                    !implementedInterface.id ||
-                    !implementedInterface.id.name
-                ) {
-                    return;
-                }
-                markVariableAsUsed(context, implementedInterface.id.name);
-            });
-        }
-
-        /**
-         * Checks if the given node has a type annotation and marks it as used.
+         * Checks the given node type annotation and marks it as used.
          * @param {ASTNode} node the relevant AST node.
          * @returns {void}
          * @private
@@ -168,7 +102,101 @@ module.exports = {
         }
 
         /**
-         * Checks if the given node has a return type and marks it as used.
+         * Checks the given decorator and marks it as used.
+         * @param {ASTNode} node The relevant AST node.
+         * @returns {void}
+         * @private
+         */
+        function markDecoratorAsUsed(node) {
+            /**
+             * Decorator
+             */
+            if (node.name) {
+                markVariableAsUsed(context, node.name);
+                return;
+            }
+
+            if (node.expression && node.expression.name) {
+                markVariableAsUsed(context, node.expression.name);
+                return;
+            }
+
+            /**
+             * Decorator Factory
+             */
+            if (node.callee && node.callee.name) {
+                markVariableAsUsed(context, node.callee.name);
+            }
+
+            if (
+                node.expression &&
+                node.expression.callee &&
+                node.expression.callee.name
+            ) {
+                markVariableAsUsed(context, node.expression.callee.name);
+            }
+        }
+
+        /**
+         * Checks the given interface and marks it as used.
+         * Generic arguments are also included in the check.
+         * @param {ASTNode} node The relevant AST node.
+         * @returns {void}
+         * @private
+         */
+        function markImplementedInterfaceAsUsed(node) {
+            if (!node || !node.id || !node.id.name) {
+                return;
+            }
+            markVariableAsUsed(context, node.id.name);
+
+            if (!node.typeParameters || !node.typeParameters.params) {
+                return;
+            }
+            node.typeParameters.params.forEach(markTypeAnnotationAsUsed);
+        }
+
+        /**
+         * Checks the given class has a super class and marks it as used.
+         * Generic arguments are also included in the check.
+         * @param {ASTNode} node The relevant AST node.
+         * @returns {void}
+         * @private
+         */
+        function markSuperClassAsUsed(node) {
+            if (!node.superClass) {
+                return;
+            }
+            markVariableAsUsed(context, node.superClass.name);
+
+            if (!node.superTypeParameters || !node.superTypeParameters.params) {
+                return;
+            }
+            node.superTypeParameters.params.forEach(markTypeAnnotationAsUsed);
+        }
+
+        /**
+         * Checks the given interface and marks it as used.
+         * Generic arguments are also included in the check.
+         * This is used when interfaces are extending other interfaces.
+         * @param {ASTNode} node the relevant AST node.
+         * @returns {void}
+         * @private
+         */
+        function markExtendedInterfaceAsUsed(node) {
+            if (!node || !node.id || !node.id.name) {
+                return;
+            }
+            markVariableAsUsed(context, node.id.name);
+
+            if (!node.typeParameters || !node.typeParameters.params) {
+                return;
+            }
+            node.typeParameters.params.forEach(markTypeAnnotationAsUsed);
+        }
+
+        /**
+         * Checks the given function return type and marks it as used.
          * @param {ASTNode} node the relevant AST node.
          * @returns {void}
          * @private
@@ -179,6 +207,22 @@ module.exports = {
             }
         }
 
+        /**
+         * Checks the given class and marks super classes, interfaces and decoratores as used.
+         * @param {ASTNode} node the relevant AST node.
+         * @returns {void}
+         * @private
+         */
+        function markClassOptionsAsUsed(node) {
+            markSuperClassAsUsed(node);
+            if (node.implements) {
+                node.implements.forEach(markImplementedInterfaceAsUsed);
+            }
+            if (node.decorators) {
+                node.decorators.forEach(markDecoratorAsUsed);
+            }
+        }
+
         //----------------------------------------------------------------------
         // Public
         //----------------------------------------------------------------------
@@ -186,6 +230,10 @@ module.exports = {
             Identifier(node) {
                 if (node.typeAnnotation) {
                     markTypeAnnotationAsUsed(node.typeAnnotation);
+                }
+
+                if (node.decorators) {
+                    node.decorators.forEach(markDecoratorAsUsed);
                 }
             },
 
@@ -199,43 +247,16 @@ module.exports = {
             FunctionExpression: markFunctionReturnTypeAsUsed,
             ArrowFunctionExpression: markFunctionReturnTypeAsUsed,
 
-            ClassProperty: markDecoratorsAsUsed,
-            ClassDeclaration(node) {
-                markDecoratorsAsUsed(node);
-                markImplementedInterfacesAsUsed(node);
-            },
+            Decorator: markDecoratorAsUsed,
+            TSInterfaceHeritage: markExtendedInterfaceAsUsed,
+
+            ClassDeclaration: markClassOptionsAsUsed,
+            ClassExpression: markClassOptionsAsUsed,
+
             MethodDefinition(node) {
-                /**
-                 * Decorators are only supported on class methods, so exit early
-                 * if the parent is not a ClassBody
-                 */
-                const anc = context.getAncestors();
-                const tAnc = anc.length;
-
-                if (
-                    !tAnc ||
-                    !anc[tAnc - 1] ||
-                    anc[tAnc - 1].type !== "ClassBody"
-                ) {
-                    return;
+                if (node.decorators) {
+                    node.decorators.forEach(markDecoratorAsUsed);
                 }
-
-                /**
-                 * Mark any of the method's own decorators as used
-                 */
-                markDecoratorsAsUsed(node);
-
-                /**
-                 * Mark any parameter decorators as used
-                 */
-                if (
-                    !node.value ||
-                    !node.value.params ||
-                    !node.value.params.length
-                ) {
-                    return;
-                }
-                node.value.params.forEach(markDecoratorsAsUsed);
             }
         };
     }
