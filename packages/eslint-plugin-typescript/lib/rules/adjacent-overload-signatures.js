@@ -29,10 +29,16 @@ module.exports = {
          * @private
          */
         function getMemberName(member) {
+            if (!member) return null;
+
             switch (member.type) {
                 case "ExportDefaultDeclaration":
                 case "ExportNamedDeclaration": {
-                    return getMemberName(member.declaration);
+                    // export statements (e.g. export { a };)
+                    // have no declarations, so ignore them
+                    return member.declaration
+                        ? getMemberName(member.declaration)
+                        : null;
                 }
                 case "DeclareFunction":
                 case "FunctionDeclaration":
@@ -84,7 +90,7 @@ module.exports = {
                             node: member,
                             message: `All '${name}' signatures should be adjacent`
                         });
-                    } else if (index === -1) {
+                    } else if (name && index === -1) {
                         seen.push(name);
                     }
 
