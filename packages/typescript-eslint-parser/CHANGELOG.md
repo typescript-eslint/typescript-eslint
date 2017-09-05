@@ -1,3 +1,8 @@
+v8.0.0 - September 5, 2017
+
+* 9877e98 Breaking: Support TypeScript 2.5 (fixes #368) (#369) (#370) (James Henry)
+* 5b49870 Fix: Location data for typeAnnotations (#378) (James Henry)
+
 v7.0.0 - August 22, 2017
 
 * 01c34f4 Fix: Ensure exports applied to TSModuleDeclaration (#375) (James Henry)
