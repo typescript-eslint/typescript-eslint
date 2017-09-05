@@ -1,5 +1,286 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`typescript fixtures/babylon-convergence/type-parameter-whitespace-loc.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 24,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 22,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          22,
+          24,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "f",
+        "range": Array [
+          9,
+          10,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        0,
+        24,
+      ],
+      "type": "FunctionDeclaration",
+      "typeParameters": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 19,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "params": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 13,
+                "line": 1,
+              },
+            },
+            "name": "T",
+            "range": Array [
+              13,
+              14,
+            ],
+            "type": "TypeParameter",
+          },
+        ],
+        "range": Array [
+          10,
+          19,
+        ],
+        "type": "TypeParameterDeclaration",
+      },
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 24,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    24,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        8,
+      ],
+      "type": "Keyword",
+      "value": "function",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        9,
+        10,
+      ],
+      "type": "Identifier",
+      "value": "f",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        10,
+        11,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        13,
+        14,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        18,
+        19,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 20,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 19,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        19,
+        20,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 21,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 20,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        20,
+        21,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 22,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        22,
+        23,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        23,
+        24,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`typescript fixtures/babylon-convergence/type-parameters.src 1`] = `
 Object {
   "body": Array [
@@ -817,12 +1098,12 @@ Object {
                       "line": 2,
                     },
                     "start": Object {
-                      "column": 29,
+                      "column": 27,
                       "line": 2,
                     },
                   },
                   "range": Array [
-                    68,
+                    66,
                     83,
                   ],
                   "type": "TypeAnnotation",
@@ -1321,7 +1602,6 @@ Object {
               25,
               38,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSAbstractClassProperty",
             "value": null,
@@ -1360,7 +1640,6 @@ Object {
               43,
               60,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSAbstractClassProperty",
             "value": Object {
@@ -2102,7 +2381,7 @@ Object {
                     "line": 2,
                   },
                   "start": Object {
-                    "column": 16,
+                    "column": 17,
                     "line": 2,
                   },
                 },
@@ -2118,12 +2397,12 @@ Object {
                       "line": 2,
                     },
                     "start": Object {
-                      "column": 21,
+                      "column": 19,
                       "line": 2,
                     },
                   },
                   "range": Array [
-                    60,
+                    58,
                     75,
                   ],
                   "type": "TypeAnnotation",
@@ -2866,7 +3145,7 @@ Object {
           Object {
             "loc": Object {
               "end": Object {
-                "column": 5,
+                "column": 8,
                 "line": 1,
               },
               "start": Object {
@@ -2887,12 +3166,12 @@ Object {
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 7,
+                  "column": 5,
                   "line": 1,
                 },
               },
               "range": Array [
-                7,
+                5,
                 8,
               ],
               "type": "TypeAnnotation",
@@ -2945,12 +3224,12 @@ Object {
               "line": 1,
             },
             "start": Object {
-              "column": 11,
+              "column": 9,
               "line": 1,
             },
           },
           "range": Array [
-            11,
+            9,
             12,
           ],
           "type": "TypeAnnotation",
@@ -3004,7 +3283,6 @@ Object {
           },
           "params": Array [
             Object {
-              "constraint": null,
               "loc": Object {
                 "end": Object {
                   "column": 2,
@@ -4431,7 +4709,6 @@ Object {
               14,
               35,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "typeAnnotation": Object {
@@ -4441,12 +4718,12 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 16,
+                  "column": 14,
                   "line": 2,
                 },
               },
               "range": Array [
-                28,
+                26,
                 34,
               ],
               "type": "TypeAnnotation",
@@ -4505,7 +4782,6 @@ Object {
               38,
               65,
             ],
-            "readonly": false,
             "static": true,
             "type": "ClassProperty",
             "typeAnnotation": Object {
@@ -4515,12 +4791,12 @@ Object {
                   "line": 3,
                 },
                 "start": Object {
-                  "column": 22,
+                  "column": 20,
                   "line": 3,
                 },
               },
               "range": Array [
-                58,
+                56,
                 64,
               ],
               "type": "TypeAnnotation",
@@ -4876,7 +5152,7 @@ Object {
                 Object {
                   "loc": Object {
                     "end": Object {
-                      "column": 23,
+                      "column": 32,
                       "line": 7,
                     },
                     "start": Object {
@@ -4897,12 +5173,12 @@ Object {
                         "line": 7,
                       },
                       "start": Object {
-                        "column": 26,
+                        "column": 24,
                         "line": 7,
                       },
                     },
                     "range": Array [
-                      138,
+                      136,
                       144,
                     ],
                     "type": "TypeAnnotation",
@@ -5823,7 +6099,6 @@ Object {
               },
               "params": Array [
                 Object {
-                  "accessibility": null,
                   "export": true,
                   "loc": Object {
                     "end": Object {
@@ -5838,7 +6113,7 @@ Object {
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 24,
+                        "column": 32,
                         "line": 2,
                       },
                       "start": Object {
@@ -5859,12 +6134,12 @@ Object {
                           "line": 2,
                         },
                         "start": Object {
-                          "column": 26,
+                          "column": 24,
                           "line": 2,
                         },
                       },
                       "range": Array [
-                        38,
+                        36,
                         44,
                       ],
                       "type": "TypeAnnotation",
@@ -5891,8 +6166,6 @@ Object {
                     28,
                     44,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -6628,7 +6901,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -7509,7 +7781,7 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 8,
+                  "column": 11,
                   "line": 2,
                 },
               },
@@ -7532,7 +7804,6 @@ Object {
                 },
                 "params": Array [
                   Object {
-                    "constraint": null,
                     "loc": Object {
                       "end": Object {
                         "column": 10,
@@ -7921,7 +8192,7 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 8,
+                  "column": 17,
                   "line": 2,
                 },
               },
@@ -7944,7 +8215,6 @@ Object {
                 },
                 "params": Array [
                   Object {
-                    "constraint": null,
                     "default": Object {
                       "loc": Object {
                         "end": Object {
@@ -9697,7 +9967,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 42,
+              "column": 45,
               "line": 1,
             },
             "start": Object {
@@ -9718,12 +9988,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 44,
+                "column": 42,
                 "line": 1,
               },
             },
             "range": Array [
-              44,
+              42,
               45,
             ],
             "type": "TypeAnnotation",
@@ -10224,7 +10494,7 @@ Object {
                 "argument": Object {
                   "loc": Object {
                     "end": Object {
-                      "column": 34,
+                      "column": 41,
                       "line": 9,
                     },
                     "start": Object {
@@ -10245,12 +10515,12 @@ Object {
                         "line": 9,
                       },
                       "start": Object {
-                        "column": 36,
+                        "column": 34,
                         "line": 9,
                       },
                     },
                     "range": Array [
-                      194,
+                      192,
                       199,
                     ],
                     "type": "TypeAnnotation",
@@ -10319,12 +10589,12 @@ Object {
                   "line": 9,
                 },
                 "start": Object {
-                  "column": 46,
+                  "column": 44,
                   "line": 9,
                 },
               },
               "range": Array [
-                204,
+                202,
                 205,
               ],
               "type": "TypeAnnotation",
@@ -10394,7 +10664,6 @@ Object {
             },
             "params": Array [
               Object {
-                "constraint": null,
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -11655,7 +11924,6 @@ Object {
               14,
               43,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "value": Object {
@@ -12023,7 +12291,7 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 5,
+                  "column": 6,
                   "line": 2,
                 },
               },
@@ -12085,7 +12353,7 @@ Object {
                   "line": 3,
                 },
                 "start": Object {
-                  "column": 5,
+                  "column": 6,
                   "line": 3,
                 },
               },
@@ -12101,12 +12369,12 @@ Object {
                     "line": 3,
                   },
                   "start": Object {
-                    "column": 10,
+                    "column": 8,
                     "line": 3,
                   },
                 },
                 "range": Array [
-                  32,
+                  30,
                   38,
                 ],
                 "type": "TypeAnnotation",
@@ -12182,7 +12450,7 @@ Object {
                   "line": 4,
                 },
                 "start": Object {
-                  "column": 13,
+                  "column": 14,
                   "line": 4,
                 },
               },
@@ -12198,12 +12466,12 @@ Object {
                     "line": 4,
                   },
                   "start": Object {
-                    "column": 18,
+                    "column": 16,
                     "line": 4,
                   },
                 },
                 "range": Array [
-                  58,
+                  56,
                   64,
                 ],
                 "type": "TypeAnnotation",
@@ -12775,7 +13043,6 @@ Object {
               14,
               19,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "value": null,
@@ -12815,7 +13082,6 @@ Object {
               22,
               36,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "typeAnnotation": Object {
@@ -12825,12 +13091,12 @@ Object {
                   "line": 3,
                 },
                 "start": Object {
-                  "column": 9,
+                  "column": 7,
                   "line": 3,
                 },
               },
               "range": Array [
-                29,
+                27,
                 35,
               ],
               "type": "TypeAnnotation",
@@ -12890,7 +13156,6 @@ Object {
               39,
               61,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "typeAnnotation": Object {
@@ -12900,12 +13165,12 @@ Object {
                   "line": 4,
                 },
                 "start": Object {
-                  "column": 17,
+                  "column": 15,
                   "line": 4,
                 },
               },
               "range": Array [
-                54,
+                52,
                 60,
               ],
               "type": "TypeAnnotation",
@@ -13369,7 +13634,6 @@ Object {
               12,
               37,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "value": Object {
@@ -13724,7 +13988,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "private",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 39,
@@ -13738,7 +14001,7 @@ Object {
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 31,
+                        "column": 39,
                         "line": 2,
                       },
                       "start": Object {
@@ -13759,12 +14022,12 @@ Object {
                           "line": 2,
                         },
                         "start": Object {
-                          "column": 33,
+                          "column": 31,
                           "line": 2,
                         },
                       },
                       "range": Array [
-                        45,
+                        43,
                         51,
                       ],
                       "type": "TypeAnnotation",
@@ -13791,13 +14054,10 @@ Object {
                     26,
                     51,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "private",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 47,
@@ -13811,7 +14071,7 @@ Object {
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 39,
+                        "column": 47,
                         "line": 3,
                       },
                       "start": Object {
@@ -13832,12 +14092,12 @@ Object {
                           "line": 3,
                         },
                         "start": Object {
-                          "column": 41,
+                          "column": 39,
                           "line": 3,
                         },
                       },
                       "range": Array [
-                        94,
+                        92,
                         100,
                       ],
                       "type": "TypeAnnotation",
@@ -13865,12 +14125,10 @@ Object {
                     100,
                   ],
                   "readonly": true,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "private",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 38,
@@ -13885,7 +14143,7 @@ Object {
                     "left": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 25,
+                          "column": 33,
                           "line": 4,
                         },
                         "start": Object {
@@ -13906,12 +14164,12 @@ Object {
                             "line": 4,
                           },
                           "start": Object {
-                            "column": 27,
+                            "column": 25,
                             "line": 4,
                           },
                         },
                         "range": Array [
-                          129,
+                          127,
                           135,
                         ],
                         "type": "TypeAnnotation",
@@ -13973,13 +14231,10 @@ Object {
                     116,
                     140,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "private",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 55,
@@ -13994,7 +14249,7 @@ Object {
                     "left": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 38,
+                          "column": 47,
                           "line": 5,
                         },
                         "start": Object {
@@ -14015,12 +14270,12 @@ Object {
                             "line": 5,
                           },
                           "start": Object {
-                            "column": 40,
+                            "column": 38,
                             "line": 5,
                           },
                         },
                         "range": Array [
-                          182,
+                          180,
                           189,
                         ],
                         "type": "TypeAnnotation",
@@ -14083,7 +14338,6 @@ Object {
                     197,
                   ],
                   "readonly": true,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -14859,7 +15113,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "protected",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 41,
@@ -14873,7 +15126,7 @@ Object {
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 33,
+                        "column": 41,
                         "line": 2,
                       },
                       "start": Object {
@@ -14894,12 +15147,12 @@ Object {
                           "line": 2,
                         },
                         "start": Object {
-                          "column": 35,
+                          "column": 33,
                           "line": 2,
                         },
                       },
                       "range": Array [
-                        47,
+                        45,
                         53,
                       ],
                       "type": "TypeAnnotation",
@@ -14926,13 +15179,10 @@ Object {
                     26,
                     53,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "protected",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 49,
@@ -14946,7 +15196,7 @@ Object {
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 41,
+                        "column": 49,
                         "line": 3,
                       },
                       "start": Object {
@@ -14967,12 +15217,12 @@ Object {
                           "line": 3,
                         },
                         "start": Object {
-                          "column": 43,
+                          "column": 41,
                           "line": 3,
                         },
                       },
                       "range": Array [
-                        98,
+                        96,
                         104,
                       ],
                       "type": "TypeAnnotation",
@@ -15000,12 +15250,10 @@ Object {
                     104,
                   ],
                   "readonly": true,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "protected",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 40,
@@ -15020,7 +15268,7 @@ Object {
                     "left": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 27,
+                          "column": 35,
                           "line": 4,
                         },
                         "start": Object {
@@ -15041,12 +15289,12 @@ Object {
                             "line": 4,
                           },
                           "start": Object {
-                            "column": 29,
+                            "column": 27,
                             "line": 4,
                           },
                         },
                         "range": Array [
-                          135,
+                          133,
                           141,
                         ],
                         "type": "TypeAnnotation",
@@ -15108,13 +15356,10 @@ Object {
                     120,
                     146,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "protected",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 57,
@@ -15129,7 +15374,7 @@ Object {
                     "left": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 40,
+                          "column": 49,
                           "line": 5,
                         },
                         "start": Object {
@@ -15150,12 +15395,12 @@ Object {
                             "line": 5,
                           },
                           "start": Object {
-                            "column": 42,
+                            "column": 40,
                             "line": 5,
                           },
                         },
                         "range": Array [
-                          190,
+                          188,
                           197,
                         ],
                         "type": "TypeAnnotation",
@@ -15218,7 +15463,6 @@ Object {
                     205,
                   ],
                   "readonly": true,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -15994,7 +16238,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "public",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 38,
@@ -16008,7 +16251,7 @@ Object {
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 30,
+                        "column": 38,
                         "line": 2,
                       },
                       "start": Object {
@@ -16029,12 +16272,12 @@ Object {
                           "line": 2,
                         },
                         "start": Object {
-                          "column": 32,
+                          "column": 30,
                           "line": 2,
                         },
                       },
                       "range": Array [
-                        44,
+                        42,
                         50,
                       ],
                       "type": "TypeAnnotation",
@@ -16061,13 +16304,10 @@ Object {
                     26,
                     50,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "public",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 46,
@@ -16081,7 +16321,7 @@ Object {
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 38,
+                        "column": 46,
                         "line": 3,
                       },
                       "start": Object {
@@ -16102,12 +16342,12 @@ Object {
                           "line": 3,
                         },
                         "start": Object {
-                          "column": 40,
+                          "column": 38,
                           "line": 3,
                         },
                       },
                       "range": Array [
-                        92,
+                        90,
                         98,
                       ],
                       "type": "TypeAnnotation",
@@ -16135,12 +16375,10 @@ Object {
                     98,
                   ],
                   "readonly": true,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "public",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 37,
@@ -16155,7 +16393,7 @@ Object {
                     "left": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 24,
+                          "column": 32,
                           "line": 4,
                         },
                         "start": Object {
@@ -16176,12 +16414,12 @@ Object {
                             "line": 4,
                           },
                           "start": Object {
-                            "column": 26,
+                            "column": 24,
                             "line": 4,
                           },
                         },
                         "range": Array [
-                          126,
+                          124,
                           132,
                         ],
                         "type": "TypeAnnotation",
@@ -16243,13 +16481,10 @@ Object {
                     114,
                     137,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "public",
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 54,
@@ -16264,7 +16499,7 @@ Object {
                     "left": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 37,
+                          "column": 46,
                           "line": 5,
                         },
                         "start": Object {
@@ -16285,12 +16520,12 @@ Object {
                             "line": 5,
                           },
                           "start": Object {
-                            "column": 39,
+                            "column": 37,
                             "line": 5,
                           },
                         },
                         "range": Array [
-                          178,
+                          176,
                           185,
                         ],
                         "type": "TypeAnnotation",
@@ -16353,7 +16588,6 @@ Object {
                     193,
                   ],
                   "readonly": true,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -17128,8 +17362,6 @@ Object {
               },
               "params": Array [
                 Object {
-                  "accessibility": null,
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 40,
@@ -17143,7 +17375,7 @@ Object {
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 32,
+                        "column": 40,
                         "line": 2,
                       },
                       "start": Object {
@@ -17164,12 +17396,12 @@ Object {
                           "line": 2,
                         },
                         "start": Object {
-                          "column": 34,
+                          "column": 32,
                           "line": 2,
                         },
                       },
                       "range": Array [
-                        46,
+                        44,
                         52,
                       ],
                       "type": "TypeAnnotation",
@@ -17197,12 +17429,9 @@ Object {
                     52,
                   ],
                   "readonly": true,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
-                  "accessibility": null,
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 49,
@@ -17217,7 +17446,7 @@ Object {
                     "left": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 31,
+                          "column": 39,
                           "line": 3,
                         },
                         "start": Object {
@@ -17238,12 +17467,12 @@ Object {
                             "line": 3,
                           },
                           "start": Object {
-                            "column": 33,
+                            "column": 31,
                             "line": 3,
                           },
                         },
                         "range": Array [
-                          87,
+                          85,
                           93,
                         ],
                         "type": "TypeAnnotation",
@@ -17306,7 +17535,6 @@ Object {
                     103,
                   ],
                   "readonly": true,
-                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -18147,8 +18375,6 @@ Object {
               },
               "params": Array [
                 Object {
-                  "accessibility": null,
-                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 32,
@@ -18162,7 +18388,7 @@ Object {
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 24,
+                        "column": 32,
                         "line": 2,
                       },
                       "start": Object {
@@ -18183,12 +18409,12 @@ Object {
                           "line": 2,
                         },
                         "start": Object {
-                          "column": 26,
+                          "column": 24,
                           "line": 2,
                         },
                       },
                       "range": Array [
-                        38,
+                        36,
                         44,
                       ],
                       "type": "TypeAnnotation",
@@ -18215,7 +18441,6 @@ Object {
                     28,
                     44,
                   ],
-                  "readonly": false,
                   "static": true,
                   "type": "TSParameterProperty",
                 },
@@ -18604,7 +18829,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -18847,7 +19071,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "default": Object {
               "loc": Object {
                 "end": Object {
@@ -19161,7 +19384,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -19723,7 +19945,7 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 7,
+                  "column": 8,
                   "line": 2,
                 },
               },
@@ -19739,12 +19961,12 @@ Object {
                     "line": 2,
                   },
                   "start": Object {
-                    "column": 12,
+                    "column": 10,
                     "line": 2,
                   },
                 },
                 "range": Array [
-                  32,
+                  30,
                   35,
                 ],
                 "type": "TypeAnnotation",
@@ -20099,7 +20321,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 24,
+              "column": 32,
               "line": 1,
             },
             "start": Object {
@@ -20120,12 +20342,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 26,
+                "column": 24,
                 "line": 1,
               },
             },
             "range": Array [
-              26,
+              24,
               32,
             ],
             "type": "TypeAnnotation",
@@ -20160,12 +20382,12 @@ Object {
             "line": 1,
           },
           "start": Object {
-            "column": 35,
+            "column": 33,
             "line": 1,
           },
         },
         "range": Array [
-          35,
+          33,
           41,
         ],
         "type": "TypeAnnotation",
@@ -20981,7 +21203,6 @@ Object {
           },
           "params": Array [
             Object {
-              "constraint": null,
               "loc": Object {
                 "end": Object {
                   "column": 22,
@@ -21242,7 +21463,6 @@ Object {
           },
           "params": Array [
             Object {
-              "constraint": null,
               "loc": Object {
                 "end": Object {
                   "column": 22,
@@ -21261,7 +21481,6 @@ Object {
               "type": "TypeParameter",
             },
             Object {
-              "constraint": null,
               "loc": Object {
                 "end": Object {
                   "column": 25,
@@ -21575,7 +21794,6 @@ Object {
           },
           "params": Array [
             Object {
-              "constraint": null,
               "loc": Object {
                 "end": Object {
                   "column": 18,
@@ -21855,7 +22073,6 @@ Object {
           },
           "params": Array [
             Object {
-              "constraint": null,
               "loc": Object {
                 "end": Object {
                   "column": 18,
@@ -21874,7 +22091,6 @@ Object {
               "type": "TypeParameter",
             },
             Object {
-              "constraint": null,
               "loc": Object {
                 "end": Object {
                   "column": 21,
@@ -22805,8 +23021,6 @@ Object {
               "members": Array [
                 Object {
                   "computed": false,
-                  "export": false,
-                  "initializer": null,
                   "key": Object {
                     "loc": Object {
                       "end": Object {
@@ -22835,13 +23049,10 @@ Object {
                       "line": 2,
                     },
                   },
-                  "optional": false,
                   "range": Array [
                     35,
                     48,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSPropertySignature",
                   "typeAnnotation": Object {
                     "loc": Object {
@@ -22850,12 +23061,12 @@ Object {
                         "line": 2,
                       },
                       "start": Object {
-                        "column": 11,
+                        "column": 9,
                         "line": 2,
                       },
                     },
                     "range": Array [
-                      42,
+                      40,
                       48,
                     ],
                     "type": "TypeAnnotation",
@@ -23179,7 +23390,7 @@ Object {
                 Object {
                   "loc": Object {
                     "end": Object {
-                      "column": 29,
+                      "column": 37,
                       "line": 1,
                     },
                     "start": Object {
@@ -23200,12 +23411,12 @@ Object {
                         "line": 1,
                       },
                       "start": Object {
-                        "column": 31,
+                        "column": 29,
                         "line": 1,
                       },
                     },
                     "range": Array [
-                      31,
+                      29,
                       37,
                     ],
                     "type": "TypeAnnotation",
@@ -23241,12 +23452,12 @@ Object {
                     "line": 1,
                   },
                   "start": Object {
-                    "column": 42,
+                    "column": 40,
                     "line": 1,
                   },
                 },
                 "range": Array [
-                  42,
+                  40,
                   46,
                 ],
                 "type": "TypeAnnotation",
@@ -23969,7 +24180,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 23,
+              "column": 45,
               "line": 1,
             },
             "start": Object {
@@ -24105,12 +24316,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 25,
+                "column": 23,
                 "line": 1,
               },
             },
             "range": Array [
-              25,
+              23,
               45,
             ],
             "type": "TypeAnnotation",
@@ -24128,8 +24339,6 @@ Object {
               "members": Array [
                 Object {
                   "computed": false,
-                  "export": false,
-                  "initializer": null,
                   "key": Object {
                     "loc": Object {
                       "end": Object {
@@ -24163,8 +24372,6 @@ Object {
                     26,
                     39,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSPropertySignature",
                   "typeAnnotation": Object {
                     "loc": Object {
@@ -24173,12 +24380,12 @@ Object {
                         "line": 1,
                       },
                       "start": Object {
-                        "column": 32,
+                        "column": 30,
                         "line": 1,
                       },
                     },
                     "range": Array [
-                      32,
+                      30,
                       38,
                     ],
                     "type": "TypeAnnotation",
@@ -24203,8 +24410,6 @@ Object {
                 },
                 Object {
                   "computed": false,
-                  "export": false,
-                  "initializer": null,
                   "key": Object {
                     "loc": Object {
                       "end": Object {
@@ -24238,10 +24443,7 @@ Object {
                     40,
                     44,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSPropertySignature",
-                  "typeAnnotation": null,
                 },
               ],
               "range": Array [
@@ -24716,7 +24918,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 23,
+              "column": 43,
               "line": 1,
             },
             "start": Object {
@@ -24852,12 +25054,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 25,
+                "column": 23,
                 "line": 1,
               },
             },
             "range": Array [
-              25,
+              23,
               43,
             ],
             "type": "TypeAnnotation",
@@ -24875,8 +25077,6 @@ Object {
               "members": Array [
                 Object {
                   "computed": false,
-                  "export": false,
-                  "initializer": null,
                   "key": Object {
                     "loc": Object {
                       "end": Object {
@@ -24905,13 +25105,10 @@ Object {
                       "line": 1,
                     },
                   },
-                  "optional": false,
                   "range": Array [
                     26,
                     38,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSPropertySignature",
                   "typeAnnotation": Object {
                     "loc": Object {
@@ -24920,12 +25117,12 @@ Object {
                         "line": 1,
                       },
                       "start": Object {
-                        "column": 31,
+                        "column": 29,
                         "line": 1,
                       },
                     },
                     "range": Array [
-                      31,
+                      29,
                       37,
                     ],
                     "type": "TypeAnnotation",
@@ -24950,8 +25147,6 @@ Object {
                 },
                 Object {
                   "computed": false,
-                  "export": false,
-                  "initializer": null,
                   "key": Object {
                     "loc": Object {
                       "end": Object {
@@ -24980,15 +25175,11 @@ Object {
                       "line": 1,
                     },
                   },
-                  "optional": false,
                   "range": Array [
                     39,
                     42,
                   ],
-                  "readonly": false,
-                  "static": false,
                   "type": "TSPropertySignature",
-                  "typeAnnotation": null,
                 },
               ],
               "range": Array [
@@ -25463,7 +25654,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 15,
+              "column": 18,
               "line": 1,
             },
             "start": Object {
@@ -25484,12 +25675,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 17,
+                "column": 15,
                 "line": 1,
               },
             },
             "range": Array [
-              17,
+              15,
               18,
             ],
             "type": "TypeAnnotation",
@@ -25542,12 +25733,12 @@ Object {
             "line": 1,
           },
           "start": Object {
-            "column": 21,
+            "column": 19,
             "line": 1,
           },
         },
         "range": Array [
-          21,
+          19,
           22,
         ],
         "type": "TypeAnnotation",
@@ -25601,7 +25792,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "loc": Object {
               "end": Object {
                 "column": 12,
@@ -26027,7 +26217,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "loc": Object {
               "end": Object {
                 "column": 29,
@@ -26330,7 +26519,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 26,
+              "column": 29,
               "line": 1,
             },
             "start": Object {
@@ -26351,12 +26540,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 28,
+                "column": 26,
                 "line": 1,
               },
             },
             "range": Array [
-              28,
+              26,
               29,
             ],
             "type": "TypeAnnotation",
@@ -26409,12 +26598,12 @@ Object {
             "line": 1,
           },
           "start": Object {
-            "column": 32,
+            "column": 30,
             "line": 1,
           },
         },
         "range": Array [
-          32,
+          30,
           33,
         ],
         "type": "TypeAnnotation",
@@ -26986,7 +27175,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 21,
+              "column": 28,
               "line": 1,
             },
             "start": Object {
@@ -27007,12 +27196,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 22,
+                "column": 21,
                 "line": 1,
               },
             },
             "range": Array [
-              22,
+              21,
               28,
             ],
             "type": "TypeAnnotation",
@@ -27047,12 +27236,12 @@ Object {
             "line": 1,
           },
           "start": Object {
-            "column": 30,
+            "column": 29,
             "line": 1,
           },
         },
         "range": Array [
-          30,
+          29,
           36,
         ],
         "type": "TypeAnnotation",
@@ -27443,7 +27632,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 21,
+              "column": 28,
               "line": 1,
             },
             "start": Object {
@@ -27464,12 +27653,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 22,
+                "column": 21,
                 "line": 1,
               },
             },
             "range": Array [
-              22,
+              21,
               28,
             ],
             "type": "TypeAnnotation",
@@ -27496,7 +27685,7 @@ Object {
           "left": Object {
             "loc": Object {
               "end": Object {
-                "column": 33,
+                "column": 40,
                 "line": 1,
               },
               "start": Object {
@@ -27517,12 +27706,12 @@ Object {
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 34,
+                  "column": 33,
                   "line": 1,
                 },
               },
               "range": Array [
-                34,
+                33,
                 40,
               ],
               "type": "TypeAnnotation",
@@ -27584,7 +27773,7 @@ Object {
           "argument": Object {
             "loc": Object {
               "end": Object {
-                "column": 55,
+                "column": 69,
                 "line": 1,
               },
               "start": Object {
@@ -27605,12 +27794,12 @@ Object {
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 56,
+                  "column": 55,
                   "line": 1,
                 },
               },
               "range": Array [
-                56,
+                55,
                 69,
               ],
               "type": "TypeAnnotation",
@@ -27715,12 +27904,12 @@ Object {
             "line": 1,
           },
           "start": Object {
-            "column": 71,
+            "column": 70,
             "line": 1,
           },
         },
         "range": Array [
-          71,
+          70,
           77,
         ],
         "type": "TypeAnnotation",
@@ -28859,7 +29048,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -29042,8 +29230,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -29072,13 +29258,10 @@ Object {
                 "line": 2,
               },
             },
-            "optional": false,
             "range": Array [
               20,
               32,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -29087,12 +29270,12 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 9,
+                  "column": 7,
                   "line": 2,
                 },
               },
               "range": Array [
-                25,
+                23,
                 31,
               ],
               "type": "TypeAnnotation",
@@ -29117,8 +29300,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -29152,8 +29333,6 @@ Object {
               37,
               50,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -29162,12 +29341,12 @@ Object {
                   "line": 3,
                 },
                 "start": Object {
-                  "column": 10,
+                  "column": 8,
                   "line": 3,
                 },
               },
               "range": Array [
-                43,
+                41,
                 49,
               ],
               "type": "TypeAnnotation",
@@ -29192,8 +29371,6 @@ Object {
           },
           Object {
             "computed": true,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -29222,13 +29399,10 @@ Object {
                 "line": 4,
               },
             },
-            "optional": false,
             "range": Array [
               55,
               69,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -29237,12 +29411,12 @@ Object {
                   "line": 4,
                 },
                 "start": Object {
-                  "column": 11,
+                  "column": 9,
                   "line": 4,
                 },
               },
               "range": Array [
-                62,
+                60,
                 68,
               ],
               "type": "TypeAnnotation",
@@ -29267,8 +29441,6 @@ Object {
           },
           Object {
             "computed": true,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -29302,8 +29474,6 @@ Object {
               74,
               89,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -29312,12 +29482,12 @@ Object {
                   "line": 5,
                 },
                 "start": Object {
-                  "column": 12,
+                  "column": 10,
                   "line": 5,
                 },
               },
               "range": Array [
-                82,
+                80,
                 88,
               ],
               "type": "TypeAnnotation",
@@ -29341,11 +29511,10 @@ Object {
             },
           },
           Object {
-            "export": false,
             "index": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 8,
+                  "column": 16,
                   "line": 6,
                 },
                 "start": Object {
@@ -29366,12 +29535,12 @@ Object {
                     "line": 6,
                   },
                   "start": Object {
-                    "column": 10,
+                    "column": 8,
                     "line": 6,
                   },
                 },
                 "range": Array [
-                  100,
+                  98,
                   106,
                 ],
                 "type": "TypeAnnotation",
@@ -29408,7 +29577,6 @@ Object {
               94,
               116,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
@@ -29418,12 +29586,12 @@ Object {
                   "line": 6,
                 },
                 "start": Object {
-                  "column": 19,
+                  "column": 17,
                   "line": 6,
                 },
               },
               "range": Array [
-                109,
+                107,
                 115,
               ],
               "type": "TypeAnnotation",
@@ -29447,11 +29615,10 @@ Object {
             },
           },
           Object {
-            "export": false,
             "index": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 8,
+                  "column": 17,
                   "line": 7,
                 },
                 "start": Object {
@@ -29473,12 +29640,12 @@ Object {
                     "line": 7,
                   },
                   "start": Object {
-                    "column": 11,
+                    "column": 9,
                     "line": 7,
                   },
                 },
                 "range": Array [
-                  128,
+                  126,
                   134,
                 ],
                 "type": "TypeAnnotation",
@@ -29515,7 +29682,6 @@ Object {
               121,
               144,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
@@ -29525,12 +29691,12 @@ Object {
                   "line": 7,
                 },
                 "start": Object {
-                  "column": 20,
+                  "column": 18,
                   "line": 7,
                 },
               },
               "range": Array [
-                137,
+                135,
                 143,
               ],
               "type": "TypeAnnotation",
@@ -29555,7 +29721,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -29590,7 +29755,6 @@ Object {
               149,
               161,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -29600,12 +29764,12 @@ Object {
                   "line": 8,
                 },
                 "start": Object {
-                  "column": 11,
+                  "column": 9,
                   "line": 8,
                 },
               },
               "range": Array [
-                156,
+                154,
                 160,
               ],
               "type": "TypeAnnotation",
@@ -29630,7 +29794,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -29720,7 +29883,6 @@ Object {
               166,
               186,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -29730,12 +29892,12 @@ Object {
                   "line": 9,
                 },
                 "start": Object {
-                  "column": 19,
+                  "column": 17,
                   "line": 9,
                 },
               },
               "range": Array [
-                181,
+                179,
                 185,
               ],
               "type": "TypeAnnotation",
@@ -29760,7 +29922,6 @@ Object {
           },
           Object {
             "computed": true,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -29850,7 +30011,6 @@ Object {
               191,
               213,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -29860,12 +30020,12 @@ Object {
                   "line": 10,
                 },
                 "start": Object {
-                  "column": 21,
+                  "column": 19,
                   "line": 10,
                 },
               },
               "range": Array [
-                208,
+                206,
                 212,
               ],
               "type": "TypeAnnotation",
@@ -29890,7 +30050,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -29980,7 +30139,6 @@ Object {
               218,
               240,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -29990,12 +30148,12 @@ Object {
                   "line": 11,
                 },
                 "start": Object {
-                  "column": 21,
+                  "column": 19,
                   "line": 11,
                 },
               },
               "range": Array [
-                235,
+                233,
                 239,
               ],
               "type": "TypeAnnotation",
@@ -30030,7 +30188,6 @@ Object {
               },
               "params": Array [
                 Object {
-                  "constraint": null,
                   "loc": Object {
                     "end": Object {
                       "column": 9,
@@ -30118,12 +30275,12 @@ Object {
                   "line": 12,
                 },
                 "start": Object {
-                  "column": 17,
+                  "column": 15,
                   "line": 12,
                 },
               },
               "range": Array [
-                258,
+                256,
                 264,
               ],
               "type": "TypeAnnotation",
@@ -30208,12 +30365,12 @@ Object {
                   "line": 13,
                 },
                 "start": Object {
-                  "column": 20,
+                  "column": 18,
                   "line": 13,
                 },
               },
               "range": Array [
-                286,
+                284,
                 292,
               ],
               "type": "TypeAnnotation",
@@ -30248,7 +30405,6 @@ Object {
               },
               "params": Array [
                 Object {
-                  "constraint": null,
                   "loc": Object {
                     "end": Object {
                       "column": 10,
@@ -32385,7 +32541,6 @@ Object {
             "params": Array [
               Object {
                 "accessibility": "public",
-                "export": false,
                 "loc": Object {
                   "end": Object {
                     "column": 17,
@@ -32418,13 +32573,10 @@ Object {
                   26,
                   34,
                 ],
-                "readonly": false,
-                "static": false,
                 "type": "TSParameterProperty",
               },
               Object {
                 "accessibility": "private",
-                "export": false,
                 "loc": Object {
                   "end": Object {
                     "column": 28,
@@ -32457,8 +32609,6 @@ Object {
                   36,
                   45,
                 ],
-                "readonly": false,
-                "static": false,
                 "type": "TSParameterProperty",
               },
             ],
@@ -32937,7 +33087,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -33271,7 +33420,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "loc": Object {
               "end": Object {
                 "column": 16,
@@ -33454,7 +33602,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -33508,7 +33655,6 @@ Object {
               76,
               85,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": null,
@@ -33758,8 +33904,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -33793,15 +33937,10 @@ Object {
               21,
               26,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
-            "typeAnnotation": null,
           },
           Object {
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -33835,8 +33974,6 @@ Object {
               31,
               44,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -33845,12 +33982,12 @@ Object {
                   "line": 3,
                 },
                 "start": Object {
-                  "column": 10,
+                  "column": 8,
                   "line": 3,
                 },
               },
               "range": Array [
-                37,
+                35,
                 43,
               ],
               "type": "TypeAnnotation",
@@ -33875,7 +34012,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -33927,7 +34063,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 17,
+                    "column": 26,
                     "line": 4,
                   },
                   "start": Object {
@@ -33949,12 +34085,12 @@ Object {
                       "line": 4,
                     },
                     "start": Object {
-                      "column": 20,
+                      "column": 18,
                       "line": 4,
                     },
                   },
                   "range": Array [
-                    65,
+                    63,
                     71,
                   ],
                   "type": "TypeAnnotation",
@@ -34001,7 +34137,6 @@ Object {
               49,
               79,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": null,
@@ -34557,8 +34692,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -34587,15 +34720,11 @@ Object {
                 "line": 2,
               },
             },
-            "optional": false,
             "range": Array [
               21,
               25,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
-            "typeAnnotation": null,
           },
         ],
         "loc": Object {
@@ -34788,7 +34917,7 @@ Object {
           "id": Object {
             "loc": Object {
               "end": Object {
-                "column": 15,
+                "column": 44,
                 "line": 1,
               },
               "start": Object {
@@ -34809,7 +34938,7 @@ Object {
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 17,
+                  "column": 15,
                   "line": 1,
                 },
               },
@@ -35546,7 +35675,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 24,
+              "column": 33,
               "line": 1,
             },
             "start": Object {
@@ -35568,12 +35697,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 27,
+                "column": 25,
                 "line": 1,
               },
             },
             "range": Array [
-              27,
+              25,
               33,
             ],
             "type": "TypeAnnotation",
@@ -36066,7 +36195,7 @@ Object {
           "id": Object {
             "loc": Object {
               "end": Object {
-                "column": 5,
+                "column": 11,
                 "line": 1,
               },
               "start": Object {
@@ -36087,7 +36216,7 @@ Object {
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 7,
+                  "column": 5,
                   "line": 1,
                 },
               },
@@ -36156,7 +36285,7 @@ Object {
           "id": Object {
             "loc": Object {
               "end": Object {
-                "column": 5,
+                "column": 16,
                 "line": 2,
               },
               "start": Object {
@@ -36177,7 +36306,7 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 7,
+                  "column": 5,
                   "line": 2,
                 },
               },
@@ -36789,7 +36918,6 @@ Object {
               68,
               79,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "value": Object {
@@ -37711,7 +37839,6 @@ Object {
             },
             "params": Array [
               Object {
-                "constraint": null,
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -38579,8 +38706,6 @@ Object {
             "members": Array [
               Object {
                 "computed": false,
-                "export": false,
-                "initializer": null,
                 "key": Object {
                   "loc": Object {
                     "end": Object {
@@ -38609,13 +38734,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   12,
                   24,
                 ],
-                "readonly": false,
-                "static": false,
                 "type": "TSPropertySignature",
                 "typeAnnotation": Object {
                   "loc": Object {
@@ -38624,12 +38746,12 @@ Object {
                       "line": 1,
                     },
                     "start": Object {
-                      "column": 17,
+                      "column": 15,
                       "line": 1,
                     },
                   },
                   "range": Array [
-                    17,
+                    15,
                     23,
                   ],
                   "type": "TypeAnnotation",
@@ -38654,8 +38776,6 @@ Object {
               },
               Object {
                 "computed": false,
-                "export": false,
-                "initializer": null,
                 "key": Object {
                   "loc": Object {
                     "end": Object {
@@ -38684,15 +38804,11 @@ Object {
                     "line": 1,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   25,
                   28,
                 ],
-                "readonly": false,
-                "static": false,
                 "type": "TSPropertySignature",
-                "typeAnnotation": null,
               },
             ],
             "range": Array [
@@ -39104,7 +39220,7 @@ Object {
         Object {
           "loc": Object {
             "end": Object {
-              "column": 19,
+              "column": 24,
               "line": 1,
             },
             "start": Object {
@@ -39125,12 +39241,12 @@ Object {
                 "line": 1,
               },
               "start": Object {
-                "column": 21,
+                "column": 19,
                 "line": 1,
               },
             },
             "range": Array [
-              21,
+              19,
               24,
             ],
             "type": "TypeAnnotation",
@@ -39165,12 +39281,12 @@ Object {
             "line": 1,
           },
           "start": Object {
-            "column": 27,
+            "column": 25,
             "line": 1,
           },
         },
         "range": Array [
-          27,
+          25,
           38,
         ],
         "type": "TypeAnnotation",
@@ -39771,7 +39887,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "loc": Object {
               "end": Object {
                 "column": 25,
@@ -39866,7 +39981,6 @@ Object {
         },
         "params": Array [
           Object {
-            "constraint": null,
             "default": Object {
               "loc": Object {
                 "end": Object {
@@ -40444,7 +40558,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -40478,7 +40591,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 25,
+                    "column": 57,
                     "line": 2,
                   },
                   "start": Object {
@@ -40499,12 +40612,12 @@ Object {
                       "line": 2,
                     },
                     "start": Object {
-                      "column": 27,
+                      "column": 25,
                       "line": 2,
                     },
                   },
                   "range": Array [
-                    49,
+                    47,
                     79,
                   ],
                   "type": "TypeAnnotation",
@@ -40523,7 +40636,7 @@ Object {
                       Object {
                         "loc": Object {
                           "end": Object {
-                            "column": 32,
+                            "column": 38,
                             "line": 2,
                           },
                           "start": Object {
@@ -40544,12 +40657,12 @@ Object {
                               "line": 2,
                             },
                             "start": Object {
-                              "column": 34,
+                              "column": 32,
                               "line": 2,
                             },
                           },
                           "range": Array [
-                            56,
+                            54,
                             60,
                           ],
                           "type": "TypeAnnotation",
@@ -40575,7 +40688,7 @@ Object {
                       Object {
                         "loc": Object {
                           "end": Object {
-                            "column": 41,
+                            "column": 48,
                             "line": 2,
                           },
                           "start": Object {
@@ -40596,12 +40709,12 @@ Object {
                               "line": 2,
                             },
                             "start": Object {
-                              "column": 43,
+                              "column": 41,
                               "line": 2,
                             },
                           },
                           "range": Array [
-                            65,
+                            63,
                             70,
                           ],
                           "type": "TypeAnnotation",
@@ -40655,12 +40768,12 @@ Object {
                           "line": 2,
                         },
                         "start": Object {
-                          "column": 53,
+                          "column": 51,
                           "line": 2,
                         },
                       },
                       "range": Array [
-                        75,
+                        73,
                         79,
                       ],
                       "type": "TypeAnnotation",
@@ -40691,7 +40804,6 @@ Object {
               23,
               87,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -40701,12 +40813,12 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 60,
+                  "column": 58,
                   "line": 2,
                 },
               },
               "range": Array [
-                82,
+                80,
                 86,
               ],
               "type": "TypeAnnotation",
@@ -41226,7 +41338,7 @@ Object {
           "id": Object {
             "loc": Object {
               "end": Object {
-                "column": 7,
+                "column": 14,
                 "line": 1,
               },
               "start": Object {
@@ -41247,7 +41359,7 @@ Object {
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 9,
+                  "column": 7,
                   "line": 1,
                 },
               },
@@ -41591,7 +41703,7 @@ Object {
           "id": Object {
             "loc": Object {
               "end": Object {
-                "column": 8,
+                "column": 15,
                 "line": 1,
               },
               "start": Object {
@@ -41612,7 +41724,7 @@ Object {
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 9,
+                  "column": 8,
                   "line": 1,
                 },
               },
@@ -41699,7 +41811,7 @@ Object {
           "id": Object {
             "loc": Object {
               "end": Object {
-                "column": 7,
+                "column": 15,
                 "line": 2,
               },
               "start": Object {
@@ -41720,7 +41832,7 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 9,
+                  "column": 7,
                   "line": 2,
                 },
               },
@@ -42084,7 +42196,7 @@ Object {
           "id": Object {
             "loc": Object {
               "end": Object {
-                "column": 5,
+                "column": 21,
                 "line": 1,
               },
               "start": Object {
@@ -42105,7 +42217,7 @@ Object {
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 15,
+                  "column": 8,
                   "line": 1,
                 },
               },
@@ -47786,7 +47898,7 @@ Object {
                   ],
                   "loc": Object {
                     "end": Object {
-                      "column": 42,
+                      "column": 53,
                       "line": 2,
                     },
                     "start": Object {
@@ -47807,12 +47919,12 @@ Object {
                         "line": 2,
                       },
                       "start": Object {
-                        "column": 44,
+                        "column": 42,
                         "line": 2,
                       },
                     },
                     "range": Array [
-                      60,
+                      58,
                       69,
                     ],
                     "type": "TypeAnnotation",
@@ -48540,7 +48652,7 @@ Object {
                   ],
                   "loc": Object {
                     "end": Object {
-                      "column": 26,
+                      "column": 34,
                       "line": 2,
                     },
                     "start": Object {
@@ -48561,12 +48673,12 @@ Object {
                         "line": 2,
                       },
                       "start": Object {
-                        "column": 28,
+                        "column": 26,
                         "line": 2,
                       },
                     },
                     "range": Array [
-                      40,
+                      38,
                       46,
                     ],
                     "type": "TypeAnnotation",
@@ -49132,7 +49244,7 @@ Object {
                   ],
                   "loc": Object {
                     "end": Object {
-                      "column": 33,
+                      "column": 41,
                       "line": 2,
                     },
                     "start": Object {
@@ -49153,12 +49265,12 @@ Object {
                         "line": 2,
                       },
                       "start": Object {
-                        "column": 35,
+                        "column": 33,
                         "line": 2,
                       },
                     },
                     "range": Array [
-                      53,
+                      51,
                       59,
                     ],
                     "type": "TypeAnnotation",
@@ -49814,7 +49926,7 @@ Object {
                   ],
                   "loc": Object {
                     "end": Object {
-                      "column": 24,
+                      "column": 32,
                       "line": 2,
                     },
                     "start": Object {
@@ -49835,12 +49947,12 @@ Object {
                         "line": 2,
                       },
                       "start": Object {
-                        "column": 26,
+                        "column": 24,
                         "line": 2,
                       },
                     },
                     "range": Array [
-                      42,
+                      40,
                       48,
                     ],
                     "type": "TypeAnnotation",
@@ -50550,7 +50662,7 @@ Object {
                   ],
                   "loc": Object {
                     "end": Object {
-                      "column": 31,
+                      "column": 39,
                       "line": 2,
                     },
                     "start": Object {
@@ -50571,12 +50683,12 @@ Object {
                         "line": 2,
                       },
                       "start": Object {
-                        "column": 33,
+                        "column": 31,
                         "line": 2,
                       },
                     },
                     "range": Array [
-                      55,
+                      53,
                       61,
                     ],
                     "type": "TypeAnnotation",
@@ -51172,7 +51284,6 @@ Object {
               26,
               40,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "value": null,
@@ -51266,7 +51377,6 @@ Object {
               45,
               86,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "value": Object {
@@ -51873,7 +51983,6 @@ Object {
               14,
               47,
             ],
-            "readonly": false,
             "static": true,
             "type": "ClassProperty",
             "value": null,
@@ -51987,7 +52096,6 @@ Object {
               53,
               91,
             ],
-            "readonly": false,
             "static": true,
             "type": "ClassProperty",
             "value": null,
@@ -52503,7 +52611,6 @@ Object {
               14,
               21,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "value": null,
@@ -52579,7 +52686,6 @@ Object {
               26,
               37,
             ],
-            "readonly": false,
             "static": false,
             "type": "ClassProperty",
             "value": null,
@@ -52951,7 +53057,6 @@ Object {
               14,
               28,
             ],
-            "readonly": false,
             "static": true,
             "type": "ClassProperty",
             "value": null,
@@ -53027,7 +53132,6 @@ Object {
               33,
               51,
             ],
-            "readonly": false,
             "static": true,
             "type": "ClassProperty",
             "value": null,
@@ -54794,7 +54898,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": false,
             "initializer": Object {
               "loc": Object {
                 "end": Object {
@@ -54842,13 +54945,10 @@ Object {
                 "line": 2,
               },
             },
-            "optional": false,
             "range": Array [
               20,
               38,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -54857,12 +54957,12 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 9,
+                  "column": 7,
                   "line": 2,
                 },
               },
               "range": Array [
-                25,
+                23,
                 31,
               ],
               "type": "TypeAnnotation",
@@ -54888,8 +54988,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -54918,13 +55016,10 @@ Object {
                 "line": 3,
               },
             },
-            "optional": false,
             "range": Array [
               43,
               60,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -54933,12 +55028,12 @@ Object {
                   "line": 3,
                 },
                 "start": Object {
-                  "column": 14,
+                  "column": 12,
                   "line": 3,
                 },
               },
               "range": Array [
-                53,
+                51,
                 59,
               ],
               "type": "TypeAnnotation",
@@ -54964,8 +55059,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -54994,13 +55087,10 @@ Object {
                 "line": 4,
               },
             },
-            "optional": false,
             "range": Array [
               65,
               83,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -55009,12 +55099,12 @@ Object {
                   "line": 4,
                 },
                 "start": Object {
-                  "column": 15,
+                  "column": 13,
                   "line": 4,
                 },
               },
               "range": Array [
-                76,
+                74,
                 82,
               ],
               "type": "TypeAnnotation",
@@ -55040,8 +55130,6 @@ Object {
           Object {
             "accessibility": "protected",
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -55070,13 +55158,10 @@ Object {
                 "line": 5,
               },
             },
-            "optional": false,
             "range": Array [
               88,
               108,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -55085,12 +55170,12 @@ Object {
                   "line": 5,
                 },
                 "start": Object {
-                  "column": 17,
+                  "column": 15,
                   "line": 5,
                 },
               },
               "range": Array [
-                101,
+                99,
                 107,
               ],
               "type": "TypeAnnotation",
@@ -55115,8 +55200,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -55145,12 +55228,10 @@ Object {
                 "line": 6,
               },
             },
-            "optional": false,
             "range": Array [
               113,
               130,
             ],
-            "readonly": false,
             "static": true,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
@@ -55160,12 +55241,12 @@ Object {
                   "line": 6,
                 },
                 "start": Object {
-                  "column": 14,
+                  "column": 12,
                   "line": 6,
                 },
               },
               "range": Array [
-                123,
+                121,
                 129,
               ],
               "type": "TypeAnnotation",
@@ -55191,7 +55272,6 @@ Object {
           Object {
             "computed": false,
             "export": true,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -55220,13 +55300,10 @@ Object {
                 "line": 7,
               },
             },
-            "optional": false,
             "range": Array [
               135,
               152,
             ],
-            "readonly": false,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -55235,12 +55312,12 @@ Object {
                   "line": 7,
                 },
                 "start": Object {
-                  "column": 14,
+                  "column": 12,
                   "line": 7,
                 },
               },
               "range": Array [
-                145,
+                143,
                 151,
               ],
               "type": "TypeAnnotation",
@@ -55265,8 +55342,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": false,
-            "initializer": null,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -55295,13 +55370,11 @@ Object {
                 "line": 8,
               },
             },
-            "optional": false,
             "range": Array [
               157,
               176,
             ],
             "readonly": true,
-            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -55310,12 +55383,12 @@ Object {
                   "line": 8,
                 },
                 "start": Object {
-                  "column": 16,
+                  "column": 14,
                   "line": 8,
                 },
               },
               "range": Array [
-                169,
+                167,
                 175,
               ],
               "type": "TypeAnnotation",
@@ -55340,11 +55413,10 @@ Object {
           },
           Object {
             "accessibility": "public",
-            "export": false,
             "index": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 15,
+                  "column": 23,
                   "line": 10,
                 },
                 "start": Object {
@@ -55365,12 +55437,12 @@ Object {
                     "line": 10,
                   },
                   "start": Object {
-                    "column": 17,
+                    "column": 15,
                     "line": 10,
                   },
                 },
                 "range": Array [
-                  195,
+                  193,
                   201,
                 ],
                 "type": "TypeAnnotation",
@@ -55407,7 +55479,6 @@ Object {
               182,
               211,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
@@ -55417,12 +55488,12 @@ Object {
                   "line": 10,
                 },
                 "start": Object {
-                  "column": 26,
+                  "column": 24,
                   "line": 10,
                 },
               },
               "range": Array [
-                204,
+                202,
                 210,
               ],
               "type": "TypeAnnotation",
@@ -55447,11 +55518,10 @@ Object {
           },
           Object {
             "accessibility": "private",
-            "export": false,
             "index": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 16,
+                  "column": 24,
                   "line": 11,
                 },
                 "start": Object {
@@ -55472,12 +55542,12 @@ Object {
                     "line": 11,
                   },
                   "start": Object {
-                    "column": 18,
+                    "column": 16,
                     "line": 11,
                   },
                 },
                 "range": Array [
-                  230,
+                  228,
                   236,
                 ],
                 "type": "TypeAnnotation",
@@ -55514,7 +55584,6 @@ Object {
               216,
               246,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
@@ -55524,12 +55593,12 @@ Object {
                   "line": 11,
                 },
                 "start": Object {
-                  "column": 27,
+                  "column": 25,
                   "line": 11,
                 },
               },
               "range": Array [
-                239,
+                237,
                 245,
               ],
               "type": "TypeAnnotation",
@@ -55554,11 +55623,10 @@ Object {
           },
           Object {
             "accessibility": "protected",
-            "export": false,
             "index": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 18,
+                  "column": 26,
                   "line": 12,
                 },
                 "start": Object {
@@ -55579,12 +55647,12 @@ Object {
                     "line": 12,
                   },
                   "start": Object {
-                    "column": 20,
+                    "column": 18,
                     "line": 12,
                   },
                 },
                 "range": Array [
-                  267,
+                  265,
                   273,
                 ],
                 "type": "TypeAnnotation",
@@ -55621,7 +55689,6 @@ Object {
               251,
               283,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
@@ -55631,12 +55698,12 @@ Object {
                   "line": 12,
                 },
                 "start": Object {
-                  "column": 29,
+                  "column": 27,
                   "line": 12,
                 },
               },
               "range": Array [
-                276,
+                274,
                 282,
               ],
               "type": "TypeAnnotation",
@@ -55660,11 +55727,10 @@ Object {
             },
           },
           Object {
-            "export": false,
             "index": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 15,
+                  "column": 23,
                   "line": 13,
                 },
                 "start": Object {
@@ -55685,12 +55751,12 @@ Object {
                     "line": 13,
                   },
                   "start": Object {
-                    "column": 17,
+                    "column": 15,
                     "line": 13,
                   },
                 },
                 "range": Array [
-                  301,
+                  299,
                   307,
                 ],
                 "type": "TypeAnnotation",
@@ -55727,7 +55793,6 @@ Object {
               288,
               317,
             ],
-            "readonly": false,
             "static": true,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
@@ -55737,12 +55802,12 @@ Object {
                   "line": 13,
                 },
                 "start": Object {
-                  "column": 26,
+                  "column": 24,
                   "line": 13,
                 },
               },
               "range": Array [
-                310,
+                308,
                 316,
               ],
               "type": "TypeAnnotation",
@@ -55770,7 +55835,7 @@ Object {
             "index": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 15,
+                  "column": 23,
                   "line": 14,
                 },
                 "start": Object {
@@ -55791,12 +55856,12 @@ Object {
                     "line": 14,
                   },
                   "start": Object {
-                    "column": 17,
+                    "column": 15,
                     "line": 14,
                   },
                 },
                 "range": Array [
-                  335,
+                  333,
                   341,
                 ],
                 "type": "TypeAnnotation",
@@ -55833,7 +55898,6 @@ Object {
               322,
               351,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
@@ -55843,12 +55907,12 @@ Object {
                   "line": 14,
                 },
                 "start": Object {
-                  "column": 26,
+                  "column": 24,
                   "line": 14,
                 },
               },
               "range": Array [
-                344,
+                342,
                 350,
               ],
               "type": "TypeAnnotation",
@@ -55872,11 +55936,10 @@ Object {
             },
           },
           Object {
-            "export": false,
             "index": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 17,
+                  "column": 25,
                   "line": 15,
                 },
                 "start": Object {
@@ -55897,12 +55960,12 @@ Object {
                     "line": 15,
                   },
                   "start": Object {
-                    "column": 19,
+                    "column": 17,
                     "line": 15,
                   },
                 },
                 "range": Array [
-                  371,
+                  369,
                   377,
                 ],
                 "type": "TypeAnnotation",
@@ -55949,12 +56012,12 @@ Object {
                   "line": 15,
                 },
                 "start": Object {
-                  "column": 28,
+                  "column": 26,
                   "line": 15,
                 },
               },
               "range": Array [
-                380,
+                378,
                 386,
               ],
               "type": "TypeAnnotation",
@@ -55980,7 +56043,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -56014,7 +56076,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 16,
+                    "column": 24,
                     "line": 17,
                   },
                   "start": Object {
@@ -56035,12 +56097,12 @@ Object {
                       "line": 17,
                     },
                     "start": Object {
-                      "column": 18,
+                      "column": 16,
                       "line": 17,
                     },
                   },
                   "range": Array [
-                    407,
+                    405,
                     413,
                   ],
                   "type": "TypeAnnotation",
@@ -56068,7 +56130,6 @@ Object {
               393,
               421,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -56078,12 +56139,12 @@ Object {
                   "line": 17,
                 },
                 "start": Object {
-                  "column": 27,
+                  "column": 25,
                   "line": 17,
                 },
               },
               "range": Array [
-                416,
+                414,
                 420,
               ],
               "type": "TypeAnnotation",
@@ -56109,7 +56170,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -56143,7 +56203,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 17,
+                    "column": 25,
                     "line": 18,
                   },
                   "start": Object {
@@ -56164,12 +56224,12 @@ Object {
                       "line": 18,
                     },
                     "start": Object {
-                      "column": 19,
+                      "column": 17,
                       "line": 18,
                     },
                   },
                   "range": Array [
-                    441,
+                    439,
                     447,
                   ],
                   "type": "TypeAnnotation",
@@ -56197,7 +56257,6 @@ Object {
               426,
               455,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -56207,12 +56266,12 @@ Object {
                   "line": 18,
                 },
                 "start": Object {
-                  "column": 28,
+                  "column": 26,
                   "line": 18,
                 },
               },
               "range": Array [
-                450,
+                448,
                 454,
               ],
               "type": "TypeAnnotation",
@@ -56238,7 +56297,6 @@ Object {
           Object {
             "accessibility": "protected",
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -56272,7 +56330,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 19,
+                    "column": 27,
                     "line": 19,
                   },
                   "start": Object {
@@ -56293,12 +56351,12 @@ Object {
                       "line": 19,
                     },
                     "start": Object {
-                      "column": 21,
+                      "column": 19,
                       "line": 19,
                     },
                   },
                   "range": Array [
-                    477,
+                    475,
                     483,
                   ],
                   "type": "TypeAnnotation",
@@ -56326,7 +56384,6 @@ Object {
               460,
               491,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -56336,12 +56393,12 @@ Object {
                   "line": 19,
                 },
                 "start": Object {
-                  "column": 30,
+                  "column": 28,
                   "line": 19,
                 },
               },
               "range": Array [
-                486,
+                484,
                 490,
               ],
               "type": "TypeAnnotation",
@@ -56366,7 +56423,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -56400,7 +56456,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 16,
+                    "column": 24,
                     "line": 20,
                   },
                   "start": Object {
@@ -56421,12 +56477,12 @@ Object {
                       "line": 20,
                     },
                     "start": Object {
-                      "column": 18,
+                      "column": 16,
                       "line": 20,
                     },
                   },
                   "range": Array [
-                    510,
+                    508,
                     516,
                   ],
                   "type": "TypeAnnotation",
@@ -56454,7 +56510,6 @@ Object {
               496,
               524,
             ],
-            "readonly": false,
             "static": true,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -56464,12 +56519,12 @@ Object {
                   "line": 20,
                 },
                 "start": Object {
-                  "column": 27,
+                  "column": 25,
                   "line": 20,
                 },
               },
               "range": Array [
-                519,
+                517,
                 523,
               ],
               "type": "TypeAnnotation",
@@ -56528,7 +56583,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 16,
+                    "column": 24,
                     "line": 21,
                   },
                   "start": Object {
@@ -56549,12 +56604,12 @@ Object {
                       "line": 21,
                     },
                     "start": Object {
-                      "column": 18,
+                      "column": 16,
                       "line": 21,
                     },
                   },
                   "range": Array [
-                    543,
+                    541,
                     549,
                   ],
                   "type": "TypeAnnotation",
@@ -56582,7 +56637,6 @@ Object {
               529,
               557,
             ],
-            "readonly": false,
             "static": false,
             "type": "TSMethodSignature",
             "typeAnnotation": Object {
@@ -56592,12 +56646,12 @@ Object {
                   "line": 21,
                 },
                 "start": Object {
-                  "column": 27,
+                  "column": 25,
                   "line": 21,
                 },
               },
               "range": Array [
-                552,
+                550,
                 556,
               ],
               "type": "TypeAnnotation",
@@ -56622,7 +56676,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -56656,7 +56709,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 18,
+                    "column": 26,
                     "line": 22,
                   },
                   "start": Object {
@@ -56677,12 +56730,12 @@ Object {
                       "line": 22,
                     },
                     "start": Object {
-                      "column": 20,
+                      "column": 18,
                       "line": 22,
                     },
                   },
                   "range": Array [
-                    578,
+                    576,
                     584,
                   ],
                   "type": "TypeAnnotation",
@@ -56720,12 +56773,12 @@ Object {
                   "line": 22,
                 },
                 "start": Object {
-                  "column": 29,
+                  "column": 27,
                   "line": 22,
                 },
               },
               "range": Array [
-                587,
+                585,
                 591,
               ],
               "type": "TypeAnnotation",
@@ -60813,7 +60866,7 @@ Object {
                 Object {
                   "loc": Object {
                     "end": Object {
-                      "column": 33,
+                      "column": 41,
                       "line": 2,
                     },
                     "start": Object {
@@ -60834,12 +60887,12 @@ Object {
                         "line": 2,
                       },
                       "start": Object {
-                        "column": 35,
+                        "column": 33,
                         "line": 2,
                       },
                     },
                     "range": Array [
-                      58,
+                      56,
                       64,
                     ],
                     "type": "TypeAnnotation",
@@ -60874,12 +60927,12 @@ Object {
                     "line": 2,
                   },
                   "start": Object {
-                    "column": 44,
+                    "column": 42,
                     "line": 2,
                   },
                 },
                 "range": Array [
-                  67,
+                  65,
                   81,
                 ],
                 "type": "TypeAnnotation",
@@ -61483,12 +61536,12 @@ Object {
                             "line": 3,
                           },
                           "start": Object {
-                            "column": 18,
+                            "column": 16,
                             "line": 3,
                           },
                         },
                         "range": Array [
-                          62,
+                          60,
                           63,
                         ],
                         "type": "TypeAnnotation",
@@ -62391,7 +62444,6 @@ Object {
                       "params": Array [
                         Object {
                           "accessibility": "public",
-                          "export": false,
                           "loc": Object {
                             "end": Object {
                               "column": 36,
@@ -62405,7 +62457,7 @@ Object {
                           "parameter": Object {
                             "loc": Object {
                               "end": Object {
-                                "column": 28,
+                                "column": 36,
                                 "line": 5,
                               },
                               "start": Object {
@@ -62426,12 +62478,12 @@ Object {
                                   "line": 5,
                                 },
                                 "start": Object {
-                                  "column": 30,
+                                  "column": 28,
                                   "line": 5,
                                 },
                               },
                               "range": Array [
-                                100,
+                                98,
                                 106,
                               ],
                               "type": "TypeAnnotation",
@@ -62458,13 +62510,10 @@ Object {
                             90,
                             106,
                           ],
-                          "readonly": false,
-                          "static": false,
                           "type": "TSParameterProperty",
                         },
                         Object {
                           "accessibility": "public",
-                          "export": false,
                           "loc": Object {
                             "end": Object {
                               "column": 54,
@@ -62478,7 +62527,7 @@ Object {
                           "parameter": Object {
                             "loc": Object {
                               "end": Object {
-                                "column": 46,
+                                "column": 54,
                                 "line": 5,
                               },
                               "start": Object {
@@ -62499,12 +62548,12 @@ Object {
                                   "line": 5,
                                 },
                                 "start": Object {
-                                  "column": 48,
+                                  "column": 46,
                                   "line": 5,
                                 },
                               },
                               "range": Array [
-                                118,
+                                116,
                                 124,
                               ],
                               "type": "TypeAnnotation",
@@ -62531,8 +62580,6 @@ Object {
                             108,
                             124,
                           ],
-                          "readonly": false,
-                          "static": false,
                           "type": "TSParameterProperty",
                         },
                       ],
@@ -62624,8 +62671,6 @@ Object {
                         "body": Array [
                           Object {
                             "computed": false,
-                            "export": false,
-                            "initializer": null,
                             "key": Object {
                               "loc": Object {
                                 "end": Object {
@@ -62654,13 +62699,10 @@ Object {
                                 "line": 9,
                               },
                             },
-                            "optional": false,
                             "range": Array [
                               200,
                               213,
                             ],
-                            "readonly": false,
-                            "static": false,
                             "type": "TSPropertySignature",
                             "typeAnnotation": Object {
                               "loc": Object {
@@ -62669,12 +62711,12 @@ Object {
                                   "line": 9,
                                 },
                                 "start": Object {
-                                  "column": 18,
+                                  "column": 16,
                                   "line": 9,
                                 },
                               },
                               "range": Array [
-                                206,
+                                204,
                                 212,
                               ],
                               "type": "TypeAnnotation",

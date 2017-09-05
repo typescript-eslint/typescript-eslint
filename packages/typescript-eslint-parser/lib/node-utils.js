@@ -170,6 +170,7 @@ module.exports = {
     getTSNodeAccessibility,
     hasStaticModifierFlag,
     findNextToken,
+    findFirstMatchingToken,
     findChildOfKind,
     findFirstMatchingAncestor,
     findAncestorOfKind,
@@ -411,6 +412,23 @@ function findNextToken(previousToken, parent) {
      * TODO: Remove dependency on private TypeScript method
      */
     return ts.findNextToken(previousToken, parent);
+}
+
+/**
+ * Find the first matching token based on the given predicate function.
+ * @param {TSToken} previousToken The previous TSToken
+ * @param {TSNode} parent The parent TSNode
+ * @param {Function} predicate The predicate function to apply to each checked token
+ * @returns {TSToken|undefined} a matching TSToken
+ */
+function findFirstMatchingToken(previousToken, parent, predicate) {
+    while (previousToken) {
+        if (predicate(previousToken)) {
+            return previousToken;
+        }
+        previousToken = findNextToken(previousToken, parent);
+    }
+    return undefined;
 }
 
 /**
