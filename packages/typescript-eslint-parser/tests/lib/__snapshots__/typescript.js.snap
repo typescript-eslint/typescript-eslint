@@ -35419,6 +35419,606 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/never-type-param.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "name": "x",
+            "range": Array [
+              6,
+              17,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                7,
+                17,
+              ],
+              "type": "TypeAnnotation",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 9,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  9,
+                  17,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 10,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 9,
+                      "line": 1,
+                    },
+                  },
+                  "name": "X",
+                  "range": Array [
+                    9,
+                    10,
+                  ],
+                  "type": "Identifier",
+                },
+                "typeParameters": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 10,
+                      "line": 1,
+                    },
+                  },
+                  "params": Array [
+                    Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 16,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 11,
+                          "line": 1,
+                        },
+                      },
+                      "range": Array [
+                        11,
+                        16,
+                      ],
+                      "type": "TSNeverKeyword",
+                    },
+                  ],
+                  "range": Array [
+                    10,
+                    17,
+                  ],
+                  "type": "TypeParameterInstantiation",
+                },
+              },
+            },
+          },
+          "init": null,
+          "loc": Object {
+            "end": Object {
+              "column": 17,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 6,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            6,
+            17,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        18,
+      ],
+      "type": "VariableDeclaration",
+    },
+    Object {
+      "expression": Object {
+        "arguments": Array [],
+        "callee": Object {
+          "computed": false,
+          "loc": Object {
+            "end": Object {
+              "column": 16,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 2,
+            },
+          },
+          "object": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 10,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 2,
+              },
+            },
+            "name": "Observable",
+            "range": Array [
+              19,
+              29,
+            ],
+            "type": "Identifier",
+          },
+          "property": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 16,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 11,
+                "line": 2,
+              },
+            },
+            "name": "empty",
+            "range": Array [
+              30,
+              35,
+            ],
+            "type": "Identifier",
+          },
+          "range": Array [
+            19,
+            35,
+          ],
+          "type": "MemberExpression",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 25,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          19,
+          44,
+        ],
+        "type": "CallExpression",
+        "typeParameters": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 23,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 16,
+              "line": 2,
+            },
+          },
+          "params": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 22,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 17,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                36,
+                41,
+              ],
+              "type": "TSNeverKeyword",
+            },
+          ],
+          "range": Array [
+            35,
+            42,
+          ],
+          "type": "TypeParameterInstantiation",
+        },
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        19,
+        45,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    46,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "Keyword",
+      "value": "const",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Identifier",
+      "value": "x",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        8,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        9,
+        10,
+      ],
+      "type": "Identifier",
+      "value": "X",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        10,
+        11,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        16,
+      ],
+      "type": "Identifier",
+      "value": "never",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        16,
+        17,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        17,
+        18,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        19,
+        29,
+      ],
+      "type": "Identifier",
+      "value": "Observable",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        29,
+        30,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        30,
+        35,
+      ],
+      "type": "Identifier",
+      "value": "empty",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        35,
+        36,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        36,
+        41,
+      ],
+      "type": "Identifier",
+      "value": "never",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 22,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        41,
+        42,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        42,
+        43,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        43,
+        44,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 25,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        44,
+        45,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`typescript fixtures/basics/non-null-assertion-operator.src 1`] = `
 Object {
   "body": Array [

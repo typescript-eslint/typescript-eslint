@@ -528,7 +528,7 @@ module.exports = function convert(config) {
         case SyntaxKind.CatchClause:
             Object.assign(result, {
                 type: AST_NODE_TYPES.CatchClause,
-                param: convertChild(node.variableDeclaration.name),
+                param: node.variableDeclaration ? convertChild(node.variableDeclaration.name) : null,
                 body: convertChild(node.block)
             });
             break;

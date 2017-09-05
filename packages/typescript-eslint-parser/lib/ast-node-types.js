@@ -124,6 +124,7 @@ module.exports = {
     TSModuleDeclaration: "TSModuleDeclaration",
     TSNamespaceFunctionDeclaration: "TSNamespaceFunctionDeclaration",
     TSNonNullExpression: "TSNonNullExpression",
+    TSNeverKeyword: "TSNeverKeyword",
     TSNullKeyword: "TSNullKeyword",
     TSNumberKeyword: "TSNumberKeyword",
     TSObjectKeyword: "TSObjectKeyword",
