@@ -473,6 +473,7 @@ const fixturePatternsToTest = [
     "typescript/basics/class-with-generic-method-default.src.ts",
     "typescript/basics/class-with-generic-method.src.ts",
     "typescript/basics/type-guard.src.ts",
+    "typescript/basics/never-type-param.src.ts",
     {
         pattern: "typescript/basics/export-named-enum.src.ts",
         config: { babylonParserOptions: { sourceType: "module" } }
