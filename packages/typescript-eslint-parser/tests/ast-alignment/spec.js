@@ -426,13 +426,75 @@ const fixturePatternsToTest = [
     "typescript/basics/class-with-readonly-property.src.ts",
     "typescript/expressions/call-expression-type-arguments.src.ts",
     "typescript/expressions/new-expression-type-arguments.src.ts",
-
+    "typescript/basics/function-with-types.src.ts",
+    "typescript/basics/non-null-assertion-operator.src.ts",
+    "typescript/namespaces-and-modules/ambient-module-declaration-with-import.src.ts",
+    "typescript/basics/class-with-accessibility-modifiers.src.ts",
+    "typescript/basics/class-with-optional-computed-property.src.ts",
+    "typescript/basics/object-with-escaped-properties.src.ts",
+    "typescript/decorators/parameter-decorators/parameter-decorator-constructor.src.ts",
+    "typescript/decorators/parameter-decorators/parameter-decorator-decorator-instance-member.src.ts",
+    "typescript/decorators/parameter-decorators/parameter-decorator-decorator-static-member.src.ts",
+    "typescript/decorators/parameter-decorators/parameter-decorator-instance-member.src.ts",
+    "typescript/decorators/parameter-decorators/parameter-decorator-static-member.src.ts",
+    "typescript/basics/function-with-object-type-with-optional-properties.src.ts",
+    "typescript/basics/function-with-object-type-without-annotation.src.ts",
+    "typescript/decorators/accessor-decorators/accessor-decorator-factory-instance-member.src.ts",
+    "typescript/decorators/accessor-decorators/accessor-decorator-factory-static-member.src.ts",
+    "typescript/decorators/accessor-decorators/accessor-decorator-instance-member.src.ts",
+    "typescript/decorators/accessor-decorators/accessor-decorator-static-member.src.ts",
+    "typescript/decorators/method-decorators/method-decorator-factory-instance-member.src.ts",
+    "typescript/decorators/method-decorators/method-decorator-factory-static-member.src.ts",
+    "typescript/decorators/method-decorators/method-decorator-instance-member.src.ts",
+    "typescript/decorators/method-decorators/method-decorator-static-member.src.ts",
+    "typescript/decorators/property-decorators/property-decorator-factory-instance-member.src.ts",
+    "typescript/decorators/property-decorators/property-decorator-factory-static-member.src.ts",
+    "typescript/decorators/property-decorators/property-decorator-instance-member.src.ts",
+    "typescript/decorators/property-decorators/property-decorator-static-member.src.ts",
+    "typescript/decorators/class-decorators/class-decorator-factory.src.ts",
+    "typescript/decorators/class-decorators/class-decorator.src.ts",
+    "typescript/babylon-convergence/type-parameters.src.ts",
+    "typescript/babylon-convergence/type-parameter-whitespace-loc.src.ts",
+    "typescript/basics/class-with-type-parameter-default.src.ts",
+    "typescript/basics/class-with-type-parameter-underscore.src.ts",
+    "typescript/basics/class-with-type-parameter.src.ts",
+    "typescript/basics/function-with-type-parameters-that-have-comments.src.ts",
+    "typescript/basics/function-with-type-parameters-with-constraint.src.ts",
+    "typescript/basics/function-with-type-parameters.src.ts",
+    "typescript/basics/type-parameters-comments.src.ts",
+    "typescript/namespaces-and-modules/shorthand-ambient-module-declaration.src.ts",
+    "typescript/basics/var-with-type.src.ts",
+    "typescript/basics/class-with-extends-generic-multiple.src.ts",
+    "typescript/basics/class-with-extends-generic.src.ts",
+    "typescript/basics/nested-type-arguments.src.ts",
+    "typescript/basics/null-and-undefined-type-annotations.src.ts",
+    "typescript/basics/var-with-dotted-type.src.ts",
+    "typescript/basics/variable-declaration-type-annotation-spacing.src.ts",
+    "typescript/basics/class-with-generic-method-default.src.ts",
+    "typescript/basics/class-with-generic-method.src.ts",
+    "typescript/basics/type-guard.src.ts",
     {
         pattern: "typescript/basics/export-named-enum.src.ts",
         config: { babylonParserOptions: { sourceType: "module" } }
     },
     {
         pattern: "typescript/basics/export-assignment.src.ts",
+        config: { babylonParserOptions: { sourceType: "module" } }
+    },
+    {
+        pattern: "typescript/basics/export-default-class-with-generic.src.ts",
+        config: { babylonParserOptions: { sourceType: "module" } }
+    },
+    {
+        pattern: "typescript/basics/export-default-class-with-multiple-generics.src.ts",
+        config: { babylonParserOptions: { sourceType: "module" } }
+    },
+    {
+        pattern: "typescript/basics/export-named-class-with-generic.src.ts",
+        config: { babylonParserOptions: { sourceType: "module" } }
+    },
+    {
+        pattern: "typescript/basics/export-named-class-with-multiple-generics.src.ts",
         config: { babylonParserOptions: { sourceType: "module" } }
     }
 
@@ -446,66 +508,73 @@ const fixturePatternsToTest = [
     // "typescript/errorRecovery/enum-with-keywords.src.ts" // babylon parse errors
 
     /**
-     * Other babylon parse errors. TODO: Need to coordinate with TS Team.
+     * Other babylon parse errors relating to invalid syntax.
      */
     // "typescript/basics/abstract-class-with-abstract-constructor.src.ts", // babylon parse errors
-    // "typescript/basics/abstract-class-with-abstract-method.src.ts", // babylon parse errors
-    // "typescript/basics/abstract-class-with-optional-method.src.ts", // babylon parse errors
-    // "typescript/basics/abstract-interface.src.ts", // babylon parse errors
     // "typescript/basics/class-with-export-parameter-properties.src.ts", // babylon parse errors
     // "typescript/basics/class-with-optional-methods.src.ts", // babylon parse errors
     // "typescript/basics/class-with-static-parameter-properties.src.ts", // babylon parse errors
-    // "typescript/basics/declare-class-with-optional-method.src.ts", // babylon parse errors
-    // "typescript/basics/export-type-alias-declaration.src.ts", // babylon parse errors
-    // "typescript/basics/export-type-class-declaration.src.ts", // babylon parse errors
-    // "typescript/basics/export-type-function-declaration.src.ts", // babylon parse errors
     // "typescript/basics/interface-with-all-property-types.src.ts", // babylon parse errors
     // "typescript/basics/interface-with-construct-signature-with-parameter-accessibility.src.ts", // babylon parse errors
-    // "typescript/namespaces-and-modules/nested-internal-module.src.ts", // babylon parse errors
 
     /**
      * typescript-eslint-parser erroring, but babylon not.
      */
     // "typescript/basics/arrow-function-with-type-parameters.src.ts" // typescript-eslint-parser parse errors
 
+    /* ================================================== */
+
     /**
      * TypeScript AST differences which need to be resolved
      */
-    // "typescript/babylon-convergence/type-parameters.src.ts",
+
+    /**
+     * Identified major AST differences
+     */
+
+    /**
+     * Babylon: ClassDeclaration + abstract: true
+     * tsep: TSAbstractClassDeclaration
+     */
     // "typescript/basics/abstract-class-with-abstract-properties.src.ts",
+
+    /**
+     * Babylon: ClassProperty + abstract: true
+     * tsep: TSAbstractClassProperty
+     */
     // "typescript/basics/abstract-class-with-abstract-readonly-property.src.ts",
-    // "typescript/basics/class-with-accessibility-modifiers.src.ts",
-    // "typescript/basics/class-with-extends-generic-multiple.src.ts",
-    // "typescript/basics/class-with-extends-generic.src.ts",
-    // "typescript/basics/class-with-generic-method-default.src.ts",
-    // "typescript/basics/class-with-generic-method.src.ts",
+
+    /**
+     * Babylon: TSExpressionWithTypeArguments
+     * tsep: ClassImplements
+     */
     // "typescript/basics/class-with-implements-generic-multiple.src.ts",
     // "typescript/basics/class-with-implements-generic.src.ts",
     // "typescript/basics/class-with-implements.src.ts",
-    // "typescript/basics/class-with-mixin.src.ts",
-    // "typescript/basics/class-with-optional-computed-property.src.ts",
-    // "typescript/basics/class-with-optional-properties.src.ts",
-    // "typescript/basics/class-with-optional-property-undefined.src.ts",
-    // "typescript/basics/class-with-private-parameter-properties.src.ts",
-    // "typescript/basics/class-with-protected-parameter-properties.src.ts",
-    // "typescript/basics/class-with-public-parameter-properties.src.ts",
-    // "typescript/basics/class-with-readonly-parameter-properties.src.ts",
-    // "typescript/basics/class-with-type-parameter-default.src.ts",
-    // "typescript/basics/class-with-type-parameter-underscore.src.ts",
-    // "typescript/basics/class-with-type-parameter.src.ts",
+
+    /**
+     * Babylon: TSDeclareFunction + declare: true
+     * tsep: DeclareFunction
+     */
     // "typescript/basics/declare-function.src.ts",
-    // "typescript/basics/destructuring-assignment.src.ts",
-    // "typescript/basics/export-default-class-with-generic.src.ts",
-    // "typescript/basics/export-default-class-with-multiple-generics.src.ts",
-    // "typescript/basics/export-named-class-with-generic.src.ts",
-    // "typescript/basics/export-named-class-with-multiple-generics.src.ts",
-    // "typescript/basics/function-with-object-type-with-optional-properties.src.ts",
-    // "typescript/basics/function-with-object-type-without-annotation.src.ts",
-    // "typescript/basics/function-with-type-parameters-that-have-comments.src.ts",
-    // "typescript/basics/function-with-type-parameters-with-constraint.src.ts",
-    // "typescript/basics/function-with-type-parameters.src.ts",
+
+    /**
+     * Babylon: TSDeclareFunction
+     * tsep: TSNamespaceFunctionDeclaration
+     */
+    // "typescript/namespaces-and-modules/declare-namespace-with-exported-function.src.ts",
+
+    /**
+     * Babylon: FunctionDeclaration
+     * tsep: TSNamespaceFunctionDeclaration
+     */
+    // "typescript/namespaces-and-modules/module-with-default-exports.src.ts",
+
+    /**
+     * Other major AST differences (e.g. fundamentally different node types)
+     */
+    // "typescript/basics/class-with-mixin.src.ts",
     // "typescript/basics/function-with-types-assignation.src.ts",
-    // "typescript/basics/function-with-types.src.ts",
     // "typescript/basics/interface-extends-multiple.src.ts",
     // "typescript/basics/interface-extends.src.ts",
     // "typescript/basics/interface-type-parameters.src.ts",
@@ -514,48 +583,39 @@ const fixturePatternsToTest = [
     // "typescript/basics/interface-with-jsdoc.src.ts",
     // "typescript/basics/interface-with-optional-properties.src.ts",
     // "typescript/basics/interface-without-type-annotation.src.ts",
-    // "typescript/basics/nested-type-arguments.src.ts",
-    // "typescript/basics/non-null-assertion-operator.src.ts",
-    // "typescript/basics/null-and-undefined-type-annotations.src.ts",
-    // "typescript/basics/object-with-escaped-properties.src.ts",
     // "typescript/basics/type-alias-declaration-with-constrained-type-parameter.src.ts",
     // "typescript/basics/type-alias-declaration.src.ts",
     // "typescript/basics/type-alias-object-without-annotation.src.ts",
-    // "typescript/basics/type-guard.src.ts",
-    // "typescript/basics/type-parameters-comments.src.ts",
     // "typescript/basics/typed-this.src.ts",
-    // "typescript/basics/var-with-dotted-type.src.ts",
-    // "typescript/basics/var-with-type.src.ts",
-    // "typescript/basics/variable-declaration-type-annotation-spacing.src.ts",
-    // "typescript/decorators/accessor-decorators/accessor-decorator-factory-instance-member.src.ts",
-    // "typescript/decorators/accessor-decorators/accessor-decorator-factory-static-member.src.ts",
-    // "typescript/decorators/accessor-decorators/accessor-decorator-instance-member.src.ts",
-    // "typescript/decorators/accessor-decorators/accessor-decorator-static-member.src.ts",
-    // "typescript/decorators/class-decorators/class-decorator-factory.src.ts",
-    // "typescript/decorators/class-decorators/class-decorator.src.ts",
-    // "typescript/decorators/method-decorators/method-decorator-factory-instance-member.src.ts",
-    // "typescript/decorators/method-decorators/method-decorator-factory-static-member.src.ts",
-    // "typescript/decorators/method-decorators/method-decorator-instance-member.src.ts",
-    // "typescript/decorators/method-decorators/method-decorator-static-member.src.ts",
-    // "typescript/decorators/parameter-decorators/parameter-decorator-constructor.src.ts",
-    // "typescript/decorators/parameter-decorators/parameter-decorator-decorator-instance-member.src.ts",
-    // "typescript/decorators/parameter-decorators/parameter-decorator-decorator-static-member.src.ts",
-    // "typescript/decorators/parameter-decorators/parameter-decorator-instance-member.src.ts",
-    // "typescript/decorators/parameter-decorators/parameter-decorator-static-member.src.ts",
-    // "typescript/decorators/property-decorators/property-decorator-factory-instance-member.src.ts",
-    // "typescript/decorators/property-decorators/property-decorator-factory-static-member.src.ts",
-    // "typescript/decorators/property-decorators/property-decorator-instance-member.src.ts",
-    // "typescript/decorators/property-decorators/property-decorator-static-member.src.ts",
     // "typescript/errorRecovery/interface-empty-extends.src.ts",
-    // "typescript/namespaces-and-modules/ambient-module-declaration-with-import.src.ts",
-    // "typescript/namespaces-and-modules/declare-namespace-with-exported-function.src.ts",
-    // "typescript/namespaces-and-modules/module-with-default-exports.src.ts",
+    // "typescript/basics/class-with-optional-properties.src.ts",
+    // "typescript/basics/class-with-optional-property-undefined.src.ts",
+    // "typescript/namespaces-and-modules/nested-internal-module.src.ts",
+    // "typescript/basics/export-type-function-declaration.src.ts",
+    // "typescript/basics/export-type-class-declaration.src.ts",
+    // "typescript/basics/abstract-interface.src.ts",
 
     /**
-     * Requires fix in https://github.com/babel/babylon/pull/684
+     * tsep bug - Program.body[0].expression.left.properties[0].value.right is currently showing up
+     * as `ArrayPattern`, babylon, acorn and espree say it should be `ArrayExpression`
+     * TODO: Fix this
      */
-    // "typescript/namespaces-and-modules/shorthand-ambient-module-declaration.src.ts"
+    // "typescript/basics/destructuring-assignment.src.ts",
 
+    /**
+     * Babylon bug for optional or abstract methods?
+     */
+    // "typescript/basics/abstract-class-with-abstract-method.src.ts", // babylon parse errors
+    // "typescript/basics/abstract-class-with-optional-method.src.ts", // babylon parse errors
+    // "typescript/basics/declare-class-with-optional-method.src.ts", // babylon parse errors
+
+    /**
+     * Awaiting feedback on Babylon issue https://github.com/babel/babylon/issues/700
+     */
+    // "typescript/basics/class-with-private-parameter-properties.src.ts",
+    // "typescript/basics/class-with-protected-parameter-properties.src.ts",
+    // "typescript/basics/class-with-public-parameter-properties.src.ts",
+    // "typescript/basics/class-with-readonly-parameter-properties.src.ts",
 ];
 
 // Either a string of the pattern, or an object containing the pattern and some additional config

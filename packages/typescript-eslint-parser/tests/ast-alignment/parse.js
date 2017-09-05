@@ -24,16 +24,11 @@ function parseWithBabylonPluginTypescript(text, parserOptions) { // eslint-disab
         plugins: [
             "jsx",
             "typescript",
-            "doExpressions",
             "objectRestSpread",
             "decorators",
             "classProperties",
-            "exportExtensions",
             "asyncGenerators",
-            "functionBind",
-            "functionSent",
             "dynamicImport",
-            "numericSeparator",
             "estree"
         ]
     }, parserOptions));

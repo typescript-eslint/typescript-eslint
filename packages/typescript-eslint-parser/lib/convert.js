@@ -85,10 +85,12 @@ module.exports = function convert(config) {
      */
     function convertTypeAnnotation(child) {
         const annotation = convertChild(child);
+        const annotationStartCol = child.getFullStart() - 1;
+        const loc = nodeUtils.getLocFor(annotationStartCol, child.end, ast);
         return {
             type: AST_NODE_TYPES.TypeAnnotation,
-            loc: annotation.loc,
-            range: annotation.range,
+            loc,
+            range: [annotationStartCol, child.end],
             typeAnnotation: annotation
         };
     }
@@ -160,7 +162,7 @@ module.exports = function convert(config) {
 
                 const constraint = typeParameter.constraint
                     ? convert({ node: typeParameter.constraint, parent: typeParameter, ast, additionalOptions })
-                    : null;
+                    : undefined;
 
                 const defaultParameter = typeParameter.default
                     ? convert({ node: typeParameter.default, parent: typeParameter, ast, additionalOptions })
@@ -279,7 +281,7 @@ module.exports = function convert(config) {
         result.type = customType;
         Object
             .keys(node)
-            .filter(key => !(/^(?:kind|parent|pos|end|flags|modifierFlagsCache|jsDoc)$/.test(key)))
+            .filter(key => !(/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc)$/.test(key)))
             .forEach(key => {
                 if (key === "type") {
                     result.typeAnnotation = (node.type) ? convertTypeAnnotation(node.type) : null;
@@ -390,6 +392,19 @@ module.exports = function convert(config) {
             return;
         }
         result.modifiers = remainingModifiers.map(convertChild);
+    }
+
+    /**
+     * Uses the current TSNode's end location for its `type` to adjust the location data of the given
+     * ESTreeNode, which should be the parent of the final typeAnnotation node
+     * @param {ESTreeNode} typeAnnotationParent The node that will have its location data mutated
+     * @returns {void}
+     */
+    function fixTypeAnnotationParentLocation(typeAnnotationParent) {
+        const end = node.type.getEnd();
+        typeAnnotationParent.range[1] = end;
+        const loc = nodeUtils.getLocFor(typeAnnotationParent.range[0], typeAnnotationParent.range[1], ast);
+        typeAnnotationParent.loc = loc;
     }
 
     /**
@@ -619,15 +634,7 @@ module.exports = function convert(config) {
 
             if (node.type) {
                 result.id.typeAnnotation = convertTypeAnnotation(node.type);
-                result.id.range[1] = node.type.getEnd();
-
-                const identifierEnd = node.name.getEnd();
-                const numCharsBetweenTypeAndIdentifier = node.type.getStart() - (node.type.getFullStart() - identifierEnd - ":".length) - identifierEnd;
-
-                result.id.typeAnnotation.range = [
-                    result.id.typeAnnotation.range[0] - numCharsBetweenTypeAndIdentifier,
-                    result.id.typeAnnotation.range[1]
-                ];
+                fixTypeAnnotationParentLocation(result.id);
             }
             break;
         }
@@ -704,7 +711,7 @@ module.exports = function convert(config) {
                 node,
                 parentNode =>
                     (parentNode.kind === SyntaxKind.BinaryExpression || parentNode.kind === SyntaxKind.ArrowFunction)
-                );
+            );
             const objectAssignNode = (
                 ancestorNode &&
                 ancestorNode.kind === SyntaxKind.BinaryExpression &&
@@ -806,7 +813,7 @@ module.exports = function convert(config) {
                 value: convertChild(node.initializer),
                 computed: nodeUtils.isComputedProperty(node.name),
                 static: nodeUtils.hasStaticModifierFlag(node),
-                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node)
+                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined
             });
 
             if (node.type) {
@@ -836,7 +843,12 @@ module.exports = function convert(config) {
         case SyntaxKind.SetAccessor:
         case SyntaxKind.MethodDeclaration: {
 
-            const openingParen = nodeUtils.findNextToken(node.name, ast);
+            const openingParen = nodeUtils.findFirstMatchingToken(node.name, ast, token => {
+                if (!token || !token.kind) {
+                    return false;
+                }
+                return nodeUtils.getTextForTokenKind(token.kind) === "(";
+            });
 
             const methodLoc = ast.getLineAndCharacterOfPosition(openingParen.getStart()),
                 nodeIsMethod = (node.kind === SyntaxKind.MethodDeclaration),
@@ -1273,7 +1285,7 @@ module.exports = function convert(config) {
 
             if (node.type) {
                 parameter.typeAnnotation = convertTypeAnnotation(node.type);
-                parameter.range[1] = node.type.getEnd();
+                fixTypeAnnotationParentLocation(parameter);
             }
 
             if (node.questionToken) {
@@ -1285,10 +1297,10 @@ module.exports = function convert(config) {
                     type: AST_NODE_TYPES.TSParameterProperty,
                     range: [node.getStart(), node.end],
                     loc: nodeUtils.getLoc(node, ast),
-                    accessibility: nodeUtils.getTSNodeAccessibility(node),
-                    readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
-                    static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
-                    export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node),
+                    accessibility: nodeUtils.getTSNodeAccessibility(node) || undefined,
+                    readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
+                    static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
+                    export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
                     parameter: result
                 };
             }
@@ -1941,9 +1953,9 @@ module.exports = function convert(config) {
                 key: convertChild(node.name),
                 params: convertParameters(node.parameters),
                 typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null,
-                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
+                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
                 static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
-                export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
+                export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node) || undefined
             });
 
             const accessibility = nodeUtils.getTSNodeAccessibility(node);
@@ -1961,14 +1973,14 @@ module.exports = function convert(config) {
         case SyntaxKind.PropertySignature: {
             Object.assign(result, {
                 type: AST_NODE_TYPES.TSPropertySignature,
-                optional: nodeUtils.isOptional(node),
+                optional: nodeUtils.isOptional(node) || undefined,
                 computed: nodeUtils.isComputedProperty(node.name),
                 key: convertChild(node.name),
-                typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null,
-                initializer: convertChild(node.initializer),
-                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
-                static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
-                export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
+                typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : undefined,
+                initializer: convertChild(node.initializer) || undefined,
+                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
+                static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
+                export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node) || undefined
             });
 
             const accessibility = nodeUtils.getTSNodeAccessibility(node);
@@ -1984,9 +1996,9 @@ module.exports = function convert(config) {
                 type: AST_NODE_TYPES.TSIndexSignature,
                 index: convertChild(node.parameters[0]),
                 typeAnnotation: (node.type) ? convertTypeAnnotation(node.type) : null,
-                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node),
+                readonly: nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
                 static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
-                export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
+                export: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node) || undefined
             });
 
             const accessibility = nodeUtils.getTSNodeAccessibility(node);
@@ -2057,6 +2069,11 @@ module.exports = function convert(config) {
                 parameterName: convertChild(node.parameterName),
                 typeAnnotation: convertTypeAnnotation(node.type)
             });
+            /**
+             * Specific fix for type-guard location data
+             */
+            result.typeAnnotation.loc = result.typeAnnotation.typeAnnotation.loc;
+            result.typeAnnotation.range = result.typeAnnotation.typeAnnotation.range;
             break;
 
         case SyntaxKind.EnumDeclaration: {
