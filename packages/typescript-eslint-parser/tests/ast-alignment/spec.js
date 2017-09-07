@@ -226,7 +226,6 @@ const fixturePatternsToTest = [
      * so we have to specify the "sourceType" we want to use.
      *
      * By default we have configured babylon to use "script", but for the examples below we need "module".
-     * Maybe fixed by https://github.com/babel/babylon/commit/00ad6d8310ce826dcdd59c7a819dbd50955058d7?
      */
     {
         pattern: "comments/export-default-anonymous-class.src.js",
@@ -637,6 +636,14 @@ fixturePatternsToTest.forEach(fixturePattern => {
     });
 });
 
+/* eslint-disable */
+/**
+ * Common predicates for Babylon AST preprocessing
+ */
+const always = () => true;
+const ifNumber = (val) => typeof val === "number";
+/* eslint-enable */
+
 /**
  * - Babylon wraps the "Program" node in an extra "File" node, normalize this for simplicity for now...
  * - Remove "start" and "end" values from Babylon nodes to reduce unimportant noise in diffs ("loc" data will still be in
@@ -649,65 +656,45 @@ function preprocessBabylonAST(ast) {
     return parseUtils.omitDeep(ast.program, [
         {
             key: "start",
-            predicate(val) {
-                // only remove the "start" number (not the "start" object within loc)
-                return typeof val === "number";
-            }
+            // only remove the "start" number (not the "start" object within loc)
+            predicate: ifNumber
         },
         {
             key: "end",
-            predicate(val) {
-                // only remove the "end" number (not the "end" object within loc)
-                return typeof val === "number";
-            }
+            // only remove the "end" number (not the "end" object within loc)
+            predicate: ifNumber
         },
         {
             key: "identifierName",
-            predicate() {
-                return true;
-            }
+            predicate: always
         },
         {
             key: "extra",
-            predicate() {
-                return true;
-            }
+            predicate: always
         },
         {
             key: "directives",
-            predicate() {
-                return true;
-            }
+            predicate: always
         },
         {
             key: "directive",
-            predicate() {
-                return true;
-            }
+            predicate: always
         },
         {
             key: "innerComments",
-            predicate() {
-                return true;
-            }
+            predicate: always
         },
         {
             key: "leadingComments",
-            predicate() {
-                return true;
-            }
+            predicate: always
         },
         {
             key: "trailingComments",
-            predicate() {
-                return true;
-            }
+            predicate: always
         },
         {
             key: "guardedHandlers",
-            predicate() {
-                return true;
-            }
+            predicate: always
         }
     ]);
 }

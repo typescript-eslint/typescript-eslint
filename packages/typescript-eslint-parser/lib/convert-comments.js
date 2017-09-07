@@ -1,6 +1,6 @@
 /**
  * @fileoverview Convert comment using TypeScript token scanner
- * @author James Henry
+ * @author James Henry <https://github.com/JamesHenry>
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
