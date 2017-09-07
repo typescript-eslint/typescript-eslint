@@ -1,6 +1,6 @@
 /**
  * @fileoverview Utilities for finding and converting TSNodes into ESTreeNodes
- * @author James Henry
+ * @author James Henry <https://github.com/JamesHenry>
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */

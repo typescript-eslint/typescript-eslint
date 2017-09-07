@@ -1,10 +1,12 @@
+"use strict";
+
 /**
  * ==================================================
  * KNOWN/DIAGNOSED ISSUES
  * ==================================================
  */
 
-// const fixturePatternsToTest = [
+module.exports = [
     /**
      * "ExperimentalSpreadProperty" in espree/typescript-eslint-parser vs "SpreadElement" in Babylon
      * comes up a lot in this section
@@ -41,7 +43,7 @@
      * Babylon parse error because of more strict spec enforcement than other parsers.
      */
 
-     /**
+    /**
      * super() is being used outside of constructor. Other parsers (e.g. espree, acorn) do not error on this.
      */
     // "ecma-features/classes/class-one-method-super.src.js", // babylon parse errors
@@ -78,11 +80,11 @@
     //     pattern: "ecma-features/modules/error-delete.src.js",
     //     config: { babylonParserOptions: { sourceType: "module" } }
     // },
-     /**
+    /**
      * 'with' in strict mode
      */
     // {
     //     pattern: "ecma-features/modules/error-strict.src.js",
     //     config: { babylonParserOptions: { sourceType: "module" } }
     // },
-// ];
+];

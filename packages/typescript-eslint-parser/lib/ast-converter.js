@@ -1,6 +1,7 @@
 /**
  * @fileoverview Converts TypeScript AST into ESTree format.
  * @author Nicholas C. Zakas
+ * @author James Henry <https://github.com/JamesHenry>
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */

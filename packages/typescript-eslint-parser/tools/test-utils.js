@@ -1,6 +1,7 @@
 /**
  * @fileoverview Tools for running test cases
  * @author Nicholas C. Zakas
+ * @author James Henry <https://github.com/JamesHenry>
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
@@ -29,7 +30,6 @@ function getRaw(ast) {
         if ((key === "start" || key === "end") && typeof value === "number") {
             return undefined;
         }
-
         return value;
     }));
 }
