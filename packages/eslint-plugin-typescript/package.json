@@ -13,7 +13,7 @@
   "scripts": {
     "lint": "eslint lib/ tests/",
     "lint:fix": "eslint lib/ tests/ --fix",
-    "mocha": "mocha tests --recursive",
+    "mocha": "mocha tests --recursive --reporter=dot",
     "test": "npm run lint && npm run mocha",
     "precommit": "npm test && lint-staged"
   },
