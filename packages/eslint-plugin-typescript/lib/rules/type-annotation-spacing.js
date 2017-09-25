@@ -75,7 +75,7 @@ module.exports = {
          * @private
          */
         function checkTypeAnnotationSpacing(typeAnnotation) {
-            const nextToken = typeAnnotation.typeAnnotation || typeAnnotation;
+            const nextToken = typeAnnotation;
             const punctuatorToken = sourceCode.getTokenBefore(nextToken);
             const previousToken = sourceCode.getTokenBefore(punctuatorToken);
 
@@ -140,7 +140,9 @@ module.exports = {
          */
         function checkFunctionReturnTypeSpacing(node) {
             if (node.returnType) {
-                checkTypeAnnotationSpacing(node.returnType);
+                checkTypeAnnotationSpacing(
+                    node.returnType.typeAnnotation || node.returnType
+                );
             }
         }
 
@@ -150,20 +152,17 @@ module.exports = {
         return {
             Identifier(node) {
                 if (node.typeAnnotation) {
-                    checkTypeAnnotationSpacing(node.typeAnnotation);
+                    checkTypeAnnotationSpacing(
+                        node.typeAnnotation.typeAnnotation ||
+                            node.typeAnnotation
+                    );
                 }
             },
-
             TypeAnnotation(node) {
-                if (
-                    node.typeAnnotation &&
-                    node.typeAnnotation.type !== "TSFunctionType" &&
-                    node.parent.type !== "TSAsExpression"
-                ) {
+                if (node.parent.type !== "TSAsExpression") {
                     checkTypeAnnotationSpacing(node.typeAnnotation);
                 }
             },
-
             FunctionDeclaration: checkFunctionReturnTypeSpacing,
             FunctionExpression: checkFunctionReturnTypeSpacing,
             ArrowFunctionExpression: checkFunctionReturnTypeSpacing
