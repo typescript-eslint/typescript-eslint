@@ -66,3 +66,4 @@ Then configure the rules you want to use under the rules section.
 * [`typescript/class-name-casing`](./docs/rules/adjacent-overload-signatures.md) - enforces PascalCased class and interface names. (`class-name` from TSLint)
 * [`typescript/member-delimiter-style`](./docs/rules/member-delimiter-style.md) - enforces a member delimiter style in interfaces and type literals.
 * [`typescript/no-empty-interface`](./docs/rules/no-empty-interface.md) - disallows the declaration of empty interfaces. (`no-empty-interface` from TSLint)
+* [`typescript/member-naming`](./docs/rules/member-naming.md) - enforces naming conventions for class members by visibility
