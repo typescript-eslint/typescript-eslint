@@ -139,6 +139,7 @@ module.exports = {
     TSReadonlyKeyword: "TSReadonlyKeyword",
     TSStaticKeyword: "TSStaticKeyword",
     TSStringKeyword: "TSStringKeyword",
+    TSSymbolKeyword: "TSSymbolKeyword",
     TSTypeLiteral: "TSTypeLiteral",
     TSTypePredicate: "TSTypePredicate",
     TSTypeReference: "TSTypeReference",
