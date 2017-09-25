@@ -28,7 +28,7 @@ ruleTester.run("type-annotation-spacing", rule, {
             parser: "typescript-eslint-parser"
         },
         {
-            code: "function foo(): string {}",
+            code: "function foo(): void {}",
             parser: "typescript-eslint-parser"
         },
         {
@@ -87,6 +87,14 @@ interface Foo {
             code: `
 interface Foo {
     greet(name: string): string;
+}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+interface Foo {
+    thing: { [key in string]: number };
 }
             `,
             parser: "typescript-eslint-parser"
@@ -478,7 +486,7 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name : string) => string;
+    greet : (name : string) => string;
 }
             `,
             options: [{ after: true, before: true }],
@@ -597,7 +605,7 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name :string) =>string;
+    greet :(name :string) =>string;
 }
             `,
             options: [{ after: false, before: true }],
@@ -716,7 +724,7 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name : string) => string;
+    greet : (name : string) => string;
 }
             `,
             options: [{ before: true }],
@@ -919,7 +927,7 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name : string)=>string;
+    greet : (name : string)=>string;
 }
             `,
             options: [
@@ -954,7 +962,7 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name : string) => string;
+    greet : (name : string) => string;
 }
             `,
             options: [
@@ -997,7 +1005,7 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name : string) =>string;
+    greet : (name : string) =>string;
 }
             `,
             options: [
@@ -1015,6 +1023,157 @@ type Foo = {
                     }
                 }
             ],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+interface Foo {
+    thing: { [key in string]: number };
+}
+            `,
+            options: [{ after: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+interface Foo {
+    thing: { [key in string]: number };
+}
+            `,
+            options: [{ after: true, before: false }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+interface Foo {
+    thing : { [key in string] : number };
+}
+            `,
+            options: [{ after: true, before: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+interface Foo {
+    thing :{ [key in string] :number };
+}
+            `,
+            options: [{ after: false, before: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+interface Foo {
+    thing : { [key in string] : number };
+}
+            `,
+            options: [{ before: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+type Foo = {
+    thing: { [key in string]: number };
+}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+type Foo = {
+    thing: { [key in string]: number };
+}
+            `,
+            options: [{ after: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+type Foo = {
+    thing: { [key in string]: number };
+}
+            `,
+            options: [{ after: true, before: false }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+type Foo = {
+    thing : { [key in string] : number };
+}
+            `,
+            options: [{ after: true, before: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+type Foo = {
+    thing :{ [key in string] :number };
+}
+            `,
+            options: [{ after: false, before: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+type Foo = {
+    thing : { [key in string] : number };
+}
+            `,
+            options: [{ before: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+class Foo {
+    greet: (name: string) => void = {}
+}
+            `,
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+class Foo {
+    greet: (name: string) => void = {}
+}
+            `,
+            options: [{ after: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+class Foo {
+    greet: (name: string)=> void = {}
+}
+            `,
+            options: [{ after: true, before: false }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+class Foo {
+    greet : (name : string) => void = {}
+}
+            `,
+            options: [{ after: true, before: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+class Foo {
+    greet :(name :string) =>void = {}
+}
+            `,
+            options: [{ after: false, before: true }],
+            parser: "typescript-eslint-parser"
+        },
+        {
+            code: `
+class Foo {
+    greet : (name : string) => void = {}
+}
+            `,
+            options: [{ before: true }],
             parser: "typescript-eslint-parser"
         }
     ],
@@ -2413,10 +2572,15 @@ type Foo = {
             options: [{ after: true, before: true }],
             output: `
 type Foo = {
-    greet: (name : string) => string;
+    greet : (name : string) => string;
 }
             `,
             errors: [
+                {
+                    message: "Expected a space before the ':'",
+                    line: 3,
+                    column: 10
+                },
                 {
                     message: "Expected a space before the ':'",
                     line: 3,
@@ -2432,21 +2596,21 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name : string)=> string;
+    greet : (name : string)=> string;
 }
             `,
             parser: "typescript-eslint-parser",
             options: [{ after: true, before: true }],
             output: `
 type Foo = {
-    greet: (name : string) => string;
+    greet : (name : string) => string;
 }
             `,
             errors: [
                 {
                     message: "Expected a space before the '=>'",
                     line: 3,
-                    column: 27
+                    column: 28
                 }
             ]
         },
@@ -2835,10 +2999,15 @@ type Foo = {
             options: [{ before: true }],
             output: `
 type Foo = {
-    greet: (name : string) => string;
+    greet : (name : string) => string;
 }
             `,
             errors: [
+                {
+                    message: "Expected a space before the ':'",
+                    line: 3,
+                    column: 10
+                },
                 {
                     message: "Expected a space before the ':'",
                     line: 3,
@@ -2854,21 +3023,21 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name : string)=> string;
+    greet : (name : string)=> string;
 }
             `,
             parser: "typescript-eslint-parser",
             options: [{ before: true }],
             output: `
 type Foo = {
-    greet: (name : string) => string;
+    greet : (name : string) => string;
 }
             `,
             errors: [
                 {
                     message: "Expected a space before the '=>'",
                     line: 3,
-                    column: 27
+                    column: 28
                 }
             ]
         },
@@ -3321,7 +3490,7 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name:string)=>string;
+    greet : (name:string)=>string;
 }
             `,
             options: [
@@ -3334,19 +3503,19 @@ type Foo = {
             parser: "typescript-eslint-parser",
             output: `
 type Foo = {
-    greet: (name : string)=>string;
+    greet : (name : string)=>string;
 }
             `,
             errors: [
                 {
                     message: "Expected a space after the ':'",
                     line: 3,
-                    column: 17
+                    column: 18
                 },
                 {
                     message: "Expected a space before the ':'",
                     line: 3,
-                    column: 17
+                    column: 18
                 }
             ]
         },
@@ -3396,7 +3565,7 @@ type Foo = {
         {
             code: `
 type Foo = {
-    greet: (name:string)=>string;
+    greet : (name:string)=>string;
 }
             `,
             options: [
@@ -3418,29 +3587,29 @@ type Foo = {
             parser: "typescript-eslint-parser",
             output: `
 type Foo = {
-    greet: (name : string) => string;
+    greet : (name : string) => string;
 }
             `,
             errors: [
                 {
                     message: "Expected a space after the ':'",
                     line: 3,
-                    column: 17
+                    column: 18
                 },
                 {
                     message: "Expected a space before the ':'",
                     line: 3,
-                    column: 17
+                    column: 18
                 },
                 {
                     message: "Expected a space after the '=>'",
                     line: 3,
-                    column: 25
+                    column: 26
                 },
                 {
                     message: "Expected a space before the '=>'",
                     line: 3,
-                    column: 25
+                    column: 26
                 }
             ]
         }
