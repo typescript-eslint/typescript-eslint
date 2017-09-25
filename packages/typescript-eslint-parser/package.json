@@ -19,7 +19,7 @@
   "license": "BSD-2-Clause",
   "devDependencies": {
     "babel-code-frame": "^6.26.0",
-    "babylon": "^7.0.0-beta.22",
+    "babylon": "7.0.0-beta.24",
     "eslint": "4.6.1",
     "eslint-config-eslint": "4.0.0",
     "eslint-plugin-node": "5.1.1",
@@ -42,7 +42,7 @@
     "eslint"
   ],
   "scripts": {
-    "test": "node Makefile.js test",
+    "test": "node Makefile.js test && npm run ast-alignment-tests",
     "jest": "jest",
     "ast-alignment-tests": "jest --config={} ./tests/ast-alignment/spec.js",
     "lint": "node Makefile.js lint",

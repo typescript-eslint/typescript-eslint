@@ -68,7 +68,87 @@ function omitDeep(obj, keysToOmit) {
     return obj;
 }
 
+/* eslint-disable */
+/**
+ * Common predicates for Babylon AST preprocessing
+ */
+const always = () => true;
+const ifNumber = (val) => typeof val === "number";
+/* eslint-enable */
+
+/**
+ * - Babylon wraps the "Program" node in an extra "File" node, normalize this for simplicity for now...
+ * - Remove "start" and "end" values from Babylon nodes to reduce unimportant noise in diffs ("loc" data will still be in
+ * each final AST and compared).
+ *
+ * @param {Object} ast raw babylon AST
+ * @returns {Object} processed babylon AST
+ */
+function preprocessBabylonAST(ast) {
+    return omitDeep(ast.program, [
+        {
+            key: "start",
+            // only remove the "start" number (not the "start" object within loc)
+            predicate: ifNumber
+        },
+        {
+            key: "end",
+            // only remove the "end" number (not the "end" object within loc)
+            predicate: ifNumber
+        },
+        {
+            key: "identifierName",
+            predicate: always
+        },
+        {
+            key: "extra",
+            predicate: always
+        },
+        {
+            key: "directives",
+            predicate: always
+        },
+        {
+            key: "directive",
+            predicate: always
+        },
+        {
+            key: "innerComments",
+            predicate: always
+        },
+        {
+            key: "leadingComments",
+            predicate: always
+        },
+        {
+            key: "trailingComments",
+            predicate: always
+        },
+        {
+            key: "guardedHandlers",
+            predicate: always
+        }
+    ]);
+}
+
+/**
+ * There is currently a really awkward difference in location data for Program nodes
+ * between different parsers in the ecosystem. Hack around this by removing the data
+ * before comparing the ASTs.
+ *
+ * See: https://github.com/babel/babylon/issues/673
+ *
+ * @param {Object} ast the raw AST with a Program node at its top level
+ * @returns {Object} the ast with the location data removed from the Program node
+ */
+function removeLocationDataFromProgramNode(ast) {
+    delete ast.loc;
+    delete ast.range;
+    return ast;
+}
+
 module.exports = {
     normalizeNodeTypes,
-    omitDeep
+    preprocessBabylonAST,
+    removeLocationDataFromProgramNode
 };
