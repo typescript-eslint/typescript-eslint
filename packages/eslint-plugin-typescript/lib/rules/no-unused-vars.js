@@ -47,7 +47,7 @@ module.exports = {
     meta: {
         docs: {
             description:
-                "Prevent TypeScript-specific variables being falsely marked as unused.",
+                "Prevent TypeScript-specific constructs from being erroneously flagged as unused",
             category: "TypeScript",
             recommended: true
         },

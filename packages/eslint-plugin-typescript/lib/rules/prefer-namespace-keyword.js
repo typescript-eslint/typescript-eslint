@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -12,7 +14,8 @@ module.exports = {
     meta: {
         docs: {
             description:
-                "Enforces the use of the keyword namespace over module to declare custom TypeScript modules.",
+                "Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules.",
+            extraDescription: [util.tslintRule("no-internal-module")],
             category: "TypeScript"
         },
         fixable: "code",
@@ -70,7 +73,7 @@ module.exports = {
                 context.report({
                     node,
                     message:
-                        "Use namespace instead of module to declare custom TypeScript modules",
+                        "Use 'namespace' instead of 'module' to declare custom TypeScript modules",
                     fix(fixer) {
                         const start = getStartIndex(node);
 

@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -11,7 +13,8 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces triple slash references are not used.",
+            description: 'Disallow `/// <reference path="" />` comments',
+            extraDescription: [util.tslintRule("no-reference")],
             category: "TypeScript"
         },
         schema: []

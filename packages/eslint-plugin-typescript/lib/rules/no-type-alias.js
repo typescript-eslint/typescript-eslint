@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -11,7 +13,8 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Disallows the use of type aliases.",
+            description: "Disallow the use of type aliases",
+            extraDescription: [util.tslintRule("interface-over-type-literal")],
             category: "TypeScript"
         },
         schema: [

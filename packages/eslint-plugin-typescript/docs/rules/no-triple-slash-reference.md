@@ -1,4 +1,4 @@
-# Enforces reference comments are not used (no-triple-slash-reference)
+# Disallow `/// <reference path="" />` comments (no-triple-slash-reference)
 
 Triple-slash reference directive comments should not be used anymore. Use `import` instead.
 

@@ -11,7 +11,7 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces member overloads to be consecutive",
+            description: "Require that member overloads be consecutive",
             category: "TypeScript"
         },
         schema: []

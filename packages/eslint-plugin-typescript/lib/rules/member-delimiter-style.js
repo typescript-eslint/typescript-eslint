@@ -22,7 +22,7 @@ module.exports = {
     meta: {
         docs: {
             description:
-                "Enforces a member delimiter style for interfaces and type literals.",
+                "Require a specific member delimiter style for interfaces and type literals",
             category: "TypeScript"
         },
         fixable: "code",

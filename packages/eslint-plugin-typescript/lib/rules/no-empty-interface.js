@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -11,7 +13,8 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Disallows the declaration of empty interfaces.",
+            description: "Disallow the declaration of empty interfaces",
+            extraDescription: [util.tslintRule("no-empty-interface")],
             category: "TypeScript"
         },
         schema: []

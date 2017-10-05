@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -33,7 +35,8 @@ const schemaOptions = [
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces a standard member declaration order.",
+            description: "Require a consistent member declaration order",
+            extraDescription: [util.tslintRule("member-ordering")],
             category: "TypeScript"
         },
         schema: [

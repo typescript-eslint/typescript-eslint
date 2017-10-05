@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -11,7 +13,8 @@
 module.exports = {
     meta: {
         docs: {
-            description: 'Enforces interface names are prefixed with "I".',
+            description: "Require that interface names be prefixed with `I`",
+            extraDescription: [util.tslintRule("interface-name")],
             category: "TypeScript"
         },
         schema: [

@@ -156,7 +156,7 @@ module.exports = {
     meta: {
         docs: {
             description:
-                "disallow the use of variables before they are defined",
+                "Disallow the use of variables before they are defined",
             category: "Variables",
             recommended: false
         },
