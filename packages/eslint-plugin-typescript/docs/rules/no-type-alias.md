@@ -1,4 +1,4 @@
-# Disallows the use of type aliases. 
+# Disallow the use of type aliases (no-type-alias)
 
 In TypeScript, type aliases serve three purposes:
 - Aliasing other types so that we can refer to them using a simpler name.

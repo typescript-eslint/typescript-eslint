@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -11,7 +13,8 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces PascalCased class and interface names.",
+            description: "Require PascalCased class and interface names",
+            extraDescription: [util.tslintRule("class-name")],
             category: "Best Practices",
             recommended: true
         }

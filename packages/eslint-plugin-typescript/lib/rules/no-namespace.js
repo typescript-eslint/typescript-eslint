@@ -12,7 +12,7 @@ module.exports = {
     meta: {
         docs: {
             description:
-                "Disallows the use of custom TypeScript modules and namespaces.",
+                "Disallow the use of custom TypeScript modules and namespaces",
             category: "TypeScript"
         },
         schema: [

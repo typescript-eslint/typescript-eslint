@@ -1,4 +1,4 @@
-# Disallows parameter properties in class constructors.
+# Disallow the use of parameter properties in class constructors. (no-parameter-properties)
 
 Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways
 of declaring and initializing class members.

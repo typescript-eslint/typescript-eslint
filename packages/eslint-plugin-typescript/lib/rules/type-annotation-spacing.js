@@ -21,7 +21,7 @@ const definition = {
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces spacing around type annotations.",
+            description: "Require consistent spacing around type annotations",
             category: "TypeScript"
         },
         fixable: "code",

@@ -1,4 +1,4 @@
-# Enforces the use of `as Type` assertions instead of `<Type>` assertions.
+# Enforces the use of `as Type` assertions instead of `<Type>` assertions (no-angle-bracket-type-assertion)
 
 TypeScript disallows the use of `<Type>` assertions in `.tsx` because of the similarity with  
 JSX's syntax, which makes it impossible to parse. 

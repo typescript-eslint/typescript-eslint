@@ -1,4 +1,4 @@
-# Enforces interface names are prefixed
+# Require that interface names be prefixed with `I` (interface-name-prefix)
 
 It can be hard to differentiate between classes and interfaces.
 Prefixing interfaces with "I" can help telling them apart at a glance.

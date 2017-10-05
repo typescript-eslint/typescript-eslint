@@ -13,8 +13,10 @@
   "scripts": {
     "lint": "eslint lib/ tests/",
     "lint:fix": "eslint lib/ tests/ --fix",
+    "docs": "eslint-docs",
+    "docs:check": "eslint-docs check",
     "mocha": "mocha tests --recursive --reporter=dot",
-    "test": "npm run lint && npm run mocha",
+    "test": "npm run lint && npm run mocha && npm run docs:check",
     "precommit": "npm test && lint-staged"
   },
   "dependencies": {
@@ -24,6 +26,7 @@
     "eslint": "^4.6.1",
     "eslint-config-eslint": "^4.0.0",
     "eslint-config-prettier": "^2.4.0",
+    "eslint-docs": "^0.1.1",
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-prettier": "^2.2.0",
     "husky": "^0.14.3",

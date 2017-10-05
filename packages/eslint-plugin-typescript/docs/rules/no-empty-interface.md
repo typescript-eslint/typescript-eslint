@@ -1,4 +1,4 @@
-# Disallows the declaration of empty interfaces.
+# Disallow the declaration of empty interfaces (no-empty-interface)
 
 An empty interface is equivalent to its supertype. If the interface does not implement a supertype, then 
 the interface is equivalent to an empty object (`{}`). In both cases it can be omitted.

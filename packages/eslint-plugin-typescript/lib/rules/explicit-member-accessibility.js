@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -12,7 +14,8 @@ module.exports = {
     meta: {
         docs: {
             description:
-                "Enforces explicity accessibility modifiers for class members",
+                "Require explicit accessibility modifiers on class properties and methods",
+            extraDescription: [util.tslintRule("member-access")],
             category: "TypeScript"
         },
         schema: []

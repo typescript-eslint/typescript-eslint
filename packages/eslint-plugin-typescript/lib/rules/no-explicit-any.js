@@ -5,6 +5,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -12,7 +14,8 @@
 module.exports = {
     meta: {
         docs: {
-            description: "Enforces the any type is not used.",
+            description: "Disallow usage of the `any` type",
+            extraDescription: [util.tslintRule("no-any")],
             category: "TypeScript"
         },
         schema: []

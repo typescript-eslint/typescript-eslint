@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -12,7 +14,10 @@ module.exports = {
     meta: {
         docs: {
             description:
-                "Enforces the use of as Type assertions instead of <Type> assertions.",
+                "Enforces the use of `as Type` assertions instead of `<Type>` assertions",
+            extraDescription: [
+                util.tslintRule("no-angle-bracket-type-assertion")
+            ],
             category: "Style"
         },
         schema: []

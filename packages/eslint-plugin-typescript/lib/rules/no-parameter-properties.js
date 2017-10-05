@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -12,7 +14,8 @@ module.exports = {
     meta: {
         docs: {
             description:
-                "Disallows parameter properties in class constructors.",
+                "Disallow the use of parameter properties in class constructors.",
+            extraDescription: [util.tslintRule("no-parameter-properties")],
             category: "TypeScript"
         },
         schema: [
