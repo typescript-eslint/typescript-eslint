@@ -102,17 +102,32 @@ module.exports = function convert(config) {
      * @returns {TypeParameterInstantiation} TypeParameterInstantiation node
      */
     function convertTypeArgumentsToTypeParameters(typeArguments) {
-        const firstTypeArgument = typeArguments[0];
-        const lastTypeArgument = typeArguments[typeArguments.length - 1];
-        const greaterThanToken = nodeUtils.findNextToken(lastTypeArgument, ast);
-
+        /**
+         * Even if typeArguments is an empty array, TypeScript sets a `pos` and `end`
+         * property on the array object so we can safely read the values here
+         */
+        const start = typeArguments.pos - 1;
+        let end = typeArguments.end + 1;
+        if (typeArguments && typeArguments.length) {
+            const firstTypeArgument = typeArguments[0];
+            const typeArgumentsParent = firstTypeArgument.parent;
+            /**
+             * In the case of the parent being a CallExpression we have to use slightly different
+             * logic to calculate the correct end position
+             */
+            if (typeArgumentsParent && typeArgumentsParent.kind === SyntaxKind.CallExpression) {
+                const lastTypeArgument = typeArguments[typeArguments.length - 1];
+                const greaterThanToken = nodeUtils.findNextToken(lastTypeArgument, ast);
+                end = greaterThanToken.end;
+            }
+        }
         return {
             type: AST_NODE_TYPES.TypeParameterInstantiation,
             range: [
-                firstTypeArgument.pos - 1,
-                greaterThanToken.end
+                start,
+                end
             ],
-            loc: nodeUtils.getLocFor(firstTypeArgument.pos - 1, greaterThanToken.end, ast),
+            loc: nodeUtils.getLocFor(start, end, ast),
             params: typeArguments.map(typeArgument => {
                 if (nodeUtils.isTypeKeyword(typeArgument.kind)) {
                     return {
