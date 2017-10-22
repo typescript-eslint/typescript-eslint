@@ -315,6 +315,22 @@ let fixturePatternConfigsToTest = [
     /* ================================================== */
 
     /**
+     * TSX-SPECIFIC FILES
+     */
+
+    createFixturePatternConfigFor("tsx", {
+        fileType: "tsx",
+        ignore: [
+            /**
+             * AST difference
+             */
+            "react-typed-props"
+        ]
+    }),
+
+    /* ================================================== */
+
+    /**
      * TYPESCRIPT-SPECIFIC FILES
      */
 
