@@ -4,7 +4,7 @@
   "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
   "homepage": "https://github.com/eslint/typescript-eslint-parser",
   "main": "parser.js",
-  "version": "8.0.1",
+  "version": "9.0.0",
   "files": [
     "lib",
     "parser.js"
