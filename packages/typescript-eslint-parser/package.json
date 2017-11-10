@@ -18,19 +18,19 @@
   },
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "babel-code-frame": "^6.26.0",
+    "babel-code-frame": "6.26.0",
     "babylon": "7.0.0-beta.24",
-    "eslint": "4.6.1",
+    "eslint": "4.10.0",
     "eslint-config-eslint": "4.0.0",
-    "eslint-plugin-node": "5.1.1",
+    "eslint-plugin-node": "5.2.1",
     "eslint-release": "0.10.3",
-    "glob": "^7.1.2",
-    "jest": "21.0.1",
-    "lodash.isplainobject": "^4.0.6",
+    "glob": "7.1.2",
+    "jest": "21.2.1",
+    "lodash.isplainobject": "4.0.6",
     "npm-license": "0.3.3",
     "shelljs": "0.7.8",
     "shelljs-nodecli": "0.1.1",
-    "typescript": "~2.5.1"
+    "typescript": "~2.6.1"
   },
   "keywords": [
     "ast",
