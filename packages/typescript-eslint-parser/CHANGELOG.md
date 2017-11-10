@@ -1,3 +1,7 @@
+v9.0.0 - November 10, 2017
+
+* 46479e8 Breaking: Support TypeScript 2.6 (fixes #394) (#397) (James Henry)
+
 v8.0.1 - October 22, 2017
 
 * 0401ffc Fix: Calculate typeArguments loc data correctly if empty (fixes #395) (#396) (James Henry)
