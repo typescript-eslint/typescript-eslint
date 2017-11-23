@@ -434,6 +434,22 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
                 "}"
             ].join("\n"),
             parser
+        },
+        {
+            code: [
+                "import Foo from 'foo'",
+                "const bar: Foo.Bar = null",
+                "console.log(bar)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import Foo from 'foo'",
+                "const baz: Foo.Bar.Baz = null",
+                "console.log(baz)"
+            ].join("\n"),
+            parser
         }
     ],
 

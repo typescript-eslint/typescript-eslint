@@ -69,8 +69,17 @@ module.exports = {
             const annotation = node.typeAnnotation || node;
 
             switch (annotation.type) {
+                case "Identifier": {
+                    markVariableAsUsed(context, annotation.name);
+                    break;
+                }
                 case "TSArrayType": {
                     markTypeAnnotationAsUsed(annotation.elementType);
+                    break;
+                }
+                case "TSQualifiedName": {
+                    markTypeAnnotationAsUsed(annotation.left);
+                    markTypeAnnotationAsUsed(annotation.right);
                     break;
                 }
                 case "TSTypeReference": {
@@ -78,6 +87,8 @@ module.exports = {
                         markTypeAnnotationAsUsed(
                             annotation.typeName.elementType
                         );
+                    } else if (annotation.typeName.type === "TSQualifiedName") {
+                        markTypeAnnotationAsUsed(annotation.typeName);
                     } else {
                         markVariableAsUsed(context, annotation.typeName.name);
                         if (
