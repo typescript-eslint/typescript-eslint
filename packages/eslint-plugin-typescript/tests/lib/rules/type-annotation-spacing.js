@@ -1185,6 +1185,25 @@ class Foo {
             parser: "typescript-eslint-parser"
         },
         {
+            code: `
+interface Foo { a: string }
+type Bar = Record<keyof Foo, string>
+            `,
+            options: [
+                {
+                    after: true,
+                    before: false,
+                    overrides: {
+                        arrow: {
+                            after: true,
+                            before: true
+                        }
+                    }
+                }
+            ],
+            parser: "typescript-eslint-parser"
+        },
+        {
             code: "let resolver: (() => PromiseLike<T>) | PromiseLike<T>;",
             parser: "typescript-eslint-parser"
         },
