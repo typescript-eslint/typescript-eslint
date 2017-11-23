@@ -376,6 +376,22 @@ ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
         {
             code: [
                 "import { Nullable } from 'nullable'",
+                "const foo = ({ nullable }: Nullable) => nullable",
+                "foo({ nullable: null })"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { ReproInterface } from 'ReproInterface'",
+                "const x = ({ a = null } : { a: ReproInterface }) => a",
+                "console.log(x)"
+            ].join("\n"),
+            parser
+        },
+        {
+            code: [
+                "import { Nullable } from 'nullable'",
                 "import { SomeOther } from 'some'",
                 "import { Another } from 'some'",
                 "class A extends Nullable<SomeOther> {",

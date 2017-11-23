@@ -92,6 +92,15 @@ module.exports = {
 
                     break;
                 }
+                case "TSTypeLiteral": {
+                    annotation.members.forEach(member => {
+                        if (member.typeAnnotation) {
+                            markTypeAnnotationAsUsed(member.typeAnnotation);
+                        }
+                    });
+
+                    break;
+                }
                 case "TSUnionType":
                 case "TSIntersectionType":
                     annotation.types.forEach(type => {
@@ -256,6 +265,12 @@ module.exports = {
 
             ClassDeclaration: markClassOptionsAsUsed,
             ClassExpression: markClassOptionsAsUsed,
+
+            ObjectPattern(node) {
+                if (node.typeAnnotation) {
+                    markTypeAnnotationAsUsed(node.typeAnnotation);
+                }
+            },
 
             MethodDefinition(node) {
                 if (node.decorators) {
