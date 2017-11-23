@@ -45,6 +45,7 @@ module.exports = {
     },
 
     create(context) {
+        const punctuators = [":", "=>"];
         const sourceCode = context.getSourceCode();
         const options = context.options[0] || {};
 
@@ -78,12 +79,16 @@ module.exports = {
             const nextToken = typeAnnotation;
             const punctuatorToken = sourceCode.getTokenBefore(nextToken);
             const previousToken = sourceCode.getTokenBefore(punctuatorToken);
+            const type = punctuatorToken.value;
+
+            if (punctuators.indexOf(type) === -1) {
+                return;
+            }
 
             const previousDelta =
                 punctuatorToken.range[0] - previousToken.range[1];
             const nextDelta = nextToken.range[0] - punctuatorToken.range[1];
 
-            const type = punctuatorToken.value;
             const before =
                 type === ":" ? colonOptions.before : arrowOptions.before;
             const after =
@@ -159,9 +164,7 @@ module.exports = {
                 }
             },
             TypeAnnotation(node) {
-                if (node.parent.type !== "TSAsExpression") {
-                    checkTypeAnnotationSpacing(node.typeAnnotation);
-                }
+                checkTypeAnnotationSpacing(node.typeAnnotation);
             },
             FunctionDeclaration: checkFunctionReturnTypeSpacing,
             FunctionExpression: checkFunctionReturnTypeSpacing,
