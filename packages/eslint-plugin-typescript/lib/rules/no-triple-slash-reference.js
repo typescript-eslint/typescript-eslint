@@ -35,9 +35,9 @@ module.exports = {
          * @private
          */
         function checkTripleSlashReference(program) {
-            const leading = sourceCode.getComments(program).leading;
+            const commentsBefore = sourceCode.getCommentsBefore(program);
 
-            leading.forEach(comment => {
+            commentsBefore.forEach(comment => {
                 if (comment.type !== "Line") {
                     return;
                 }
