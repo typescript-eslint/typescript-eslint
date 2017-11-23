@@ -88,7 +88,9 @@ module.exports = {
                     if (index > -1 && lastName !== name) {
                         context.report({
                             node: member,
-                            message: `All '${name}' signatures should be adjacent`
+                            message: `All '${
+                                name
+                            }' signatures should be adjacent`
                         });
                     } else if (name && index === -1) {
                         seen.push(name);

@@ -10,27 +10,26 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const schemaOptions = [
-    "field",
-    "method",
-    "constructor"
-].reduce((options, type) => {
-    options.push(type);
+const schemaOptions = ["field", "method", "constructor"].reduce(
+    (options, type) => {
+        options.push(type);
 
-    ["public", "protected", "private"].forEach(accessibility => {
-        options.push(`${accessibility}-${type}`);
-        if (type !== "constructor") {
-            ["static", "instance"].forEach(scope => {
-                if (options.indexOf(`${scope}-${type}`) === -1) {
-                    options.push(`${scope}-${type}`);
-                }
-                options.push(`${accessibility}-${scope}-${type}`);
-            });
-        }
-    });
+        ["public", "protected", "private"].forEach(accessibility => {
+            options.push(`${accessibility}-${type}`);
+            if (type !== "constructor") {
+                ["static", "instance"].forEach(scope => {
+                    if (options.indexOf(`${scope}-${type}`) === -1) {
+                        options.push(`${scope}-${type}`);
+                    }
+                    options.push(`${accessibility}-${scope}-${type}`);
+                });
+            }
+        });
 
-    return options;
-}, []);
+        return options;
+    },
+    []
+);
 
 module.exports = {
     meta: {
