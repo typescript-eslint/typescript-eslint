@@ -271,6 +271,14 @@ module.exports = {
             FunctionExpression: markFunctionReturnTypeAsUsed,
             ArrowFunctionExpression: markFunctionReturnTypeAsUsed,
 
+            CallExpression(node) {
+                if (node.typeParameters && node.typeParameters.params) {
+                    node.typeParameters.params.forEach(
+                        markTypeAnnotationAsUsed
+                    );
+                }
+            },
+
             Decorator: markDecoratorAsUsed,
             TSInterfaceHeritage: markExtendedInterfaceAsUsed,
 
