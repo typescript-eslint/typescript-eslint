@@ -1,9 +1,16 @@
-[![Travis](https://img.shields.io/travis/JamesHenry/eslint-plugin-tslint.svg?style=flat-square)](https://travis-ci.org/JamesHenry/eslint-plugin-tslint)
-[![GitHub license](https://img.shields.io/npm/l/eslint-plugin-tslint.svg?style=flat-square)](https://github.com/JamesHenry/eslint-plugin-tslint/blob/master/LICENSE)
-[![npm](https://img.shields.io/npm/v/eslint-plugin-tslint.svg?style=flat-square)](https://www.npmjs.com/package/eslint-plugin-tslint) [![npm](https://img.shields.io/npm/dt/eslint-plugin-tslint.svg?style=flat-square)](https://www.npmjs.com/package/eslint-plugin-tslint)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
+<h1 align="center">ESLint Plugin TSLint</h1>
 
-# eslint-plugin-tslint
+<p align="center">
+    <a href="https://travis-ci.org/JamesHenry/eslint-plugin-tslint"><img src="https://img.shields.io/travis/JamesHenry/eslint-plugin-tslint.svg?style=flat-square" alt="Travis"/></a>
+    <a href="https://github.com/JamesHenry/eslint-plugin-tslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/eslint-plugin-tslint.svg?style=flat-square" alt="GitHub license" /></a>
+    <a href="https://www.npmjs.com/package/eslint-plugin-tslint"><img src="https://img.shields.io/npm/v/eslint-plugin-tslint.svg?style=flat-square" alt="NPM Version" /></a>
+    <a href="https://www.npmjs.com/package/eslint-plugin-tslint"><img src="https://img.shields.io/npm/dt/eslint-plugin-tslint.svg?style=flat-square" alt="NPM Downloads" /></a>
+    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen friendly" /></a>
+    <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square" alt="semantic-release" /></a>
+</p>
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
+<br>
+<p align="center" style="border: 1px solid blue;">
+<a href="http://typescriptcourses.com" target="_blank"><img src="https://user-images.githubusercontent.com/900523/33187671-54d039fc-d08b-11e7-809b-b5b99b5a8a8f.png" alt="typescriptcourses.com"/></a>
+</p>
+<br>

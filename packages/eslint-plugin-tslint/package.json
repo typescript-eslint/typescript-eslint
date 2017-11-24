@@ -1,41 +1,53 @@
 {
   "name": "eslint-plugin-tslint",
-  "version": "0.0.0-development",
+  "version": "0.0.0-semantically-released",
   "main": "lib/index.js",
   "author": "James Henry <james@henry.sc>",
   "description": "TSLint wrapper plugin for ESLint",
-  "keywords": [
-    "eslint",
-    "eslintplugin",
-    "eslint-plugin",
-    "tslint"
-  ],
+  "keywords": ["eslint", "eslintplugin", "eslint-plugin", "tslint"],
+  "files": ["lib"],
   "repository": "JamesHenry/eslint-plugin-tslint",
   "license": "MIT",
   "scripts": {
-    "test": "npm run build && mocha tests --recursive",
+    "test": "npm run build && jest",
     "build": "rm -rf lib/ && tsc",
-    "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post",
-    "commit": "git-cz"
+    "semantic-release":
+      "semantic-release pre && npm publish && semantic-release post",
+    "precommit": "npm test && lint-staged",
+    "cz": "git-cz"
+  },
+  "peerDependencies": {
+    "tslint": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "6.0.54",
-    "cz-conventional-changelog": "1.2.0",
-    "eslint": "3.12.2",
-    "mocha": "3.2.0",
-    "semantic-release": "^6.3.2",
-    "typescript": "2.0.10",
-    "typescript-eslint-parser": "1.0.0"
+    "@types/jest": "21.1.8",
+    "@types/node": "8.0.53",
+    "cz-conventional-changelog": "2.1.0",
+    "eslint": "4.11.0",
+    "husky": "^0.14.3",
+    "jest": "21.2.1",
+    "lint-staged": "^5.0.0",
+    "prettier-eslint-cli": "4.4.0",
+    "semantic-release": "8.2.0",
+    "ts-jest": "^21.2.3",
+    "tslint": "^5.8.0",
+    "typescript": "2.6.1",
+    "typescript-eslint-parser": "9.0.0"
   },
-  "dependencies": {
-    "tslint": "4.2.0"
+  "lint-staged": {
+    "src/**/*": ["prettier-eslint --write", "git add"],
+    "test/**/*": ["prettier-eslint --write", "git add"]
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "files": [
-    "lib"
-  ]
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.ts$",
+    "moduleFileExtensions": ["ts", "js", "json"]
+  }
 }

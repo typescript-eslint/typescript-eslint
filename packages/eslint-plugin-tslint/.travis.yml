@@ -1,20 +1,17 @@
-language: node_js
-before_install:
-  # Repo for Yarn
-  - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
-  - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-  - sudo apt-get update -qq
-  - sudo apt-get install -y -qq yarn=0.18.1-1
-cache:
-  directories:
-  - $HOME/.yarn-cache
+sudo: false
 notifications:
   email: false
+language: node_js
+cache:
+  yarn: true
+  directories:
+    - node_modules
 node_js:
-  - '7'
-  - '6'
+  - '9'
+  - '8'
 script:
   - yarn test
+  - yarn build
 after_success:
   - yarn semantic-release
 branches:
