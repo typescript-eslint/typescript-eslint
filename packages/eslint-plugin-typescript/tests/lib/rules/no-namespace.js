@@ -15,29 +15,25 @@ const rule = require("../../../lib/rules/no-namespace"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("no-namespace", rule, {
     valid: [
-        {
-            code: "declare module 'foo' { }",
-            parser: "typescript-eslint-parser"
-        },
+        "declare module 'foo' { }",
         {
             code: "declare module foo { }",
-            options: [{ allowDeclarations: true }],
-            parser: "typescript-eslint-parser"
+            options: [{ allowDeclarations: true }]
         },
         {
             code: "declare namespace foo { }",
-            options: [{ allowDeclarations: true }],
-            parser: "typescript-eslint-parser"
+            options: [{ allowDeclarations: true }]
         }
     ],
     invalid: [
         {
             code: "module foo {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -49,7 +45,6 @@ ruleTester.run("no-namespace", rule, {
         },
         {
             code: "namespace foo {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -62,7 +57,6 @@ ruleTester.run("no-namespace", rule, {
         {
             code: "module foo {}",
             options: [{ allowDeclarations: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -75,7 +69,6 @@ ruleTester.run("no-namespace", rule, {
         {
             code: "namespace foo {}",
             options: [{ allowDeclarations: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -87,7 +80,6 @@ ruleTester.run("no-namespace", rule, {
         },
         {
             code: "declare module foo { }",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -99,7 +91,6 @@ ruleTester.run("no-namespace", rule, {
         },
         {
             code: "declare namespace foo { }",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -112,7 +103,6 @@ ruleTester.run("no-namespace", rule, {
         {
             code: "declare module foo {}",
             options: [{ allowDeclarations: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -125,7 +115,6 @@ ruleTester.run("no-namespace", rule, {
         {
             code: "declare namespace foo {}",
             options: [{ allowDeclarations: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:

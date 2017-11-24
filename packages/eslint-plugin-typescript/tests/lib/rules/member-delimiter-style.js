@@ -15,10 +15,18 @@ const rule = require("../../../lib/rules/member-delimiter-style"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("member-delimiter-style", rule, {
     valid: [
+        `
+interface Foo {
+    name: string;
+    age: number;
+}
+        `,
         {
             code: `
 interface Foo {
@@ -26,7 +34,7 @@ interface Foo {
     age: number;
 }
             `,
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "semi", requireLast: true }]
         },
         {
             code: `
@@ -35,18 +43,7 @@ interface Foo {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: true }],
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
-}
-            `,
-            options: [{ delimiter: "semi" }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "semi" }]
         },
         {
             code: `
@@ -55,8 +52,7 @@ interface Foo {
     age: number
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "semi", requireLast: false }]
         },
         {
             code: `
@@ -65,8 +61,7 @@ interface Foo {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "semi", requireLast: false }]
         },
         {
             code: `
@@ -75,8 +70,7 @@ interface Foo {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma", requireLast: true }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "comma", requireLast: true }]
         },
         {
             code: `
@@ -85,8 +79,7 @@ interface Foo {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma" }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "comma" }]
         },
         {
             code: `
@@ -95,8 +88,7 @@ interface Foo {
     age: number
 }
             `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "comma", requireLast: false }]
         },
         {
             code: `
@@ -105,8 +97,7 @@ interface Foo {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "comma", requireLast: false }]
         },
         {
             code: `
@@ -115,8 +106,7 @@ interface Foo {
     age: number
 }
             `,
-            options: [{ delimiter: "none", requireLast: true }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "none", requireLast: true }]
         },
         {
             code: `
@@ -125,8 +115,7 @@ interface Foo {
     age: number
 }
             `,
-            options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "none", requireLast: false }]
         },
         {
             code: `
@@ -146,8 +135,7 @@ interface Foo {
                         }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -161,8 +149,7 @@ interface Foo {
                     delimiter: "comma",
                     overrides: { interface: { delimiter: "semi" } }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -182,8 +169,7 @@ interface Foo {
                         }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -203,8 +189,7 @@ interface Foo {
                         }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -224,8 +209,7 @@ interface Foo {
                         }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -239,8 +223,7 @@ interface Foo {
                     delimiter: "semi",
                     overrides: { interface: { delimiter: "comma" } }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -260,8 +243,7 @@ interface Foo {
                         }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -278,8 +260,7 @@ interface Foo {
                         interface: { delimiter: "comma", requireLast: false }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -296,8 +277,7 @@ interface Foo {
                         interface: { delimiter: "none", requireLast: true }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -314,8 +294,15 @@ interface Foo {
                         interface: { delimiter: "none", requireLast: false }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `
         },
         {
             code: `
@@ -324,7 +311,7 @@ type Foo = {
     age: number;
 }
             `,
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "semi", requireLast: true }]
         },
         {
             code: `
@@ -333,18 +320,7 @@ type Foo = {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: true }],
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `,
-            options: [{ delimiter: "semi" }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "semi" }]
         },
         {
             code: `
@@ -353,8 +329,7 @@ type Foo = {
     age: number
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "semi", requireLast: false }]
         },
         {
             code: `
@@ -363,8 +338,7 @@ type Foo = {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "semi", requireLast: false }]
         },
         {
             code: `
@@ -373,8 +347,7 @@ type Foo = {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma", requireLast: true }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "comma", requireLast: true }]
         },
         {
             code: `
@@ -383,8 +356,7 @@ type Foo = {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma" }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "comma" }]
         },
         {
             code: `
@@ -393,8 +365,7 @@ type Foo = {
     age: number
 }
             `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "comma", requireLast: false }]
         },
         {
             code: `
@@ -403,8 +374,7 @@ type Foo = {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "comma", requireLast: false }]
         },
         {
             code: `
@@ -413,8 +383,7 @@ type Foo = {
     age: number
 }
             `,
-            options: [{ delimiter: "none", requireLast: true }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "none", requireLast: true }]
         },
         {
             code: `
@@ -423,8 +392,7 @@ type Foo = {
     age: number
 }
             `,
-            options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser"
+            options: [{ delimiter: "none", requireLast: false }]
         },
         {
             code: `
@@ -441,8 +409,7 @@ type Foo = {
                         typeLiteral: { delimiter: "semi", requireLast: true }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -456,8 +423,7 @@ type Foo = {
                     delimiter: "comma",
                     overrides: { typeLiteral: { delimiter: "semi" } }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -474,8 +440,7 @@ type Foo = {
                         typeLiteral: { delimiter: "semi", requireLast: false }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -492,8 +457,7 @@ type Foo = {
                         typeLiteral: { delimiter: "semi", requireLast: false }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -510,8 +474,7 @@ type Foo = {
                         typeLiteral: { delimiter: "comma", requireLast: true }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -525,8 +488,7 @@ type Foo = {
                     delimiter: "semi",
                     overrides: { typeLiteral: { delimiter: "comma" } }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -543,8 +505,7 @@ type Foo = {
                         typeLiteral: { delimiter: "comma", requireLast: false }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -561,8 +522,7 @@ type Foo = {
                         typeLiteral: { delimiter: "comma", requireLast: false }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -579,8 +539,7 @@ type Foo = {
                         typeLiteral: { delimiter: "none", requireLast: true }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -597,8 +556,7 @@ type Foo = {
                         typeLiteral: { delimiter: "none", requireLast: false }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -620,25 +578,17 @@ type Bar = {
                         typeLiteral: { delimiter: "comma" }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
-        {
-            code: "interface Foo { [key: string]: any }",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "interface Foo { [key: string]: any; }",
-            parser: "typescript-eslint-parser"
-        },
+        "interface Foo { [key: string]: any }",
+        "interface Foo { [key: string]: any; }",
         {
             code: "interface Foo { [key: string]: any }",
             options: [
                 {
                     ignoreSingleLine: true
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "interface Foo { [key: string]: any }",
@@ -647,8 +597,7 @@ type Bar = {
                     delimiter: "comma",
                     ignoreSingleLine: true
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "interface Foo { [key: string]: any; }",
@@ -656,8 +605,7 @@ type Bar = {
                 {
                     ignoreSingleLine: false
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "interface Foo { [key: string]: any, }",
@@ -666,8 +614,7 @@ type Bar = {
                     delimiter: "comma",
                     ignoreSingleLine: false
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "interface Foo { [key: string]: any }",
@@ -678,8 +625,7 @@ type Bar = {
                         interface: { ignoreSingleLine: true }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "interface Foo { [key: string]: any }",
@@ -688,8 +634,7 @@ type Bar = {
                     requireLast: true,
                     ignoreSingleLine: true
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "interface Foo { [key: string]: any; }",
@@ -698,8 +643,7 @@ type Bar = {
                     requireLast: true,
                     ignoreSingleLine: false
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "interface Foo { [key: string]: any }",
@@ -711,25 +655,17 @@ type Bar = {
                         interface: { ignoreSingleLine: true }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
-        {
-            code: "type Foo = { [key: string]: any }",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "type Foo = { [key: string]: any; }",
-            parser: "typescript-eslint-parser"
-        },
+        "type Foo = { [key: string]: any }",
+        "type Foo = { [key: string]: any; }",
         {
             code: "type Foo = { [key: string]: any }",
             options: [
                 {
                     ignoreSingleLine: true
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "type Foo = { [key: string]: any; }",
@@ -737,8 +673,7 @@ type Bar = {
                 {
                     ignoreSingleLine: false
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "type Foo = { [key: string]: any }",
@@ -749,8 +684,7 @@ type Bar = {
                         typeLiteral: { ignoreSingleLine: true }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "type Foo = { [key: string]: any }",
@@ -759,8 +693,7 @@ type Bar = {
                     requireLast: true,
                     ignoreSingleLine: true
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "type Foo = { [key: string]: any; }",
@@ -769,8 +702,7 @@ type Bar = {
                     requireLast: true,
                     ignoreSingleLine: false
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: "type Foo = { [key: string]: any }",
@@ -782,8 +714,7 @@ type Bar = {
                         typeLiteral: { ignoreSingleLine: true }
                     }
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         }
     ],
     invalid: [
@@ -794,7 +725,6 @@ interface Foo {
     age: number
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -816,7 +746,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "semi" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -838,7 +767,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "semi", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -860,7 +788,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "semi", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -877,7 +804,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "comma" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -899,7 +825,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "comma", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -921,7 +846,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -938,7 +862,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "comma" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -960,7 +883,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "comma", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -982,7 +904,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -999,7 +920,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1021,7 +941,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "none" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1043,7 +962,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "none", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1065,7 +983,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1082,7 +999,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1099,7 +1015,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "none" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -1121,7 +1036,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "none", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -1143,7 +1057,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -1160,7 +1073,6 @@ interface Foo {
 }
             `,
             options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -1182,7 +1094,6 @@ interface Foo {
                     overrides: { interface: { delimiter: "semi" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -1212,7 +1123,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -1242,7 +1152,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -1264,7 +1173,6 @@ interface Foo {
                     overrides: { interface: { delimiter: "comma" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1294,7 +1202,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1324,7 +1231,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1346,7 +1252,6 @@ interface Foo {
                     overrides: { interface: { delimiter: "comma" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1376,7 +1281,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1406,7 +1310,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1431,7 +1334,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1458,7 +1360,6 @@ interface Foo {
                     overrides: { interface: { delimiter: "none" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1488,7 +1389,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1518,7 +1418,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1543,7 +1442,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1565,7 +1463,6 @@ interface Foo {
                     overrides: { interface: { delimiter: "none" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -1595,7 +1492,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -1625,7 +1521,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -1650,7 +1545,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -1666,7 +1560,6 @@ type Foo = {
     age: number
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -1688,7 +1581,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "semi" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -1710,7 +1602,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "semi", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -1732,7 +1623,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "semi", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -1749,7 +1639,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "comma" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1771,7 +1660,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "comma", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1793,7 +1681,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1810,7 +1697,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "comma" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1832,7 +1718,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "comma", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1854,7 +1739,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1871,7 +1755,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "comma", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -1893,7 +1776,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "none" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1915,7 +1797,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "none", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1937,7 +1818,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1954,7 +1834,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -1971,7 +1850,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "none" }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -1993,7 +1871,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "none", requireLast: true }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -2015,7 +1892,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -2032,7 +1908,6 @@ type Foo = {
 }
             `,
             options: [{ delimiter: "none", requireLast: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -2054,7 +1929,6 @@ type Foo = {
                     overrides: { typeLiteral: { delimiter: "semi" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2084,7 +1958,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2114,7 +1987,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2136,7 +2008,6 @@ type Foo = {
                     overrides: { typeLiteral: { delimiter: "comma" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -2166,7 +2037,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -2196,7 +2066,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -2218,7 +2087,6 @@ type Foo = {
                     overrides: { typeLiteral: { delimiter: "comma" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -2248,7 +2116,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -2278,7 +2145,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -2303,7 +2169,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -2330,7 +2195,6 @@ type Foo = {
                     overrides: { typeLiteral: { delimiter: "none" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -2360,7 +2224,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -2390,7 +2253,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -2415,7 +2277,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (;).",
@@ -2437,7 +2298,6 @@ type Foo = {
                     overrides: { typeLiteral: { delimiter: "none" } }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -2467,7 +2327,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -2497,7 +2356,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -2522,7 +2380,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected separator (,).",
@@ -2553,7 +2410,6 @@ type Bar = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a comma.",
@@ -2583,7 +2439,6 @@ interface Foo {
     [key: string]: any
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2598,7 +2453,6 @@ interface Foo {
     [key: string]: any
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [{ ignoreSingleLine: true }],
             errors: [
                 {
@@ -2611,7 +2465,6 @@ interface Foo {
         {
             code: "interface Foo { [key: string]: any }",
             options: [{ ignoreSingleLine: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2628,7 +2481,6 @@ interface Foo {
                     ignoreSingleLine: false
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2648,7 +2500,6 @@ interface Foo {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2663,7 +2514,6 @@ type Foo = {
     [key: string]: any
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2678,7 +2528,6 @@ type Foo = {
     [key: string]: any
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [{ ignoreSingleLine: true }],
             errors: [
                 {
@@ -2691,7 +2540,6 @@ type Foo = {
         {
             code: "type Foo = { [key: string]: any }",
             options: [{ ignoreSingleLine: false }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2708,7 +2556,6 @@ type Foo = {
                     ignoreSingleLine: false
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2728,7 +2575,6 @@ type Foo = {
                     }
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Expected a semicolon.",

@@ -15,227 +15,138 @@ const rule = require("../../../lib/rules/no-explicit-any"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("no-explicit-any", rule, {
     valid: [
-        {
-            code: "const number: number = 1",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "function greet(): string {}",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "function greet(): Array<string> {}",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "function greet(): string[] {}",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "function greet(): Array<Array<string>> {}",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "function greet(): Array<string[]> {}",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "function greet(param: Array<string>): Array<string> {}",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        "const number: number = 1",
+        "function greet(): string {}",
+        "function greet(): Array<string> {}",
+        "function greet(): string[] {}",
+        "function greet(): Array<Array<string>> {}",
+        "function greet(): Array<string[]> {}",
+        "function greet(param: Array<string>): Array<string> {}",
+        `
 class Greeter {
     message: string;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 class Greeter {
     message: Array<string>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 class Greeter {
     message: string[];
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 class Greeter {
     message: Array<Array<string>>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 class Greeter {
     message: Array<string[]>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 interface Greeter {
     message: string;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 interface Greeter {
     message: Array<string>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 interface Greeter {
     message: string[];
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 interface Greeter {
     message: Array<Array<string>>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 interface Greeter {
     message: Array<string[]>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
     message: string;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
     message: Array<string>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
     message: string[];
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
     message: Array<Array<string>>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
     message: Array<string[]>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
-    message: string | number; 
+    message: string | number;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
-    message: string | Array<string>; 
+    message: string | Array<string>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
-    message: string | string[]; 
+    message: string | string[];
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
-    message: string | Array<Array<string>>; 
+    message: string | Array<Array<string>>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
-    message: string & number; 
+    message: string & number;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
-    message: string & Array<string>; 
+    message: string & Array<string>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
-    message: string & string[]; 
+    message: string & string[];
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type obj = {
-    message: string & Array<Array<string>>; 
+    message: string & Array<Array<string>>;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        }
+        `
     ],
     invalid: [
         {
             code: "const number: any = 1",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -246,7 +157,6 @@ type obj = {
         },
         {
             code: "function generic(): any {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -257,7 +167,6 @@ type obj = {
         },
         {
             code: "function generic(): Array<any> {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -268,7 +177,6 @@ type obj = {
         },
         {
             code: "function generic(): any[] {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -279,7 +187,6 @@ type obj = {
         },
         {
             code: "function generic(param: Array<any>): number {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -290,7 +197,6 @@ type obj = {
         },
         {
             code: "function generic(param: any[]): number {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -301,7 +207,6 @@ type obj = {
         },
         {
             code: "function generic(param: Array<any>): Array<any> {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -317,7 +222,6 @@ type obj = {
         },
         {
             code: "function generic(): Array<Array<any>> {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -328,7 +232,6 @@ type obj = {
         },
         {
             code: "function generic(): Array<any[]> {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -343,7 +246,6 @@ class Greeter {
     constructor(param: Array<any>) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -358,7 +260,6 @@ class Greeter {
     message: any;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -370,10 +271,9 @@ class Greeter {
         {
             code: `
 class Greeter {
-    message: Array<any>; 
+    message: Array<any>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -385,10 +285,9 @@ class Greeter {
         {
             code: `
 class Greeter {
-    message: any[]; 
+    message: any[];
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -400,10 +299,9 @@ class Greeter {
         {
             code: `
 class Greeter {
-    message: Array<Array<any>>; 
+    message: Array<Array<any>>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -415,10 +313,9 @@ class Greeter {
         {
             code: `
 class Greeter {
-    message: Array<any[]>; 
+    message: Array<any[]>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -430,10 +327,9 @@ class Greeter {
         {
             code: `
 interface Greeter {
-    message: any; 
+    message: any;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -445,10 +341,9 @@ interface Greeter {
         {
             code: `
 interface Greeter {
-    message: Array<any>; 
+    message: Array<any>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -460,10 +355,9 @@ interface Greeter {
         {
             code: `
 interface Greeter {
-    message: any[]; 
+    message: any[];
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -475,10 +369,9 @@ interface Greeter {
         {
             code: `
 interface Greeter {
-    message: Array<Array<any>>; 
+    message: Array<Array<any>>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -490,10 +383,9 @@ interface Greeter {
         {
             code: `
 interface Greeter {
-    message: Array<any[]>; 
+    message: Array<any[]>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -505,10 +397,9 @@ interface Greeter {
         {
             code: `
 type obj = {
-    message: any; 
+    message: any;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -520,10 +411,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: Array<any>; 
+    message: Array<any>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -535,10 +425,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: any[]; 
+    message: any[];
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -550,10 +439,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: Array<Array<any>>; 
+    message: Array<Array<any>>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -565,10 +453,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: Array<any[]>; 
+    message: Array<any[]>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -580,10 +467,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string | any; 
+    message: string | any;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -595,10 +481,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string | Array<any>; 
+    message: string | Array<any>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -610,10 +495,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string | any[]; 
+    message: string | any[];
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -625,10 +509,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string | Array<Array<any>>; 
+    message: string | Array<Array<any>>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -640,10 +523,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string | Array<any[]>; 
+    message: string | Array<any[]>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -655,10 +537,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string & any; 
+    message: string & any;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -670,10 +551,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string & Array<any>; 
+    message: string & Array<any>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -685,10 +565,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string & any[]; 
+    message: string & any[];
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -700,10 +579,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string & Array<Array<any>>; 
+    message: string & Array<Array<any>>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",
@@ -715,10 +593,9 @@ type obj = {
         {
             code: `
 type obj = {
-    message: string & Array<any[]>; 
+    message: string & Array<any[]>;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "Unexpected any. Specify a different type.",

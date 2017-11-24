@@ -15,12 +15,13 @@ const rule = require("../../../lib/rules/member-ordering"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("member-ordering", rule, {
     valid: [
-        {
-            code: `
+        `
 // no accessibility === public
 interface Foo {
     A: string;
@@ -37,36 +38,33 @@ interface Foo {
     K();
     L();
 }
+        `,
+        {
+            code: `
+// no accessibility === public
+interface Foo {
+    A: string;
+    J();
+    K();
+    D: string;
+    E: string;
+    F: string;
+    new();
+    G();
+    H();
+    B: string;
+    C: string;
+    I();
+    L();
+}
             `,
-            parser: "typescript-eslint-parser"
+            options: [{ default: "never" }]
         },
         {
             code: `
 // no accessibility === public
 interface Foo {
     A: string;
-    J();
-    K();
-    D: string;
-    E: string;
-    F: string;
-    new();
-    G();
-    H();
-    B: string;
-    C: string;
-    I();
-    L();
-}
-            `,
-            options: [{ default: "never" }],
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
-// no accessibility === public
-interface Foo {
-    A: string;
     B: string;
     C: string;
     D: string;
@@ -81,8 +79,7 @@ interface Foo {
     L();
 }
             `,
-            options: [{ default: ["field", "constructor", "method"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["field", "constructor", "method"] }]
         },
 
         {
@@ -104,8 +101,7 @@ interface Foo {
     L();
 }
             `,
-            options: [{ interfaces: "never" }],
-            parser: "typescript-eslint-parser"
+            options: [{ interfaces: "never" }]
         },
         {
             code: `
@@ -126,8 +122,7 @@ interface Foo {
     F: string;
 }
             `,
-            options: [{ interfaces: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ interfaces: ["method", "constructor", "field"] }]
         },
         {
             code: `
@@ -153,8 +148,7 @@ interface Foo {
                     default: ["field", "constructor", "method"],
                     interfaces: ["method", "constructor", "field"]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -183,8 +177,7 @@ interface Foo {
                         "protected-static-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -213,11 +206,9 @@ interface Foo {
                         "protected-static-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
-        {
-            code: `
+        `
 // no accessibility === public
 type Foo = {
     A: string;
@@ -234,8 +225,26 @@ type Foo = {
     K();
     L();
 }
+        `,
+        {
+            code: `
+// no accessibility === public
+type Foo = {
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+    E: string;
+    F: string;
+    G();
+    H();
+    I();
+    J();
+    K();
+    L();
+}
             `,
-            parser: "typescript-eslint-parser"
+            options: [{ default: "never" }]
         },
         {
             code: `
@@ -255,29 +264,7 @@ type Foo = {
     L();
 }
             `,
-            options: [{ default: "never" }],
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
-// no accessibility === public
-type Foo = {
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-}
-            `,
-            options: [{ default: ["field", "constructor", "method"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["field", "constructor", "method"] }]
         },
         {
             code: `
@@ -298,8 +285,7 @@ type Foo = {
     L();
 }
             `,
-            options: [{ default: ["field", "method"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["field", "method"] }]
         },
         {
             code: `
@@ -319,8 +305,7 @@ type Foo = {
     F: string;
 }
             `,
-            options: [{ typeLiterals: "never" }],
-            parser: "typescript-eslint-parser"
+            options: [{ typeLiterals: "never" }]
         },
         {
             code: `
@@ -340,8 +325,7 @@ type Foo = {
     F: string;
 }
             `,
-            options: [{ typeLiterals: ["method", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ typeLiterals: ["method", "field"] }]
         },
         {
             code: `
@@ -361,8 +345,7 @@ type Foo = {
     F: string;
 }
             `,
-            options: [{ typeLiterals: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ typeLiterals: ["method", "constructor", "field"] }]
         },
         {
             code: `
@@ -387,8 +370,7 @@ type Foo = {
                     default: ["field", "constructor", "method"],
                     typeLiterals: ["method", "constructor", "field"]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -417,8 +399,44 @@ type Foo = {
                     ],
                     typeLiterals: ["field", "method"]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
+        },
+        `
+class Foo {
+    public static A: string;
+    protected static B: string = "";
+    private static C: string = "";
+    public D: string = "";
+    protected E: string = "";
+    private F: string = "";
+    constructor() {}
+    public static G() {}
+    protected static H() {}
+    private static I() {}
+    public J() {}
+    protected K() {}
+    private L() {}
+}
+        `,
+        {
+            code: `
+class Foo {
+    public static A: string;
+    protected static B: string = "";
+    private static C: string = "";
+    public D: string = "";
+    protected E: string = "";
+    private F: string = "";
+    constructor() {}
+    public static G() {}
+    protected static H() {}
+    private static I() {}
+    public J() {}
+    protected K() {}
+    private L() {}
+}
+            `,
+            options: [{ default: "never" }]
         },
         {
             code: `
@@ -438,49 +456,7 @@ class Foo {
     private L() {}
 }
             `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
-class Foo {
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    constructor() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-}
-            `,
-            options: [{ default: "never" }],
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
-class Foo {
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    constructor() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-}
-            `,
-            options: [{ default: ["field", "constructor", "method"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["field", "constructor", "method"] }]
         },
         {
             code: `
@@ -500,8 +476,7 @@ class Foo {
     private L() {}
 }
             `,
-            options: [{ default: ["field", "method"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["field", "method"] }]
         },
         {
             code: `
@@ -521,8 +496,7 @@ class Foo {
     private F: string = "";
 }
             `,
-            options: [{ classes: "never" }],
-            parser: "typescript-eslint-parser"
+            options: [{ classes: "never" }]
         },
         {
             code: `
@@ -542,8 +516,7 @@ class Foo {
     constructor() {}
 }
             `,
-            options: [{ classes: ["method", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ classes: ["method", "field"] }]
         },
         {
             code: `
@@ -563,8 +536,7 @@ class Foo {
     private F: string = "";
 }
             `,
-            options: [{ classes: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ classes: ["method", "constructor", "field"] }]
         },
         {
             code: `
@@ -589,8 +561,7 @@ class Foo {
                     default: ["field", "constructor", "method"],
                     classes: ["method", "constructor", "field"]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -620,8 +591,7 @@ class Foo {
                         "protected-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -654,8 +624,7 @@ class Foo {
                         "private-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -675,7 +644,6 @@ class Foo {
     private F: string = "";
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     default: [
@@ -718,8 +686,7 @@ class Foo {
                         "field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -747,8 +714,7 @@ class Foo {
                         "protected-static-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -776,8 +742,7 @@ class Foo {
                         "protected-static-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -805,8 +770,7 @@ class Foo {
                         "protected-static-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -839,8 +803,7 @@ class Foo {
                         "protected-instance-method"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -873,8 +836,44 @@ class Foo {
                         "protected-instance-method"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
+        },
+        `
+const foo = class Foo {
+    public static A: string;
+    protected static B: string = "";
+    private static C: string = "";
+    public D: string = "";
+    protected E: string = "";
+    private F: string = "";
+    constructor() {}
+    public static G() {}
+    protected static H() {}
+    private static I() {}
+    public J() {}
+    protected K() {}
+    private L() {}
+}
+        `,
+        {
+            code: `
+const foo = class Foo {
+    constructor() {}
+    public static A: string;
+    protected static B: string = "";
+    private static I() {}
+    public J() {}
+    private F: string = "";
+    public static G() {}
+    private static C: string = "";
+    public D: string = "";
+    protected E: string = "";
+    protected static H() {}
+    protected K() {}
+    private L() {}
+}
+            `,
+            options: [{ default: "never" }]
         },
         {
             code: `
@@ -894,49 +893,7 @@ const foo = class Foo {
     private L() {}
 }
             `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
-const foo = class Foo {
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    private static I() {}
-    public J() {}
-    private F: string = "";
-    public static G() {}
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    protected static H() {}
-    protected K() {}
-    private L() {}
-}
-            `,
-            options: [{ default: "never" }],
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
-const foo = class Foo {
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    constructor() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-}
-            `,
-            options: [{ default: ["field", "constructor", "method"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["field", "constructor", "method"] }]
         },
         {
             code: `
@@ -956,8 +913,7 @@ const foo = class Foo {
     private L() {}
 }
             `,
-            options: [{ default: ["field", "method"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["field", "method"] }]
         },
         {
             code: `
@@ -977,8 +933,7 @@ const foo = class Foo {
     private F: string = "";
 }
             `,
-            options: [{ classExpressions: "never" }],
-            parser: "typescript-eslint-parser"
+            options: [{ classExpressions: "never" }]
         },
         {
             code: `
@@ -998,8 +953,7 @@ const foo = class Foo {
     constructor() {}
 }
             `,
-            options: [{ classExpressions: ["method", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ classExpressions: ["method", "field"] }]
         },
         {
             code: `
@@ -1019,8 +973,7 @@ const foo = class Foo {
     private F: string = "";
 }
             `,
-            options: [{ classExpressions: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ classExpressions: ["method", "constructor", "field"] }]
         },
         {
             code: `
@@ -1045,8 +998,7 @@ const foo = class Foo {
                     default: ["field", "constructor", "method"],
                     classExpressions: ["method", "constructor", "field"]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -1074,8 +1026,7 @@ const foo = class Foo {
                         "protected-static-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -1103,8 +1054,7 @@ const foo = class Foo {
                         "protected-static-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -1132,8 +1082,7 @@ const foo = class Foo {
                         "protected-static-field"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -1171,8 +1120,7 @@ const foo = class Foo {
                         "protected-instance-method"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
         {
             code: `
@@ -1210,20 +1158,16 @@ const foo = class Foo {
                         "protected-instance-method"
                     ]
                 }
-            ],
-            parser: "typescript-eslint-parser"
+            ]
         },
-        {
-            code: `
+        `
 class Foo {
     A: string;
     constructor () {}
     J() {}
     K = () => {}
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
+        `,
         {
             code: `
 class Foo {
@@ -1233,8 +1177,7 @@ class Foo {
     A: string;
 }
             `,
-            options: [{ default: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["method", "constructor", "field"] }]
         },
         {
             code: `
@@ -1246,19 +1189,15 @@ class Foo {
     A: string;
 }
             `,
-            options: [{ default: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["method", "constructor", "field"] }]
         },
-        {
-            code: `
+        `
 interface Foo {
     A: string;
     J();
     K: () => {}
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
+        `,
         {
             code: `
 interface Foo {
@@ -1267,19 +1206,15 @@ interface Foo {
     A: string;
 }
             `,
-            options: [{ default: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["method", "constructor", "field"] }]
         },
-        {
-            code: `
+        `
 type Foo = {
     A: string;
     J();
     K: () => {}
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
+        `,
         {
             code: `
 type Foo = {
@@ -1288,8 +1223,7 @@ type Foo = {
     A: string;
 }
             `,
-            options: [{ default: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ default: ["method", "constructor", "field"] }]
         }
     ],
     invalid: [
@@ -1312,7 +1246,6 @@ interface Foo {
     new();
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -1341,7 +1274,6 @@ interface Foo {
     new();
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [{ default: ["method", "constructor", "field"] }],
             errors: [
                 {
@@ -1407,7 +1339,6 @@ interface Foo {
     new();
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [{ interfaces: ["method", "constructor", "field"] }],
             errors: [
                 {
@@ -1473,7 +1404,6 @@ interface Foo {
     new();
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     default: ["field", "method", "constructor"],
@@ -1544,7 +1474,6 @@ interface Foo {
     L();
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     interfaces: ["constructor", "field", "method"]
@@ -1602,7 +1531,6 @@ type Foo = {
     new();
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -1631,7 +1559,6 @@ type Foo = {
     new();
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [{ default: ["method", "constructor", "field"] }],
             errors: [
                 {
@@ -1697,7 +1624,6 @@ type Foo = {
     new();
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [{ typeLiterals: ["method", "constructor", "field"] }],
             errors: [
                 {
@@ -1763,7 +1689,6 @@ type Foo = {
     new();
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     default: ["field", "method", "constructor"],
@@ -1834,7 +1759,6 @@ type Foo = {
     L();
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     typeLiterals: ["constructor", "field", "method"]
@@ -1891,7 +1815,6 @@ class Foo {
     private static I() {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -1931,7 +1854,6 @@ class Foo {
     private static I() {}
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [{ default: ["field", "constructor", "method"] }],
             errors: [
                 {
@@ -1991,7 +1913,6 @@ class Foo {
 }
             `,
             options: [{ default: ["field", "method"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2020,7 +1941,6 @@ class Foo {
 }
             `,
             options: [{ default: ["method", "field"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2049,7 +1969,6 @@ class Foo {
 }
             `,
             options: [{ classes: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2107,7 +2026,6 @@ class Foo {
                     classes: ["method", "constructor", "field"]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2184,7 +2102,6 @@ class Foo {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2232,7 +2149,6 @@ class Foo {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2266,7 +2182,6 @@ class Foo {
     private F: string = "";
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     default: [
@@ -2318,7 +2233,6 @@ class Foo {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2360,7 +2274,6 @@ class Foo {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2397,7 +2310,6 @@ class Foo {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2425,7 +2337,6 @@ const foo = class Foo {
     private static I() {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2465,7 +2376,6 @@ const foo = class {
     private static I() {}
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [{ default: ["field", "constructor", "method"] }],
             errors: [
                 {
@@ -2525,7 +2435,6 @@ const foo = class {
 }
             `,
             options: [{ default: ["field", "method"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2554,7 +2463,6 @@ const foo = class {
 }
             `,
             options: [{ default: ["method", "field"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2583,7 +2491,6 @@ const foo = class {
 }
             `,
             options: [{ classExpressions: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2641,7 +2548,6 @@ const foo = class {
                     classExpressions: ["method", "constructor", "field"]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2718,7 +2624,6 @@ const foo = class {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2766,7 +2671,6 @@ const foo = class {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2800,7 +2704,6 @@ const foo = class {
     private F: string = "";
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     default: [
@@ -2852,7 +2755,6 @@ const foo = class {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2895,7 +2797,6 @@ const foo = class {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2932,7 +2833,6 @@ const foo = class {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2952,7 +2852,6 @@ class Foo {
     J() {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2978,7 +2877,6 @@ class Foo {
 }
             `,
             options: [{ default: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -2999,7 +2897,6 @@ class Foo {
 }
             `,
             options: [{ default: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -3023,7 +2920,6 @@ interface Foo {
     J();
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -3042,7 +2938,6 @@ interface Foo {
 }
             `,
             options: [{ default: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -3060,7 +2955,6 @@ type Foo = {
     J();
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -3079,7 +2973,6 @@ type Foo = {
 }
             `,
             options: [{ default: ["method", "constructor", "field"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:

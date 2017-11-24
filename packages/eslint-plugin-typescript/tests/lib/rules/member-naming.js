@@ -15,33 +15,30 @@ const rule = require("../../../lib/rules/member-naming"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("member-naming", rule, {
     valid: [
         {
             code: `class Class { _fooBar() {} }`,
-            parser: "typescript-eslint-parser",
             options: [{ public: "^_" }]
         },
         {
             code: `class Class { public _fooBar() {} }`,
-            parser: "typescript-eslint-parser",
             options: [{ public: "^_" }]
         },
         {
             code: `class Class { protected _fooBar() {} }`,
-            parser: "typescript-eslint-parser",
             options: [{ protected: "^_" }]
         },
         {
             code: `class Class { private _fooBar() {} }`,
-            parser: "typescript-eslint-parser",
             options: [{ private: "^_" }]
         },
         {
             code: `class Class { protected fooBar() {} }`,
-            parser: "typescript-eslint-parser",
             options: [{ private: "^_" }]
         },
         {
@@ -53,7 +50,6 @@ class Class {
     private privFour() {}
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     public: "^pub[A-Z]",
@@ -71,7 +67,6 @@ class Class {
     private privFour: string;
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     public: "^pub[A-Z]",
@@ -89,7 +84,6 @@ class Class {
     private privFour = true;
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     public: "^pub[A-Z]",
@@ -102,7 +96,6 @@ class Class {
     invalid: [
         {
             code: `class Class { fooBar() {} }`,
-            parser: "typescript-eslint-parser",
             options: [{ public: "^_" }],
             errors: [
                 {
@@ -114,7 +107,6 @@ class Class {
         },
         {
             code: `class Class { public fooBar() {} }`,
-            parser: "typescript-eslint-parser",
             options: [{ public: "^_" }],
             errors: [
                 {
@@ -126,7 +118,6 @@ class Class {
         },
         {
             code: `class Class { protected fooBar() {} }`,
-            parser: "typescript-eslint-parser",
             options: [{ protected: "^_" }],
             errors: [
                 {
@@ -138,7 +129,6 @@ class Class {
         },
         {
             code: `class Class { private fooBar() {} }`,
-            parser: "typescript-eslint-parser",
             options: [{ private: "^_" }],
             errors: [
                 {
@@ -157,7 +147,6 @@ class Class {
     private four() {}
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     public: "^pub[A-Z]",
@@ -198,7 +187,6 @@ class Class {
     private four: string;
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     public: "^pub[A-Z]",
@@ -239,7 +227,6 @@ class Class {
     private four = true;
 }
             `,
-            parser: "typescript-eslint-parser",
             options: [
                 {
                     public: "^pub[A-Z]",

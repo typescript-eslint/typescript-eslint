@@ -15,27 +15,19 @@ const rule = require("../../../lib/rules/prefer-namespace-keyword"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("prefer-namespace-keyword", rule, {
     valid: [
-        {
-            code: "declare module 'foo' { }",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "namespace foo { }",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "declare namespace foo { }",
-            parser: "typescript-eslint-parser"
-        }
+        "declare module 'foo' { }",
+        "namespace foo { }",
+        "declare namespace foo { }"
     ],
     invalid: [
         {
             code: "module foo { }",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -48,7 +40,6 @@ ruleTester.run("prefer-namespace-keyword", rule, {
         },
         {
             code: "declare module foo { }",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -65,7 +56,6 @@ declare module foo {
     declare module bar { }
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
