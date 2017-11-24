@@ -26,79 +26,166 @@ ruleTester.run("no-use-before-define", rule, {
         "Object.hasOwnProperty.call(a);",
         "function a() { alert(arguments);}",
         {
-            code: "a(); function a() { alert(arguments); }",
+            code: `
+a();
+function a() { alert(arguments); }
+            `,
             options: ["nofunc"]
         },
         {
             code: "(() => { var a = 42; alert(a); })();",
             parserOptions: { ecmaVersion: 6 }
         },
-        { code: "a(); try { throw new Error() } catch (a) {}" },
-        { code: "class A {} new A();", parserOptions: { ecmaVersion: 6 } },
+        `
+a();
+try {
+    throw new Error()
+} catch (a) {}
+        `,
+        {
+            code: `
+class A {}
+new A();
+            `,
+            parserOptions: { ecmaVersion: 6 }
+        },
         "var a = 0, b = a;",
         { code: "var {a = 0, b = a} = {};", parserOptions: { ecmaVersion: 6 } },
         { code: "var [a = 0, b = a] = {};", parserOptions: { ecmaVersion: 6 } },
-        "function foo() { foo(); }",
-        "var foo = function() { foo(); };",
-        { code: "var a; for (a in a) {}" },
-        { code: "var a; for (a of a) {}", parserOptions: { ecmaVersion: 6 } },
+        `
+function foo() {
+    foo();
+}
+        `,
+        `
+var foo = function() {
+    foo();
+};
+        `,
+        `
+var a;
+for (a in a) {}
+        `,
+        {
+            code: `
+var a;
+for (a of a) {}
+            `,
+            parserOptions: { ecmaVersion: 6 }
+        },
 
         // Block-level bindings
         {
-            code: '"use strict"; a(); { function a() {} }',
+            code: `
+"use strict";
+a();
+{
+    function a() {}
+}
+            `,
             parserOptions: { ecmaVersion: 6 }
         },
         {
-            code: '"use strict"; { a(); function a() {} }',
+            code: `
+"use strict";
+{
+    a();
+    function a() {}
+}
+            `,
             options: ["nofunc"],
             parserOptions: { ecmaVersion: 6 }
         },
         {
-            code: "switch (foo) { case 1:  { a(); } default: { let a; }}",
+            code: `
+switch (foo) {
+    case 1: {
+        a();
+    }
+    default: {
+        let a;
+    }
+}
+            `,
             parserOptions: { ecmaVersion: 6 }
         },
         {
-            code: "a(); { let a = function () {}; }",
+            code: `
+a();
+{
+    let a = function () {};
+}
+            `,
             parserOptions: { ecmaVersion: 6 }
         },
 
         // object style options
         {
-            code: "a(); function a() { alert(arguments); }",
+            code: `
+a();
+function a() {
+    alert(arguments);
+}
+            `,
             options: [{ functions: false }]
         },
         {
-            code: '"use strict"; { a(); function a() {} }',
+            code: `
+"use strict";
+{
+    a();
+    function a() {}
+}
+            `,
             options: [{ functions: false }],
             parserOptions: { ecmaVersion: 6 }
         },
         {
-            code: "function foo() { new A(); } class A {};",
+            code: `
+function foo() {
+    new A();
+}
+class A {};
+            `,
             options: [{ classes: false }],
             parserOptions: { ecmaVersion: 6 }
         },
 
         // "variables" option
         {
-            code: "function foo() { bar; } var bar;",
+            code: `
+function foo() {
+    bar;
+}
+var bar;
+            `,
             options: [{ variables: false }]
         },
         {
-            code: "var foo = () => bar; var bar;",
+            code: `
+var foo = () => bar;
+var bar;
+            `,
             options: [{ variables: false }],
             parserOptions: { ecmaVersion: 6 }
         },
 
         // "typedefs" option
         {
-            code: "var x: Foo = 2; type Foo = string | number",
+            code: `
+var x: Foo = 2;
+type Foo = string | number
+            `,
             options: [{ typedefs: false }],
             parser: "typescript-eslint-parser"
         }
     ],
     invalid: [
         {
-            code: "a++; var a=19;",
+            code: `
+a++;
+var a=19;
+            `,
             parserOptions: { sourceType: "module" },
             errors: [
                 {
@@ -108,7 +195,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "a++; var a=19;",
+            code: `
+a++;
+var a=19;
+            `,
             parserOptions: { parserOptions: { ecmaVersion: 6 } },
             errors: [
                 {
@@ -118,7 +208,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "a++; var a=19;",
+            code: `
+a++;
+var a=19;
+            `,
             errors: [
                 {
                     message: "'a' was used before it was defined.",
@@ -127,7 +220,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "a(); var a=function() {};",
+            code: `
+a();
+var a=function() {};
+            `,
             errors: [
                 {
                     message: "'a' was used before it was defined.",
@@ -136,7 +232,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "alert(a[1]); var a=[1,3];",
+            code: `
+alert(a[1]);
+var a=[1,3];
+            `,
             errors: [
                 {
                     message: "'a' was used before it was defined.",
@@ -145,7 +244,14 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "a(); function a() { alert(b); var b=10; a(); }",
+            code: `
+a();
+function a() {
+    alert(b);
+    var b=10;
+    a();
+}
+            `,
             errors: [
                 {
                     message: "'a' was used before it was defined.",
@@ -158,7 +264,11 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "a(); var a=function() {};",
+            code: `
+a();
+var a=function() {};
+
+            `,
             options: ["nofunc"],
             errors: [
                 {
@@ -168,7 +278,14 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "(() => { alert(a); var a = 42; })();",
+            code: `
+(
+    () => {
+        alert(a);
+        var a = 42;
+    }
+)();
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -178,7 +295,12 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "(() => a())(); function a() { }",
+            code: `
+(
+    () => a()
+)();
+function a() { }
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -188,7 +310,13 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: '"use strict"; a(); { function a() {} }',
+            code: `
+"use strict";
+a();
+{
+    function a() {}
+}
+            `,
             errors: [
                 {
                     message: "'a' was used before it was defined.",
@@ -197,7 +325,14 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "a(); try { throw new Error() } catch (foo) {var a;}",
+            code: `
+a();
+try {
+    throw new Error()
+} catch (foo) {
+    var a;
+}
+            `,
             errors: [
                 {
                     message: "'a' was used before it was defined.",
@@ -206,7 +341,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "var f = () => a; var a;",
+            code: `
+var f = () => a;
+var a;
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -216,7 +354,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "new A(); class A {};",
+            code: `
+new A();
+class A {};
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -226,7 +367,12 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "function foo() { new A(); } class A {};",
+            code: `
+function foo() {
+    new A();
+}
+class A {};
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -236,7 +382,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "new A(); var A = class {};",
+            code: `
+new A();
+var A = class {};
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -246,7 +395,12 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "function foo() { new A(); } var A = class {};",
+            code: `
+function foo() {
+    new A();
+}
+var A = class {};
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -258,7 +412,12 @@ ruleTester.run("no-use-before-define", rule, {
 
         // Block-level bindings
         {
-            code: "a++; { var a; }",
+            code: `
+a++;
+{
+    var a;
+}
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -268,7 +427,13 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: '"use strict"; { a(); function a() {} }',
+            code: `
+"use strict";
+{
+    a();
+    function a() {}
+}
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -278,7 +443,12 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "{a; let a = 1}",
+            code: `
+{
+    a;
+    let a = 1
+}
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -288,7 +458,14 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "switch (foo) { case 1: a();\n default: \n let a;}",
+            code: `
+switch (foo) {
+    case 1:
+        a();
+    default:
+        let a;
+}
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -298,7 +475,14 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "if (true) { function foo() { a; } let a;}",
+            code: `
+if (true) {
+    function foo() {
+        a;
+    }
+    let a;
+}
+            `,
             parserOptions: { ecmaVersion: 6 },
             errors: [
                 {
@@ -310,7 +494,10 @@ ruleTester.run("no-use-before-define", rule, {
 
         // object style options
         {
-            code: "a(); var a=function() {};",
+            code: `
+a();
+var a=function() {};
+            `,
             options: [{ functions: false, classes: false }],
             errors: [
                 {
@@ -320,7 +507,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "new A(); class A {};",
+            code: `
+new A();
+class A {};
+            `,
             options: [{ functions: false, classes: false }],
             parserOptions: { ecmaVersion: 6 },
             errors: [
@@ -331,7 +521,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "new A(); var A = class {};",
+            code: `
+new A();
+var A = class {};
+            `,
             options: [{ classes: false }],
             parserOptions: { ecmaVersion: 6 },
             errors: [
@@ -342,7 +535,12 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "function foo() { new A(); } var A = class {};",
+            code: `
+function foo() {
+    new A();
+}
+var A = class {};
+            `,
             options: [{ classes: false }],
             parserOptions: { ecmaVersion: 6 },
             errors: [
@@ -475,7 +673,13 @@ ruleTester.run("no-use-before-define", rule, {
 
         // "variables" option
         {
-            code: "function foo() { bar; var bar = 1; } var bar;",
+            code: `
+function foo() {
+    bar;
+    var bar = 1;
+}
+var bar;
+            `,
             parserOptions: { ecmaVersion: 6 },
             options: [{ variables: false }],
             errors: [
@@ -486,7 +690,10 @@ ruleTester.run("no-use-before-define", rule, {
             ]
         },
         {
-            code: "foo; var foo;",
+            code: `
+foo;
+var foo;
+            `,
             options: [{ variables: false }],
             errors: [
                 {

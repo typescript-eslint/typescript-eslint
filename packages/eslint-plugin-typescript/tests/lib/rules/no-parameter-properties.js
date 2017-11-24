@@ -15,43 +15,35 @@ const rule = require("../../../lib/rules/no-parameter-properties"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("no-parameter-properties", rule, {
     valid: [
-        {
-            code: `
+        `
 class Foo {
     constructor(name: string) {}
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 class Foo {
     constructor(name: string, age: number) {}
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 class Foo {
     constructor(name: string);
     constructor(name: string, age?: number) {}
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
+        `,
         {
             code: `
 class Foo {
     constructor(readonly name: string) { }
 }
             `,
-            options: [{ allows: ["readonly"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ allows: ["readonly"] }]
         },
         {
             code: `
@@ -59,8 +51,7 @@ class Foo {
     constructor(private name: string) { }
 }
             `,
-            options: [{ allows: ["private"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ allows: ["private"] }]
         },
         {
             code: `
@@ -68,8 +59,7 @@ class Foo {
     constructor(protected name: string) { }
 }
             `,
-            options: [{ allows: ["protected"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ allows: ["protected"] }]
         },
         {
             code: `
@@ -77,8 +67,7 @@ class Foo {
     constructor(public name: string) { }
 }
             `,
-            options: [{ allows: ["public"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ allows: ["public"] }]
         },
         {
             code: `
@@ -86,8 +75,7 @@ class Foo {
     constructor(private readonly name: string) { }
 }
             `,
-            options: [{ allows: ["private readonly"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ allows: ["private readonly"] }]
         },
         {
             code: `
@@ -95,8 +83,7 @@ class Foo {
     constructor(protected readonly name: string) { }
 }
             `,
-            options: [{ allows: ["protected readonly"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ allows: ["protected readonly"] }]
         },
         {
             code: `
@@ -104,8 +91,7 @@ class Foo {
     constructor(public readonly name: string) { }
 }
             `,
-            options: [{ allows: ["public readonly"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ allows: ["public readonly"] }]
         },
         {
             code: `
@@ -113,8 +99,7 @@ class Foo {
     constructor(readonly name: string, private age: number) { }
 }
             `,
-            options: [{ allows: ["readonly", "private"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ allows: ["readonly", "private"] }]
         },
         {
             code: `
@@ -122,8 +107,7 @@ class Foo {
     constructor(public readonly name: string, private age: number) { }
 }
             `,
-            options: [{ allows: ["public readonly", "private"] }],
-            parser: "typescript-eslint-parser"
+            options: [{ allows: ["public readonly", "private"] }]
         }
     ],
     invalid: [
@@ -133,7 +117,6 @@ class Foo {
     constructor(readonly name: string) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -149,7 +132,6 @@ class Foo {
     constructor(private name: string) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -165,7 +147,6 @@ class Foo {
     constructor(protected name: string) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -181,7 +162,6 @@ class Foo {
     constructor(public name: string) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -197,7 +177,6 @@ class Foo {
     constructor(private readonly name: string) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -213,7 +192,6 @@ class Foo {
     constructor(protected readonly name: string) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -229,7 +207,6 @@ class Foo {
     constructor(public readonly name: string) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -245,7 +222,6 @@ class Foo {
     constructor(public name: string, age: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -261,7 +237,6 @@ class Foo {
     constructor(private name: string, private age: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -283,7 +258,6 @@ class Foo {
     constructor(protected name: string, protected age: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -305,7 +279,6 @@ class Foo {
     constructor(public name: string, public age: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -328,7 +301,6 @@ class Foo {
     constructor(private name: string, age?: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -345,7 +317,6 @@ class Foo {
     constructor(private name: string, age?: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -368,7 +339,6 @@ class Foo {
     constructor(private name: string, private age?: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -397,7 +367,6 @@ class Foo {
     constructor(protected name: string, age?: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -414,7 +383,6 @@ class Foo {
     constructor(protected name: string, age?: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -437,7 +405,6 @@ class Foo {
     constructor(protected name: string, protected age?: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -466,7 +433,6 @@ class Foo {
     constructor(public name: string, age?: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -483,7 +449,6 @@ class Foo {
     constructor(public name: string, age?: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -506,7 +471,6 @@ class Foo {
     constructor(public name: string, public age?: number) {}
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -536,7 +500,6 @@ class Foo {
 }
             `,
             options: [{ allows: ["private"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -553,7 +516,6 @@ class Foo {
 }
             `,
             options: [{ allows: ["readonly"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -579,7 +541,6 @@ class Foo {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -606,7 +567,6 @@ class Foo {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -623,7 +583,6 @@ class Foo {
 }
             `,
             options: [{ allows: ["readonly", "private"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -649,7 +608,6 @@ class Foo {
                     ]
                 }
             ],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -667,7 +625,6 @@ class Foo {
 }
             `,
             options: [{ allows: ["private"] }],
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:

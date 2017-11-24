@@ -15,53 +15,48 @@ const rule = require("../../../lib/rules/interface-name-prefix"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("interface-name-prefix", rule, {
     valid: [
-        {
-            code: `
+        `
 interface Animal {
     name: string;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
+        `,
         {
-            options: ["always"],
             code: `
 interface IAnimal {
     name: string;
 }
             `,
-            parser: "typescript-eslint-parser"
+            options: ["always"]
         },
         {
-            options: ["always"],
             code: `
 interface IIguana {
     name: string;
 }
             `,
-            parser: "typescript-eslint-parser"
+            options: ["always"]
         },
         {
-            options: ["never"],
             code: `
 interface Iguana {
     name: string;
 }
             `,
-            parser: "typescript-eslint-parser"
+            options: ["never"]
         },
         {
-            options: ["never"],
             code: `
 interface Animal {
     name: string;
 }
             `,
-            parser: "typescript-eslint-parser"
+            options: ["never"]
         }
     ],
     invalid: [
@@ -71,7 +66,6 @@ interface IAnimal {
     name: string;
 }
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: 'Interface name must not be prefixed with "I"',
@@ -81,13 +75,12 @@ interface IAnimal {
             ]
         },
         {
-            options: ["always"],
             code: `
 interface Animal {
     name: string;
 }
             `,
-            parser: "typescript-eslint-parser",
+            options: ["always"],
             errors: [
                 {
                     message: 'Interface name must be prefixed with "I"',
@@ -97,13 +90,12 @@ interface Animal {
             ]
         },
         {
-            options: ["always"],
             code: `
 interface Iguana {
     name: string;
 }
             `,
-            parser: "typescript-eslint-parser",
+            options: ["always"],
             errors: [
                 {
                     message: 'Interface name must be prefixed with "I"',
@@ -113,13 +105,12 @@ interface Iguana {
             ]
         },
         {
-            options: ["never"],
             code: `
 interface IIguana {
     name: string;
 }
             `,
-            parser: "typescript-eslint-parser",
+            options: ["never"],
             errors: [
                 {
                     message: 'Interface name must not be prefixed with "I"',
@@ -129,13 +120,12 @@ interface IIguana {
             ]
         },
         {
-            options: ["never"],
             code: `
 interface IAnimal {
     name: string;
 }
             `,
-            parser: "typescript-eslint-parser",
+            options: ["never"],
             errors: [
                 {
                     message: 'Interface name must not be prefixed with "I"',

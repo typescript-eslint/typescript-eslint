@@ -15,12 +15,13 @@ const rule = require("../../../lib/rules/explicit-member-accessibility"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("explicit-member-accessibility", rule, {
     valid: [
-        {
-            code: `
+        `
 class Test {
   protected name: string
   private x: number
@@ -28,9 +29,7 @@ class Test {
     return this.x
   }
 }
-            `,
-            parser: "typescript-eslint-parser"
-        }
+        `
     ],
     invalid: [
         {
@@ -41,8 +40,7 @@ class Test {
     return this.x
   }
 }
-          `,
-            parser: "typescript-eslint-parser",
+            `,
             errors: [
                 {
                     message:
@@ -60,8 +58,7 @@ class Test {
     return this.x
   }
 }
-          `,
-            parser: "typescript-eslint-parser",
+            `,
             errors: [
                 {
                     message:

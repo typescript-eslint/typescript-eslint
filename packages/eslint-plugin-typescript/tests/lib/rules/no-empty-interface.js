@@ -15,20 +15,18 @@ const rule = require("../../../lib/rules/no-empty-interface"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("no-empty-interface", rule, {
     valid: [
-        {
-            code: `
+        `
 interface Foo {
     name: string;
 }
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 interface Foo {
     name: string;
 }
@@ -39,14 +37,11 @@ interface Bar {
 
 // valid because extending multiple interfaces can be used instead of a union type
 interface Baz extends Foo, Bar {}
-            `,
-            parser: "typescript-eslint-parser"
-        }
+        `
     ],
     invalid: [
         {
             code: "interface Foo {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "An empty interface is equivalent to `{}`",
@@ -57,7 +52,6 @@ interface Baz extends Foo, Bar {}
         },
         {
             code: "interface Foo extends {}",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message: "An empty interface is equivalent to `{}`",
@@ -69,12 +63,11 @@ interface Baz extends Foo, Bar {}
         {
             code: `
 interface Foo {
-    name: string;    
+    name: string;
 }
 
 interface Bar extends Foo {}
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:

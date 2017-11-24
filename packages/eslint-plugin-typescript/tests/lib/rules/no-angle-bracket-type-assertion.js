@@ -15,12 +15,13 @@ const rule = require("../../../lib/rules/no-angle-bracket-type-assertion"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser"
+});
 
 ruleTester.run("no-angle-bracket-type-assertion", rule, {
     valid: [
-        {
-            code: `
+        `
 interface Foo {
     bar : number;
     bas : string;
@@ -30,68 +31,17 @@ class Generic<T> implements Foo {}
 
 const foo = {} as Foo<int>;
 const bar = new Generic<int>() as Foo;
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "const array : Array<string> = [];",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "const array : Array<string> = [];",
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: "const a : number = 5 as number",
-            parser: "typescript-eslint-parser",
-            errors: [
-                {
-                    message:
-                        "Prefer 'as number' instead of '<number>' when doing type assertions",
-                    row: 1,
-                    column: 20
-                }
-            ]
-        },
-        {
-            code: `
-const a : number = 5;
-const b : number = a as number;
-            `,
-            parser: "typescript-eslint-parser",
-            errors: [
-                {
-                    message:
-                        "Prefer 'as number' instead of '<number>' when doing type assertions",
-                    row: 3,
-                    column: 20
-                }
-            ]
-        },
-        {
-            code: "const a : Array<number> = [1] as Array<number>;",
-            parser: "typescript-eslint-parser",
-            errors: [
-                {
-                    message:
-                        "Prefer 'as Array<number>' instead of '<Array<number>>' when doing type assertions",
-                    row: 1,
-                    column: 27
-                }
-            ]
-        },
-        {
-            code: `
+        `,
+        "const array : Array<string> = [];",
+        "const array : Array<string> = [];",
+        `
 class A {}
 class B extends A {}
 
 const b : B = new B();
 const a : A = b as A;
-            `,
-            parser: "typescript-eslint-parser"
-        },
-        {
-            code: `
+        `,
+        `
 type A = {
     num: number
 };
@@ -101,9 +51,13 @@ const b = {
 };
 
 const a: A = b as A;
-            `,
-            parser: "typescript-eslint-parser"
-        }
+        `,
+        "const a : number = 5 as number",
+        `
+const a : number = 5;
+const b : number = a as number;
+        `,
+        "const a : Array<number> = [1] as Array<number>;"
     ],
     invalid: [
         {
@@ -118,7 +72,6 @@ class Generic<T> implements Foo {}
 const foo = <Foo>{};
 const bar = <Foo>new Generic<int>();
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -136,7 +89,6 @@ const bar = <Foo>new Generic<int>();
         },
         {
             code: "const a : number = <number>5",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -151,7 +103,6 @@ const bar = <Foo>new Generic<int>();
 const a : number = 5;
 const b : number = <number>a;
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -163,7 +114,6 @@ const b : number = <number>a;
         },
         {
             code: "const a : Array<number> = <Array<number>>[1];",
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -181,7 +131,6 @@ class B extends A {}
 const b : B = new B();
 const a : A = <A>b;
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
@@ -203,7 +152,6 @@ const b = {
 
 const a: A = <A>b;
             `,
-            parser: "typescript-eslint-parser",
             errors: [
                 {
                     message:
