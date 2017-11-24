@@ -61,7 +61,7 @@ ruleTester.run('tslint/config', rule, {
       output: 'var foo = true',
       errors: [
         {
-          message: 'Missing semicolon',
+          message: 'Missing semicolon (tslint:semicolon)',
           line: 1,
           column: 15,
         },
@@ -75,7 +75,7 @@ ruleTester.run('tslint/config', rule, {
       output: 'var foo = true',
       errors: [
         {
-          message: 'failure',
+          message: 'failure (tslint:always-fail)',
           line: 1,
           column: 1,
         },

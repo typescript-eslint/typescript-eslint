@@ -129,7 +129,7 @@ export const rules = {
           const start = failure.getStartPosition().getLineAndCharacter();
           const end = failure.getEndPosition().getLineAndCharacter();
           context.report({
-            message: failure.getFailure(),
+            message: `${failure.getFailure()} (tslint:${failure.getRuleName()})`,
             loc: {
               start: {
                 line: start.line + 1,
