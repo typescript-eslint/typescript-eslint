@@ -9,9 +9,12 @@ cache:
 node_js:
   - '9'
   - '8'
+before_install: yarn global add greenkeeper-lockfile@1
+before_script: greenkeeper-lockfile-update
 script:
   - yarn test
   - yarn build
+after_script: greenkeeper-lockfile-upload
 after_success:
   - yarn semantic-release
 branches:
