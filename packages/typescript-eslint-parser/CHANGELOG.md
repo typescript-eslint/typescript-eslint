@@ -1,3 +1,8 @@
+v9.0.1 - November 29, 2017
+
+* 153cdb8 Fix: Calculate end position of TypeInstantiation (fixes #406) (#405) (Lucas Duailibe)
+* 678907b Fix: Explicitly convert AbstractKeyword (fixes #407) (#408) (James Henry)
+
 v9.0.0 - November 10, 2017
 
 * 46479e8 Breaking: Support TypeScript 2.6 (fixes #394) (#397) (James Henry)
