@@ -2124,6 +2124,13 @@ module.exports = function convert(config) {
             break;
         }
 
+        case SyntaxKind.AbstractKeyword: {
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSAbstractKeyword
+            });
+            break;
+        }
+
         case SyntaxKind.ModuleDeclaration: {
             Object.assign(result, {
                 type: AST_NODE_TYPES.TSModuleDeclaration,
