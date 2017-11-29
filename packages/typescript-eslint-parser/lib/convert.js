@@ -112,10 +112,10 @@ module.exports = function convert(config) {
             const firstTypeArgument = typeArguments[0];
             const typeArgumentsParent = firstTypeArgument.parent;
             /**
-             * In the case of the parent being a CallExpression we have to use slightly different
-             * logic to calculate the correct end position
+             * In the case of the parent being a CallExpression or a TypeReference we have to use
+             * slightly different logic to calculate the correct end position
              */
-            if (typeArgumentsParent && typeArgumentsParent.kind === SyntaxKind.CallExpression) {
+            if (typeArgumentsParent && (typeArgumentsParent.kind === SyntaxKind.CallExpression || typeArgumentsParent.kind === SyntaxKind.TypeReference)) {
                 const lastTypeArgument = typeArguments[typeArguments.length - 1];
                 const greaterThanToken = nodeUtils.findNextToken(lastTypeArgument, ast);
                 end = greaterThanToken.end;

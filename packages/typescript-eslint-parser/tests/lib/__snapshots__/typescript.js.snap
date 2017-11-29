@@ -41607,6 +41607,481 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/type-reference-comments.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "body": Object {
+        "body": Array [
+          Object {
+            "computed": false,
+            "key": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 10,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 2,
+                },
+              },
+              "name": "mBuffers",
+              "range": Array [
+                26,
+                34,
+              ],
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 51,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              26,
+              75,
+            ],
+            "static": false,
+            "type": "ClassProperty",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 50,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                34,
+                74,
+              ],
+              "type": "TypeAnnotation",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 50,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 12,
+                    "line": 2,
+                  },
+                },
+                "range": Array [
+                  36,
+                  74,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
+                  "left": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 19,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 12,
+                        "line": 2,
+                      },
+                    },
+                    "name": "interop",
+                    "range": Array [
+                      36,
+                      43,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "loc": Object {
+                    "end": Object {
+                      "column": 29,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 12,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    36,
+                    53,
+                  ],
+                  "right": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 29,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 20,
+                        "line": 2,
+                      },
+                    },
+                    "name": "Reference",
+                    "range": Array [
+                      44,
+                      53,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "type": "TSQualifiedName",
+                },
+                "typeParameters": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 50,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 29,
+                      "line": 2,
+                    },
+                  },
+                  "params": Array [
+                    Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 33,
+                          "line": 2,
+                        },
+                        "start": Object {
+                          "column": 30,
+                          "line": 2,
+                        },
+                      },
+                      "range": Array [
+                        54,
+                        57,
+                      ],
+                      "type": "TSAnyKeyword",
+                    },
+                  ],
+                  "range": Array [
+                    53,
+                    74,
+                  ],
+                  "type": "TypeParameterInstantiation",
+                },
+              },
+            },
+            "value": null,
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 22,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          22,
+          77,
+        ],
+        "type": "ClassBody",
+      },
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 21,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "name": "AudioBufferList",
+        "range": Array [
+          6,
+          21,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        77,
+      ],
+      "superClass": null,
+      "type": "ClassDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 4,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    78,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "Keyword",
+      "value": "class",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 21,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        21,
+      ],
+      "type": "Identifier",
+      "value": "AudioBufferList",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 22,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        22,
+        23,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        26,
+        34,
+      ],
+      "type": "Identifier",
+      "value": "mBuffers",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        34,
+        35,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        36,
+        43,
+      ],
+      "type": "Identifier",
+      "value": "interop",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 20,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 19,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        43,
+        44,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 29,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 20,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        44,
+        53,
+      ],
+      "type": "Identifier",
+      "value": "Reference",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 30,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 29,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        53,
+        54,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 33,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 30,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        54,
+        57,
+      ],
+      "type": "Identifier",
+      "value": "any",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 50,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 49,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        73,
+        74,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 51,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 50,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        74,
+        75,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        76,
+        77,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`typescript fixtures/basics/typed-this.src 1`] = `
 Object {
   "body": Array [
