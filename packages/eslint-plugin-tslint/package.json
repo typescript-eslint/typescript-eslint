@@ -27,7 +27,7 @@
     "husky": "^0.14.3",
     "jest": "21.2.1",
     "lint-staged": "6.0.0",
-    "prettier-eslint-cli": "4.4.0",
+    "prettier-eslint-cli": "4.4.2",
     "semantic-release": "8.2.0",
     "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",
