@@ -1,3 +1,9 @@
+v10.0.0 - December 11, 2017
+
+* 59a37f4 Breaking: Updates to AST node types of some TSNodes (fixes #386) (#388) (James Henry)
+* 627355e Chore: Introduce integration tests (#411) (James Henry)
+* b4d22e7 Chore: No package-lock like other ESLint repos (#409) (James Henry)
+
 v9.0.1 - November 29, 2017
 
 * 153cdb8 Fix: Calculate end position of TypeInstantiation (fixes #406) (#405) (Lucas Duailibe)
