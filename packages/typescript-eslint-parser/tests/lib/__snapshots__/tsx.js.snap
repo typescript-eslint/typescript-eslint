@@ -159,7 +159,7 @@ Object {
                     53,
                     61,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -526,7 +526,7 @@ Object {
                 98,
                 105,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {

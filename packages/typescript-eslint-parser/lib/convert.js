@@ -89,7 +89,7 @@ module.exports = function convert(config) {
         const annotationStartCol = child.getFullStart() - 1;
         const loc = nodeUtils.getLocFor(annotationStartCol, child.end, ast);
         return {
-            type: AST_NODE_TYPES.TypeAnnotation,
+            type: AST_NODE_TYPES.TSTypeAnnotation,
             loc,
             range: [annotationStartCol, child.end],
             typeAnnotation: annotation
@@ -122,7 +122,7 @@ module.exports = function convert(config) {
             }
         }
         return {
-            type: AST_NODE_TYPES.TypeParameterInstantiation,
+            type: AST_NODE_TYPES.TSTypeParameterInstantiation,
             range: [
                 start,
                 end
@@ -167,7 +167,7 @@ module.exports = function convert(config) {
         const greaterThanToken = nodeUtils.findNextToken(lastTypeParameter, ast);
 
         return {
-            type: AST_NODE_TYPES.TypeParameterDeclaration,
+            type: AST_NODE_TYPES.TSTypeParameterDeclaration,
             range: [
                 firstTypeParameter.pos - 1,
                 greaterThanToken.end
@@ -185,7 +185,7 @@ module.exports = function convert(config) {
                     : typeParameter.default;
 
                 return {
-                    type: AST_NODE_TYPES.TypeParameter,
+                    type: AST_NODE_TYPES.TSTypeParameter,
                     range: [
                         typeParameter.getStart(),
                         typeParameter.getEnd()

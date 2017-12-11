@@ -87,14 +87,14 @@ Object {
               13,
               14,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           10,
           19,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -402,14 +402,14 @@ Object {
               11,
               36,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           10,
           37,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -1106,7 +1106,7 @@ Object {
                     66,
                     83,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -1175,7 +1175,7 @@ Object {
                         75,
                         83,
                       ],
-                      "type": "TypeParameterInstantiation",
+                      "type": "TSTypeParameterInstantiation",
                     },
                   },
                 },
@@ -2405,7 +2405,7 @@ Object {
                     58,
                     75,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -2474,7 +2474,7 @@ Object {
                         67,
                         75,
                       ],
-                      "type": "TypeParameterInstantiation",
+                      "type": "TSTypeParameterInstantiation",
                     },
                   },
                 },
@@ -3174,7 +3174,7 @@ Object {
                 5,
                 8,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -3232,7 +3232,7 @@ Object {
             9,
             12,
           ],
-          "type": "TypeAnnotation",
+          "type": "TSTypeAnnotation",
           "typeAnnotation": Object {
             "loc": Object {
               "end": Object {
@@ -3298,14 +3298,14 @@ Object {
                 1,
                 2,
               ],
-              "type": "TypeParameter",
+              "type": "TSTypeParameter",
             },
           ],
           "range": Array [
             0,
             3,
           ],
-          "type": "TypeParameterDeclaration",
+          "type": "TSTypeParameterDeclaration",
         },
       },
       "loc": Object {
@@ -4726,7 +4726,7 @@ Object {
                 26,
                 34,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -4799,7 +4799,7 @@ Object {
                 56,
                 64,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -5181,7 +5181,7 @@ Object {
                       136,
                       144,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -6142,7 +6142,7 @@ Object {
                         36,
                         44,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -6885,7 +6885,7 @@ Object {
           24,
           27,
         ],
-        "type": "TypeParameterInstantiation",
+        "type": "TSTypeParameterInstantiation",
       },
       "type": "ClassDeclaration",
       "typeParameters": Object {
@@ -6916,14 +6916,14 @@ Object {
               10,
               11,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           9,
           12,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -7323,7 +7323,7 @@ Object {
           34,
           40,
         ],
-        "type": "TypeParameterInstantiation",
+        "type": "TSTypeParameterInstantiation",
       },
       "type": "ClassDeclaration",
       "typeParameters": Object {
@@ -7389,14 +7389,14 @@ Object {
               10,
               21,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           9,
           22,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -7819,14 +7819,14 @@ Object {
                       21,
                       22,
                     ],
-                    "type": "TypeParameter",
+                    "type": "TSTypeParameter",
                   },
                 ],
                 "range": Array [
                   20,
                   23,
                 ],
-                "type": "TypeParameterDeclaration",
+                "type": "TSTypeParameterDeclaration",
               },
             },
           },
@@ -8265,14 +8265,14 @@ Object {
                       21,
                       28,
                     ],
-                    "type": "TypeParameter",
+                    "type": "TSTypeParameter",
                   },
                 ],
                 "range": Array [
                   20,
                   29,
                 ],
-                "type": "TypeParameterDeclaration",
+                "type": "TSTypeParameterDeclaration",
               },
             },
           },
@@ -9230,7 +9230,7 @@ Object {
               24,
               27,
             ],
-            "type": "TypeParameterInstantiation",
+            "type": "TSTypeParameterInstantiation",
           },
         },
       ],
@@ -9597,7 +9597,7 @@ Object {
               24,
               30,
             ],
-            "type": "TypeParameterInstantiation",
+            "type": "TSTypeParameterInstantiation",
           },
         },
       ],
@@ -9996,7 +9996,7 @@ Object {
               42,
               45,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -10139,7 +10139,7 @@ Object {
                   32,
                   36,
                 ],
-                "type": "TypeParameterInstantiation",
+                "type": "TSTypeParameterInstantiation",
               },
             },
             "loc": Object {
@@ -10157,14 +10157,14 @@ Object {
               11,
               36,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           10,
           37,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
     Object {
@@ -10343,7 +10343,7 @@ Object {
             103,
             108,
           ],
-          "type": "TypeParameterInstantiation",
+          "type": "TSTypeParameterInstantiation",
         },
       },
       "type": "ClassDeclaration",
@@ -10523,7 +10523,7 @@ Object {
                       192,
                       199,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "elementType": Object {
                         "loc": Object {
@@ -10597,7 +10597,7 @@ Object {
                 202,
                 205,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -10679,14 +10679,14 @@ Object {
                   175,
                   176,
                 ],
-                "type": "TypeParameter",
+                "type": "TSTypeParameter",
               },
             ],
             "range": Array [
               174,
               177,
             ],
-            "type": "TypeParameterDeclaration",
+            "type": "TSTypeParameterDeclaration",
           },
         },
       ],
@@ -12377,7 +12377,7 @@ Object {
                   30,
                   38,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -12474,7 +12474,7 @@ Object {
                   56,
                   64,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -13099,7 +13099,7 @@ Object {
                 27,
                 35,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -13173,7 +13173,7 @@ Object {
                 52,
                 60,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -14030,7 +14030,7 @@ Object {
                         43,
                         51,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -14100,7 +14100,7 @@ Object {
                         92,
                         100,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -14172,7 +14172,7 @@ Object {
                           127,
                           135,
                         ],
-                        "type": "TypeAnnotation",
+                        "type": "TSTypeAnnotation",
                         "typeAnnotation": Object {
                           "loc": Object {
                             "end": Object {
@@ -14278,7 +14278,7 @@ Object {
                           180,
                           189,
                         ],
-                        "type": "TypeAnnotation",
+                        "type": "TSTypeAnnotation",
                         "typeAnnotation": Object {
                           "loc": Object {
                             "end": Object {
@@ -15155,7 +15155,7 @@ Object {
                         45,
                         53,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -15225,7 +15225,7 @@ Object {
                         96,
                         104,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -15297,7 +15297,7 @@ Object {
                           133,
                           141,
                         ],
-                        "type": "TypeAnnotation",
+                        "type": "TSTypeAnnotation",
                         "typeAnnotation": Object {
                           "loc": Object {
                             "end": Object {
@@ -15403,7 +15403,7 @@ Object {
                           188,
                           197,
                         ],
-                        "type": "TypeAnnotation",
+                        "type": "TSTypeAnnotation",
                         "typeAnnotation": Object {
                           "loc": Object {
                             "end": Object {
@@ -16280,7 +16280,7 @@ Object {
                         42,
                         50,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -16350,7 +16350,7 @@ Object {
                         90,
                         98,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -16422,7 +16422,7 @@ Object {
                           124,
                           132,
                         ],
-                        "type": "TypeAnnotation",
+                        "type": "TSTypeAnnotation",
                         "typeAnnotation": Object {
                           "loc": Object {
                             "end": Object {
@@ -16528,7 +16528,7 @@ Object {
                           176,
                           185,
                         ],
-                        "type": "TypeAnnotation",
+                        "type": "TSTypeAnnotation",
                         "typeAnnotation": Object {
                           "loc": Object {
                             "end": Object {
@@ -17404,7 +17404,7 @@ Object {
                         44,
                         52,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -17475,7 +17475,7 @@ Object {
                           85,
                           93,
                         ],
-                        "type": "TypeAnnotation",
+                        "type": "TSTypeAnnotation",
                         "typeAnnotation": Object {
                           "loc": Object {
                             "end": Object {
@@ -18417,7 +18417,7 @@ Object {
                         36,
                         44,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -18844,14 +18844,14 @@ Object {
               10,
               11,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           9,
           12,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -19121,14 +19121,14 @@ Object {
               10,
               17,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           9,
           18,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -19399,14 +19399,14 @@ Object {
               8,
               11,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           7,
           12,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -19969,7 +19969,7 @@ Object {
                   30,
                   35,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -20350,7 +20350,7 @@ Object {
               24,
               32,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -20390,7 +20390,7 @@ Object {
           33,
           41,
         ],
-        "type": "TypeAnnotation",
+        "type": "TSTypeAnnotation",
         "typeAnnotation": Object {
           "loc": Object {
             "end": Object {
@@ -21218,14 +21218,14 @@ Object {
                 21,
                 22,
               ],
-              "type": "TypeParameter",
+              "type": "TSTypeParameter",
             },
           ],
           "range": Array [
             20,
             23,
           ],
-          "type": "TypeParameterDeclaration",
+          "type": "TSTypeParameterDeclaration",
         },
       },
       "loc": Object {
@@ -21478,7 +21478,7 @@ Object {
                 21,
                 22,
               ],
-              "type": "TypeParameter",
+              "type": "TSTypeParameter",
             },
             Object {
               "loc": Object {
@@ -21496,14 +21496,14 @@ Object {
                 24,
                 25,
               ],
-              "type": "TypeParameter",
+              "type": "TSTypeParameter",
             },
           ],
           "range": Array [
             20,
             26,
           ],
-          "type": "TypeParameterDeclaration",
+          "type": "TSTypeParameterDeclaration",
         },
       },
       "loc": Object {
@@ -21809,14 +21809,14 @@ Object {
                 17,
                 18,
               ],
-              "type": "TypeParameter",
+              "type": "TSTypeParameter",
             },
           ],
           "range": Array [
             16,
             19,
           ],
-          "type": "TypeParameterDeclaration",
+          "type": "TSTypeParameterDeclaration",
         },
       },
       "loc": Object {
@@ -22088,7 +22088,7 @@ Object {
                 17,
                 18,
               ],
-              "type": "TypeParameter",
+              "type": "TSTypeParameter",
             },
             Object {
               "loc": Object {
@@ -22106,14 +22106,14 @@ Object {
                 20,
                 21,
               ],
-              "type": "TypeParameter",
+              "type": "TSTypeParameter",
             },
           ],
           "range": Array [
             16,
             22,
           ],
-          "type": "TypeParameterDeclaration",
+          "type": "TSTypeParameterDeclaration",
         },
       },
       "loc": Object {
@@ -23069,7 +23069,7 @@ Object {
                       40,
                       48,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -23419,7 +23419,7 @@ Object {
                       29,
                       37,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -23460,7 +23460,7 @@ Object {
                   40,
                   46,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -24324,7 +24324,7 @@ Object {
               23,
               45,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -24388,7 +24388,7 @@ Object {
                       30,
                       38,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -25062,7 +25062,7 @@ Object {
               23,
               43,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -25125,7 +25125,7 @@ Object {
                       29,
                       37,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -25683,7 +25683,7 @@ Object {
               15,
               18,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -25741,7 +25741,7 @@ Object {
           19,
           22,
         ],
-        "type": "TypeAnnotation",
+        "type": "TSTypeAnnotation",
         "typeAnnotation": Object {
           "loc": Object {
             "end": Object {
@@ -25807,14 +25807,14 @@ Object {
               11,
               12,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           10,
           13,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -26232,14 +26232,14 @@ Object {
               28,
               29,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           16,
           30,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -26548,7 +26548,7 @@ Object {
               26,
               29,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -26606,7 +26606,7 @@ Object {
           30,
           33,
         ],
-        "type": "TypeAnnotation",
+        "type": "TSTypeAnnotation",
         "typeAnnotation": Object {
           "loc": Object {
             "end": Object {
@@ -26690,14 +26690,14 @@ Object {
               11,
               23,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           10,
           24,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -27204,7 +27204,7 @@ Object {
               21,
               28,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -27244,7 +27244,7 @@ Object {
           29,
           36,
         ],
-        "type": "TypeAnnotation",
+        "type": "TSTypeAnnotation",
         "typeAnnotation": Object {
           "loc": Object {
             "end": Object {
@@ -27661,7 +27661,7 @@ Object {
               21,
               28,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -27714,7 +27714,7 @@ Object {
                 33,
                 40,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -27802,7 +27802,7 @@ Object {
                 55,
                 69,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -27871,7 +27871,7 @@ Object {
                     61,
                     69,
                   ],
-                  "type": "TypeParameterInstantiation",
+                  "type": "TSTypeParameterInstantiation",
                 },
               },
             },
@@ -27912,7 +27912,7 @@ Object {
           70,
           77,
         ],
-        "type": "TypeAnnotation",
+        "type": "TSTypeAnnotation",
         "typeAnnotation": Object {
           "loc": Object {
             "end": Object {
@@ -29063,14 +29063,14 @@ Object {
               14,
               15,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           13,
           16,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -29278,7 +29278,7 @@ Object {
                 23,
                 31,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -29349,7 +29349,7 @@ Object {
                 41,
                 49,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -29419,7 +29419,7 @@ Object {
                 60,
                 68,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -29490,7 +29490,7 @@ Object {
                 80,
                 88,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -29543,7 +29543,7 @@ Object {
                   98,
                   106,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -29594,7 +29594,7 @@ Object {
                 107,
                 115,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -29648,7 +29648,7 @@ Object {
                   126,
                   134,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -29699,7 +29699,7 @@ Object {
                 135,
                 143,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -29772,7 +29772,7 @@ Object {
                 154,
                 160,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -29900,7 +29900,7 @@ Object {
                 179,
                 185,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -30028,7 +30028,7 @@ Object {
                 206,
                 212,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -30156,7 +30156,7 @@ Object {
                 233,
                 239,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -30203,14 +30203,14 @@ Object {
                     222,
                     223,
                   ],
-                  "type": "TypeParameter",
+                  "type": "TSTypeParameter",
                 },
               ],
               "range": Array [
                 221,
                 224,
               ],
-              "type": "TypeParameterDeclaration",
+              "type": "TSTypeParameterDeclaration",
             },
           },
           Object {
@@ -30283,7 +30283,7 @@ Object {
                 256,
                 264,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -30373,7 +30373,7 @@ Object {
                 284,
                 292,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -30420,14 +30420,14 @@ Object {
                     275,
                     276,
                   ],
-                  "type": "TypeParameter",
+                  "type": "TSTypeParameter",
                 },
               ],
               "range": Array [
                 274,
                 277,
               ],
-              "type": "TypeParameterDeclaration",
+              "type": "TSTypeParameterDeclaration",
             },
           },
         ],
@@ -33037,7 +33037,7 @@ Object {
               28,
               31,
             ],
-            "type": "TypeParameterInstantiation",
+            "type": "TSTypeParameterInstantiation",
           },
         },
       ],
@@ -33102,14 +33102,14 @@ Object {
               14,
               15,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           13,
           16,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -33435,14 +33435,14 @@ Object {
               15,
               16,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           14,
           17,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -33990,7 +33990,7 @@ Object {
                 35,
                 43,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -34093,7 +34093,7 @@ Object {
                     63,
                     71,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -34946,7 +34946,7 @@ Object {
                 15,
                 44,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -35107,7 +35107,7 @@ Object {
                                 34,
                                 42,
                               ],
-                              "type": "TypeParameterInstantiation",
+                              "type": "TSTypeParameterInstantiation",
                             },
                           },
                         ],
@@ -35115,7 +35115,7 @@ Object {
                           28,
                           43,
                         ],
-                        "type": "TypeParameterInstantiation",
+                        "type": "TSTypeParameterInstantiation",
                       },
                     },
                   ],
@@ -35123,7 +35123,7 @@ Object {
                     22,
                     44,
                   ],
-                  "type": "TypeParameterInstantiation",
+                  "type": "TSTypeParameterInstantiation",
                 },
               },
             },
@@ -35457,7 +35457,7 @@ Object {
                 7,
                 17,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -35526,7 +35526,7 @@ Object {
                     10,
                     17,
                   ],
-                  "type": "TypeParameterInstantiation",
+                  "type": "TSTypeParameterInstantiation",
                 },
               },
             },
@@ -35672,7 +35672,7 @@ Object {
             35,
             42,
           ],
-          "type": "TypeParameterInstantiation",
+          "type": "TSTypeParameterInstantiation",
         },
       },
       "loc": Object {
@@ -36305,7 +36305,7 @@ Object {
               25,
               33,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -36824,7 +36824,7 @@ Object {
                 5,
                 11,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -36914,7 +36914,7 @@ Object {
                 18,
                 29,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -38330,7 +38330,7 @@ Object {
               17,
               38,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -38416,7 +38416,7 @@ Object {
                   22,
                   38,
                 ],
-                "type": "TypeParameterInstantiation",
+                "type": "TSTypeParameterInstantiation",
               },
             },
           },
@@ -38829,7 +38829,7 @@ Object {
                     24,
                     27,
                   ],
-                  "type": "TypeParameterInstantiation",
+                  "type": "TSTypeParameterInstantiation",
                 },
               },
               Object {
@@ -38912,14 +38912,14 @@ Object {
                   12,
                   13,
                 ],
-                "type": "TypeParameter",
+                "type": "TSTypeParameter",
               },
             ],
             "range": Array [
               11,
               14,
             ],
-            "type": "TypeParameterDeclaration",
+            "type": "TSTypeParameterDeclaration",
           },
         },
       ],
@@ -39305,7 +39305,7 @@ Object {
                     35,
                     38,
                   ],
-                  "type": "TypeParameterInstantiation",
+                  "type": "TSTypeParameterInstantiation",
                 },
               },
               Object {
@@ -39406,14 +39406,14 @@ Object {
                   12,
                   24,
                 ],
-                "type": "TypeParameter",
+                "type": "TSTypeParameter",
               },
             ],
             "range": Array [
               11,
               25,
             ],
-            "type": "TypeParameterDeclaration",
+            "type": "TSTypeParameterDeclaration",
           },
         },
       ],
@@ -39812,7 +39812,7 @@ Object {
                     15,
                     23,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -40307,7 +40307,7 @@ Object {
               19,
               24,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -40347,7 +40347,7 @@ Object {
           25,
           38,
         ],
-        "type": "TypeAnnotation",
+        "type": "TSTypeAnnotation",
         "typeAnnotation": Object {
           "loc": Object {
             "end": Object {
@@ -40397,7 +40397,7 @@ Object {
               32,
               38,
             ],
-            "type": "TypeAnnotation",
+            "type": "TSTypeAnnotation",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -40857,7 +40857,7 @@ Object {
             3,
             40,
           ],
-          "type": "TypeParameterInstantiation",
+          "type": "TSTypeParameterInstantiation",
         },
       },
       "loc": Object {
@@ -40960,14 +40960,14 @@ Object {
               68,
               69,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           56,
           81,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
     Object {
@@ -41089,14 +41089,14 @@ Object {
               112,
               129,
             ],
-            "type": "TypeParameter",
+            "type": "TSTypeParameter",
           },
         ],
         "range": Array [
           100,
           131,
         ],
-        "type": "TypeParameterDeclaration",
+        "type": "TSTypeParameterDeclaration",
       },
     },
   ],
@@ -41664,7 +41664,7 @@ Object {
                 34,
                 74,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -41768,7 +41768,7 @@ Object {
                     53,
                     74,
                   ],
-                  "type": "TypeParameterInstantiation",
+                  "type": "TSTypeParameterInstantiation",
                 },
               },
             },
@@ -42153,7 +42153,7 @@ Object {
                     47,
                     79,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -42198,7 +42198,7 @@ Object {
                             54,
                             60,
                           ],
-                          "type": "TypeAnnotation",
+                          "type": "TSTypeAnnotation",
                           "typeAnnotation": Object {
                             "loc": Object {
                               "end": Object {
@@ -42250,7 +42250,7 @@ Object {
                             63,
                             70,
                           ],
-                          "type": "TypeAnnotation",
+                          "type": "TSTypeAnnotation",
                           "typeAnnotation": Object {
                             "loc": Object {
                               "end": Object {
@@ -42309,7 +42309,7 @@ Object {
                         73,
                         79,
                       ],
-                      "type": "TypeAnnotation",
+                      "type": "TSTypeAnnotation",
                       "typeAnnotation": Object {
                         "loc": Object {
                           "end": Object {
@@ -42354,7 +42354,7 @@ Object {
                 80,
                 86,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -42900,7 +42900,7 @@ Object {
                 7,
                 14,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -43265,7 +43265,7 @@ Object {
                 8,
                 15,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -43373,7 +43373,7 @@ Object {
                 37,
                 45,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -43758,7 +43758,7 @@ Object {
                 8,
                 21,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -49460,7 +49460,7 @@ Object {
                       58,
                       69,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -50214,7 +50214,7 @@ Object {
                       38,
                       46,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -50806,7 +50806,7 @@ Object {
                       51,
                       59,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -51488,7 +51488,7 @@ Object {
                       40,
                       48,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -52224,7 +52224,7 @@ Object {
                       53,
                       61,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -55873,7 +55873,7 @@ Object {
                 9,
                 16,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -55924,7 +55924,7 @@ Object {
                     14,
                     16,
                   ],
-                  "type": "TypeParameterInstantiation",
+                  "type": "TSTypeParameterInstantiation",
                 },
               },
             },
@@ -56757,7 +56757,7 @@ Object {
                 23,
                 31,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -56828,7 +56828,7 @@ Object {
                 51,
                 59,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -56899,7 +56899,7 @@ Object {
                 74,
                 82,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -56970,7 +56970,7 @@ Object {
                 99,
                 107,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57041,7 +57041,7 @@ Object {
                 121,
                 129,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57112,7 +57112,7 @@ Object {
                 143,
                 151,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57183,7 +57183,7 @@ Object {
                 167,
                 175,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57237,7 +57237,7 @@ Object {
                   193,
                   201,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -57288,7 +57288,7 @@ Object {
                 202,
                 210,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57342,7 +57342,7 @@ Object {
                   228,
                   236,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -57393,7 +57393,7 @@ Object {
                 237,
                 245,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57447,7 +57447,7 @@ Object {
                   265,
                   273,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -57498,7 +57498,7 @@ Object {
                 274,
                 282,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57551,7 +57551,7 @@ Object {
                   299,
                   307,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -57602,7 +57602,7 @@ Object {
                 308,
                 316,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57656,7 +57656,7 @@ Object {
                   333,
                   341,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -57707,7 +57707,7 @@ Object {
                 342,
                 350,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57760,7 +57760,7 @@ Object {
                   369,
                   377,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -57812,7 +57812,7 @@ Object {
                 378,
                 386,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -57897,7 +57897,7 @@ Object {
                     405,
                     413,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -57939,7 +57939,7 @@ Object {
                 414,
                 420,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -58024,7 +58024,7 @@ Object {
                     439,
                     447,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -58066,7 +58066,7 @@ Object {
                 448,
                 454,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -58151,7 +58151,7 @@ Object {
                     475,
                     483,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -58193,7 +58193,7 @@ Object {
                 484,
                 490,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -58277,7 +58277,7 @@ Object {
                     508,
                     516,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -58319,7 +58319,7 @@ Object {
                 517,
                 523,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -58404,7 +58404,7 @@ Object {
                     541,
                     549,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -58446,7 +58446,7 @@ Object {
                 550,
                 556,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -58530,7 +58530,7 @@ Object {
                     576,
                     584,
                   ],
-                  "type": "TypeAnnotation",
+                  "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
@@ -58573,7 +58573,7 @@ Object {
                 585,
                 591,
               ],
-              "type": "TypeAnnotation",
+              "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "loc": Object {
                   "end": Object {
@@ -61530,7 +61530,7 @@ Object {
             3,
             6,
           ],
-          "type": "TypeParameterInstantiation",
+          "type": "TSTypeParameterInstantiation",
         },
       },
       "loc": Object {
@@ -61619,7 +61619,7 @@ Object {
             13,
             21,
           ],
-          "type": "TypeParameterInstantiation",
+          "type": "TSTypeParameterInstantiation",
         },
       },
       "loc": Object {
@@ -62023,7 +62023,7 @@ Object {
                 15,
                 18,
               ],
-              "type": "TypeParameterInstantiation",
+              "type": "TSTypeParameterInstantiation",
             },
           },
           "loc": Object {
@@ -62687,7 +62687,7 @@ Object {
                       56,
                       64,
                     ],
-                    "type": "TypeAnnotation",
+                    "type": "TSTypeAnnotation",
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
@@ -62727,7 +62727,7 @@ Object {
                   65,
                   81,
                 ],
-                "type": "TypeAnnotation",
+                "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
                   "loc": Object {
                     "end": Object {
@@ -62796,7 +62796,7 @@ Object {
                       76,
                       81,
                     ],
-                    "type": "TypeParameterInstantiation",
+                    "type": "TSTypeParameterInstantiation",
                   },
                 },
               },
@@ -63336,7 +63336,7 @@ Object {
                           60,
                           63,
                         ],
-                        "type": "TypeAnnotation",
+                        "type": "TSTypeAnnotation",
                         "typeAnnotation": Object {
                           "loc": Object {
                             "end": Object {
@@ -64278,7 +64278,7 @@ Object {
                                 98,
                                 106,
                               ],
-                              "type": "TypeAnnotation",
+                              "type": "TSTypeAnnotation",
                               "typeAnnotation": Object {
                                 "loc": Object {
                                   "end": Object {
@@ -64348,7 +64348,7 @@ Object {
                                 116,
                                 124,
                               ],
-                              "type": "TypeAnnotation",
+                              "type": "TSTypeAnnotation",
                               "typeAnnotation": Object {
                                 "loc": Object {
                                   "end": Object {
@@ -64511,7 +64511,7 @@ Object {
                                 204,
                                 212,
                               ],
-                              "type": "TypeAnnotation",
+                              "type": "TSTypeAnnotation",
                               "typeAnnotation": Object {
                                 "loc": Object {
                                   "end": Object {
