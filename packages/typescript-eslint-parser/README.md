@@ -58,8 +58,8 @@ Please check the current list of open and known issues and ensure the bug has no
  - TypeScript version
  - TypeScript parser version
  - ESLint config or rules and plugins currently enabled
- 
-As well include a small code sample that can be used to reproduce the issue. 
+
+As well include a small code sample that can be used to reproduce the issue.
 
 ## Contributing
 
@@ -69,6 +69,8 @@ Issues and pull requests will be triaged and responded to as quickly as possible
 
 * `npm test` - run all linting and tests
 * `npm run lint` - run all linting
+* `npm run ast-alignment-tests` - run only Babylon AST alignment tests
+* `npm run integration-tests` - run only integration tests
 
 ## License
 
