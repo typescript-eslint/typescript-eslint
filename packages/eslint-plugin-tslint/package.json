@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@types/jest": "21.1.8",
-    "@types/node": "8.0.57",
+    "@types/node": "8.0.58",
     "cz-conventional-changelog": "2.1.0",
     "eslint": "4.13.0",
     "husky": "^0.14.3",
