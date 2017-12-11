@@ -97,7 +97,6 @@ module.exports = {
     ThisExpression: "ThisExpression",
     ThrowStatement: "ThrowStatement",
     TryStatement: "TryStatement",
-
     /**
      * TS-prefixed nodes
      */
@@ -140,17 +139,16 @@ module.exports = {
     TSStaticKeyword: "TSStaticKeyword",
     TSStringKeyword: "TSStringKeyword",
     TSSymbolKeyword: "TSSymbolKeyword",
+    TSTypeAnnotation: "TSTypeAnnotation",
     TSTypeLiteral: "TSTypeLiteral",
+    TSTypeParameter: "TSTypeParameter",
+    TSTypeParameterDeclaration: "TSTypeParameterDeclaration",
+    TSTypeParameterInstantiation: "TSTypeParameterInstantiation",
     TSTypePredicate: "TSTypePredicate",
     TSTypeReference: "TSTypeReference",
     TSUnionType: "TSUnionType",
     TSUndefinedKeyword: "TSUndefinedKeyword",
     TSVoidKeyword: "TSVoidKeyword",
-
-    TypeAnnotation: "TypeAnnotation",
-    TypeParameter: "TypeParameter",
-    TypeParameterDeclaration: "TypeParameterDeclaration",
-    TypeParameterInstantiation: "TypeParameterInstantiation",
     UnaryExpression: "UnaryExpression",
     UpdateExpression: "UpdateExpression",
     VariableDeclaration: "VariableDeclaration",

@@ -75,4 +75,3 @@ Issues and pull requests will be triaged and responded to as quickly as possible
 ## License
 
 TypeScript ESLint Parser is licensed under a permissive BSD 2-clause license.
-
