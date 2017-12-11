@@ -32,7 +32,7 @@
     "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",
     "typescript": "2.6.2",
-    "typescript-eslint-parser": "9.0.1"
+    "typescript-eslint-parser": "10.0.0"
   },
   "lint-staged": {
     "src/**/*": ["prettier-eslint --write", "git add"],
