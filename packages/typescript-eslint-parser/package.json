@@ -20,6 +20,7 @@
   "devDependencies": {
     "babel-code-frame": "6.26.0",
     "babylon": "7.0.0-beta.24",
+    "dedent": "^0.7.0",
     "eslint": "4.10.0",
     "eslint-config-eslint": "4.0.0",
     "eslint-plugin-node": "5.2.1",
@@ -42,9 +43,10 @@
     "eslint"
   ],
   "scripts": {
-    "test": "node Makefile.js test && npm run ast-alignment-tests",
+    "test": "node Makefile.js test && npm run integration-tests && npm run ast-alignment-tests",
     "jest": "jest",
-    "ast-alignment-tests": "jest --config={} ./tests/ast-alignment/spec.js",
+    "ast-alignment-tests": "jest --config=./tests/ast-alignment/jest.config.js",
+    "integration-tests": "jest --config=./tests/integration/jest.config.js",
     "lint": "node Makefile.js lint",
     "release": "eslint-release",
     "ci-release": "eslint-ci-release",
