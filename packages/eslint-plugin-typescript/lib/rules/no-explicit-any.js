@@ -91,7 +91,7 @@ module.exports = {
                     );
                 }
             },
-            TypeAnnotation(node) {
+            TSTypeAnnotation(node) {
                 if (node.typeAnnotation) {
                     checkGenericNodeForAnnotation(node.typeAnnotation);
                 }
