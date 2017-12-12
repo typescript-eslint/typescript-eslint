@@ -261,7 +261,7 @@ module.exports = {
                 }
             },
 
-            TypeAnnotation(node) {
+            TSTypeAnnotation(node) {
                 if (node.typeAnnotation) {
                     markTypeAnnotationAsUsed(node.typeAnnotation);
                 }

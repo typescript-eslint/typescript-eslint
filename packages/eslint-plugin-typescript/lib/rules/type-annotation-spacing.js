@@ -71,7 +71,7 @@ module.exports = {
         /**
          * Checks if there's proper spacing around type annotations (no space
          * before colon, one space after).
-         * @param {ASTNode} typeAnnotation The TypeAnnotation node.
+         * @param {ASTNode} typeAnnotation The TSTypeAnnotation node.
          * @returns {void}
          * @private
          */
@@ -163,7 +163,7 @@ module.exports = {
                     );
                 }
             },
-            TypeAnnotation(node) {
+            TSTypeAnnotation(node) {
                 checkTypeAnnotationSpacing(node.typeAnnotation);
             },
             FunctionDeclaration: checkFunctionReturnTypeSpacing,
