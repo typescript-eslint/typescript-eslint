@@ -1,3 +1,8 @@
+v11.0.0 - December 13, 2017
+
+* 6698042 Breaking: No prefix on FnDec within namespace (fixes #127) (#413) (James Henry)
+* aec31cb Breaking: Implement parseForESLint() function (#412) (James Henry)
+
 v10.0.0 - December 11, 2017
 
 * 59a37f4 Breaking: Updates to AST node types of some TSNodes (fixes #386) (#388) (James Henry)
