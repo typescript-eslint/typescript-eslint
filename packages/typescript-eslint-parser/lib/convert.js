@@ -622,13 +622,6 @@ module.exports = function convert(config) {
                 }
             }
 
-            /**
-             * Prefix FunctionDeclarations within TypeScript namespaces with "TS"
-             */
-            if (node.parent && node.parent.kind === SyntaxKind.ModuleBlock) {
-                functionDeclarationType = AST_NODE_TYPES.TSNamespaceFunctionDeclaration;
-            }
-
             Object.assign(result, {
                 type: functionDeclarationType,
                 id: convertChild(node.name),

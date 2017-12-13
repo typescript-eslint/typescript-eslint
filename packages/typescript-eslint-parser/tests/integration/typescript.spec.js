@@ -157,6 +157,23 @@ describe("TypeScript", () => {
         );
     });
 
+    it("should correctly apply no-unreachable on TS-constructs (#127)", () => {
+        verifyAndAssertMessages(
+            unpad(`
+                export namespace foo {
+                    export function bar() {
+                        return;
+                    }
+                }
+                export type Qux = true;
+            `),
+            {
+                "no-unreachable": 2
+            },
+            []
+        );
+    });
+
     // it("should not produce a false positive for no-restricted-globals rule (#350)", () => {
     //     verifyAndAssertMessages(
     //         unpad(`
@@ -166,23 +183,6 @@ describe("TypeScript", () => {
     //         `),
     //         {
     //             "no-restricted-globals": [2, "location"]
-    //         },
-    //         []
-    //     );
-    // });
-
-    // it("should correctly apply no-unreachable on TS-constructs (#127)", () => {
-    //     verifyAndAssertMessages(
-    //         unpad(`
-    //             export namespace foo {
-    //                 export function bar() {
-    //                     return;
-    //                 }
-    //             }
-    //             export type Qux = true;
-    //         `),
-    //         {
-    //             "no-unreachable": 2
     //         },
     //         []
     //     );
