@@ -1179,7 +1179,7 @@ Object {
                     },
                   },
                 },
-                "type": "FunctionExpression",
+                "type": "TSEmptyBodyFunctionExpression",
               },
             },
           ],
@@ -2478,7 +2478,7 @@ Object {
                     },
                   },
                 },
-                "type": "FunctionExpression",
+                "type": "TSEmptyBodyFunctionExpression",
               },
             },
           ],
@@ -12300,7 +12300,7 @@ Object {
                 18,
                 21,
               ],
-              "type": "FunctionExpression",
+              "type": "TSEmptyBodyFunctionExpression",
             },
           },
           Object {
@@ -12396,7 +12396,7 @@ Object {
                   "type": "TSStringKeyword",
                 },
               },
-              "type": "FunctionExpression",
+              "type": "TSEmptyBodyFunctionExpression",
             },
           },
           Object {
@@ -12493,7 +12493,7 @@ Object {
                   "type": "TSStringKeyword",
                 },
               },
-              "type": "FunctionExpression",
+              "type": "TSEmptyBodyFunctionExpression",
             },
           },
         ],
@@ -19988,7 +19988,7 @@ Object {
                   "type": "TSAnyKeyword",
                 },
               },
-              "type": "FunctionExpression",
+              "type": "TSEmptyBodyFunctionExpression",
             },
           },
         ],
@@ -20409,7 +20409,7 @@ Object {
           "type": "TSStringKeyword",
         },
       },
-      "type": "DeclareFunction",
+      "type": "TSEmptyBodyDeclareFunction",
     },
   ],
   "loc": Object {
@@ -62800,7 +62800,7 @@ Object {
                   },
                 },
               },
-              "type": "TSNamespaceFunctionDeclaration",
+              "type": "TSEmptyBodyFunctionDeclaration",
             },
             "loc": Object {
               "end": Object {
@@ -63500,7 +63500,7 @@ Object {
                 93,
                 110,
               ],
-              "type": "TSNamespaceFunctionDeclaration",
+              "type": "FunctionDeclaration",
             },
             "loc": Object {
               "end": Object {
