@@ -1,6 +1,6 @@
-# TypeScript ESLint Parser (Experimental)
+# TypeScript ESLint Parser
 
-A parser that converts TypeScript into an [ESTree](https://github.com/estree/estree)-compatible form so it can be used in ESLint.
+A parser that converts TypeScript source code into an [ESTree](https://github.com/estree/estree)-compatible form.
 
 **Important:** This parser is not fully compatible with all ESLint rules and plugins. Some rules will improperly mark source code as failing or not find problems where it should.
 
@@ -20,18 +20,10 @@ The following ESLint rules will fail on acceptable code:
  - no-undef [#77](https://github.com/eslint/typescript-eslint-parser/issues/77)
  - no-unused-vars [#77](https://github.com/eslint/typescript-eslint-parser/issues/77)
  - no-useless-constructor [#77](https://github.com/eslint/typescript-eslint-parser/issues/77)
- - space-infix-ops [#224](https://github.com/eslint/typescript-eslint-parser/issues/224)
  
 The follow ESLint plugins have issues when used with this parser:
- - eslint-plugin-react [#213](https://github.com/eslint/typescript-eslint-parser/issues/213)
  - eslint-plugin-import
     - prefer-default-export - Will fail exports inside of Namespaces or Modules
-  
-The following TypeScript syntax will cause rules to fail or ESLint v3 to crash:
- - Empty body functions
-   - Abstract methods
-   - Function overloading
-   - Declared functions
 
 ## Usage
 

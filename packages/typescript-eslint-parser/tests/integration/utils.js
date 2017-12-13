@@ -11,6 +11,7 @@
 //------------------------------------------------------------------------------
 const eslint = require("eslint");
 const unpad = require("dedent");
+const fs = require("fs");
 const path = require("path");
 
 //------------------------------------------------------------------------------
@@ -19,9 +20,21 @@ const path = require("path");
 
 /* eslint-disable no-use-before-define */
 module.exports = {
-    verifyAndAssertMessages
+    verifyAndAssertMessages,
+    loadExternalFixture
 };
 /* eslint-enable no-use-before-define */
+
+/**
+ * Loads an external fixture by name
+ * @param {string} fixtureName the name of the fixture file to load
+ * @returns {string} stringified file contents
+ */
+function loadExternalFixture(fixtureName) {
+    return fs.readFileSync(
+        path.join(__dirname, "external-fixtures", `${fixtureName}.js`)
+    ).toString();
+}
 
 /**
  * A utility function to lint the given source code using typescript-eslint-parser

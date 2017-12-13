@@ -21,7 +21,7 @@
     "babel-code-frame": "6.26.0",
     "babylon": "7.0.0-beta.34",
     "dedent": "0.7.0",
-    "eslint": "4.13.0",
+    "eslint": "4.13.1",
     "eslint-config-eslint": "4.0.0",
     "eslint-plugin-node": "5.2.1",
     "eslint-release": "0.10.3",

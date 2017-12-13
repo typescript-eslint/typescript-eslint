@@ -58,7 +58,8 @@ module.exports = (ast, extra) => {
         ast,
         additionalOptions: {
             errorOnUnknownASTType: extra.errorOnUnknownASTType || false,
-            useJSXTextNode: extra.useJSXTextNode || false
+            useJSXTextNode: extra.useJSXTextNode || false,
+            parseForESLint: extra.parseForESLint
         }
     });
 
