@@ -33,11 +33,11 @@ const utils = require("./utils");
 const verifyAndAssertMessages = utils.verifyAndAssertMessages;
 
 describe("Non-regression tests from babel-eslint", () => {
-    it("arrow function support (issue #1)", () => {
+    it("arrow function support", () => {
         verifyAndAssertMessages("describe('stuff', () => {});", {}, []);
     });
 
-    it("EOL validation (issue #2)", () => {
+    it("EOL validation", () => {
         verifyAndAssertMessages(
             "module.exports = \"something\";",
             { "eol-last": 1, semi: 1 },
@@ -45,7 +45,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("Modules support (issue #5)", () => {
+    it("Modules support", () => {
         verifyAndAssertMessages(
             unpad(`
           import Foo from 'foo';
@@ -59,7 +59,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("Rest parameters (issue #7)", () => {
+    it("Rest parameters", () => {
         verifyAndAssertMessages(
             "function foo(...args) { return args; }",
             { "no-undef": 1 },
@@ -67,7 +67,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("Exported classes should be used (issue #8)", () => {
+    it("Exported classes should be used", () => {
         verifyAndAssertMessages(
             "class Foo {} module.exports = Foo;",
             { "no-unused-vars": 1 },
@@ -75,7 +75,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("super keyword in class (issue #10)", () => {
+    it("super keyword in class", () => {
         verifyAndAssertMessages(
             "class Foo { constructor() { super() } }",
             { "no-undef": 1 },
@@ -83,7 +83,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("Rest parameter in destructuring assignment (issue #11)", () => {
+    it("Rest parameter in destructuring assignment", () => {
         verifyAndAssertMessages(
             "const [a, ...rest] = ['1', '2', '3']; module.exports = rest;",
             { "no-undef": 1 },
@@ -95,7 +95,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("JSX attribute names marked as variables (issue #12)", () => {
+    it("JSX attribute names marked as variables", () => {
         verifyAndAssertMessages(
             "module.exports = <div className=\"foo\" />",
             { "no-undef": 1 },
@@ -107,7 +107,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("Multiple destructured assignment with compound properties (issue #16)", () => {
+    it("Multiple destructured assignment with compound properties", () => {
         verifyAndAssertMessages(
             "module.exports = { ...a.a, ...a.b };",
             { "no-dupe-keys": 1 },
@@ -115,7 +115,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("Arrow function with non-block bodies (issue #20)", () => {
+    it("Arrow function with non-block bodies", () => {
         verifyAndAssertMessages(
             "\"use strict\"; () => 1",
             { strict: [1, "global"] },
@@ -124,7 +124,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("#242", () => {
+    it("babel/babel-eslint#242", () => {
         verifyAndAssertMessages(
             "\"use strict\"; asdf;",
             { "no-irregular-whitespace": 1 },
@@ -133,7 +133,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("await keyword (issue #22)", () => {
+    it("await keyword", () => {
         verifyAndAssertMessages(
             "async function foo() { await bar(); }",
             { "no-unused-expressions": 1 },
@@ -141,7 +141,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("arrow functions (issue #27)", () => {
+    it("arrow functions", () => {
         verifyAndAssertMessages(
             "[1, 2, 3].map(i => i * 2);",
             { "func-names": 1, "space-before-blocks": 1 },
@@ -149,7 +149,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("comment with padded-blocks (issue #33)", () => {
+    it("comment with padded-blocks", () => {
         verifyAndAssertMessages(
             unpad(`
           if (a) {
@@ -184,7 +184,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("template strings #31", () => {
+    it("template strings", () => {
         verifyAndAssertMessages(
             "console.log(`${a}, b`);",
             { "comma-spacing": 1 },
@@ -192,7 +192,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("template with destructuring #31", () => {
+    it("template with destructuring", () => {
         verifyAndAssertMessages(
             unpad(`
           module.exports = {
@@ -207,7 +207,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    describe("decorators #72", () => {
+    describe("decorators", () => {
         // it("class declaration", () => {
         //     verifyAndAssertMessages(
         //         unpad(`
@@ -307,7 +307,7 @@ describe("Non-regression tests from babel-eslint", () => {
         // });
     });
 
-    it("detects minimal no-unused-vars case #120", () => {
+    it("detects minimal no-unused-vars case", () => {
         verifyAndAssertMessages("var unused;", { "no-unused-vars": 1 }, [
             "1:5 'unused' is defined but never used. no-unused-vars"
         ]);
@@ -315,8 +315,8 @@ describe("Non-regression tests from babel-eslint", () => {
 
     // This two tests are disabled, as the feature to visit properties when
     // there is a spread/rest operator has been removed as it caused problems
-    // with other rules #249
-    it.skip("visits excluded properties left of spread #95", () => {
+    // with other rules
+    it.skip("visits excluded properties left of spread", () => {
         verifyAndAssertMessages(
             "var originalObject = {}; var {field1, field2, ...clone} = originalObject;",
             { "no-unused-vars": 1 },
@@ -324,7 +324,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it.skip("visits excluded properties left of spread #210", () => {
+    it.skip("visits excluded properties left of spread", () => {
         verifyAndAssertMessages(
             "const props = { yo: 'yo' }; const { ...otherProps } = props;",
             { "no-unused-vars": 1 },
@@ -348,7 +348,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("does not mark spread variables as use-before-define #249", () => {
+    it("does not mark spread variables as use-before-define", () => {
         verifyAndAssertMessages(
             "var originalObject = {}; var {field1, field2, ...clone} = originalObject;",
             { "no-use-before-define": 1 },
@@ -356,7 +356,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("detects no-unused-vars with object destructuring #142", () => {
+    it("detects no-unused-vars with object destructuring", () => {
         verifyAndAssertMessages(
             "const {Bacona} = require('baconjs')",
             { "no-undef": 1, "no-unused-vars": 1 },
@@ -368,7 +368,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("don't warn no-unused-vars with spread #142", () => {
+    it("don't warn no-unused-vars with spread", () => {
         verifyAndAssertMessages(
             unpad(`
           export default function test(data) {
@@ -383,7 +383,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("excludes comment tokens #153", () => {
+    it("excludes comment tokens", () => {
         verifyAndAssertMessages(
             unpad(`
           var a = [
@@ -408,7 +408,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("ternary and parens #149", () => {
+    it("ternary and parens", () => {
         verifyAndAssertMessages(
             "true ? (true) : false;",
             { "space-infix-ops": 1 },
@@ -416,7 +416,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("line comment space-in-parens #124", () => {
+    it("line comment space-in-parens", () => {
         verifyAndAssertMessages(
             unpad(`
           React.createClass({
@@ -432,7 +432,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("block comment space-in-parens #124", () => {
+    it("block comment space-in-parens", () => {
         verifyAndAssertMessages(
             unpad(`
           React.createClass({
@@ -450,7 +450,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("no no-undef error with rest #11", () => {
+    it("no no-undef error with rest", () => {
         verifyAndAssertMessages(
             "const [a, ...rest] = ['1', '2', '3']; a; rest;",
             { "no-undef": 1, "no-unused-vars": 1 },
@@ -458,7 +458,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("async function with space-before-function-paren #168", () => {
+    it("async function with space-before-function-paren", () => {
         verifyAndAssertMessages(
             "it('handles updates', async function() {});",
             { "space-before-function-paren": [1, "never"] },
@@ -466,7 +466,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("no-use-before-define #192", () => {
+    it("no-use-before-define", () => {
         verifyAndAssertMessages(
             unpad(`
           console.log(x);
@@ -477,11 +477,11 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("jsx and stringliteral #216", () => {
+    it("jsx and stringliteral", () => {
         verifyAndAssertMessages("<div className=''></div>", {}, []);
     });
 
-    it("getter/setter #218", () => {
+    it("getter/setter", () => {
         verifyAndAssertMessages(
             unpad(`
           class Person {
@@ -497,7 +497,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("getter/setter #220", () => {
+    it("getter/setter", () => {
         verifyAndAssertMessages(
             unpad(`
           var B = {
@@ -514,7 +514,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("correctly detects redeclares if in script mode #217", () => {
+    it("correctly detects redeclares if in script mode", () => {
         verifyAndAssertMessages(
             unpad(`
           var a = 321;
@@ -526,7 +526,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    // it("correctly detects redeclares if in module mode #217", () => {
+    // it("correctly detects redeclares if in module mode", () => {
     //     verifyAndAssertMessages(
     //         unpad(`
     //       var a = 321;
@@ -553,18 +553,18 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    it("no-implicit-globals in module", () => {
-        verifyAndAssertMessages(
-            "var leakedGlobal = 1;",
-            { "no-implicit-globals": 1 },
-            [],
-            "module",
-            {
-                env: {},
-                parserOptions: { ecmaVersion: 6, sourceType: "module" }
-            }
-        );
-    });
+    // it("no-implicit-globals in module", () => {
+    //     verifyAndAssertMessages(
+    //         "var leakedGlobal = 1;",
+    //         { "no-implicit-globals": 1 },
+    //         [],
+    //         "module",
+    //         {
+    //             env: {},
+    //             parserOptions: { ecmaVersion: 6, sourceType: "module" }
+    //         }
+    //     );
+    // });
 
     // it("no-implicit-globals in default", () => {
     //     verifyAndAssertMessages(
@@ -579,17 +579,17 @@ describe("Non-regression tests from babel-eslint", () => {
     //     );
     // });
 
-    it("with does not crash parsing in script mode (strict off) #171", () => {
+    it("with does not crash parsing in script mode (strict off)", () => {
         verifyAndAssertMessages("with (arguments) { length; }", {}, [], "script");
     });
 
-    // it("with does crash parsing in module mode (strict on) #171", () => {
+    // it("with does crash parsing in module mode (strict on)", () => {
     //     verifyAndAssertMessages("with (arguments) { length; }", {}, [
     //         "1:1 Parsing error: 'with' in strict mode"
     //     ]);
     // });
 
-    it("new.target is not reported as undef #235", () => {
+    it("new.target is not reported as undef", () => {
         verifyAndAssertMessages(
             "function foo () { return new.target }",
             { "no-undef": 1 },
@@ -597,7 +597,7 @@ describe("Non-regression tests from babel-eslint", () => {
         );
     });
 
-    // it("decorator does not create TypeError #229", () => {
+    // it("decorator does not create TypeError", () => {
     //     verifyAndAssertMessages(
     //         unpad(`
     //       class A {
@@ -610,7 +610,7 @@ describe("Non-regression tests from babel-eslint", () => {
     //     );
     // });
 
-    it("newline-before-return with comments #289", () => {
+    it("newline-before-return with comments", () => {
         verifyAndAssertMessages(
             unpad(`
           function a() {

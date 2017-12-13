@@ -1,6 +1,7 @@
 /**
  * @fileoverview Parser that converts TypeScript into ESTree format.
  * @author Nicholas C. Zakas
+ * @author James Henry <https://github.com/JamesHenry>
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
@@ -45,11 +46,13 @@ function resetExtra() {
 
 /**
  * Parses the given source code to produce a valid AST
- * @param  {mixed} code    TypeScript code
- * @param  {Object} options configuration object for the parser
+ * @param {mixed} code    TypeScript code
+ * @param {Object} options configuration object for the parser
+ * @param {Object} additionalParsingContext additional internal configuration
  * @returns {Object}         the AST
  */
-function parse(code, options) {
+function generateAST(code, options, additionalParsingContext) {
+    additionalParsingContext = additionalParsingContext || {};
 
     const toString = String;
 
@@ -104,6 +107,13 @@ function parse(code, options) {
             extra.log = Function.prototype;
         }
 
+        /**
+         * Provide the context as to whether or not we are parsing for ESLint,
+         * specifically
+         */
+        if (additionalParsingContext.isParseForESLint) {
+            extra.parseForESLint = true;
+        }
     }
 
     if (!isRunningSupportedTypeScriptVersion && !warnedAboutTSVersion) {
@@ -175,7 +185,14 @@ function parse(code, options) {
 
 exports.version = require("./package.json").version;
 
-exports.parse = parse;
+exports.parse = function parse(code, options) {
+    return generateAST(code, options, { isParseForESLint: false });
+};
+
+exports.parseForESLint = function parseForESLint(code, options) {
+    const ast = generateAST(code, options, { isParseForESLint: true });
+    return { ast };
+};
 
 // Deep copy.
 /* istanbul ignore next */

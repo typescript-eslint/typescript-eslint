@@ -70,6 +70,21 @@ module.exports = function convert(config) {
     }
 
     /**
+     * If we are parsing for ESLint we need to perform a custom namespacing step
+     * on functions which have no body so that we do not break any ESLint rules which
+     * rely on them to have one.
+     *
+     * @param {ESTreeNode} functionNode the converted ESTreeNode
+     * @returns {void}
+     */
+    function namespaceEmptyBodyFunctionForESLint(functionNode) {
+        if (!config.additionalOptions.parseForESLint || functionNode.body) {
+            return;
+        }
+        functionNode.type = `TSEmptyBody${functionNode.type}`;
+    }
+
+    /**
      * Converts a TypeScript node into an ESTree node.
      * @param  {TSNode} child the child TSNode
      * @returns {ESTreeNode}       the converted ESTree node
@@ -634,6 +649,8 @@ module.exports = function convert(config) {
                 result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
             }
 
+            namespaceEmptyBodyFunctionForESLint(result);
+
             // check for exports
             result = nodeUtils.fixExports(node, result, ast);
 
@@ -953,6 +970,8 @@ module.exports = function convert(config) {
             if (node.typeParameters && node.typeParameters.length) {
                 method.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(node.typeParameters);
             }
+
+            namespaceEmptyBodyFunctionForESLint(result.value);
 
             break;
 
