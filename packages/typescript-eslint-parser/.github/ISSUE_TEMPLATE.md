@@ -6,8 +6,8 @@
 
 **What code were you trying to parse?**
 
-```
-<!-- put your code here -->
+```ts
+// Put your code here
 ```
 
 **What did you expect to happen?**
