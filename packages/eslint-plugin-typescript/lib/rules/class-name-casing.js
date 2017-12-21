@@ -33,9 +33,7 @@ module.exports = {
          * @returns {boolean}      Is the name PascalCased?
          */
         function isPascalCase(name) {
-            return (
-                name[0].toUpperCase() === name[0] && /^[A-Za-z]+$/.test(name)
-            );
+            return /^[A-Z][0-9A-Za-z]*$/.test(name);
         }
 
         /**
