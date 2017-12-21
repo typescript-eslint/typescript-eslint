@@ -29,7 +29,8 @@ ruleTester.run("class-name-casing", rule, {
             }
         },
         "var Foo = class {};",
-        "interface SomeInterface {}"
+        "interface SomeInterface {}",
+        "class ClassNameWithDigit2 {}"
     ],
 
     invalid: [
