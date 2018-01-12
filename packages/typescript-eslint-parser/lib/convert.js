@@ -1050,6 +1050,8 @@ module.exports = function convert(config) {
                 result.accessibility = accessibility;
             }
 
+            namespaceEmptyBodyFunctionForESLint(result.value);
+
             break;
 
         }

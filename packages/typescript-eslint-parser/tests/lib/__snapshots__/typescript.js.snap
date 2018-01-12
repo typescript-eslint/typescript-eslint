@@ -733,7 +733,7 @@ Object {
                   63,
                   66,
                 ],
-                "type": "FunctionExpression",
+                "type": "TSEmptyBodyFunctionExpression",
               },
             },
           ],
