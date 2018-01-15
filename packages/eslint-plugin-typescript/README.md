@@ -53,6 +53,7 @@ Then configure the rules you want to use under the rules section.
 <!-- begin rule list -->
 * [`typescript/adjacent-overload-signatures`](./docs/rules/adjacent-overload-signatures.md) — Require that member overloads be consecutive
 * [`typescript/class-name-casing`](./docs/rules/class-name-casing.md) — Require PascalCased class and interface names (`class-name` from TSLint)
+* [`typescript/explicit-function-return-type`](./docs/rules/explicit-function-return-type.md) — Require explicit return types on functions and class methods
 * [`typescript/explicit-member-accessibility`](./docs/rules/explicit-member-accessibility.md) — Require explicit accessibility modifiers on class properties and methods (`member-access` from TSLint)
 * [`typescript/interface-name-prefix`](./docs/rules/interface-name-prefix.md) — Require that interface names be prefixed with `I` (`interface-name` from TSLint)
 * [`typescript/member-delimiter-style`](./docs/rules/member-delimiter-style.md) — Require a specific member delimiter style for interfaces and type literals
