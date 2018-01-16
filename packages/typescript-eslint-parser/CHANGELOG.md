@@ -1,3 +1,8 @@
+v12.0.0 - January 16, 2018
+
+* 6ce4cd8 Breaking: Properly categorize constructors with no body (#427) (Jed Fox)
+* e94ede3 Docs: Sets default code block language in issue template to "ts" (#421) (Marius Schulz)
+
 v11.0.0 - December 13, 2017
 
 * 6698042 Breaking: No prefix on FnDec within namespace (fixes #127) (#413) (James Henry)
