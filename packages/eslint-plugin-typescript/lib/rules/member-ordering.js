@@ -36,7 +36,9 @@ module.exports = {
         docs: {
             description: "Require a consistent member declaration order",
             extraDescription: [util.tslintRule("member-ordering")],
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-ordering.md"
         },
         schema: [
             {

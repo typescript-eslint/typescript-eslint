@@ -13,7 +13,10 @@ module.exports = {
         docs: {
             description:
                 "Require explicit return types on functions and class methods",
-            category: "TypeScript"
+
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/explicit-function-return-type.md"
         },
         schema: []
     },

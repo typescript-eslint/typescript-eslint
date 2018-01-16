@@ -16,7 +16,9 @@ module.exports = {
             description:
                 "Disallow the use of parameter properties in class constructors.",
             extraDescription: [util.tslintRule("no-parameter-properties")],
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-parameter-properties.md"
         },
         schema: [
             {

@@ -15,7 +15,9 @@ module.exports = {
         docs: {
             description: "Require that interface names be prefixed with `I`",
             extraDescription: [util.tslintRule("interface-name")],
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/interface-name-prefix.md"
         },
         schema: [
             {

@@ -22,7 +22,9 @@ module.exports = {
     meta: {
         docs: {
             description: "Require consistent spacing around type annotations",
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/type-annotation-spacing.md"
         },
         fixable: "code",
         schema: [

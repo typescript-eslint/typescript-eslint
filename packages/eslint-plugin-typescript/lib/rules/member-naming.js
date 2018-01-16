@@ -13,7 +13,9 @@ module.exports = {
         docs: {
             description:
                 "Enforces naming conventions for class members by visibility.",
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-naming.md"
         },
         schema: [
             {

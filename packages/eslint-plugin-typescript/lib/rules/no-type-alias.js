@@ -15,7 +15,9 @@ module.exports = {
         docs: {
             description: "Disallow the use of type aliases",
             extraDescription: [util.tslintRule("interface-over-type-literal")],
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-type-alias.md"
         },
         schema: [
             {

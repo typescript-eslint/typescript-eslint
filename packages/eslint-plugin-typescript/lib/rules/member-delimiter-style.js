@@ -23,7 +23,9 @@ module.exports = {
         docs: {
             description:
                 "Require a specific member delimiter style for interfaces and type literals",
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-delimiter-style.md"
         },
         fixable: "code",
         schema: [

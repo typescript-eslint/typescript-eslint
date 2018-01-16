@@ -158,7 +158,9 @@ module.exports = {
             description:
                 "Disallow the use of variables before they are defined",
             category: "Variables",
-            recommended: false
+            recommended: false,
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-use-before-define.md"
         },
 
         schema: [
