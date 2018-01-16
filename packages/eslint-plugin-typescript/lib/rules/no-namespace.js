@@ -13,7 +13,9 @@ module.exports = {
         docs: {
             description:
                 "Disallow the use of custom TypeScript modules and namespaces",
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-namespace.md"
         },
         schema: [
             {

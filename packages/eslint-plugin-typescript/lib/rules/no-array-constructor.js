@@ -14,7 +14,9 @@ module.exports = {
         docs: {
             description: "Disallow generic `Array` constructors",
             category: "Stylistic Issues",
-            recommended: false
+            recommended: false,
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-array-constructor.md"
         },
         fixable: "code",
         schema: []

@@ -16,7 +16,9 @@ module.exports = {
             description: "Require PascalCased class and interface names",
             extraDescription: [util.tslintRule("class-name")],
             category: "Best Practices",
-            recommended: true
+            recommended: true,
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/class-name-casing.md"
         }
     },
 

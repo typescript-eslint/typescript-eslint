@@ -12,7 +12,9 @@ module.exports = {
     meta: {
         docs: {
             description: "Require that member overloads be consecutive",
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/adjacent-overload-signatures.md"
         },
         schema: []
     },

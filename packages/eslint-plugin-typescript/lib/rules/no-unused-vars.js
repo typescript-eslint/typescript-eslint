@@ -49,7 +49,9 @@ module.exports = {
             description:
                 "Prevent TypeScript-specific constructs from being erroneously flagged as unused",
             category: "TypeScript",
-            recommended: true
+            recommended: true,
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-unused-vars.md"
         },
         schema: []
     },

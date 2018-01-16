@@ -16,7 +16,9 @@ module.exports = {
         docs: {
             description: "Disallow usage of the `any` type",
             extraDescription: [util.tslintRule("no-any")],
-            category: "TypeScript"
+            category: "TypeScript",
+            url:
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-explicit-any.md"
         },
         schema: []
     },
