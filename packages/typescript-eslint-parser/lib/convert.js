@@ -1573,6 +1573,14 @@ module.exports = function convert(config) {
             });
             break;
 
+        case SyntaxKind.TypeOperator:
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSTypeOperator,
+                operator: nodeUtils.getTextForTokenKind(node.operator),
+                typeAnnotation: convertChild(node.type)
+            });
+            break;
+
         // Binary Operations
 
         case SyntaxKind.BinaryExpression:

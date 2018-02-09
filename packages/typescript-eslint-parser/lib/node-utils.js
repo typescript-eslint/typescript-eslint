@@ -97,6 +97,8 @@ TOKEN_TO_TEXT[SyntaxKind.BarEqualsToken] = "|=";
 TOKEN_TO_TEXT[SyntaxKind.CaretEqualsToken] = "^=";
 TOKEN_TO_TEXT[SyntaxKind.AtToken] = "@";
 TOKEN_TO_TEXT[SyntaxKind.InKeyword] = "in";
+TOKEN_TO_TEXT[SyntaxKind.UniqueKeyword] = "unique";
+TOKEN_TO_TEXT[SyntaxKind.KeyOfKeyword] = "keyof";
 
 /**
  * Find the first matching child based on the given sourceFile and predicate function.
