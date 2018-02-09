@@ -17,9 +17,7 @@ If you use a non-supported version of TypeScript, the parser will log a warning 
 ## Known Issues
 
 The following ESLint rules will fail on acceptable code:
- - no-undef [#77](https://github.com/eslint/typescript-eslint-parser/issues/77)
- - no-unused-vars [#77](https://github.com/eslint/typescript-eslint-parser/issues/77)
- - no-useless-constructor [#77](https://github.com/eslint/typescript-eslint-parser/issues/77)
+ - no-undef [#416](https://github.com/eslint/typescript-eslint-parser/issues/416)
  
 The follow ESLint plugins have issues when used with this parser:
  - eslint-plugin-import
