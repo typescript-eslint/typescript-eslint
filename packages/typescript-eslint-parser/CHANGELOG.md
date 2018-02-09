@@ -1,3 +1,8 @@
+v13.0.0 - February 9, 2018
+
+* fb5e4c4 Breaking: Support TypeScript 2.7 (fixes #442,#426) (#447) (James Henry)
+* bd9c12f Docs: Update Known Issues section of README (#440) (Kepler Sticka-Jones)
+
 v12.0.0 - January 16, 2018
 
 * 6ce4cd8 Breaking: Properly categorize constructors with no body (#427) (Jed Fox)
