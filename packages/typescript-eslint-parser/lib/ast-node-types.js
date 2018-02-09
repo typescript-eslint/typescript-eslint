@@ -141,6 +141,7 @@ module.exports = {
     TSSymbolKeyword: "TSSymbolKeyword",
     TSTypeAnnotation: "TSTypeAnnotation",
     TSTypeLiteral: "TSTypeLiteral",
+    TSTypeOperator: "TSTypeOperator",
     TSTypeParameter: "TSTypeParameter",
     TSTypeParameterDeclaration: "TSTypeParameterDeclaration",
     TSTypeParameterInstantiation: "TSTypeParameterInstantiation",

@@ -19,19 +19,19 @@
   "license": "BSD-2-Clause",
   "devDependencies": {
     "babel-code-frame": "6.26.0",
-    "babylon": "7.0.0-beta.34",
+    "babylon": "7.0.0-beta.39",
     "dedent": "0.7.0",
-    "eslint": "4.13.1",
+    "eslint": "4.17.0",
     "eslint-config-eslint": "4.0.0",
-    "eslint-plugin-node": "5.2.1",
+    "eslint-plugin-node": "6.0.0",
     "eslint-release": "0.10.3",
     "glob": "7.1.2",
-    "jest": "21.2.1",
+    "jest": "22.2.1",
     "lodash.isplainobject": "4.0.6",
     "npm-license": "0.3.3",
-    "shelljs": "0.7.8",
+    "shelljs": "0.8.1",
     "shelljs-nodecli": "0.1.1",
-    "typescript": "~2.6.1"
+    "typescript": "~2.7.1"
   },
   "keywords": [
     "ast",
@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "lodash.unescape": "4.0.1",
-    "semver": "5.4.1"
+    "semver": "5.5.0"
   },
   "peerDependencies": {
     "typescript": "*"
