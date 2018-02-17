@@ -187,7 +187,9 @@ module.exports = {
     convertTokens,
     getNodeContainer,
     isWithinTypeAnnotation,
-    isTypeKeyword
+    isTypeKeyword,
+    isComment,
+    isJSDocComment
 };
 /* eslint-enable no-use-before-define */
 
@@ -247,6 +249,24 @@ function isComma(token) {
 }
 
 /**
+ * Returns true if the given TSNode is a comment
+ * @param {TSNode} node the TypeScript node
+ * @returns {boolean} is commment
+ */
+function isComment(node) {
+    return node.kind === SyntaxKind.SingleLineCommentTrivia || node.kind === SyntaxKind.MultiLineCommentTrivia;
+}
+
+/**
+ * Returns true if the given TSNode is a JSDoc comment
+ * @param {TSNode} node the TypeScript node
+ * @returns {boolean} is JSDoc comment
+ */
+function isJSDocComment(node) {
+    return node.kind === SyntaxKind.JSDocComment;
+}
+
+/**
  * Returns the binary expression type of the given TSToken
  * @param  {TSToken} operator the operator token
  * @returns {string}          the binary expression type
@@ -258,7 +278,6 @@ function getBinaryExpressionType(operator) {
         return "LogicalExpression";
     }
     return "BinaryExpression";
-
 }
 
 /**
@@ -695,6 +714,12 @@ function convertTokens(ast) {
      * @returns {undefined}
      */
     function walk(node) {
+        // TypeScript generates tokens for types in JSDoc blocks. Comment tokens
+        // and their children should not be walked or added to the resulting tokens list.
+        if (isComment(node) || isJSDocComment(node)) {
+            return;
+        }
+
         if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
             const converted = convertToken(node, ast);
 
