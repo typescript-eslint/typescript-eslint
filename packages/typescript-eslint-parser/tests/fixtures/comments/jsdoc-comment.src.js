@@ -1,17 +1,4 @@
 /**
- * @a
- */
-foo;
-
-/**
- * @a
- */
-/**
- * a
- */
-foo;
-
-/**
  * This is a function.
  * @param {String} bar some string
  * @returns {String} returns bar

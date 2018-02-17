@@ -80,7 +80,7 @@ describe("TypeScript", () => {
         );
     });
 
-    it("should not produce any lint errors on valid JSDoc indentation (#344)", () => {
+    it("should not produce any lint errors on valid JSDoc indentation (#344 & #422)", () => {
         verifyAndAssertMessages(
             loadExternalFixture("jsdoc-indent"),
             {
