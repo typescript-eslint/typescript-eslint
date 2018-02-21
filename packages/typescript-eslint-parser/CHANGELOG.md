@@ -1,3 +1,8 @@
+v14.0.0 - February 21, 2018
+
+* 439ea24 New: Support Definite Assignment (fixes #424) (#432) (Lucas Azzola)
+* adc0b1b Breaking: Remove all tokens inside comments from tokens array (fixes #422) (#423) (Kai Cataldo)
+
 v13.0.0 - February 9, 2018
 
 * fb5e4c4 Breaking: Support TypeScript 2.7 (fixes #442,#426) (#447) (James Henry)
