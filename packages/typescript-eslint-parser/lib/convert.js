@@ -658,6 +658,10 @@ module.exports = function convert(config) {
                 init: convertChild(node.initializer)
             });
 
+            if (node.exclamationToken) {
+                result.definite = true;
+            }
+
             if (node.type) {
                 result.id.typeAnnotation = convertTypeAnnotation(node.type);
                 fixTypeAnnotationParentLocation(result.id);
@@ -857,6 +861,10 @@ module.exports = function convert(config) {
 
             if (node.name.kind === SyntaxKind.Identifier && node.questionToken) {
                 result.key.optional = true;
+            }
+
+            if (node.exclamationToken) {
+                result.definite = true;
             }
 
             if (result.key.type === AST_NODE_TYPES.Literal && node.questionToken) {

@@ -349,6 +349,8 @@ let fixturePatternConfigsToTest = [
             "interface-with-all-property-types", // babylon parse errors
             "interface-with-construct-signature-with-parameter-accessibility", // babylon parse errors
             "class-with-implements-and-extends", // babylon parse errors
+            "var-with-definite-assignment", // babylon parse errors
+            "class-with-definite-assignment", // babylon parse errors
             /**
              * typescript-eslint-parser erroring, but babylon not.
              */
