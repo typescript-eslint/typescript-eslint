@@ -21,7 +21,9 @@ const ruleTester = new RuleTester({
 
 ruleTester.run("explicit-member-accessibility", rule, {
     valid: [
-        `
+        {
+            filename: "test.ts",
+            code: `
 class Test {
   protected name: string
   private x: number
@@ -29,10 +31,22 @@ class Test {
     return this.x
   }
 }
-        `
+            `
+        },
+        {
+            filename: "test.js",
+            code: `
+class Test {
+  getX () {
+    return 1;
+  }
+}
+            `
+        }
     ],
     invalid: [
         {
+            filename: "test.ts",
             code: `
 class Test {
   x: number
@@ -51,6 +65,7 @@ class Test {
             ]
         },
         {
+            filename: "test.ts",
             code: `
 class Test {
   private x: number

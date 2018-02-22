@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -50,16 +52,6 @@ module.exports = {
         }
 
         /**
-         * Check if the context file name is *.ts or *.tsx
-         * @param {string} fileName The context file name
-         * @returns {boolean} `true` if the file name ends in *.ts or *.tsx
-         * @private
-         */
-        function isTypescript(fileName) {
-            return /\.(ts|tsx)$/.test(fileName);
-        }
-
-        /**
          * Checks if a function declaration/expression has a return type.
          * @param {ASTNode} node The node representing a function.
          * @returns {void}
@@ -70,7 +62,7 @@ module.exports = {
                 !node.returnType &&
                 !isConstructor(node.parent) &&
                 !isSetter(node.parent) &&
-                isTypescript(context.getFilename())
+                util.isTypescript(context.getFilename())
             ) {
                 context.report({
                     node,
