@@ -35,7 +35,10 @@ module.exports = {
          * @private
          */
         function checkMethodAccessibilityModifier(methodDefinition) {
-            if (!methodDefinition.accessibility) {
+            if (
+                !methodDefinition.accessibility &&
+                util.isTypescript(context.getFilename())
+            ) {
                 context.report({
                     node: methodDefinition,
                     message: `Missing accessibility modifier on method definition ${
@@ -52,7 +55,10 @@ module.exports = {
          * @private
          */
         function checkPropertyAccessibilityModifier(classProperty) {
-            if (!classProperty.accessibility) {
+            if (
+                !classProperty.accessibility &&
+                util.isTypescript(context.getFilename())
+            ) {
                 context.report({
                     node: classProperty,
                     message: `Missing accessibility modifier on class property ${
