@@ -64,6 +64,7 @@ Then configure the rules you want to use under the rules section.
 * [`typescript/no-empty-interface`](./docs/rules/no-empty-interface.md) — Disallow the declaration of empty interfaces (`no-empty-interface` from TSLint)
 * [`typescript/no-explicit-any`](./docs/rules/no-explicit-any.md) — Disallow usage of the `any` type (`no-any` from TSLint)
 * [`typescript/no-namespace`](./docs/rules/no-namespace.md) — Disallow the use of custom TypeScript modules and namespaces
+* [`typescript/no-non-null-assertion`](./docs/rules/no-non-null-assertion.md) — Disallows non-null assertions using the `!` postfix operator (`no-non-null-assertion` from TSLint)
 * [`typescript/no-parameter-properties`](./docs/rules/no-parameter-properties.md) — Disallow the use of parameter properties in class constructors. (`no-parameter-properties` from TSLint)
 * [`typescript/no-triple-slash-reference`](./docs/rules/no-triple-slash-reference.md) — Disallow `/// <reference path="" />` comments (`no-reference` from TSLint)
 * [`typescript/no-type-alias`](./docs/rules/no-type-alias.md) — Disallow the use of type aliases (`interface-over-type-literal` from TSLint)
