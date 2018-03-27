@@ -90,6 +90,7 @@ module.exports = {
          */
         function checkLastToken(member, opts, isLast, isSameLine) {
             let message;
+            let missingDelimiter = false;
             const lastToken = sourceCode.getLastToken(member, {
                 includeComments: false
             });
@@ -118,6 +119,7 @@ module.exports = {
                 }
 
                 if (!canOmit) {
+                    missingDelimiter = true;
                     message =
                         opts.delimiter === "semi"
                             ? "Expected a semicolon."
@@ -138,7 +140,29 @@ module.exports = {
                             column: lastToken.loc.end.column
                         }
                     },
-                    message
+                    message,
+                    fix(fixer) {
+                        let token;
+
+                        if (opts.delimiter === "semi") {
+                            token = ";";
+                        } else if (opts.delimiter === "comma") {
+                            token = ",";
+                        } else {
+                            // remove the unneeded token
+                            return fixer.remove(lastToken);
+                        }
+
+                        if (missingDelimiter) {
+                            // add the missing delimiter
+                            return fixer.insertTextAfter(lastToken, token);
+                        } else if (isLast && !opts.requireLast) {
+                            return fixer.remove(lastToken);
+                        }
+
+                        // correct the current delimiter
+                        return fixer.replaceText(lastToken, token);
+                    }
                 });
             }
         }
