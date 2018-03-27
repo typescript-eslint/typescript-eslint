@@ -172,23 +172,9 @@ module.exports = {
          */
         function shouldBeProcessedAsMethod(node) {
             // check for bound methods in ClassProperty nodes.
-            if (
-                node.value &&
-                functionExpressions.indexOf(node.value.type) > -1
-            ) {
-                return true;
-            }
-
-            // check for bound methods in TSPropertySignature nodes.
-            if (
-                node.typeAnnotation &&
-                node.typeAnnotation.typeAnnotation &&
-                node.typeAnnotation.typeAnnotation.type === "TSFunctionType"
-            ) {
-                return true;
-            }
-
-            return false;
+            return (
+                node.value && functionExpressions.indexOf(node.value.type) > -1
+            );
         }
 
         /**
