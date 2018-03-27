@@ -27,7 +27,7 @@
     "eslint-config-eslint": "^4.0.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-docs": "^0.1.1",
-    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-prettier": "^2.2.0",
     "husky": "^0.14.3",
     "lint-staged": "^6.0.0",
