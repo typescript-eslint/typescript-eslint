@@ -725,6 +725,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -743,6 +749,12 @@ interface Foo {
 interface Foo {
     name: string
     age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
 }
             `,
             options: [{ delimiter: "semi" }],
@@ -766,6 +778,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
             options: [{ delimiter: "semi", requireLast: true }],
             errors: [
                 {
@@ -783,8 +801,36 @@ interface Foo {
         {
             code: `
 interface Foo {
+    name: string
+    age: number
+}
+            `,
+            output: `
+interface Foo {
     name: string;
     age: number
+}
+            `,
+            options: [{ delimiter: "semi", requireLast: false }],
+            errors: [
+                {
+                    message: "Expected a semicolon.",
+                    line: 3,
+                    column: 17
+                }
+            ]
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
 }
             `,
             options: [{ delimiter: "semi", requireLast: true }],
@@ -801,6 +847,12 @@ interface Foo {
 interface Foo {
     name: string
     age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
 }
             `,
             options: [{ delimiter: "comma" }],
@@ -824,6 +876,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
             options: [{ delimiter: "comma", requireLast: true }],
             errors: [
                 {
@@ -845,6 +903,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
+}
+            `,
             options: [{ delimiter: "comma", requireLast: false }],
             errors: [
                 {
@@ -859,6 +923,12 @@ interface Foo {
 interface Foo {
     name: string;
     age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
 }
             `,
             options: [{ delimiter: "comma" }],
@@ -882,6 +952,12 @@ interface Foo {
     age: number;
 }
             `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
             options: [{ delimiter: "comma", requireLast: true }],
             errors: [
                 {
@@ -903,6 +979,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
+}
+            `,
             options: [{ delimiter: "comma", requireLast: false }],
             errors: [
                 {
@@ -917,6 +999,12 @@ interface Foo {
 interface Foo {
     name: string
     age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
 }
             `,
             options: [{ delimiter: "comma", requireLast: false }],
@@ -938,6 +1026,12 @@ interface Foo {
 interface Foo {
     name: string;
     age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
 }
             `,
             options: [{ delimiter: "none" }],
@@ -961,6 +1055,12 @@ interface Foo {
     age: number;
 }
             `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: true }],
             errors: [
                 {
@@ -982,6 +1082,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: false }],
             errors: [
                 {
@@ -998,6 +1104,12 @@ interface Foo {
     age: number;
 }
             `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: false }],
             errors: [
                 {
@@ -1012,6 +1124,12 @@ interface Foo {
 interface Foo {
     name: string,
     age: number,
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
 }
             `,
             options: [{ delimiter: "none" }],
@@ -1035,6 +1153,12 @@ interface Foo {
     age: number,
 }
             `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: true }],
             errors: [
                 {
@@ -1056,6 +1180,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: false }],
             errors: [
                 {
@@ -1072,6 +1202,12 @@ interface Foo {
     age: number,
 }
             `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: false }],
             errors: [
                 {
@@ -1086,6 +1222,12 @@ interface Foo {
 interface Foo {
     name: string
     age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
 }
             `,
             options: [
@@ -1114,6 +1256,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
             options: [
                 {
                     delimiter: "comma",
@@ -1143,6 +1291,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
             options: [
                 {
                     delimiter: "comma",
@@ -1165,6 +1319,12 @@ interface Foo {
 interface Foo {
     name: string
     age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
 }
             `,
             options: [
@@ -1191,6 +1351,12 @@ interface Foo {
 interface Foo {
     name: string
     age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
 }
             `,
             options: [
@@ -1222,6 +1388,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "semi",
@@ -1244,6 +1416,12 @@ interface Foo {
 interface Foo {
     name: string;
     age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
 }
             `,
             options: [
@@ -1270,6 +1448,12 @@ interface Foo {
 interface Foo {
     name: string;
     age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
 }
             `,
             options: [
@@ -1301,6 +1485,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "semi",
@@ -1323,6 +1513,12 @@ interface Foo {
 interface Foo {
     name: string
     age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
 }
             `,
             options: [
@@ -1352,6 +1548,12 @@ interface Foo {
 interface Foo {
     name: string;
     age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -1378,6 +1580,12 @@ interface Foo {
 interface Foo {
     name: string;
     age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -1409,6 +1617,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "semi",
@@ -1433,6 +1647,12 @@ interface Foo {
     age: number;
 }
             `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "semi",
@@ -1455,6 +1675,12 @@ interface Foo {
 interface Foo {
     name: string,
     age: number,
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -1481,6 +1707,12 @@ interface Foo {
 interface Foo {
     name: string,
     age: number,
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -1512,6 +1744,12 @@ interface Foo {
     age: number
 }
             `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "semi",
@@ -1534,6 +1772,12 @@ interface Foo {
 interface Foo {
     name: string
     age: number,
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -1558,6 +1802,12 @@ interface Foo {
 type Foo = {
     name: string
     age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
 }
             `,
             errors: [
@@ -1578,6 +1828,12 @@ type Foo = {
 type Foo = {
     name: string
     age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
 }
             `,
             options: [{ delimiter: "semi" }],
@@ -1601,6 +1857,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
             options: [{ delimiter: "semi", requireLast: true }],
             errors: [
                 {
@@ -1622,6 +1884,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
             options: [{ delimiter: "semi", requireLast: true }],
             errors: [
                 {
@@ -1636,6 +1904,12 @@ type Foo = {
 type Foo = {
     name: string
     age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
 }
             `,
             options: [{ delimiter: "comma" }],
@@ -1659,6 +1933,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
             options: [{ delimiter: "comma", requireLast: true }],
             errors: [
                 {
@@ -1680,6 +1960,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
+}
+            `,
             options: [{ delimiter: "comma", requireLast: false }],
             errors: [
                 {
@@ -1694,6 +1980,12 @@ type Foo = {
 type Foo = {
     name: string;
     age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
 }
             `,
             options: [{ delimiter: "comma" }],
@@ -1717,6 +2009,12 @@ type Foo = {
     age: number;
 }
             `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
             options: [{ delimiter: "comma", requireLast: true }],
             errors: [
                 {
@@ -1738,6 +2036,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
+}
+            `,
             options: [{ delimiter: "comma", requireLast: false }],
             errors: [
                 {
@@ -1752,6 +2056,12 @@ type Foo = {
 type Foo = {
     name: string
     age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
 }
             `,
             options: [{ delimiter: "comma", requireLast: false }],
@@ -1773,6 +2083,12 @@ type Foo = {
 type Foo = {
     name: string;
     age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
 }
             `,
             options: [{ delimiter: "none" }],
@@ -1796,6 +2112,12 @@ type Foo = {
     age: number;
 }
             `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: true }],
             errors: [
                 {
@@ -1817,6 +2139,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: false }],
             errors: [
                 {
@@ -1833,6 +2161,12 @@ type Foo = {
     age: number;
 }
             `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: false }],
             errors: [
                 {
@@ -1847,6 +2181,12 @@ type Foo = {
 type Foo = {
     name: string,
     age: number,
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
 }
             `,
             options: [{ delimiter: "none" }],
@@ -1870,6 +2210,12 @@ type Foo = {
     age: number,
 }
             `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: true }],
             errors: [
                 {
@@ -1891,6 +2237,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: false }],
             errors: [
                 {
@@ -1907,6 +2259,12 @@ type Foo = {
     age: number,
 }
             `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
             options: [{ delimiter: "none", requireLast: false }],
             errors: [
                 {
@@ -1921,6 +2279,12 @@ type Foo = {
 type Foo = {
     name: string
     age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
 }
             `,
             options: [
@@ -1949,6 +2313,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
             options: [
                 {
                     delimiter: "comma",
@@ -1978,6 +2348,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
             options: [
                 {
                     delimiter: "comma",
@@ -2000,6 +2376,12 @@ type Foo = {
 type Foo = {
     name: string
     age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
 }
             `,
             options: [
@@ -2026,6 +2408,12 @@ type Foo = {
 type Foo = {
     name: string
     age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
 }
             `,
             options: [
@@ -2057,6 +2445,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "semi",
@@ -2079,6 +2473,12 @@ type Foo = {
 type Foo = {
     name: string;
     age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
 }
             `,
             options: [
@@ -2105,6 +2505,12 @@ type Foo = {
 type Foo = {
     name: string;
     age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
 }
             `,
             options: [
@@ -2136,6 +2542,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "semi",
@@ -2158,6 +2570,12 @@ type Foo = {
 type Foo = {
     name: string
     age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
 }
             `,
             options: [
@@ -2187,6 +2605,12 @@ type Foo = {
 type Foo = {
     name: string;
     age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -2213,6 +2637,12 @@ type Foo = {
 type Foo = {
     name: string;
     age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -2244,6 +2674,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "semi",
@@ -2268,6 +2704,12 @@ type Foo = {
     age: number;
 }
             `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "semi",
@@ -2290,6 +2732,12 @@ type Foo = {
 type Foo = {
     name: string,
     age: number,
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -2316,6 +2764,12 @@ type Foo = {
 type Foo = {
     name: string,
     age: number,
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -2347,6 +2801,12 @@ type Foo = {
     age: number
 }
             `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
             options: [
                 {
                     delimiter: "comma",
@@ -2369,6 +2829,12 @@ type Foo = {
 type Foo = {
     name: string
     age: number,
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
 }
             `,
             options: [
@@ -2398,6 +2864,17 @@ interface Foo {
 type Bar = {
     name: string,
     age: number,
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
+}
+
+type Bar = {
+    name: string;
+    age: number;
 }
             `,
             options: [
@@ -2439,6 +2916,11 @@ interface Foo {
     [key: string]: any
 }
             `,
+            output: `
+interface Foo {
+    [key: string]: any;
+}
+            `,
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2453,6 +2935,11 @@ interface Foo {
     [key: string]: any
 }
             `,
+            output: `
+interface Foo {
+    [key: string]: any;
+}
+            `,
             options: [{ ignoreSingleLine: true }],
             errors: [
                 {
@@ -2464,6 +2951,7 @@ interface Foo {
         },
         {
             code: "interface Foo { [key: string]: any }",
+            output: "interface Foo { [key: string]: any; }",
             options: [{ ignoreSingleLine: false }],
             errors: [
                 {
@@ -2475,6 +2963,7 @@ interface Foo {
         },
         {
             code: "interface Foo { [key: string]: any }",
+            output: "interface Foo { [key: string]: any; }",
             options: [
                 {
                     requireLast: true,
@@ -2491,6 +2980,7 @@ interface Foo {
         },
         {
             code: "interface Foo { [key: string]: any }",
+            output: "interface Foo { [key: string]: any; }",
             options: [
                 {
                     requireLast: true,
@@ -2514,6 +3004,11 @@ type Foo = {
     [key: string]: any
 }
             `,
+            output: `
+type Foo = {
+    [key: string]: any;
+}
+            `,
             errors: [
                 {
                     message: "Expected a semicolon.",
@@ -2528,6 +3023,11 @@ type Foo = {
     [key: string]: any
 }
             `,
+            output: `
+type Foo = {
+    [key: string]: any;
+}
+            `,
             options: [{ ignoreSingleLine: true }],
             errors: [
                 {
@@ -2539,6 +3039,7 @@ type Foo = {
         },
         {
             code: "type Foo = { [key: string]: any }",
+            output: "type Foo = { [key: string]: any; }",
             options: [{ ignoreSingleLine: false }],
             errors: [
                 {
@@ -2550,6 +3051,7 @@ type Foo = {
         },
         {
             code: "type Foo = { [key: string]: any }",
+            output: "type Foo = { [key: string]: any; }",
             options: [
                 {
                     requireLast: true,
@@ -2566,6 +3068,7 @@ type Foo = {
         },
         {
             code: "type Foo = { [key: string]: any }",
+            output: "type Foo = { [key: string]: any; }",
             options: [
                 {
                     requireLast: true,
