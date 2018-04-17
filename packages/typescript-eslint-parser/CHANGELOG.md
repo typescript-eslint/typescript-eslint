@@ -1,3 +1,7 @@
+v15.0.0 - April 17, 2018
+
+* e572416 Breaking: Support TypeScript 2.8 (fixes #453) (#454) (James Henry)
+
 v14.0.0 - February 21, 2018
 
 * 439ea24 New: Support Definite Assignment (fixes #424) (#432) (Lucas Azzola)
