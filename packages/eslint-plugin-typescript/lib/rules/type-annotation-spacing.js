@@ -79,38 +79,46 @@ module.exports = {
          */
         function checkTypeAnnotationSpacing(typeAnnotation) {
             const nextToken = typeAnnotation;
-            const punctuatorToken = sourceCode.getTokenBefore(nextToken);
-            const previousToken = sourceCode.getTokenBefore(punctuatorToken);
-            const type = punctuatorToken.value;
+            const punctuatorTokenEnd = sourceCode.getTokenBefore(nextToken);
+            let punctuatorTokenStart = punctuatorTokenEnd;
+            let previousToken = sourceCode.getTokenBefore(punctuatorTokenEnd);
+            let type = punctuatorTokenEnd.value;
 
             if (punctuators.indexOf(type) === -1) {
                 return;
             }
-
-            const previousDelta =
-                punctuatorToken.range[0] - previousToken.range[1];
-            const nextDelta = nextToken.range[0] - punctuatorToken.range[1];
 
             const before =
                 type === ":" ? colonOptions.before : arrowOptions.before;
             const after =
                 type === ":" ? colonOptions.after : arrowOptions.after;
 
+            if (type === ":" && previousToken.value === "?") {
+                // shift the start to the ?
+                type = "?:";
+                punctuatorTokenStart = previousToken;
+                previousToken = sourceCode.getTokenBefore(previousToken);
+            }
+
+            const previousDelta =
+                punctuatorTokenStart.range[0] - previousToken.range[1];
+            const nextDelta = nextToken.range[0] - punctuatorTokenEnd.range[1];
+
             if (after && nextDelta === 0) {
                 context.report({
-                    node: punctuatorToken,
+                    node: punctuatorTokenEnd,
                     message: `Expected a space after the '${type}'`,
                     fix(fixer) {
-                        return fixer.insertTextAfter(punctuatorToken, " ");
+                        return fixer.insertTextAfter(punctuatorTokenEnd, " ");
                     }
                 });
             } else if (!after && nextDelta > 0) {
                 context.report({
-                    node: punctuatorToken,
+                    node: punctuatorTokenEnd,
                     message: `Unexpected space after the '${type}'`,
                     fix(fixer) {
                         return fixer.removeRange([
-                            punctuatorToken.range[1],
+                            punctuatorTokenEnd.range[1],
                             nextToken.range[0]
                         ]);
                     }
@@ -119,7 +127,7 @@ module.exports = {
 
             if (before && previousDelta === 0) {
                 context.report({
-                    node: punctuatorToken,
+                    node: punctuatorTokenStart,
                     message: `Expected a space before the '${type}'`,
                     fix(fixer) {
                         return fixer.insertTextAfter(previousToken, " ");
@@ -127,12 +135,12 @@ module.exports = {
                 });
             } else if (!before && previousDelta > 0) {
                 context.report({
-                    node: punctuatorToken,
+                    node: punctuatorTokenStart,
                     message: `Unexpected space before the '${type}'`,
                     fix(fixer) {
                         return fixer.removeRange([
                             previousToken.range[1],
-                            punctuatorToken.range[0]
+                            punctuatorTokenStart.range[0]
                         ]);
                     }
                 });
