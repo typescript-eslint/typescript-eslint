@@ -65,6 +65,46 @@ function test() {
     return;
 }
             `
+        },
+        {
+            code: `fn(() => {});`,
+            options: [
+                {
+                    allowExpressions: true
+                }
+            ]
+        },
+        {
+            code: `fn(function() {});`,
+            options: [
+                {
+                    allowExpressions: true
+                }
+            ]
+        },
+        {
+            code: `[function() {}, () => {}]`,
+            options: [
+                {
+                    allowExpressions: true
+                }
+            ]
+        },
+        {
+            code: `(function() {});`,
+            options: [
+                {
+                    allowExpressions: true
+                }
+            ]
+        },
+        {
+            code: `(() => {})();`,
+            options: [
+                {
+                    allowExpressions: true
+                }
+            ]
         }
     ],
     invalid: [
@@ -135,6 +175,30 @@ class Test {
                     message: "Missing return type on function.",
                     line: 8,
                     column: 9
+                }
+            ]
+        },
+        {
+            filename: "test.ts",
+            code: `const foo = () => {};`,
+            options: [{ allowExpressions: true }],
+            errors: [
+                {
+                    message: "Missing return type on function.",
+                    line: 1,
+                    column: 13
+                }
+            ]
+        },
+        {
+            filename: "test.ts",
+            code: `const foo = function() {};`,
+            options: [{ allowExpressions: true }],
+            errors: [
+                {
+                    message: "Missing return type on function.",
+                    line: 1,
+                    column: 13
                 }
             ]
         }
