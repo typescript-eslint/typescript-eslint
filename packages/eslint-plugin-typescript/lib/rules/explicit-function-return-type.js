@@ -20,10 +20,22 @@ module.exports = {
             url:
                 "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/explicit-function-return-type.md"
         },
-        schema: []
+        schema: [
+            {
+                type: "object",
+                properties: {
+                    allowExpressions: {
+                        type: "boolean"
+                    }
+                },
+                additionalProperties: false
+            }
+        ]
     },
 
     create(context) {
+        const options = context.options[0] || {};
+
         //----------------------------------------------------------------------
         // Helpers
         //----------------------------------------------------------------------
@@ -58,6 +70,14 @@ module.exports = {
          * @private
          */
         function checkFunctionReturnType(node) {
+            if (
+                options.allowExpressions &&
+                node.type !== "FunctionDeclaration" &&
+                node.parent.type !== "VariableDeclarator"
+            ) {
+                return;
+            }
+
             if (
                 !node.returnType &&
                 !isConstructor(node.parent) &&

@@ -57,6 +57,34 @@ class Test {
 }
 ```
 
+## Options
+
+The rule accepts an options object with the following properties:
+
+* `allowExpressions` if true, only functions which are part of a declaration will be checked
+
+By default, `allowExpressions: false` is used, meaning all declarations and
+expressions _must_ have a return type.
+
+### allowExpressions
+
+Examples of **incorrect** code for this rule with `{ allowExpressions: true }`:
+
+```ts
+function test() {
+}
+```
+
+Examples of **correct** code for this rule with `{ allowExpressions: true }`:
+
+```ts
+node.addEventListener('click', () => {});
+
+node.addEventListener('click', function() {});
+
+const foo = arr.map(i => i * i);
+```
+
 ## When Not To Use It
 
 If you don't wish to prevent calling code from using function return values in unexpected ways, then
