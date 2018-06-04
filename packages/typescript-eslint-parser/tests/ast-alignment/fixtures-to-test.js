@@ -454,6 +454,7 @@ let fixturePatternConfigsToTest = [
             "class-empty-extends-implements", // babylon parse errors
             "class-empty-extends", // babylon parse errors
             "decorator-on-enum-declaration", // babylon parse errors
+            "decorator-on-interface-declaration", // babylon parse errors
             "interface-property-modifiers", // babylon parse errors
             "enum-with-keywords" // babylon parse errors
         ]

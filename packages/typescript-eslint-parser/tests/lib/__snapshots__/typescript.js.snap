@@ -57236,6 +57236,285 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/errorRecovery/decorator-on-interface-declaration.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "abstract": false,
+      "body": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          20,
+          22,
+        ],
+        "type": "TSInterfaceBody",
+      },
+      "decorators": Array [
+        Object {
+          "expression": Object {
+            "arguments": Array [],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 1,
+                  "line": 1,
+                },
+              },
+              "name": "deco",
+              "range": Array [
+                1,
+                5,
+              ],
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 1,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              1,
+              7,
+            ],
+            "type": "CallExpression",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 7,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            0,
+            7,
+          ],
+          "type": "Decorator",
+        },
+      ],
+      "heritage": Array [],
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 2,
+          },
+        },
+        "name": "M",
+        "range": Array [
+          18,
+          19,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        22,
+      ],
+      "type": "TSInterfaceDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 14,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    22,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        1,
+      ],
+      "type": "Punctuator",
+      "value": "@",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        1,
+        5,
+      ],
+      "type": "Identifier",
+      "value": "deco",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        5,
+        6,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        8,
+        17,
+      ],
+      "type": "Keyword",
+      "value": "interface",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        18,
+        19,
+      ],
+      "type": "Identifier",
+      "value": "M",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        20,
+        21,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        21,
+        22,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`typescript fixtures/errorRecovery/empty-type-arguments.src 1`] = `
 Object {
   "body": Array [

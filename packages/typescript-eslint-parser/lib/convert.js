@@ -2101,7 +2101,14 @@ module.exports = function convert(config) {
                 id: convertChild(node.name),
                 heritage: hasImplementsClause ? interfaceHeritageClauses[0].types.map(convertInterfaceHeritageClause) : []
             });
-
+            /**
+             * Semantically, decorators are not allowed on interface declarations,
+             * but the TypeScript compiler will parse them and produce a valid AST,
+             * so we handle them here too.
+             */
+            if (node.decorators) {
+                result.decorators = convertDecorators(node.decorators);
+            }
             // check for exports
             result = nodeUtils.fixExports(node, result, ast);
 

@@ -1,0 +1,2 @@
+@deco()
+interface M {}
