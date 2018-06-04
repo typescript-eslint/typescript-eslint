@@ -1,3 +1,8 @@
+v16.0.0 - June 3, 2018
+
+* 009336d Breaking: Set minimum node version to 6 (#481) (James Henry)
+* 9316b23 Breaking: Support TypeScript 2.9 (#480) (James Henry)
+
 v15.0.1 - June 3, 2018
 
 * 891cee9 Fix: decorators removed on interface declarations (fixes #478) (#479) (Muhanad Rabie)
