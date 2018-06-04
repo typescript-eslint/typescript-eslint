@@ -1,1187 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ecmaFeatures REGEXP FLAG - NODE VERSION <6: fixtures/regexUFlag/regex-u-extended-escape.src 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 5,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "name": "x",
-            "range": Array [
-              4,
-              5,
-            ],
-            "type": "Identifier",
-          },
-          "init": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 40,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 8,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              8,
-              40,
-            ],
-            "raw": "/[\\\\u{0000000000000061}-\\\\u{7A}]/u",
-            "regex": Object {
-              "flags": "u",
-              "pattern": "[\\\\u{0000000000000061}-\\\\u{7A}]",
-            },
-            "type": "Literal",
-            "value": null,
-          },
-          "loc": Object {
-            "end": Object {
-              "column": 40,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 4,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            4,
-            40,
-          ],
-          "type": "VariableDeclarator",
-        },
-      ],
-      "kind": "var",
-      "loc": Object {
-        "end": Object {
-          "column": 41,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        41,
-      ],
-      "type": "VariableDeclaration",
-    },
-  ],
-  "loc": Object {
-    "end": Object {
-      "column": 0,
-      "line": 2,
-    },
-    "start": Object {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "range": Array [
-    0,
-    42,
-  ],
-  "sourceType": "script",
-  "tokens": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 3,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        3,
-      ],
-      "type": "Keyword",
-      "value": "var",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 5,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 4,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        4,
-        5,
-      ],
-      "type": "Identifier",
-      "value": "x",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 7,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 6,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        6,
-        7,
-      ],
-      "type": "Punctuator",
-      "value": "=",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 40,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 8,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        8,
-        40,
-      ],
-      "regex": Object {
-        "flags": "u",
-        "pattern": "[\\\\u{0000000000000061}-\\\\u{7A}]",
-      },
-      "type": "RegularExpression",
-      "value": "/[\\\\u{0000000000000061}-\\\\u{7A}]/u",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 41,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 40,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        40,
-        41,
-      ],
-      "type": "Punctuator",
-      "value": ";",
-    },
-  ],
-  "type": "Program",
-}
-`;
-
-exports[`ecmaFeatures REGEXP FLAG - NODE VERSION <6: fixtures/regexUFlag/regex-u-simple.src 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 7,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "name": "foo",
-            "range": Array [
-              4,
-              7,
-            ],
-            "type": "Identifier",
-          },
-          "init": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 16,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 10,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              10,
-              16,
-            ],
-            "raw": "/foo/u",
-            "regex": Object {
-              "flags": "u",
-              "pattern": "foo",
-            },
-            "type": "Literal",
-            "value": null,
-          },
-          "loc": Object {
-            "end": Object {
-              "column": 16,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 4,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            4,
-            16,
-          ],
-          "type": "VariableDeclarator",
-        },
-      ],
-      "kind": "var",
-      "loc": Object {
-        "end": Object {
-          "column": 17,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        17,
-      ],
-      "type": "VariableDeclaration",
-    },
-  ],
-  "loc": Object {
-    "end": Object {
-      "column": 0,
-      "line": 2,
-    },
-    "start": Object {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "range": Array [
-    0,
-    18,
-  ],
-  "sourceType": "script",
-  "tokens": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 3,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        3,
-      ],
-      "type": "Keyword",
-      "value": "var",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 7,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 4,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        4,
-        7,
-      ],
-      "type": "Identifier",
-      "value": "foo",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 9,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 8,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        8,
-        9,
-      ],
-      "type": "Punctuator",
-      "value": "=",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 16,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 10,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        10,
-        16,
-      ],
-      "regex": Object {
-        "flags": "u",
-        "pattern": "foo",
-      },
-      "type": "RegularExpression",
-      "value": "/foo/u",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 17,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 16,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        16,
-        17,
-      ],
-      "type": "Punctuator",
-      "value": ";",
-    },
-  ],
-  "type": "Program",
-}
-`;
-
-exports[`ecmaFeatures REGEXP FLAG - NODE VERSION <6: fixtures/regexYFlag/regexp-y-simple.src 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 7,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "name": "foo",
-            "range": Array [
-              4,
-              7,
-            ],
-            "type": "Identifier",
-          },
-          "init": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 16,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 10,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              10,
-              16,
-            ],
-            "raw": "/foo/y",
-            "regex": Object {
-              "flags": "y",
-              "pattern": "foo",
-            },
-            "type": "Literal",
-            "value": null,
-          },
-          "loc": Object {
-            "end": Object {
-              "column": 16,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 4,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            4,
-            16,
-          ],
-          "type": "VariableDeclarator",
-        },
-      ],
-      "kind": "var",
-      "loc": Object {
-        "end": Object {
-          "column": 17,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        17,
-      ],
-      "type": "VariableDeclaration",
-    },
-  ],
-  "loc": Object {
-    "end": Object {
-      "column": 0,
-      "line": 2,
-    },
-    "start": Object {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "range": Array [
-    0,
-    18,
-  ],
-  "sourceType": "script",
-  "tokens": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 3,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        3,
-      ],
-      "type": "Keyword",
-      "value": "var",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 7,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 4,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        4,
-        7,
-      ],
-      "type": "Identifier",
-      "value": "foo",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 9,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 8,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        8,
-        9,
-      ],
-      "type": "Punctuator",
-      "value": "=",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 16,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 10,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        10,
-        16,
-      ],
-      "regex": Object {
-        "flags": "y",
-        "pattern": "foo",
-      },
-      "type": "RegularExpression",
-      "value": "/foo/y",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 17,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 16,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        16,
-        17,
-      ],
-      "type": "Punctuator",
-      "value": ";",
-    },
-  ],
-  "type": "Program",
-}
-`;
-
-exports[`ecmaFeatures REGEXP FLAG - NODE VERSION >=6: fixtures/regexUFlag/regex-u-extended-escape.src 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 5,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "name": "x",
-            "range": Array [
-              4,
-              5,
-            ],
-            "type": "Identifier",
-          },
-          "init": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 40,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 8,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              8,
-              40,
-            ],
-            "raw": "/[\\\\u{0000000000000061}-\\\\u{7A}]/u",
-            "regex": Object {
-              "flags": "u",
-              "pattern": "[\\\\u{0000000000000061}-\\\\u{7A}]",
-            },
-            "type": "Literal",
-            "value": Object {},
-          },
-          "loc": Object {
-            "end": Object {
-              "column": 40,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 4,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            4,
-            40,
-          ],
-          "type": "VariableDeclarator",
-        },
-      ],
-      "kind": "var",
-      "loc": Object {
-        "end": Object {
-          "column": 41,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        41,
-      ],
-      "type": "VariableDeclaration",
-    },
-  ],
-  "loc": Object {
-    "end": Object {
-      "column": 0,
-      "line": 2,
-    },
-    "start": Object {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "range": Array [
-    0,
-    42,
-  ],
-  "sourceType": "script",
-  "tokens": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 3,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        3,
-      ],
-      "type": "Keyword",
-      "value": "var",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 5,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 4,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        4,
-        5,
-      ],
-      "type": "Identifier",
-      "value": "x",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 7,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 6,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        6,
-        7,
-      ],
-      "type": "Punctuator",
-      "value": "=",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 40,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 8,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        8,
-        40,
-      ],
-      "regex": Object {
-        "flags": "u",
-        "pattern": "[\\\\u{0000000000000061}-\\\\u{7A}]",
-      },
-      "type": "RegularExpression",
-      "value": "/[\\\\u{0000000000000061}-\\\\u{7A}]/u",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 41,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 40,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        40,
-        41,
-      ],
-      "type": "Punctuator",
-      "value": ";",
-    },
-  ],
-  "type": "Program",
-}
-`;
-
-exports[`ecmaFeatures REGEXP FLAG - NODE VERSION >=6: fixtures/regexUFlag/regex-u-simple.src 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 7,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "name": "foo",
-            "range": Array [
-              4,
-              7,
-            ],
-            "type": "Identifier",
-          },
-          "init": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 16,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 10,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              10,
-              16,
-            ],
-            "raw": "/foo/u",
-            "regex": Object {
-              "flags": "u",
-              "pattern": "foo",
-            },
-            "type": "Literal",
-            "value": Object {},
-          },
-          "loc": Object {
-            "end": Object {
-              "column": 16,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 4,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            4,
-            16,
-          ],
-          "type": "VariableDeclarator",
-        },
-      ],
-      "kind": "var",
-      "loc": Object {
-        "end": Object {
-          "column": 17,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        17,
-      ],
-      "type": "VariableDeclaration",
-    },
-  ],
-  "loc": Object {
-    "end": Object {
-      "column": 0,
-      "line": 2,
-    },
-    "start": Object {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "range": Array [
-    0,
-    18,
-  ],
-  "sourceType": "script",
-  "tokens": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 3,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        3,
-      ],
-      "type": "Keyword",
-      "value": "var",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 7,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 4,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        4,
-        7,
-      ],
-      "type": "Identifier",
-      "value": "foo",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 9,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 8,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        8,
-        9,
-      ],
-      "type": "Punctuator",
-      "value": "=",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 16,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 10,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        10,
-        16,
-      ],
-      "regex": Object {
-        "flags": "u",
-        "pattern": "foo",
-      },
-      "type": "RegularExpression",
-      "value": "/foo/u",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 17,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 16,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        16,
-        17,
-      ],
-      "type": "Punctuator",
-      "value": ";",
-    },
-  ],
-  "type": "Program",
-}
-`;
-
-exports[`ecmaFeatures REGEXP FLAG - NODE VERSION >=6: fixtures/regexYFlag/regexp-y-simple.src 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 7,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "name": "foo",
-            "range": Array [
-              4,
-              7,
-            ],
-            "type": "Identifier",
-          },
-          "init": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 16,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 10,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              10,
-              16,
-            ],
-            "raw": "/foo/y",
-            "regex": Object {
-              "flags": "y",
-              "pattern": "foo",
-            },
-            "type": "Literal",
-            "value": Object {},
-          },
-          "loc": Object {
-            "end": Object {
-              "column": 16,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 4,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            4,
-            16,
-          ],
-          "type": "VariableDeclarator",
-        },
-      ],
-      "kind": "var",
-      "loc": Object {
-        "end": Object {
-          "column": 17,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        17,
-      ],
-      "type": "VariableDeclaration",
-    },
-  ],
-  "loc": Object {
-    "end": Object {
-      "column": 0,
-      "line": 2,
-    },
-    "start": Object {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "range": Array [
-    0,
-    18,
-  ],
-  "sourceType": "script",
-  "tokens": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 3,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        0,
-        3,
-      ],
-      "type": "Keyword",
-      "value": "var",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 7,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 4,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        4,
-        7,
-      ],
-      "type": "Identifier",
-      "value": "foo",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 9,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 8,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        8,
-        9,
-      ],
-      "type": "Punctuator",
-      "value": "=",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 16,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 10,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        10,
-        16,
-      ],
-      "regex": Object {
-        "flags": "y",
-        "pattern": "foo",
-      },
-      "type": "RegularExpression",
-      "value": "/foo/y",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 17,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 16,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        16,
-        17,
-      ],
-      "type": "Punctuator",
-      "value": ";",
-    },
-  ],
-  "type": "Program",
-}
-`;
-
 exports[`ecmaFeatures fixtures/arrowFunctions/as-param.src 1`] = `
 Object {
   "body": Array [
@@ -89418,6 +88236,597 @@ Object {
       },
       "type": "RegularExpression",
       "value": "/foo./",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        16,
+        17,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`ecmaFeatures fixtures/regexUFlag/regex-u-extended-escape.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 5,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "x",
+            "range": Array [
+              4,
+              5,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 40,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 8,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              8,
+              40,
+            ],
+            "raw": "/[\\\\u{0000000000000061}-\\\\u{7A}]/u",
+            "regex": Object {
+              "flags": "u",
+              "pattern": "[\\\\u{0000000000000061}-\\\\u{7A}]",
+            },
+            "type": "Literal",
+            "value": Object {},
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 40,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            4,
+            40,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "var",
+      "loc": Object {
+        "end": Object {
+          "column": 41,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        41,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    42,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "Keyword",
+      "value": "var",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        5,
+      ],
+      "type": "Identifier",
+      "value": "x",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 40,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        40,
+      ],
+      "regex": Object {
+        "flags": "u",
+        "pattern": "[\\\\u{0000000000000061}-\\\\u{7A}]",
+      },
+      "type": "RegularExpression",
+      "value": "/[\\\\u{0000000000000061}-\\\\u{7A}]/u",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 41,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 40,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        40,
+        41,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`ecmaFeatures fixtures/regexUFlag/regex-u-simple.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "foo",
+            "range": Array [
+              4,
+              7,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 16,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 10,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              10,
+              16,
+            ],
+            "raw": "/foo/u",
+            "regex": Object {
+              "flags": "u",
+              "pattern": "foo",
+            },
+            "type": "Literal",
+            "value": Object {},
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 16,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            4,
+            16,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "var",
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        17,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    18,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "Keyword",
+      "value": "var",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        7,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        9,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        10,
+        16,
+      ],
+      "regex": Object {
+        "flags": "u",
+        "pattern": "foo",
+      },
+      "type": "RegularExpression",
+      "value": "/foo/u",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        16,
+        17,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`ecmaFeatures fixtures/regexYFlag/regexp-y-simple.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "foo",
+            "range": Array [
+              4,
+              7,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 16,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 10,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              10,
+              16,
+            ],
+            "raw": "/foo/y",
+            "regex": Object {
+              "flags": "y",
+              "pattern": "foo",
+            },
+            "type": "Literal",
+            "value": Object {},
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 16,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            4,
+            16,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "var",
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        17,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    18,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "Keyword",
+      "value": "var",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        7,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        9,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        10,
+        16,
+      ],
+      "regex": Object {
+        "flags": "y",
+        "pattern": "foo",
+      },
+      "type": "RegularExpression",
+      "value": "/foo/y",
     },
     Object {
       "loc": Object {
