@@ -1,5 +1,427 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TSX fixtures/generic-jsx-element.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "children": Array [],
+        "closingElement": null,
+        "loc": Object {
+          "end": Object {
+            "column": 33,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "openingElement": Object {
+          "attributes": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 30,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+              },
+              "name": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 25,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 21,
+                    "line": 1,
+                  },
+                },
+                "name": "data",
+                "range": Array [
+                  21,
+                  25,
+                ],
+                "type": "JSXIdentifier",
+              },
+              "range": Array [
+                21,
+                30,
+              ],
+              "type": "JSXAttribute",
+              "value": Object {
+                "expression": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 29,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 27,
+                      "line": 1,
+                    },
+                  },
+                  "range": Array [
+                    27,
+                    29,
+                  ],
+                  "raw": "12",
+                  "type": "Literal",
+                  "value": 12,
+                },
+                "loc": Object {
+                  "end": Object {
+                    "column": 30,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 26,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  26,
+                  30,
+                ],
+                "type": "JSXExpressionContainer",
+              },
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 33,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "name": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 12,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 1,
+                "line": 1,
+              },
+            },
+            "name": "MyComponent",
+            "range": Array [
+              1,
+              12,
+            ],
+            "type": "JSXIdentifier",
+          },
+          "range": Array [
+            0,
+            33,
+          ],
+          "selfClosing": true,
+          "type": "JSXOpeningElement",
+          "typeParameters": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 20,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 12,
+                "line": 1,
+              },
+            },
+            "params": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 19,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 13,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  13,
+                  19,
+                ],
+                "type": "TSNumberKeyword",
+              },
+            ],
+            "range": Array [
+              12,
+              20,
+            ],
+            "type": "TSTypeParameterInstantiation",
+          },
+        },
+        "range": Array [
+          0,
+          33,
+        ],
+        "type": "JSXElement",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 33,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        33,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    34,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        1,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        1,
+        12,
+      ],
+      "type": "JSXIdentifier",
+      "value": "MyComponent",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        12,
+        13,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        13,
+        19,
+      ],
+      "type": "Identifier",
+      "value": "number",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 20,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 19,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        19,
+        20,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 21,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        21,
+        25,
+      ],
+      "type": "JSXIdentifier",
+      "value": "data",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 25,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        25,
+        26,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 27,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 26,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        26,
+        27,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 29,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 27,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        27,
+        29,
+      ],
+      "type": "Numeric",
+      "value": "12",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 30,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 29,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        29,
+        30,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 32,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 31,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        31,
+        32,
+      ],
+      "type": "Punctuator",
+      "value": "/",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 33,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 32,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        32,
+        33,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`TSX fixtures/react-typed-props.src 1`] = `
 Object {
   "body": Array [
