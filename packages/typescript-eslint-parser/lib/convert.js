@@ -1237,6 +1237,9 @@ module.exports = function convert(config) {
         case SyntaxKind.TaggedTemplateExpression:
             Object.assign(result, {
                 type: AST_NODE_TYPES.TaggedTemplateExpression,
+                typeParameters: (node.typeArguments)
+                    ? convertTypeArgumentsToTypeParameters(node.typeArguments)
+                    : undefined,
                 tag: convertChild(node.tag),
                 quasi: convertChild(node.template)
             });
@@ -1856,6 +1859,9 @@ module.exports = function convert(config) {
         case SyntaxKind.JsxOpeningElement:
             Object.assign(result, {
                 type: AST_NODE_TYPES.JSXOpeningElement,
+                typeParameters: (node.typeArguments)
+                    ? convertTypeArgumentsToTypeParameters(node.typeArguments)
+                    : undefined,
                 selfClosing: false,
                 name: convertTypeScriptJSXTagNameToESTreeName(node.tagName),
                 attributes: node.attributes.properties.map(convertChild)
