@@ -1,0 +1,11 @@
+root: true
+
+# typescript-eslint-parser
+parser: /usr/parser/parser.js
+
+rules:
+    array-callback-return: 2
+    getter-return: 2
+    strict: 2
+    lines-around-directive: 2
+    no-empty-function: 2

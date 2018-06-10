@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  range-error-indent-issue-333:
+    build: ./range-error-indent-issue-333
+    container_name: "range-error-indent-issue-333"
+    volumes:
+      # link to all the integration test files, so that updates don't require a rebuild
+      - ./range-error-indent-issue-333:/usr/linked
+      # link to parser source, but "ignore" tests (by overriding it with an empty dir)
+      - ../../:/usr/parser
+      - /usr/parser/tests
+
+  no-redeclare-overloaded-functions-issue-402:
+    build: ./no-redeclare-overloaded-functions-issue-402
+    container_name: "no-redeclare-overloaded-functions-issue-402"
+    volumes:
+      # link to all the integration test files, so that updates don't require a rebuild
+      - ./no-redeclare-overloaded-functions-issue-402:/usr/linked
+      # link to parser source, but "ignore" tests (by overriding it with an empty dir)
+      - ../../:/usr/parser
+      - /usr/parser/tests
+
+  declared-empty-body-functions-issue-162:
+    build: ./declared-empty-body-functions-issue-162
+    container_name: "declared-empty-body-functions-issue-162"
+    volumes:
+      # link to all the integration test files, so that updates don't require a rebuild
+      - ./declared-empty-body-functions-issue-162:/usr/linked
+      # link to parser source, but "ignore" tests (by overriding it with an empty dir)
+      - ../../:/usr/parser
+      - /usr/parser/tests
+
+  jsdoc-indent-issues-344-422:
+    build: ./jsdoc-indent-issues-344-422
+    container_name: "jsdoc-indent-issues-344-422"
+    volumes:
+      # link to all the integration test files, so that updates don't require a rebuild
+      - ./jsdoc-indent-issues-344-422:/usr/linked
+      # link to parser source, but "ignore" tests (by overriding it with an empty dir)
+      - ../../:/usr/parser
+      - /usr/parser/tests
+
+  method-overloads-issue-389:
+    build: ./method-overloads-issue-389
+    container_name: "method-overloads-issue-389"
+    volumes:
+      # link to all the integration test files, so that updates don't require a rebuild
+      - ./method-overloads-issue-389:/usr/linked
+      # link to parser source, but "ignore" tests (by overriding it with an empty dir)
+      - ../../:/usr/parser
+      - /usr/parser/tests

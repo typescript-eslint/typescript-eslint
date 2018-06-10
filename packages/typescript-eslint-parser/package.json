@@ -20,7 +20,6 @@
   "devDependencies": {
     "babel-code-frame": "6.26.0",
     "babylon": "7.0.0-beta.39",
-    "dedent": "0.7.0",
     "eslint": "4.19.1",
     "eslint-config-eslint": "4.0.0",
     "eslint-plugin-node": "6.0.1",
@@ -46,7 +45,8 @@
     "test": "node Makefile.js test && npm run integration-tests && npm run ast-alignment-tests",
     "jest": "jest",
     "ast-alignment-tests": "jest --config=./tests/ast-alignment/jest.config.js",
-    "integration-tests": "jest --config=./tests/integration/jest.config.js",
+    "integration-tests": "docker-compose -f tests/integration/docker-compose.yml up",
+    "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
     "lint": "node Makefile.js lint",
     "release": "eslint-release",
     "ci-release": "eslint-ci-release",
