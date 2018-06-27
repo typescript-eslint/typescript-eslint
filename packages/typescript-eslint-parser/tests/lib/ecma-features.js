@@ -25,8 +25,7 @@ const FIXTURES_DIR = "./tests/fixtures/ecma-features";
 const testFiles = shelljs.find(FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.js") > -1)
     // strip off ".src.js"
-    .map(filename => filename.substring(FIXTURES_DIR.length - 1, filename.length - 7))
-    .filter(filename => !(/error-|invalid-|globalReturn/.test(filename)));
+    .map(filename => filename.substring(FIXTURES_DIR.length - 1, filename.length - 7));
 
 //------------------------------------------------------------------------------
 // Tests
