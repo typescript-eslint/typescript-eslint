@@ -42,8 +42,6 @@ module.exports = {
     Decorator: "Decorator",
     DoWhileStatement: "DoWhileStatement",
     EmptyStatement: "EmptyStatement",
-    ExperimentalRestProperty: "ExperimentalRestProperty",
-    ExperimentalSpreadProperty: "ExperimentalSpreadProperty",
     ExportAllDeclaration: "ExportAllDeclaration",
     ExportDefaultDeclaration: "ExportDefaultDeclaration",
     ExportNamedDeclaration: "ExportNamedDeclaration",

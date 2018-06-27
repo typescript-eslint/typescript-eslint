@@ -1133,10 +1133,8 @@ module.exports = function convert(config) {
 
                 if (node.dotDotDotToken) {
                     Object.assign(result, {
-                        type: AST_NODE_TYPES.ExperimentalRestProperty,
-                        argument: convertChild(node.propertyName || node.name),
-                        computed: Boolean(node.propertyName && node.propertyName.kind === SyntaxKind.ComputedPropertyName),
-                        shorthand: !node.propertyName
+                        type: AST_NODE_TYPES.RestElement,
+                        argument: convertChild(node.propertyName || node.name)
                     });
                 } else {
                     Object.assign(result, {
@@ -1283,16 +1281,16 @@ module.exports = function convert(config) {
             break;
         }
         case SyntaxKind.SpreadAssignment: {
-            let type = AST_NODE_TYPES.ExperimentalSpreadProperty;
+            let type = AST_NODE_TYPES.SpreadElement;
 
             if (node.parent &&
                 node.parent.parent &&
                 node.parent.parent.kind === SyntaxKind.BinaryExpression
             ) {
                 if (node.parent.parent.right === node.parent) {
-                    type = AST_NODE_TYPES.ExperimentalSpreadProperty;
+                    type = AST_NODE_TYPES.SpreadElement;
                 } else if (node.parent.parent.left === node.parent) {
-                    type = AST_NODE_TYPES.ExperimentalRestProperty;
+                    type = AST_NODE_TYPES.RestElement;
                 }
             }
 
