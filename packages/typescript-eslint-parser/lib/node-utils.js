@@ -99,6 +99,8 @@ TOKEN_TO_TEXT[SyntaxKind.AtToken] = "@";
 TOKEN_TO_TEXT[SyntaxKind.InKeyword] = "in";
 TOKEN_TO_TEXT[SyntaxKind.UniqueKeyword] = "unique";
 TOKEN_TO_TEXT[SyntaxKind.KeyOfKeyword] = "keyof";
+TOKEN_TO_TEXT[SyntaxKind.NewKeyword] = "new";
+TOKEN_TO_TEXT[SyntaxKind.ImportKeyword] = "import";
 
 /**
  * Find the first matching child based on the given sourceFile and predicate function.

@@ -1729,7 +1729,7 @@ module.exports = function convert(config) {
                     type: AST_NODE_TYPES.Identifier,
                     range: newToken.range,
                     loc: newToken.loc,
-                    name: "new"
+                    name: nodeUtils.getTextForTokenKind(node.keywordToken)
                 },
                 property: convertChild(node.name)
             });
