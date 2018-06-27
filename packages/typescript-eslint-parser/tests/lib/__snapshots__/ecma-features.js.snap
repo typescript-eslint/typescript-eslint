@@ -61572,7 +61572,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "computed": false,
               "loc": Object {
                 "end": Object {
                   "column": 19,
@@ -61587,8 +61586,7 @@ Object {
                 15,
                 19,
               ],
-              "shorthand": true,
-              "type": "ExperimentalRestProperty",
+              "type": "RestElement",
             },
           ],
           "range": Array [
@@ -61949,7 +61947,7 @@ Object {
                 5,
                 9,
               ],
-              "type": "ExperimentalRestProperty",
+              "type": "RestElement",
             },
           ],
           "range": Array [
@@ -62075,7 +62073,7 @@ Object {
                 17,
                 21,
               ],
-              "type": "ExperimentalSpreadProperty",
+              "type": "SpreadElement",
             },
           ],
           "range": Array [
@@ -62479,7 +62477,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "computed": false,
               "loc": Object {
                 "end": Object {
                   "column": 20,
@@ -62494,8 +62491,7 @@ Object {
                 14,
                 20,
               ],
-              "shorthand": true,
-              "type": "ExperimentalRestProperty",
+              "type": "RestElement",
             },
           ],
           "range": Array [
@@ -62866,7 +62862,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "computed": false,
                 "loc": Object {
                   "end": Object {
                     "column": 16,
@@ -62881,8 +62876,7 @@ Object {
                   12,
                   16,
                 ],
-                "shorthand": true,
-                "type": "ExperimentalRestProperty",
+                "type": "RestElement",
               },
             ],
             "range": Array [
@@ -63350,7 +63344,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "computed": false,
                 "loc": Object {
                   "end": Object {
                     "column": 16,
@@ -63365,8 +63358,7 @@ Object {
                   12,
                   16,
                 ],
-                "shorthand": true,
-                "type": "ExperimentalRestProperty",
+                "type": "RestElement",
               },
             ],
             "range": Array [
@@ -64533,7 +64525,7 @@ Object {
                   70,
                   80,
                 ],
-                "type": "ExperimentalSpreadProperty",
+                "type": "SpreadElement",
               },
             ],
             "range": Array [
@@ -65281,7 +65273,6 @@ Object {
                         ],
                         "type": "Identifier",
                       },
-                      "computed": false,
                       "loc": Object {
                         "end": Object {
                           "column": 45,
@@ -65296,8 +65287,7 @@ Object {
                         38,
                         48,
                       ],
-                      "shorthand": true,
-                      "type": "ExperimentalRestProperty",
+                      "type": "RestElement",
                     },
                   ],
                   "range": Array [
@@ -65936,7 +65926,6 @@ Object {
                             ],
                             "type": "Identifier",
                           },
-                          "computed": false,
                           "loc": Object {
                             "end": Object {
                               "column": 45,
@@ -65951,8 +65940,7 @@ Object {
                             45,
                             55,
                           ],
-                          "shorthand": true,
-                          "type": "ExperimentalRestProperty",
+                          "type": "RestElement",
                         },
                       ],
                       "range": Array [
@@ -66685,7 +66673,7 @@ Object {
                   60,
                   66,
                 ],
-                "type": "ExperimentalSpreadProperty",
+                "type": "SpreadElement",
               },
             ],
             "range": Array [
@@ -67403,7 +67391,7 @@ Object {
                   70,
                   76,
                 ],
-                "type": "ExperimentalSpreadProperty",
+                "type": "SpreadElement",
               },
             ],
             "range": Array [
@@ -68045,7 +68033,7 @@ Object {
               9,
               13,
             ],
-            "type": "ExperimentalSpreadProperty",
+            "type": "SpreadElement",
           },
         ],
         "range": Array [
@@ -68544,7 +68532,7 @@ Object {
                   56,
                   62,
                 ],
-                "type": "ExperimentalSpreadProperty",
+                "type": "SpreadElement",
               },
               Object {
                 "argument": Object {
@@ -68579,7 +68567,7 @@ Object {
                   68,
                   74,
                 ],
-                "type": "ExperimentalSpreadProperty",
+                "type": "SpreadElement",
               },
             ],
             "range": Array [

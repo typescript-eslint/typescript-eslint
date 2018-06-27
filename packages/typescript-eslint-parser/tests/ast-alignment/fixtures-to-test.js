@@ -105,10 +105,9 @@ let fixturePatternConfigsToTest = [
     createFixturePatternConfigFor("ecma-features/experimentalObjectRestSpread", {
         ignore: [
             /**
-             * "ExperimentalSpreadProperty" in espree/typescript-eslint-parser vs "SpreadElement" in Babylon
-             * comes up a lot in this section
+             * Trailing comma is not permitted after a "RestElement" in Babylon
              */
-            "**/*"
+             "invalid-rest-trailing-comma"
         ]
     }),
 
