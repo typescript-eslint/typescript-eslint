@@ -13337,7 +13337,6 @@ Object {
                 },
               },
               "name": "foo",
-              "optional": true,
               "range": Array [
                 14,
                 17,
@@ -13354,6 +13353,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": true,
             "range": Array [
               14,
               19,
@@ -13376,7 +13376,6 @@ Object {
                 },
               },
               "name": "bar",
-              "optional": true,
               "range": Array [
                 22,
                 25,
@@ -13393,6 +13392,7 @@ Object {
                 "line": 3,
               },
             },
+            "optional": true,
             "range": Array [
               22,
               36,
@@ -13450,7 +13450,6 @@ Object {
                 },
               },
               "name": "baz",
-              "optional": true,
               "range": Array [
                 47,
                 50,
@@ -13467,6 +13466,7 @@ Object {
                 "line": 4,
               },
             },
+            "optional": true,
             "range": Array [
               39,
               61,
@@ -13928,7 +13928,6 @@ Object {
                 },
               },
               "name": "foo",
-              "optional": true,
               "range": Array [
                 20,
                 23,
@@ -13945,6 +13944,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": true,
             "range": Array [
               12,
               37,

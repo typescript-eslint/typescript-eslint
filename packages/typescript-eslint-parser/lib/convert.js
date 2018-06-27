@@ -860,7 +860,7 @@ module.exports = function convert(config) {
             }
 
             if (node.name.kind === SyntaxKind.Identifier && node.questionToken) {
-                result.key.optional = true;
+                result.optional = true;
             }
 
             if (node.exclamationToken) {
