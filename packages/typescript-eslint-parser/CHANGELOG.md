@@ -1,3 +1,11 @@
+v16.0.1 - June 27, 2018
+
+* bc83c6a Chore: Do not run integration tests within npm test (James Henry)
+* db62d63 Fix: Snapshot all ecma-features fixtures (#495) (James Henry)
+* 3c1fab0 Fix: support ImportMeta (fixes #489) (#490) (Ika)
+* 6611535 Chore: Loosen node version requirement in package.json (fixes #482) (#484) (James Henry)
+* 27f39cc Chore: Powerful integration tests and improved README (#483) (James Henry)
+
 v16.0.0 - June 3, 2018
 
 * 009336d Breaking: Set minimum node version to 6 (#481) (James Henry)
