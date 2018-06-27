@@ -399,8 +399,6 @@ let fixturePatternConfigsToTest = [
             "type-alias-declaration",
             "type-alias-object-without-annotation",
             "typed-this",
-            "class-with-optional-properties",
-            "class-with-optional-property-undefined",
             "export-type-function-declaration",
             "export-type-class-declaration",
             "abstract-interface",
