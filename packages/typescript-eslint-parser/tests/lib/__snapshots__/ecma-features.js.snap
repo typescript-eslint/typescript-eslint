@@ -22287,6 +22287,8 @@ Object {
 }
 `;
 
+exports[`ecmaFeatures fixtures/classes/invalid-class-two-super-classes.src 1`] = `"Classes can only extend a single class."`;
+
 exports[`ecmaFeatures fixtures/classes/named-class-expression.src 1`] = `
 Object {
   "body": Array [

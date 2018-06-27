@@ -1397,8 +1397,14 @@ module.exports = function convert(config) {
             const openBrace = nodeUtils.findNextToken(lastClassToken, ast);
             const superClass = heritageClauses.find(clause => clause.token === SyntaxKind.ExtendsKeyword);
 
-            if (superClass && superClass.types[0] && superClass.types[0].typeArguments) {
-                result.superTypeParameters = convertTypeArgumentsToTypeParameters(superClass.types[0].typeArguments);
+            if (superClass) {
+                if (superClass.types.length > 1) {
+                    throw nodeUtils.createError(ast, superClass.types[1].pos, "Classes can only extend a single class.");
+                }
+
+                if (superClass.types[0] && superClass.types[0].typeArguments) {
+                    result.superTypeParameters = convertTypeArgumentsToTypeParameters(superClass.types[0].typeArguments);
+                }
             }
 
             const implementsClause = heritageClauses.find(clause => clause.token === SyntaxKind.ImplementsKeyword);

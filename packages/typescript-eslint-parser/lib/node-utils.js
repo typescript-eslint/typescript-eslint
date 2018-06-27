@@ -191,7 +191,8 @@ module.exports = {
     isWithinTypeAnnotation,
     isTypeKeyword,
     isComment,
-    isJSDocComment
+    isJSDocComment,
+    createError
 };
 /* eslint-enable no-use-before-define */
 
@@ -766,4 +767,20 @@ function getNodeContainer(ast, start, end) {
     walk(ast);
 
     return container;
+}
+
+/**
+ * @param {Object} ast     the AST object
+ * @param {int} start      the index at which the error starts
+ * @param {string} message the error message
+ * @returns {Object}       converted error object
+ */
+function createError(ast, start, message) {
+    const loc = ast.getLineAndCharacterOfPosition(start);
+    return {
+        index: start,
+        lineNumber: loc.line + 1,
+        column: loc.character,
+        message
+    };
 }

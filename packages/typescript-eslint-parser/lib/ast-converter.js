@@ -26,13 +26,7 @@ const convert = require("./convert"),
  * @returns {Object}       converted error object
  */
 function convertError(error) {
-    const loc = error.file.getLineAndCharacterOfPosition(error.start);
-    return {
-        index: error.start,
-        lineNumber: loc.line + 1,
-        column: loc.character,
-        message: error.message || error.messageText
-    };
+    return nodeUtils.createError(error.file, error.start, error.message || error.messageText);
 }
 
 //------------------------------------------------------------------------------
