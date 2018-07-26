@@ -125,30 +125,6 @@ function findFirstMatchingChild(node, sourceFile, predicate) {
     return undefined;
 }
 
-/**
- * Returns true if the given TSNode is a let variable declaration
- * @param {TSNode} node The TSNode
- * @returns {boolean} whether or not the given node is a let variable declaration
- */
-function isLet(node) {
-    /**
-     * TODO: Remove dependency on private TypeScript method
-     */
-    return ts.isLet(node);
-}
-
-/**
- * Returns true if the given TSNode is a const variable declaration
- * @param {TSNode} node The TSNode
- * @returns {boolean} whether or not the given node is a const variable declaration
- */
-function isConst(node) {
-    /**
-     * TODO: Remove dependency on private TypeScript method
-     */
-    return ts.isConst(node);
-}
-
 //------------------------------------------------------------------------------
 // Public
 //------------------------------------------------------------------------------
@@ -179,7 +155,6 @@ module.exports = {
     findFirstMatchingAncestor,
     findAncestorOfKind,
     hasJSXAncestor,
-    unescapeIdentifier,
     unescapeStringLiteralText,
     isComputedProperty,
     isOptional,
@@ -366,24 +341,20 @@ function isTypeKeyword(kind) {
  * @returns {string}     declaration kind
  */
 function getDeclarationKind(node) {
-    let varDeclarationKind;
     switch (node.kind) {
         case SyntaxKind.TypeAliasDeclaration:
-            varDeclarationKind = "type";
-            break;
+            return "type";
         case SyntaxKind.VariableDeclarationList:
-            if (isLet(node)) {
-                varDeclarationKind = "let";
-            } else if (isConst(node)) {
-                varDeclarationKind = "const";
-            } else {
-                varDeclarationKind = "var";
+            if (node.flags & ts.NodeFlags.Let) {
+                return "let";
             }
-            break;
+            if (node.flags & ts.NodeFlags.Const) {
+                return "const";
+            }
+            return "var";
         default:
             throw "Unable to determine declaration kind.";
     }
-    return varDeclarationKind;
 }
 
 /**
@@ -500,15 +471,6 @@ function findAncestorOfKind(node, kind) {
  */
 function hasJSXAncestor(node) {
     return !!findFirstMatchingAncestor(node, isJSXToken);
-}
-
-/**
- * Remove extra underscore from escaped identifier text content.
- * @param {string} identifier The escaped identifier text.
- * @returns {string} The unescaped identifier text.
- */
-function unescapeIdentifier(identifier) {
-    return ts.unescapeIdentifier(identifier);
 }
 
 /**

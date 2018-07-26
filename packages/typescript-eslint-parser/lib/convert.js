@@ -189,7 +189,7 @@ module.exports = function convert(config) {
             ],
             loc: nodeUtils.getLocFor(firstTypeParameter.pos - 1, greaterThanToken.end, ast),
             params: typeParameters.map(typeParameter => {
-                const name = nodeUtils.unescapeIdentifier(typeParameter.name.text);
+                const name = typeParameter.name.text;
 
                 const constraint = typeParameter.constraint
                     ? convert({ node: typeParameter.constraint, parent: typeParameter, ast, additionalOptions })
@@ -473,7 +473,7 @@ module.exports = function convert(config) {
         case SyntaxKind.Identifier:
             Object.assign(result, {
                 type: AST_NODE_TYPES.Identifier,
-                name: nodeUtils.unescapeIdentifier(node.text)
+                name: node.text
             });
             break;
 
@@ -1748,7 +1748,7 @@ module.exports = function convert(config) {
                 raw: ast.text.slice(result.range[0], result.range[1])
             });
             if (parent.name && parent.name === node) {
-                result.value = nodeUtils.unescapeIdentifier(node.text);
+                result.value = node.text;
             } else {
                 result.value = nodeUtils.unescapeStringLiteralText(node.text);
             }
