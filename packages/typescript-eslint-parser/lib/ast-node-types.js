@@ -70,6 +70,7 @@ module.exports = {
     JSXNamespacedName: "JSXNamespacedName",
     JSXOpeningElement: "JSXOpeningElement",
     JSXSpreadAttribute: "JSXSpreadAttribute",
+    JSXSpreadChild: "JSXSpreadChild",
     JSXText: "JSXText",
     LabeledStatement: "LabeledStatement",
     Literal: "Literal",

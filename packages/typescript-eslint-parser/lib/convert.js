@@ -1897,7 +1897,9 @@ module.exports = function convert(config) {
             };
 
             Object.assign(result, {
-                type: AST_NODE_TYPES.JSXExpressionContainer,
+                type: node.dotDotDotToken
+                    ? AST_NODE_TYPES.JSXSpreadChild
+                    : AST_NODE_TYPES.JSXExpressionContainer,
                 expression
             });
 
