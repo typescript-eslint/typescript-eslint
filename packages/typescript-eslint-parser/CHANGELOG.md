@@ -1,3 +1,10 @@
+v17.0.0 - July 26, 2018
+
+* 117800d Fix: support JSXSpreadChild (fixes #500) (#501) (Ika)
+* 6eec85b Breaking: Remove "Experimental" from rest and spread (fixes #428) (#429) (Lucas Duailibe)
+* 42f29a1 Fix: error on multiple super classes (fixes #493) (#494) (Ika)
+* 11d9169 Breaking: always set optional on ClassProperty (fixes #472) (#491) (Ika)
+
 v16.0.1 - June 27, 2018
 
 * bc83c6a Chore: Do not run integration tests within npm test (James Henry)
