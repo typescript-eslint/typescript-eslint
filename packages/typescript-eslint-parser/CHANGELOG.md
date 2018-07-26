@@ -1,3 +1,7 @@
+v17.0.1 - July 26, 2018
+
+* f1d7de3 Chore: Replace removed API with public flags (fixes #498) (#505) (Texas Toland)
+
 v17.0.0 - July 26, 2018
 
 * 117800d Fix: support JSXSpreadChild (fixes #500) (#501) (Ika)
