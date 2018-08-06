@@ -40,7 +40,7 @@ And in your ESLint configuration file:
 
 We will always endeavor to support the latest stable version of TypeScript.
 
-The version of TypeScript currently supported by this parser is `~2.9.1`. This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+The version of TypeScript currently supported by this parser is `~3.0.1`. This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
 If you use a non-supported version of TypeScript, the parser will log a warning to the console.
 
@@ -57,10 +57,11 @@ The vast majority of issues which are submitted here are not actually parsing bu
 This is not ideal, but users need a place to be able to report those things, so it has become accepted that that will also be done in this repo.
 
 Please check the current list of open and known issues and ensure the issue has not been reported before. When creating a new issue provide as much information about your environment as possible. This includes:
- - ESLint Version
- - TypeScript version
- - The `typescript-eslint-parser` version
- - ESLint config or rules and plugins currently enabled
+
+- ESLint Version
+- TypeScript version
+- The `typescript-eslint-parser` version
+- ESLint config or rules and plugins currently enabled
 
 ## Integration Tests
 
@@ -90,10 +91,10 @@ Issues and pull requests will be triaged and responded to as quickly as possible
 
 ## Build Commands
 
-* `npm test` - run all linting and tests
-* `npm run lint` - run all linting
-* `npm run ast-alignment-tests` - run only Babylon AST alignment tests
-* `npm run integration-tests` - run only integration tests
+- `npm test` - run all linting and tests
+- `npm run lint` - run all linting
+- `npm run ast-alignment-tests` - run only Babylon AST alignment tests
+- `npm run integration-tests` - run only integration tests
 
 ## License
 
