@@ -62,6 +62,7 @@
     "typescript": "*"
   },
   "jest": {
+    "testEnvironment": "node",
     "testRegex": "tests/lib/.+\\.js$",
     "testPathIgnorePatterns": [],
     "collectCoverage": true,

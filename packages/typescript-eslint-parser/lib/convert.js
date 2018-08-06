@@ -154,6 +154,9 @@ module.exports = function convert(config) {
                         loc: nodeUtils.getLoc(typeArgument, ast)
                     };
                 }
+                if (typeArgument.kind === SyntaxKind.ImportType) {
+                    return convert({ node: typeArgument, parent: null, ast, additionalOptions });
+                }
                 return {
                     type: AST_NODE_TYPES.TSTypeReference,
                     range: [
@@ -2139,6 +2142,16 @@ module.exports = function convert(config) {
              */
             result.typeAnnotation.loc = result.typeAnnotation.typeAnnotation.loc;
             result.typeAnnotation.range = result.typeAnnotation.typeAnnotation.range;
+            break;
+
+        case SyntaxKind.ImportType:
+            Object.assign(result, {
+                type: AST_NODE_TYPES.TSImportType,
+                isTypeOf: !!node.isTypeOf,
+                parameter: convertChild(node.argument),
+                qualifier: convertChild(node.qualifier),
+                typeParameters: node.typeArguments ? convertTypeArgumentsToTypeParameters(node.typeArguments) : null
+            });
             break;
 
         case SyntaxKind.EnumDeclaration: {
