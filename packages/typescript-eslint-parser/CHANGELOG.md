@@ -1,3 +1,8 @@
+v18.0.0 - August 6, 2018
+
+* 16d1a78 Breaking: Support TypeScript 3.0 (#504) (James Henry)
+* 7461462 Fix: remove unnecessary TypeRef wrapper for ImportType (fixes #507) (#508) (Ika)
+
 v17.0.1 - July 26, 2018
 
 * f1d7de3 Chore: Replace removed API with public flags (fixes #498) (#505) (Texas Toland)
