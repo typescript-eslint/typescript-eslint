@@ -422,7 +422,12 @@ let fixturePatternConfigsToTest = [
             "class-with-private-parameter-properties",
             "class-with-protected-parameter-properties",
             "class-with-public-parameter-properties",
-            "class-with-readonly-parameter-properties"
+            "class-with-readonly-parameter-properties",
+            /**
+             * Not yet supported in Babylon https://github.com/babel/babel/issues/7749
+             */
+            "import-type",
+            "import-type-with-type-parameters-in-type-reference"
         ],
         parseWithSourceTypeModule: [
             "export-named-enum",

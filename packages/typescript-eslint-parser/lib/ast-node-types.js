@@ -113,6 +113,8 @@ module.exports = {
     TSEnumMember: "TSEnumMember",
     TSExportAssignment: "TSExportAssignment",
     TSExportKeyword: "TSExportKeyword",
+    TSImportType: "TSImportType",
+    TSLiteralType: "TSLiteralType",
     TSIndexSignature: "TSIndexSignature",
     TSInterfaceBody: "TSInterfaceBody",
     TSInterfaceDeclaration: "TSInterfaceDeclaration",
