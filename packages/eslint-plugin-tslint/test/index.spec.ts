@@ -81,5 +81,24 @@ ruleTester.run('tslint/config', rule, {
         },
       ],
     },
+    {
+      filename: './test/test-project/source.ts',
+      code: '/* tslint rules requires type info */',
+      parser: 'typescript-eslint-parser',
+      parserOptions,
+      options: [
+        {
+          rulesDirectory: ['node_modules/tslint/lib/rules'],
+          rules: { 'restrict-plus-operands': true, 'no-for-in-array': true },
+          configFile: `${__dirname}/test-project/tsconfig.json`,
+        },
+      ],
+      errors: [
+        {
+          message:
+            'Operands of \'+\' operation must either be both strings or both numbers, consider using template literals (tslint:restrict-plus-operands)',
+        },
+      ],
+    },
   ],
 });

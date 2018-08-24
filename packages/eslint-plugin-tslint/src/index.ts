@@ -8,15 +8,13 @@
 //------------------------------------------------------------------------------
 
 import { Linter as TSLintLinter, RuleSeverity, Configuration } from 'tslint';
+import * as ts from 'typescript';
+import { Rule } from 'eslint';
+import { createService } from 'typescript-service';
 
 //------------------------------------------------------------------------------
 // Plugin Definition
 //------------------------------------------------------------------------------
-
-interface LineAndColumn {
-  line: number;
-  column: number;
-}
 
 type RawRuleConfig =
   | null
@@ -37,14 +35,7 @@ interface TSLintPluginOptions {
   rules?: RawRulesConfig;
 }
 
-interface ESLintContext {
-  getSourceCode(): { text: string };
-  report(config: {
-    message: string;
-    loc: { start: LineAndColumn; end: LineAndColumn };
-  }): void;
-  options: TSLintPluginOptions[];
-}
+let languageService: ReturnType<typeof createService>;
 
 export const rules = {
   /**
@@ -76,13 +67,20 @@ export const rules = {
                 type: 'string',
               },
             },
+            configFile: {
+              type: 'string',
+            },
+            compilerOptions: {
+              type: 'object',
+              additionalProperties: true,
+            },
           },
           additionalProperties: false,
         },
       ],
     },
-    create: function(context: ESLintContext) {
-      const fakeFilename = 'eslint.ts';
+    create: function(context: Rule.RuleContext) {
+      const fileName = context.getFilename();
       const sourceCode = context.getSourceCode().text;
 
       /**
@@ -91,6 +89,8 @@ export const rules = {
       const {
         rules: tslintRules,
         rulesDirectory: tslintRulesDirectory,
+        configFile,
+        compilerOptions,
       } = context.options[0];
 
       const tslintOptions = {
@@ -108,16 +108,25 @@ export const rules = {
 
       const tslintConfig = Configuration.parseConfigFile(rawConfig);
 
+      let program: ts.Program | undefined = undefined;
+
+      if (fileName !== '<input>' && configFile) {
+        if (!languageService) {
+          languageService = createService({ configFile, compilerOptions });
+        }
+        program = languageService.getProgram();
+      }
+
       /**
        * Create an instance of TSLint
        */
-      const tslint = new TSLintLinter(tslintOptions);
+      const tslint = new TSLintLinter(tslintOptions, program);
 
       /**
        * Lint the source code using the configured TSLint instance, and the rules which have been
        * passed via the ESLint rule options for this rule (using "tslint/config")
        */
-      tslint.lint(fakeFilename, sourceCode, tslintConfig);
+      tslint.lint(fileName, sourceCode, tslintConfig);
 
       const result = tslint.getResult();
 

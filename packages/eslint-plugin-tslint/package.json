@@ -4,39 +4,55 @@
   "main": "lib/index.js",
   "author": "James Henry <james@henry.sc>",
   "description": "TSLint wrapper plugin for ESLint",
-  "keywords": ["eslint", "eslintplugin", "eslint-plugin", "tslint"],
-  "files": ["lib"],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "tslint"
+  ],
+  "files": [
+    "lib"
+  ],
   "repository": "JamesHenry/eslint-plugin-tslint",
   "license": "MIT",
   "scripts": {
     "test": "npm run build && jest",
     "build": "rm -rf lib/ && tsc",
-    "semantic-release":
-      "semantic-release pre && npm publish && semantic-release post",
-    "precommit": "npm test && lint-staged",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "_precommit": "npm test && lint-staged",
     "cz": "git-cz"
+  },
+  "dependencies": {
+    "typescript-service": "^2.0.0"
   },
   "peerDependencies": {
     "tslint": "^5.0.0"
   },
   "devDependencies": {
-    "@types/jest": "21.1.8",
-    "@types/node": "8.0.58",
+    "@types/eslint": "^4.16.3",
+    "@types/jest": "23.3.1",
+    "@types/node": "10.9.1",
     "cz-conventional-changelog": "2.1.0",
-    "eslint": "4.13.1",
+    "eslint": "5.4.0",
     "husky": "^0.14.3",
-    "jest": "21.2.1",
-    "lint-staged": "6.0.0",
-    "prettier-eslint-cli": "4.4.2",
-    "semantic-release": "8.2.0",
-    "ts-jest": "^21.2.3",
-    "tslint": "^5.8.0",
-    "typescript": "2.6.2",
-    "typescript-eslint-parser": "10.0.0"
+    "jest": "23.5.0",
+    "lint-staged": "7.2.2",
+    "prettier-eslint-cli": "4.7.1",
+    "semantic-release": "15.9.9",
+    "ts-jest": "^23.1.4",
+    "tslint": "^5.11.0",
+    "typescript": "3.0.1",
+    "typescript-eslint-parser": "18.0.0"
   },
   "lint-staged": {
-    "src/**/*": ["prettier-eslint --write", "git add"],
-    "test/**/*": ["prettier-eslint --write", "git add"]
+    "src/**/*": [
+      "prettier-eslint --write",
+      "git add"
+    ],
+    "test/**/*": [
+      "prettier-eslint --write",
+      "git add"
+    ]
   },
   "config": {
     "commitizen": {
@@ -44,10 +60,17 @@
     }
   },
   "jest": {
+    "testEnvironment": "node",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.ts$",
-    "moduleFileExtensions": ["ts", "js", "json"]
+    "testMatch": [
+      "<rootDir>/test/*.spec.ts"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
   }
 }
