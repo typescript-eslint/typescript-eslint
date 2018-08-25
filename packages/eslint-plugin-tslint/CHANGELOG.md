@@ -1,3 +1,8 @@
+## <small>2.2.2 (2018-08-25)</small>
+
+* test: Read real code from test file ([ba2baed](https://github.com/unlight/eslint-plugin-tslint2/commit/ba2baed))
+* fix: Pass sourceText parameter to service getSource ([dd4c2f8](https://github.com/unlight/eslint-plugin-tslint2/commit/dd4c2f8))
+
 ## <small>2.2.1 (2018-08-25)</small>
 
 * fix: Fixed bug when file not defined in tsconfig ([20b498b](https://github.com/unlight/eslint-plugin-tslint2/commit/20b498b))
