@@ -1,8 +1,12 @@
 {
-  "name": "eslint-plugin-tslint",
+  "name": "eslint-plugin-tslint2",
   "version": "0.0.0-semantically-released",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
+  "typings": "src/index.ts",
   "author": "James Henry <james@henry.sc>",
+  "contributors": [
+    "Roman Vasilev (https://github.com/unlight)"
+  ],
   "description": "TSLint wrapper plugin for ESLint",
   "keywords": [
     "eslint",
@@ -10,16 +14,15 @@
     "eslint-plugin",
     "tslint"
   ],
-  "files": [
-    "lib"
-  ],
-  "repository": "JamesHenry/eslint-plugin-tslint",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unlight/eslint-plugin-tslint2.git"
+  },
   "license": "MIT",
   "scripts": {
     "test": "npm run build && jest",
     "build": "rm -rf lib/ && tsc",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "_precommit": "npm test && lint-staged",
     "cz": "git-cz"
   },
   "dependencies": {
@@ -30,33 +33,48 @@
   },
   "devDependencies": {
     "@types/eslint": "^4.16.3",
-    "@types/jest": "23.3.1",
-    "@types/node": "10.9.1",
-    "cz-conventional-changelog": "2.1.0",
-    "eslint": "5.4.0",
-    "husky": "^0.14.3",
-    "jest": "23.5.0",
-    "lint-staged": "7.2.2",
-    "prettier-eslint-cli": "4.7.1",
-    "semantic-release": "15.9.9",
+    "@types/jest": "^23.3.1",
+    "@types/node": "^10.9.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^5.4.0",
+    "jest": "^23.5.0",
+    "semantic-release": "^15.9.9",
     "ts-jest": "^23.1.4",
     "tslint": "^5.11.0",
-    "typescript": "3.0.1",
-    "typescript-eslint-parser": "18.0.0"
+    "typescript": "^3.0.1",
+    "typescript-eslint-parser": "^18.0.0"
   },
-  "lint-staged": {
-    "src/**/*": [
-      "prettier-eslint --write",
-      "git add"
+  "release": {
+    "generateNotes": {
+      "writerOpts": {
+        "__keep": "me"
+      }
+    },
+    "verifyConditions": [
+      "@semantic-release/changelog",
+      "@semantic-release/github",
+      "@semantic-release/npm",
+      "@semantic-release/git"
     ],
-    "test/**/*": [
-      "prettier-eslint --write",
-      "git add"
+    "prepare": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ],
+    "publish": [
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ],
+    "success": [
+      "@semantic-release/github"
+    ],
+    "fail": [
+      "@semantic-release/github"
     ]
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "cz-conventional-changelog"
     }
   },
   "jest": {
@@ -72,5 +90,12 @@
       "js",
       "json"
     ]
+  },
+  "bugs": {
+    "url": "https://github.com/unlight/eslint-plugin-tslint2/issues"
+  },
+  "homepage": "https://github.com/unlight/eslint-plugin-tslint2#readme",
+  "directories": {
+    "test": "test"
   }
 }

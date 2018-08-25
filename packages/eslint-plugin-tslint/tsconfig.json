@@ -6,7 +6,7 @@
 		"removeComments": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"sourceMap": false,
+		"sourceMap": true,
 		"pretty": true,
 		"allowUnreachableCode": false,
 		"noFallthroughCasesInSwitch": false,
