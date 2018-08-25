@@ -47,6 +47,18 @@ ruleTester.run('tslint/config', rules.config, {
             parserOptions,
             options: [tslintRulesConfig],
         },
+        {
+            filename: './test/test-project/file-spec.ts',
+            code: '/* file not defined in tsconfig */',
+            parser: 'typescript-eslint-parser',
+            parserOptions,
+            options: [
+                {
+                    ...tslintRulesConfig,
+                    configFile: `${__dirname}/test-project/tsconfig-files.json`,
+                },
+            ],
+        },
     ],
 
     invalid: [

@@ -7,10 +7,12 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import { Linter as TSLintLinter, RuleSeverity, Configuration } from 'tslint';
+import { RuleSeverity, Configuration } from 'tslint';
 import * as ts from 'typescript';
 import { Rule } from 'eslint';
-import { createService } from 'typescript-service';
+import { typescriptService } from './typescript-service';
+import { CustomLinter } from './custom-linter';
+
 
 //------------------------------------------------------------------------------
 // Plugin Definition
@@ -34,8 +36,6 @@ interface TSLintPluginOptions {
     rulesDirectory?: string[];
     rules?: RawRulesConfig;
 }
-
-let languageService: ReturnType<typeof createService>;
 
 export const rules = {
     /**
@@ -110,16 +110,14 @@ export const rules = {
             let program: ts.Program | undefined = undefined;
 
             if (fileName !== '<input>' && configFile) {
-                if (!languageService) {
-                    languageService = createService({ configFile, compilerOptions });
-                }
-                program = languageService.getProgram();
+                const service = typescriptService({ configFile, compilerOptions });
+                program = service.getProgram();
             }
 
             /**
              * Create an instance of TSLint
              */
-            const tslint = new TSLintLinter(tslintOptions, program);
+            const tslint = new CustomLinter(tslintOptions, program);
 
             /**
              * Lint the source code using the configured TSLint instance, and the rules which have been

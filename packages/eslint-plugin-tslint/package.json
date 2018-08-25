@@ -23,6 +23,7 @@
     "test": "npm run tscheck && npm run test:r",
     "tscheck": "echo tscheck... && tsc --noEmit",
     "test:r": "jest --runInBand --verbose",
+    "test:w": "jest --watch --runInBand",
     "semantic-release": "semantic-release",
     "prepublishOnly": "npm run build && sed -i -e 's/devDependencies/_devDependencies/g' package.json",
     "build": "tsc",

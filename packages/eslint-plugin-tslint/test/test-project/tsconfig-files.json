@@ -1,0 +1,6 @@
+{
+  "lib": ["dom"],
+  "files": [
+    "file.ts"
+  ]
+}
