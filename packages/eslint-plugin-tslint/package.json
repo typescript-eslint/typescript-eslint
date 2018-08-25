@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-tslint2",
-  "version": "0.0.0-semantically-released",
+  "version": "2.2.0",
   "main": "dist/index.js",
   "typings": "src/index.ts",
   "author": "James Henry <james@henry.sc>",
