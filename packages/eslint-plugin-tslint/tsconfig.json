@@ -17,7 +17,7 @@
 		"noUnusedLocals": true,
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
-		"outDir": "./lib",
+		"outDir": "./dist",
 		"types": [
 			"node"
 		],

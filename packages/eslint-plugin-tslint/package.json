@@ -20,9 +20,14 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "npm run build && jest",
-    "build": "rm -rf lib/ && tsc",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "test": "npm run tscheck && npm run test:r",
+    "tscheck": "echo tscheck... && tsc --noEmit",
+    "test:r": "jest --runInBand --verbose",
+    "semantic-release": "semantic-release",
+    "prepublishOnly": "npm run build && sed -i -e 's/devDependencies/_devDependencies/g' package.json",
+    "build": "tsc",
+    "prebuild": "npm run clean",
+    "clean": "rm -rf dist/",
     "cz": "git-cz"
   },
   "dependencies": {
