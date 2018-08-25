@@ -37,6 +37,8 @@
     "tslint": "^5.0.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.0",
+    "@semantic-release/git": "^7.0.2",
     "@types/eslint": "^4.16.3",
     "@types/jest": "^23.3.1",
     "@types/node": "^10.9.2",
