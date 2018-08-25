@@ -1,17 +1,26 @@
-<h1 align="center">ESLint Plugin TSLint</h1>
+# eslint-plugin-tslint2
+ESLint plugin wraps a TSLint configuration and lints the whole source using TSLint.
 
-<p align="center">
-    <a href="https://travis-ci.org/JamesHenry/eslint-plugin-tslint"><img src="https://img.shields.io/travis/JamesHenry/eslint-plugin-tslint.svg?style=flat-square" alt="Travis"/></a>
-    <a href="https://github.com/JamesHenry/eslint-plugin-tslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/eslint-plugin-tslint.svg?style=flat-square" alt="GitHub license" /></a>
-    <a href="https://www.npmjs.com/package/eslint-plugin-tslint"><img src="https://img.shields.io/npm/v/eslint-plugin-tslint.svg?style=flat-square" alt="NPM Version" /></a>
-    <a href="https://www.npmjs.com/package/eslint-plugin-tslint"><img src="https://img.shields.io/npm/dt/eslint-plugin-tslint.svg?style=flat-square" alt="NPM Downloads" /></a>
-    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen friendly" /></a>
-    <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square" alt="semantic-release" /></a>
-    <a href="https://greenkeeper.io"><img src="https://badges.greenkeeper.io/JamesHenry/mongoose-schema-to-typescript-interface.svg?style=flat-square" alt="greenkeeper.io" /></a>
-</p>
+## USAGE
+Configure in your eslint config file:
+```
+"plugins": [
+    "tslint2"
+],
+"rules": {
+    "tslint2/config": ["warn", {
+        rules: { /* tslint rules */ },
+        rulesDirectory: [ /* array of paths to directories with rules, e.g. 'node_modules/tslint/lib/rules' */ ],
+        configFile: '/* path to tsconfig.json of your project */',
+        compilerOptions: { /* ability to override TypeScript compilers options defined in tsconfig.json */ }
+    }],
+}
+```
 
-<br>
-<p align="center" style="border: 1px solid blue;">
-<a href="http://typescriptcourses.com" target="_blank"><img src="https://james-henry-cdn.firebaseapp.com/images/typescriptcourses-github-banner.png" alt="typescriptcourses.com"/></a>
-</p>
-<br>
+## RULES
+Plugin contains only single rule `tslint2/config`.
+
+### TSLint Plugins
+* https://github.com/Glavin001/tslint-clean-code
+* https://github.com/Microsoft/tslint-microsoft-contrib
+
