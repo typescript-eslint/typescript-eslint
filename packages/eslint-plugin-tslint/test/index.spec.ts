@@ -5,6 +5,7 @@
 
 import { rules } from '../src/index';
 import { RuleTester, Linter } from 'eslint';
+import { readFileSync } from 'fs';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -49,7 +50,7 @@ ruleTester.run('tslint/config', rules.config, {
         },
         {
             filename: './test/test-project/file-spec.ts',
-            code: '/* file not defined in tsconfig */',
+            code: readFileSync('./test/test-project/file-spec.ts', 'utf8'),
             parser: 'typescript-eslint-parser',
             parserOptions,
             options: [
@@ -92,13 +93,13 @@ ruleTester.run('tslint/config', rules.config, {
         },
         {
             filename: './test/test-project/source.ts',
-            code: '/* tslint rules requires type info */',
+            code: readFileSync('./test/test-project/source.ts', 'utf8'),
             parser: 'typescript-eslint-parser',
             parserOptions,
             options: [
                 {
                     rulesDirectory: ['node_modules/tslint/lib/rules'],
-                    rules: { 'restrict-plus-operands': true, 'no-for-in-array': true },
+                    rules: { 'restrict-plus-operands': true },
                     configFile: `${__dirname}/test-project/tsconfig.json`,
                 },
             ],
