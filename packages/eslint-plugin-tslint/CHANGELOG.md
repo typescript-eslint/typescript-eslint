@@ -1,3 +1,7 @@
+## <small>2.2.1 (2018-08-25)</small>
+
+* fix: Fixed bug when file not defined in tsconfig ([20b498b](https://github.com/unlight/eslint-plugin-tslint2/commit/20b498b))
+
 ## 2.2.0 (2018-08-25)
 
 * ci: Added missing packages ([3938da6](https://github.com/unlight/eslint-plugin-tslint2/commit/3938da6))
