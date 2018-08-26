@@ -32,7 +32,7 @@
     "cz": "git-cz"
   },
   "dependencies": {
-    "typescript-service": "^2.0.0"
+    "typescript-service": "^2.0.2"
   },
   "peerDependencies": {
     "tslint": "^5.0.0"
