@@ -18,6 +18,8 @@ export class CustomLinter extends TSLintLinter {
             return super.getSourceFile(fileName, source);
         }
         const service = typescriptService();
-        return service.getSourceFile(fileName, source);
+        const result =  service.getSourceFile(fileName, source);
+        this.program = service.getProgram();
+        return result;
     }
 }
