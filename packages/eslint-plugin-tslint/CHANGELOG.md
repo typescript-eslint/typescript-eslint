@@ -1,3 +1,7 @@
+## <small>2.2.3 (2018-08-26)</small>
+
+* fix: Updated typescript-service dependency ([2f4f434](https://github.com/unlight/eslint-plugin-tslint2/commit/2f4f434))
+
 ## <small>2.2.2 (2018-08-25)</small>
 
 * test: Read real code from test file ([ba2baed](https://github.com/unlight/eslint-plugin-tslint2/commit/ba2baed))
