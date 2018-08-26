@@ -1,3 +1,7 @@
+## <small>2.2.4 (2018-08-26)</small>
+
+* fix: Update program when sourceFile was updated ([0fe933c](https://github.com/unlight/eslint-plugin-tslint2/commit/0fe933c))
+
 ## <small>2.2.3 (2018-08-26)</small>
 
 * fix: Updated typescript-service dependency ([2f4f434](https://github.com/unlight/eslint-plugin-tslint2/commit/2f4f434))
