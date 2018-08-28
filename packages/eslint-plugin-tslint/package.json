@@ -34,21 +34,21 @@
     "cz": "git-cz"
   },
   "dependencies": {
-    "typescript-service": "^2.0.2"
+    "typescript-service": "^2.0.3"
   },
   "peerDependencies": {
     "tslint": "^5.0.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.0",
-    "@semantic-release/git": "^7.0.2",
+    "@semantic-release/git": "^7.0.3",
     "@types/eslint": "^4.16.3",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.9.2",
+    "@types/node": "^10.9.3",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.4.0",
     "mocha": "^5.2.0",
-    "semantic-release": "^15.9.9",
+    "semantic-release": "^15.9.12",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1",
