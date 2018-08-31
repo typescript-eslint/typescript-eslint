@@ -2,7 +2,7 @@
 ESLint plugin wraps a TSLint configuration and lints the whole source using TSLint.  
 Fork of [eslint-plugin-tslint](https://github.com/JamesHenry/eslint-plugin-tslint), the main difference are:  
 - Support rules which requires type information
-- Support tsx (WIP)
+- Support tsx
 
 ## INSTALL
 ```
@@ -34,3 +34,4 @@ Plugin contains only single rule `tslint2/config`.
 ### TSLint Plugins
 * https://github.com/Glavin001/tslint-clean-code
 * https://github.com/Microsoft/tslint-microsoft-contrib
+* https://github.com/SonarSource/SonarTS

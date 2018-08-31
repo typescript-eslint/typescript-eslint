@@ -20,11 +20,11 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "npm run tscheck && npm run test:r",
+    "test": "npm run tscheck && npm run test:cov",
     "tscheck": "echo tscheck... && tsc --noEmit",
-    "test:r": "npm run mocha -- test/*.spec.ts",
-    "mocha": "node -r ts-node/register/transpile-only node_modules/mocha/bin/_mocha --timeout 5000",
-    "test:w": "npm run mocha -- --watch-extensions ts --watch test/**/*.spec.ts",
+    "test:r": "mocha -r ts-node/register/transpile-only --timeout 8s test/*.spec.ts",
+    "test:w": "mocha -r ts-node/register/transpile-only --watch-extensions ts --watch --timeout 8s test/**/*.spec.ts",
+    "test:cov": "nyc mocha --timeout 8s test/**/*.spec.ts",
     "test:d": "node --inspect-brk -r ts-node/register/transpile-only node_modules/mocha/bin/_mocha --no-timeouts --watch-extensions ts --watch test/**/*.spec.ts",
     "semantic-release": "semantic-release",
     "prepublishOnly": "npm run build && sed -i -e 's/devDependencies/_devDependencies/g' package.json",
@@ -48,11 +48,34 @@
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.4.0",
     "mocha": "^5.2.0",
+    "nyc": "^13.0.1",
     "semantic-release": "^15.9.12",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1",
     "typescript-eslint-parser": "^18.0.0"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/*.spec.ts"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "require": [
+      "ts-node/register/transpile-only"
+    ],
+    "reporter": [
+      "text"
+    ],
+    "sourceMap": true,
+    "instrument": true
   },
   "release": {
     "generateNotes": {
