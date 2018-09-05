@@ -1,0 +1,19 @@
+sudo: false
+notifications:
+    email: false
+language: node_js
+cache:
+    directories:
+        - node_modules
+node_js:
+    - '9'
+    - '8'
+install:
+    - npm install
+script:
+    - npm test
+deploy:
+    provider: script
+    script: npx semantic-release
+    on:
+        branch: master

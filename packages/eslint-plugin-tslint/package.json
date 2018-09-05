@@ -1,5 +1,5 @@
 {
-  "name": "eslint-plugin-tslint2",
+  "name": "eslint-plugin-tslint",
   "version": "2.2.4",
   "main": "dist/index.js",
   "typings": "src/index.ts",
@@ -16,17 +16,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/unlight/eslint-plugin-tslint2.git"
+    "url": "git+https://github.com/JamesHenry/eslint-plugin-tslint.git"
   },
   "license": "MIT",
   "scripts": {
-    "test": "npm run tscheck && npm run test:cov",
+    "test": "npm run eslint && npm run tscheck && npm run test:cov",
     "tscheck": "echo tscheck... && tsc --noEmit",
     "test:r": "mocha -r ts-node/register/transpile-only --timeout 8s test/*.spec.ts",
     "test:w": "mocha -r ts-node/register/transpile-only --watch-extensions ts --watch --timeout 8s test/**/*.spec.ts",
     "test:cov": "nyc mocha --timeout 8s test/**/*.spec.ts",
     "test:d": "node --inspect-brk -r ts-node/register/transpile-only node_modules/mocha/bin/_mocha --no-timeouts --watch-extensions ts --watch test/**/*.spec.ts",
-    "semantic-release": "semantic-release",
+    "eslint": "eslint src --ext ts",
     "prepublishOnly": "npm run build && sed -i -e 's/devDependencies/_devDependencies/g' package.json",
     "build": "tsc",
     "prebuild": "npm run clean",
@@ -78,11 +78,6 @@
     "instrument": true
   },
   "release": {
-    "generateNotes": {
-      "writerOpts": {
-        "__keep": "me"
-      }
-    },
     "verifyConditions": [
       "@semantic-release/changelog",
       "@semantic-release/github",
@@ -111,9 +106,9 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/unlight/eslint-plugin-tslint2/issues"
+    "url": "https://github.com/JamesHenry/eslint-plugin-tslint/issues"
   },
-  "homepage": "https://github.com/unlight/eslint-plugin-tslint2#readme",
+  "homepage": "https://github.com/JamesHenry/eslint-plugin-tslint#readme",
   "directories": {
     "test": "test"
   }
