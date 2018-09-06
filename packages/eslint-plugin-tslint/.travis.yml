@@ -6,7 +6,6 @@ cache:
     directories:
         - node_modules
 node_js:
-    - '9'
     - '8'
 install:
     - npm install
@@ -14,6 +13,8 @@ script:
     - npm test
 deploy:
     provider: script
-    script: npx semantic-release
+    script:
+        npm install
+        npx semantic-release
     on:
         branch: master
