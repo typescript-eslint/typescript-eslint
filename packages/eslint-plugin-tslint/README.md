@@ -40,3 +40,4 @@ Plugin contains only single rule `tslint/config`.
 * https://github.com/Glavin001/tslint-clean-code
 * https://github.com/Microsoft/tslint-microsoft-contrib
 * https://github.com/SonarSource/SonarTS
+* https://github.com/ajafff/tslint-consistent-codestyle
