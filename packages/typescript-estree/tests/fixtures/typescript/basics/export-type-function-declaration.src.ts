@@ -1,0 +1,1 @@
+export type TestCallback = (a: number) => void;
