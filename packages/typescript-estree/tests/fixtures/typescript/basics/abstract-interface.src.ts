@@ -1,0 +1,2 @@
+export abstract interface I {
+}

@@ -1,0 +1,73 @@
+{
+  "name": "typescript-estree",
+  "description": "A parser that converts TypeScript source code into an ESTree compatible form",
+  "homepage": "https://github.com/JamesHenry/typescript-estree",
+  "main": "parser.js",
+  "version": "0.0.0-development",
+  "files": [
+    "lib",
+    "parser.js"
+  ],
+  "engines": {
+    "node": ">=6.14.0"
+  },
+  "repository": "JamesHenry/typescript-estree",
+  "bugs": {
+    "url": "https://github.com/JamesHenry/typescript-estree/issues"
+  },
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "babel-code-frame": "6.26.0",
+    "babylon": "7.0.0-beta.39",
+    "cz-conventional-changelog": "2.1.0",
+    "glob": "7.1.2",
+    "husky": "0.14.3",
+    "jest": "23.1.0",
+    "lint-staged": "7.3.0",
+    "lodash.isplainobject": "4.0.6",
+    "semantic-release": "^15.9.16",
+    "shelljs": "0.8.2",
+    "typescript": "~3.0.1",
+    "travis-deploy-once": "^5.0.8"
+  },
+  "keywords": [
+    "ast",
+    "estree",
+    "ecmascript",
+    "javascript",
+    "typescript",
+    "parser",
+    "syntax"
+  ],
+  "scripts": {
+    "test": "npm run unit-tests && npm run ast-alignment-tests",
+    "unit-tests": "jest",
+    "ast-alignment-tests": "jest --config=./tests/ast-alignment/jest.config.js",
+    "precommit": "npm test && lint-staged",
+    "cz": "git-cz",
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
+  },
+  "dependencies": {
+    "lodash.unescape": "4.0.1",
+    "semver": "5.5.0"
+  },
+  "peerDependencies": {
+    "typescript": "*"
+  },
+  "lint-staged": {},
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testRegex": "tests/lib/.+\\.js$",
+    "testPathIgnorePatterns": [],
+    "collectCoverage": true,
+    "coverageReporters": [
+      "text-summary"
+    ]
+  }
+}

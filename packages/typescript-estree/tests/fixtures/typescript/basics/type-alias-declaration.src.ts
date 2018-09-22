@@ -1,0 +1,1 @@
+type Result<T> = Success<T> | Failure
