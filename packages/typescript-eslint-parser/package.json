@@ -6,7 +6,6 @@
   "main": "parser.js",
   "version": "19.0.0",
   "files": [
-    "lib",
     "parser.js"
   ],
   "engines": {
