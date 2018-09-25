@@ -38,7 +38,7 @@ const NODE_MODULES = "./node_modules/",
     // Files
     MAKEFILE = "./Makefile.js",
     /* eslint-disable no-use-before-define */
-    JS_FILES = `${find("lib/").filter(fileType("js")).join(" ")} parser.js`,
+    JS_FILES = "parser.js",
     TEST_FILES = find("tests/lib/").filter(fileType("js")).join(" "),
     TOOLS_FILES = find("tools/").filter(fileType("js")).join(" ");
     /* eslint-enable no-use-before-define */

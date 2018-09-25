@@ -18,15 +18,10 @@
   },
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "babel-code-frame": "6.26.0",
-    "babylon": "7.0.0-beta.39",
-    "eslint": "4.19.1",
     "eslint-config-eslint": "4.0.0",
     "eslint-plugin-node": "6.0.1",
     "eslint-release": "0.11.1",
-    "glob": "7.1.2",
     "jest": "23.1.0",
-    "lodash.isplainobject": "4.0.6",
     "npm-license": "0.3.3",
     "shelljs": "0.8.2",
     "shelljs-nodecli": "0.1.1",
@@ -42,9 +37,8 @@
     "eslint"
   ],
   "scripts": {
-    "test": "node Makefile.js test && npm run ast-alignment-tests",
+    "test": "node Makefile.js test",
     "jest": "jest",
-    "ast-alignment-tests": "jest --config=./tests/ast-alignment/jest.config.js",
     "integration-tests": "docker-compose -f tests/integration/docker-compose.yml up",
     "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
     "lint": "node Makefile.js lint",
@@ -55,8 +49,8 @@
     "betarelease": "eslint-prerelease beta"
   },
   "dependencies": {
-    "lodash.unescape": "4.0.1",
-    "semver": "5.5.0"
+    "eslint": "4.19.1",
+    "typescript-estree": "1.0.0"
   },
   "peerDependencies": {
     "typescript": "*"

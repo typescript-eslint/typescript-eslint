@@ -1,18 +1,21 @@
 # TypeScript ESLint Parser
 
-A parser that converts TypeScript source code into an [ESTree](https://github.com/estree/estree)-compatible form.
+An ESLint custom parser which leverages [TypeScript ESTree](https://github.com/JamesHenry/typescript-estree) to allow for ESLint to lint TypeScript source code.
+
+
+## Installation:
+
+```sh
+npm install --save-dev typescript-eslint-parser
+```
 
 ## Usage
 
-This parser is actually somewhat generic and robust - it could be used to power any use-case which requires taking TypeScript source code and producing an ESTree-compatiable AST.
+In your ESLint configuration file, set the `parser` property:
 
-In fact, that is exactly what it is used for in the popular open-source code formatter, [Prettier](https://prettier.io), to power its TypeScript support.
-
-Nevertheless, the parser does have a special appreciation for ESLint-specific use-cases built in, and can even produce a slightly different AST for ESLint if needed (using the special `parseForESLint()` method).
-
-The majority of users of this parser use it to enable them to use ESLint on their TypeScript source files, so they will not actually be interacting with the parser directly. Instead they will configure ESLint to use it instead of its default parser, [espree](https://github.com/eslint/espree), which does not understand TypeScript.
-
-## Usage with ESLint
+```json
+"parser": "typescript-eslint-parser"
+```
 
 There is sometimes an incorrect assumption that the parser itself is what does everything necessary to facilitate the use of ESLint with TypeScript. In actuality, it is the combination of the parser _and_ one or more plugins which allow you to maximize your usage of ESLint with TypeScript.
 
@@ -23,18 +26,6 @@ The core rules built into ESLint, such as `indent` have no knowledge of such con
 Instead, you also need to make use of one more plugins which will add or extend rules with TypeScript-specific features.
 
 By far the most common case will be installing the [eslint-plugin-typescript](https://github.com/nzakas/eslint-plugin-typescript) plugin, but there are also other relevant options available such a [eslint-plugin-tslint](https://github.com/JamesHenry/eslint-plugin-tslint).
-
-Install:
-
-```sh
-npm install --save-dev typescript-eslint-parser
-```
-
-And in your ESLint configuration file:
-
-```json
-"parser": "typescript-eslint-parser"
-```
 
 ## Supported TypeScript Version
 
@@ -52,9 +43,7 @@ If you're familiar with TypeScript and ESLint, and you'd like to see this projec
 
 ## Reporting Issues
 
-The vast majority of issues which are submitted here are not actually parsing bugs at all. They are integration issues with the ESLint ecosystem.
-
-This is not ideal, but users need a place to be able to report those things, so it has become accepted that that will also be done in this repo.
+Please **do not report parsing/AST issues in this repo**, report them directly to [TypeScript ESTree](https://github.com/JamesHenry/typescript-estree).
 
 Please check the current list of open and known issues and ensure the issue has not been reported before. When creating a new issue provide as much information about your environment as possible. This includes:
 
@@ -69,9 +58,9 @@ We have a very flexible way of running integration tests which connects all of t
 
 We run each test within its own docker container, and so each one has complete autonomy over what dependencies/plugins are installed and what versions are used. This also has the benefit of not bloating the `package.json` and `node_modules` of the parser project itself.
 
-> If you are going to submit an issue related to the usage of this parser with ESLint, please consider creating a failing integration which clearly demonstrates the behavior. It's honestly super quick!
+> If you are going to submit an issue related to the usage of this parser with ESLint, please consider creating a failing integration test which clearly demonstrates the behavior. It's honestly super quick!
 
-You just need to duplicate on of the existing test sub-directories found in `tests/integration/`, tweak the dependencies and ESLint config to match what you need, and add a new entry to the docker-compose.yml file which matches the format of the existing ones.
+You just need to duplicate one of the existing test sub-directories found in `tests/integration/`, tweak the dependencies and ESLint config to match what you need, and add a new entry to the docker-compose.yml file which matches the format of the existing ones.
 
 Then run:
 
@@ -93,7 +82,6 @@ Issues and pull requests will be triaged and responded to as quickly as possible
 
 - `npm test` - run all linting and tests
 - `npm run lint` - run all linting
-- `npm run ast-alignment-tests` - run only Babylon AST alignment tests
 - `npm run integration-tests` - run only integration tests
 
 ## License
