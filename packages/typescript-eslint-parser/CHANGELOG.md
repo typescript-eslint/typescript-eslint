@@ -1,3 +1,7 @@
+v19.0.1 - September 25, 2018
+
+* 7a367c7 Fix: Remove lib from package.json files (#518) (James Henry)
+
 v19.0.0 - September 25, 2018
 
 * 3d3ab2f Breaking: Use typescript-estree for parsing (#515) (James Henry)
