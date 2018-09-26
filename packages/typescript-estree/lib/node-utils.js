@@ -326,6 +326,7 @@ function isTypeKeyword(kind) {
         case SyntaxKind.ObjectKeyword:
         case SyntaxKind.StringKeyword:
         case SyntaxKind.SymbolKeyword:
+        case SyntaxKind.UnknownKeyword:
         case SyntaxKind.VoidKeyword:
             return true;
         default:
