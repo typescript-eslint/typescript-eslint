@@ -1,4 +1,5 @@
 * text=auto
 *.js eol=lf
 *.ts eol=lf
+*.tsx eol=lf
 *.yml eol=lf
