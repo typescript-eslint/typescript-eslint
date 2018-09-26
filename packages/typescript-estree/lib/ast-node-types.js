@@ -150,6 +150,7 @@ module.exports = {
     TSTypeReference: "TSTypeReference",
     TSUnionType: "TSUnionType",
     TSUndefinedKeyword: "TSUndefinedKeyword",
+    TSUnknownKeyword: "TSUnknownKeyword",
     TSVoidKeyword: "TSVoidKeyword",
     UnaryExpression: "UnaryExpression",
     UpdateExpression: "UpdateExpression",

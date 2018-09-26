@@ -382,6 +382,11 @@ let fixturePatternConfigsToTest = [
              */
             "declare-function",
             /**
+             * Babylon: TSTypeReference + identifier
+             * tsep: TSUnknownKeyword
+             */
+            "unknown-type-annotation",
+            /**
              * Other major AST differences (e.g. fundamentally different node types)
              */
             "class-with-mixin",
