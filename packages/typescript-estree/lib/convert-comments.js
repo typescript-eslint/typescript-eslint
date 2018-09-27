@@ -5,14 +5,14 @@
  * MIT License
  */
 
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const ts = require("typescript"),
-    nodeUtils = require("./node-utils");
+const ts = require('typescript'),
+  nodeUtils = require('./node-utils');
 
 //------------------------------------------------------------------------------
 // Private
@@ -29,24 +29,31 @@ const ts = require("typescript"),
  * @returns {Object} The comment object.
  * @private
  */
-function convertTypeScriptCommentToEsprimaComment(block, text, start, end, startLoc, endLoc) {
-    const comment = {
-        type: block ? "Block" : "Line",
-        value: text
+function convertTypeScriptCommentToEsprimaComment(
+  block,
+  text,
+  start,
+  end,
+  startLoc,
+  endLoc
+) {
+  const comment = {
+    type: block ? 'Block' : 'Line',
+    value: text
+  };
+
+  if (typeof start === 'number') {
+    comment.range = [start, end];
+  }
+
+  if (typeof startLoc === 'object') {
+    comment.loc = {
+      start: startLoc,
+      end: endLoc
     };
+  }
 
-    if (typeof start === "number") {
-        comment.range = [start, end];
-    }
-
-    if (typeof startLoc === "object") {
-        comment.loc = {
-            start: startLoc,
-            end: endLoc
-        };
-    }
-
-    return comment;
+  return comment;
 }
 
 /**
@@ -58,21 +65,30 @@ function convertTypeScriptCommentToEsprimaComment(block, text, start, end, start
  * @private
  */
 function getCommentFromTriviaScanner(triviaScanner, ast, code) {
-    const kind = triviaScanner.getToken();
-    const isBlock = (kind === ts.SyntaxKind.MultiLineCommentTrivia);
-    const range = {
-        pos: triviaScanner.getTokenPos(),
-        end: triviaScanner.getTextPos(),
-        kind: triviaScanner.getToken()
-    };
+  const kind = triviaScanner.getToken();
+  const isBlock = kind === ts.SyntaxKind.MultiLineCommentTrivia;
+  const range = {
+    pos: triviaScanner.getTokenPos(),
+    end: triviaScanner.getTextPos(),
+    kind: triviaScanner.getToken()
+  };
 
-    const comment = code.substring(range.pos, range.end);
-    const text = (isBlock) ? comment.replace(/^\/\*/, "").replace(/\*\/$/, "") : comment.replace(/^\/\//, "");
-    const loc = nodeUtils.getLocFor(range.pos, range.end, ast);
+  const comment = code.substring(range.pos, range.end);
+  const text = isBlock
+    ? comment.replace(/^\/\*/, '').replace(/\*\/$/, '')
+    : comment.replace(/^\/\//, '');
+  const loc = nodeUtils.getLocFor(range.pos, range.end, ast);
 
-    const esprimaComment = convertTypeScriptCommentToEsprimaComment(isBlock, text, range.pos, range.end, loc.start, loc.end);
+  const esprimaComment = convertTypeScriptCommentToEsprimaComment(
+    isBlock,
+    text,
+    range.pos,
+    range.end,
+    loc.start,
+    loc.end
+  );
 
-    return esprimaComment;
+  return esprimaComment;
 }
 
 //------------------------------------------------------------------------------
@@ -80,9 +96,8 @@ function getCommentFromTriviaScanner(triviaScanner, ast, code) {
 //------------------------------------------------------------------------------
 
 module.exports = {
-    convertComments
+  convertComments
 };
-
 
 /**
  * Convert all comments for the given AST.
@@ -92,55 +107,53 @@ module.exports = {
  * @private
  */
 function convertComments(ast, code) {
-    const comments = [];
+  const comments = [];
 
-    /**
-     * Create a TypeScript Scanner, with skipTrivia set to false so that
-     * we can parse the comments
-     */
-    const triviaScanner = ts.createScanner(ast.languageVersion, false, 0, code);
+  /**
+   * Create a TypeScript Scanner, with skipTrivia set to false so that
+   * we can parse the comments
+   */
+  const triviaScanner = ts.createScanner(ast.languageVersion, false, 0, code);
 
-    let kind = triviaScanner.scan();
-    while (kind !== ts.SyntaxKind.EndOfFileToken) {
-        const start = triviaScanner.getTokenPos();
-        const end = triviaScanner.getTextPos();
+  let kind = triviaScanner.scan();
+  while (kind !== ts.SyntaxKind.EndOfFileToken) {
+    const start = triviaScanner.getTokenPos();
+    const end = triviaScanner.getTextPos();
 
-        let container = null;
-        switch (kind) {
-            case ts.SyntaxKind.SingleLineCommentTrivia:
-            case ts.SyntaxKind.MultiLineCommentTrivia: {
-                const comment = getCommentFromTriviaScanner(triviaScanner, ast, code);
+    let container = null;
+    switch (kind) {
+      case ts.SyntaxKind.SingleLineCommentTrivia:
+      case ts.SyntaxKind.MultiLineCommentTrivia: {
+        const comment = getCommentFromTriviaScanner(triviaScanner, ast, code);
 
-                comments.push(comment);
-                break;
-            }
-            case ts.SyntaxKind.CloseBraceToken:
-                container = nodeUtils.getNodeContainer(ast, start, end);
+        comments.push(comment);
+        break;
+      }
+      case ts.SyntaxKind.CloseBraceToken:
+        container = nodeUtils.getNodeContainer(ast, start, end);
 
-                if (
-                    container.kind === ts.SyntaxKind.TemplateMiddle ||
-                    container.kind === ts.SyntaxKind.TemplateTail
-                ) {
-                    kind = triviaScanner.reScanTemplateToken();
-                    continue;
-                }
-                break;
-            case ts.SyntaxKind.SlashToken:
-            case ts.SyntaxKind.SlashEqualsToken:
-                container = nodeUtils.getNodeContainer(ast, start, end);
-
-                if (
-                    container.kind === ts.SyntaxKind.RegularExpressionLiteral
-                ) {
-                    kind = triviaScanner.reScanSlashToken();
-                    continue;
-                }
-                break;
-            default:
-                break;
+        if (
+          container.kind === ts.SyntaxKind.TemplateMiddle ||
+          container.kind === ts.SyntaxKind.TemplateTail
+        ) {
+          kind = triviaScanner.reScanTemplateToken();
+          continue;
         }
-        kind = triviaScanner.scan();
-    }
+        break;
+      case ts.SyntaxKind.SlashToken:
+      case ts.SyntaxKind.SlashEqualsToken:
+        container = nodeUtils.getNodeContainer(ast, start, end);
 
-    return comments;
+        if (container.kind === ts.SyntaxKind.RegularExpressionLiteral) {
+          kind = triviaScanner.reScanSlashToken();
+          continue;
+        }
+        break;
+      default:
+        break;
+    }
+    kind = triviaScanner.scan();
+  }
+
+  return comments;
 }

@@ -28,6 +28,7 @@
     "jest": "23.1.0",
     "lint-staged": "7.3.0",
     "lodash.isplainobject": "4.0.6",
+    "prettier": "^1.14.3",
     "semantic-release": "^15.9.16",
     "shelljs": "0.8.2",
     "travis-deploy-once": "^5.0.8",
@@ -49,6 +50,7 @@
     "precommit": "npm test && lint-staged",
     "cz": "git-cz",
     "commitmsg": "commitlint -E GIT_PARAMS",
+    "check-format": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once"
   },
@@ -59,14 +61,21 @@
   "peerDependencies": {
     "typescript": "*"
   },
-  "lint-staged": {},
+  "lint-staged": {
+    "*.{ts,js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "jest": {
     "testEnvironment": "node",

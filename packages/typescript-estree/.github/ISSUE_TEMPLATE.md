@@ -1,8 +1,6 @@
 **What version of TypeScript are you using?**
 
-
 **What version of `typescript-estree` are you using?**
-
 
 **What code were you trying to parse?**
 
@@ -11,6 +9,5 @@
 ```
 
 **What did you expect to happen?**
-
 
 **What actually happened?**
