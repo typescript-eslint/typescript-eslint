@@ -17,6 +17,9 @@
   },
   "license": "BSD-2-Clause",
   "devDependencies": {
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
+    "@commitlint/travis-cli": "^7.1.2",
     "babel-code-frame": "6.26.0",
     "babylon": "7.0.0-beta.39",
     "cz-conventional-changelog": "2.1.0",
@@ -27,8 +30,8 @@
     "lodash.isplainobject": "4.0.6",
     "semantic-release": "^15.9.16",
     "shelljs": "0.8.2",
-    "typescript": "~3.0.1",
-    "travis-deploy-once": "^5.0.8"
+    "travis-deploy-once": "^5.0.8",
+    "typescript": "~3.0.1"
   },
   "keywords": [
     "ast",
@@ -45,6 +48,7 @@
     "ast-alignment-tests": "jest --config=./tests/ast-alignment/jest.config.js",
     "precommit": "npm test && lint-staged",
     "cz": "git-cz",
+    "commitmsg": "commitlint -E GIT_PARAMS",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once"
   },
@@ -60,6 +64,9 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
   },
   "jest": {
     "testEnvironment": "node",
