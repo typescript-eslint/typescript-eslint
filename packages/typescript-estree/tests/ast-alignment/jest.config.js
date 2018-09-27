@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
 module.exports = {
-    testEnvironment: "node",
-    testRegex: "spec\\.js$"
+  testEnvironment: 'node',
+  testRegex: 'spec\\.js$'
 };

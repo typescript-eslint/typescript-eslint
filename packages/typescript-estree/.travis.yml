@@ -14,6 +14,7 @@ install:
   - yarn --ignore-engines
 script:
   - commitlint-travis
+  - yarn check-format
   - yarn test
 after_success:
   - npm run travis-deploy-once "npm run semantic-release"

@@ -20,7 +20,7 @@ This parser is somewhat generic and robust, it could be used to power any use-ca
 In fact, it is already used within these hyper-popular open-source projects to power their TypeScript support:
 
 - [ESLint](https://eslint.org), the pluggable linting utility for JavaScript and JSX
-    - See [typescript-eslint-parser](https://github.com/eslint/typescript-eslint-parser) for more details
+  - See [typescript-eslint-parser](https://github.com/eslint/typescript-eslint-parser) for more details
 - [Prettier](https://prettier.io), an opinionated code formatter
 
 ## Supported TypeScript Version
