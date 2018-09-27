@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const isPlainObject = require("lodash.isplainobject");
+const isPlainObject = require('lodash.isplainobject');
 
 /**
  * By default, pretty-format (within Jest matchers) retains the names/types of nodes from the babylon AST,
@@ -11,7 +11,7 @@ const isPlainObject = require("lodash.isplainobject");
  * @returns {Object} normalized AST
  */
 function normalizeNodeTypes(ast) {
-    return JSON.parse(JSON.stringify(ast));
+  return JSON.parse(JSON.stringify(ast));
 }
 
 /**
@@ -21,58 +21,58 @@ function normalizeNodeTypes(ast) {
  * @returns {Object} formatted object
  */
 function omitDeep(obj, keysToOmit) {
-    keysToOmit = keysToOmit || [];
-    function shouldOmit(keyName, val) {
-        if (!keysToOmit || !keysToOmit.length) {
-            return false;
-        }
-        for (const keyConfig of keysToOmit) {
-            if (keyConfig.key !== keyName) {
-                continue;
-            }
-            return keyConfig.predicate(val);
-        }
-        return false;
+  keysToOmit = keysToOmit || [];
+  function shouldOmit(keyName, val) {
+    if (!keysToOmit || !keysToOmit.length) {
+      return false;
     }
+    for (const keyConfig of keysToOmit) {
+      if (keyConfig.key !== keyName) {
+        continue;
+      }
+      return keyConfig.predicate(val);
+    }
+    return false;
+  }
 
-    for (const key in obj) {
-        if (!obj.hasOwnProperty(key)) {
-            continue;
-        }
-        const val = obj[key];
-        if (isPlainObject(val)) {
-            if (shouldOmit(key, val)) {
-                delete obj[key];
-                // re-run with the same arguments
-                // in case the object has multiple keys to omit
-                return omitDeep(obj, keysToOmit);
-            }
-            omitDeep(val, keysToOmit);
-        } else if (Array.isArray(val)) {
-            if (shouldOmit(key, val)) {
-                delete obj[key];
-                // re-run with the same arguments
-                // in case the object has multiple keys to omit
-                return omitDeep(obj, keysToOmit);
-            }
-            for (const i of val) {
-                omitDeep(i, keysToOmit);
-            }
-        } else if (shouldOmit(key, val)) {
-            delete obj[key];
-            // re-run with the same arguments
-            // in case the object has multiple keys to omit
-            return omitDeep(obj, keysToOmit);
-        }
+  for (const key in obj) {
+    if (!obj.hasOwnProperty(key)) {
+      continue;
     }
-    return obj;
+    const val = obj[key];
+    if (isPlainObject(val)) {
+      if (shouldOmit(key, val)) {
+        delete obj[key];
+        // re-run with the same arguments
+        // in case the object has multiple keys to omit
+        return omitDeep(obj, keysToOmit);
+      }
+      omitDeep(val, keysToOmit);
+    } else if (Array.isArray(val)) {
+      if (shouldOmit(key, val)) {
+        delete obj[key];
+        // re-run with the same arguments
+        // in case the object has multiple keys to omit
+        return omitDeep(obj, keysToOmit);
+      }
+      for (const i of val) {
+        omitDeep(i, keysToOmit);
+      }
+    } else if (shouldOmit(key, val)) {
+      delete obj[key];
+      // re-run with the same arguments
+      // in case the object has multiple keys to omit
+      return omitDeep(obj, keysToOmit);
+    }
+  }
+  return obj;
 }
 
 /**
  * Common predicates for Babylon AST preprocessing
  */
 const always = () => true;
-const ifNumber = (val) => typeof val === "number";
+const ifNumber = val => typeof val === 'number';
 
 /**
  * - Babylon wraps the "Program" node in an extra "File" node, normalize this for simplicity for now...
@@ -83,50 +83,50 @@ const ifNumber = (val) => typeof val === "number";
  * @returns {Object} processed babylon AST
  */
 function preprocessBabylonAST(ast) {
-    return omitDeep(ast.program, [
-        {
-            key: "start",
-            // only remove the "start" number (not the "start" object within loc)
-            predicate: ifNumber
-        },
-        {
-            key: "end",
-            // only remove the "end" number (not the "end" object within loc)
-            predicate: ifNumber
-        },
-        {
-            key: "identifierName",
-            predicate: always
-        },
-        {
-            key: "extra",
-            predicate: always
-        },
-        {
-            key: "directives",
-            predicate: always
-        },
-        {
-            key: "directive",
-            predicate: always
-        },
-        {
-            key: "innerComments",
-            predicate: always
-        },
-        {
-            key: "leadingComments",
-            predicate: always
-        },
-        {
-            key: "trailingComments",
-            predicate: always
-        },
-        {
-            key: "guardedHandlers",
-            predicate: always
-        }
-    ]);
+  return omitDeep(ast.program, [
+    {
+      key: 'start',
+      // only remove the "start" number (not the "start" object within loc)
+      predicate: ifNumber
+    },
+    {
+      key: 'end',
+      // only remove the "end" number (not the "end" object within loc)
+      predicate: ifNumber
+    },
+    {
+      key: 'identifierName',
+      predicate: always
+    },
+    {
+      key: 'extra',
+      predicate: always
+    },
+    {
+      key: 'directives',
+      predicate: always
+    },
+    {
+      key: 'directive',
+      predicate: always
+    },
+    {
+      key: 'innerComments',
+      predicate: always
+    },
+    {
+      key: 'leadingComments',
+      predicate: always
+    },
+    {
+      key: 'trailingComments',
+      predicate: always
+    },
+    {
+      key: 'guardedHandlers',
+      predicate: always
+    }
+  ]);
 }
 
 /**
@@ -140,13 +140,13 @@ function preprocessBabylonAST(ast) {
  * @returns {Object} the ast with the location data removed from the Program node
  */
 function removeLocationDataFromProgramNode(ast) {
-    delete ast.loc;
-    delete ast.range;
-    return ast;
+  delete ast.loc;
+  delete ast.range;
+  return ast;
 }
 
 module.exports = {
-    normalizeNodeTypes,
-    preprocessBabylonAST,
-    removeLocationDataFromProgramNode
+  normalizeNodeTypes,
+  preprocessBabylonAST,
+  removeLocationDataFromProgramNode
 };

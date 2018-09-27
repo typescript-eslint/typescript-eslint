@@ -6,59 +6,52 @@
  * MIT License
  */
 
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const parser = require("../../parser"),
-    testUtils = require("../../tools/test-utils");
+const parser = require('../../parser'),
+  testUtils = require('../../tools/test-utils');
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-describe("parse()", () => {
-
-
-    describe("basic functionality", () => {
-
-        it("should parse an empty string", () => {
-            expect(parser.parse("").body).toEqual([]);
-            expect(parser.parse("", {}).body).toEqual([]);
-        });
-
+describe('parse()', () => {
+  describe('basic functionality', () => {
+    it('should parse an empty string', () => {
+      expect(parser.parse('').body).toEqual([]);
+      expect(parser.parse('', {}).body).toEqual([]);
     });
+  });
 
-    describe("modules", () => {
-
-        it("should have correct column number when strict mode error occurs", () => {
-            try {
-                parser.parse("function fn(a, a) {\n}", { sourceType: "module" });
-            } catch (err) {
-                expect(err.column).toEqual(16);
-            }
-        });
-
+  describe('modules', () => {
+    it('should have correct column number when strict mode error occurs', () => {
+      try {
+        parser.parse('function fn(a, a) {\n}', { sourceType: 'module' });
+      } catch (err) {
+        expect(err.column).toEqual(16);
+      }
     });
+  });
 
-    describe("general", () => {
+  describe('general', () => {
+    const code = 'let foo = bar;';
+    const config = {
+      ecmaFeatures: {
+        blockBindings: true
+      },
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true
+    };
 
-        const code = "let foo = bar;";
-        const config = {
-            ecmaFeatures: {
-                blockBindings: true
-            },
-            comment: true,
-            tokens: true,
-            range: true,
-            loc: true
-        };
-
-        test("output tokens, comments, locs, and ranges when called with those options", testUtils.createSnapshotTestBlock(code, config));
-
-    });
-
-
+    test(
+      'output tokens, comments, locs, and ranges when called with those options',
+      testUtils.createSnapshotTestBlock(code, config)
+    );
+  });
 });

@@ -6,13 +6,13 @@
  * MIT License
  */
 
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const parser = require("../parser");
+const parser = require('../parser');
 
 //------------------------------------------------------------------------------
 //   Private
@@ -24,12 +24,14 @@ const parser = require("../parser");
  * @returns {Object}     copy of the AST object
  */
 function getRaw(ast) {
-    return JSON.parse(JSON.stringify(ast, (key, value) => {
-        if ((key === "start" || key === "end") && typeof value === "number") {
-            return undefined;
-        }
-        return value;
-    }));
+  return JSON.parse(
+    JSON.stringify(ast, (key, value) => {
+      if ((key === 'start' || key === 'end') && typeof value === 'number') {
+        return undefined;
+      }
+      return value;
+    })
+  );
 }
 
 /**
@@ -40,34 +42,32 @@ function getRaw(ast) {
  * @returns {Function} callback for Jest test() block
  */
 function createSnapshotTestBlock(code, config) {
+  /**
+   * @returns {Object} the AST object
+   */
+  function parse() {
+    const ast = parser.parse(code, config);
+    return getRaw(ast);
+  }
 
-    /**
-     * @returns {Object} the AST object
-     */
-    function parse() {
-        const ast = parser.parse(code, config);
-        return getRaw(ast);
+  return () => {
+    try {
+      const result = parse();
+      expect(result).toMatchSnapshot();
+    } catch (e) {
+      /**
+       * If we are deliberately throwing because of encountering an unknown
+       * AST_NODE_TYPE, we rethrow to cause the test to fail
+       */
+      if (e.message.match('Unknown AST_NODE_TYPE')) {
+        throw new Error(e);
+      }
+      expect(parse).toThrowErrorMatchingSnapshot();
     }
-
-    return () => {
-        try {
-            const result = parse();
-            expect(result).toMatchSnapshot();
-        } catch (e) {
-            /**
-             * If we are deliberately throwing because of encountering an unknown
-             * AST_NODE_TYPE, we rethrow to cause the test to fail
-             */
-            if (e.message.match("Unknown AST_NODE_TYPE")) {
-                throw new Error(e);
-            }
-            expect(parse).toThrowErrorMatchingSnapshot();
-        }
-    };
-
+  };
 }
 
 module.exports = {
-    getRaw,
-    createSnapshotTestBlock
+  getRaw,
+  createSnapshotTestBlock
 };

@@ -5,14 +5,14 @@
  * MIT License
  */
 
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const ts = require("typescript"),
-    unescape = require("lodash.unescape");
+const ts = require('typescript'),
+  unescape = require('lodash.unescape');
 
 //------------------------------------------------------------------------------
 // Private
@@ -21,86 +21,86 @@ const ts = require("typescript"),
 const SyntaxKind = ts.SyntaxKind;
 
 const ASSIGNMENT_OPERATORS = [
-    SyntaxKind.EqualsToken,
-    SyntaxKind.PlusEqualsToken,
-    SyntaxKind.MinusEqualsToken,
-    SyntaxKind.AsteriskEqualsToken,
-    SyntaxKind.SlashEqualsToken,
-    SyntaxKind.PercentEqualsToken,
-    SyntaxKind.LessThanLessThanEqualsToken,
-    SyntaxKind.GreaterThanGreaterThanEqualsToken,
-    SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken,
-    SyntaxKind.AmpersandEqualsToken,
-    SyntaxKind.BarEqualsToken,
-    SyntaxKind.CaretEqualsToken
+  SyntaxKind.EqualsToken,
+  SyntaxKind.PlusEqualsToken,
+  SyntaxKind.MinusEqualsToken,
+  SyntaxKind.AsteriskEqualsToken,
+  SyntaxKind.SlashEqualsToken,
+  SyntaxKind.PercentEqualsToken,
+  SyntaxKind.LessThanLessThanEqualsToken,
+  SyntaxKind.GreaterThanGreaterThanEqualsToken,
+  SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken,
+  SyntaxKind.AmpersandEqualsToken,
+  SyntaxKind.BarEqualsToken,
+  SyntaxKind.CaretEqualsToken
 ];
 
 const LOGICAL_OPERATORS = [
-    SyntaxKind.BarBarToken,
-    SyntaxKind.AmpersandAmpersandToken
+  SyntaxKind.BarBarToken,
+  SyntaxKind.AmpersandAmpersandToken
 ];
 
 const TOKEN_TO_TEXT = {};
-TOKEN_TO_TEXT[SyntaxKind.OpenBraceToken] = "{";
-TOKEN_TO_TEXT[SyntaxKind.CloseBraceToken] = "}";
-TOKEN_TO_TEXT[SyntaxKind.OpenParenToken] = "(";
-TOKEN_TO_TEXT[SyntaxKind.CloseParenToken] = ")";
-TOKEN_TO_TEXT[SyntaxKind.OpenBracketToken] = "[";
-TOKEN_TO_TEXT[SyntaxKind.CloseBracketToken] = "]";
-TOKEN_TO_TEXT[SyntaxKind.DotToken] = ".";
-TOKEN_TO_TEXT[SyntaxKind.DotDotDotToken] = "...";
-TOKEN_TO_TEXT[SyntaxKind.SemicolonToken] = ";";
-TOKEN_TO_TEXT[SyntaxKind.CommaToken] = ",";
-TOKEN_TO_TEXT[SyntaxKind.LessThanToken] = "<";
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanToken] = ">";
-TOKEN_TO_TEXT[SyntaxKind.LessThanEqualsToken] = "<=";
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanEqualsToken] = ">=";
-TOKEN_TO_TEXT[SyntaxKind.EqualsEqualsToken] = "==";
-TOKEN_TO_TEXT[SyntaxKind.ExclamationEqualsToken] = "!=";
-TOKEN_TO_TEXT[SyntaxKind.EqualsEqualsEqualsToken] = "===";
-TOKEN_TO_TEXT[SyntaxKind.InstanceOfKeyword] = "instanceof";
-TOKEN_TO_TEXT[SyntaxKind.ExclamationEqualsEqualsToken] = "!==";
-TOKEN_TO_TEXT[SyntaxKind.EqualsGreaterThanToken] = "=>";
-TOKEN_TO_TEXT[SyntaxKind.PlusToken] = "+";
-TOKEN_TO_TEXT[SyntaxKind.MinusToken] = "-";
-TOKEN_TO_TEXT[SyntaxKind.AsteriskToken] = "*";
-TOKEN_TO_TEXT[SyntaxKind.AsteriskAsteriskToken] = "**";
-TOKEN_TO_TEXT[SyntaxKind.SlashToken] = "/";
-TOKEN_TO_TEXT[SyntaxKind.PercentToken] = "%";
-TOKEN_TO_TEXT[SyntaxKind.PlusPlusToken] = "++";
-TOKEN_TO_TEXT[SyntaxKind.MinusMinusToken] = "--";
-TOKEN_TO_TEXT[SyntaxKind.LessThanLessThanToken] = "<<";
-TOKEN_TO_TEXT[SyntaxKind.LessThanSlashToken] = "</";
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanToken] = ">>";
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanGreaterThanToken] = ">>>";
-TOKEN_TO_TEXT[SyntaxKind.AmpersandToken] = "&";
-TOKEN_TO_TEXT[SyntaxKind.BarToken] = "|";
-TOKEN_TO_TEXT[SyntaxKind.CaretToken] = "^";
-TOKEN_TO_TEXT[SyntaxKind.ExclamationToken] = "!";
-TOKEN_TO_TEXT[SyntaxKind.TildeToken] = "~";
-TOKEN_TO_TEXT[SyntaxKind.AmpersandAmpersandToken] = "&&";
-TOKEN_TO_TEXT[SyntaxKind.BarBarToken] = "||";
-TOKEN_TO_TEXT[SyntaxKind.QuestionToken] = "?";
-TOKEN_TO_TEXT[SyntaxKind.ColonToken] = ":";
-TOKEN_TO_TEXT[SyntaxKind.EqualsToken] = "=";
-TOKEN_TO_TEXT[SyntaxKind.PlusEqualsToken] = "+=";
-TOKEN_TO_TEXT[SyntaxKind.MinusEqualsToken] = "-=";
-TOKEN_TO_TEXT[SyntaxKind.AsteriskEqualsToken] = "*=";
-TOKEN_TO_TEXT[SyntaxKind.AsteriskAsteriskEqualsToken] = "**=";
-TOKEN_TO_TEXT[SyntaxKind.SlashEqualsToken] = "/=";
-TOKEN_TO_TEXT[SyntaxKind.PercentEqualsToken] = "%=";
-TOKEN_TO_TEXT[SyntaxKind.LessThanLessThanEqualsToken] = "<<=";
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanEqualsToken] = ">>=";
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken] = ">>>=";
-TOKEN_TO_TEXT[SyntaxKind.AmpersandEqualsToken] = "&=";
-TOKEN_TO_TEXT[SyntaxKind.BarEqualsToken] = "|=";
-TOKEN_TO_TEXT[SyntaxKind.CaretEqualsToken] = "^=";
-TOKEN_TO_TEXT[SyntaxKind.AtToken] = "@";
-TOKEN_TO_TEXT[SyntaxKind.InKeyword] = "in";
-TOKEN_TO_TEXT[SyntaxKind.UniqueKeyword] = "unique";
-TOKEN_TO_TEXT[SyntaxKind.KeyOfKeyword] = "keyof";
-TOKEN_TO_TEXT[SyntaxKind.NewKeyword] = "new";
-TOKEN_TO_TEXT[SyntaxKind.ImportKeyword] = "import";
+TOKEN_TO_TEXT[SyntaxKind.OpenBraceToken] = '{';
+TOKEN_TO_TEXT[SyntaxKind.CloseBraceToken] = '}';
+TOKEN_TO_TEXT[SyntaxKind.OpenParenToken] = '(';
+TOKEN_TO_TEXT[SyntaxKind.CloseParenToken] = ')';
+TOKEN_TO_TEXT[SyntaxKind.OpenBracketToken] = '[';
+TOKEN_TO_TEXT[SyntaxKind.CloseBracketToken] = ']';
+TOKEN_TO_TEXT[SyntaxKind.DotToken] = '.';
+TOKEN_TO_TEXT[SyntaxKind.DotDotDotToken] = '...';
+TOKEN_TO_TEXT[SyntaxKind.SemicolonToken] = ';';
+TOKEN_TO_TEXT[SyntaxKind.CommaToken] = ',';
+TOKEN_TO_TEXT[SyntaxKind.LessThanToken] = '<';
+TOKEN_TO_TEXT[SyntaxKind.GreaterThanToken] = '>';
+TOKEN_TO_TEXT[SyntaxKind.LessThanEqualsToken] = '<=';
+TOKEN_TO_TEXT[SyntaxKind.GreaterThanEqualsToken] = '>=';
+TOKEN_TO_TEXT[SyntaxKind.EqualsEqualsToken] = '==';
+TOKEN_TO_TEXT[SyntaxKind.ExclamationEqualsToken] = '!=';
+TOKEN_TO_TEXT[SyntaxKind.EqualsEqualsEqualsToken] = '===';
+TOKEN_TO_TEXT[SyntaxKind.InstanceOfKeyword] = 'instanceof';
+TOKEN_TO_TEXT[SyntaxKind.ExclamationEqualsEqualsToken] = '!==';
+TOKEN_TO_TEXT[SyntaxKind.EqualsGreaterThanToken] = '=>';
+TOKEN_TO_TEXT[SyntaxKind.PlusToken] = '+';
+TOKEN_TO_TEXT[SyntaxKind.MinusToken] = '-';
+TOKEN_TO_TEXT[SyntaxKind.AsteriskToken] = '*';
+TOKEN_TO_TEXT[SyntaxKind.AsteriskAsteriskToken] = '**';
+TOKEN_TO_TEXT[SyntaxKind.SlashToken] = '/';
+TOKEN_TO_TEXT[SyntaxKind.PercentToken] = '%';
+TOKEN_TO_TEXT[SyntaxKind.PlusPlusToken] = '++';
+TOKEN_TO_TEXT[SyntaxKind.MinusMinusToken] = '--';
+TOKEN_TO_TEXT[SyntaxKind.LessThanLessThanToken] = '<<';
+TOKEN_TO_TEXT[SyntaxKind.LessThanSlashToken] = '</';
+TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanToken] = '>>';
+TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanGreaterThanToken] = '>>>';
+TOKEN_TO_TEXT[SyntaxKind.AmpersandToken] = '&';
+TOKEN_TO_TEXT[SyntaxKind.BarToken] = '|';
+TOKEN_TO_TEXT[SyntaxKind.CaretToken] = '^';
+TOKEN_TO_TEXT[SyntaxKind.ExclamationToken] = '!';
+TOKEN_TO_TEXT[SyntaxKind.TildeToken] = '~';
+TOKEN_TO_TEXT[SyntaxKind.AmpersandAmpersandToken] = '&&';
+TOKEN_TO_TEXT[SyntaxKind.BarBarToken] = '||';
+TOKEN_TO_TEXT[SyntaxKind.QuestionToken] = '?';
+TOKEN_TO_TEXT[SyntaxKind.ColonToken] = ':';
+TOKEN_TO_TEXT[SyntaxKind.EqualsToken] = '=';
+TOKEN_TO_TEXT[SyntaxKind.PlusEqualsToken] = '+=';
+TOKEN_TO_TEXT[SyntaxKind.MinusEqualsToken] = '-=';
+TOKEN_TO_TEXT[SyntaxKind.AsteriskEqualsToken] = '*=';
+TOKEN_TO_TEXT[SyntaxKind.AsteriskAsteriskEqualsToken] = '**=';
+TOKEN_TO_TEXT[SyntaxKind.SlashEqualsToken] = '/=';
+TOKEN_TO_TEXT[SyntaxKind.PercentEqualsToken] = '%=';
+TOKEN_TO_TEXT[SyntaxKind.LessThanLessThanEqualsToken] = '<<=';
+TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanEqualsToken] = '>>=';
+TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken] = '>>>=';
+TOKEN_TO_TEXT[SyntaxKind.AmpersandEqualsToken] = '&=';
+TOKEN_TO_TEXT[SyntaxKind.BarEqualsToken] = '|=';
+TOKEN_TO_TEXT[SyntaxKind.CaretEqualsToken] = '^=';
+TOKEN_TO_TEXT[SyntaxKind.AtToken] = '@';
+TOKEN_TO_TEXT[SyntaxKind.InKeyword] = 'in';
+TOKEN_TO_TEXT[SyntaxKind.UniqueKeyword] = 'unique';
+TOKEN_TO_TEXT[SyntaxKind.KeyOfKeyword] = 'keyof';
+TOKEN_TO_TEXT[SyntaxKind.NewKeyword] = 'new';
+TOKEN_TO_TEXT[SyntaxKind.ImportKeyword] = 'import';
 
 /**
  * Find the first matching child based on the given sourceFile and predicate function.
@@ -110,19 +110,19 @@ TOKEN_TO_TEXT[SyntaxKind.ImportKeyword] = "import";
  * @returns {TSNode|undefined} a matching child TSNode
  */
 function findFirstMatchingChild(node, sourceFile, predicate) {
-    const children = node.getChildren(sourceFile);
-    for (let i = 0; i < children.length; i++) {
-        const child = children[i];
-        if (child && predicate(child)) {
-            return child;
-        }
-
-        const grandChild = findFirstMatchingChild(child, sourceFile, predicate);
-        if (grandChild) {
-            return grandChild;
-        }
+  const children = node.getChildren(sourceFile);
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    if (child && predicate(child)) {
+      return child;
     }
-    return undefined;
+
+    const grandChild = findFirstMatchingChild(child, sourceFile, predicate);
+    if (grandChild) {
+      return grandChild;
+    }
+  }
+  return undefined;
 }
 
 //------------------------------------------------------------------------------
@@ -130,43 +130,43 @@ function findFirstMatchingChild(node, sourceFile, predicate) {
 //------------------------------------------------------------------------------
 
 module.exports = {
-    /**
-     * Expose the enum of possible TSNode `kind`s.
-     */
-    SyntaxKind,
-    isAssignmentOperator,
-    isLogicalOperator,
-    getTextForTokenKind,
-    isESTreeClassMember,
-    hasModifier,
-    isComma,
-    getBinaryExpressionType,
-    getLocFor,
-    getLoc,
-    isToken,
-    isJSXToken,
-    getDeclarationKind,
-    getTSNodeAccessibility,
-    hasStaticModifierFlag,
-    findNextToken,
-    findFirstMatchingToken,
-    findChildOfKind,
-    findFirstMatchingAncestor,
-    findAncestorOfKind,
-    hasJSXAncestor,
-    unescapeStringLiteralText,
-    isComputedProperty,
-    isOptional,
-    fixExports,
-    getTokenType,
-    convertToken,
-    convertTokens,
-    getNodeContainer,
-    isWithinTypeAnnotation,
-    isTypeKeyword,
-    isComment,
-    isJSDocComment,
-    createError
+  /**
+   * Expose the enum of possible TSNode `kind`s.
+   */
+  SyntaxKind,
+  isAssignmentOperator,
+  isLogicalOperator,
+  getTextForTokenKind,
+  isESTreeClassMember,
+  hasModifier,
+  isComma,
+  getBinaryExpressionType,
+  getLocFor,
+  getLoc,
+  isToken,
+  isJSXToken,
+  getDeclarationKind,
+  getTSNodeAccessibility,
+  hasStaticModifierFlag,
+  findNextToken,
+  findFirstMatchingToken,
+  findChildOfKind,
+  findFirstMatchingAncestor,
+  findAncestorOfKind,
+  hasJSXAncestor,
+  unescapeStringLiteralText,
+  isComputedProperty,
+  isOptional,
+  fixExports,
+  getTokenType,
+  convertToken,
+  convertTokens,
+  getNodeContainer,
+  isWithinTypeAnnotation,
+  isTypeKeyword,
+  isComment,
+  isJSDocComment,
+  createError
 };
 
 /**
@@ -175,7 +175,7 @@ module.exports = {
  * @returns {boolean}          is assignment
  */
 function isAssignmentOperator(operator) {
-    return ASSIGNMENT_OPERATORS.indexOf(operator.kind) > -1;
+  return ASSIGNMENT_OPERATORS.indexOf(operator.kind) > -1;
 }
 
 /**
@@ -184,7 +184,7 @@ function isAssignmentOperator(operator) {
  * @returns {boolean}          is a logical operator
  */
 function isLogicalOperator(operator) {
-    return LOGICAL_OPERATORS.indexOf(operator.kind) > -1;
+  return LOGICAL_OPERATORS.indexOf(operator.kind) > -1;
 }
 
 /**
@@ -193,7 +193,7 @@ function isLogicalOperator(operator) {
  * @returns {string}          the token applicable token as a string
  */
 function getTextForTokenKind(kind) {
-    return TOKEN_TO_TEXT[kind];
+  return TOKEN_TO_TEXT[kind];
 }
 
 /**
@@ -202,7 +202,7 @@ function getTextForTokenKind(kind) {
  * @returns {boolean}      is valid ESTree class member
  */
 function isESTreeClassMember(node) {
-    return node.kind !== SyntaxKind.SemicolonClassElement;
+  return node.kind !== SyntaxKind.SemicolonClassElement;
 }
 
 /**
@@ -212,7 +212,11 @@ function isESTreeClassMember(node) {
  * @returns {boolean} has the modifier specified
  */
 function hasModifier(modifierKind, node) {
-    return !!node.modifiers && !!node.modifiers.length && node.modifiers.some(modifier => modifier.kind === modifierKind);
+  return (
+    !!node.modifiers &&
+    !!node.modifiers.length &&
+    node.modifiers.some(modifier => modifier.kind === modifierKind)
+  );
 }
 
 /**
@@ -221,7 +225,7 @@ function hasModifier(modifierKind, node) {
  * @returns {boolean}       is comma
  */
 function isComma(token) {
-    return token.kind === SyntaxKind.CommaToken;
+  return token.kind === SyntaxKind.CommaToken;
 }
 
 /**
@@ -230,7 +234,10 @@ function isComma(token) {
  * @returns {boolean} is commment
  */
 function isComment(node) {
-    return node.kind === SyntaxKind.SingleLineCommentTrivia || node.kind === SyntaxKind.MultiLineCommentTrivia;
+  return (
+    node.kind === SyntaxKind.SingleLineCommentTrivia ||
+    node.kind === SyntaxKind.MultiLineCommentTrivia
+  );
 }
 
 /**
@@ -239,7 +246,7 @@ function isComment(node) {
  * @returns {boolean} is JSDoc comment
  */
 function isJSDocComment(node) {
-    return node.kind === SyntaxKind.JSDocComment;
+  return node.kind === SyntaxKind.JSDocComment;
 }
 
 /**
@@ -248,12 +255,12 @@ function isJSDocComment(node) {
  * @returns {string}          the binary expression type
  */
 function getBinaryExpressionType(operator) {
-    if (isAssignmentOperator(operator)) {
-        return "AssignmentExpression";
-    } else if (isLogicalOperator(operator)) {
-        return "LogicalExpression";
-    }
-    return "BinaryExpression";
+  if (isAssignmentOperator(operator)) {
+    return 'AssignmentExpression';
+  } else if (isLogicalOperator(operator)) {
+    return 'LogicalExpression';
+  }
+  return 'BinaryExpression';
 }
 
 /**
@@ -265,19 +272,19 @@ function getBinaryExpressionType(operator) {
  * @returns {Object}       the loc data
  */
 function getLocFor(start, end, ast) {
-    const startLoc = ast.getLineAndCharacterOfPosition(start),
-        endLoc = ast.getLineAndCharacterOfPosition(end);
+  const startLoc = ast.getLineAndCharacterOfPosition(start),
+    endLoc = ast.getLineAndCharacterOfPosition(end);
 
-    return {
-        start: {
-            line: startLoc.line + 1,
-            column: startLoc.character
-        },
-        end: {
-            line: endLoc.line + 1,
-            column: endLoc.character
-        }
-    };
+  return {
+    start: {
+      line: startLoc.line + 1,
+      column: startLoc.character
+    },
+    end: {
+      line: endLoc.line + 1,
+      column: endLoc.character
+    }
+  };
 }
 
 /**
@@ -288,7 +295,7 @@ function getLocFor(start, end, ast) {
  * @returns {Object}             the loc data
  */
 function getLoc(nodeOrToken, ast) {
-    return getLocFor(nodeOrToken.getStart(), nodeOrToken.end, ast);
+  return getLocFor(nodeOrToken.getStart(), nodeOrToken.end, ast);
 }
 
 /**
@@ -297,7 +304,9 @@ function getLoc(nodeOrToken, ast) {
  * @returns {boolean}     is a token
  */
 function isToken(node) {
-    return node.kind >= SyntaxKind.FirstToken && node.kind <= SyntaxKind.LastToken;
+  return (
+    node.kind >= SyntaxKind.FirstToken && node.kind <= SyntaxKind.LastToken
+  );
 }
 
 /**
@@ -306,10 +315,9 @@ function isToken(node) {
  * @returns {boolean}       is a JSX token
  */
 function isJSXToken(node) {
-    return (
-        node.kind >= SyntaxKind.JsxElement &&
-        node.kind <= SyntaxKind.JsxAttribute
-    );
+  return (
+    node.kind >= SyntaxKind.JsxElement && node.kind <= SyntaxKind.JsxAttribute
+  );
 }
 
 /**
@@ -318,20 +326,20 @@ function isJSXToken(node) {
  * @returns {boolean} is a type keyword
  */
 function isTypeKeyword(kind) {
-    switch (kind) {
-        case SyntaxKind.AnyKeyword:
-        case SyntaxKind.BooleanKeyword:
-        case SyntaxKind.NeverKeyword:
-        case SyntaxKind.NumberKeyword:
-        case SyntaxKind.ObjectKeyword:
-        case SyntaxKind.StringKeyword:
-        case SyntaxKind.SymbolKeyword:
-        case SyntaxKind.UnknownKeyword:
-        case SyntaxKind.VoidKeyword:
-            return true;
-        default:
-            return false;
-    }
+  switch (kind) {
+    case SyntaxKind.AnyKeyword:
+    case SyntaxKind.BooleanKeyword:
+    case SyntaxKind.NeverKeyword:
+    case SyntaxKind.NumberKeyword:
+    case SyntaxKind.ObjectKeyword:
+    case SyntaxKind.StringKeyword:
+    case SyntaxKind.SymbolKeyword:
+    case SyntaxKind.UnknownKeyword:
+    case SyntaxKind.VoidKeyword:
+      return true;
+    default:
+      return false;
+  }
 }
 
 /**
@@ -340,20 +348,20 @@ function isTypeKeyword(kind) {
  * @returns {string}     declaration kind
  */
 function getDeclarationKind(node) {
-    switch (node.kind) {
-        case SyntaxKind.TypeAliasDeclaration:
-            return "type";
-        case SyntaxKind.VariableDeclarationList:
-            if (node.flags & ts.NodeFlags.Let) {
-                return "let";
-            }
-            if (node.flags & ts.NodeFlags.Const) {
-                return "const";
-            }
-            return "var";
-        default:
-            throw "Unable to determine declaration kind.";
-    }
+  switch (node.kind) {
+    case SyntaxKind.TypeAliasDeclaration:
+      return 'type';
+    case SyntaxKind.VariableDeclarationList:
+      if (node.flags & ts.NodeFlags.Let) {
+        return 'let';
+      }
+      if (node.flags & ts.NodeFlags.Const) {
+        return 'const';
+      }
+      return 'var';
+    default:
+      throw 'Unable to determine declaration kind.';
+  }
 }
 
 /**
@@ -362,24 +370,24 @@ function getDeclarationKind(node) {
  * @returns {string | null} accessibility "public", "protected", "private", or null
  */
 function getTSNodeAccessibility(node) {
-    const modifiers = node.modifiers;
-    if (!modifiers) {
-        return null;
-    }
-    for (let i = 0; i < modifiers.length; i++) {
-        const modifier = modifiers[i];
-        switch (modifier.kind) {
-            case SyntaxKind.PublicKeyword:
-                return "public";
-            case SyntaxKind.ProtectedKeyword:
-                return "protected";
-            case SyntaxKind.PrivateKeyword:
-                return "private";
-            default:
-                continue;
-        }
-    }
+  const modifiers = node.modifiers;
+  if (!modifiers) {
     return null;
+  }
+  for (let i = 0; i < modifiers.length; i++) {
+    const modifier = modifiers[i];
+    switch (modifier.kind) {
+      case SyntaxKind.PublicKeyword:
+        return 'public';
+      case SyntaxKind.ProtectedKeyword:
+        return 'protected';
+      case SyntaxKind.PrivateKeyword:
+        return 'private';
+      default:
+        continue;
+    }
+  }
+  return null;
 }
 
 /**
@@ -389,10 +397,10 @@ function getTSNodeAccessibility(node) {
  * @returns {boolean} whether or not the static modifier flag is set
  */
 function hasStaticModifierFlag(node) {
-    /**
-     * TODO: Remove dependency on private TypeScript method
-     */
-    return Boolean(ts.getModifierFlags(node) & ts.ModifierFlags.Static);
+  /**
+   * TODO: Remove dependency on private TypeScript method
+   */
+  return Boolean(ts.getModifierFlags(node) & ts.ModifierFlags.Static);
 }
 
 /**
@@ -402,10 +410,10 @@ function hasStaticModifierFlag(node) {
  * @returns {TSToken} the next TSToken
  */
 function findNextToken(previousToken, parent) {
-    /**
-     * TODO: Remove dependency on private TypeScript method
-     */
-    return ts.findNextToken(previousToken, parent);
+  /**
+   * TODO: Remove dependency on private TypeScript method
+   */
+  return ts.findNextToken(previousToken, parent);
 }
 
 /**
@@ -416,13 +424,13 @@ function findNextToken(previousToken, parent) {
  * @returns {TSToken|undefined} a matching TSToken
  */
 function findFirstMatchingToken(previousToken, parent, predicate) {
-    while (previousToken) {
-        if (predicate(previousToken)) {
-            return previousToken;
-        }
-        previousToken = findNextToken(previousToken, parent);
+  while (previousToken) {
+    if (predicate(previousToken)) {
+      return previousToken;
     }
-    return undefined;
+    previousToken = findNextToken(previousToken, parent);
+  }
+  return undefined;
 }
 
 /**
@@ -433,7 +441,7 @@ function findFirstMatchingToken(previousToken, parent, predicate) {
  * @returns {TSNode|undefined} a matching TSNode
  */
 function findChildOfKind(node, kind, sourceFile) {
-    return findFirstMatchingChild(node, sourceFile, child => child.kind === kind);
+  return findFirstMatchingChild(node, sourceFile, child => child.kind === kind);
 }
 
 /**
@@ -443,13 +451,13 @@ function findChildOfKind(node, kind, sourceFile) {
  * @returns {TSNode|undefined} a matching parent TSNode
  */
 function findFirstMatchingAncestor(node, predicate) {
-    while (node) {
-        if (predicate(node)) {
-            return node;
-        }
-        node = node.parent;
+  while (node) {
+    if (predicate(node)) {
+      return node;
     }
-    return undefined;
+    node = node.parent;
+  }
+  return undefined;
 }
 
 /**
@@ -459,9 +467,8 @@ function findFirstMatchingAncestor(node, predicate) {
  * @returns {TSNode|undefined} a matching parent TSNode
  */
 function findAncestorOfKind(node, kind) {
-    return findFirstMatchingAncestor(node, parent => parent.kind === kind);
+  return findFirstMatchingAncestor(node, parent => parent.kind === kind);
 }
-
 
 /**
  * Returns true if a given TSNode has a JSX token within its hierarchy
@@ -469,7 +476,7 @@ function findAncestorOfKind(node, kind) {
  * @returns {boolean}       has JSX ancestor
  */
 function hasJSXAncestor(node) {
-    return !!findFirstMatchingAncestor(node, isJSXToken);
+  return !!findFirstMatchingAncestor(node, isJSXToken);
 }
 
 /**
@@ -478,7 +485,7 @@ function hasJSXAncestor(node) {
  * @returns {string} The unescaped string literal text.
  */
 function unescapeStringLiteralText(text) {
-    return unescape(text);
+  return unescape(text);
 }
 
 /**
@@ -487,7 +494,7 @@ function unescapeStringLiteralText(text) {
  * @returns {boolean}       is Computed Property
  */
 function isComputedProperty(node) {
-    return node.kind === SyntaxKind.ComputedPropertyName;
+  return node.kind === SyntaxKind.ComputedPropertyName;
 }
 
 /**
@@ -496,8 +503,9 @@ function isComputedProperty(node) {
  * @returns {boolean}       is Optional
  */
 function isOptional(node) {
-    return (node.questionToken)
-        ? (node.questionToken.kind === SyntaxKind.QuestionToken) : false;
+  return node.questionToken
+    ? node.questionToken.kind === SyntaxKind.QuestionToken
+    : false;
 }
 
 /**
@@ -507,7 +515,10 @@ function isOptional(node) {
  * @returns {boolean}       is within "typeAnnotation context"
  */
 function isWithinTypeAnnotation(node) {
-    return node.parent.type === node || (node.parent.types && node.parent.types.indexOf(node) > -1);
+  return (
+    node.parent.type === node ||
+    (node.parent.types && node.parent.types.indexOf(node) > -1)
+  );
 }
 
 /**
@@ -518,36 +529,38 @@ function isWithinTypeAnnotation(node) {
  * @returns {TSNode}        the TSNode with fixed exports
  */
 function fixExports(node, result, ast) {
-    // check for exports
-    if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
-        const exportKeyword = node.modifiers[0],
-            nextModifier = node.modifiers[1],
-            lastModifier = node.modifiers[node.modifiers.length - 1],
-            declarationIsDefault = nextModifier && (nextModifier.kind === SyntaxKind.DefaultKeyword),
-            varToken = findNextToken(lastModifier, ast);
+  // check for exports
+  if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
+    const exportKeyword = node.modifiers[0],
+      nextModifier = node.modifiers[1],
+      lastModifier = node.modifiers[node.modifiers.length - 1],
+      declarationIsDefault =
+        nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword,
+      varToken = findNextToken(lastModifier, ast);
 
-        result.range[0] = varToken.getStart();
-        result.loc = getLocFor(result.range[0], result.range[1], ast);
+    result.range[0] = varToken.getStart();
+    result.loc = getLocFor(result.range[0], result.range[1], ast);
 
-        const declarationType = declarationIsDefault ? "ExportDefaultDeclaration" : "ExportNamedDeclaration";
+    const declarationType = declarationIsDefault
+      ? 'ExportDefaultDeclaration'
+      : 'ExportNamedDeclaration';
 
-        const newResult = {
-            type: declarationType,
-            declaration: result,
-            range: [exportKeyword.getStart(), result.range[1]],
-            loc: getLocFor(exportKeyword.getStart(), result.range[1], ast)
-        };
+    const newResult = {
+      type: declarationType,
+      declaration: result,
+      range: [exportKeyword.getStart(), result.range[1]],
+      loc: getLocFor(exportKeyword.getStart(), result.range[1], ast)
+    };
 
-        if (!declarationIsDefault) {
-            newResult.specifiers = [];
-            newResult.source = null;
-        }
-
-        return newResult;
-
+    if (!declarationIsDefault) {
+      newResult.specifiers = [];
+      newResult.source = null;
     }
 
-    return result;
+    return newResult;
+  }
+
+  return result;
 }
 
 /**
@@ -556,87 +569,105 @@ function fixExports(node, result, ast) {
  * @returns {string}       the token type
  */
 function getTokenType(token) {
-    // Need two checks for keywords since some are also identifiers
-    if (token.originalKeywordKind) {
+  // Need two checks for keywords since some are also identifiers
+  if (token.originalKeywordKind) {
+    switch (token.originalKeywordKind) {
+      case SyntaxKind.NullKeyword:
+        return 'Null';
 
-        switch (token.originalKeywordKind) {
-            case SyntaxKind.NullKeyword:
-                return "Null";
+      case SyntaxKind.GetKeyword:
+      case SyntaxKind.SetKeyword:
+      case SyntaxKind.TypeKeyword:
+      case SyntaxKind.ModuleKeyword:
+        return 'Identifier';
 
-            case SyntaxKind.GetKeyword:
-            case SyntaxKind.SetKeyword:
-            case SyntaxKind.TypeKeyword:
-            case SyntaxKind.ModuleKeyword:
-                return "Identifier";
+      default:
+        return 'Keyword';
+    }
+  }
 
-            default:
-                return "Keyword";
-        }
+  if (
+    token.kind >= SyntaxKind.FirstKeyword &&
+    token.kind <= SyntaxKind.LastFutureReservedWord
+  ) {
+    if (
+      token.kind === SyntaxKind.FalseKeyword ||
+      token.kind === SyntaxKind.TrueKeyword
+    ) {
+      return 'Boolean';
     }
 
-    if (token.kind >= SyntaxKind.FirstKeyword && token.kind <= SyntaxKind.LastFutureReservedWord) {
-        if (token.kind === SyntaxKind.FalseKeyword || token.kind === SyntaxKind.TrueKeyword) {
-            return "Boolean";
-        }
+    return 'Keyword';
+  }
 
-        return "Keyword";
+  if (
+    token.kind >= SyntaxKind.FirstPunctuation &&
+    token.kind <= SyntaxKind.LastBinaryOperator
+  ) {
+    return 'Punctuator';
+  }
+
+  if (
+    token.kind >= SyntaxKind.NoSubstitutionTemplateLiteral &&
+    token.kind <= SyntaxKind.TemplateTail
+  ) {
+    return 'Template';
+  }
+
+  switch (token.kind) {
+    case SyntaxKind.NumericLiteral:
+      return 'Numeric';
+
+    case SyntaxKind.JsxText:
+      return 'JSXText';
+
+    case SyntaxKind.StringLiteral:
+      // A TypeScript-StringLiteral token with a TypeScript-JsxAttribute or TypeScript-JsxElement parent,
+      // must actually be an ESTree-JSXText token
+      if (
+        token.parent &&
+        (token.parent.kind === SyntaxKind.JsxAttribute ||
+          token.parent.kind === SyntaxKind.JsxElement)
+      ) {
+        return 'JSXText';
+      }
+
+      return 'String';
+
+    case SyntaxKind.RegularExpressionLiteral:
+      return 'RegularExpression';
+
+    case SyntaxKind.Identifier:
+    case SyntaxKind.ConstructorKeyword:
+    case SyntaxKind.GetKeyword:
+    case SyntaxKind.SetKeyword:
+
+    // falls through
+    default:
+  }
+
+  // Some JSX tokens have to be determined based on their parent
+  if (token.parent) {
+    if (
+      token.kind === SyntaxKind.Identifier &&
+      token.parent.kind === SyntaxKind.PropertyAccessExpression &&
+      hasJSXAncestor(token)
+    ) {
+      return 'JSXIdentifier';
     }
 
-    if (token.kind >= SyntaxKind.FirstPunctuation && token.kind <= SyntaxKind.LastBinaryOperator) {
-        return "Punctuator";
+    if (isJSXToken(token.parent)) {
+      if (token.kind === SyntaxKind.PropertyAccessExpression) {
+        return 'JSXMemberExpression';
+      }
+
+      if (token.kind === SyntaxKind.Identifier) {
+        return 'JSXIdentifier';
+      }
     }
+  }
 
-    if (token.kind >= SyntaxKind.NoSubstitutionTemplateLiteral && token.kind <= SyntaxKind.TemplateTail) {
-        return "Template";
-    }
-
-    switch (token.kind) {
-        case SyntaxKind.NumericLiteral:
-            return "Numeric";
-
-        case SyntaxKind.JsxText:
-            return "JSXText";
-
-        case SyntaxKind.StringLiteral:
-
-            // A TypeScript-StringLiteral token with a TypeScript-JsxAttribute or TypeScript-JsxElement parent,
-            // must actually be an ESTree-JSXText token
-            if (token.parent && (token.parent.kind === SyntaxKind.JsxAttribute || token.parent.kind === SyntaxKind.JsxElement)) {
-                return "JSXText";
-            }
-
-            return "String";
-
-        case SyntaxKind.RegularExpressionLiteral:
-            return "RegularExpression";
-
-        case SyntaxKind.Identifier:
-        case SyntaxKind.ConstructorKeyword:
-        case SyntaxKind.GetKeyword:
-        case SyntaxKind.SetKeyword:
-
-            // falls through
-        default:
-    }
-
-    // Some JSX tokens have to be determined based on their parent
-    if (token.parent) {
-        if (token.kind === SyntaxKind.Identifier && token.parent.kind === SyntaxKind.PropertyAccessExpression && hasJSXAncestor(token)) {
-            return "JSXIdentifier";
-        }
-
-        if (isJSXToken(token.parent)) {
-            if (token.kind === SyntaxKind.PropertyAccessExpression) {
-                return "JSXMemberExpression";
-            }
-
-            if (token.kind === SyntaxKind.Identifier) {
-                return "JSXIdentifier";
-            }
-        }
-    }
-
-    return "Identifier";
+  return 'Identifier';
 }
 
 /**
@@ -646,24 +677,27 @@ function getTokenType(token) {
  * @returns {ESTreeToken}       the converted ESTreeToken
  */
 function convertToken(token, ast) {
-    const start = (token.kind === SyntaxKind.JsxText) ? token.getFullStart() : token.getStart(),
-        end = token.getEnd(),
-        value = ast.text.slice(start, end),
-        newToken = {
-            type: getTokenType(token),
-            value,
-            range: [start, end],
-            loc: getLocFor(start, end, ast)
-        };
+  const start =
+      token.kind === SyntaxKind.JsxText
+        ? token.getFullStart()
+        : token.getStart(),
+    end = token.getEnd(),
+    value = ast.text.slice(start, end),
+    newToken = {
+      type: getTokenType(token),
+      value,
+      range: [start, end],
+      loc: getLocFor(start, end, ast)
+    };
 
-    if (newToken.type === "RegularExpression") {
-        newToken.regex = {
-            pattern: value.slice(1, value.lastIndexOf("/")),
-            flags: value.slice(value.lastIndexOf("/") + 1)
-        };
-    }
+  if (newToken.type === 'RegularExpression') {
+    newToken.regex = {
+      pattern: value.slice(1, value.lastIndexOf('/')),
+      flags: value.slice(value.lastIndexOf('/') + 1)
+    };
+  }
 
-    return newToken;
+  return newToken;
 }
 
 /**
@@ -672,30 +706,30 @@ function convertToken(token, ast) {
  * @returns {ESTreeToken[]}     the converted ESTreeTokens
  */
 function convertTokens(ast) {
-    const result = [];
-    /**
-     * @param  {TSNode} node the TSNode
-     * @returns {undefined}
-     */
-    function walk(node) {
-        // TypeScript generates tokens for types in JSDoc blocks. Comment tokens
-        // and their children should not be walked or added to the resulting tokens list.
-        if (isComment(node) || isJSDocComment(node)) {
-            return;
-        }
-
-        if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
-            const converted = convertToken(node, ast);
-
-            if (converted) {
-                result.push(converted);
-            }
-        } else {
-            node.getChildren().forEach(walk);
-        }
+  const result = [];
+  /**
+   * @param  {TSNode} node the TSNode
+   * @returns {undefined}
+   */
+  function walk(node) {
+    // TypeScript generates tokens for types in JSDoc blocks. Comment tokens
+    // and their children should not be walked or added to the resulting tokens list.
+    if (isComment(node) || isJSDocComment(node)) {
+      return;
     }
-    walk(ast);
-    return result;
+
+    if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
+      const converted = convertToken(node, ast);
+
+      if (converted) {
+        result.push(converted);
+      }
+    } else {
+      node.getChildren().forEach(walk);
+    }
+  }
+  walk(ast);
+  return result;
 }
 
 /**
@@ -707,27 +741,27 @@ function convertTokens(ast) {
  * @private
  */
 function getNodeContainer(ast, start, end) {
-    let container = null;
+  let container = null;
 
-    /**
-     * @param  {TSNode} node the TSNode
-     * @returns {undefined}
-     */
-    function walk(node) {
-        const nodeStart = node.pos;
-        const nodeEnd = node.end;
+  /**
+   * @param  {TSNode} node the TSNode
+   * @returns {undefined}
+   */
+  function walk(node) {
+    const nodeStart = node.pos;
+    const nodeEnd = node.end;
 
-        if (start >= nodeStart && end <= nodeEnd) {
-            if (isToken(node)) {
-                container = node;
-            } else {
-                node.getChildren().forEach(walk);
-            }
-        }
+    if (start >= nodeStart && end <= nodeEnd) {
+      if (isToken(node)) {
+        container = node;
+      } else {
+        node.getChildren().forEach(walk);
+      }
     }
-    walk(ast);
+  }
+  walk(ast);
 
-    return container;
+  return container;
 }
 
 /**
@@ -737,11 +771,11 @@ function getNodeContainer(ast, start, end) {
  * @returns {Object}       converted error object
  */
 function createError(ast, start, message) {
-    const loc = ast.getLineAndCharacterOfPosition(start);
-    return {
-        index: start,
-        lineNumber: loc.line + 1,
-        column: loc.character,
-        message
-    };
+  const loc = ast.getLineAndCharacterOfPosition(start);
+  return {
+    index: start,
+    lineNumber: loc.line + 1,
+    column: loc.character,
+    message
+  };
 }
