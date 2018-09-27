@@ -1,6 +1,17 @@
-# TypeScript ESTree
+<h1 align="center">TypeScript ESTree</h1>
 
-A parser that converts TypeScript source code into an [ESTree](https://github.com/estree/estree)-compatible form.
+<p align="center">A parser that converts TypeScript source code into an ESTree-compatible form: https://github.com/estree/estree</p>
+
+<p align="center">
+    <a href="https://travis-ci.org/JamesHenry/typescript-estree"><img src="https://img.shields.io/travis/JamesHenry/typescript-estree.svg?style=flat-square" alt="Travis"/></a>
+    <a href="https://github.com/JamesHenry/typescript-estree/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
+    <a href="https://www.npmjs.com/package/typescript-estree"><img src="https://img.shields.io/npm/v/typescript-estree.svg?style=flat-square" alt="NPM Version" /></a>
+    <a href="https://www.npmjs.com/package/typescript-estree"><img src="https://img.shields.io/npm/dt/typescript-estree.svg?style=flat-square" alt="NPM Downloads" /></a>
+    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen friendly" /></a>
+    <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square" alt="semantic-release" /></a>
+</p>
+
+<br>
 
 ## Usage
 

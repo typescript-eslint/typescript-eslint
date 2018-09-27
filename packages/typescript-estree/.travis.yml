@@ -13,6 +13,7 @@ node_js:
 install:
   - yarn --ignore-engines
 script:
+  - commitlint-travis
   - yarn test
 after_success:
   - npm run travis-deploy-once "npm run semantic-release"
