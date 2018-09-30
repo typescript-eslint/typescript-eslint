@@ -27,23 +27,6 @@ const OPEN_SOURCE_LICENSES = [
 ];
 
 //------------------------------------------------------------------------------
-// Data
-//------------------------------------------------------------------------------
-
-const NODE_MODULES = "./node_modules/",
-
-    // Utilities - intentional extra space at the end of each string
-    JEST = `${NODE_MODULES}jest/bin/jest.js`,
-
-    // Files
-    MAKEFILE = "./Makefile.js",
-    /* eslint-disable no-use-before-define */
-    JS_FILES = "parser.js",
-    TEST_FILES = find("tests/lib/").filter(fileType("js")).join(" "),
-    TOOLS_FILES = find("tools/").filter(fileType("js")).join(" ");
-    /* eslint-enable no-use-before-define */
-
-//------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
@@ -60,6 +43,19 @@ function fileType(extension) {
 }
 
 //------------------------------------------------------------------------------
+// Data
+//------------------------------------------------------------------------------
+
+const JEST = "jest",
+    LINT_OPTIONS = "--report-unused-disable-directives",
+
+    // Files
+    MAKEFILE = "./Makefile.js",
+    JS_FILES = "parser.js",
+    TEST_FILES = find("tests/lib/").filter(fileType("js")).join(" "),
+    TOOLS_FILES = find("tools/").filter(fileType("js")).join(" ");
+
+//------------------------------------------------------------------------------
 // Tasks
 //------------------------------------------------------------------------------
 
@@ -72,25 +68,25 @@ target.lint = function() {
         lastReturn;
 
     echo("Validating Makefile.js");
-    lastReturn = nodeCLI.exec("eslint", MAKEFILE);
+    lastReturn = nodeCLI.exec("eslint", MAKEFILE, LINT_OPTIONS);
     if (lastReturn.code !== 0) {
         errors++;
     }
 
     echo("Validating JavaScript files");
-    lastReturn = nodeCLI.exec("eslint", JS_FILES);
+    lastReturn = nodeCLI.exec("eslint", JS_FILES, LINT_OPTIONS);
     if (lastReturn.code !== 0) {
         errors++;
     }
 
     echo("Validating JavaScript test files");
-    lastReturn = nodeCLI.exec("eslint", TEST_FILES);
+    lastReturn = nodeCLI.exec("eslint", TEST_FILES, LINT_OPTIONS);
     if (lastReturn.code !== 0) {
         errors++;
     }
 
     echo("Validating JavaScript tools files");
-    lastReturn = nodeCLI.exec("eslint", TOOLS_FILES);
+    lastReturn = nodeCLI.exec("eslint", TOOLS_FILES, LINT_OPTIONS);
     if (lastReturn.code !== 0) {
         errors++;
     }
