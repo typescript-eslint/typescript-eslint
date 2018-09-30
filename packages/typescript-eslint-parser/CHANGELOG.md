@@ -1,3 +1,8 @@
+v19.0.2 - September 29, 2018
+
+* aa0fe13 Fix: Re-expose parse method (fixes #519) (#521) (Kevin Partington)
+* 655359f Chore: Makefile tweaks (#522) (Kevin Partington)
+
 v19.0.1 - September 25, 2018
 
 * 7a367c7 Fix: Remove lib from package.json files (#518) (James Henry)
