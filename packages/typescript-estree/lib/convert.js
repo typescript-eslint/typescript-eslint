@@ -1976,6 +1976,15 @@ module.exports = function convert(config) {
 
       break;
 
+    case SyntaxKind.JsxFragment:
+      Object.assign(result, {
+        type: AST_NODE_TYPES.JSXFragment,
+        openingElement: convertChild(node.openingElement),
+        closingElement: convertChild(node.closingElement),
+        children: node.children.map(convertChild)
+      });
+      break;
+
     case SyntaxKind.JsxSelfClosingElement: {
       /**
        * Convert SyntaxKind.JsxSelfClosingElement to SyntaxKind.JsxOpeningElement,
@@ -2012,6 +2021,18 @@ module.exports = function convert(config) {
       Object.assign(result, {
         type: AST_NODE_TYPES.JSXClosingElement,
         name: convertTypeScriptJSXTagNameToESTreeName(node.tagName)
+      });
+      break;
+
+    case SyntaxKind.JsxOpeningFragment:
+      Object.assign(result, {
+        type: AST_NODE_TYPES.JSXOpeningFragment,
+        selfClosing: false
+      });
+      break;
+    case SyntaxKind.JsxClosingFragment:
+      Object.assign(result, {
+        type: AST_NODE_TYPES.JSXClosingFragment
       });
       break;
 
