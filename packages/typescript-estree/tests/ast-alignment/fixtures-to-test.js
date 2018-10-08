@@ -20,6 +20,12 @@ const jsxFilesWithKnownIssues = require('../jsx-known-issues').map(f =>
 jsxFilesWithKnownIssues.push('invalid-no-tag-name');
 
 /**
+ * JSX shorthand fragments are not supported by Babylon
+ */
+jsxFilesWithKnownIssues.push('shorthand-fragment');
+jsxFilesWithKnownIssues.push('shorthand-fragment-with-child');
+
+/**
  * Custom constructs/concepts used in this file:
  *
  * type Pattern = string; // used for node-glob matching
