@@ -32,7 +32,7 @@
     "semantic-release": "^15.9.16",
     "shelljs": "0.8.2",
     "travis-deploy-once": "^5.0.8",
-    "typescript": "~3.0.1"
+    "typescript": "~3.1.1"
   },
   "keywords": [
     "ast",
