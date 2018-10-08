@@ -1,6 +1,6 @@
 {
   "name": "typescript-eslint-parser",
-  "description": "An Esprima-style parser for TypeScript",
+  "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
   "homepage": "https://github.com/eslint/typescript-eslint-parser",
   "main": "parser.js",
@@ -24,7 +24,7 @@
     "npm-license": "0.3.3",
     "shelljs": "0.8.2",
     "shelljs-nodecli": "0.1.1",
-    "typescript": "~3.0.1"
+    "typescript": "~3.1.1"
   },
   "keywords": [
     "ast",
@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "eslint": "4.19.1",
-    "typescript-estree": "1.0.0"
+    "typescript-estree": "2.1.0"
   },
   "peerDependencies": {
     "typescript": "*"
