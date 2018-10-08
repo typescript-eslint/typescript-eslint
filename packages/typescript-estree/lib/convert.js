@@ -746,6 +746,8 @@ module.exports = function convert(config) {
       if (arrayAssignNode) {
         if (arrayAssignNode.left === node) {
           arrayIsInAssignment = true;
+        } else if (node.parent.kind === SyntaxKind.CallExpression) {
+          arrayIsInAssignment = false;
         } else {
           arrayIsInAssignment =
             nodeUtils.findChildOfKind(
@@ -790,6 +792,8 @@ module.exports = function convert(config) {
       if (objectAssignNode) {
         if (objectAssignNode.left === node) {
           objectIsInAssignment = true;
+        } else if (node.parent.kind === SyntaxKind.CallExpression) {
+          objectIsInAssignment = false;
         } else {
           objectIsInAssignment =
             nodeUtils.findChildOfKind(
