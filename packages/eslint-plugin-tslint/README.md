@@ -22,10 +22,10 @@ Configure in your eslint config file:
 ],
 "rules": {
     "tslint/config": ["warn", {
-        rules: { /* tslint rules */ },
-        rulesDirectory: [ /* array of paths to directories with rules, e.g. 'node_modules/tslint/lib/rules' */ ],
-        configFile: '/* path to tsconfig.json of your project */',
         lintFile: '/* path to tslint.json of your project */',
+        rules: { /* tslint rules (will be used if `lintFile` is not specified) */ },
+        rulesDirectory: [ /* array of paths to directories with rules, e.g. 'node_modules/tslint/lib/rules' (will be used if `lintFile` is not specified) */ ],
+        configFile: '/* path to tsconfig.json of your project */',
         compilerOptions: { /* ability to override TypeScript compilers options defined in tsconfig.json */ }
     }],
 }

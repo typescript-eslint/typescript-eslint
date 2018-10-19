@@ -54,8 +54,7 @@ export const rules = {
     config: {
         meta: {
             docs: {
-                description:
-                    'Wraps a TSLint configuration and lints the whole source using TSLint',
+                description: 'Wraps a TSLint configuration and lints the whole source using TSLint',
                 category: 'TSLint',
             },
             schema: [
