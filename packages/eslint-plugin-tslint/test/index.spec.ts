@@ -50,7 +50,7 @@ ruleTester.run('tslint/config', rules.config, {
         },
         {
             filename: './test/test-project/file-spec.ts',
-            code: readFileSync('./test/test-project/file-spec.ts', 'utf8'),
+            code: readFileSync('./test/test-project/file-spec.ts', 'utf8').replace(/\n/g, ' '),
             parser: 'typescript-eslint-parser',
             parserOptions,
             options: [
@@ -60,15 +60,30 @@ ruleTester.run('tslint/config', rules.config, {
                 },
             ],
         },
+        {
+            code: 'throw "should be ok because rule is not loaded";',
+            parser: 'typescript-eslint-parser',
+            parserOptions,
+            options: [tslintRulesConfig],
+        },
     ],
 
     invalid: [
         {
-            code: 'var foo = true',
+            options: [{ lintFile: './test/test-project/tslint.json' }],
+            parser: 'typescript-eslint-parser',
+            parserOptions,
+            code: 'throw "err" // no-string-throw',
+            errors: [
+                { message: 'Throwing plain strings (not instances of Error) gives no stack traces (tslint:no-string-throw)' },
+            ],
+        },
+        {
+            code: 'var foo = true // semicolon',
             parser: 'typescript-eslint-parser',
             parserOptions,
             options: [tslintRulesConfig],
-            output: 'var foo = true',
+            output: 'var foo = true // semicolon',
             errors: [
                 {
                     message: 'Missing semicolon (tslint:semicolon)',
@@ -78,11 +93,11 @@ ruleTester.run('tslint/config', rules.config, {
             ],
         },
         {
-            code: 'var foo = true',
+            code: 'var foo = true // fail',
             parser: 'typescript-eslint-parser',
             parserOptions,
             options: [tslintRulesDirectoryConfig],
-            output: 'var foo = true',
+            output: 'var foo = true // fail',
             errors: [
                 {
                     message: 'failure (tslint:always-fail)',
@@ -93,7 +108,7 @@ ruleTester.run('tslint/config', rules.config, {
         },
         {
             filename: './test/test-project/source.ts',
-            code: readFileSync('./test/test-project/source.ts', 'utf8'),
+            code: readFileSync('./test/test-project/source.ts', 'utf8').replace(/\n/g, ' '),
             parser: 'typescript-eslint-parser',
             parserOptions,
             options: [

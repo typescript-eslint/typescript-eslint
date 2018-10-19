@@ -34,6 +34,7 @@
     "cz": "git-cz"
   },
   "dependencies": {
+    "lodash.memoize": "^4.1.2",
     "typescript-service": "^2.0.3"
   },
   "peerDependencies": {
@@ -43,6 +44,7 @@
     "@semantic-release/changelog": "^3.0.0",
     "@semantic-release/git": "^7.0.3",
     "@types/eslint": "^4.16.3",
+    "@types/lodash.memoize": "^4.1.4",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.9.3",
     "cz-conventional-changelog": "^2.1.0",

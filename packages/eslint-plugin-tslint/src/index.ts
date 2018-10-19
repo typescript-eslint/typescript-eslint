@@ -12,7 +12,7 @@ import * as ts from 'typescript';
 import { Rule } from 'eslint';
 import { typescriptService } from './typescript-service';
 import { CustomLinter } from './custom-linter';
-
+import memoize = require('lodash.memoize');
 
 //------------------------------------------------------------------------------
 // Plugin Definition
@@ -32,10 +32,19 @@ interface RawRulesConfig {
     [key: string]: RawRuleConfig;
 }
 
-interface TSLintPluginOptions {
-    rulesDirectory?: string[];
-    rules?: RawRulesConfig;
-}
+
+/**
+ * Construct a configFile for TSLint
+ */
+const tslintConfig = memoize((lintFile: string, tslintRules: RawRulesConfig, tslintRulesDirectory: string[]) => {
+    if (lintFile != null) {
+        return Configuration.loadConfigurationFromPath(lintFile);
+    }
+    return Configuration.parseConfigFile({
+        rules: tslintRules || {},
+        rulesDirectory: tslintRulesDirectory || [],
+    });
+}, (lintFile, tslintRules = {}, tslintRulesDirectory = []) => `${lintFile}_${Object.keys(tslintRules).join(',')}_${tslintRulesDirectory.length}`);
 
 export const rules = {
     /**
@@ -69,6 +78,9 @@ export const rules = {
                         configFile: {
                             type: 'string',
                         },
+                        lintFile: {
+                            type: 'string',
+                        },
                         compilerOptions: {
                             type: 'object',
                             additionalProperties: true,
@@ -89,23 +101,9 @@ export const rules = {
                 rules: tslintRules,
                 rulesDirectory: tslintRulesDirectory,
                 configFile,
+                lintFile,
                 compilerOptions,
             } = context.options[0];
-
-            const tslintOptions = {
-                formatter: 'json',
-                fix: false,
-                rulesDirectory: tslintRulesDirectory,
-            };
-
-            /**
-             * Manually construct a configFile for TSLint
-             */
-            const rawConfig: TSLintPluginOptions = {};
-            rawConfig.rules = tslintRules || {};
-            rawConfig.rulesDirectory = tslintRulesDirectory || [];
-
-            const tslintConfig = Configuration.parseConfigFile(rawConfig);
 
             let program: ts.Program | undefined = undefined;
 
@@ -116,14 +114,16 @@ export const rules = {
 
             /**
              * Create an instance of TSLint
-             */
-            const tslint = new CustomLinter(tslintOptions, program);
-
-            /**
              * Lint the source code using the configured TSLint instance, and the rules which have been
              * passed via the ESLint rule options for this rule (using "tslint/config")
              */
-            tslint.lint(fileName, sourceCode, tslintConfig);
+            const tslintOptions = {
+                formatter: 'json',
+                fix: false,
+            };
+            const tslint = new CustomLinter(tslintOptions, program);
+            const configuration = tslintConfig(lintFile, tslintRules, tslintRulesDirectory);
+            tslint.lint(fileName, sourceCode, configuration);
 
             const result = tslint.getResult();
 
