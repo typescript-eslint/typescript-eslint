@@ -1,3 +1,15 @@
+# [3.1.0](https://github.com/JamesHenry/eslint-plugin-tslint/compare/v3.0.0...v3.1.0) (2018-10-19)
+
+
+### Bug Fixes
+
+* Tiny lint note elimination ([a731838](https://github.com/JamesHenry/eslint-plugin-tslint/commit/a731838))
+
+
+### Features
+
+* Support for tslint property ([18a4afb](https://github.com/JamesHenry/eslint-plugin-tslint/commit/18a4afb)), closes [#40](https://github.com/JamesHenry/eslint-plugin-tslint/issues/40)
+
 # [3.0.0](https://github.com/JamesHenry/eslint-plugin-tslint/compare/v2.1.0...v3.0.0) (2018-09-09)
 
 

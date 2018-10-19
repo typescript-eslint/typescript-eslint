@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-tslint",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "main": "dist/index.js",
   "typings": "src/index.ts",
   "author": "James Henry <james@henry.sc>",
