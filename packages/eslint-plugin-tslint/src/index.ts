@@ -44,7 +44,7 @@ const tslintConfig = memoize((lintFile: string, tslintRules: RawRulesConfig, tsl
         rules: tslintRules || {},
         rulesDirectory: tslintRulesDirectory || [],
     });
-}, (lintFile, tslintRules = {}, tslintRulesDirectory = []) => `${lintFile}_${Object.keys(tslintRules).join(',')}_${tslintRulesDirectory.length}`);
+}, (lintFile: string | undefined, tslintRules = {}, tslintRulesDirectory = []) => `${lintFile}_${Object.keys(tslintRules).join(',')}_${tslintRulesDirectory.length}`);
 
 export const rules = {
     /**
