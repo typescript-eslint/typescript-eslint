@@ -744,17 +744,20 @@ module.exports = function convert(config) {
       let arrayIsInAssignment;
 
       if (arrayAssignNode) {
-        if (arrayAssignNode.left === node) {
-          arrayIsInAssignment = true;
-        } else if (node.parent.kind === SyntaxKind.CallExpression) {
+        if (node.parent.kind === SyntaxKind.CallExpression) {
           arrayIsInAssignment = false;
-        } else {
+        } else if (
+          nodeUtils.getBinaryExpressionType(arrayAssignNode.operatorToken) ===
+          AST_NODE_TYPES.AssignmentExpression
+        ) {
           arrayIsInAssignment =
             nodeUtils.findChildOfKind(
               arrayAssignNode.left,
               SyntaxKind.ArrayLiteralExpression,
               ast
-            ) === node;
+            ) === node || arrayAssignNode.left === node;
+        } else {
+          arrayIsInAssignment = false;
         }
       }
 
