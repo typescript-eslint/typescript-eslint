@@ -1,3 +1,7 @@
+v20.1.1 - October 31, 2018
+
+* 1683169 Revert "Chore: Make ESLint a devDependency/peerDependency (fixes #523)" (#537) (Kevin Partington)
+
 v20.1.0 - October 30, 2018
 
 * 075d243 Chore: Make ESLint a devDependency/peerDependency (fixes #523) (#526) (Kevin Partington)
