@@ -6,7 +6,8 @@
   "main": "parser.js",
   "version": "20.0.0",
   "files": [
-    "parser.js"
+    "parser.js",
+    "visitor-keys.js"
   ],
   "engines": {
     "node": ">=6.14.0"
@@ -49,6 +50,7 @@
   },
   "dependencies": {
     "eslint": "4.19.1",
+    "eslint-visitor-keys": "^1.0.0",
     "typescript-estree": "2.1.0"
   },
   "peerDependencies": {
