@@ -40,9 +40,6 @@ describe('parse()', () => {
   describe('general', () => {
     const code = 'let foo = bar;';
     const config = {
-      ecmaFeatures: {
-        blockBindings: true
-      },
       comment: true,
       tokens: true,
       range: true,

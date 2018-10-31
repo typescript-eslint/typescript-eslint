@@ -35,8 +35,6 @@ const testFiles = shelljs
 
 describe('TSX', () => {
   testFiles.forEach(filename => {
-    // Uncomment and fill in filename to focus on a single file
-    // var filename = "jsx/invalid-matching-placeholder-in-closing-tag";
     const code = shelljs.cat(
       `${path.resolve(TSX_FIXTURES_DIR, filename)}.src.tsx`
     );
@@ -46,9 +44,7 @@ describe('TSX', () => {
       tokens: true,
       errorOnUnknownASTType: true,
       useJSXTextNode: true,
-      ecmaFeatures: {
-        jsx: true
-      }
+      jsx: true
     };
     test(
       `fixtures/${filename}.src`,

@@ -1,6 +1,6 @@
 <h1 align="center">TypeScript ESTree</h1>
 
-<p align="center">A parser that converts TypeScript source code into an ESTree-compatible form: https://github.com/estree/estree</p>
+<p align="center">A parser that converts TypeScript source code into an <a href="https://github.com/estree/estree">ESTree</a>-compatible form</p>
 
 <p align="center">
     <a href="https://travis-ci.org/JamesHenry/typescript-estree"><img src="https://img.shields.io/travis/JamesHenry/typescript-estree.svg?style=flat-square" alt="Travis"/></a>
@@ -13,15 +13,97 @@
 
 <br>
 
-## Usage
+## About
 
-This parser is somewhat generic and robust, it could be used to power any use-case which requires taking TypeScript source code and producing an ESTree-compatiable AST.
+This parser is somewhat generic and robust, and could be used to power any use-case which requires taking TypeScript source code and producing an ESTree-compatiable AST.
 
 In fact, it is already used within these hyper-popular open-source projects to power their TypeScript support:
 
 - [ESLint](https://eslint.org), the pluggable linting utility for JavaScript and JSX
   - See [typescript-eslint-parser](https://github.com/eslint/typescript-eslint-parser) for more details
 - [Prettier](https://prettier.io), an opinionated code formatter
+
+## Installation
+
+```
+npm install --save typescript-estree
+```
+
+## API
+
+### parse(code, options)
+
+Parses the given string of code with the options provided and returns an ESTree-compatible AST. The options object has the following properties:
+
+```javascript
+{
+    // attach range information to each node
+    range: false,
+
+    // attach line/column location information to each node
+    loc: false,
+
+    // create a top-level tokens array containing all tokens
+    tokens: false,
+
+    // create a top-level comments array containing all comments
+    comment: false,
+
+    // enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
+    jsx: false,
+
+    /*
+     * The JSX AST changed the node type for string literals
+     * inside a JSX Element from `Literal` to `JSXText`.
+     * When value is `true`, these nodes will be parsed as type `JSXText`.
+     * When value is `false`, these nodes will be parsed as type `Literal`.
+     */
+    useJSXTextNode: false,
+
+    // Cause the parser to error if it encounters an unknown AST node type (useful for testing)
+    errorOnUnknownASTType: false,
+
+    /*
+     * Allows overriding of function used for logging.
+     * When value is `false`, no logging will occur.
+     * When value is not provided, `console.log()` will be used.
+     */
+    loggerFn: undefined
+}
+```
+
+Example usage:
+
+```javascript
+const parser = require('typescript-estree');
+const code = "const hello: string = 'world';";
+const ast = parser.parse(code, {
+  range: true,
+  loc: true
+});
+```
+
+### version
+
+Exposes the current version of typescript-estree as specified in package.json.
+
+Example usage:
+
+```javascript
+const parser = require('typescript-estree');
+const version = parser.version;
+```
+
+### AST_NODE_TYPES
+
+Exposes an object that contains the AST node types produced by the parser.
+
+Example usage:
+
+```javascript
+const parser = require('typescript-estree');
+const astNodeTypes = parser.AST_NODE_TYPES;
+```
 
 ## Supported TypeScript Version
 

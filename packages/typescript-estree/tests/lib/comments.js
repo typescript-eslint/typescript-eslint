@@ -42,9 +42,7 @@ describe('Comments', () => {
       range: true,
       tokens: true,
       comment: true,
-      ecmaFeatures: {
-        jsx: true
-      }
+      jsx: true
     };
     test(
       `fixtures/${filename}.src`,
