@@ -34,22 +34,18 @@ const testFiles = shelljs
 // Tests
 //------------------------------------------------------------------------------
 
-describe('ecmaFeatures', () => {
+describe('ecma-features', () => {
   testFiles.forEach(filename => {
-    // Uncomment and fill in filename to focus on a single file
-    // var filename = "jsx/invalid-matching-placeholder-in-closing-tag";
     const feature = path.dirname(filename),
       code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`),
       config = {
         loc: true,
         range: true,
         tokens: true,
-        ecmaFeatures: {},
         errorOnUnknownASTType: true
       };
 
     test(`fixtures/${filename}.src`, () => {
-      config.ecmaFeatures[feature] = true;
       testUtils.createSnapshotTestBlock(code, config)();
     });
   });

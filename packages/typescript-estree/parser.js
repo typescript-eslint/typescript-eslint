@@ -35,10 +35,8 @@ function resetExtra() {
     loc: false,
     comment: false,
     comments: [],
-    tolerant: false,
-    errors: [],
     strict: false,
-    ecmaFeatures: {},
+    jsx: false,
     useJSXTextNode: false,
     log: console.log
   };
@@ -67,31 +65,27 @@ function generateAST(code, options) {
     extra.range = typeof options.range === 'boolean' && options.range;
     extra.loc = typeof options.loc === 'boolean' && options.loc;
 
-    if (extra.loc && options.source !== null && options.source !== undefined) {
-      extra.source = toString(options.source);
-    }
-
     if (typeof options.tokens === 'boolean' && options.tokens) {
       extra.tokens = [];
     }
+
     if (typeof options.comment === 'boolean' && options.comment) {
       extra.comment = true;
       extra.comments = [];
     }
-    if (typeof options.tolerant === 'boolean' && options.tolerant) {
-      extra.errors = [];
-    }
 
-    if (options.ecmaFeatures && typeof options.ecmaFeatures === 'object') {
-      // pass through jsx option
-      extra.ecmaFeatures.jsx = options.ecmaFeatures.jsx;
+    if (typeof options.jsx === 'boolean' && options.jsx) {
+      extra.jsx = true;
     }
 
     /**
      * Allow the user to cause the parser to error if it encounters an unknown AST Node Type
      * (used in testing).
      */
-    if (options.errorOnUnknownASTType) {
+    if (
+      typeof options.errorOnUnknownASTType === 'boolean' &&
+      options.errorOnUnknownASTType
+    ) {
       extra.errorOnUnknownASTType = true;
     }
 
@@ -126,7 +120,7 @@ function generateAST(code, options) {
 
   // Even if jsx option is set in typescript compiler, filename still has to
   // contain .tsx file extension
-  const FILENAME = extra.ecmaFeatures.jsx ? 'estree.tsx' : 'estree.ts';
+  const FILENAME = extra.jsx ? 'estree.tsx' : 'estree.ts';
 
   const compilerHost = {
     fileExists() {
@@ -165,7 +159,7 @@ function generateAST(code, options) {
     {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
-      jsx: extra.ecmaFeatures.jsx ? 'preserve' : undefined
+      jsx: extra.jsx ? 'preserve' : undefined
     },
     compilerHost
   );

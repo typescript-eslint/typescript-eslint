@@ -54,9 +54,7 @@ function parseWithTypeScriptESTree(text, parserOptions) {
           comment: false,
           useJSXTextNode: true,
           errorOnUnknownASTType: true,
-          ecmaFeatures: {
-            jsx: true
-          }
+          jsx: true
         },
         parserOptions
       )
