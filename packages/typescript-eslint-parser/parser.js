@@ -11,6 +11,7 @@
 const parse = require("typescript-estree").parse;
 const astNodeTypes = require("typescript-estree").AST_NODE_TYPES;
 const traverser = require("eslint/lib/util/traverser");
+const visitorKeys = require("./visitor-keys");
 
 //------------------------------------------------------------------------------
 // Public
@@ -29,7 +30,7 @@ exports.parseForESLint = function parseForESLint(code, options) {
             }
         }
     });
-    return { ast };
+    return { ast, visitorKeys };
 };
 
 exports.parse = function(code, options) {

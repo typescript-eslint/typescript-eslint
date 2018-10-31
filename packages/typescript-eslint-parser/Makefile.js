@@ -51,7 +51,7 @@ const JEST = "jest",
 
     // Files
     MAKEFILE = "./Makefile.js",
-    JS_FILES = "parser.js",
+    JS_FILES = "parser.js visitor-keys.js",
     TEST_FILES = find("tests/lib/").filter(fileType("js")).join(" "),
     TOOLS_FILES = find("tools/").filter(fileType("js")).join(" ");
 
