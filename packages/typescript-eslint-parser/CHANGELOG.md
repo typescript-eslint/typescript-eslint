@@ -1,3 +1,10 @@
+v20.1.0 - October 30, 2018
+
+* 075d243 Chore: Make ESLint a devDependency/peerDependency (fixes #523) (#526) (Kevin Partington)
+* 4310aac Chore: Force LF for tsx files (#520) (Benjamin Lichtman)
+* bacac5f New: Add visitor keys (#516) (Michał Sajnóg)
+* 4172933 Upgrade: eslint-release@1.0.0 (#527) (Teddy Katz)
+
 v20.0.0 - October 8, 2018
 
 * f4b9893 Breaking: Support TypeScript 3.1 (fixes #524) (#525) (James Henry)
