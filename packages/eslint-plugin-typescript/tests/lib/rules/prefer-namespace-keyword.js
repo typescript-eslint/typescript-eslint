@@ -23,7 +23,8 @@ ruleTester.run("prefer-namespace-keyword", rule, {
     valid: [
         "declare module 'foo' { }",
         "namespace foo { }",
-        "declare namespace foo { }"
+        "declare namespace foo { }",
+        "declare global { }"
     ],
     invalid: [
         {
