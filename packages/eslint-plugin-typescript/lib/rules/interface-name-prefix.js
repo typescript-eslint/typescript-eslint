@@ -43,19 +43,8 @@ module.exports = {
             if (typeof name !== "string") {
                 return false;
             }
-            if (name.length === 0) {
-                return false;
-            }
-            const first = name.charAt(0);
-            const second = name.charAt(1);
 
-            if (second === "") {
-                return false;
-            }
-            if (first !== "I" || second !== second.toUpperCase()) {
-                return false;
-            }
-            return true;
+            return /^I[A-Z]/.test(name);
         }
 
         /**

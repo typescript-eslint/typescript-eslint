@@ -57,6 +57,14 @@ interface Animal {
 }
             `,
             options: ["never"]
+        },
+        {
+            code: `
+interface I18n {
+    name: string;
+}
+            `,
+            options: ["never"]
         }
     ],
     invalid: [
