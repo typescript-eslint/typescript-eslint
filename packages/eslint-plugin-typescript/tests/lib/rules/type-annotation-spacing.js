@@ -5907,3 +5907,356 @@ type Foo = {
         }
     ]
 });
+
+//------------------------------------------------------------------------------
+// Optional w/Addition/Removal Annotation Tests
+//------------------------------------------------------------------------------
+
+const operators = ["+?:", "-?:"];
+
+ruleTester.run("type-annotation-spacing", rule, {
+    valid: operators.reduce(
+        (validCases, operator) =>
+            validCases.concat([
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    options: []
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    options: [{ after: true }]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    options: [{ before: false }]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    options: [{ after: true, before: false }]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+                    options: [{ after: false, before: true }]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    options: [{ before: true }]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    options: [{ after: true, before: true }]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    options: [{ after: false }]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    options: [{ after: false, before: false }]
+                }
+            ]),
+        []
+    ),
+    invalid: operators.reduce(
+        (validCases, operator) =>
+            validCases.concat([
+                // space before + after cases
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    options: [{ after: true }],
+                    output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space before the '${operator}'`,
+                            line: 1,
+                            column: 32
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    options: [{ before: false }],
+                    output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space before the '${operator}'`,
+                            line: 1,
+                            column: 32
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    options: [{ after: true, before: false }],
+                    output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space before the '${operator}'`,
+                            line: 1,
+                            column: 32
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    options: [{ after: false }],
+                    output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space before the '${operator}'`,
+                            line: 1,
+                            column: 32
+                        },
+                        {
+                            message: `Unexpected space after the '${operator}'`,
+                            line: 1,
+                            column: 34
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    options: [{ after: false, before: false }],
+                    output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space before the '${operator}'`,
+                            line: 1,
+                            column: 32
+                        },
+                        {
+                            message: `Unexpected space after the '${operator}'`,
+                            line: 1,
+                            column: 34
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    options: [{ after: false, before: true }],
+                    output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space after the '${operator}'`,
+                            line: 1,
+                            column: 34
+                        }
+                    ]
+                },
+                // no space cases
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    options: [{ after: true }],
+                    output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space after the '${operator}'`,
+                            line: 1,
+                            column: 33
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    options: [{ before: true }],
+                    output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space before the '${operator}'`,
+                            line: 1,
+                            column: 31
+                        },
+                        {
+                            message: `Expected a space after the '${operator}'`,
+                            line: 1,
+                            column: 33
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    options: [{ after: true, before: true }],
+                    output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space before the '${operator}'`,
+                            line: 1,
+                            column: 31
+                        },
+                        {
+                            message: `Expected a space after the '${operator}'`,
+                            line: 1,
+                            column: 33
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    options: [{ after: true, before: false }],
+                    output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space after the '${operator}'`,
+                            line: 1,
+                            column: 33
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    options: [{ after: false, before: true }],
+                    output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space before the '${operator}'`,
+                            line: 1,
+                            column: 31
+                        }
+                    ]
+                },
+                // space before cases
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+                    options: [],
+                    output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space before the '${operator}'`,
+                            line: 1,
+                            column: 32
+                        },
+                        {
+                            message: `Expected a space after the '${operator}'`,
+                            line: 1,
+                            column: 34
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+                    options: [{ after: true }],
+                    output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space before the '${operator}'`,
+                            line: 1,
+                            column: 32
+                        },
+                        {
+                            message: `Expected a space after the '${operator}'`,
+                            line: 1,
+                            column: 34
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+                    options: [{ before: true }],
+                    output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space after the '${operator}'`,
+                            line: 1,
+                            column: 34
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+                    options: [{ after: true, before: false }],
+                    output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space before the '${operator}'`,
+                            line: 1,
+                            column: 32
+                        },
+                        {
+                            message: `Expected a space after the '${operator}'`,
+                            line: 1,
+                            column: 34
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+                    options: [{ after: true, before: true }],
+                    output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space after the '${operator}'`,
+                            line: 1,
+                            column: 34
+                        }
+                    ]
+                },
+                // space after cases
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    options: [{ after: false }],
+                    output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space after the '${operator}'`,
+                            line: 1,
+                            column: 33
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    options: [{ before: true }],
+                    output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space before the '${operator}'`,
+                            line: 1,
+                            column: 31
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    options: [{ after: true, before: true }],
+                    output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space before the '${operator}'`,
+                            line: 1,
+                            column: 31
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    options: [{ after: false, before: true }],
+                    output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+                    errors: [
+                        {
+                            message: `Expected a space before the '${operator}'`,
+                            line: 1,
+                            column: 31
+                        },
+                        {
+                            message: `Unexpected space after the '${operator}'`,
+                            line: 1,
+                            column: 33
+                        }
+                    ]
+                },
+                {
+                    code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+                    options: [{ after: false, before: false }],
+                    output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+                    errors: [
+                        {
+                            message: `Unexpected space after the '${operator}'`,
+                            line: 1,
+                            column: 33
+                        }
+                    ]
+                }
+            ]),
+        []
+    )
+});
