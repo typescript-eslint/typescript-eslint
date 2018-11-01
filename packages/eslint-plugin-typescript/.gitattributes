@@ -1,0 +1,8 @@
+# avoids End-of-line problems for Windows Devs
+# automatically converts crlf -> lf
+#   (linters can turn off their line-ending checks)
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.d.ts text eol=lf
