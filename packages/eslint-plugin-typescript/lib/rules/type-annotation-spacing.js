@@ -98,6 +98,16 @@ module.exports = {
                 type = "?:";
                 punctuatorTokenStart = previousToken;
                 previousToken = sourceCode.getTokenBefore(previousToken);
+
+                // handle the +/- modifiers for optional modification operators
+                if (
+                    previousToken.value === "+" ||
+                    previousToken.value === "-"
+                ) {
+                    type = `${previousToken.value}?:`;
+                    punctuatorTokenStart = previousToken;
+                    previousToken = sourceCode.getTokenBefore(previousToken);
+                }
             }
 
             const previousDelta =
