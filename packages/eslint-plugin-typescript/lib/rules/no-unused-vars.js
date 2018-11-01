@@ -122,6 +122,15 @@ module.exports = {
 
                     break;
 
+                case "TSTypeParameter": {
+                    markTypeAnnotationAsUsed(annotation.constraint);
+                    break;
+                }
+                case "TSMappedType": {
+                    markTypeAnnotationAsUsed(annotation.typeAnnotation);
+                    markTypeAnnotationAsUsed(annotation.typeParameter);
+                    break;
+                }
                 default:
                     break;
             }
@@ -246,6 +255,9 @@ module.exports = {
             }
             if (node.decorators) {
                 node.decorators.forEach(markDecoratorAsUsed);
+            }
+            if (node.typeParameters && node.typeParameters.params) {
+                node.typeParameters.params.forEach(markTypeAnnotationAsUsed);
             }
         }
 
