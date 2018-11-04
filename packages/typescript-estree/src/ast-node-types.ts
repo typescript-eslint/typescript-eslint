@@ -5,20 +5,7 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-// None!
-
-//------------------------------------------------------------------------------
-// Public
-//------------------------------------------------------------------------------
-
-module.exports = {
+export const AST_NODE_TYPES: { [key: string]: string } = {
   ArrayExpression: 'ArrayExpression',
   ArrayPattern: 'ArrayPattern',
   ArrowFunctionExpression: 'ArrowFunctionExpression',

@@ -15,7 +15,7 @@
 
 ## About
 
-This parser is somewhat generic and robust, and could be used to power any use-case which requires taking TypeScript source code and producing an ESTree-compatiable AST.
+This parser is somewhat generic and robust, and could be used to power any use-case which requires taking TypeScript source code and producing an ESTree-compatible AST.
 
 In fact, it is already used within these hyper-popular open-source projects to power their TypeScript support:
 

@@ -2,11 +2,12 @@
   "name": "typescript-estree",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "homepage": "https://github.com/JamesHenry/typescript-estree",
-  "main": "parser.js",
+  "main": "dist/parser.js",
   "version": "0.0.0-development",
   "files": [
-    "lib",
-    "parser.js"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=6.14.0"
@@ -20,6 +21,12 @@
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@commitlint/travis-cli": "^7.1.2",
+    "@types/babel-code-frame": "^6.20.1",
+    "@types/jest": "^23.3.9",
+    "@types/lodash.isplainobject": "^4.0.4",
+    "@types/lodash.unescape": "^4.0.4",
+    "@types/semver": "^5.5.0",
+    "@types/shelljs": "^0.8.0",
     "babel-code-frame": "6.26.0",
     "babylon": "7.0.0-beta.39",
     "cz-conventional-changelog": "2.1.0",
@@ -32,6 +39,7 @@
     "semantic-release": "^15.9.16",
     "shelljs": "0.8.2",
     "travis-deploy-once": "^5.0.8",
+    "ts-jest": "^23.10.4",
     "typescript": "~3.1.1"
   },
   "keywords": [
@@ -44,6 +52,7 @@
     "syntax"
   ],
   "scripts": {
+    "build": "tsc",
     "test": "npm run unit-tests && npm run ast-alignment-tests",
     "unit-tests": "jest",
     "ast-alignment-tests": "jest --config=./tests/ast-alignment/jest.config.js",
@@ -79,8 +88,18 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "testRegex": "tests/lib/.+\\.js$",
-    "testPathIgnorePatterns": [],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/tests/lib/.*)\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
     "collectCoverage": true,
     "coverageReporters": [
       "text-summary"
