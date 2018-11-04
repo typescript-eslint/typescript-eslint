@@ -5,17 +5,11 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-const path = require('path'),
-  shelljs = require('shelljs'),
-  testUtils = require('../../tools/test-utils'),
-  filesWithKnownIssues = require('../jsx-known-issues');
+import path from 'path';
+import shelljs from 'shelljs';
+import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { createSnapshotTestBlock } from '../../tools/test-utils';
+import filesWithKnownIssues from '../jsx-known-issues';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -51,11 +45,11 @@ const jsxTextTestFiles = shelljs
 describe('JSX', () => {
   /**
    * Test each fixture file
-   * @param {string} fixturesDir Fixtures Directory
-   * @param {boolean} useJSXTextNode Use JSX Text Node
-   * @returns {void}
    */
-  function testFixture(fixturesDir, useJSXTextNode) {
+  function testFixture(
+    fixturesDir: string,
+    useJSXTextNode: boolean
+  ): (filename: string) => void {
     return filename => {
       const code = shelljs.cat(`${path.resolve(fixturesDir, filename)}.src.js`);
 
@@ -68,9 +62,9 @@ describe('JSX', () => {
         jsx: true
       };
 
-      test(
+      it(
         `fixtures/${filename}.src`,
-        testUtils.createSnapshotTestBlock(code, config)
+        createSnapshotTestBlock(code, config as ParserOptions)
       );
     };
   }

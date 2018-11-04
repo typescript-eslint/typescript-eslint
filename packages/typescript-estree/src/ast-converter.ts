@@ -5,27 +5,17 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-const convert = require('./convert'),
-  convertComments = require('./convert-comments').convertComments,
-  nodeUtils = require('./node-utils');
-
-//------------------------------------------------------------------------------
-// Private
-//------------------------------------------------------------------------------
+import { convert } from './convert';
+import { convertComments } from './convert-comments';
+import nodeUtils from './node-utils';
+import { Extra } from './temp-types-based-on-js-source';
 
 /**
  * Extends and formats a given error object
  * @param  {Object} error the error object
  * @returns {Object}       converted error object
  */
-function convertError(error) {
+function convertError(error: any) {
   return nodeUtils.createError(
     error.file,
     error.start,
@@ -33,11 +23,7 @@ function convertError(error) {
   );
 }
 
-//------------------------------------------------------------------------------
-// Public
-//------------------------------------------------------------------------------
-
-module.exports = (ast, extra) => {
+export default (ast: any, extra: Extra) => {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
    * source.
@@ -49,7 +35,7 @@ module.exports = (ast, extra) => {
   /**
    * Recursively convert the TypeScript AST into an ESTree-compatible AST
    */
-  const estree = convert({
+  const estree: any = convert({
     node: ast,
     parent: null,
     ast,

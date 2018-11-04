@@ -1,26 +1,20 @@
 /**
- * @fileoverview Tests for parsing and attaching comments.
+ * @fileoverview Tests for ECMA feature flags
  * @author Nicholas C. Zakas
  * @author James Henry <https://github.com/JamesHenry>
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-const path = require('path'),
-  shelljs = require('shelljs'),
-  testUtils = require('../../tools/test-utils');
+import path from 'path';
+import shelljs from 'shelljs';
+import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = './tests/fixtures/comments';
+const FIXTURES_DIR = './tests/fixtures/ecma-features';
 
 const testFiles = shelljs
   .find(FIXTURES_DIR)
@@ -34,19 +28,19 @@ const testFiles = shelljs
 // Tests
 //------------------------------------------------------------------------------
 
-describe('Comments', () => {
+describe('ecma-features', () => {
   testFiles.forEach(filename => {
-    const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
-    const config = {
-      loc: true,
-      range: true,
-      tokens: true,
-      comment: true,
-      jsx: true
-    };
-    test(
+    const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`),
+      config = {
+        loc: true,
+        range: true,
+        tokens: true,
+        errorOnUnknownASTType: true
+      };
+
+    it(
       `fixtures/${filename}.src`,
-      testUtils.createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config as ParserOptions)
     );
   });
 });

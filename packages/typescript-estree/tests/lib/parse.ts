@@ -5,15 +5,9 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-const parser = require('../../parser'),
-  testUtils = require('../../tools/test-utils');
+import * as parser from '../../src/parser';
+import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -22,15 +16,15 @@ const parser = require('../../parser'),
 describe('parse()', () => {
   describe('basic functionality', () => {
     it('should parse an empty string', () => {
-      expect(parser.parse('').body).toEqual([]);
-      expect(parser.parse('', {}).body).toEqual([]);
+      expect((parser as any).parse('').body).toEqual([]);
+      expect(parser.parse('', {} as any).body).toEqual([]);
     });
   });
 
   describe('modules', () => {
     it('should have correct column number when strict mode error occurs', () => {
       try {
-        parser.parse('function fn(a, a) {\n}', { sourceType: 'module' });
+        parser.parse('function fn(a, a) {\n}', { sourceType: 'module' } as any);
       } catch (err) {
         expect(err.column).toEqual(16);
       }
@@ -46,9 +40,9 @@ describe('parse()', () => {
       loc: true
     };
 
-    test(
+    it(
       'output tokens, comments, locs, and ranges when called with those options',
-      testUtils.createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config as ParserOptions)
     );
   });
 });

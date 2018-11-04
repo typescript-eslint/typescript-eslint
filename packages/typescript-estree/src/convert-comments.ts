@@ -5,39 +5,34 @@
  * MIT License
  */
 
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-const ts = require('typescript'),
-  nodeUtils = require('./node-utils');
-
-//------------------------------------------------------------------------------
-// Private
-//------------------------------------------------------------------------------
+import ts from 'typescript';
+import nodeUtils from './node-utils';
+import {
+  ESTreeComment,
+  ESTreeToken,
+  LineAndColumnData
+} from './temp-types-based-on-js-source';
 
 /**
  * Converts a TypeScript comment to an Esprima comment.
  * @param {boolean} block True if it's a block comment, false if not.
  * @param {string} text The text of the comment.
- * @param {int} start The index at which the comment starts.
- * @param {int} end The index at which the comment ends.
- * @param {Location} startLoc The location at which the comment starts.
- * @param {Location} endLoc The location at which the comment ends.
+ * @param {number} start The index at which the comment starts.
+ * @param {number} end The index at which the comment ends.
+ * @param {LineAndColumnData} startLoc The location at which the comment starts.
+ * @param {LineAndColumnData} endLoc The location at which the comment ends.
  * @returns {Object} The comment object.
  * @private
  */
 function convertTypeScriptCommentToEsprimaComment(
-  block,
-  text,
-  start,
-  end,
-  startLoc,
-  endLoc
-) {
-  const comment = {
+  block: boolean,
+  text: string,
+  start: number,
+  end: number,
+  startLoc: LineAndColumnData,
+  endLoc: LineAndColumnData
+): ESTreeComment {
+  const comment: Partial<ESTreeToken> = {
     type: block ? 'Block' : 'Line',
     value: text
   };
@@ -53,18 +48,22 @@ function convertTypeScriptCommentToEsprimaComment(
     };
   }
 
-  return comment;
+  return comment as ESTreeComment;
 }
 
 /**
  * Convert comment from TypeScript Triva Scanner.
- * @param  {Object} triviaScanner TS Scanner
- * @param  {Object} ast the AST object
+ * @param  {ts.Scanner} triviaScanner TS Scanner
+ * @param  {ts.SourceFile} ast the AST object
  * @param  {string} code TypeScript code
  * @returns {ESTreeComment}     the converted ESTreeComment
  * @private
  */
-function getCommentFromTriviaScanner(triviaScanner, ast, code) {
+function getCommentFromTriviaScanner(
+  triviaScanner: ts.Scanner,
+  ast: ts.SourceFile,
+  code: string
+): ESTreeComment {
   const kind = triviaScanner.getToken();
   const isBlock = kind === ts.SyntaxKind.MultiLineCommentTrivia;
   const range = {
@@ -91,23 +90,18 @@ function getCommentFromTriviaScanner(triviaScanner, ast, code) {
   return esprimaComment;
 }
 
-//------------------------------------------------------------------------------
-// Public
-//------------------------------------------------------------------------------
-
-module.exports = {
-  convertComments
-};
-
 /**
  * Convert all comments for the given AST.
- * @param  {Object} ast the AST object
+ * @param  {ts.SourceFile} ast the AST object
  * @param  {string} code the TypeScript code
  * @returns {ESTreeComment[]}     the converted ESTreeComment
  * @private
  */
-function convertComments(ast, code) {
-  const comments = [];
+export function convertComments(
+  ast: ts.SourceFile,
+  code: string
+): ESTreeComment[] {
+  const comments: ESTreeComment[] = [];
 
   /**
    * Create a TypeScript Scanner, with skipTrivia set to false so that
@@ -120,7 +114,7 @@ function convertComments(ast, code) {
     const start = triviaScanner.getTokenPos();
     const end = triviaScanner.getTextPos();
 
-    let container = null;
+    let container: ts.Token<any> | null = null;
     switch (kind) {
       case ts.SyntaxKind.SingleLineCommentTrivia:
       case ts.SyntaxKind.MultiLineCommentTrivia: {
@@ -130,7 +124,7 @@ function convertComments(ast, code) {
         break;
       }
       case ts.SyntaxKind.CloseBraceToken:
-        container = nodeUtils.getNodeContainer(ast, start, end);
+        container = nodeUtils.getNodeContainer(ast, start, end) as ts.Node;
 
         if (
           container.kind === ts.SyntaxKind.TemplateMiddle ||
@@ -142,7 +136,7 @@ function convertComments(ast, code) {
         break;
       case ts.SyntaxKind.SlashToken:
       case ts.SyntaxKind.SlashEqualsToken:
-        container = nodeUtils.getNodeContainer(ast, start, end);
+        container = nodeUtils.getNodeContainer(ast, start, end) as ts.Node;
 
         if (container.kind === ts.SyntaxKind.RegularExpressionLiteral) {
           kind = triviaScanner.reScanSlashToken();

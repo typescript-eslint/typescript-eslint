@@ -1,10 +1,7 @@
-'use strict';
-
-const fs = require('fs');
-
-const parse = require('./parse');
-const parseUtils = require('./utils');
-const fixturesToTest = require('./fixtures-to-test');
+import fs from 'fs';
+import { fixturesToTest } from './fixtures-to-test';
+import { parse } from './parse';
+import * as parseUtils from './utils';
 
 fixturesToTest.forEach(fixture => {
   const filename = fixture.filename;
@@ -40,7 +37,7 @@ fixturesToTest.forEach(fixture => {
      * FAIL: babylon errored but typescript-estree did not
      */
     if (!typeScriptESTreeResult.parseError) {
-      test(`TEST FAIL [BABYLON ERRORED, BUT TSEP DID NOT] - ${filename}`, () => {
+      it(`TEST FAIL [BABYLON ERRORED, BUT TSEP DID NOT] - ${filename}`, () => {
         expect(typeScriptESTreeResult.parseError).toEqual(
           babylonTypeScriptPluginResult.parseError
         );
@@ -50,7 +47,7 @@ fixturesToTest.forEach(fixture => {
     /**
      * Both parsers errored - this is OK as long as the errors are of the same "type"
      */
-    test(`[Both parsers error as expected] - ${filename}`, () => {
+    it(`[Both parsers error as expected] - ${filename}`, () => {
       expect(babylonTypeScriptPluginResult.parseError.name).toEqual(
         typeScriptESTreeResult.parseError.name
       );
@@ -62,7 +59,7 @@ fixturesToTest.forEach(fixture => {
    * FAIL: typescript-estree errored but babylon did not
    */
   if (typeScriptESTreeResult.parseError) {
-    test(`TEST FAIL [TSEP ERRORED, BUT BABYLON DID NOT] - ${filename}`, () => {
+    it(`TEST FAIL [TSEP ERRORED, BUT BABYLON DID NOT] - ${filename}`, () => {
       expect(babylonTypeScriptPluginResult.parseError).toEqual(
         typeScriptESTreeResult.parseError
       );
@@ -73,7 +70,7 @@ fixturesToTest.forEach(fixture => {
   /**
    * No errors, assert the two ASTs match
    */
-  test(`${filename}`, () => {
+  it(`${filename}`, () => {
     expect(babylonTypeScriptPluginResult.ast).toBeTruthy();
     expect(typeScriptESTreeResult.ast).toBeTruthy();
     /**
