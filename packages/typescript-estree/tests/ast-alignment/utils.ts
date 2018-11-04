@@ -1,6 +1,4 @@
-'use strict';
-
-const isPlainObject = require('lodash.isplainobject');
+import isPlainObject from 'lodash.isplainobject';
 
 /**
  * By default, pretty-format (within Jest matchers) retains the names/types of nodes from the babylon AST,
@@ -10,7 +8,7 @@ const isPlainObject = require('lodash.isplainobject');
  * @param {Object} ast raw AST
  * @returns {Object} normalized AST
  */
-function normalizeNodeTypes(ast) {
+export function normalizeNodeTypes(ast: any): any {
   return JSON.parse(JSON.stringify(ast));
 }
 
@@ -20,9 +18,12 @@ function normalizeNodeTypes(ast) {
  * @param {Object[]} keysToOmit Names and predicate functions use to determine what keys to omit from the final object
  * @returns {Object} formatted object
  */
-function omitDeep(obj, keysToOmit) {
+export function omitDeep(
+  obj: any,
+  keysToOmit: { key: string; predicate: Function }[]
+): any {
   keysToOmit = keysToOmit || [];
-  function shouldOmit(keyName, val) {
+  function shouldOmit(keyName: string, val: any) {
     if (!keysToOmit || !keysToOmit.length) {
       return false;
     }
@@ -39,10 +40,10 @@ function omitDeep(obj, keysToOmit) {
     if (!obj.hasOwnProperty(key)) {
       continue;
     }
-    const val = obj[key];
+    const val = (obj as any)[key];
     if (isPlainObject(val)) {
       if (shouldOmit(key, val)) {
-        delete obj[key];
+        delete (obj as any)[key];
         // re-run with the same arguments
         // in case the object has multiple keys to omit
         return omitDeep(obj, keysToOmit);
@@ -50,7 +51,7 @@ function omitDeep(obj, keysToOmit) {
       omitDeep(val, keysToOmit);
     } else if (Array.isArray(val)) {
       if (shouldOmit(key, val)) {
-        delete obj[key];
+        delete (obj as any)[key];
         // re-run with the same arguments
         // in case the object has multiple keys to omit
         return omitDeep(obj, keysToOmit);
@@ -59,7 +60,7 @@ function omitDeep(obj, keysToOmit) {
         omitDeep(i, keysToOmit);
       }
     } else if (shouldOmit(key, val)) {
-      delete obj[key];
+      delete (obj as any)[key];
       // re-run with the same arguments
       // in case the object has multiple keys to omit
       return omitDeep(obj, keysToOmit);
@@ -72,7 +73,7 @@ function omitDeep(obj, keysToOmit) {
  * Common predicates for Babylon AST preprocessing
  */
 const always = () => true;
-const ifNumber = val => typeof val === 'number';
+const ifNumber = (val: any) => typeof val === 'number';
 
 /**
  * - Babylon wraps the "Program" node in an extra "File" node, normalize this for simplicity for now...
@@ -82,7 +83,7 @@ const ifNumber = val => typeof val === 'number';
  * @param {Object} ast raw babylon AST
  * @returns {Object} processed babylon AST
  */
-function preprocessBabylonAST(ast) {
+export function preprocessBabylonAST(ast: any): any {
   return omitDeep(ast.program, [
     {
       key: 'start',
@@ -139,14 +140,8 @@ function preprocessBabylonAST(ast) {
  * @param {Object} ast the raw AST with a Program node at its top level
  * @returns {Object} the ast with the location data removed from the Program node
  */
-function removeLocationDataFromProgramNode(ast) {
+export function removeLocationDataFromProgramNode(ast: any) {
   delete ast.loc;
   delete ast.range;
   return ast;
 }
-
-module.exports = {
-  normalizeNodeTypes,
-  preprocessBabylonAST,
-  removeLocationDataFromProgramNode
-};

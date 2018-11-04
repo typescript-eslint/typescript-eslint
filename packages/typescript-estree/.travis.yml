@@ -16,6 +16,7 @@ script:
   - commitlint-travis
   - yarn check-format
   - yarn test
+  - yarn build
 after_success:
   - npm run travis-deploy-once "npm run semantic-release"
 branches:

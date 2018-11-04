@@ -5,30 +5,28 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
+import semver from 'semver';
+import ts from 'typescript';
+import convert from './ast-converter';
+import { Extra, ParserOptions } from './temp-types-based-on-js-source';
 
-'use strict';
+const packageJSON = require('../package.json');
 
-const astNodeTypes = require('./lib/ast-node-types'),
-  ts = require('typescript'),
-  convert = require('./lib/ast-converter'),
-  semver = require('semver');
-
-const SUPPORTED_TYPESCRIPT_VERSIONS = require('./package.json').devDependencies
-  .typescript;
+const SUPPORTED_TYPESCRIPT_VERSIONS = packageJSON.devDependencies.typescript;
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
   SUPPORTED_TYPESCRIPT_VERSIONS
 );
 
-let extra;
+let extra: Extra;
 let warnedAboutTSVersion = false;
 
 /**
  * Resets the extra config object
  * @returns {void}
  */
-function resetExtra() {
+function resetExtra(): void {
   extra = {
     tokens: null,
     range: false,
@@ -38,7 +36,9 @@ function resetExtra() {
     strict: false,
     jsx: false,
     useJSXTextNode: false,
-    log: console.log
+    log: console.log,
+    errorOnUnknownASTType: false,
+    code: ''
   };
 }
 
@@ -48,14 +48,14 @@ function resetExtra() {
 
 /**
  * Parses the given source code to produce a valid AST
- * @param {mixed} code    TypeScript code
- * @param {Object} options configuration object for the parser
+ * @param {string} code    TypeScript code
+ * @param {ParserOptions} options configuration object for the parser
  * @returns {Object}         the AST
  */
-function generateAST(code, options) {
+function generateAST(code: string, options: ParserOptions): any {
   const toString = String;
 
-  if (typeof code !== 'string' && !(code instanceof String)) {
+  if (typeof code !== 'string' && !((code as any) instanceof String)) {
     code = toString(code);
   }
 
@@ -140,17 +140,20 @@ function generateAST(code, options) {
     getNewLine() {
       return '\n';
     },
-    getSourceFile(filename) {
+    getSourceFile(filename: string) {
       return ts.createSourceFile(filename, code, ts.ScriptTarget.Latest, true);
     },
     readFile() {
-      return null;
+      return undefined;
     },
     useCaseSensitiveFileNames() {
       return true;
     },
     writeFile() {
       return null;
+    },
+    getDirectories() {
+      return [];
     }
   };
 
@@ -159,7 +162,7 @@ function generateAST(code, options) {
     {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
-      jsx: extra.jsx ? 'preserve' : undefined
+      jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined
     },
     compilerHost
   );
@@ -174,10 +177,11 @@ function generateAST(code, options) {
 // Public
 //------------------------------------------------------------------------------
 
-exports.version = require('./package.json').version;
+export { AST_NODE_TYPES } from './ast-node-types';
+export { version };
 
-exports.parse = function parse(code, options) {
+const version = packageJSON.version;
+
+export function parse(code: string, options: ParserOptions) {
   return generateAST(code, options);
-};
-
-exports.AST_NODE_TYPES = astNodeTypes;
+}

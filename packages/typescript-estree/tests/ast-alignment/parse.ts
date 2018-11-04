@@ -1,19 +1,19 @@
-'use strict';
+import codeFrame from 'babel-code-frame';
+import * as parser from '../../src/parser';
+import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import * as parseUtils from './utils';
 
-const codeFrame = require('babel-code-frame');
-const parseUtils = require('./utils');
-
-function createError(message, line, column) {
+function createError(message: string, line: number, column: number) {
   // Construct an error similar to the ones thrown by Babylon.
   const error = new SyntaxError(`${message} (${line}:${column})`);
-  error.loc = {
+  (error as any).loc = {
     line,
     column
   };
   return error;
 }
 
-function parseWithBabylonPluginTypescript(text, parserOptions) {
+function parseWithBabylonPluginTypescript(text: string, parserOptions?: any) {
   parserOptions = parserOptions || {};
   const babylon = require('babylon');
   return babylon.parse(
@@ -40,36 +40,41 @@ function parseWithBabylonPluginTypescript(text, parserOptions) {
   );
 }
 
-function parseWithTypeScriptESTree(text, parserOptions) {
-  parserOptions = parserOptions || {};
-  const parser = require('../../parser');
+function parseWithTypeScriptESTree(
+  text: string,
+  parserOptions?: ParserOptions
+) {
+  parserOptions = parserOptions || ({} as ParserOptions);
   try {
-    return parser.parse(
-      text,
-      Object.assign(
-        {
-          loc: true,
-          range: true,
-          tokens: false,
-          comment: false,
-          useJSXTextNode: true,
-          errorOnUnknownASTType: true,
-          jsx: true
-        },
-        parserOptions
-      )
-    );
+    return parser.parse(text, Object.assign(
+      {
+        loc: true,
+        range: true,
+        tokens: false,
+        comment: false,
+        useJSXTextNode: true,
+        errorOnUnknownASTType: true,
+        jsx: true
+      },
+      parserOptions
+    ) as any);
   } catch (e) {
     throw createError(e.message, e.lineNumber, e.column);
   }
 }
 
-module.exports = function parse(text, opts) {
+interface ASTComparisonParseOptions {
+  parser: string;
+  typeScriptESTreeOptions?: ParserOptions;
+  babylonParserOptions?: any;
+}
+
+export function parse(text: string, opts: ASTComparisonParseOptions) {
   /**
    * Always return a consistent interface, there will be times when we expect both
    * parsers to fail to parse the invalid source.
    */
-  const result = {
+  const result: any = {
     parseError: null,
     ast: null
   };
@@ -103,4 +108,4 @@ module.exports = function parse(text, opts) {
   }
 
   return result;
-};
+}

@@ -1,14 +1,30 @@
-'use strict';
+import glob from 'glob';
+import path from 'path';
+import jsxKnownIssues from '../jsx-known-issues';
 
-const path = require('path');
-const glob = require('glob');
+interface Fixture {
+  filename: string;
+  config?: any;
+}
+
+interface FixturePatternConfig {
+  pattern: string;
+  config?: {
+    babylonParserOptions?: any;
+    typeScriptESTreeOptions?: any;
+  };
+}
+
+interface CreateFixturePatternConfig {
+  ignore?: string[];
+  fileType?: string;
+  parseWithSourceTypeModule?: string[];
+}
 
 /**
  * JSX fixtures which have known issues for typescript-estree
  */
-const jsxFilesWithKnownIssues = require('../jsx-known-issues').map(f =>
-  f.replace('jsx/', '')
-);
+const jsxFilesWithKnownIssues = jsxKnownIssues.map(f => f.replace('jsx/', ''));
 
 /**
  * Current random error difference on jsx/invalid-no-tag-name.src.js
@@ -26,38 +42,29 @@ jsxFilesWithKnownIssues.push('shorthand-fragment');
 jsxFilesWithKnownIssues.push('shorthand-fragment-with-child');
 
 /**
- * Custom constructs/concepts used in this file:
- *
- * type Pattern = string; // used for node-glob matching
- *
- * interface FixturePatternConfig {
- *   pattern: Pattern,
- *   config?: {
- *     babylonParserOptions: any,
- *     typeScriptESTreeOptions: any
- *   }
- * }
- */
-
-/**
  * Globally track which fixtures need to be parsed with sourceType: "module"
  * so that they can be added with the correct FixturePatternConfig
  */
-let fixturesRequiringSourceTypeModule = [];
+let fixturesRequiringSourceTypeModule: FixturePatternConfig[] = [];
 
 /**
  * Utility to generate a FixturePatternConfig object containing the glob pattern for specific subsections of the fixtures/ directory,
  * including the capability to ignore specific nested patterns.
  *
  * @param {string} fixturesSubPath the sub-path within the fixtures/ directory
- * @param {Object?} config an optional configuration object with optional sub-paths to ignore and/or parse with sourceType: module
+ * @param {CreateFixturePatternConfig?} config an optional configuration object with optional sub-paths to ignore and/or parse with sourceType: module
  * @returns {FixturePatternConfig} an object containing the glob pattern and optional additional config
  */
-function createFixturePatternConfigFor(fixturesSubPath, config) {
+function createFixturePatternConfigFor(
+  fixturesSubPath: string,
+  config?: CreateFixturePatternConfig
+): FixturePatternConfig {
   if (!fixturesSubPath) {
-    return '';
+    throw new Error(
+      'fixtureSubPath was not provided for the current fixture pattern'
+    );
   }
-  config = config || {};
+  config = config || ({} as CreateFixturePatternConfig);
   config.ignore = config.ignore || [];
   config.fileType = config.fileType || 'js';
   config.parseWithSourceTypeModule = config.parseWithSourceTypeModule || [];
@@ -72,12 +79,17 @@ function createFixturePatternConfigFor(fixturesSubPath, config) {
    * ignore list, and then add their full config into the global array.
    */
   if (config.parseWithSourceTypeModule.length) {
-    config.ignore = [].concat(config.ignore, config.parseWithSourceTypeModule);
-    fixturesRequiringSourceTypeModule = [].concat(
+    config.ignore = ([] as string[]).concat(
+      config.ignore,
+      config.parseWithSourceTypeModule
+    );
+    fixturesRequiringSourceTypeModule = ([] as FixturePatternConfig[]).concat(
       fixturesRequiringSourceTypeModule,
       config.parseWithSourceTypeModule.map(fixture => ({
         // It needs to be the full path from within fixtures/ for the pattern
-        pattern: `${fixturesSubPath}/${fixture}.src.${config.fileType}`,
+        pattern: `${fixturesSubPath}/${fixture}.src.${
+          (config as CreateFixturePatternConfig).fileType
+        }`,
         config: { babylonParserOptions: { sourceType: 'module' } }
       }))
     );
@@ -532,18 +544,12 @@ let fixturePatternConfigsToTest = [
 /**
  * Add in all the fixtures which need to be parsed with sourceType: "module"
  */
-fixturePatternConfigsToTest = [].concat(
+fixturePatternConfigsToTest = ([] as FixturePatternConfig[]).concat(
   fixturePatternConfigsToTest,
   fixturesRequiringSourceTypeModule
 );
 
-/**
- * interface Fixture {
- *   filename: string,
- *   config?: any
- * }
- */
-const fixturesToTest = [];
+const fixturesToTest: Fixture[] = [];
 const fixturesDirPath = path.join(__dirname, '../fixtures');
 
 /**
@@ -565,4 +571,4 @@ fixturePatternConfigsToTest.forEach(fixturePatternConfig => {
   });
 });
 
-module.exports = fixturesToTest;
+export { fixturesToTest };
