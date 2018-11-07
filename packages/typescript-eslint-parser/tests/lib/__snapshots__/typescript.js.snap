@@ -98,6 +98,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 24,
@@ -413,6 +414,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 42,
@@ -807,6 +809,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -1253,6 +1256,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -1715,6 +1719,7 @@ Object {
       "type": "TSAbstractClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -2087,6 +2092,7 @@ Object {
       "type": "TSAbstractClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -2552,6 +2558,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -2939,6 +2946,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -3325,6 +3333,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -3730,6 +3739,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 5,
@@ -4251,6 +4261,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -5262,6 +5273,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -6153,6 +6165,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -6544,6 +6557,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -6911,6 +6925,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -7242,6 +7257,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -7715,6 +7731,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -8198,6 +8215,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -8644,6 +8662,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -9012,6 +9031,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -9253,6 +9273,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -9567,6 +9588,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -9934,6 +9956,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -11023,6 +11046,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -12313,6 +12337,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -12864,6 +12889,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -13562,6 +13588,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -14023,6 +14050,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -14716,6 +14744,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -15841,6 +15870,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -16966,6 +16996,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -17913,6 +17944,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -18411,6 +18443,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -18820,6 +18853,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -19170,6 +19204,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -19447,6 +19482,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -19725,6 +19761,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -20003,6 +20040,7 @@ Object {
       "type": "TSEnumDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -20359,6 +20397,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -20727,6 +20766,7 @@ Object {
       "type": "TSEmptyBodyDeclareFunction",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 42,
@@ -21114,6 +21154,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 21,
@@ -21372,6 +21413,7 @@ Object {
       "type": "TSExportAssignment",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -21560,6 +21602,7 @@ Object {
       "type": "ExportDefaultDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -21838,6 +21881,7 @@ Object {
       "type": "ExportDefaultDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -22153,6 +22197,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -22450,6 +22495,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -22800,6 +22846,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -23132,6 +23179,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 40,
@@ -23464,6 +23512,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 2,
@@ -23849,6 +23898,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 47,
@@ -24219,6 +24269,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -24777,6 +24828,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -25513,6 +25565,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -26133,6 +26186,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -26556,6 +26610,26 @@ Object {
         ],
         "type": "TSTypeParameterDeclaration",
       },
+    },
+  ],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 28,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        17,
+        28,
+      ],
+      "type": "Block",
+      "value": "comment",
     },
   ],
   "loc": Object {
@@ -27016,6 +27090,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -27581,6 +27656,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -28249,6 +28325,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -29070,6 +29147,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -29708,6 +29786,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -30112,6 +30191,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -30371,6 +30451,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -30632,6 +30713,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -32041,6 +32123,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -34230,6 +34313,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -34671,6 +34755,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -35004,6 +35089,7 @@ Object {
       },
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -35268,6 +35354,29 @@ Object {
         87,
       ],
       "type": "TSInterfaceDeclaration",
+    },
+  ],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        21,
+        71,
+      ],
+      "type": "Block",
+      "value": "*
+     * Comment Line 1
+     * @baz bar 
+     ",
     },
   ],
   "loc": Object {
@@ -35752,6 +35861,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -36337,6 +36447,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -36578,6 +36689,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -36963,6 +37075,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 44,
@@ -37491,6 +37604,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -38150,6 +38264,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -38769,6 +38884,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 17,
@@ -39392,6 +39508,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -40228,6 +40345,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 42,
@@ -40740,6 +40858,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 37,
@@ -41234,6 +41353,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 48,
@@ -41709,6 +41829,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -42220,6 +42341,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -42897,6 +43019,116 @@ Object {
         ],
         "type": "TSTypeParameterDeclaration",
       },
+    },
+  ],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 20,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        5,
+        20,
+      ],
+      "type": "Block",
+      "value": " comment 1 ",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 38,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        23,
+        38,
+      ],
+      "type": "Block",
+      "value": " comment 2 ",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        58,
+        67,
+      ],
+      "type": "Block",
+      "value": " aaa ",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 35,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 26,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        70,
+        79,
+      ],
+      "type": "Block",
+      "value": " bbb ",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        102,
+        111,
+      ],
+      "type": "Block",
+      "value": " aaa ",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 35,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 26,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        114,
+        123,
+      ],
+      "type": "Block",
+      "value": " bbb ",
     },
   ],
   "loc": Object {
@@ -43626,6 +43858,26 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 49,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 34,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        58,
+        73,
+      ],
+      "type": "Block",
+      "value": "AudioBuffer",
+    },
+  ],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -44226,6 +44478,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -44755,6 +45008,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -45161,6 +45415,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -45688,6 +45943,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -46091,6 +46347,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -46458,6 +46715,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 22,
@@ -46852,6 +47110,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -47574,6 +47833,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -48290,6 +48550,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -48917,6 +49178,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -49393,6 +49655,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 12,
@@ -49713,6 +49976,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 21,
@@ -50198,6 +50462,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -50683,6 +50948,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -51148,6 +51414,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -51541,6 +51808,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -52203,6 +52471,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -52939,6 +53208,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -53531,6 +53801,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -54213,6 +54484,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -54949,6 +55221,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -55646,6 +55919,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -56330,6 +56604,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -56920,6 +57195,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -57366,6 +57642,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -57697,6 +57974,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -57903,6 +58181,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -58126,6 +58405,7 @@ Object {
       "type": "ClassDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -58350,6 +58630,7 @@ Object {
       "type": "TSEnumDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 14,
@@ -58593,6 +58874,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 14,
@@ -58888,6 +59170,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 16,
@@ -59197,6 +59480,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 72,
@@ -59493,6 +59777,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -61569,6 +61854,7 @@ Object {
       "type": "TSInterfaceDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -64562,6 +64848,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 14,
@@ -64984,6 +65271,7 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 21,
@@ -65355,6 +65643,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 14,
@@ -65617,6 +65906,7 @@ Object {
       "type": "TSModuleDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -66077,6 +66367,7 @@ Object {
       "type": "TSModuleDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -66775,6 +67066,7 @@ Object {
       "type": "TSModuleDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -67926,6 +68218,7 @@ Object {
       "type": "TSModuleDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,
@@ -68744,6 +69037,7 @@ Object {
       "type": "TSModuleDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,

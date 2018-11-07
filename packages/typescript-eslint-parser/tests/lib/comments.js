@@ -32,19 +32,11 @@ const testFiles = shelljs.find(FIXTURES_DIR)
 //------------------------------------------------------------------------------
 
 describe("Comments", () => {
-
     testFiles.forEach(filename => {
         const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
         const config = {
-            loc: true,
-            range: true,
-            tokens: true,
-            comment: true,
-            ecmaFeatures: {
-                jsx: true
-            }
+            jsx: true
         };
         test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code, config));
     });
-
 });

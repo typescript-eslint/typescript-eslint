@@ -185,6 +185,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -1010,6 +1011,7 @@ Object {
       "type": "ExportDefaultDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 1,

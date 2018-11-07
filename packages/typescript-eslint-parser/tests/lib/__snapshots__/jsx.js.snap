@@ -291,6 +291,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 45,
@@ -1036,6 +1037,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -1621,6 +1623,26 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 27,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        27,
+      ],
+      "type": "Block",
+      "value": " this is a comment ",
+    },
+  ],
   "loc": Object {
     "end": Object {
       "column": 33,
@@ -2099,6 +2121,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 28,
@@ -2667,6 +2690,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 42,
@@ -3068,6 +3092,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 10,
@@ -3742,6 +3767,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 84,
@@ -4426,6 +4452,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 12,
@@ -4704,6 +4731,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 14,
@@ -5068,6 +5096,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -5542,6 +5571,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -5982,6 +6012,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 12,
@@ -6244,6 +6275,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 6,
@@ -6565,6 +6597,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -6991,6 +7024,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -7413,6 +7447,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 36,
@@ -7763,6 +7798,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 19,
@@ -8127,6 +8163,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 12,
@@ -8615,6 +8652,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 16,
@@ -9055,6 +9093,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 25,
@@ -9493,6 +9532,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 54,
@@ -9970,6 +10010,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 24,
@@ -10345,6 +10386,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -10733,6 +10775,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 25,
