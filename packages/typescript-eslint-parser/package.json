@@ -51,7 +51,7 @@
   "dependencies": {
     "eslint": "4.19.1",
     "eslint-visitor-keys": "^1.0.0",
-    "typescript-estree": "2.1.0"
+    "typescript-estree": "5.0.0"
   },
   "peerDependencies": {
     "typescript": "*"

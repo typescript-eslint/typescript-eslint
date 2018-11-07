@@ -17,7 +17,9 @@ npm install --save-dev typescript-eslint-parser
 In your ESLint configuration file, set the `parser` property:
 
 ```json
-"parser": "typescript-eslint-parser"
+{
+    "parser": "typescript-eslint-parser"
+}
 ```
 
 There is sometimes an incorrect assumption that the parser itself is what does everything necessary to facilitate the use of ESLint with TypeScript. In actuality, it is the combination of the parser _and_ one or more plugins which allow you to maximize your usage of ESLint with TypeScript.
@@ -30,15 +32,23 @@ Instead, you also need to make use of one more plugins which will add or extend 
 
 By far the most common case will be installing the [eslint-plugin-typescript](https://github.com/nzakas/eslint-plugin-typescript) plugin, but there are also other relevant options available such a [eslint-plugin-tslint](https://github.com/JamesHenry/eslint-plugin-tslint).
 
-## Options
+## Configuration
 
-The full list of options can be found in the [typescript-estree README](https://github.com/JamesHenry/typescript-estree#parsecode-options). Use them like this in your eslintrc:
+The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring#specifying-parser-options) in your ESLint configuration file.
 
-```js
-parserOptions: {
-  ecmaFeatures: {
-    jsx: true,
-  }
+**`jsx`** - default `false`. Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
+
+**`useJSXTextNode`** - default `false`. The JSX AST changed the node type for string literals inside a JSX Element from `Literal` to `JSXText`. When value is `true`, these nodes will be parsed as type `JSXText`. When value is `false`, these nodes will be parsed as type `Literal`.
+
+### .eslintrc.json
+
+```json
+{
+    "parser": "typescript-eslint-parser",
+    "parserOptions": {
+        "jsx": true,
+        "useJSXTextNode": true
+    }
 }
 ```
 

@@ -41,7 +41,16 @@ function getRaw(ast) {
  * @param {*} config the parser configuration
  * @returns {Function} callback for Jest test() block
  */
-function createSnapshotTestBlock(code, config) {
+function createSnapshotTestBlock(code, config = {}) {
+    const defaultConfig = {
+        loc: true,
+        range: true,
+        raw: true,
+        tokens: true,
+        comment: true,
+        errorOnUnknownASTType: true
+    };
+    config = Object.assign({}, defaultConfig, config);
 
     /**
      * @returns {Object} the AST object

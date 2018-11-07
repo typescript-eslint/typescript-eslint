@@ -94,6 +94,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -499,6 +500,7 @@ Object {
       "type": "DoWhileStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -1177,6 +1179,7 @@ Object {
       "type": "FunctionDeclaration",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -1544,6 +1547,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 17,
@@ -1712,6 +1716,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -1973,6 +1978,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 6,
@@ -2215,6 +2221,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,
@@ -2515,6 +2522,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 4,
@@ -2974,6 +2982,7 @@ Object {
       "type": "ExpressionStatement",
     },
   ],
+  "comments": Array [],
   "loc": Object {
     "end": Object {
       "column": 0,

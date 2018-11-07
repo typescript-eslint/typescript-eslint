@@ -32,19 +32,8 @@ const testFiles = shelljs.find(FIXTURES_DIR)
 //------------------------------------------------------------------------------
 
 describe("basics", () => {
-
     testFiles.forEach(filename => {
-        // Uncomment and fill in filename to focus on a single file
-        // var filename = "jsx/invalid-matching-placeholder-in-closing-tag";
         const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
-        const config = {
-            loc: true,
-            range: true,
-            tokens: true,
-            ecmaFeatures: {},
-            errorOnUnknownASTType: true
-        };
-        test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code, config));
+        test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code));
     });
-
 });
