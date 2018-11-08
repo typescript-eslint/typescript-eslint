@@ -10,6 +10,7 @@ node_js:
     - "8"
     - "9"
     - "10"
+    - "11"
 
 script: npm test && npm run integration-tests
 
