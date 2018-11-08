@@ -6,6 +6,7 @@ cache:
 notifications:
   email: false
 node_js:
+  - '11'
   - '10'
   - '9'
   - '8'
