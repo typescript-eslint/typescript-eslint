@@ -36,9 +36,12 @@ By far the most common case will be installing the [eslint-plugin-typescript](ht
 
 The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring#specifying-parser-options) in your ESLint configuration file.
 
-**`jsx`** - default `false`. Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
+- **`jsx`** - default `false`. Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
+    - It's `false` on `*.ts` files regardless of this option.
+    - It's `true` on `*.tsx` files regardless of this option.
+    - Otherwise, it respects this option.
 
-**`useJSXTextNode`** - default `false`. The JSX AST changed the node type for string literals inside a JSX Element from `Literal` to `JSXText`. When value is `true`, these nodes will be parsed as type `JSXText`. When value is `false`, these nodes will be parsed as type `Literal`.
+- **`useJSXTextNode`** - default `false`. The JSX AST changed the node type for string literals inside a JSX Element from `Literal` to `JSXText`. When value is `true`, these nodes will be parsed as type `JSXText`. When value is `false`, these nodes will be parsed as type `Literal`.
 
 ### .eslintrc.json
 
