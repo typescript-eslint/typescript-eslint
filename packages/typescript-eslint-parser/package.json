@@ -17,16 +17,6 @@
     "url": "https://github.com/eslint/typescript-eslint-parser/issues"
   },
   "license": "BSD-2-Clause",
-  "devDependencies": {
-    "eslint-config-eslint": "4.0.0",
-    "eslint-plugin-node": "6.0.1",
-    "eslint-release": "1.1.0",
-    "jest": "23.1.0",
-    "npm-license": "0.3.3",
-    "shelljs": "0.8.2",
-    "shelljs-nodecli": "0.1.1",
-    "typescript": "~3.1.1"
-  },
   "keywords": [
     "ast",
     "ecmascript",
@@ -48,13 +38,24 @@
     "generate-rcrelease": "eslint-generate-prerelease rc",
     "publish-release": "eslint-publish-release"
   },
+  "peerDependencies": {
+    "eslint": ">=4.19.1",
+    "typescript": "*"
+  },
   "dependencies": {
-    "eslint": "4.19.1",
     "eslint-visitor-keys": "^1.0.0",
     "typescript-estree": "5.0.0"
   },
-  "peerDependencies": {
-    "typescript": "*"
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-eslint": "4.0.0",
+    "eslint-plugin-node": "6.0.1",
+    "eslint-release": "1.1.0",
+    "jest": "23.1.0",
+    "npm-license": "0.3.3",
+    "shelljs": "0.8.2",
+    "shelljs-nodecli": "0.1.1",
+    "typescript": "~3.1.1"
   },
   "jest": {
     "testEnvironment": "node",
