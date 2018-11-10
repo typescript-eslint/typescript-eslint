@@ -20,7 +20,12 @@ const visitorKeys = require("./visitor-keys");
 exports.version = require("./package.json").version;
 
 exports.parseForESLint = function parseForESLint(code, options) {
-    if (options && typeof options.filePath === "string") {
+    if (typeof options !== "object" || options === null) {
+        options = { useJSXTextNode: true };
+    } else if (typeof options.useJSXTextNode !== "boolean") {
+        options = Object.assign({}, options, { useJSXTextNode: true });
+    }
+    if (typeof options.filePath === "string") {
         const tsx = options.filePath.endsWith(".tsx");
         if (tsx || options.filePath.endsWith(".ts")) {
             options = Object.assign({}, options, { jsx: tsx });

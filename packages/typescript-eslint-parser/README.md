@@ -41,7 +41,7 @@ The following additional configuration options are available by specifying them 
     - It's `true` on `*.tsx` files regardless of this option.
     - Otherwise, it respects this option.
 
-- **`useJSXTextNode`** - default `false`. The JSX AST changed the node type for string literals inside a JSX Element from `Literal` to `JSXText`. When value is `true`, these nodes will be parsed as type `JSXText`. When value is `false`, these nodes will be parsed as type `Literal`.
+- **`useJSXTextNode`** - default `true`. Please set `false` if you use this parser on ESLint v4. If this is `false`, the parser creates the AST of JSX texts as the legacy style.
 
 ### .eslintrc.json
 
