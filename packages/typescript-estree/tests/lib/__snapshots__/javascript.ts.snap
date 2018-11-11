@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ecma-features fixtures/arrayLiteral/array-literal-in-lhs.src 1`] = `
+exports[`javascript fixtures/arrayLiteral/array-literal-in-lhs.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -349,7 +349,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrayLiteral/array-literals-in-binary-expr.src 1`] = `
+exports[`javascript fixtures/arrayLiteral/array-literals-in-binary-expr.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -553,7 +553,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/as-param.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/as-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -834,7 +834,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/as-param-with-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/as-param-with-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1206,7 +1206,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/basic.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/basic.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1379,7 +1379,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/basic-in-binary-expression.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/basic-in-binary-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2062,7 +2062,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/block-body.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/block-body.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2326,7 +2326,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/block-body-not-object.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/block-body-not-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2643,7 +2643,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-dup-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-dup-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2907,17 +2907,17 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-missing-paren.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/arrowFunctions/error-missing-paren.src 1`] = `"';' expected."`;
 
-exports[`ecma-features fixtures/arrowFunctions/error-not-arrow.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/arrowFunctions/error-not-arrow.src 1`] = `"Expression expected."`;
 
-exports[`ecma-features fixtures/arrowFunctions/error-numeric-param.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/arrowFunctions/error-numeric-param.src 1`] = `"';' expected."`;
 
-exports[`ecma-features fixtures/arrowFunctions/error-numeric-param-multi.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/arrowFunctions/error-numeric-param-multi.src 1`] = `"';' expected."`;
 
-exports[`ecma-features fixtures/arrowFunctions/error-reverse-arrow.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/arrowFunctions/error-reverse-arrow.src 1`] = `"Expression expected."`;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-default-param-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-default-param-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -3271,7 +3271,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-dup-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-dup-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -3607,7 +3607,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -3943,7 +3943,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-eval-return.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-eval-return.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -4207,7 +4207,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-octal.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-octal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -4489,7 +4489,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-param-arguments.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-arguments.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -4825,7 +4825,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-param-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -5161,7 +5161,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-param-names.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-names.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -5497,7 +5497,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-param-no-paren-arguments.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-no-paren-arguments.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -5743,7 +5743,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-strict-param-no-paren-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-no-paren-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -5989,7 +5989,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-two-lines.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-two-lines.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -6254,9 +6254,9 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/error-wrapped-param.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/arrowFunctions/error-wrapped-param.src 1`] = `"';' expected."`;
 
-exports[`ecma-features fixtures/arrowFunctions/expression.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -6465,7 +6465,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/iife.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/iife.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -6805,7 +6805,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/multiple-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/multiple-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -7069,7 +7069,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/no-auto-return.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/no-auto-return.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -7423,7 +7423,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/not-strict-arguments.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/not-strict-arguments.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -7597,7 +7597,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/not-strict-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/not-strict-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -7771,7 +7771,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/not-strict-eval-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/not-strict-eval-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -8035,7 +8035,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/not-strict-octal.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/not-strict-octal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -8245,7 +8245,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/return-arrow-function.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/return-arrow-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -8496,7 +8496,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/return-sequence.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/return-sequence.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9071,7 +9071,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/single-param.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/single-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9245,7 +9245,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/single-param-parens.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/single-param-parens.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9455,7 +9455,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/arrowFunctions/single-param-return-identifier.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/single-param-return-identifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9664,9 +9664,3148 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/binaryLiterals/invalid.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/basics/delete-expression.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "argument": Object {
+          "computed": false,
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 7,
+              "line": 1,
+            },
+          },
+          "object": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 10,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 7,
+                "line": 1,
+              },
+            },
+            "name": "foo",
+            "range": Array [
+              7,
+              10,
+            ],
+            "type": "Identifier",
+          },
+          "property": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 11,
+                "line": 1,
+              },
+            },
+            "name": "bar",
+            "range": Array [
+              11,
+              14,
+            ],
+            "type": "Identifier",
+          },
+          "range": Array [
+            7,
+            14,
+          ],
+          "type": "MemberExpression",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "operator": "delete",
+        "prefix": true,
+        "range": Array [
+          0,
+          14,
+        ],
+        "type": "UnaryExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        15,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    16,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "delete",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        10,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        10,
+        11,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        14,
+      ],
+      "type": "Identifier",
+      "value": "bar",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        14,
+        15,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
 
-exports[`ecma-features fixtures/binaryLiterals/lowercase.src 1`] = `
+exports[`javascript fixtures/basics/do-while-statements.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "body": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 3,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 2,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          2,
+          3,
+        ],
+        "type": "EmptyStatement",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        13,
+      ],
+      "test": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "raw": "1",
+        "type": "Literal",
+        "value": 1,
+      },
+      "type": "DoWhileStatement",
+    },
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 5,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 3,
+              },
+            },
+            "name": "i",
+            "range": Array [
+              19,
+              20,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 8,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              23,
+              24,
+            ],
+            "raw": "0",
+            "type": "Literal",
+            "value": 0,
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 9,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 3,
+            },
+          },
+          "range": Array [
+            19,
+            24,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "var",
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        15,
+        25,
+      ],
+      "type": "VariableDeclaration",
+    },
+    Object {
+      "body": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "left": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 4,
+                    "line": 5,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 5,
+                  },
+                },
+                "name": "i",
+                "range": Array [
+                  34,
+                  35,
+                ],
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 5,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 5,
+                },
+              },
+              "operator": "+=",
+              "range": Array [
+                34,
+                40,
+              ],
+              "right": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 9,
+                    "line": 5,
+                  },
+                  "start": Object {
+                    "column": 8,
+                    "line": 5,
+                  },
+                },
+                "range": Array [
+                  39,
+                  40,
+                ],
+                "raw": "1",
+                "type": "Literal",
+                "value": 1,
+              },
+              "type": "AssignmentExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 10,
+                "line": 5,
+              },
+              "start": Object {
+                "column": 3,
+                "line": 5,
+              },
+            },
+            "range": Array [
+              34,
+              41,
+            ],
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 6,
+          },
+          "start": Object {
+            "column": 3,
+            "line": 4,
+          },
+        },
+        "range": Array [
+          29,
+          43,
+        ],
+        "type": "BlockStatement",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        26,
+        58,
+      ],
+      "test": Object {
+        "left": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 10,
+              "line": 6,
+            },
+            "start": Object {
+              "column": 9,
+              "line": 6,
+            },
+          },
+          "name": "i",
+          "range": Array [
+            51,
+            52,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 6,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 6,
+          },
+        },
+        "operator": "<",
+        "range": Array [
+          51,
+          56,
+        ],
+        "right": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 6,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 6,
+            },
+          },
+          "range": Array [
+            55,
+            56,
+          ],
+          "raw": "5",
+          "type": "Literal",
+          "value": 5,
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "DoWhileStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 7,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    59,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        2,
+      ],
+      "type": "Keyword",
+      "value": "do",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        2,
+        3,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        9,
+      ],
+      "type": "Keyword",
+      "value": "while",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        9,
+        10,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        10,
+        11,
+      ],
+      "type": "Numeric",
+      "value": "1",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        12,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        12,
+        13,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        15,
+        18,
+      ],
+      "type": "Keyword",
+      "value": "var",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        19,
+        20,
+      ],
+      "type": "Identifier",
+      "value": "i",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        21,
+        22,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        23,
+        24,
+      ],
+      "type": "Numeric",
+      "value": "0",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        24,
+        25,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        26,
+        28,
+      ],
+      "type": "Keyword",
+      "value": "do",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        29,
+        30,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        34,
+        35,
+      ],
+      "type": "Identifier",
+      "value": "i",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        36,
+        38,
+      ],
+      "type": "Punctuator",
+      "value": "+=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        39,
+        40,
+      ],
+      "type": "Numeric",
+      "value": "1",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        40,
+        41,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        42,
+        43,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        44,
+        49,
+      ],
+      "type": "Keyword",
+      "value": "while",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        50,
+        51,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        51,
+        52,
+      ],
+      "type": "Identifier",
+      "value": "i",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        53,
+        54,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        55,
+        56,
+      ],
+      "type": "Numeric",
+      "value": "5",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        56,
+        57,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        57,
+        58,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/basics/identifiers-double-underscore.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 10,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "__test",
+            "range": Array [
+              4,
+              10,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 13,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              13,
+              17,
+            ],
+            "raw": "'ff'",
+            "type": "Literal",
+            "value": "ff",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 17,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            4,
+            17,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "var",
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        18,
+      ],
+      "type": "VariableDeclaration",
+    },
+    Object {
+      "body": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 12,
+            "line": 3,
+          },
+        },
+        "range": Array [
+          32,
+          36,
+        ],
+        "type": "ClassBody",
+      },
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 3,
+          },
+        },
+        "name": "__Foo",
+        "range": Array [
+          26,
+          31,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        20,
+        36,
+      ],
+      "superClass": null,
+      "type": "ClassDeclaration",
+    },
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 9,
+          },
+          "start": Object {
+            "column": 17,
+            "line": 7,
+          },
+        },
+        "range": Array [
+          55,
+          59,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 7,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 7,
+          },
+        },
+        "name": "__Bar",
+        "range": Array [
+          47,
+          52,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 9,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 7,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        38,
+        59,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 10,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    60,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "Keyword",
+      "value": "var",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        10,
+      ],
+      "type": "Identifier",
+      "value": "__test",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        12,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        13,
+        17,
+      ],
+      "type": "String",
+      "value": "'ff'",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        17,
+        18,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        20,
+        25,
+      ],
+      "type": "Keyword",
+      "value": "class",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        26,
+        31,
+      ],
+      "type": "Identifier",
+      "value": "__Foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        32,
+        33,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        35,
+        36,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        38,
+        46,
+      ],
+      "type": "Keyword",
+      "value": "function",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        47,
+        52,
+      ],
+      "type": "Identifier",
+      "value": "__Bar",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        52,
+        53,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        53,
+        54,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        55,
+        56,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 9,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 9,
+        },
+      },
+      "range": Array [
+        58,
+        59,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/basics/instanceof.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "left": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 2,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            0,
+            2,
+          ],
+          "raw": "''",
+          "type": "Literal",
+          "value": "",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "operator": "instanceof",
+        "range": Array [
+          0,
+          17,
+        ],
+        "right": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 17,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 14,
+              "line": 1,
+            },
+          },
+          "name": "Set",
+          "range": Array [
+            14,
+            17,
+          ],
+          "type": "Identifier",
+        },
+        "type": "BinaryExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        17,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 17,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    17,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        2,
+      ],
+      "type": "String",
+      "value": "''",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        3,
+        13,
+      ],
+      "type": "Keyword",
+      "value": "instanceof",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        14,
+        17,
+      ],
+      "type": "Identifier",
+      "value": "Set",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/basics/new-with-member-expression.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "arguments": Array [],
+        "callee": Object {
+          "computed": false,
+          "loc": Object {
+            "end": Object {
+              "column": 11,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "object": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "foo",
+            "range": Array [
+              4,
+              7,
+            ],
+            "type": "Identifier",
+          },
+          "property": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 8,
+                "line": 1,
+              },
+            },
+            "name": "bar",
+            "range": Array [
+              8,
+              11,
+            ],
+            "type": "Identifier",
+          },
+          "range": Array [
+            4,
+            11,
+          ],
+          "type": "MemberExpression",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 13,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          13,
+        ],
+        "type": "NewExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        14,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    15,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "Keyword",
+      "value": "new",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        7,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        8,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        11,
+      ],
+      "type": "Identifier",
+      "value": "bar",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        12,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        12,
+        13,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        13,
+        14,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/basics/new-without-parens.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 14,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          14,
+          16,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "X",
+        "range": Array [
+          9,
+          10,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        0,
+        16,
+      ],
+      "type": "FunctionDeclaration",
+    },
+    Object {
+      "expression": Object {
+        "arguments": Array [],
+        "callee": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 5,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 2,
+            },
+          },
+          "name": "X",
+          "range": Array [
+            21,
+            22,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          17,
+          22,
+        ],
+        "type": "NewExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        17,
+        23,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 6,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    23,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        8,
+      ],
+      "type": "Keyword",
+      "value": "function",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        9,
+        10,
+      ],
+      "type": "Identifier",
+      "value": "X",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        12,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        12,
+        13,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        14,
+        15,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        15,
+        16,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        17,
+        20,
+      ],
+      "type": "Keyword",
+      "value": "new",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        21,
+        22,
+      ],
+      "type": "Identifier",
+      "value": "X",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        22,
+        23,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/basics/typeof-expression.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "argument": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 12,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 7,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            7,
+            12,
+          ],
+          "raw": "'str'",
+          "type": "Literal",
+          "value": "str",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "operator": "typeof",
+        "prefix": true,
+        "range": Array [
+          0,
+          12,
+        ],
+        "type": "UnaryExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        12,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    13,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "typeof",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        12,
+      ],
+      "type": "String",
+      "value": "'str'",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/basics/update-expression.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 5,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "i",
+            "range": Array [
+              4,
+              5,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 8,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              8,
+              9,
+            ],
+            "raw": "0",
+            "type": "Literal",
+            "value": 0,
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 9,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            4,
+            9,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "var",
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        10,
+      ],
+      "type": "VariableDeclaration",
+    },
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "argument": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 3,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 2,
+                    "line": 3,
+                  },
+                },
+                "name": "i",
+                "range": Array [
+                  28,
+                  29,
+                ],
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 3,
+                },
+              },
+              "operator": "++",
+              "prefix": false,
+              "range": Array [
+                28,
+                31,
+              ],
+              "type": "UpdateExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 6,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              28,
+              32,
+            ],
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 4,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          24,
+          34,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 2,
+          },
+        },
+        "name": "f",
+        "range": Array [
+          20,
+          21,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        11,
+        34,
+      ],
+      "type": "FunctionDeclaration",
+    },
+    Object {
+      "expression": Object {
+        "arguments": Array [],
+        "callee": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 5,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 5,
+            },
+          },
+          "name": "f",
+          "range": Array [
+            35,
+            36,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 3,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 5,
+          },
+        },
+        "range": Array [
+          35,
+          38,
+        ],
+        "type": "CallExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        35,
+        39,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 4,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    39,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "Keyword",
+      "value": "var",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        5,
+      ],
+      "type": "Identifier",
+      "value": "i",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        9,
+      ],
+      "type": "Numeric",
+      "value": "0",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        9,
+        10,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        11,
+        19,
+      ],
+      "type": "Keyword",
+      "value": "function",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        20,
+        21,
+      ],
+      "type": "Identifier",
+      "value": "f",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        21,
+        22,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        22,
+        23,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        24,
+        25,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        28,
+        29,
+      ],
+      "type": "Identifier",
+      "value": "i",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        29,
+        31,
+      ],
+      "type": "Punctuator",
+      "value": "++",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        31,
+        32,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        33,
+        34,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        35,
+        36,
+      ],
+      "type": "Identifier",
+      "value": "f",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        36,
+        37,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        37,
+        38,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        38,
+        39,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/basics/void-expression.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "argument": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 6,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 5,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            5,
+            6,
+          ],
+          "raw": "4",
+          "type": "Literal",
+          "value": 4,
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 6,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "operator": "void",
+        "prefix": true,
+        "range": Array [
+          0,
+          6,
+        ],
+        "type": "UnaryExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        7,
+      ],
+      "type": "ExpressionStatement",
+    },
+    Object {
+      "expression": Object {
+        "argument": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 6,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 5,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            13,
+            14,
+          ],
+          "raw": "3",
+          "type": "Literal",
+          "value": 3,
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 2,
+          },
+        },
+        "operator": "void",
+        "prefix": true,
+        "range": Array [
+          8,
+          15,
+        ],
+        "type": "UnaryExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        8,
+        16,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    17,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        4,
+      ],
+      "type": "Keyword",
+      "value": "void",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        5,
+        6,
+      ],
+      "type": "Numeric",
+      "value": "4",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        8,
+        12,
+      ],
+      "type": "Keyword",
+      "value": "void",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        12,
+        13,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        13,
+        14,
+      ],
+      "type": "Numeric",
+      "value": "3",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        14,
+        15,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        15,
+        16,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/binaryLiterals/invalid.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/binaryLiterals/lowercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9763,7 +12902,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/binaryLiterals/uppercase.src 1`] = `
+exports[`javascript fixtures/binaryLiterals/uppercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9860,7 +12999,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/blockBindings/const.src 1`] = `
+exports[`javascript fixtures/blockBindings/const.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -10048,7 +13187,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/blockBindings/let.src 1`] = `
+exports[`javascript fixtures/blockBindings/let.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -10236,7 +13375,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/blockBindings/let-in-switchcase.src 1`] = `
+exports[`javascript fixtures/blockBindings/let-in-switchcase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -10716,7 +13855,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-accessor-properties.src 1`] = `
+exports[`javascript fixtures/classes/class-accessor-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -11330,7 +14469,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-computed-static-method.src 1`] = `
+exports[`javascript fixtures/classes/class-computed-static-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -11757,7 +14896,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-expression.src 1`] = `
+exports[`javascript fixtures/classes/class-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -11944,7 +15083,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-method-named-prototype.src 1`] = `
+exports[`javascript fixtures/classes/class-method-named-prototype.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -12299,7 +15438,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-method-named-static.src 1`] = `
+exports[`javascript fixtures/classes/class-method-named-static.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -12672,7 +15811,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-method-named-with-space.src 1`] = `
+exports[`javascript fixtures/classes/class-method-named-with-space.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -12992,7 +16131,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-one-method.src 1`] = `
+exports[`javascript fixtures/classes/class-one-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -13347,7 +16486,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-one-method-super.src 1`] = `
+exports[`javascript fixtures/classes/class-one-method-super.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -13827,7 +16966,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-static-method.src 1`] = `
+exports[`javascript fixtures/classes/class-static-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -14218,7 +17357,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-static-method-named-prototype.src 1`] = `
+exports[`javascript fixtures/classes/class-static-method-named-prototype.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -14628,7 +17767,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-static-method-named-static.src 1`] = `
+exports[`javascript fixtures/classes/class-static-method-named-static.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -15019,7 +18158,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-static-methods-and-accessor-properties.src 1`] = `
+exports[`javascript fixtures/classes/class-static-methods-and-accessor-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -15837,7 +18976,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-two-computed-static-methods.src 1`] = `
+exports[`javascript fixtures/classes/class-two-computed-static-methods.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -16486,7 +19625,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-two-methods.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -17009,7 +20148,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-two-methods-computed-constructor.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods-computed-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -17570,7 +20709,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-two-methods-semi.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -18111,7 +21250,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-two-methods-three-semi.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods-three-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -18688,7 +21827,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-two-methods-two-semi.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods-two-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -19247,7 +22386,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-two-static-methods-named-constructor.src 1`] = `
+exports[`javascript fixtures/classes/class-two-static-methods-named-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -19806,7 +22945,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-with-constructor.src 1`] = `
+exports[`javascript fixtures/classes/class-with-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -20161,7 +23300,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-with-constructor-parameters.src 1`] = `
+exports[`javascript fixtures/classes/class-with-constructor-parameters.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -20572,7 +23711,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/class-with-constructor-with-space.src 1`] = `
+exports[`javascript fixtures/classes/class-with-constructor-with-space.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -20927,7 +24066,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/derived-class-assign-to-var.src 1`] = `
+exports[`javascript fixtures/classes/derived-class-assign-to-var.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -21259,7 +24398,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/derived-class-expression.src 1`] = `
+exports[`javascript fixtures/classes/derived-class-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -21500,7 +24639,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/empty-class.src 1`] = `
+exports[`javascript fixtures/classes/empty-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -21686,7 +24825,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/empty-class-double-semi.src 1`] = `
+exports[`javascript fixtures/classes/empty-class-double-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -21872,7 +25011,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/empty-class-semi.src 1`] = `
+exports[`javascript fixtures/classes/empty-class-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -22076,7 +25215,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/empty-literal-derived-class.src 1`] = `
+exports[`javascript fixtures/classes/empty-literal-derived-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -22316,7 +25455,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/invalid-class-declaration.src 1`] = `
+exports[`javascript fixtures/classes/invalid-class-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -22467,7 +25606,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/invalid-class-setter-declaration.src 1`] = `
+exports[`javascript fixtures/classes/invalid-class-setter-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -22840,9 +25979,9 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/invalid-class-two-super-classes.src 1`] = `"Classes can only extend a single class."`;
+exports[`javascript fixtures/classes/invalid-class-two-super-classes.src 1`] = `"Classes can only extend a single class."`;
 
-exports[`ecma-features fixtures/classes/named-class-expression.src 1`] = `
+exports[`javascript fixtures/classes/named-class-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -23064,7 +26203,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/classes/named-derived-class-expression.src 1`] = `
+exports[`javascript fixtures/classes/named-derived-class-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -23340,7 +26479,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/defaultParams/class-constructor.src 1`] = `
+exports[`javascript fixtures/defaultParams/class-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -23769,7 +26908,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/defaultParams/class-method.src 1`] = `
+exports[`javascript fixtures/defaultParams/class-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -24198,7 +27337,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/defaultParams/declaration.src 1`] = `
+exports[`javascript fixtures/defaultParams/declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -24497,7 +27636,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/defaultParams/expression.src 1`] = `
+exports[`javascript fixtures/defaultParams/expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -24850,7 +27989,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/defaultParams/method.src 1`] = `
+exports[`javascript fixtures/defaultParams/method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -25333,7 +28472,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/defaultParams/not-all-params.src 1`] = `
+exports[`javascript fixtures/defaultParams/not-all-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -25832,7 +28971,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/array-member.src 1`] = `
+exports[`javascript fixtures/destructuring/array-member.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -26128,7 +29267,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/array-to-array.src 1`] = `
+exports[`javascript fixtures/destructuring/array-to-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -26514,7 +29653,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/array-var-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring/array-var-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -26775,7 +29914,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/class-constructor-params-array.src 1`] = `
+exports[`javascript fixtures/destructuring/class-constructor-params-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -27241,7 +30380,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/class-constructor-params-defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring/class-constructor-params-defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -27851,7 +30990,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/class-constructor-params-defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring/class-constructor-params-defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -28539,7 +31678,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/class-constructor-params-object.src 1`] = `
+exports[`javascript fixtures/destructuring/class-constructor-params-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -29083,7 +32222,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/class-method-params-array.src 1`] = `
+exports[`javascript fixtures/destructuring/class-method-params-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -29549,7 +32688,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/class-method-params-defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring/class-method-params-defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -30159,7 +33298,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/class-method-params-defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring/class-method-params-defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -30847,7 +33986,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/class-method-params-object.src 1`] = `
+exports[`javascript fixtures/destructuring/class-method-params-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -31391,7 +34530,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -31668,7 +34807,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-array-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -32235,7 +35374,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-array-longform-nested-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-longform-nested-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -33013,7 +36152,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-array-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -33436,7 +36575,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-array-nested-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-nested-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -33932,7 +37071,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-array-nested-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-nested-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -34356,7 +37495,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -34692,7 +37831,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-object-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -35376,7 +38515,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-object-longform.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-longform.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -35766,7 +38905,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-object-longform-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-longform-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -36558,7 +39697,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-object-longform-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-longform-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -37206,7 +40345,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-object-mixed-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-mixed-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -37782,7 +40921,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-object-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -38322,7 +41461,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-object-nested-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-nested-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -38971,7 +42110,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/defaults-object-nested-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-nested-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -39548,7 +42687,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/destructured-array-catch.src 1`] = `
+exports[`javascript fixtures/destructuring/destructured-array-catch.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -40469,7 +43608,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/destructured-object-catch.src 1`] = `
+exports[`javascript fixtures/destructuring/destructured-object-catch.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -41429,7 +44568,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/invalid-defaults-object-assign.src 1`] = `
+exports[`javascript fixtures/destructuring/invalid-defaults-object-assign.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -41964,7 +45103,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/named-param.src 1`] = `
+exports[`javascript fixtures/destructuring/named-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -42298,7 +45437,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/nested-array.src 1`] = `
+exports[`javascript fixtures/destructuring/nested-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -42964,7 +46103,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/nested-object.src 1`] = `
+exports[`javascript fixtures/destructuring/nested-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -43932,7 +47071,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/object-var-named.src 1`] = `
+exports[`javascript fixtures/destructuring/object-var-named.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -44268,7 +47407,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/object-var-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring/object-var-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -44568,7 +47707,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/param-defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring/param-defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -44922,7 +48061,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/param-defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring/param-defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -45315,7 +48454,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/param-defaults-object-nested.src 1`] = `
+exports[`javascript fixtures/destructuring/param-defaults-object-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -46038,7 +49177,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/params-array.src 1`] = `
+exports[`javascript fixtures/destructuring/params-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -46409,7 +49548,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/params-array-wrapped.src 1`] = `
+exports[`javascript fixtures/destructuring/params-array-wrapped.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -46816,7 +49955,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/params-multi-object.src 1`] = `
+exports[`javascript fixtures/destructuring/params-multi-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -47226,7 +50365,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/params-nested-array.src 1`] = `
+exports[`javascript fixtures/destructuring/params-nested-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -47690,7 +50829,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/params-nested-object.src 1`] = `
+exports[`javascript fixtures/destructuring/params-nested-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -48341,7 +51480,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/params-object.src 1`] = `
+exports[`javascript fixtures/destructuring/params-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -48790,7 +51929,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/params-object-wrapped.src 1`] = `
+exports[`javascript fixtures/destructuring/params-object-wrapped.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -49275,7 +52414,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring/sparse-array.src 1`] = `
+exports[`javascript fixtures/destructuring/sparse-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -49571,7 +52710,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-arrowFunctions/arrow-param-array.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -49835,7 +52974,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-arrowFunctions/arrow-param-nested-array.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-nested-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -50208,7 +53347,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-arrowFunctions/arrow-param-nested-object.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-nested-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -50734,7 +53873,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-arrowFunctions/arrow-param-nested-object-named.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-nested-object-named.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -51332,7 +54471,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-arrowFunctions/arrow-param-object.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -51635,7 +54774,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-arrowFunctions/param-defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/param-defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -51953,7 +55092,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-arrowFunctions/param-defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/param-defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -52310,7 +55449,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-arrowFunctions/param-defaults-object-nested.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/param-defaults-object-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -53071,7 +56210,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-blockBindings/array-const-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/array-const-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -53332,7 +56471,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-blockBindings/array-let-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/array-let-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -53593,7 +56732,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-blockBindings/object-const-named.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/object-const-named.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -53929,7 +57068,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-blockBindings/object-const-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/object-const-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -54229,7 +57368,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-blockBindings/object-let-named.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/object-let-named.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -54565,7 +57704,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-blockBindings/object-let-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/object-let-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -54865,7 +58004,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-defaultParams/param-array.src 1`] = `
+exports[`javascript fixtures/destructuring-and-defaultParams/param-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -55309,7 +58448,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-defaultParams/param-object.src 1`] = `
+exports[`javascript fixtures/destructuring-and-defaultParams/param-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -55904,7 +59043,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-defaultParams/param-object-short.src 1`] = `
+exports[`javascript fixtures/destructuring-and-defaultParams/param-object-short.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -56557,7 +59696,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-forOf/loop.src 1`] = `
+exports[`javascript fixtures/destructuring-and-forOf/loop.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -56834,7 +59973,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/complex-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/complex-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -57333,7 +60472,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/destructured-array-literal.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/destructured-array-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -57754,7 +60893,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/destructuring-param.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/destructuring-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -58269,7 +61408,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/error-complex-destructured-spread-first.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/error-complex-destructured-spread-first.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -58768,7 +61907,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/multi-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/multi-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -59080,7 +62219,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/single-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/single-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -59338,7 +62477,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/var-complex-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/var-complex-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -59857,7 +62996,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/var-destructured-array-literal.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/var-destructured-array-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -60298,7 +63437,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/var-multi-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/var-multi-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -60630,7 +63769,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/destructuring-and-spread/var-single-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/var-single-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -60908,7 +64047,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalAsyncIteration/async-generators.src 1`] = `
+exports[`javascript fixtures/experimentalAsyncIteration/async-generators.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -61134,7 +64273,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalAsyncIteration/async-iterator.src 1`] = `
+exports[`javascript fixtures/experimentalAsyncIteration/async-iterator.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -61633,7 +64772,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalDynamicImport/dynamic-import.src 1`] = `
+exports[`javascript fixtures/experimentalDynamicImport/dynamic-import.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -61983,7 +65122,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/arg-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/arg-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -62393,7 +65532,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/destructuring-assign-mirror.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/destructuring-assign-mirror.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -62945,7 +66084,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/function-parameter-object-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/function-parameter-object-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -63262,9 +66401,9 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/invalid-rest.src 1`] = `"',' expected."`;
+exports[`javascript fixtures/experimentalObjectRestSpread/invalid-rest.src 1`] = `"',' expected."`;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -63746,7 +66885,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/object-rest.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/object-rest.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -64731,7 +67870,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/property-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/property-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -65593,7 +68732,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/shorthand-method-args.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/shorthand-method-args.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -66226,7 +69365,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/shorthand-methods.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/shorthand-methods.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -66915,7 +70054,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/shorthand-properties.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/shorthand-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -67633,7 +70772,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/single-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/single-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -68423,7 +71562,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/spread-trailing-comma.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/spread-trailing-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -68831,7 +71970,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalObjectRestSpread/two-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/two-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -69581,7 +72720,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalOptionalCatchBinding/optional-catch-binding.src 1`] = `
+exports[`javascript fixtures/experimentalOptionalCatchBinding/optional-catch-binding.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -69786,7 +72925,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/experimentalOptionalCatchBinding/optional-catch-binding-finally.src 1`] = `
+exports[`javascript fixtures/experimentalOptionalCatchBinding/optional-catch-binding-finally.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -70062,7 +73201,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/exponentiationOperators/exponential-operators.src 1`] = `
+exports[`javascript fixtures/exponentiationOperators/exponential-operators.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -70468,7 +73607,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/forOf/for-of-with-function-initializer.src 1`] = `
+exports[`javascript fixtures/forOf/for-of-with-function-initializer.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -71183,7 +74322,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/forOf/for-of-with-var-and-braces.src 1`] = `
+exports[`javascript fixtures/forOf/for-of-with-var-and-braces.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -71606,7 +74745,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/forOf/for-of-with-var-and-no-braces.src 1`] = `
+exports[`javascript fixtures/forOf/for-of-with-var-and-no-braces.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -71974,7 +75113,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/forOf/invalid-for-of-with-const-and-no-braces.src 1`] = `
+exports[`javascript fixtures/forOf/invalid-for-of-with-const-and-no-braces.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -72342,7 +75481,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/forOf/invalid-for-of-with-let-and-no-braces.src 1`] = `
+exports[`javascript fixtures/forOf/invalid-for-of-with-let-and-no-braces.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -72710,7 +75849,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/anonymous-generator.src 1`] = `
+exports[`javascript fixtures/generators/anonymous-generator.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -73044,7 +76183,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/async-generator-function.src 1`] = `
+exports[`javascript fixtures/generators/async-generator-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -73270,7 +76409,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/async-generator-method.src 1`] = `
+exports[`javascript fixtures/generators/async-generator-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -73898,7 +77037,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/double-yield.src 1`] = `
+exports[`javascript fixtures/generators/double-yield.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -74269,7 +77408,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/empty-generator-declaration.src 1`] = `
+exports[`javascript fixtures/generators/empty-generator-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -74512,7 +77651,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/generator-declaration.src 1`] = `
+exports[`javascript fixtures/generators/generator-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -74863,7 +78002,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/yield-delegation.src 1`] = `
+exports[`javascript fixtures/generators/yield-delegation.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -75215,7 +78354,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/yield-without-value.src 1`] = `
+exports[`javascript fixtures/generators/yield-without-value.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -75532,7 +78671,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/yield-without-value-in-call.src 1`] = `
+exports[`javascript fixtures/generators/yield-without-value-in-call.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -75940,7 +79079,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/generators/yield-without-value-no-semi.src 1`] = `
+exports[`javascript fixtures/generators/yield-without-value-no-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76239,7 +79378,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/globalReturn/return-identifier.src 1`] = `
+exports[`javascript fixtures/globalReturn/return-identifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76353,7 +79492,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/globalReturn/return-no-arg.src 1`] = `
+exports[`javascript fixtures/globalReturn/return-no-arg.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76432,7 +79571,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/globalReturn/return-true.src 1`] = `
+exports[`javascript fixtures/globalReturn/return-true.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76547,7 +79686,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/importMeta/simple-import-meta.src 1`] = `
+exports[`javascript fixtures/importMeta/simple-import-meta.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76786,7 +79925,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/error-delete.src 1`] = `
+exports[`javascript fixtures/modules/error-delete.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -77082,7 +80221,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/error-function.src 1`] = `
+exports[`javascript fixtures/modules/error-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -77380,7 +80519,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/error-strict.src 1`] = `
+exports[`javascript fixtures/modules/error-strict.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -77964,7 +81103,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-default-array.src 1`] = `
+exports[`javascript fixtures/modules/export-default-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78114,7 +81253,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-default-class.src 1`] = `
+exports[`javascript fixtures/modules/export-default-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78283,7 +81422,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-default-expression.src 1`] = `
+exports[`javascript fixtures/modules/export-default-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78525,7 +81664,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-default-function.src 1`] = `
+exports[`javascript fixtures/modules/export-default-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78733,7 +81872,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-default-named-class.src 1`] = `
+exports[`javascript fixtures/modules/export-default-named-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78937,7 +82076,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-default-named-function.src 1`] = `
+exports[`javascript fixtures/modules/export-default-named-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79180,7 +82319,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-default-number.src 1`] = `
+exports[`javascript fixtures/modules/export-default-number.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79313,7 +82452,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-default-object.src 1`] = `
+exports[`javascript fixtures/modules/export-default-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79576,7 +82715,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-default-value.src 1`] = `
+exports[`javascript fixtures/modules/export-default-value.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79708,7 +82847,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-from-batch.src 1`] = `
+exports[`javascript fixtures/modules/export-from-batch.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79859,7 +82998,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-from-default.src 1`] = `
+exports[`javascript fixtures/modules/export-from-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -80102,7 +83241,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-from-named-as-default.src 1`] = `
+exports[`javascript fixtures/modules/export-from-named-as-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -80381,7 +83520,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-from-named-as-specifier.src 1`] = `
+exports[`javascript fixtures/modules/export-from-named-as-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -80660,7 +83799,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-from-named-as-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/export-from-named-as-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -81028,7 +84167,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-from-specifier.src 1`] = `
+exports[`javascript fixtures/modules/export-from-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -81271,7 +84410,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-from-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/export-from-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -81603,7 +84742,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-function.src 1`] = `
+exports[`javascript fixtures/modules/export-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -81830,7 +84969,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-named-as-default.src 1`] = `
+exports[`javascript fixtures/modules/export-named-as-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82055,7 +85194,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-named-as-specifier.src 1`] = `
+exports[`javascript fixtures/modules/export-named-as-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82280,7 +85419,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-named-as-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/export-named-as-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82594,7 +85733,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-named-class.src 1`] = `
+exports[`javascript fixtures/modules/export-named-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82782,7 +85921,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-named-empty.src 1`] = `
+exports[`javascript fixtures/modules/export-named-empty.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82899,7 +86038,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-named-specifier.src 1`] = `
+exports[`javascript fixtures/modules/export-named-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -83088,7 +86227,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-named-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/export-named-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -83366,7 +86505,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-named-specifiers-comma.src 1`] = `
+exports[`javascript fixtures/modules/export-named-specifiers-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -83662,7 +86801,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-var.src 1`] = `
+exports[`javascript fixtures/modules/export-var.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -83834,7 +86973,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-var-anonymous-function.src 1`] = `
+exports[`javascript fixtures/modules/export-var-anonymous-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -84153,7 +87292,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/export-var-number.src 1`] = `
+exports[`javascript fixtures/modules/export-var-number.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -84379,7 +87518,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-default.src 1`] = `
+exports[`javascript fixtures/modules/import-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -84567,7 +87706,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-default-and-named-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/import-default-and-named-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -84880,7 +88019,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-default-and-namespace-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/import-default-and-namespace-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -85175,7 +88314,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-default-as.src 1`] = `
+exports[`javascript fixtures/modules/import-default-as.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -85453,7 +88592,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-jquery.src 1`] = `
+exports[`javascript fixtures/modules/import-jquery.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -85623,7 +88762,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-module.src 1`] = `
+exports[`javascript fixtures/modules/import-module.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -85739,7 +88878,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-named-as-specifier.src 1`] = `
+exports[`javascript fixtures/modules/import-named-as-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -86017,7 +89156,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-named-as-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/import-named-as-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -86384,7 +89523,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-named-empty.src 1`] = `
+exports[`javascript fixtures/modules/import-named-empty.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -86554,7 +89693,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-named-specifier.src 1`] = `
+exports[`javascript fixtures/modules/import-named-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -86796,7 +89935,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-named-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/import-named-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -87127,7 +90266,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-named-specifiers-comma.src 1`] = `
+exports[`javascript fixtures/modules/import-named-specifiers-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -87476,7 +90615,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-namespace-specifier.src 1`] = `
+exports[`javascript fixtures/modules/import-namespace-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -87700,7 +90839,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/import-null-as-nil.src 1`] = `
+exports[`javascript fixtures/modules/import-null-as-nil.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -87960,7 +91099,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/invalid-await.src 1`] = `
+exports[`javascript fixtures/modules/invalid-await.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88132,7 +91271,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/invalid-class.src 1`] = `
+exports[`javascript fixtures/modules/invalid-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88301,17 +91440,17 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/invalid-export-batch-missing-from-clause.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-export-batch-missing-from-clause.src 1`] = `"'from' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-export-batch-token.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-export-batch-token.src 1`] = `"'from' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-export-default.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/modules/invalid-export-default.src 1`] = `"';' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-export-default-equal.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/modules/invalid-export-default-equal.src 1`] = `"Expression expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-export-default-token.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/modules/invalid-export-default-token.src 1`] = `"';' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-export-named-default.src 1`] = `
+exports[`javascript fixtures/modules/invalid-export-named-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88482,19 +91621,19 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/invalid-export-named-extra-comma.src 1`] = `"Identifier expected."`;
+exports[`javascript fixtures/modules/invalid-export-named-extra-comma.src 1`] = `"Identifier expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-export-named-middle-comma.src 1`] = `"Identifier expected."`;
+exports[`javascript fixtures/modules/invalid-export-named-middle-comma.src 1`] = `"Identifier expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-default.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/modules/invalid-import-default.src 1`] = `"Expression expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-default-after-named.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-default-after-named.src 1`] = `"'from' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-default-after-named-after-default.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-default-after-named-after-default.src 1`] = `"'from' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-default-missing-module-specifier.src 1`] = `"'=' expected."`;
+exports[`javascript fixtures/modules/invalid-import-default-missing-module-specifier.src 1`] = `"'=' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-default-module-specifier.src 1`] = `
+exports[`javascript fixtures/modules/invalid-import-default-module-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88681,9 +91820,9 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/invalid-import-missing-module-specifier.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-missing-module-specifier.src 1`] = `"'from' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-module-specifier.src 1`] = `
+exports[`javascript fixtures/modules/invalid-import-module-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88907,21 +92046,21 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/modules/invalid-import-named-after-named.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-after-named.src 1`] = `"'from' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-named-after-namespace.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-after-namespace.src 1`] = `"'from' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-named-as-missing-from.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-as-missing-from.src 1`] = `"'from' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-named-extra-comma.src 1`] = `"Identifier expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-extra-comma.src 1`] = `"Identifier expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-named-middle-comma.src 1`] = `"Identifier expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-middle-comma.src 1`] = `"Identifier expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-namespace-after-named.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-namespace-after-named.src 1`] = `"'from' expected."`;
 
-exports[`ecma-features fixtures/modules/invalid-import-namespace-missing-as.src 1`] = `"'as' expected."`;
+exports[`javascript fixtures/modules/invalid-import-namespace-missing-as.src 1`] = `"'as' expected."`;
 
-exports[`ecma-features fixtures/newTarget/invalid-new-target.src 1`] = `
+exports[`javascript fixtures/newTarget/invalid-new-target.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -89180,7 +92319,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/newTarget/invalid-unknown-property.src 1`] = `
+exports[`javascript fixtures/newTarget/invalid-unknown-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -89587,7 +92726,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/newTarget/simple-new-target.src 1`] = `
+exports[`javascript fixtures/newTarget/simple-new-target.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -90012,7 +93151,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteral/object-literal-in-lhs.src 1`] = `
+exports[`javascript fixtures/objectLiteral/object-literal-in-lhs.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -90361,7 +93500,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/computed-addition-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-addition-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -90789,7 +93928,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/computed-and-identifier.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-and-identifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -91218,7 +94357,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/computed-getter-and-setter.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-getter-and-setter.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -91870,7 +95009,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/computed-string-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-string-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -92225,7 +95364,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/computed-variable-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-variable-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -92579,11 +95718,11 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/invalid-computed-variable-property.src 1`] = `"':' expected."`;
+exports[`javascript fixtures/objectLiteralComputedProperties/invalid-computed-variable-property.src 1`] = `"':' expected."`;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/invalid-standalone-computed-variable-property.src 1`] = `"':' expected."`;
+exports[`javascript fixtures/objectLiteralComputedProperties/invalid-standalone-computed-variable-property.src 1`] = `"':' expected."`;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/standalone-expression.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/standalone-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -92882,7 +96021,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/standalone-expression-with-addition.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/standalone-expression-with-addition.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -93255,7 +96394,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralComputedProperties/standalone-expression-with-method.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/standalone-expression-with-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -93647,7 +96786,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralDuplicateProperties/error-proto-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralDuplicateProperties/error-proto-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -94347,7 +97486,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -95049,7 +98188,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralDuplicateProperties/strict-duplicate-properties.src 1`] = `
+exports[`javascript fixtures/objectLiteralDuplicateProperties/strict-duplicate-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -95570,7 +98709,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `
+exports[`javascript fixtures/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -96093,9 +99232,9 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralShorthandMethods/invalid-method-no-braces.src 1`] = `"'{' expected."`;
+exports[`javascript fixtures/objectLiteralShorthandMethods/invalid-method-no-braces.src 1`] = `"'{' expected."`;
 
-exports[`ecma-features fixtures/objectLiteralShorthandMethods/method-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/method-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -96561,7 +99700,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralShorthandMethods/simple-method.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -96952,7 +100091,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralShorthandMethods/simple-method-named-get.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method-named-get.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -97343,7 +100482,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralShorthandMethods/simple-method-named-set.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method-named-set.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -97734,7 +100873,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralShorthandMethods/simple-method-with-argument.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method-with-argument.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -98162,7 +101301,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralShorthandMethods/simple-method-with-string-name.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method-with-string-name.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -98554,7 +101693,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralShorthandMethods/string-name-method-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/string-name-method-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -99021,7 +102160,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/objectLiteralShorthandProperties/shorthand-properties.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandProperties/shorthand-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -99743,9 +102882,9 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/octalLiterals/invalid.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/octalLiterals/invalid.src 1`] = `"';' expected."`;
 
-exports[`ecma-features fixtures/octalLiterals/lowercase.src 1`] = `
+exports[`javascript fixtures/octalLiterals/lowercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -99842,7 +102981,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/octalLiterals/strict-uppercase.src 1`] = `
+exports[`javascript fixtures/octalLiterals/strict-uppercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100011,7 +103150,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/octalLiterals/uppercase.src 1`] = `
+exports[`javascript fixtures/octalLiterals/uppercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100108,7 +103247,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/regex/regexp-simple.src 1`] = `
+exports[`javascript fixtures/regex/regexp-simple.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100305,7 +103444,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/regexUFlag/regex-u-extended-escape.src 1`] = `
+exports[`javascript fixtures/regexUFlag/regex-u-extended-escape.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100502,7 +103641,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/regexUFlag/regex-u-invalid-extended-escape.src 1`] = `
+exports[`javascript fixtures/regexUFlag/regex-u-invalid-extended-escape.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100699,7 +103838,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/regexUFlag/regex-u-simple.src 1`] = `
+exports[`javascript fixtures/regexUFlag/regex-u-simple.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100896,7 +104035,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/regexYFlag/regexp-y-simple.src 1`] = `
+exports[`javascript fixtures/regexYFlag/regexp-y-simple.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -101093,7 +104232,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/restParams/basic-rest.src 1`] = `
+exports[`javascript fixtures/restParams/basic-rest.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -101444,7 +104583,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/restParams/class-constructor.src 1`] = `
+exports[`javascript fixtures/restParams/class-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -101836,7 +104975,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/restParams/class-method.src 1`] = `
+exports[`javascript fixtures/restParams/class-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -102228,7 +105367,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/restParams/error-no-default.src 1`] = `
+exports[`javascript fixtures/restParams/error-no-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -102545,7 +105684,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/restParams/error-not-last.src 1`] = `
+exports[`javascript fixtures/restParams/error-not-last.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -102880,7 +106019,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/restParams/func-expression.src 1`] = `
+exports[`javascript fixtures/restParams/func-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -103234,7 +106373,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/restParams/func-expression-multi.src 1`] = `
+exports[`javascript fixtures/restParams/func-expression-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -103642,7 +106781,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/restParams/invalid-rest-param.src 1`] = `
+exports[`javascript fixtures/restParams/invalid-rest-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -104033,7 +107172,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/restParams/single-rest.src 1`] = `
+exports[`javascript fixtures/restParams/single-rest.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -104330,11 +107469,11 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/spread/error-invalid-if.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/spread/error-invalid-if.src 1`] = `"Expression expected."`;
 
-exports[`ecma-features fixtures/spread/error-invalid-sequence.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/spread/error-invalid-sequence.src 1`] = `"Expression expected."`;
 
-exports[`ecma-features fixtures/spread/multi-function-call.src 1`] = `
+exports[`javascript fixtures/spread/multi-function-call.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -104610,7 +107749,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/spread/not-final-param.src 1`] = `
+exports[`javascript fixtures/spread/not-final-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -104886,7 +108025,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/spread/simple-function-call.src 1`] = `
+exports[`javascript fixtures/spread/simple-function-call.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -105108,7 +108247,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/templateStrings/deeply-nested.src 1`] = `
+exports[`javascript fixtures/templateStrings/deeply-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -105573,7 +108712,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/templateStrings/error-octal-literal.src 1`] = `
+exports[`javascript fixtures/templateStrings/error-octal-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -105693,7 +108832,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/templateStrings/escape-characters.src 1`] = `
+exports[`javascript fixtures/templateStrings/escape-characters.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -105907,7 +109046,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/templateStrings/expressions.src 1`] = `
+exports[`javascript fixtures/templateStrings/expressions.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -106581,7 +109720,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/templateStrings/multi-line-template-string.src 1`] = `
+exports[`javascript fixtures/templateStrings/multi-line-template-string.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -106716,7 +109855,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/templateStrings/simple-template-string.src 1`] = `
+exports[`javascript fixtures/templateStrings/simple-template-string.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -106836,7 +109975,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/templateStrings/single-dollar-sign.src 1`] = `
+exports[`javascript fixtures/templateStrings/single-dollar-sign.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -107048,7 +110187,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/templateStrings/tagged-no-placeholders.src 1`] = `
+exports[`javascript fixtures/templateStrings/tagged-no-placeholders.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -107221,7 +110360,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/templateStrings/tagged-template-string.src 1`] = `
+exports[`javascript fixtures/templateStrings/tagged-template-string.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -107947,7 +111086,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/unicodeCodePointEscapes/basic-string-literal.src 1`] = `
+exports[`javascript fixtures/unicodeCodePointEscapes/basic-string-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -108044,7 +111183,7 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/unicodeCodePointEscapes/complex-string-literal.src 1`] = `
+exports[`javascript fixtures/unicodeCodePointEscapes/complex-string-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -108141,6 +111280,6 @@ Object {
 }
 `;
 
-exports[`ecma-features fixtures/unicodeCodePointEscapes/invalid-empty-escape.src 1`] = `"Hexadecimal digit expected."`;
+exports[`javascript fixtures/unicodeCodePointEscapes/invalid-empty-escape.src 1`] = `"Hexadecimal digit expected."`;
 
-exports[`ecma-features fixtures/unicodeCodePointEscapes/invalid-too-large-escape.src 1`] = `"An extended Unicode escape value must be between 0x0 and 0x10FFFF inclusive."`;
+exports[`javascript fixtures/unicodeCodePointEscapes/invalid-too-large-escape.src 1`] = `"An extended Unicode escape value must be between 0x0 and 0x10FFFF inclusive."`;

@@ -1,5 +1,5 @@
 /**
- * @fileoverview Tests for basic expressions
+ * @fileoverview Tests for ECMA feature flags
  * @author Nicholas C. Zakas
  * @author James Henry <https://github.com/JamesHenry>
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
@@ -14,7 +14,7 @@ import { createSnapshotTestBlock } from '../../tools/test-utils';
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = './tests/fixtures/basics';
+const FIXTURES_DIR = './tests/fixtures/javascript';
 
 const testFiles = shelljs
   .find(FIXTURES_DIR)
@@ -28,15 +28,16 @@ const testFiles = shelljs
 // Tests
 //------------------------------------------------------------------------------
 
-describe('basics', () => {
+describe('javascript', () => {
   testFiles.forEach(filename => {
-    const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
-    const config = {
-      loc: true,
-      range: true,
-      tokens: true,
-      errorOnUnknownASTType: true
-    };
+    const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`),
+      config = {
+        loc: true,
+        range: true,
+        tokens: true,
+        errorOnUnknownASTType: true
+      };
+
     it(
       `fixtures/${filename}.src`,
       createSnapshotTestBlock(code, config as ParserOptions)
