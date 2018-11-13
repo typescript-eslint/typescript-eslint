@@ -7,6 +7,7 @@
   "version": "20.1.1",
   "files": [
     "parser.js",
+    "analyze-scope.js",
     "visitor-keys.js"
   ],
   "engines": {
@@ -43,7 +44,9 @@
     "typescript": "*"
   },
   "dependencies": {
+    "eslint-scope": "^4.0.0",
     "eslint-visitor-keys": "^1.0.0",
+    "lodash": "^4.17.11",
     "typescript-estree": "5.0.0"
   },
   "devDependencies": {
