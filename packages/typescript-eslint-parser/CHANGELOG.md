@@ -1,3 +1,13 @@
+v21.0.0 - November 13, 2018
+
+* eb23b26 Update: add proper scope analysis (fixes #535) (#540) (Toru Nagashima)
+* 150ffe8 Breaking: make 'useJSXTextNode:true' by default (#544) (Toru Nagashima)
+* 2d22321 Breaking: switch 'jsx' option by filename (fixes #517) (#543) (Toru Nagashima)
+* 3b1ed17 Breaking: make eslint a peerDep/devDep (#541) (Kai Cataldo)
+* 1d54346 Chore: test Node v11 in CI (#542) (Kai Cataldo)
+* a9d932a Breaking: typescript-estree v5 (#538) (Kai Cataldo)
+* 6a9b629 Docs: add options to README (#530) (Joe Pea)
+
 v20.1.1 - October 31, 2018
 
 * 1683169 Revert "Chore: Make ESLint a devDependency/peerDependency (fixes #523)" (#537) (Kevin Partington)
