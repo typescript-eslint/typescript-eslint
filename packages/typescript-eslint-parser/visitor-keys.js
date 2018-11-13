@@ -9,28 +9,20 @@
 const Evk = require("eslint-visitor-keys");
 
 module.exports = Evk.unionWith({
-    ArrayPattern: ["typeAnnotation"],
-    ArrowFunctionExpression: ["returnType", "typeParameters"],
-    AssignmentPattern: ["typeAnnotation"],
-    CallExpression: ["typeParameters"],
-    ClassDeclaration: ["superTypeParameters", "typeParameters"],
-    ClassExpression: ["superTypeParameters", "typeParameters"],
-    ClassImplements: ["typeParameters"],
-    ClassProperty: ["typeAnnotation"],
-    FunctionDeclaration: ["returnType", "typeParameters"],
-    FunctionExpression: ["returnType", "typeParameters"],
+    // Additional Properties.
+    ArrayPattern: ["elements", "typeAnnotation"],
+    ArrowFunctionExpression: ["typeParameters", "params", "returnType", "body"],
+    ClassDeclaration: ["decorators", "id", "typeParameters", "superClass", "body"],
+    ClassExpression: ["decorators", "id", "typeParameters", "superClass", "body"],
+    FunctionDeclaration: ["id", "typeParameters", "params", "returnType", "body"],
+    FunctionExpression: ["id", "typeParameters", "params", "returnType", "body"],
     Identifier: ["typeAnnotation"],
-    InterfaceDeclaration: ["typeParameters"],
-    NewExpression: ["typeParameters"],
-    ObjectPattern: ["typeAnnotation"],
-    /**
-     * According to https://github.com/estree/estree/blob/master/extensions/type-annotations.md
-     * RestElement should have "typeAnnotation", but has not. Annotation is added on the "parameter" node
-     */
-    RestElement: [],
-    TaggedTemplateExpression: ["typeParameters"],
-    VariableDeclarator: ["typeParameters"],
+    MethodDefinition: ["decorators", "key", "value"],
+    ObjectPattern: ["properties", "typeAnnotation"],
 
+    // Additional Nodes.
+    ClassProperty: ["decorators", "key", "typeAnnotation", "value"],
+    Decorator: ["expression"],
     TSAbstractClassProperty: ["typeAnnotation", "key", "value"],
     TSAbstractClassDeclaration: ["id", "body", "superClass", "implements"],
     TSAbstractKeyword: [],
@@ -39,9 +31,13 @@ module.exports = Evk.unionWith({
     TSArrayType: ["elementType"],
     TSAsyncKeyword: [],
     TSBooleanKeyword: [],
+    TSCallSignature: ["typeParameters", "parameters", "typeAnnotation"],
+    TSConstructSignature: ["typeParameters", "params", "typeAnnotation"],
     TSConstructorType: ["typeAnnotation", "parameters"],
-    TSConstructSignature: ["typeAnnotation", "typeParameters"],
     TSDeclareKeyword: [],
+    TSEmptyBodyDeclareFunction: ["id", "typeParameters", "params", "returnType"],
+    TSEmptyBodyFunctionDeclaration: ["id", "typeParameters", "params", "returnType"],
+    TSEmptyBodyFunctionExpression: ["id", "typeParameters", "params", "returnType"],
     TSEnumDeclaration: ["members"],
     TSEnumMember: ["initializer"],
     TSExportAssignment: ["expression"],
@@ -81,6 +77,7 @@ module.exports = Evk.unionWith({
     TSTypeParameterInstantiation: ["params"],
     TSTypePredicate: ["typeAnnotation", "parameterName"],
     TSTypeReference: ["typeName", "typeParameters"],
+    TSTypeQuery: ["exprName"],
     TSUnionType: ["types"],
     TSUndefinedKeyword: [],
     TSVoidKeyword: []

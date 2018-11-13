@@ -11,6 +11,7 @@
 const parse = require("typescript-estree").parse;
 const astNodeTypes = require("typescript-estree").AST_NODE_TYPES;
 const traverser = require("eslint/lib/util/traverser");
+const analyzeScope = require("./analyze-scope");
 const visitorKeys = require("./visitor-keys");
 
 //------------------------------------------------------------------------------
@@ -33,16 +34,45 @@ exports.parseForESLint = function parseForESLint(code, options) {
     }
 
     const ast = parse(code, options);
+    const extraOptions = {
+        sourceType: ast.sourceType
+    };
+
     traverser.traverse(ast, {
         enter: node => {
-            if (node.type === "DeclareFunction" || node.type === "FunctionExpression" || node.type === "FunctionDeclaration") {
-                if (!node.body) {
-                    node.type = `TSEmptyBody${node.type}`;
-                }
+            switch (node.type) {
+                // Just for backword compatibility.
+                case "DeclareFunction":
+                    if (!node.body) {
+                        node.type = `TSEmptyBody${node.type}`;
+                    }
+                    break;
+
+                // Function#body cannot be null in ESTree spec.
+                case "FunctionExpression":
+                case "FunctionDeclaration":
+                    if (!node.body) {
+                        node.type = `TSEmptyBody${node.type}`;
+                    }
+                    break;
+
+                // Import/Export declarations cannot appear in script.
+                // But if those appear only in namespace/module blocks, `ast.sourceType` was `"script"`.
+                // This doesn't modify `ast.sourceType` directly for backrard compatibility.
+                case "ImportDeclaration":
+                case "ExportAllDeclaration":
+                case "ExportDefaultDeclaration":
+                case "ExportNamedDeclaration":
+                    extraOptions.sourceType = "module";
+                    break;
+
+                // no default
             }
         }
     });
-    return { ast, visitorKeys };
+
+    const scopeManager = analyzeScope(ast, options, extraOptions);
+    return { ast, scopeManager, visitorKeys };
 };
 
 exports.parse = function(code, options) {
