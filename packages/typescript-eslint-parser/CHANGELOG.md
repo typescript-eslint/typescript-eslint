@@ -1,3 +1,8 @@
+v21.0.1 - November 15, 2018
+
+* [`3715584`](https://github.com/eslint/typescript-eslint-parser/commit/3715584404de566c9b6db975328122e819993768) Fix: wrong reference on TSQualifiedName (fixes #550) (#551) (Toru Nagashima)
+* [`15b32d0`](https://github.com/eslint/typescript-eslint-parser/commit/15b32d0c9430111cdcdc7d187dfdc00b049bf3fb) Upgrade: eslint-release v1.2.0 (#549) (Kai Cataldo)
+
 v21.0.0 - November 13, 2018
 
 * eb23b26 Update: add proper scope analysis (fixes #535) (#540) (Toru Nagashima)
