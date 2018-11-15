@@ -385,6 +385,15 @@ class Referencer extends OriginalReferencer {
     }
 
     /**
+     * Create reference objects for the object part. (This is `obj.prop`)
+     * @param {TSTypeQuery} node The TSTypeQuery node to visit.
+     * @returns {void}
+     */
+    TSQualifiedName(node) {
+        this.visit(node.left);
+    }
+
+    /**
      * Create reference objects for the references in computed keys.
      * @param {TSPropertySignature} node The TSPropertySignature node to visit.
      * @returns {void}

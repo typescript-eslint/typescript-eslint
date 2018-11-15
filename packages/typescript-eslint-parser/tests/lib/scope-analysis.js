@@ -351,4 +351,23 @@ export default class ListModalStore {
 
         expect(messages).toStrictEqual([]);
     });
+
+    test("https://github.com/eslint/typescript-eslint-parser/issues/550", () => {
+        const code = `
+function test(file: Blob) {
+  const slice: typeof file.slice =
+    file.slice || (file as any).webkitSlice || (file as any).mozSlice
+  return slice
+}
+`;
+        const config = {
+            parser: "typescript-eslint-parser",
+            rules: {
+                "no-use-before-define": "error"
+            }
+        };
+        const messages = linter.verify(code, config, { filename: "issue.ts" });
+
+        expect(messages).toStrictEqual([]);
+    });
 });
