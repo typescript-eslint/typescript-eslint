@@ -216,6 +216,18 @@ module.exports = {
         }
 
         /**
+         * Checks the given expression and marks any type parameters as used.
+         * @param {ASTNode} node the relevant AST node.
+         * @returns {void}
+         * @private
+         */
+        function markExpressionAsUsed(node) {
+            if (node.typeParameters && node.typeParameters.params) {
+                node.typeParameters.params.forEach(markTypeAnnotationAsUsed);
+            }
+        }
+
+        /**
          * Checks the given interface and marks it as used.
          * Generic arguments are also included in the check.
          * This is used when interfaces are extending other interfaces.
@@ -236,19 +248,22 @@ module.exports = {
         }
 
         /**
-         * Checks the given function return type and marks it as used.
+         * Checks the given function and marks return types and type parameter constraints as used.
          * @param {ASTNode} node the relevant AST node.
          * @returns {void}
          * @private
          */
-        function markFunctionReturnTypeAsUsed(node) {
+        function markFunctionOptionsAsUsed(node) {
+            if (node.typeParameters && node.typeParameters.params) {
+                node.typeParameters.params.forEach(markTypeAnnotationAsUsed);
+            }
             if (node.returnType) {
                 markTypeAnnotationAsUsed(node.returnType);
             }
         }
 
         /**
-         * Checks the given class and marks super classes, interfaces and decoratores as used.
+         * Checks the given class and marks super classes, interfaces, type parameter constraints and decorators as used.
          * @param {ASTNode} node the relevant AST node.
          * @returns {void}
          * @private
@@ -286,17 +301,12 @@ module.exports = {
                 }
             },
 
-            FunctionDeclaration: markFunctionReturnTypeAsUsed,
-            FunctionExpression: markFunctionReturnTypeAsUsed,
-            ArrowFunctionExpression: markFunctionReturnTypeAsUsed,
+            FunctionDeclaration: markFunctionOptionsAsUsed,
+            FunctionExpression: markFunctionOptionsAsUsed,
+            ArrowFunctionExpression: markFunctionOptionsAsUsed,
 
-            CallExpression(node) {
-                if (node.typeParameters && node.typeParameters.params) {
-                    node.typeParameters.params.forEach(
-                        markTypeAnnotationAsUsed
-                    );
-                }
-            },
+            CallExpression: markExpressionAsUsed,
+            NewExpression: markExpressionAsUsed,
 
             Decorator: markDecoratorAsUsed,
             TSInterfaceHeritage: markExtendedInterfaceAsUsed,
