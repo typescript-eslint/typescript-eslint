@@ -220,6 +220,7 @@ console.log(a);
 import { Nullable } from 'nullable';
 import { Component } from 'react';
 class Foo implements Component<Nullable>{};
+
 new Foo();
 		`,
         `
@@ -368,6 +369,38 @@ export const map: { [name in Foo]: Bar } = {
     b: 2,
     c: 3
 }
+        `,
+        `
+import { Nullable } from 'nullable';
+class A<T> {
+    bar: T
+}
+new A<Nullable>();
+        `,
+        `
+import { Nullable } from 'nullable';
+import { SomeOther } from 'other';
+function foo<T extends Nullable>() {
+}
+foo<SomeOther>();
+        `,
+        `
+import { Nullable } from 'nullable';
+import { SomeOther } from 'other';
+class A<T extends Nullable> {
+    bar: T;
+}
+new A<SomeOther>();
+        `,
+        `
+import { Nullable } from 'nullable';
+import { SomeOther } from 'other';
+interface A<T extends Nullable> {
+    bar: T;
+}
+export const a: A<SomeOther> = {
+    foo: "bar"
+};
         `
     ],
 
