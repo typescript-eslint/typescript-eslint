@@ -332,6 +332,34 @@ class Baz<T extends Foo & Bar> {}
 new Baz<any>()
         `,
         `
+import { Foo } from './types';
+
+class Bar<T = Foo> {}
+
+new Bar<number>()
+        `,
+        `
+import { Foo } from './types';
+
+class Foo<T = any> {}
+
+new Foo()
+        `,
+        `
+import { Foo } from './types';
+
+class Foo<T = {}> {}
+
+new Foo()
+        `,
+        `
+import { Foo } from './types';
+
+class Foo<T extends {} = {}> {}
+
+new Foo()
+        `,
+        `
 type Foo = "a" | "b" | "c"
 type Bar = number
 

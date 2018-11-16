@@ -123,7 +123,12 @@ module.exports = {
                     break;
 
                 case "TSTypeParameter": {
-                    markTypeAnnotationAsUsed(annotation.constraint);
+                    if (annotation.constraint) {
+                        markTypeAnnotationAsUsed(annotation.constraint);
+                    }
+                    if (annotation.default) {
+                        markTypeAnnotationAsUsed(annotation.default);
+                    }
                     break;
                 }
                 case "TSMappedType": {
