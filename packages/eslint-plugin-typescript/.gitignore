@@ -14,3 +14,4 @@ versions.json
 /packages/**/node_modules
 /.vscode
 .sublimelinterrc
+yarn.lock

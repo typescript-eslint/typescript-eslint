@@ -34,6 +34,16 @@ class Test {
             `
         },
         {
+            filename: "test.ts",
+            code: `
+class Test {
+  protected name: string
+  protected foo?: string
+  public "foo-bar"?: string
+}
+            `
+        },
+        {
             filename: "test.js",
             code: `
 class Test {
@@ -75,6 +85,31 @@ class Test {
 }
             `,
             errors: [
+                {
+                    message:
+                        "Missing accessibility modifier on method definition getX.",
+                    line: 4,
+                    column: 3
+                }
+            ]
+        },
+        {
+            filename: "test.ts",
+            code: `
+class Test {
+  x?: number
+  getX? () {
+    return this.x
+  }
+}
+            `,
+            errors: [
+                {
+                    message:
+                        "Missing accessibility modifier on class property x.",
+                    line: 3,
+                    column: 3
+                },
                 {
                     message:
                         "Missing accessibility modifier on method definition getX.",

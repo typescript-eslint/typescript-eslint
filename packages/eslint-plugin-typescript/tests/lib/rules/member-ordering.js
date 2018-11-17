@@ -161,6 +161,7 @@ interface Foo {
     D: string;
     E: string;
     F: string;
+    G?: string;
     J();
     K();
     L();

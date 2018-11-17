@@ -91,7 +91,12 @@ module.exports = {
             "in-intersections",
             "in-unions-and-intersections"
         ];
-        const aliasTypes = ["TSLastTypeNode", "TSArrayType", "TSTypeReference"];
+        const aliasTypes = [
+            "TSLastTypeNode",
+            "TSArrayType",
+            "TSTypeReference",
+            "TSLiteralType"
+        ];
 
         //----------------------------------------------------------------------
         // Helpers
