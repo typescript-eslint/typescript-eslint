@@ -496,6 +496,17 @@ type Foo<T> = {
 };
             `,
             options: [{ allowMappedTypes: "in-intersections" }]
+        },
+        {
+            code: `export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | false;`,
+            options: [
+                {
+                    allowAliases: "in-unions-and-intersections",
+                    allowCallbacks: true,
+                    allowLiterals: "in-unions-and-intersections",
+                    allowMappedTypes: "in-unions-and-intersections"
+                }
+            ]
         }
     ],
     invalid: [
