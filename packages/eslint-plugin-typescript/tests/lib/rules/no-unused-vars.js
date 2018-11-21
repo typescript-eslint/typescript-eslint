@@ -401,6 +401,46 @@ interface A<T extends Nullable> {
 export const a: A<SomeOther> = {
     foo: "bar"
 };
+        `,
+        // https://github.com/nzakas/eslint-plugin-typescript/issues/150
+        `
+export class App {
+    constructor(private logger: Logger) {
+        console.log(this.logger);
+    }
+}
+        `,
+        `
+export class App {
+    constructor(bar: string);
+    constructor(private logger: Logger) {
+        console.log(this.logger);
+    }
+}
+        `,
+        `
+export class App {
+    constructor(baz: string, private logger: Logger) {
+        console.log(baz);
+        console.log(this.logger);
+    }
+}
+        `,
+        `
+export class App {
+    constructor(baz: string, private logger: Logger, private bar: () => void) {
+        console.log(this.logger);
+        this.bar();
+    }
+}
+        `,
+        `
+export class App {
+    constructor(private logger: Logger) {}
+    meth() {
+        console.log(this.logger);
+    }
+}
         `
     ],
 

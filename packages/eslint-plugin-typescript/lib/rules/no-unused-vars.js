@@ -301,6 +301,11 @@ module.exports = {
                 }
             },
 
+            TSParameterProperty(node) {
+                // just assume parameter properties are used
+                markVariableAsUsed(context, node.parameter.name);
+            },
+
             FunctionDeclaration: markFunctionOptionsAsUsed,
             FunctionExpression: markFunctionOptionsAsUsed,
             ArrowFunctionExpression: markFunctionOptionsAsUsed,
