@@ -39,7 +39,7 @@ module.exports = Evk.unionWith({
     TSEmptyBodyFunctionDeclaration: ["id", "typeParameters", "params", "returnType"],
     TSEmptyBodyFunctionExpression: ["id", "typeParameters", "params", "returnType"],
     TSEnumDeclaration: ["members"],
-    TSEnumMember: ["initializer"],
+    TSEnumMember: ["id", "initializer"],
     TSExportAssignment: ["expression"],
     TSExportKeyword: [],
     TSImportType: ["parameter", "qualifier", "typeParameters"],
