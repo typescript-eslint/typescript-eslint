@@ -17,7 +17,9 @@
     "docs:check": "eslint-docs check",
     "format": "prettier --write --tab-width 4 lib/**/*.js tests/**/*.js",
     "mocha": "mocha tests --recursive --reporter=dot",
-    "test": "npm run lint && npm run mocha && npm run docs:check",
+    "pretest": "npm run lint",
+    "test": "mocha tests --recursive --reporter=dot",
+    "posttest": "npm run docs:check",
     "precommit": "npm test && lint-staged"
   },
   "dependencies": {
