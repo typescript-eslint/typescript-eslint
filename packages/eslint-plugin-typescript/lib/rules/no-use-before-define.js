@@ -40,6 +40,14 @@ function parseOptions(options) {
 }
 
 /**
+ * @param {Scope} scope - a scope to check
+ * @returns {boolean} `true` if the scope is toplevel
+ */
+function isTopLevelScope(scope) {
+    return scope.type === "module" || scope.type === "global";
+}
+
+/**
  * Checks whether or not a given variable is a function declaration.
  *
  * @param {eslint-scope.Variable} variable - A variable to check.
@@ -57,10 +65,18 @@ function isFunction(variable) {
  * @returns {boolean} `true` if the variable is a class declaration.
  */
 function isOuterClass(variable, reference) {
-    return (
-        variable.defs[0].type === "ClassName" &&
-        variable.scope.variableScope !== reference.from.variableScope
-    );
+    if (variable.defs[0].type !== "ClassName") {
+        return false;
+    }
+
+    if (variable.scope.variableScope === reference.from.variableScope) {
+        // allow the same scope only if it's the top level global/module scope
+        if (!isTopLevelScope(variable.scope.variableScope)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 /**
@@ -70,10 +86,18 @@ function isOuterClass(variable, reference) {
  * @returns {boolean} `true` if the variable is a variable declaration.
  */
 function isOuterVariable(variable, reference) {
-    return (
-        variable.defs[0].type === "Variable" &&
-        variable.scope.variableScope !== reference.from.variableScope
-    );
+    if (variable.defs[0].type !== "Variable") {
+        return false;
+    }
+
+    if (variable.scope.variableScope === reference.from.variableScope) {
+        // allow the same scope only if it's the top level global/module scope
+        if (!isTopLevelScope(variable.scope.variableScope)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 /**

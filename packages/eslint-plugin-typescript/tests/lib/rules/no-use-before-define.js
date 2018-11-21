@@ -178,6 +178,26 @@ type Foo = string | number
             `,
             options: [{ typedefs: false }],
             parser: "typescript-eslint-parser"
+        },
+
+        // test for https://github.com/bradzacher/eslint-plugin-typescript/issues/142
+        {
+            code: `
+var alias = Test;
+
+class Test {}
+            `,
+            parserOptions: { ecmaVersion: 6 },
+            options: [{ classes: false }]
+        },
+        {
+            code: `
+var alias = Test;
+
+export class Test {}
+            `,
+            parserOptions: { ecmaVersion: 6, sourceType: "module" },
+            options: [{ classes: false }]
         }
     ],
     invalid: [
@@ -509,20 +529,6 @@ var a=function() {};
         {
             code: `
 new A();
-class A {};
-            `,
-            options: [{ functions: false, classes: false }],
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'A' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
-        },
-        {
-            code: `
-new A();
 var A = class {};
             `,
             options: [{ classes: false }],
@@ -685,19 +691,6 @@ var bar;
             errors: [
                 {
                     message: "'bar' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
-        },
-        {
-            code: `
-foo;
-var foo;
-            `,
-            options: [{ variables: false }],
-            errors: [
-                {
-                    message: "'foo' was used before it was defined.",
                     type: "Identifier"
                 }
             ]
