@@ -2703,6 +2703,176 @@ Object {
 }
 `;
 
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/enum-string.ts 1`] = `
+Object {
+  "$id": 4,
+  "block": Object {
+    "range": Array [
+      0,
+      29,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 3,
+      "block": Object {
+        "range": Array [
+          0,
+          28,
+        ],
+        "type": "TSEnumDeclaration",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": false,
+      "references": Array [
+        Object {
+          "$id": 2,
+          "from": Object {
+            "$ref": 3,
+          },
+          "identifier": Object {
+            "name": "BAR",
+            "range": Array [
+              15,
+              18,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 1,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              21,
+              26,
+            ],
+            "type": "Literal",
+          },
+        },
+      ],
+      "throughReferences": Array [],
+      "type": "enum",
+      "upperScope": Object {
+        "$ref": 4,
+      },
+      "variableMap": Object {
+        "BAR": Object {
+          "$ref": 1,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 4,
+      },
+      "variables": Array [
+        Object {
+          "$id": 1,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "BAR",
+                "range": Array [
+                  15,
+                  18,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  15,
+                  26,
+                ],
+                "type": "TSEnumMember",
+              },
+              "parent": undefined,
+              "type": "EnumMemberName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "BAR",
+              "range": Array [
+                15,
+                18,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "BAR",
+          "references": Array [
+            Object {
+              "$ref": 2,
+            },
+          ],
+          "scope": Object {
+            "$ref": 3,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "Foo": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 4,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "Foo",
+            "range": Array [
+              5,
+              8,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              0,
+              28,
+            ],
+            "type": "TSEnumDeclaration",
+          },
+          "parent": undefined,
+          "type": "EnumName",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "Foo",
+          "range": Array [
+            5,
+            8,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "Foo",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 4,
+      },
+    },
+  ],
+}
+`;
+
 exports[`TypeScript scope analysis tests/fixtures/scope-analysis/function-overload.ts 1`] = `
 Object {
   "$id": 4,
