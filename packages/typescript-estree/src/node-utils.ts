@@ -160,7 +160,8 @@ export default {
   isTypeKeyword,
   isComment,
   isJSDocComment,
-  createError
+  createError,
+  firstDefined
 };
 
 /**
@@ -296,7 +297,7 @@ function getLoc(
   nodeOrToken: ts.Node | ts.Token<any>,
   ast: ts.SourceFile
 ): ESTreeNodeLoc {
-  return getLocFor(nodeOrToken.getStart(), nodeOrToken.end, ast);
+  return getLocFor(nodeOrToken.getStart(ast), nodeOrToken.end, ast);
 }
 
 /**
@@ -406,18 +407,35 @@ function hasStaticModifierFlag(node: ts.Node): boolean {
 
 /**
  * Finds the next token based on the previous one and its parent
- * @param {ts.Token} previousToken The previous ts.Token
- * @param {ts.Node} parent The parent ts.Node
+ * Had to copy this from TS instead of using TS's version because theirs doesn't pass the ast to getChildren
+ * @param {ts.Token} previousToken The previous TSToken
+ * @param {ts.Node} parent The parent TSNode
+ * @param {ts.SourceFile} ast The TS AST
  * @returns {ts.Token} the next TSToken
  */
 function findNextToken(
   previousToken: ts.Token<any>,
-  parent: ts.Node
-): ts.Token<any> {
-  /**
-   * TODO: Remove dependency on private TypeScript method
-   */
-  return (ts as any).findNextToken(previousToken, parent);
+  parent: ts.Node,
+  ast: ts.SourceFile
+): ts.Token<any> | undefined {
+  return find(parent);
+
+  function find(n: ts.Node): ts.Token<any> | undefined {
+    if (ts.isToken(n) && n.pos === previousToken.end) {
+      // this is token that starts at the end of previous token - return it
+      return n;
+    }
+    return firstDefined(n.getChildren(ast), (child: ts.Node) => {
+      const shouldDiveInChildNode =
+        // previous token is enclosed somewhere in the child
+        (child.pos <= previousToken.pos && child.end > previousToken.end) ||
+        // previous token ends exactly at the beginning of child
+        child.pos === previousToken.end;
+      return shouldDiveInChildNode && nodeHasTokens(child, ast)
+        ? find(child)
+        : undefined;
+    });
+  }
 }
 
 /**
@@ -425,18 +443,20 @@ function findNextToken(
  * @param {ts.Token} previousToken The previous ts.Token
  * @param {ts.Node} parent The parent ts.Node
  * @param {Function} predicate The predicate function to apply to each checked token
+ * @param {ts.SourceFile} ast The TS AST
  * @returns {ts.Token|undefined} a matching ts.Token
  */
 function findFirstMatchingToken(
-  previousToken: ts.Token<any>,
+  previousToken: ts.Token<any> | undefined,
   parent: ts.Node,
-  predicate: (node: ts.Node) => boolean
+  predicate: (node: ts.Node) => boolean,
+  ast: ts.SourceFile
 ): ts.Token<any> | undefined {
   while (previousToken) {
     if (predicate(previousToken)) {
       return previousToken;
     }
-    previousToken = findNextToken(previousToken, parent);
+    previousToken = findNextToken(previousToken, parent, ast);
   }
   return undefined;
 }
@@ -555,9 +575,9 @@ function fixExports(
       lastModifier = node.modifiers[node.modifiers.length - 1],
       declarationIsDefault =
         nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword,
-      varToken = findNextToken(lastModifier, ast);
+      varToken = findNextToken(lastModifier, ast, ast);
 
-    result.range[0] = varToken.getStart();
+    result.range[0] = varToken!.getStart(ast);
     result.loc = getLocFor(result.range[0], result.range[1], ast);
 
     const declarationType = declarationIsDefault
@@ -567,8 +587,8 @@ function fixExports(
     const newResult: any = {
       type: declarationType,
       declaration: result,
-      range: [exportKeyword.getStart(), result.range[1]],
-      loc: getLocFor(exportKeyword.getStart(), result.range[1], ast)
+      range: [exportKeyword.getStart(ast), result.range[1]],
+      loc: getLocFor(exportKeyword.getStart(ast), result.range[1], ast)
     };
 
     if (!declarationIsDefault) {
@@ -699,7 +719,7 @@ function convertToken(token: ts.Token<any>, ast: ts.SourceFile): ESTreeToken {
   const start =
       token.kind === SyntaxKind.JsxText
         ? token.getFullStart()
-        : token.getStart(),
+        : token.getStart(ast),
     end = token.getEnd(),
     value = ast.text.slice(start, end),
     newToken: any = {
@@ -744,7 +764,7 @@ function convertTokens(ast: ts.SourceFile): ESTreeToken[] {
         result.push(converted);
       }
     } else {
-      node.getChildren().forEach(walk);
+      node.getChildren(ast).forEach(walk);
     }
   }
   walk(ast);
@@ -801,4 +821,41 @@ function createError(ast: ts.SourceFile, start: number, message: string) {
     column: loc.character,
     message
   };
+}
+
+/**
+ * @param {ts.Node} n the TSNode
+ * @param {ts.SourceFile} ast the TS AST
+ */
+function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
+  // If we have a token or node that has a non-zero width, it must have tokens.
+  // Note: getWidth() does not take trivia into account.
+  return n.kind === SyntaxKind.EndOfFileToken
+    ? !!(n as any).jsDoc
+    : n.getWidth(ast) !== 0;
+}
+
+/**
+ * Like `forEach`, but suitable for use with numbers and strings (which may be falsy).
+ * @template T
+ * @template U
+ * @param {ReadonlyArray<T>|undefined} array
+ * @param {(element: T, index: number) => (U|undefined)} callback
+ * @returns {U|undefined}
+ */
+function firstDefined<T, U>(
+  array: ReadonlyArray<T> | undefined,
+  callback: (element: T, index: number) => U | undefined
+): U | undefined {
+  if (array === undefined) {
+    return undefined;
+  }
+
+  for (let i = 0; i < array.length; i++) {
+    const result = callback(array[i], i);
+    if (result !== undefined) {
+      return result;
+    }
+  }
+  return undefined;
 }

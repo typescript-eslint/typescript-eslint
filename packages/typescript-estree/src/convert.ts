@@ -12,6 +12,31 @@ import { ESTreeNode } from './temp-types-based-on-js-source';
 
 const SyntaxKind = ts.SyntaxKind;
 
+let esTreeNodeToTSNodeMap = new WeakMap();
+let tsNodeToESTreeNodeMap = new WeakMap();
+
+export function resetASTMaps() {
+  esTreeNodeToTSNodeMap = new WeakMap();
+  tsNodeToESTreeNodeMap = new WeakMap();
+}
+
+export function getASTMaps() {
+  return { esTreeNodeToTSNodeMap, tsNodeToESTreeNodeMap };
+}
+
+interface ConvertAdditionalOptions {
+  errorOnUnknownASTType: boolean;
+  useJSXTextNode: boolean;
+  shouldProvideParserServices: boolean;
+}
+
+interface ConvertConfig {
+  node: ts.Node;
+  parent?: ts.Node | null;
+  ast: ts.SourceFile;
+  additionalOptions: ConvertAdditionalOptions;
+}
+
 /**
  * Converts a TypeScript node into an ESTree node
  * @param  {Object} config configuration options for the conversion
@@ -21,7 +46,7 @@ const SyntaxKind = ts.SyntaxKind;
  * @param  {Object} config.additionalOptions additional options for the conversion
  * @returns {ESTreeNode|null}        the converted ESTreeNode
  */
-export function convert(config: any): ESTreeNode | null {
+export default function convert(config: ConvertConfig): ESTreeNode | null {
   const node = config.node as ts.Node;
   const parent = config.parent;
   const ast = config.ast;
@@ -39,7 +64,7 @@ export function convert(config: any): ESTreeNode | null {
    */
   let result: Partial<ESTreeNode> = {
     type: '',
-    range: [node.getStart(), node.end],
+    range: [node.getStart(ast), node.end],
     loc: nodeUtils.getLoc(node, ast)
   };
 
@@ -108,8 +133,12 @@ export function convert(config: any): ESTreeNode | null {
           typeArgumentsParent.kind === SyntaxKind.TypeReference)
       ) {
         const lastTypeArgument = typeArguments[typeArguments.length - 1];
-        const greaterThanToken = nodeUtils.findNextToken(lastTypeArgument, ast);
-        end = greaterThanToken.end;
+        const greaterThanToken = nodeUtils.findNextToken(
+          lastTypeArgument,
+          ast,
+          ast
+        );
+        end = greaterThanToken!.end;
       }
     }
     return {
@@ -120,7 +149,7 @@ export function convert(config: any): ESTreeNode | null {
         if (nodeUtils.isTypeKeyword(typeArgument.kind)) {
           return {
             type: AST_NODE_TYPES[`TS${SyntaxKind[typeArgument.kind]}`],
-            range: [typeArgument.getStart(), typeArgument.getEnd()],
+            range: [typeArgument.getStart(ast), typeArgument.getEnd()],
             loc: nodeUtils.getLoc(typeArgument, ast)
           };
         }
@@ -134,7 +163,7 @@ export function convert(config: any): ESTreeNode | null {
         }
         return {
           type: AST_NODE_TYPES.TSTypeReference,
-          range: [typeArgument.getStart(), typeArgument.getEnd()],
+          range: [typeArgument.getStart(ast), typeArgument.getEnd()],
           loc: nodeUtils.getLoc(typeArgument, ast),
           typeName: convertChild(typeArgument.typeName || typeArgument),
           typeParameters: typeArgument.typeArguments
@@ -156,14 +185,18 @@ export function convert(config: any): ESTreeNode | null {
     const firstTypeParameter = typeParameters[0];
     const lastTypeParameter = typeParameters[typeParameters.length - 1];
 
-    const greaterThanToken = nodeUtils.findNextToken(lastTypeParameter, ast);
+    const greaterThanToken = nodeUtils.findNextToken(
+      lastTypeParameter,
+      ast,
+      ast
+    );
 
     return {
       type: AST_NODE_TYPES.TSTypeParameterDeclaration,
-      range: [firstTypeParameter.pos - 1, greaterThanToken.end],
+      range: [firstTypeParameter.pos - 1, greaterThanToken!.end],
       loc: nodeUtils.getLocFor(
         firstTypeParameter.pos - 1,
-        greaterThanToken.end,
+        greaterThanToken!.end,
         ast
       ),
       params: typeParameters.map(typeParameter => {
@@ -189,7 +222,7 @@ export function convert(config: any): ESTreeNode | null {
 
         return {
           type: AST_NODE_TYPES.TSTypeParameter,
-          range: [typeParameter.getStart(), typeParameter.getEnd()],
+          range: [typeParameter.getStart(ast), typeParameter.getEnd()],
           loc: nodeUtils.getLoc(typeParameter, ast),
           name,
           constraint,
@@ -258,7 +291,7 @@ export function convert(config: any): ESTreeNode | null {
       const expression = convertChild(decorator.expression);
       return {
         type: AST_NODE_TYPES.Decorator,
-        range: [decorator.getStart(), decorator.end],
+        range: [decorator.getStart(ast), decorator.end],
         loc: nodeUtils.getLoc(decorator, ast),
         expression
       };
@@ -336,8 +369,10 @@ export function convert(config: any): ESTreeNode | null {
             (result as any)[key] = (node as any)[key].map(convertChild);
           } else if (
             (node as any)[key] &&
-            typeof (node as any)[key] === 'object'
+            typeof (node as any)[key] === 'object' &&
+            (node as any)[key].kind
           ) {
+            // need to check node[key].kind to ensure we don't try to convert a symbol
             (result as any)[key] = convertChild((node as any)[key]);
           } else {
             (result as any)[key] = (node as any)[key];
@@ -475,7 +510,7 @@ export function convert(config: any): ESTreeNode | null {
 
       (result as any).range[1] = (node as any).endOfFileToken.end;
       result.loc = nodeUtils.getLocFor(
-        node.getStart(),
+        node.getStart(ast),
         (result as any).range[1],
         ast
       );
@@ -873,7 +908,7 @@ export function convert(config: any): ESTreeNode | null {
     }
 
     case SyntaxKind.ComputedPropertyName:
-      if (parent.kind === SyntaxKind.ObjectLiteralExpression) {
+      if (parent!.kind === SyntaxKind.ObjectLiteralExpression) {
         Object.assign(result, {
           type: AST_NODE_TYPES.Property,
           key: convertChild((node as any).name),
@@ -949,11 +984,12 @@ export function convert(config: any): ESTreeNode | null {
             return false;
           }
           return nodeUtils.getTextForTokenKind(token.kind) === '(';
-        }
+        },
+        ast
       );
 
       const methodLoc = ast.getLineAndCharacterOfPosition(
-          (openingParen as any).getStart()
+          (openingParen as any).getStart(ast)
         ),
         nodeIsMethod = node.kind === SyntaxKind.MethodDeclaration,
         method = {
@@ -977,7 +1013,7 @@ export function convert(config: any): ESTreeNode | null {
         (method as any).returnType = convertTypeAnnotation((node as any).type);
       }
 
-      if (parent.kind === SyntaxKind.ObjectLiteralExpression) {
+      if (parent!.kind === SyntaxKind.ObjectLiteralExpression) {
         (method as any).params = (node as any).parameters.map(convertChild);
 
         Object.assign(result, {
@@ -1063,7 +1099,7 @@ export function convert(config: any): ESTreeNode | null {
           node
         ),
         firstConstructorToken = constructorIsStatic
-          ? nodeUtils.findNextToken((node as any).getFirstToken(), ast)
+          ? nodeUtils.findNextToken((node as any).getFirstToken(), ast, ast)
           : node.getFirstToken(),
         constructorLoc = ast.getLineAndCharacterOfPosition(
           (node as any).parameters.pos - 1
@@ -1087,10 +1123,10 @@ export function convert(config: any): ESTreeNode | null {
         };
 
       const constructorIdentifierLocStart = ast.getLineAndCharacterOfPosition(
-          (firstConstructorToken as any).getStart()
+          (firstConstructorToken as any).getStart(ast)
         ),
         constructorIdentifierLocEnd = ast.getLineAndCharacterOfPosition(
-          (firstConstructorToken as any).getEnd()
+          (firstConstructorToken as any).getEnd(ast)
         ),
         constructorIsComputed =
           !!(node as any).name &&
@@ -1104,7 +1140,7 @@ export function convert(config: any): ESTreeNode | null {
           value: 'constructor',
           raw: (node as any).name.getText(),
           range: [
-            (firstConstructorToken as any).getStart(),
+            (firstConstructorToken as any).getStart(ast),
             (firstConstructorToken as any).end
           ],
           loc: {
@@ -1123,7 +1159,7 @@ export function convert(config: any): ESTreeNode | null {
           type: AST_NODE_TYPES.Identifier,
           name: 'constructor',
           range: [
-            (firstConstructorToken as any).getStart(),
+            (firstConstructorToken as any).getStart(ast),
             (firstConstructorToken as any).end
           ],
           loc: {
@@ -1210,7 +1246,7 @@ export function convert(config: any): ESTreeNode | null {
       break;
 
     case SyntaxKind.BindingElement:
-      if (parent.kind === SyntaxKind.ArrayBindingPattern) {
+      if (parent!.kind === SyntaxKind.ArrayBindingPattern) {
         const arrayItem = convert({
           node: (node as any).name,
           parent,
@@ -1232,7 +1268,7 @@ export function convert(config: any): ESTreeNode | null {
         } else {
           return arrayItem;
         }
-      } else if (parent.kind === SyntaxKind.ObjectBindingPattern) {
+      } else if (parent!.kind === SyntaxKind.ObjectBindingPattern) {
         if ((node as any).dotDotDotToken) {
           Object.assign(result, {
             type: AST_NODE_TYPES.RestElement,
@@ -1262,11 +1298,11 @@ export function convert(config: any): ESTreeNode | null {
             left: convertChild((node as any).name),
             right: convertChild((node as any).initializer),
             range: [
-              (node as any).name.getStart(),
+              (node as any).name.getStart(ast),
               (node as any).initializer.end
             ],
             loc: nodeUtils.getLocFor(
-              (node as any).name.getStart(),
+              (node as any).name.getStart(ast),
               (node as any).initializer.end,
               ast
             )
@@ -1323,7 +1359,7 @@ export function convert(config: any): ESTreeNode | null {
           {
             type: AST_NODE_TYPES.TemplateElement,
             value: {
-              raw: ast.text.slice(node.getStart() + 1, node.end - 1),
+              raw: ast.text.slice(node.getStart(ast) + 1, node.end - 1),
               cooked: (node as any).text
             },
             tail: true,
@@ -1366,7 +1402,10 @@ export function convert(config: any): ESTreeNode | null {
       Object.assign(result, {
         type: AST_NODE_TYPES.TemplateElement,
         value: {
-          raw: ast.text.slice(node.getStart() + 1, node.end - (tail ? 1 : 2)),
+          raw: ast.text.slice(
+            node.getStart(ast) + 1,
+            node.end - (tail ? 1 : 2)
+          ),
           cooked: (node as any).text
         },
         tail
@@ -1459,7 +1498,7 @@ export function convert(config: any): ESTreeNode | null {
       if (node.modifiers) {
         return {
           type: AST_NODE_TYPES.TSParameterProperty,
-          range: [node.getStart(), node.end],
+          range: [node.getStart(ast), node.end],
           loc: nodeUtils.getLoc(node, ast),
           accessibility: nodeUtils.getTSNodeAccessibility(node) || undefined,
           readonly:
@@ -1493,7 +1532,7 @@ export function convert(config: any): ESTreeNode | null {
         ];
 
         if (!lastClassToken || lastTypeParameter.pos > lastClassToken.pos) {
-          lastClassToken = nodeUtils.findNextToken(lastTypeParameter, ast);
+          lastClassToken = nodeUtils.findNextToken(lastTypeParameter, ast, ast);
         }
         result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           (node as any).typeParameters
@@ -1517,14 +1556,14 @@ export function convert(config: any): ESTreeNode | null {
         const lastModifier = node.modifiers[node.modifiers.length - 1];
 
         if (!lastClassToken || lastModifier.pos > lastClassToken.pos) {
-          lastClassToken = nodeUtils.findNextToken(lastModifier, ast);
+          lastClassToken = nodeUtils.findNextToken(lastModifier, ast, ast);
         }
       } else if (!lastClassToken) {
         // no name
         lastClassToken = node.getFirstToken();
       }
 
-      const openBrace = nodeUtils.findNextToken(lastClassToken, ast);
+      const openBrace = nodeUtils.findNextToken(lastClassToken, ast, ast)!;
       const superClass = heritageClauses.find(
         (clause: any) => clause.token === SyntaxKind.ExtendsKeyword
       );
@@ -1557,8 +1596,8 @@ export function convert(config: any): ESTreeNode | null {
           body: [],
 
           // TODO: Fix location info
-          range: [openBrace.getStart(), (result as any).range[1]],
-          loc: nodeUtils.getLocFor(openBrace.getStart(), node.end, ast)
+          range: [openBrace.getStart(ast), (result as any).range[1]],
+          loc: nodeUtils.getLocFor(openBrace.getStart(ast), node.end, ast)
         },
         superClass:
           superClass && superClass.types[0]
@@ -1849,7 +1888,7 @@ export function convert(config: any): ESTreeNode | null {
       break;
 
     case SyntaxKind.PropertyAccessExpression:
-      if (nodeUtils.isJSXToken(parent)) {
+      if (nodeUtils.isJSXToken(parent!)) {
         const jsxMemberExpression = {
           type: AST_NODE_TYPES.MemberExpression,
           object: convertChild((node as any).expression),
@@ -1948,7 +1987,7 @@ export function convert(config: any): ESTreeNode | null {
         type: AST_NODE_TYPES.Literal,
         raw: ast.text.slice((result as any).range[0], (result as any).range[1])
       });
-      if (parent.name && parent.name === node) {
+      if ((parent as any).name && (parent as any).name === node) {
         (result as any).value = (node as any).text;
       } else {
         (result as any).value = nodeUtils.unescapeStringLiteralText(
@@ -2216,7 +2255,7 @@ export function convert(config: any): ESTreeNode | null {
         type: AST_NODE_TYPES.VariableDeclarator,
         id: convertChild((node as any).name),
         init: convertChild((node as any).type),
-        range: [(node as any).name.getStart(), (node as any).end]
+        range: [(node as any).name.getStart(ast), (node as any).end]
       };
 
       (typeAliasDeclarator as any).loc = nodeUtils.getLocFor(
@@ -2359,6 +2398,7 @@ export function convert(config: any): ESTreeNode | null {
         ) {
           interfaceLastClassToken = nodeUtils.findNextToken(
             interfaceLastTypeParameter,
+            ast,
             ast
           );
         }
@@ -2374,14 +2414,19 @@ export function convert(config: any): ESTreeNode | null {
       );
       const interfaceOpenBrace = nodeUtils.findNextToken(
         interfaceLastClassToken,
+        ast,
         ast
-      );
+      )!;
 
       const interfaceBody = {
         type: AST_NODE_TYPES.TSInterfaceBody,
         body: (node as any).members.map((member: any) => convertChild(member)),
-        range: [interfaceOpenBrace.getStart(), (result as any).range[1]],
-        loc: nodeUtils.getLocFor(interfaceOpenBrace.getStart(), node.end, ast)
+        range: [interfaceOpenBrace.getStart(ast), (result as any).range[1]],
+        loc: nodeUtils.getLocFor(
+          interfaceOpenBrace.getStart(ast),
+          node.end,
+          ast
+        )
       };
 
       Object.assign(result, {
@@ -2490,6 +2535,11 @@ export function convert(config: any): ESTreeNode | null {
 
     default:
       deeplyCopy();
+  }
+
+  if (additionalOptions.shouldProvideParserServices) {
+    tsNodeToESTreeNodeMap.set(node, result);
+    esTreeNodeToTSNodeMap.set(result, node);
   }
 
   return result as any;
