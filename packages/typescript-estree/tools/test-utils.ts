@@ -24,19 +24,32 @@ export function getRaw(ast: any) {
   );
 }
 
+export function parseCodeAndGenerateServices(
+  code: string,
+  config: ParserOptions
+) {
+  return parser.parseAndGenerateServices(code, config);
+}
+
 /**
  * Returns a function which can be used as the callback of a Jest test() block,
  * and which performs an assertion on the snapshot for the given code and config.
  * @param {string} code The source code to parse
  * @param {ParserOptions} config the parser configuration
- * @returns {Function} callback for Jest it() block
+ * @returns {jest.ProvidesCallback} callback for Jest it() block
  */
-export function createSnapshotTestBlock(code: string, config: ParserOptions) {
+export function createSnapshotTestBlock(
+  code: string,
+  config: ParserOptions,
+  generateServices?: true
+) {
   /**
    * @returns {Object} the AST object
    */
   function parse() {
-    const ast = parser.parse(code, config);
+    const ast = generateServices
+      ? parser.parseAndGenerateServices(code, config).ast
+      : parser.parse(code, config);
     return getRaw(ast);
   }
 
