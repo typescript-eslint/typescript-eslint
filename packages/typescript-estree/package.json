@@ -25,6 +25,7 @@
     "@types/jest": "^23.3.9",
     "@types/lodash.isplainobject": "^4.0.4",
     "@types/lodash.unescape": "^4.0.4",
+    "@types/node": "^10.12.2",
     "@types/semver": "^5.5.0",
     "@types/shelljs": "^0.8.0",
     "babel-code-frame": "6.26.0",
