@@ -113,11 +113,11 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor('ecma-features/templateStrings', {
+  createFixturePatternConfigFor('javascript/templateStrings', {
     ignore: ['**/*']
   }),
 
-  createFixturePatternConfigFor('ecma-features/experimentalObjectRestSpread', {
+  createFixturePatternConfigFor('javascript/experimentalObjectRestSpread', {
     ignore: [
       /**
        * Trailing comma is not permitted after a "RestElement" in Babylon
@@ -126,7 +126,7 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor('ecma-features/arrowFunctions', {
+  createFixturePatternConfigFor('javascript/arrowFunctions', {
     ignore: [
       /**
        * Expected babylon parse errors - all of these files below produce parse errors in espree
@@ -141,10 +141,10 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor('ecma-features/binaryLiterals'),
-  createFixturePatternConfigFor('ecma-features/blockBindings'),
+  createFixturePatternConfigFor('javascript/binaryLiterals'),
+  createFixturePatternConfigFor('javascript/blockBindings'),
 
-  createFixturePatternConfigFor('ecma-features/classes', {
+  createFixturePatternConfigFor('javascript/classes', {
     ignore: [
       /**
        * super() is being used outside of constructor. Other parsers (e.g. espree, acorn) do not error on this.
@@ -160,9 +160,9 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor('ecma-features/defaultParams'),
+  createFixturePatternConfigFor('javascript/defaultParams'),
 
-  createFixturePatternConfigFor('ecma-features/destructuring', {
+  createFixturePatternConfigFor('javascript/destructuring', {
     ignore: [
       /**
        * Expected babylon parse errors - all of these files below produce parse errors in espree
@@ -173,18 +173,12 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor(
-    'ecma-features/destructuring-and-arrowFunctions'
-  ),
-  createFixturePatternConfigFor(
-    'ecma-features/destructuring-and-blockBindings'
-  ),
-  createFixturePatternConfigFor(
-    'ecma-features/destructuring-and-defaultParams'
-  ),
-  createFixturePatternConfigFor('ecma-features/destructuring-and-forOf'),
+  createFixturePatternConfigFor('javascript/destructuring-and-arrowFunctions'),
+  createFixturePatternConfigFor('javascript/destructuring-and-blockBindings'),
+  createFixturePatternConfigFor('javascript/destructuring-and-defaultParams'),
+  createFixturePatternConfigFor('javascript/destructuring-and-forOf'),
 
-  createFixturePatternConfigFor('ecma-features/destructuring-and-spread', {
+  createFixturePatternConfigFor('javascript/destructuring-and-spread', {
     ignore: [
       /**
        * Expected babylon parse errors - all of these files below produce parse errors in espree
@@ -195,11 +189,11 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor('ecma-features/experimentalAsyncIteration'),
-  createFixturePatternConfigFor('ecma-features/experimentalDynamicImport'),
-  createFixturePatternConfigFor('ecma-features/exponentiationOperators'),
+  createFixturePatternConfigFor('javascript/experimentalAsyncIteration'),
+  createFixturePatternConfigFor('javascript/experimentalDynamicImport'),
+  createFixturePatternConfigFor('javascript/exponentiationOperators'),
 
-  createFixturePatternConfigFor('ecma-features/forOf', {
+  createFixturePatternConfigFor('javascript/forOf', {
     ignore: [
       /**
        * TypeScript, espree and acorn parse this fine - esprima, flow and babylon do not...
@@ -208,10 +202,10 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor('ecma-features/generators'),
-  createFixturePatternConfigFor('ecma-features/globalReturn'),
+  createFixturePatternConfigFor('javascript/generators'),
+  createFixturePatternConfigFor('javascript/globalReturn'),
 
-  createFixturePatternConfigFor('ecma-features/modules', {
+  createFixturePatternConfigFor('javascript/modules', {
     ignore: [
       /**
        * TypeScript, flow and babylon parse this fine - esprima, espree and acorn do not...
@@ -282,7 +276,7 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor('ecma-features/newTarget', {
+  createFixturePatternConfigFor('javascript/newTarget', {
     ignore: [
       /**
        * Expected babylon parse errors - all of these files below produce parse errors in espree
@@ -294,35 +288,28 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor(
-    'ecma-features/objectLiteralComputedProperties'
-  ),
+  createFixturePatternConfigFor('javascript/objectLiteralComputedProperties'),
 
-  createFixturePatternConfigFor(
-    'ecma-features/objectLiteralDuplicateProperties',
-    {
-      ignore: [
-        /**
-         * Expected babylon parse errors - all of these files below produce parse errors in espree
-         * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
-         * does not actually error on them and will produce an AST.
-         */
-        'error-proto-property', // babylon parse errors
-        'error-proto-string-property' // babylon parse errors
-      ]
-    }
-  ),
+  createFixturePatternConfigFor('javascript/objectLiteralDuplicateProperties', {
+    ignore: [
+      /**
+       * Expected babylon parse errors - all of these files below produce parse errors in espree
+       * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
+       * does not actually error on them and will produce an AST.
+       */
+      'error-proto-property', // babylon parse errors
+      'error-proto-string-property' // babylon parse errors
+    ]
+  }),
 
-  createFixturePatternConfigFor('ecma-features/objectLiteralShorthandMethods'),
-  createFixturePatternConfigFor(
-    'ecma-features/objectLiteralShorthandProperties'
-  ),
-  createFixturePatternConfigFor('ecma-features/octalLiterals'),
-  createFixturePatternConfigFor('ecma-features/regex'),
-  createFixturePatternConfigFor('ecma-features/regexUFlag'),
-  createFixturePatternConfigFor('ecma-features/regexYFlag'),
+  createFixturePatternConfigFor('javascript/objectLiteralShorthandMethods'),
+  createFixturePatternConfigFor('javascript/objectLiteralShorthandProperties'),
+  createFixturePatternConfigFor('javascript/octalLiterals'),
+  createFixturePatternConfigFor('javascript/regex'),
+  createFixturePatternConfigFor('javascript/regexUFlag'),
+  createFixturePatternConfigFor('javascript/regexYFlag'),
 
-  createFixturePatternConfigFor('ecma-features/restParams', {
+  createFixturePatternConfigFor('javascript/restParams', {
     ignore: [
       /**
        * Expected babylon parse errors - all of these files below produce parse errors in espree
@@ -334,8 +321,8 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
-  createFixturePatternConfigFor('ecma-features/spread'),
-  createFixturePatternConfigFor('ecma-features/unicodeCodePointEscapes'),
+  createFixturePatternConfigFor('javascript/spread'),
+  createFixturePatternConfigFor('javascript/unicodeCodePointEscapes'),
   createFixturePatternConfigFor('jsx', { ignore: jsxFilesWithKnownIssues }),
   createFixturePatternConfigFor('jsx-useJSXTextNode'),
 
