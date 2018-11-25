@@ -36,12 +36,6 @@ const jsxFilesWithKnownIssues = jsxKnownIssues.map(f => f.replace('jsx/', ''));
 jsxFilesWithKnownIssues.push('invalid-no-tag-name');
 
 /**
- * JSX shorthand fragments are not supported by Babylon
- */
-jsxFilesWithKnownIssues.push('shorthand-fragment');
-jsxFilesWithKnownIssues.push('shorthand-fragment-with-child');
-
-/**
  * Globally track which fixtures need to be parsed with sourceType: "module"
  * so that they can be added with the correct FixturePatternConfig
  */

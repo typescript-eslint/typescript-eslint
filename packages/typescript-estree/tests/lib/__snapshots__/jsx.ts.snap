@@ -6832,7 +6832,23 @@ Object {
     Object {
       "expression": Object {
         "children": Array [],
-        "closingElement": null,
+        "closingFragment": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 5,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 2,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            2,
+            5,
+          ],
+          "type": "JSXClosingFragment",
+        },
         "loc": Object {
           "end": Object {
             "column": 5,
@@ -6843,7 +6859,23 @@ Object {
             "line": 1,
           },
         },
-        "openingElement": null,
+        "openingFragment": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 2,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            0,
+            2,
+          ],
+          "type": "JSXOpeningFragment",
+        },
         "range": Array [
           0,
           5,
@@ -7041,7 +7073,23 @@ Object {
             "type": "JSXElement",
           },
         ],
-        "closingElement": null,
+        "closingFragment": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 12,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 9,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            9,
+            12,
+          ],
+          "type": "JSXClosingFragment",
+        },
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -7052,7 +7100,23 @@ Object {
             "line": 1,
           },
         },
-        "openingElement": null,
+        "openingFragment": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 2,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            0,
+            2,
+          ],
+          "type": "JSXOpeningFragment",
+        },
         "range": Array [
           0,
           12,
