@@ -9,8 +9,14 @@ import calculateProjectParserOptions from './tsconfig-parser';
 import semver from 'semver';
 import ts from 'typescript';
 import convert from './ast-converter';
+import {
+  Extra,
+  ParserOptions,
+  ESTreeToken,
+  ESTreeComment
+} from './temp-types-based-on-js-source';
+import { Program } from './estree/spec';
 import util from './node-utils';
-import { Extra, ParserOptions } from './temp-types-based-on-js-source';
 
 const packageJSON = require('../package.json');
 
@@ -23,6 +29,15 @@ const isRunningSupportedTypeScriptVersion = semver.satisfies(
 
 let extra: Extra;
 let warnedAboutTSVersion = false;
+
+/**
+ * Compute the filename based on the parser options
+ *
+ * @param options Parser options
+ */
+function getFileName({ jsx }: { jsx?: boolean }) {
+  return jsx ? 'estree.tsx' : 'estree.ts';
+}
 
 /**
  * Resets the extra config object
@@ -53,9 +68,15 @@ function resetExtra(): void {
  */
 function getASTFromProject(code: string, options: ParserOptions) {
   return util.firstDefined(
-    calculateProjectParserOptions(code, options.filePath, extra),
+    calculateProjectParserOptions(
+      code,
+      options.filePath || getFileName(options),
+      extra
+    ),
     (currentProgram: ts.Program) => {
-      const ast = currentProgram.getSourceFile(options.filePath);
+      const ast = currentProgram.getSourceFile(
+        options.filePath || getFileName(options)
+      );
       return ast && { ast, program: currentProgram };
     }
   );
@@ -68,7 +89,7 @@ function getASTFromProject(code: string, options: ParserOptions) {
 function createNewProgram(code: string) {
   // Even if jsx option is set in typescript compiler, filename still has to
   // contain .tsx file extension
-  const FILENAME = extra.jsx ? 'estree.tsx' : 'estree.ts';
+  const FILENAME = getFileName(extra);
 
   const compilerHost = {
     fileExists() {
@@ -141,6 +162,11 @@ function getProgramAndAST(
 // Parser
 //------------------------------------------------------------------------------
 
+type AST<T extends ParserOptions> = Program &
+  (T['range'] extends true ? { range: [number, number] } : {}) &
+  (T['tokens'] extends true ? { tokens: ESTreeToken[] } : {}) &
+  (T['comment'] extends true ? { comments: ESTreeComment[] } : {});
+
 /**
  * Parses the given source code to produce a valid AST
  * @param {string} code    TypeScript code
@@ -148,11 +174,25 @@ function getProgramAndAST(
  * @param {ParserOptions} options configuration object for the parser
  * @returns {Object}         the AST
  */
-function generateAST(
+function generateAST<T extends ParserOptions = ParserOptions>(
   code: string,
-  options: ParserOptions,
+  options: T = {} as T,
   shouldGenerateServices = false
-): any {
+): {
+  estree: AST<T>;
+  program: typeof shouldGenerateServices extends true
+    ? ts.Program
+    : (ts.Program | undefined);
+  astMaps: typeof shouldGenerateServices extends true
+    ? {
+        esTreeNodeToTSNodeMap: WeakMap<object, any>;
+        tsNodeToESTreeNodeMap: WeakMap<object, any>;
+      }
+    : {
+        esTreeNodeToTSNodeMap?: WeakMap<object, any>;
+        tsNodeToESTreeNodeMap?: WeakMap<object, any>;
+      };
+} {
   const toString = String;
 
   if (typeof code !== 'string' && !((code as any) instanceof String)) {
@@ -245,7 +285,7 @@ function generateAST(
     estree,
     program: shouldProvideParserServices ? program : undefined,
     astMaps: shouldProvideParserServices
-      ? astMaps
+      ? astMaps!
       : { esTreeNodeToTSNodeMap: undefined, tsNodeToESTreeNodeMap: undefined }
   };
 }
@@ -259,8 +299,11 @@ export { version };
 
 const version = packageJSON.version;
 
-export function parse(code: string, options: ParserOptions) {
-  return generateAST(code, options).estree;
+export function parse<T extends ParserOptions = ParserOptions>(
+  code: string,
+  options?: T
+) {
+  return generateAST<T>(code, options).estree;
 }
 
 export function parseAndGenerateServices(code: string, options: ParserOptions) {
