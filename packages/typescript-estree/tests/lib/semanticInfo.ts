@@ -79,15 +79,15 @@ describe('semanticInfo', () => {
 
     // get type checker
     expect(parseResult).toHaveProperty('services.program.getTypeChecker');
-    const checker = parseResult.services.program.getTypeChecker();
+    const checker = parseResult.services.program!.getTypeChecker();
 
     // get number node (ast shape validated by snapshot)
-    const arrayMember =
-      parseResult.ast.body[0].declarations[0].init.elements[0];
+    const arrayMember = (parseResult.ast as any).body[0].declarations[0].init
+      .elements[0];
     expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
 
     // get corresponding TS node
-    const tsArrayMember = parseResult.services.esTreeNodeToTSNodeMap.get(
+    const tsArrayMember = parseResult.services.esTreeNodeToTSNodeMap!.get(
       arrayMember
     );
     expect(tsArrayMember).toBeDefined();
@@ -95,28 +95,28 @@ describe('semanticInfo', () => {
     expect(tsArrayMember.text).toBe('3');
 
     // get type of TS node
-    const arrayMemberType = checker.getTypeAtLocation(tsArrayMember);
+    const arrayMemberType: any = checker.getTypeAtLocation(tsArrayMember);
     expect(arrayMemberType.flags).toBe(ts.TypeFlags.NumberLiteral);
     expect(arrayMemberType.value).toBe(3);
 
     // make sure it maps back to original ESTree node
     expect(parseResult).toHaveProperty('services.tsNodeToESTreeNodeMap');
-    expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsArrayMember)).toBe(
+    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayMember)).toBe(
       arrayMember
     );
 
     // get bound name
-    const boundName = parseResult.ast.body[0].declarations[0].id;
+    const boundName = (parseResult.ast as any).body[0].declarations[0].id;
     expect(boundName.name).toBe('x');
 
-    const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap.get(
+    const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
       boundName
     );
     expect(tsBoundName).toBeDefined();
 
     checkNumberArrayType(checker, tsBoundName);
 
-    expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
+    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName)).toBe(
       boundName
     );
   });
@@ -130,22 +130,23 @@ describe('semanticInfo', () => {
 
     // get type checker
     expect(parseResult).toHaveProperty('services.program.getTypeChecker');
-    const checker = parseResult.services.program.getTypeChecker();
+    const checker = parseResult.services.program!.getTypeChecker();
 
     // get array node (ast shape validated by snapshot)
     // node is defined in other file than the parsed one
-    const arrayBoundName = parseResult.ast.body[1].expression.callee.object;
+    const arrayBoundName = (parseResult.ast as any).body[1].expression.callee
+      .object;
     expect(arrayBoundName.name).toBe('arr');
 
     expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
-    const tsArrayBoundName = parseResult.services.esTreeNodeToTSNodeMap.get(
+    const tsArrayBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
       arrayBoundName
     );
     expect(tsArrayBoundName).toBeDefined();
     checkNumberArrayType(checker, tsArrayBoundName);
 
     expect(
-      parseResult.services.tsNodeToESTreeNodeMap.get(tsArrayBoundName)
+      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName)
     ).toBe(arrayBoundName);
   });
 

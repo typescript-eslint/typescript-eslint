@@ -71,15 +71,15 @@ export interface Extra {
 }
 
 export interface ParserOptions {
-  range: boolean;
-  loc: boolean;
-  tokens: boolean;
-  comment: boolean;
-  jsx: boolean;
-  errorOnUnknownASTType: boolean;
-  useJSXTextNode: boolean;
-  loggerFn: Function | false;
-  project: string | string[];
-  filePath: string;
-  tsconfigRootDir: string;
+  range?: boolean;
+  loc?: boolean;
+  tokens?: boolean;
+  comment?: boolean;
+  jsx?: boolean;
+  errorOnUnknownASTType?: boolean;
+  useJSXTextNode?: boolean;
+  loggerFn?: Function | false;
+  project?: string | string[];
+  filePath?: string;
+  tsconfigRootDir?: string;
 }
