@@ -51,9 +51,9 @@ module.exports = {
             category: "TypeScript",
             recommended: true,
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-unused-vars.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-unused-vars.md",
         },
-        schema: []
+        schema: [],
     },
 
     create(context) {
@@ -329,7 +329,7 @@ module.exports = {
                 if (node.decorators) {
                     node.decorators.forEach(markDecoratorAsUsed);
                 }
-            }
+            },
         };
-    }
+    },
 };

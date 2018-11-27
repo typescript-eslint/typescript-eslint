@@ -18,9 +18,9 @@ module.exports = {
             extraDescription: [util.tslintRule("no-var-requires")],
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-var-requires.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-var-requires.md",
         },
-        schema: []
+        schema: [],
     },
     create(context) {
         //----------------------------------------------------------------------
@@ -36,10 +36,10 @@ module.exports = {
                     context.report({
                         node,
                         message:
-                            "Require statement not part of import statement"
+                            "Require statement not part of import statement",
                     });
                 }
-            }
+            },
         };
-    }
+    },
 };

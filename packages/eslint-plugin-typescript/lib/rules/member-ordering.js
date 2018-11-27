@@ -38,7 +38,7 @@ module.exports = {
             extraDescription: [util.tslintRule("member-ordering")],
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-ordering.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-ordering.md",
         },
         schema: [
             {
@@ -47,72 +47,72 @@ module.exports = {
                     default: {
                         oneOf: [
                             {
-                                enum: ["never"]
+                                enum: ["never"],
                             },
                             {
                                 type: "array",
                                 items: {
-                                    enum: schemaOptions
-                                }
-                            }
-                        ]
+                                    enum: schemaOptions,
+                                },
+                            },
+                        ],
                     },
                     classes: {
                         oneOf: [
                             {
-                                enum: ["never"]
+                                enum: ["never"],
                             },
                             {
                                 type: "array",
                                 items: {
-                                    enum: schemaOptions
-                                }
-                            }
-                        ]
+                                    enum: schemaOptions,
+                                },
+                            },
+                        ],
                     },
                     classExpressions: {
                         oneOf: [
                             {
-                                enum: ["never"]
+                                enum: ["never"],
                             },
                             {
                                 type: "array",
                                 items: {
-                                    enum: schemaOptions
-                                }
-                            }
-                        ]
+                                    enum: schemaOptions,
+                                },
+                            },
+                        ],
                     },
                     interfaces: {
                         oneOf: [
                             {
-                                enum: ["never"]
+                                enum: ["never"],
                             },
                             {
                                 type: "array",
                                 items: {
-                                    enum: ["field", "method", "constructor"]
-                                }
-                            }
-                        ]
+                                    enum: ["field", "method", "constructor"],
+                                },
+                            },
+                        ],
                     },
                     typeLiterals: {
                         oneOf: [
                             {
-                                enum: ["never"]
+                                enum: ["never"],
                             },
                             {
                                 type: "array",
                                 items: {
-                                    enum: ["field", "method", "constructor"]
-                                }
-                            }
-                        ]
-                    }
+                                    enum: ["field", "method", "constructor"],
+                                },
+                            },
+                        ],
+                    },
                 },
-                additionalProperties: false
-            }
-        ]
+                additionalProperties: false,
+            },
+        ],
     },
 
     create(context) {
@@ -120,7 +120,7 @@ module.exports = {
 
         const functionExpressions = [
             "FunctionExpression",
-            "ArrowFunctionExpression"
+            "ArrowFunctionExpression",
         ];
         const defaultOrder = [
             "public-static-field",
@@ -157,7 +157,7 @@ module.exports = {
             "static-method",
             "instance-method",
 
-            "method"
+            "method",
         ];
 
         //----------------------------------------------------------------------
@@ -332,8 +332,8 @@ module.exports = {
                                         previousRanks,
                                         rank,
                                         order
-                                    )
-                                }
+                                    ),
+                                },
                             });
                         } else {
                             previousRanks.push(rank);
@@ -374,7 +374,7 @@ module.exports = {
                     options.typeLiterals || options.default || defaultOrder,
                     false
                 );
-            }
+            },
         };
-    }
+    },
 };

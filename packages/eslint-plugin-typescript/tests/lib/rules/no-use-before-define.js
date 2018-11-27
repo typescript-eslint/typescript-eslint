@@ -30,11 +30,11 @@ ruleTester.run("no-use-before-define", rule, {
 a();
 function a() { alert(arguments); }
             `,
-            options: ["nofunc"]
+            options: ["nofunc"],
         },
         {
             code: "(() => { var a = 42; alert(a); })();",
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
         `
 a();
@@ -47,7 +47,7 @@ try {
 class A {}
 new A();
             `,
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
         "var a = 0, b = a;",
         { code: "var {a = 0, b = a} = {};", parserOptions: { ecmaVersion: 6 } },
@@ -71,7 +71,7 @@ for (a in a) {}
 var a;
 for (a of a) {}
             `,
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
 
         // Block-level bindings
@@ -83,7 +83,7 @@ a();
     function a() {}
 }
             `,
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
         {
             code: `
@@ -94,7 +94,7 @@ a();
 }
             `,
             options: ["nofunc"],
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
         {
             code: `
@@ -107,7 +107,7 @@ switch (foo) {
     }
 }
             `,
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
         {
             code: `
@@ -116,7 +116,7 @@ a();
     let a = function () {};
 }
             `,
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
 
         // object style options
@@ -127,7 +127,7 @@ function a() {
     alert(arguments);
 }
             `,
-            options: [{ functions: false }]
+            options: [{ functions: false }],
         },
         {
             code: `
@@ -138,7 +138,7 @@ function a() {
 }
             `,
             options: [{ functions: false }],
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
         {
             code: `
@@ -148,7 +148,7 @@ function foo() {
 class A {};
             `,
             options: [{ classes: false }],
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
 
         // "variables" option
@@ -159,7 +159,7 @@ function foo() {
 }
 var bar;
             `,
-            options: [{ variables: false }]
+            options: [{ variables: false }],
         },
         {
             code: `
@@ -167,7 +167,7 @@ var foo = () => bar;
 var bar;
             `,
             options: [{ variables: false }],
-            parserOptions: { ecmaVersion: 6 }
+            parserOptions: { ecmaVersion: 6 },
         },
 
         // "typedefs" option
@@ -177,7 +177,7 @@ var x: Foo = 2;
 type Foo = string | number
             `,
             options: [{ typedefs: false }],
-            parser: "typescript-eslint-parser"
+            parser: "typescript-eslint-parser",
         },
 
         // test for https://github.com/bradzacher/eslint-plugin-typescript/issues/142
@@ -188,7 +188,7 @@ var alias = Test;
 class Test {}
             `,
             parserOptions: { ecmaVersion: 6 },
-            options: [{ classes: false }]
+            options: [{ classes: false }],
         },
         {
             code: `
@@ -197,8 +197,8 @@ var alias = Test;
 export class Test {}
             `,
             parserOptions: { ecmaVersion: 6, sourceType: "module" },
-            options: [{ classes: false }]
-        }
+            options: [{ classes: false }],
+        },
     ],
     invalid: [
         {
@@ -210,9 +210,9 @@ var a=19;
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -223,9 +223,9 @@ var a=19;
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -235,9 +235,9 @@ var a=19;
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -247,9 +247,9 @@ var a=function() {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -259,9 +259,9 @@ var a=[1,3];
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -275,13 +275,13 @@ function a() {
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
+                    type: "Identifier",
                 },
                 {
                     message: "'b' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -293,9 +293,9 @@ var a=function() {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -310,9 +310,9 @@ var a=function() {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -325,9 +325,9 @@ function a() { }
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -340,9 +340,9 @@ a();
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -356,9 +356,9 @@ try {
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -369,9 +369,9 @@ var a;
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -382,9 +382,9 @@ class A {};
             errors: [
                 {
                     message: "'A' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -397,9 +397,9 @@ class A {};
             errors: [
                 {
                     message: "'A' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -410,9 +410,9 @@ var A = class {};
             errors: [
                 {
                     message: "'A' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -425,9 +425,9 @@ var A = class {};
             errors: [
                 {
                     message: "'A' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
 
         // Block-level bindings
@@ -442,9 +442,9 @@ a++;
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -458,9 +458,9 @@ a++;
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -473,9 +473,9 @@ a++;
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -490,9 +490,9 @@ switch (foo) {
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -507,9 +507,9 @@ if (true) {
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
 
         // object style options
@@ -522,9 +522,9 @@ var a=function() {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -536,9 +536,9 @@ var A = class {};
             errors: [
                 {
                     message: "'A' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: `
@@ -552,9 +552,9 @@ var A = class {};
             errors: [
                 {
                     message: "'A' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
 
         // invalid initializers
@@ -563,9 +563,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "let a = a + b;",
@@ -573,9 +573,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "const a = foo(a);",
@@ -583,9 +583,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "function foo(a = a) {}",
@@ -593,9 +593,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "var {a = a} = [];",
@@ -603,9 +603,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "var [a = a] = [];",
@@ -613,9 +613,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "var {b = a, a} = {};",
@@ -623,9 +623,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "var [b = a, a] = {};",
@@ -633,9 +633,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "var {a = 0} = a;",
@@ -643,9 +643,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "var [a = 0] = a;",
@@ -653,18 +653,18 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "for (var a in a) {}",
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
         {
             code: "for (var a of a) {}",
@@ -672,9 +672,9 @@ var A = class {};
             errors: [
                 {
                     message: "'a' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
+                    type: "Identifier",
+                },
+            ],
         },
 
         // "variables" option
@@ -691,9 +691,9 @@ var bar;
             errors: [
                 {
                     message: "'bar' was used before it was defined.",
-                    type: "Identifier"
-                }
-            ]
-        }
-    ]
+                    type: "Identifier",
+                },
+            ],
+        },
+    ],
 });

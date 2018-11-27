@@ -17,9 +17,9 @@ module.exports = {
             extraDescription: [util.tslintRule("no-reference")],
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-triple-slash-reference.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-triple-slash-reference.md",
         },
-        schema: []
+        schema: [],
     },
 
     create(context) {
@@ -46,7 +46,7 @@ module.exports = {
                 if (referenceRegExp.test(comment.value)) {
                     context.report({
                         node: comment,
-                        message: "Do not use a triple slash reference"
+                        message: "Do not use a triple slash reference",
                     });
                 }
             });
@@ -56,7 +56,7 @@ module.exports = {
         // Public
         //----------------------------------------------------------------------
         return {
-            Program: checkTripleSlashReference
+            Program: checkTripleSlashReference,
         };
-    }
+    },
 };

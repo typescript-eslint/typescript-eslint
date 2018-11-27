@@ -19,7 +19,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-inferrable-types")],
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-inferrable-types.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-inferrable-types.md",
         },
         fixable: "code",
         schema: [
@@ -27,15 +27,15 @@ module.exports = {
                 type: "object",
                 properties: {
                     ignoreParameters: {
-                        type: "boolean"
+                        type: "boolean",
                     },
                     ignoreProperties: {
-                        type: "boolean"
-                    }
+                        type: "boolean",
+                    },
                 },
-                additionalProperties: false
-            }
-        ]
+                additionalProperties: false,
+            },
+        ],
     },
 
     create(context) {
@@ -115,7 +115,7 @@ module.exports = {
             const typeMap = {
                 TSBooleanKeyword: "boolean",
                 TSNumberKeyword: "number",
-                TSStringKeyword: "string"
+                TSStringKeyword: "string",
             };
 
             const type = typeMap[typeNode.typeAnnotation.type];
@@ -123,7 +123,7 @@ module.exports = {
             context.report({
                 node,
                 message: `Type ${type} trivially inferred from a ${type} literal, remove type annotation`,
-                fix: fixer => fixer.remove(typeNode)
+                fix: fixer => fixer.remove(typeNode),
             });
         }
 
@@ -185,7 +185,7 @@ module.exports = {
             FunctionExpression: inferrableParameterVisitor,
             FunctionDeclaration: inferrableParameterVisitor,
             ArrowFunctionExpression: inferrableParameterVisitor,
-            ClassProperty: inferrablePropertyVisitor
+            ClassProperty: inferrablePropertyVisitor,
         };
-    }
+    },
 };

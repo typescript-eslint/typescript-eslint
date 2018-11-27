@@ -13,9 +13,9 @@ const definition = {
     type: "object",
     properties: {
         before: { type: "boolean" },
-        after: { type: "boolean" }
+        after: { type: "boolean" },
     },
-    additionalProperties: false
+    additionalProperties: false,
 };
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
             description: "Require consistent spacing around type annotations",
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/type-annotation-spacing.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/type-annotation-spacing.md",
         },
         fixable: "code",
         schema: [
@@ -37,13 +37,13 @@ module.exports = {
                         type: "object",
                         properties: {
                             colon: definition,
-                            arrow: definition
+                            arrow: definition,
                         },
-                        additionalProperties: false
-                    }
-                }
-            }
-        ]
+                        additionalProperties: false,
+                    },
+                },
+            },
+        ],
     },
 
     create(context) {
@@ -120,7 +120,7 @@ module.exports = {
                     message: `Expected a space after the '${type}'`,
                     fix(fixer) {
                         return fixer.insertTextAfter(punctuatorTokenEnd, " ");
-                    }
+                    },
                 });
             } else if (!after && nextDelta > 0) {
                 context.report({
@@ -129,9 +129,9 @@ module.exports = {
                     fix(fixer) {
                         return fixer.removeRange([
                             punctuatorTokenEnd.range[1],
-                            nextToken.range[0]
+                            nextToken.range[0],
                         ]);
-                    }
+                    },
                 });
             }
 
@@ -141,7 +141,7 @@ module.exports = {
                     message: `Expected a space before the '${type}'`,
                     fix(fixer) {
                         return fixer.insertTextAfter(previousToken, " ");
-                    }
+                    },
                 });
             } else if (!before && previousDelta > 0) {
                 context.report({
@@ -150,9 +150,9 @@ module.exports = {
                     fix(fixer) {
                         return fixer.removeRange([
                             previousToken.range[1],
-                            punctuatorTokenStart.range[0]
+                            punctuatorTokenStart.range[0],
                         ]);
-                    }
+                    },
                 });
             }
         }
@@ -188,7 +188,7 @@ module.exports = {
             },
             FunctionDeclaration: checkFunctionReturnTypeSpacing,
             FunctionExpression: checkFunctionReturnTypeSpacing,
-            ArrowFunctionExpression: checkFunctionReturnTypeSpacing
+            ArrowFunctionExpression: checkFunctionReturnTypeSpacing,
         };
-    }
+    },
 };

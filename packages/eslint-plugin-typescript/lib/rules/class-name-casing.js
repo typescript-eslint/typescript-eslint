@@ -18,8 +18,8 @@ module.exports = {
             category: "Best Practices",
             recommended: true,
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/class-name-casing.md"
-        }
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/class-name-casing.md",
+        },
     },
 
     create(context) {
@@ -63,7 +63,7 @@ module.exports = {
 
             context.report({
                 node: id,
-                message: `${friendlyName} '${id.name}' must be PascalCased`
+                message: `${friendlyName} '${id.name}' must be PascalCased`,
             });
         }
 
@@ -88,7 +88,7 @@ module.exports = {
                         report(node.init, id);
                     }
                 }
-            }
+            },
         };
-    }
+    },
 };

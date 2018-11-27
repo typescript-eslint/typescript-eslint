@@ -31,7 +31,7 @@ function createTypeParameterChecker(context, rule) {
                         node,
                         message:
                             "Type parameter {{name}} does not match rule {{rule}}",
-                        data
+                        data,
                     });
                 }
             }
@@ -45,8 +45,8 @@ module.exports = {
             description: "Enforces naming of generic type variables",
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/generic-type-naming.md"
-        }
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/generic-type-naming.md",
+        },
     },
 
     create(context) {
@@ -65,7 +65,7 @@ module.exports = {
             TSInterfaceDeclaration: checkTypeParameters,
             FunctionDeclaration: checkTypeParameters,
             TSCallSignature: checkTypeParameters,
-            CallSignature: checkTypeParameters
+            CallSignature: checkTypeParameters,
         };
-    }
+    },
 };

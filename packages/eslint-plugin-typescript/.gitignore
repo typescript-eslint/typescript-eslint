@@ -12,6 +12,5 @@ versions.json
 .eslintcache
 .cache
 /packages/**/node_modules
-/.vscode
 .sublimelinterrc
 yarn.lock

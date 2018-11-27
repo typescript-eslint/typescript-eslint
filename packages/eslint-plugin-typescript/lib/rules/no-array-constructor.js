@@ -16,10 +16,10 @@ module.exports = {
             category: "Stylistic Issues",
             recommended: false,
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-array-constructor.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-array-constructor.md",
         },
         fixable: "code",
-        schema: []
+        schema: [],
     },
 
     create(context) {
@@ -51,14 +51,14 @@ module.exports = {
                             node,
                             `[${fullText.slice(preambleLength + 1, -1)}]`
                         );
-                    }
+                    },
                 });
             }
         }
 
         return {
             CallExpression: check,
-            NewExpression: check
+            NewExpression: check,
         };
-    }
+    },
 };

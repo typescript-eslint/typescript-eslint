@@ -16,7 +16,7 @@ const rule = require("../../../lib/rules/no-explicit-any"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("no-explicit-any", rule, {
@@ -142,7 +142,7 @@ type obj = {
 type obj = {
     message: string & Array<Array<string>>;
 }
-        `
+        `,
     ],
     invalid: [
         {
@@ -151,9 +151,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 15
-                }
-            ]
+                    column: 15,
+                },
+            ],
         },
         {
             code: "function generic(): any {}",
@@ -161,9 +161,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 21
-                }
-            ]
+                    column: 21,
+                },
+            ],
         },
         {
             code: "function generic(): Array<any> {}",
@@ -171,9 +171,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 27
-                }
-            ]
+                    column: 27,
+                },
+            ],
         },
         {
             code: "function generic(): any[] {}",
@@ -181,9 +181,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 21
-                }
-            ]
+                    column: 21,
+                },
+            ],
         },
         {
             code: "function generic(param: Array<any>): number {}",
@@ -191,9 +191,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 31
-                }
-            ]
+                    column: 31,
+                },
+            ],
         },
         {
             code: "function generic(param: any[]): number {}",
@@ -201,9 +201,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 25
-                }
-            ]
+                    column: 25,
+                },
+            ],
         },
         {
             code: "function generic(param: Array<any>): Array<any> {}",
@@ -211,14 +211,14 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 31
+                    column: 31,
                 },
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 44
-                }
-            ]
+                    column: 44,
+                },
+            ],
         },
         {
             code: "function generic(): Array<Array<any>> {}",
@@ -226,9 +226,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 33
-                }
-            ]
+                    column: 33,
+                },
+            ],
         },
         {
             code: "function generic(): Array<any[]> {}",
@@ -236,9 +236,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 1,
-                    column: 27
-                }
-            ]
+                    column: 27,
+                },
+            ],
         },
         {
             code: `
@@ -250,9 +250,9 @@ class Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 30
-                }
-            ]
+                    column: 30,
+                },
+            ],
         },
         {
             code: `
@@ -264,9 +264,9 @@ class Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 14
-                }
-            ]
+                    column: 14,
+                },
+            ],
         },
         {
             code: `
@@ -278,9 +278,9 @@ class Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 20
-                }
-            ]
+                    column: 20,
+                },
+            ],
         },
         {
             code: `
@@ -292,9 +292,9 @@ class Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 14
-                }
-            ]
+                    column: 14,
+                },
+            ],
         },
         {
             code: `
@@ -306,9 +306,9 @@ class Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 26
-                }
-            ]
+                    column: 26,
+                },
+            ],
         },
         {
             code: `
@@ -320,9 +320,9 @@ class Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 20
-                }
-            ]
+                    column: 20,
+                },
+            ],
         },
         {
             code: `
@@ -334,9 +334,9 @@ interface Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 14
-                }
-            ]
+                    column: 14,
+                },
+            ],
         },
         {
             code: `
@@ -348,9 +348,9 @@ interface Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 20
-                }
-            ]
+                    column: 20,
+                },
+            ],
         },
         {
             code: `
@@ -362,9 +362,9 @@ interface Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 14
-                }
-            ]
+                    column: 14,
+                },
+            ],
         },
         {
             code: `
@@ -376,9 +376,9 @@ interface Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 26
-                }
-            ]
+                    column: 26,
+                },
+            ],
         },
         {
             code: `
@@ -390,9 +390,9 @@ interface Greeter {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 20
-                }
-            ]
+                    column: 20,
+                },
+            ],
         },
         {
             code: `
@@ -404,9 +404,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 14
-                }
-            ]
+                    column: 14,
+                },
+            ],
         },
         {
             code: `
@@ -418,9 +418,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 20
-                }
-            ]
+                    column: 20,
+                },
+            ],
         },
         {
             code: `
@@ -432,9 +432,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 14
-                }
-            ]
+                    column: 14,
+                },
+            ],
         },
         {
             code: `
@@ -446,9 +446,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 26
-                }
-            ]
+                    column: 26,
+                },
+            ],
         },
         {
             code: `
@@ -460,9 +460,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 20
-                }
-            ]
+                    column: 20,
+                },
+            ],
         },
         {
             code: `
@@ -474,9 +474,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 23
-                }
-            ]
+                    column: 23,
+                },
+            ],
         },
         {
             code: `
@@ -488,9 +488,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 29
-                }
-            ]
+                    column: 29,
+                },
+            ],
         },
         {
             code: `
@@ -502,9 +502,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 23
-                }
-            ]
+                    column: 23,
+                },
+            ],
         },
         {
             code: `
@@ -516,9 +516,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 35
-                }
-            ]
+                    column: 35,
+                },
+            ],
         },
         {
             code: `
@@ -530,9 +530,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 29
-                }
-            ]
+                    column: 29,
+                },
+            ],
         },
         {
             code: `
@@ -544,9 +544,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 23
-                }
-            ]
+                    column: 23,
+                },
+            ],
         },
         {
             code: `
@@ -558,9 +558,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 29
-                }
-            ]
+                    column: 29,
+                },
+            ],
         },
         {
             code: `
@@ -572,9 +572,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 23
-                }
-            ]
+                    column: 23,
+                },
+            ],
         },
         {
             code: `
@@ -586,9 +586,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 35
-                }
-            ]
+                    column: 35,
+                },
+            ],
         },
         {
             code: `
@@ -600,9 +600,9 @@ type obj = {
                 {
                     message: "Unexpected any. Specify a different type.",
                     line: 3,
-                    column: 29
-                }
-            ]
-        }
-    ]
+                    column: 29,
+                },
+            ],
+        },
+    ],
 });

@@ -14,9 +14,9 @@ module.exports = {
             description: "Require that member overloads be consecutive",
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/adjacent-overload-signatures.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/adjacent-overload-signatures.md",
         },
-        schema: []
+        schema: [],
     },
 
     create(context) {
@@ -92,7 +92,7 @@ module.exports = {
                     if (index > -1 && lastName !== name) {
                         context.report({
                             node: member,
-                            message: `All '${name}' signatures should be adjacent`
+                            message: `All '${name}' signatures should be adjacent`,
                         });
                     } else if (name && index === -1) {
                         seen.push(name);
@@ -111,7 +111,7 @@ module.exports = {
             TSTypeLiteral: checkBodyForOverloadMethods,
             TSInterfaceBody: checkBodyForOverloadMethods,
             ClassBody: checkBodyForOverloadMethods,
-            Program: checkBodyForOverloadMethods
+            Program: checkBodyForOverloadMethods,
         };
-    }
+    },
 };

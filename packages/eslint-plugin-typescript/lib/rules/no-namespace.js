@@ -15,22 +15,22 @@ module.exports = {
                 "Disallow the use of custom TypeScript modules and namespaces",
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-namespace.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-namespace.md",
         },
         schema: [
             {
                 type: "object",
                 properties: {
                     allowDeclarations: {
-                        type: "boolean"
+                        type: "boolean",
                     },
                     allowDefinitionFiles: {
-                        type: "boolean"
-                    }
+                        type: "boolean",
+                    },
                 },
-                additionalProperties: false
-            }
-        ]
+                additionalProperties: false,
+            },
+        ],
     },
 
     create(context) {
@@ -96,9 +96,9 @@ module.exports = {
                 context.report({
                     node,
                     message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces"
+                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces",
                 });
-            }
+            },
         };
-    }
+    },
 };

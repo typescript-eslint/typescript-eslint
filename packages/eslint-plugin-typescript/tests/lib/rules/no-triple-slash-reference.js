@@ -16,13 +16,13 @@ const rule = require("../../../lib/rules/no-triple-slash-reference"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("no-triple-slash-reference", rule, {
     valid: [
         "/// Non-reference triple-slash comment",
-        "// <reference path='Animal' />"
+        "// <reference path='Animal' />",
     ],
     invalid: [
         {
@@ -31,9 +31,9 @@ ruleTester.run("no-triple-slash-reference", rule, {
                 {
                     message: "Do not use a triple slash reference",
                     line: 1,
-                    column: 1
-                }
-            ]
+                    column: 1,
+                },
+            ],
         },
         {
             code: `
@@ -45,9 +45,9 @@ let a
                 {
                     message: "Do not use a triple slash reference",
                     line: 2,
-                    column: 1
-                }
-            ]
-        }
-    ]
+                    column: 1,
+                },
+            ],
+        },
+    ],
 });

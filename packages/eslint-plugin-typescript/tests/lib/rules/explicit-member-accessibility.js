@@ -16,7 +16,7 @@ const rule = require("../../../lib/rules/explicit-member-accessibility"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("explicit-member-accessibility", rule, {
@@ -31,7 +31,7 @@ class Test {
     return this.x
   }
 }
-            `
+            `,
         },
         {
             filename: "test.ts",
@@ -41,7 +41,7 @@ class Test {
   protected foo?: string
   public "foo-bar"?: string
 }
-            `
+            `,
         },
         {
             filename: "test.js",
@@ -51,8 +51,8 @@ class Test {
     return 1;
   }
 }
-            `
-        }
+            `,
+        },
     ],
     invalid: [
         {
@@ -70,9 +70,9 @@ class Test {
                     message:
                         "Missing accessibility modifier on class property x.",
                     line: 3,
-                    column: 3
-                }
-            ]
+                    column: 3,
+                },
+            ],
         },
         {
             filename: "test.ts",
@@ -89,9 +89,9 @@ class Test {
                     message:
                         "Missing accessibility modifier on method definition getX.",
                     line: 4,
-                    column: 3
-                }
-            ]
+                    column: 3,
+                },
+            ],
         },
         {
             filename: "test.ts",
@@ -108,15 +108,15 @@ class Test {
                     message:
                         "Missing accessibility modifier on class property x.",
                     line: 3,
-                    column: 3
+                    column: 3,
                 },
                 {
                     message:
                         "Missing accessibility modifier on method definition getX.",
                     line: 4,
-                    column: 3
-                }
-            ]
-        }
-    ]
+                    column: 3,
+                },
+            ],
+        },
+    ],
 });

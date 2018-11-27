@@ -16,7 +16,7 @@ const rule = require("../../../lib/rules/prefer-namespace-keyword"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("prefer-namespace-keyword", rule, {
@@ -24,7 +24,7 @@ ruleTester.run("prefer-namespace-keyword", rule, {
         "declare module 'foo' { }",
         "namespace foo { }",
         "declare namespace foo { }",
-        "declare global { }"
+        "declare global { }",
     ],
     invalid: [
         {
@@ -35,9 +35,9 @@ ruleTester.run("prefer-namespace-keyword", rule, {
                         "Use 'namespace' instead of 'module' to declare custom TypeScript modules",
                     output: "namespace foo { }",
                     row: 1,
-                    column: 1
-                }
-            ]
+                    column: 1,
+                },
+            ],
         },
         {
             code: "declare module foo { }",
@@ -47,9 +47,9 @@ ruleTester.run("prefer-namespace-keyword", rule, {
                         "Use 'namespace' instead of 'module' to declare custom TypeScript modules",
                     output: "declare namespace foo { }",
                     row: 1,
-                    column: 1
-                }
-            ]
+                    column: 1,
+                },
+            ],
         },
         {
             code: `
@@ -63,7 +63,7 @@ declare module foo {
                         "Use 'namespace' instead of 'module' to declare custom TypeScript modules",
                     output: "declare namespace foo { }",
                     row: 2,
-                    column: 1
+                    column: 1,
                 },
                 {
                     message:
@@ -74,9 +74,9 @@ declare namespace foo {
 }
             `,
                     row: 3,
-                    column: 5
-                }
-            ]
-        }
-    ]
+                    column: 5,
+                },
+            ],
+        },
+    ],
 });

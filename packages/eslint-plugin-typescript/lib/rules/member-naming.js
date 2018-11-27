@@ -15,7 +15,7 @@ module.exports = {
                 "Enforces naming conventions for class members by visibility.",
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-naming.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-naming.md",
         },
         schema: [
             {
@@ -23,11 +23,11 @@ module.exports = {
                 properties: {
                     public: { type: "string" },
                     protected: { type: "string" },
-                    private: { type: "string" }
+                    private: { type: "string" },
                 },
-                additionalProperties: false
-            }
-        ]
+                additionalProperties: false,
+            },
+        ],
     },
 
     create(context) {
@@ -60,7 +60,7 @@ module.exports = {
                 node: node.key,
                 message:
                     "{{accessibility}} property {{name}} should match {{convention}}",
-                data: { accessibility, name, convention }
+                data: { accessibility, name, convention },
             });
         }
 
@@ -70,7 +70,7 @@ module.exports = {
 
         return {
             MethodDefinition: validateName,
-            ClassProperty: validateName
+            ClassProperty: validateName,
         };
-    }
+    },
 };

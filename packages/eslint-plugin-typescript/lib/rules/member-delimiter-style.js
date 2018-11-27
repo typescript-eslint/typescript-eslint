@@ -13,9 +13,9 @@ const definition = {
     properties: {
         delimiter: { enum: ["none", "semi", "comma"] },
         requireLast: { type: "boolean" },
-        ignoreSingleLine: { type: "boolean" }
+        ignoreSingleLine: { type: "boolean" },
     },
-    additionalProperties: false
+    additionalProperties: false,
 };
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
                 "Require a specific member delimiter style for interfaces and type literals",
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-delimiter-style.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-delimiter-style.md",
         },
         fixable: "code",
         schema: [
@@ -39,14 +39,14 @@ module.exports = {
                         type: "object",
                         properties: {
                             interface: definition,
-                            typeLiteral: definition
+                            typeLiteral: definition,
                         },
-                        additionalProperties: false
-                    }
+                        additionalProperties: false,
+                    },
                 },
-                additionalProperties: false
-            }
-        ]
+                additionalProperties: false,
+            },
+        ],
     },
 
     create(context) {
@@ -57,7 +57,7 @@ module.exports = {
         const defaults = {
             delimiter: "semi",
             requireLast: true,
-            ignoreSingleLine: true
+            ignoreSingleLine: true,
         };
 
         const interfaceOptions = Object.assign(
@@ -92,7 +92,7 @@ module.exports = {
             let message;
             let missingDelimiter = false;
             const lastToken = sourceCode.getLastToken(member, {
-                includeComments: false
+                includeComments: false,
             });
 
             if (lastToken.value === ";" && opts.delimiter !== "semi") {
@@ -133,12 +133,12 @@ module.exports = {
                     loc: {
                         start: {
                             line: lastToken.loc.end.line,
-                            column: lastToken.loc.end.column
+                            column: lastToken.loc.end.column,
                         },
                         end: {
                             line: lastToken.loc.end.line,
-                            column: lastToken.loc.end.column
-                        }
+                            column: lastToken.loc.end.column,
+                        },
                     },
                     message,
                     fix(fixer) {
@@ -162,7 +162,7 @@ module.exports = {
 
                         // correct the current delimiter
                         return fixer.replaceText(lastToken, token);
-                    }
+                    },
                 });
             }
         }
@@ -194,7 +194,7 @@ module.exports = {
 
         return {
             TSInterfaceBody: checkMemberSeparatorStyle,
-            TSTypeLiteral: checkMemberSeparatorStyle
+            TSTypeLiteral: checkMemberSeparatorStyle,
         };
-    }
+    },
 };
