@@ -34,12 +34,11 @@ Please try to avoid code that isn't directly related to the bug, as it makes it 
 **Actual Result**
 
 
-
 **Additional Info**
 
 
+**Versions**
 
-** Versions **
 | package                    | version |
 | -------------------------- | ------- |
 | `eslint-plugin-typescript` | `X.Y.Z` |
