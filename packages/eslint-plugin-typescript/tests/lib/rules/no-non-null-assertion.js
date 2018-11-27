@@ -16,7 +16,7 @@ const rule = require("../../../lib/rules/no-non-null-assertion"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("no-non-null-assertion", rule, {
@@ -25,8 +25,12 @@ ruleTester.run("no-non-null-assertion", rule, {
         {
             code: "const x = null; x!.y;",
             errors: [
-                { message: "Forbidden non-null assertion", line: 1, column: 17 }
-            ]
-        }
-    ]
+                {
+                    message: "Forbidden non-null assertion",
+                    line: 1,
+                    column: 17,
+                },
+            ],
+        },
+    ],
 });

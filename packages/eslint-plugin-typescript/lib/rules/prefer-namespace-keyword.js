@@ -18,10 +18,10 @@ module.exports = {
             extraDescription: [util.tslintRule("no-internal-module")],
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/prefer-namespace-keyword.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/prefer-namespace-keyword.md",
         },
         fixable: "code",
-        schema: []
+        schema: [],
     },
 
     create(context) {
@@ -65,9 +65,9 @@ module.exports = {
                             moduleKeywordToken,
                             "namespace"
                         );
-                    }
+                    },
                 });
-            }
+            },
         };
-    }
+    },
 };

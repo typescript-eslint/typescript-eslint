@@ -12,7 +12,7 @@ const rule = require("../../../lib/rules/generic-type-naming"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 const messagePattern = "Type parameter {{name}} does not match rule {{rule}}";
@@ -41,34 +41,34 @@ ruleTester.run("generic-type-naming", rule, {
         { code: "class<x> { }", options: ["^x+$"] },
         {
             code: "class CounterContainer extends Container<Counter> { }",
-            options: ["^T$"]
-        }
+            options: ["^T$"],
+        },
     ],
     invalid: [
         {
             code: "class<x> { }",
             options: ["^[A-Z]+$"],
-            errors: [error({ name: "x", rule: "^[A-Z]+$" })]
+            errors: [error({ name: "x", rule: "^[A-Z]+$" })],
         },
         {
             code: "interface SimpleMap<x> { }",
             options: ["^[A-Z]+$"],
-            errors: [error({ name: "x", rule: "^[A-Z]+$" })]
+            errors: [error({ name: "x", rule: "^[A-Z]+$" })],
         },
         {
             code: "type R<x> = {}",
             options: ["^[A-Z]+$"],
-            errors: [error({ name: "x", rule: "^[A-Z]+$" })]
+            errors: [error({ name: "x", rule: "^[A-Z]+$" })],
         },
         {
             code: "function get<x>() {}",
             options: ["^[A-Z]+$"],
-            errors: [error({ name: "x", rule: "^[A-Z]+$" })]
+            errors: [error({ name: "x", rule: "^[A-Z]+$" })],
         },
         {
             code: "interface GenericIdentityFn { <x>(arg: x): x }",
             options: ["^[A-Z]+$"],
-            errors: [error({ name: "x", rule: "^[A-Z]+$" })]
-        }
-    ]
+            errors: [error({ name: "x", rule: "^[A-Z]+$" })],
+        },
+    ],
 });

@@ -16,7 +16,7 @@ const rule = require("../../../lib/rules/explicit-function-return-type"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("explicit-function-return-type", rule, {
@@ -27,7 +27,7 @@ ruleTester.run("explicit-function-return-type", rule, {
 function test(): void {
     return;
 }
-            `
+            `,
         },
         {
             filename: "test.ts",
@@ -35,13 +35,13 @@ function test(): void {
 var fn = function(): number {
     return 1;
 };
-            `
+            `,
         },
         {
             filename: "test.ts",
             code: `
 var arrowFn = (): string => 'test';
-            `
+            `,
         },
         {
             filename: "test.ts",
@@ -56,7 +56,7 @@ class Test {
     return;
   }
 }
-            `
+            `,
         },
         {
             filename: "test.js",
@@ -64,48 +64,48 @@ class Test {
 function test() {
     return;
 }
-            `
+            `,
         },
         {
             code: `fn(() => {});`,
             options: [
                 {
-                    allowExpressions: true
-                }
-            ]
+                    allowExpressions: true,
+                },
+            ],
         },
         {
             code: `fn(function() {});`,
             options: [
                 {
-                    allowExpressions: true
-                }
-            ]
+                    allowExpressions: true,
+                },
+            ],
         },
         {
             code: `[function() {}, () => {}]`,
             options: [
                 {
-                    allowExpressions: true
-                }
-            ]
+                    allowExpressions: true,
+                },
+            ],
         },
         {
             code: `(function() {});`,
             options: [
                 {
-                    allowExpressions: true
-                }
-            ]
+                    allowExpressions: true,
+                },
+            ],
         },
         {
             code: `(() => {})();`,
             options: [
                 {
-                    allowExpressions: true
-                }
-            ]
-        }
+                    allowExpressions: true,
+                },
+            ],
+        },
     ],
     invalid: [
         {
@@ -119,9 +119,9 @@ function test() {
                 {
                     message: "Missing return type on function.",
                     line: 2,
-                    column: 1
-                }
-            ]
+                    column: 1,
+                },
+            ],
         },
         {
             filename: "test.ts",
@@ -134,9 +134,9 @@ var fn = function() {
                 {
                     message: "Missing return type on function.",
                     line: 2,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             filename: "test.ts",
@@ -147,9 +147,9 @@ var arrowFn = () => 'test';
                 {
                     message: "Missing return type on function.",
                     line: 2,
-                    column: 15
-                }
-            ]
+                    column: 15,
+                },
+            ],
         },
         {
             filename: "test.ts",
@@ -169,14 +169,14 @@ class Test {
                 {
                     message: "Missing return type on function.",
                     line: 4,
-                    column: 11
+                    column: 11,
                 },
                 {
                     message: "Missing return type on function.",
                     line: 8,
-                    column: 9
-                }
-            ]
+                    column: 9,
+                },
+            ],
         },
         {
             filename: "test.ts",
@@ -186,9 +186,9 @@ class Test {
                 {
                     message: "Missing return type on function.",
                     line: 1,
-                    column: 13
-                }
-            ]
+                    column: 13,
+                },
+            ],
         },
         {
             filename: "test.ts",
@@ -198,9 +198,9 @@ class Test {
                 {
                     message: "Missing return type on function.",
                     line: 1,
-                    column: 13
-                }
-            ]
-        }
-    ]
+                    column: 13,
+                },
+            ],
+        },
+    ],
 });

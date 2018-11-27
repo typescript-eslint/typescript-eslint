@@ -18,7 +18,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-parameter-properties")],
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-parameter-properties.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-parameter-properties.md",
         },
         schema: [
             {
@@ -34,15 +34,15 @@ module.exports = {
                                 "public",
                                 "private readonly",
                                 "protected readonly",
-                                "public readonly"
-                            ]
+                                "public readonly",
+                            ],
                         },
-                        minItems: 1
-                    }
+                        minItems: 1,
+                    },
                 },
-                additionalProperties: false
-            }
-        ]
+                additionalProperties: false,
+            },
+        ],
     },
 
     create(context) {
@@ -83,11 +83,11 @@ module.exports = {
                         message:
                             "Property {{parameter}} cannot be declared in the constructor",
                         data: {
-                            parameter: node.parameter.name
-                        }
+                            parameter: node.parameter.name,
+                        },
                     });
                 }
-            }
+            },
         };
-    }
+    },
 };

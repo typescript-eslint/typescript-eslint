@@ -18,19 +18,19 @@ module.exports = {
 
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/explicit-function-return-type.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/explicit-function-return-type.md",
         },
         schema: [
             {
                 type: "object",
                 properties: {
                     allowExpressions: {
-                        type: "boolean"
-                    }
+                        type: "boolean",
+                    },
                 },
-                additionalProperties: false
-            }
-        ]
+                additionalProperties: false,
+            },
+        ],
     },
 
     create(context) {
@@ -86,7 +86,7 @@ module.exports = {
             ) {
                 context.report({
                     node,
-                    message: `Missing return type on function.`
+                    message: `Missing return type on function.`,
                 });
             }
         }
@@ -97,7 +97,7 @@ module.exports = {
         return {
             FunctionDeclaration: checkFunctionReturnType,
             FunctionExpression: checkFunctionReturnType,
-            ArrowFunctionExpression: checkFunctionReturnType
+            ArrowFunctionExpression: checkFunctionReturnType,
         };
-    }
+    },
 };

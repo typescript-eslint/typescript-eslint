@@ -16,7 +16,7 @@ const rule = require("../../../lib/rules/member-delimiter-style"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("member-delimiter-style", rule, {
@@ -34,7 +34,7 @@ interface Foo {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: true }]
+            options: [{ delimiter: "semi", requireLast: true }],
         },
         {
             code: `
@@ -43,7 +43,7 @@ interface Foo {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi" }]
+            options: [{ delimiter: "semi" }],
         },
         {
             code: `
@@ -52,7 +52,7 @@ interface Foo {
     age: number
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }]
+            options: [{ delimiter: "semi", requireLast: false }],
         },
         {
             code: `
@@ -61,7 +61,7 @@ interface Foo {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }]
+            options: [{ delimiter: "semi", requireLast: false }],
         },
         {
             code: `
@@ -70,7 +70,7 @@ interface Foo {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma", requireLast: true }]
+            options: [{ delimiter: "comma", requireLast: true }],
         },
         {
             code: `
@@ -79,7 +79,7 @@ interface Foo {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma" }]
+            options: [{ delimiter: "comma" }],
         },
         {
             code: `
@@ -88,7 +88,7 @@ interface Foo {
     age: number
 }
             `,
-            options: [{ delimiter: "comma", requireLast: false }]
+            options: [{ delimiter: "comma", requireLast: false }],
         },
         {
             code: `
@@ -97,7 +97,7 @@ interface Foo {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma", requireLast: false }]
+            options: [{ delimiter: "comma", requireLast: false }],
         },
         {
             code: `
@@ -106,7 +106,7 @@ interface Foo {
     age: number
 }
             `,
-            options: [{ delimiter: "none", requireLast: true }]
+            options: [{ delimiter: "none", requireLast: true }],
         },
         {
             code: `
@@ -115,7 +115,7 @@ interface Foo {
     age: number
 }
             `,
-            options: [{ delimiter: "none", requireLast: false }]
+            options: [{ delimiter: "none", requireLast: false }],
         },
         {
             code: `
@@ -131,11 +131,11 @@ interface Foo {
                     overrides: {
                         interface: {
                             delimiter: "semi",
-                            requireLast: true
-                        }
-                    }
-                }
-            ]
+                            requireLast: true,
+                        },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -147,9 +147,9 @@ interface Foo {
             options: [
                 {
                     delimiter: "comma",
-                    overrides: { interface: { delimiter: "semi" } }
-                }
-            ]
+                    overrides: { interface: { delimiter: "semi" } },
+                },
+            ],
         },
         {
             code: `
@@ -165,11 +165,11 @@ interface Foo {
                     overrides: {
                         interface: {
                             delimiter: "semi",
-                            requireLast: false
-                        }
-                    }
-                }
-            ]
+                            requireLast: false,
+                        },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -185,11 +185,11 @@ interface Foo {
                     overrides: {
                         interface: {
                             delimiter: "semi",
-                            requireLast: false
-                        }
-                    }
-                }
-            ]
+                            requireLast: false,
+                        },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -205,11 +205,11 @@ interface Foo {
                     overrides: {
                         interface: {
                             delimiter: "comma",
-                            requireLast: true
-                        }
-                    }
-                }
-            ]
+                            requireLast: true,
+                        },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -221,9 +221,9 @@ interface Foo {
             options: [
                 {
                     delimiter: "semi",
-                    overrides: { interface: { delimiter: "comma" } }
-                }
-            ]
+                    overrides: { interface: { delimiter: "comma" } },
+                },
+            ],
         },
         {
             code: `
@@ -239,11 +239,11 @@ interface Foo {
                     overrides: {
                         interface: {
                             delimiter: "comma",
-                            requireLast: false
-                        }
-                    }
-                }
-            ]
+                            requireLast: false,
+                        },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -257,10 +257,10 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        interface: { delimiter: "comma", requireLast: false }
-                    }
-                }
-            ]
+                        interface: { delimiter: "comma", requireLast: false },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -274,10 +274,10 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: false,
                     overrides: {
-                        interface: { delimiter: "none", requireLast: true }
-                    }
-                }
-            ]
+                        interface: { delimiter: "none", requireLast: true },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -291,18 +291,10 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false }
-                    }
-                }
-            ]
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `
+                        interface: { delimiter: "none", requireLast: false },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -311,7 +303,6 @@ type Foo = {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: true }]
         },
         {
             code: `
@@ -320,7 +311,16 @@ type Foo = {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi" }]
+            options: [{ delimiter: "semi", requireLast: true }],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
+            options: [{ delimiter: "semi" }],
         },
         {
             code: `
@@ -329,7 +329,7 @@ type Foo = {
     age: number
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }]
+            options: [{ delimiter: "semi", requireLast: false }],
         },
         {
             code: `
@@ -338,7 +338,7 @@ type Foo = {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }]
+            options: [{ delimiter: "semi", requireLast: false }],
         },
         {
             code: `
@@ -347,7 +347,7 @@ type Foo = {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma", requireLast: true }]
+            options: [{ delimiter: "comma", requireLast: true }],
         },
         {
             code: `
@@ -356,7 +356,7 @@ type Foo = {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma" }]
+            options: [{ delimiter: "comma" }],
         },
         {
             code: `
@@ -365,7 +365,7 @@ type Foo = {
     age: number
 }
             `,
-            options: [{ delimiter: "comma", requireLast: false }]
+            options: [{ delimiter: "comma", requireLast: false }],
         },
         {
             code: `
@@ -374,7 +374,7 @@ type Foo = {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma", requireLast: false }]
+            options: [{ delimiter: "comma", requireLast: false }],
         },
         {
             code: `
@@ -383,7 +383,7 @@ type Foo = {
     age: number
 }
             `,
-            options: [{ delimiter: "none", requireLast: true }]
+            options: [{ delimiter: "none", requireLast: true }],
         },
         {
             code: `
@@ -392,7 +392,7 @@ type Foo = {
     age: number
 }
             `,
-            options: [{ delimiter: "none", requireLast: false }]
+            options: [{ delimiter: "none", requireLast: false }],
         },
         {
             code: `
@@ -406,10 +406,10 @@ type Foo = {
                     delimiter: "comma",
                     requireLast: false,
                     overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: true }
-                    }
-                }
-            ]
+                        typeLiteral: { delimiter: "semi", requireLast: true },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -421,9 +421,9 @@ type Foo = {
             options: [
                 {
                     delimiter: "comma",
-                    overrides: { typeLiteral: { delimiter: "semi" } }
-                }
-            ]
+                    overrides: { typeLiteral: { delimiter: "semi" } },
+                },
+            ],
         },
         {
             code: `
@@ -437,10 +437,10 @@ type Foo = {
                     delimiter: "comma",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: false }
-                    }
-                }
-            ]
+                        typeLiteral: { delimiter: "semi", requireLast: false },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -454,10 +454,10 @@ type Foo = {
                     delimiter: "comma",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: false }
-                    }
-                }
-            ]
+                        typeLiteral: { delimiter: "semi", requireLast: false },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -471,10 +471,10 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: false,
                     overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: true }
-                    }
-                }
-            ]
+                        typeLiteral: { delimiter: "comma", requireLast: true },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -486,9 +486,9 @@ type Foo = {
             options: [
                 {
                     delimiter: "semi",
-                    overrides: { typeLiteral: { delimiter: "comma" } }
-                }
-            ]
+                    overrides: { typeLiteral: { delimiter: "comma" } },
+                },
+            ],
         },
         {
             code: `
@@ -502,10 +502,10 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: false,
                     overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: false }
-                    }
-                }
-            ]
+                        typeLiteral: { delimiter: "comma", requireLast: false },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -519,10 +519,10 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: false }
-                    }
-                }
-            ]
+                        typeLiteral: { delimiter: "comma", requireLast: false },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -536,10 +536,10 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: false,
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: true }
-                    }
-                }
-            ]
+                        typeLiteral: { delimiter: "none", requireLast: true },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -553,10 +553,10 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false }
-                    }
-                }
-            ]
+                        typeLiteral: { delimiter: "none", requireLast: false },
+                    },
+                },
+            ],
         },
         {
             code: `
@@ -575,10 +575,10 @@ type Bar = {
                     delimiter: "none",
                     overrides: {
                         interface: { delimiter: "semi" },
-                        typeLiteral: { delimiter: "comma" }
-                    }
-                }
-            ]
+                        typeLiteral: { delimiter: "comma" },
+                    },
+                },
+            ],
         },
         "interface Foo { [key: string]: any }",
         "interface Foo { [key: string]: any; }",
@@ -586,35 +586,35 @@ type Bar = {
             code: "interface Foo { [key: string]: any }",
             options: [
                 {
-                    ignoreSingleLine: true
-                }
-            ]
+                    ignoreSingleLine: true,
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any }",
             options: [
                 {
                     delimiter: "comma",
-                    ignoreSingleLine: true
-                }
-            ]
+                    ignoreSingleLine: true,
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any; }",
             options: [
                 {
-                    ignoreSingleLine: false
-                }
-            ]
+                    ignoreSingleLine: false,
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any, }",
             options: [
                 {
                     delimiter: "comma",
-                    ignoreSingleLine: false
-                }
-            ]
+                    ignoreSingleLine: false,
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any }",
@@ -622,28 +622,28 @@ type Bar = {
                 {
                     ignoreSingleLine: false,
                     overrides: {
-                        interface: { ignoreSingleLine: true }
-                    }
-                }
-            ]
+                        interface: { ignoreSingleLine: true },
+                    },
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any }",
             options: [
                 {
                     requireLast: true,
-                    ignoreSingleLine: true
-                }
-            ]
+                    ignoreSingleLine: true,
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any; }",
             options: [
                 {
                     requireLast: true,
-                    ignoreSingleLine: false
-                }
-            ]
+                    ignoreSingleLine: false,
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any }",
@@ -652,10 +652,10 @@ type Bar = {
                     requireLast: true,
                     ignoreSingleLine: false,
                     overrides: {
-                        interface: { ignoreSingleLine: true }
-                    }
-                }
-            ]
+                        interface: { ignoreSingleLine: true },
+                    },
+                },
+            ],
         },
         "type Foo = { [key: string]: any }",
         "type Foo = { [key: string]: any; }",
@@ -663,17 +663,17 @@ type Bar = {
             code: "type Foo = { [key: string]: any }",
             options: [
                 {
-                    ignoreSingleLine: true
-                }
-            ]
+                    ignoreSingleLine: true,
+                },
+            ],
         },
         {
             code: "type Foo = { [key: string]: any; }",
             options: [
                 {
-                    ignoreSingleLine: false
-                }
-            ]
+                    ignoreSingleLine: false,
+                },
+            ],
         },
         {
             code: "type Foo = { [key: string]: any }",
@@ -681,28 +681,28 @@ type Bar = {
                 {
                     ignoreSingleLine: false,
                     overrides: {
-                        typeLiteral: { ignoreSingleLine: true }
-                    }
-                }
-            ]
+                        typeLiteral: { ignoreSingleLine: true },
+                    },
+                },
+            ],
         },
         {
             code: "type Foo = { [key: string]: any }",
             options: [
                 {
                     requireLast: true,
-                    ignoreSingleLine: true
-                }
-            ]
+                    ignoreSingleLine: true,
+                },
+            ],
         },
         {
             code: "type Foo = { [key: string]: any; }",
             options: [
                 {
                     requireLast: true,
-                    ignoreSingleLine: false
-                }
-            ]
+                    ignoreSingleLine: false,
+                },
+            ],
         },
         {
             code: "type Foo = { [key: string]: any }",
@@ -711,11 +711,11 @@ type Bar = {
                     requireLast: true,
                     ignoreSingleLine: false,
                     overrides: {
-                        typeLiteral: { ignoreSingleLine: true }
-                    }
-                }
-            ]
-        }
+                        typeLiteral: { ignoreSingleLine: true },
+                    },
+                },
+            ],
+        },
     ],
     invalid: [
         {
@@ -735,14 +735,14 @@ interface Foo {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -762,14 +762,14 @@ interface Foo {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -789,14 +789,14 @@ interface Foo {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -816,9 +816,9 @@ interface Foo {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -838,9 +838,9 @@ interface Foo {
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -860,14 +860,14 @@ interface Foo {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -887,14 +887,14 @@ interface Foo {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -914,9 +914,9 @@ interface Foo {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -936,14 +936,14 @@ interface Foo {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -963,14 +963,14 @@ interface Foo {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -990,9 +990,9 @@ interface Foo {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -1012,14 +1012,14 @@ interface Foo {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1039,14 +1039,14 @@ interface Foo {
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1066,14 +1066,14 @@ interface Foo {
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1093,9 +1093,9 @@ interface Foo {
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -1115,9 +1115,9 @@ interface Foo {
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1137,14 +1137,14 @@ interface Foo {
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1164,14 +1164,14 @@ interface Foo {
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1191,9 +1191,9 @@ interface Foo {
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -1213,9 +1213,9 @@ interface Foo {
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1233,21 +1233,21 @@ interface Foo {
             options: [
                 {
                     delimiter: "comma",
-                    overrides: { interface: { delimiter: "semi" } }
-                }
+                    overrides: { interface: { delimiter: "semi" } },
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -1267,22 +1267,22 @@ interface Foo {
                     delimiter: "comma",
                     requireLast: false,
                     overrides: {
-                        interface: { delimiter: "semi", requireLast: true }
-                    }
-                }
+                        interface: { delimiter: "semi", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -1302,17 +1302,17 @@ interface Foo {
                     delimiter: "comma",
                     requireLast: false,
                     overrides: {
-                        interface: { delimiter: "semi", requireLast: true }
-                    }
-                }
+                        interface: { delimiter: "semi", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -1330,124 +1330,27 @@ interface Foo {
             options: [
                 {
                     delimiter: "semi",
-                    overrides: { interface: { delimiter: "comma" } }
-                }
+                    overrides: { interface: { delimiter: "comma" } },
+                },
             ],
             errors: [
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
 interface Foo {
     name: string
     age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number,
-}
-            `,
-            options: [
-                {
-                    delimiter: "semi",
-                    requireLast: false,
-                    overrides: {
-                        interface: { delimiter: "comma", requireLast: true }
-                    }
-                }
-            ],
-            errors: [
-                {
-                    message: "Expected a comma.",
-                    line: 3,
-                    column: 17
-                },
-                {
-                    message: "Expected a comma.",
-                    line: 4,
-                    column: 16
-                }
-            ]
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number
-}
-            `,
-            options: [
-                {
-                    delimiter: "semi",
-                    requireLast: true,
-                    overrides: {
-                        interface: { delimiter: "comma", requireLast: false }
-                    }
-                }
-            ],
-            errors: [
-                {
-                    message: "Expected a comma.",
-                    line: 3,
-                    column: 17
-                }
-            ]
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number,
-}
-            `,
-            options: [
-                {
-                    delimiter: "semi",
-                    overrides: { interface: { delimiter: "comma" } }
-                }
-            ],
-            errors: [
-                {
-                    message: "Expected a comma.",
-                    line: 3,
-                    column: 18
-                },
-                {
-                    message: "Expected a comma.",
-                    line: 4,
-                    column: 17
-                }
-            ]
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
 }
             `,
             output: `
@@ -1461,22 +1364,119 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: false,
                     overrides: {
-                        interface: { delimiter: "comma", requireLast: true }
-                    }
-                }
+                        interface: { delimiter: "comma", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
+}
+            `,
+            options: [
+                {
+                    delimiter: "semi",
+                    requireLast: true,
+                    overrides: {
+                        interface: { delimiter: "comma", requireLast: false },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    message: "Expected a comma.",
+                    line: 3,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    delimiter: "semi",
+                    overrides: { interface: { delimiter: "comma" } },
+                },
+            ],
+            errors: [
+                {
+                    message: "Expected a comma.",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    message: "Expected a comma.",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    delimiter: "semi",
+                    requireLast: false,
+                    overrides: {
+                        interface: { delimiter: "comma", requireLast: true },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    message: "Expected a comma.",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    message: "Expected a comma.",
+                    line: 4,
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1496,17 +1496,17 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        interface: { delimiter: "comma", requireLast: false }
-                    }
-                }
+                        interface: { delimiter: "comma", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -1526,22 +1526,22 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        interface: { delimiter: "comma", requireLast: false }
-                    }
-                }
+                        interface: { delimiter: "comma", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1559,21 +1559,21 @@ interface Foo {
             options: [
                 {
                     delimiter: "semi",
-                    overrides: { interface: { delimiter: "none" } }
-                }
+                    overrides: { interface: { delimiter: "none" } },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1593,22 +1593,22 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: false,
                     overrides: {
-                        interface: { delimiter: "none", requireLast: true }
-                    }
-                }
+                        interface: { delimiter: "none", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1628,17 +1628,17 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false }
-                    }
-                }
+                        interface: { delimiter: "none", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -1658,17 +1658,17 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false }
-                    }
-                }
+                        interface: { delimiter: "none", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1686,21 +1686,21 @@ interface Foo {
             options: [
                 {
                     delimiter: "semi",
-                    overrides: { interface: { delimiter: "none" } }
-                }
+                    overrides: { interface: { delimiter: "none" } },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1720,22 +1720,22 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: false,
                     overrides: {
-                        interface: { delimiter: "none", requireLast: true }
-                    }
-                }
+                        interface: { delimiter: "none", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1755,17 +1755,17 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false }
-                    }
-                }
+                        interface: { delimiter: "none", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -1785,17 +1785,17 @@ interface Foo {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false }
-                    }
-                }
+                        interface: { delimiter: "none", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1814,14 +1814,14 @@ type Foo = {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -1841,14 +1841,14 @@ type Foo = {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -1868,14 +1868,14 @@ type Foo = {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -1895,9 +1895,9 @@ type Foo = {
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -1917,14 +1917,14 @@ type Foo = {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -1944,14 +1944,14 @@ type Foo = {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -1971,9 +1971,9 @@ type Foo = {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -1993,14 +1993,14 @@ type Foo = {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2020,14 +2020,14 @@ type Foo = {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2047,9 +2047,9 @@ type Foo = {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -2069,14 +2069,14 @@ type Foo = {
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2096,14 +2096,14 @@ type Foo = {
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2123,14 +2123,14 @@ type Foo = {
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2150,9 +2150,9 @@ type Foo = {
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -2172,9 +2172,9 @@ type Foo = {
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2194,14 +2194,14 @@ type Foo = {
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2221,14 +2221,14 @@ type Foo = {
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2248,9 +2248,9 @@ type Foo = {
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -2270,9 +2270,9 @@ type Foo = {
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2290,21 +2290,21 @@ type Foo = {
             options: [
                 {
                     delimiter: "comma",
-                    overrides: { typeLiteral: { delimiter: "semi" } }
-                }
+                    overrides: { typeLiteral: { delimiter: "semi" } },
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -2324,22 +2324,22 @@ type Foo = {
                     delimiter: "comma",
                     requireLast: false,
                     overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: true }
-                    }
-                }
+                        typeLiteral: { delimiter: "semi", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -2359,17 +2359,17 @@ type Foo = {
                     delimiter: "comma",
                     requireLast: false,
                     overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: true }
-                    }
-                }
+                        typeLiteral: { delimiter: "semi", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
@@ -2387,124 +2387,27 @@ type Foo = {
             options: [
                 {
                     delimiter: "semi",
-                    overrides: { typeLiteral: { delimiter: "comma" } }
-                }
+                    overrides: { typeLiteral: { delimiter: "comma" } },
+                },
             ],
             errors: [
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 16
-                }
-            ]
+                    column: 16,
+                },
+            ],
         },
         {
             code: `
 type Foo = {
     name: string
     age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number,
-}
-            `,
-            options: [
-                {
-                    delimiter: "semi",
-                    requireLast: false,
-                    overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: true }
-                    }
-                }
-            ],
-            errors: [
-                {
-                    message: "Expected a comma.",
-                    line: 3,
-                    column: 17
-                },
-                {
-                    message: "Expected a comma.",
-                    line: 4,
-                    column: 16
-                }
-            ]
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number
-}
-            `,
-            options: [
-                {
-                    delimiter: "semi",
-                    requireLast: true,
-                    overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: false }
-                    }
-                }
-            ],
-            errors: [
-                {
-                    message: "Expected a comma.",
-                    line: 3,
-                    column: 17
-                }
-            ]
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number,
-}
-            `,
-            options: [
-                {
-                    delimiter: "semi",
-                    overrides: { typeLiteral: { delimiter: "comma" } }
-                }
-            ],
-            errors: [
-                {
-                    message: "Expected a comma.",
-                    line: 3,
-                    column: 18
-                },
-                {
-                    message: "Expected a comma.",
-                    line: 4,
-                    column: 17
-                }
-            ]
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
 }
             `,
             output: `
@@ -2518,22 +2421,119 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: false,
                     overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: true }
-                    }
-                }
+                        typeLiteral: { delimiter: "comma", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
+}
+            `,
+            options: [
+                {
+                    delimiter: "semi",
+                    requireLast: true,
+                    overrides: {
+                        typeLiteral: { delimiter: "comma", requireLast: false },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    message: "Expected a comma.",
+                    line: 3,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    delimiter: "semi",
+                    overrides: { typeLiteral: { delimiter: "comma" } },
+                },
+            ],
+            errors: [
+                {
+                    message: "Expected a comma.",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    message: "Expected a comma.",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    delimiter: "semi",
+                    requireLast: false,
+                    overrides: {
+                        typeLiteral: { delimiter: "comma", requireLast: true },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    message: "Expected a comma.",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    message: "Expected a comma.",
+                    line: 4,
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2553,17 +2553,17 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: false }
-                    }
-                }
+                        typeLiteral: { delimiter: "comma", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -2583,22 +2583,22 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: false }
-                    }
-                }
+                        typeLiteral: { delimiter: "comma", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2616,21 +2616,21 @@ type Foo = {
             options: [
                 {
                     delimiter: "semi",
-                    overrides: { typeLiteral: { delimiter: "none" } }
-                }
+                    overrides: { typeLiteral: { delimiter: "none" } },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2650,22 +2650,22 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: false,
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: true }
-                    }
-                }
+                        typeLiteral: { delimiter: "none", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2685,17 +2685,17 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false }
-                    }
-                }
+                        typeLiteral: { delimiter: "none", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (;).",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -2715,17 +2715,17 @@ type Foo = {
                     delimiter: "semi",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false }
-                    }
-                }
+                        typeLiteral: { delimiter: "none", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (;).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2743,21 +2743,21 @@ type Foo = {
             options: [
                 {
                     delimiter: "comma",
-                    overrides: { typeLiteral: { delimiter: "none" } }
-                }
+                    overrides: { typeLiteral: { delimiter: "none" } },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2777,22 +2777,22 @@ type Foo = {
                     delimiter: "comma",
                     requireLast: false,
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: true }
-                    }
-                }
+                        typeLiteral: { delimiter: "none", requireLast: true },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2812,17 +2812,17 @@ type Foo = {
                     delimiter: "comma",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false }
-                    }
-                }
+                        typeLiteral: { delimiter: "none", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (,).",
                     line: 3,
-                    column: 18
-                }
-            ]
+                    column: 18,
+                },
+            ],
         },
         {
             code: `
@@ -2842,17 +2842,17 @@ type Foo = {
                     delimiter: "comma",
                     requireLast: true,
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false }
-                    }
-                }
+                        typeLiteral: { delimiter: "none", requireLast: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Unexpected separator (,).",
                     line: 4,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2883,32 +2883,32 @@ type Bar = {
                     requireLast: true,
                     overrides: {
                         interface: { delimiter: "comma" },
-                        typeLiteral: { delimiter: "semi" }
-                    }
-                }
+                        typeLiteral: { delimiter: "semi" },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a comma.",
                     line: 3,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Expected a comma.",
                     line: 4,
-                    column: 17
+                    column: 17,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 8,
-                    column: 18
+                    column: 18,
                 },
                 {
                     message: "Expected a semicolon.",
                     line: 9,
-                    column: 17
-                }
-            ]
+                    column: 17,
+                },
+            ],
         },
         {
             code: `
@@ -2925,9 +2925,9 @@ interface Foo {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 23
-                }
-            ]
+                    column: 23,
+                },
+            ],
         },
         {
             code: `
@@ -2945,9 +2945,9 @@ interface Foo {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 23
-                }
-            ]
+                    column: 23,
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any }",
@@ -2957,9 +2957,9 @@ interface Foo {
                 {
                     message: "Expected a semicolon.",
                     line: 1,
-                    column: 35
-                }
-            ]
+                    column: 35,
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any }",
@@ -2967,16 +2967,16 @@ interface Foo {
             options: [
                 {
                     requireLast: true,
-                    ignoreSingleLine: false
-                }
+                    ignoreSingleLine: false,
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 1,
-                    column: 35
-                }
-            ]
+                    column: 35,
+                },
+            ],
         },
         {
             code: "interface Foo { [key: string]: any }",
@@ -2986,17 +2986,17 @@ interface Foo {
                     requireLast: true,
                     ignoreSingleLine: true,
                     overrides: {
-                        interface: { ignoreSingleLine: false }
-                    }
-                }
+                        interface: { ignoreSingleLine: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 1,
-                    column: 35
-                }
-            ]
+                    column: 35,
+                },
+            ],
         },
         {
             code: `
@@ -3013,9 +3013,9 @@ type Foo = {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 23
-                }
-            ]
+                    column: 23,
+                },
+            ],
         },
         {
             code: `
@@ -3033,9 +3033,9 @@ type Foo = {
                 {
                     message: "Expected a semicolon.",
                     line: 3,
-                    column: 23
-                }
-            ]
+                    column: 23,
+                },
+            ],
         },
         {
             code: "type Foo = { [key: string]: any }",
@@ -3045,9 +3045,9 @@ type Foo = {
                 {
                     message: "Expected a semicolon.",
                     line: 1,
-                    column: 32
-                }
-            ]
+                    column: 32,
+                },
+            ],
         },
         {
             code: "type Foo = { [key: string]: any }",
@@ -3055,16 +3055,16 @@ type Foo = {
             options: [
                 {
                     requireLast: true,
-                    ignoreSingleLine: false
-                }
+                    ignoreSingleLine: false,
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 1,
-                    column: 32
-                }
-            ]
+                    column: 32,
+                },
+            ],
         },
         {
             code: "type Foo = { [key: string]: any }",
@@ -3074,17 +3074,17 @@ type Foo = {
                     requireLast: true,
                     ignoreSingleLine: true,
                     overrides: {
-                        typeLiteral: { ignoreSingleLine: false }
-                    }
-                }
+                        typeLiteral: { ignoreSingleLine: false },
+                    },
+                },
             ],
             errors: [
                 {
                     message: "Expected a semicolon.",
                     line: 1,
-                    column: 32
-                }
-            ]
-        }
-    ]
+                    column: 32,
+                },
+            ],
+        },
+    ],
 });

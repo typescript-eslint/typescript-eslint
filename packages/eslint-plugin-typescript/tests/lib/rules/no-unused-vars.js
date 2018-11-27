@@ -16,12 +16,12 @@ const ruleTester = new RuleTester({
     parserOptions: {
         ecmaVersion: 6,
         sourceType: "module",
-        ecmaFeatures: {}
+        ecmaFeatures: {},
     },
     parser: "typescript-eslint-parser",
     rules: {
-        "typescript/no-unused-vars": "error"
-    }
+        "typescript/no-unused-vars": "error",
+    },
 });
 
 ruleTester.defineRule("typescript/no-unused-vars", rule);
@@ -441,7 +441,7 @@ export class App {
         console.log(this.logger);
     }
 }
-        `
+        `,
     ],
 
     invalid: [
@@ -455,9 +455,9 @@ export class Foo {}
                     message:
                         "'ClassDecoratorFactory' is defined but never used.",
                     line: 2,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -469,9 +469,9 @@ baz<Bar>()
                 {
                     message: "'Foo' is defined but never used.",
                     line: 2,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -483,9 +483,9 @@ console.log(a);
                 {
                     message: "'Nullable' is defined but never used.",
                     line: 2,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -498,9 +498,9 @@ console.log(a);
                 {
                     message: "'SomeOther' is defined but never used.",
                     line: 3,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
 
         {
@@ -516,9 +516,9 @@ new A();
                 {
                     message: "'Another' is defined but never used.",
                     line: 3,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -533,9 +533,9 @@ new A();
                 {
                     message: "'Another' is defined but never used.",
                     line: 3,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -550,9 +550,9 @@ new A();
                 {
                     message: "'Another' is defined but never used.",
                     line: 3,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -566,9 +566,9 @@ interface A {
                 {
                     message: "'Another' is defined but never used.",
                     line: 3,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -582,9 +582,9 @@ interface A {
                 {
                     message: "'Another' is defined but never used.",
                     line: 3,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -596,9 +596,9 @@ foo();
                 {
                     message: "'Nullable' is defined but never used.",
                     line: 2,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -610,9 +610,9 @@ foo();
                 {
                     message: "'Nullable' is defined but never used.",
                     line: 2,
-                    column: 10
-                }
-            ]
+                    column: 10,
+                },
+            ],
         },
         {
             code: `
@@ -628,9 +628,9 @@ new A();
                 {
                     message: "'SomeOther' is defined but never used.",
                     line: 3,
-                    column: 10
-                }
-            ]
-        }
-    ]
+                    column: 10,
+                },
+            ],
+        },
+    ],
 });

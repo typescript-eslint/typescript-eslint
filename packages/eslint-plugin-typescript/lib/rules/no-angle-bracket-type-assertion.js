@@ -16,13 +16,13 @@ module.exports = {
             description:
                 "Enforces the use of `as Type` assertions instead of `<Type>` assertions",
             extraDescription: [
-                util.tslintRule("no-angle-bracket-type-assertion")
+                util.tslintRule("no-angle-bracket-type-assertion"),
             ],
             category: "Style",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-angle-bracket-type-assertion.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-angle-bracket-type-assertion.md",
         },
-        schema: []
+        schema: [],
     },
 
     create(context) {
@@ -40,10 +40,10 @@ module.exports = {
                     data: {
                         cast: sourceCode.getText(
                             node.typeAnnotation.typeAnnotation
-                        )
-                    }
+                        ),
+                    },
                 });
-            }
+            },
         };
-    }
+    },
 };

@@ -17,7 +17,7 @@ module.exports = {
             extraDescription: [util.tslintRule("interface-over-type-literal")],
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-type-alias.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-type-alias.md",
         },
         schema: [
             {
@@ -31,11 +31,11 @@ module.exports = {
                             "never",
                             "in-unions",
                             "in-intersections",
-                            "in-unions-and-intersections"
-                        ]
+                            "in-unions-and-intersections",
+                        ],
                     },
                     allowCallbacks: {
-                        enum: [true, false, "always", "never"]
+                        enum: [true, false, "always", "never"],
                     },
                     allowLiterals: {
                         enum: [
@@ -45,8 +45,8 @@ module.exports = {
                             "never",
                             "in-unions",
                             "in-intersections",
-                            "in-unions-and-intersections"
-                        ]
+                            "in-unions-and-intersections",
+                        ],
                     },
                     allowMappedTypes: {
                         enum: [
@@ -56,13 +56,13 @@ module.exports = {
                             "never",
                             "in-unions",
                             "in-intersections",
-                            "in-unions-and-intersections"
-                        ]
-                    }
+                            "in-unions-and-intersections",
+                        ],
+                    },
                 },
-                additionalProperties: false
-            }
-        ]
+                additionalProperties: false,
+            },
+        ],
     },
 
     create(context) {
@@ -78,24 +78,24 @@ module.exports = {
             true,
             "always",
             "in-unions",
-            "in-unions-and-intersections"
+            "in-unions-and-intersections",
         ];
         const intersections = [
             true,
             "always",
             "in-intersections",
-            "in-unions-and-intersections"
+            "in-unions-and-intersections",
         ];
         const compositions = [
             "in-unions",
             "in-intersections",
-            "in-unions-and-intersections"
+            "in-unions-and-intersections",
         ];
         const aliasTypes = [
             "TSLastTypeNode",
             "TSArrayType",
             "TSTypeReference",
-            "TSLiteralType"
+            "TSLiteralType",
         ];
 
         //----------------------------------------------------------------------
@@ -229,7 +229,7 @@ module.exports = {
                             compositionType,
                             isTopLevel,
                             "aliases"
-                        )
+                        ),
                     });
                 }
             } else if (isCallback(node)) {
@@ -240,7 +240,7 @@ module.exports = {
                             compositionType,
                             isTopLevel,
                             "callbacks"
-                        )
+                        ),
                     });
                 }
             } else if (isLiteral(node)) {
@@ -258,7 +258,7 @@ module.exports = {
                             compositionType,
                             isTopLevel,
                             "literals"
-                        )
+                        ),
                     });
                 }
             } else if (isMappedType(node)) {
@@ -276,13 +276,13 @@ module.exports = {
                             compositionType,
                             isTopLevel,
                             "mapped types"
-                        )
+                        ),
                     });
                 }
             } else {
                 context.report({
                     node,
-                    message: getMessage(compositionType, isTopLevel)
+                    message: getMessage(compositionType, isTopLevel),
                 });
             }
         }
@@ -326,7 +326,7 @@ module.exports = {
                 if (node.kind === "type") {
                     validateNode(node.declarations[0].init, true);
                 }
-            }
+            },
         };
-    }
+    },
 };

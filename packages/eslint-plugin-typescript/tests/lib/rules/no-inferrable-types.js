@@ -16,7 +16,7 @@ const RuleTester = require("eslint").RuleTester;
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("no-inferrable-types", rule, {
@@ -39,23 +39,23 @@ ruleTester.run("no-inferrable-types", rule, {
         {
             code:
                 "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {}",
-            options: [{ ignoreParameters: true }]
+            options: [{ ignoreParameters: true }],
         },
         {
             code:
                 "function fn(a: number = 5, b: boolean = true, c: string = 'foo') {}",
-            options: [{ ignoreParameters: true }]
+            options: [{ ignoreParameters: true }],
         },
         {
             code:
                 "const fn = function(a: number = 5, b: boolean = true, c: string = 'foo') {}",
-            options: [{ ignoreParameters: true }]
+            options: [{ ignoreParameters: true }],
         },
         {
             code:
                 "class Foo { a: number = 5; b: boolean = true; c: string = 'foo'; }",
-            options: [{ ignoreProperties: true }]
-        }
+            options: [{ ignoreProperties: true }],
+        },
     ],
 
     invalid: [
@@ -67,9 +67,9 @@ ruleTester.run("no-inferrable-types", rule, {
                     message:
                         "Type number trivially inferred from a number literal, remove type annotation",
                     line: 1,
-                    column: 7
-                }
-            ]
+                    column: 7,
+                },
+            ],
         },
         {
             code: "const a: number = Infinity",
@@ -79,9 +79,9 @@ ruleTester.run("no-inferrable-types", rule, {
                     message:
                         "Type number trivially inferred from a number literal, remove type annotation",
                     line: 1,
-                    column: 7
-                }
-            ]
+                    column: 7,
+                },
+            ],
         },
         {
             code: "const a: boolean = true",
@@ -91,9 +91,9 @@ ruleTester.run("no-inferrable-types", rule, {
                     message:
                         "Type boolean trivially inferred from a boolean literal, remove type annotation",
                     line: 1,
-                    column: 7
-                }
-            ]
+                    column: 7,
+                },
+            ],
         },
         {
             code: "const a: string = 'foo'",
@@ -103,9 +103,9 @@ ruleTester.run("no-inferrable-types", rule, {
                     message:
                         "Type string trivially inferred from a string literal, remove type annotation",
                     line: 1,
-                    column: 7
-                }
-            ]
+                    column: 7,
+                },
+            ],
         },
         {
             code:
@@ -116,21 +116,21 @@ ruleTester.run("no-inferrable-types", rule, {
                     message:
                         "Type number trivially inferred from a number literal, remove type annotation",
                     line: 1,
-                    column: 13
+                    column: 13,
                 },
                 {
                     message:
                         "Type boolean trivially inferred from a boolean literal, remove type annotation",
                     line: 1,
-                    column: 28
+                    column: 28,
                 },
                 {
                     message:
                         "Type string trivially inferred from a string literal, remove type annotation",
                     line: 1,
-                    column: 47
-                }
-            ]
+                    column: 47,
+                },
+            ],
         },
         {
             code:
@@ -141,21 +141,21 @@ ruleTester.run("no-inferrable-types", rule, {
                     message:
                         "Type number trivially inferred from a number literal, remove type annotation",
                     line: 1,
-                    column: 13
+                    column: 13,
                 },
                 {
                     message:
                         "Type boolean trivially inferred from a boolean literal, remove type annotation",
                     line: 1,
-                    column: 28
+                    column: 28,
                 },
                 {
                     message:
                         "Type string trivially inferred from a string literal, remove type annotation",
                     line: 1,
-                    column: 47
-                }
-            ]
-        }
-    ]
+                    column: 47,
+                },
+            ],
+        },
+    ],
 });

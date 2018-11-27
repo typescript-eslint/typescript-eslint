@@ -18,9 +18,9 @@ module.exports = {
             extraDescription: [util.tslintRule("no-any")],
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-explicit-any.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-explicit-any.md",
         },
-        schema: []
+        schema: [],
     },
 
     create(context) {
@@ -38,7 +38,7 @@ module.exports = {
             if (node.type === "TSAnyKeyword") {
                 context.report({
                     node,
-                    message: "Unexpected any. Specify a different type."
+                    message: "Unexpected any. Specify a different type.",
                 });
             } else if (node.type === "TSArrayType") {
                 checkGenericNodeForAnnotation(node.elementType);
@@ -100,7 +100,7 @@ module.exports = {
             },
             FunctionDeclaration: checkFunctionReturnTypeForAnnotation,
             FunctionExpression: checkFunctionReturnTypeForAnnotation,
-            ArrowFunctionExpression: checkFunctionReturnTypeForAnnotation
+            ArrowFunctionExpression: checkFunctionReturnTypeForAnnotation,
         };
-    }
+    },
 };

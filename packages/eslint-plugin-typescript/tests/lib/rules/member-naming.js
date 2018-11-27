@@ -16,30 +16,30 @@ const rule = require("../../../lib/rules/member-naming"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("member-naming", rule, {
     valid: [
         {
             code: `class Class { _fooBar() {} }`,
-            options: [{ public: "^_" }]
+            options: [{ public: "^_" }],
         },
         {
             code: `class Class { public _fooBar() {} }`,
-            options: [{ public: "^_" }]
+            options: [{ public: "^_" }],
         },
         {
             code: `class Class { protected _fooBar() {} }`,
-            options: [{ protected: "^_" }]
+            options: [{ protected: "^_" }],
         },
         {
             code: `class Class { private _fooBar() {} }`,
-            options: [{ private: "^_" }]
+            options: [{ private: "^_" }],
         },
         {
             code: `class Class { protected fooBar() {} }`,
-            options: [{ private: "^_" }]
+            options: [{ private: "^_" }],
         },
         {
             code: `
@@ -54,9 +54,9 @@ class Class {
                 {
                     public: "^pub[A-Z]",
                     protected: "^prot[A-Z]",
-                    private: "^priv[A-Z]"
-                }
-            ]
+                    private: "^priv[A-Z]",
+                },
+            ],
         },
         {
             code: `
@@ -71,9 +71,9 @@ class Class {
                 {
                     public: "^pub[A-Z]",
                     protected: "^prot[A-Z]",
-                    private: "^priv[A-Z]"
-                }
-            ]
+                    private: "^priv[A-Z]",
+                },
+            ],
         },
         {
             code: `
@@ -88,10 +88,10 @@ class Class {
                 {
                     public: "^pub[A-Z]",
                     protected: "^prot[A-Z]",
-                    private: "^priv[A-Z]"
-                }
-            ]
-        }
+                    private: "^priv[A-Z]",
+                },
+            ],
+        },
     ],
     invalid: [
         {
@@ -101,9 +101,9 @@ class Class {
                 {
                     message: "public property fooBar should match /^_/",
                     line: 1,
-                    column: 15
-                }
-            ]
+                    column: 15,
+                },
+            ],
         },
         {
             code: `class Class { public fooBar() {} }`,
@@ -112,9 +112,9 @@ class Class {
                 {
                     message: "public property fooBar should match /^_/",
                     line: 1,
-                    column: 22
-                }
-            ]
+                    column: 22,
+                },
+            ],
         },
         {
             code: `class Class { protected fooBar() {} }`,
@@ -123,9 +123,9 @@ class Class {
                 {
                     message: "protected property fooBar should match /^_/",
                     line: 1,
-                    column: 25
-                }
-            ]
+                    column: 25,
+                },
+            ],
         },
         {
             code: `class Class { private fooBar() {} }`,
@@ -134,9 +134,9 @@ class Class {
                 {
                     message: "private property fooBar should match /^_/",
                     line: 1,
-                    column: 23
-                }
-            ]
+                    column: 23,
+                },
+            ],
         },
         {
             code: `
@@ -151,32 +151,32 @@ class Class {
                 {
                     public: "^pub[A-Z]",
                     protected: "^prot[A-Z]",
-                    private: "^priv[A-Z]"
-                }
+                    private: "^priv[A-Z]",
+                },
             ],
             errors: [
                 {
                     message: "public property one should match /^pub[A-Z]/",
                     line: 3,
-                    column: 5
+                    column: 5,
                 },
                 {
                     message: "public property two should match /^pub[A-Z]/",
                     line: 4,
-                    column: 12
+                    column: 12,
                 },
                 {
                     message:
                         "protected property three should match /^prot[A-Z]/",
                     line: 5,
-                    column: 15
+                    column: 15,
                 },
                 {
                     message: "private property four should match /^priv[A-Z]/",
                     line: 6,
-                    column: 13
-                }
-            ]
+                    column: 13,
+                },
+            ],
         },
         {
             code: `
@@ -191,32 +191,32 @@ class Class {
                 {
                     public: "^pub[A-Z]",
                     protected: "^prot[A-Z]",
-                    private: "^priv[A-Z]"
-                }
+                    private: "^priv[A-Z]",
+                },
             ],
             errors: [
                 {
                     message: "public property one should match /^pub[A-Z]/",
                     line: 3,
-                    column: 5
+                    column: 5,
                 },
                 {
                     message: "public property two should match /^pub[A-Z]/",
                     line: 4,
-                    column: 12
+                    column: 12,
                 },
                 {
                     message:
                         "protected property three should match /^prot[A-Z]/",
                     line: 5,
-                    column: 15
+                    column: 15,
                 },
                 {
                     message: "private property four should match /^priv[A-Z]/",
                     line: 6,
-                    column: 13
-                }
-            ]
+                    column: 13,
+                },
+            ],
         },
         {
             code: `
@@ -231,32 +231,32 @@ class Class {
                 {
                     public: "^pub[A-Z]",
                     protected: "^prot[A-Z]",
-                    private: "^priv[A-Z]"
-                }
+                    private: "^priv[A-Z]",
+                },
             ],
             errors: [
                 {
                     message: "public property one should match /^pub[A-Z]/",
                     line: 3,
-                    column: 5
+                    column: 5,
                 },
                 {
                     message: "public property two should match /^pub[A-Z]/",
                     line: 4,
-                    column: 12
+                    column: 12,
                 },
                 {
                     message:
                         "protected property three should match /^prot[A-Z]/",
                     line: 5,
-                    column: 15
+                    column: 15,
                 },
                 {
                     message: "private property four should match /^priv[A-Z]/",
                     line: 6,
-                    column: 13
-                }
-            ]
-        }
-    ]
+                    column: 13,
+                },
+            ],
+        },
+    ],
 });

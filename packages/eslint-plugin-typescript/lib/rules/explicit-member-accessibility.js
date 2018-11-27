@@ -18,9 +18,9 @@ module.exports = {
             extraDescription: [util.tslintRule("member-access")],
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/explicit-member-accessibility.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/explicit-member-accessibility.md",
         },
-        schema: []
+        schema: [],
     },
 
     create(context) {
@@ -43,7 +43,7 @@ module.exports = {
                     node: methodDefinition,
                     message: `Missing accessibility modifier on method definition ${
                         methodDefinition.key.name
-                    }.`
+                    }.`,
                 });
             }
         }
@@ -63,7 +63,7 @@ module.exports = {
                     node: classProperty,
                     message: `Missing accessibility modifier on class property ${
                         classProperty.key.name
-                    }.`
+                    }.`,
                 });
             }
         }
@@ -73,7 +73,7 @@ module.exports = {
         //----------------------------------------------------------------------
         return {
             ClassProperty: checkPropertyAccessibilityModifier,
-            MethodDefinition: checkMethodAccessibilityModifier
+            MethodDefinition: checkMethodAccessibilityModifier,
         };
-    }
+    },
 };

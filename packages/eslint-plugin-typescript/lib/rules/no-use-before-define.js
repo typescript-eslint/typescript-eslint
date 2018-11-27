@@ -184,14 +184,14 @@ module.exports = {
             category: "Variables",
             recommended: false,
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-use-before-define.md"
+                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-use-before-define.md",
         },
 
         schema: [
             {
                 oneOf: [
                     {
-                        enum: ["nofunc"]
+                        enum: ["nofunc"],
                     },
                     {
                         type: "object",
@@ -199,13 +199,13 @@ module.exports = {
                             functions: { type: "boolean" },
                             classes: { type: "boolean" },
                             variables: { type: "boolean" },
-                            typedefs: { type: "boolean" }
+                            typedefs: { type: "boolean" },
                         },
-                        additionalProperties: false
-                    }
-                ]
-            }
-        ]
+                        additionalProperties: false,
+                    },
+                ],
+            },
+        ],
     },
 
     create(context) {
@@ -265,7 +265,7 @@ module.exports = {
                 context.report({
                     node: reference.identifier,
                     message: "'{{name}}' was used before it was defined.",
-                    data: reference.identifier
+                    data: reference.identifier,
                 });
             });
         }
@@ -293,7 +293,7 @@ module.exports = {
                 if (ecmaFeatures.globalReturn || node.sourceType === "module") {
                     findVariablesInScope(scope.childScopes[0]);
                 }
-            }
+            },
         };
 
         if (context.parserOptions.ecmaVersion >= 6) {
@@ -312,5 +312,5 @@ module.exports = {
         }
 
         return ruleDefinition;
-    }
+    },
 };

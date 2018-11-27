@@ -16,7 +16,7 @@ const rule = require("../../../lib/rules/no-angle-bracket-type-assertion"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 ruleTester.run("no-angle-bracket-type-assertion", rule, {
@@ -57,7 +57,7 @@ const a: A = b as A;
 const a : number = 5;
 const b : number = a as number;
         `,
-        "const a : Array<number> = [1] as Array<number>;"
+        "const a : Array<number> = [1] as Array<number>;",
     ],
     invalid: [
         {
@@ -77,15 +77,15 @@ const bar = <Foo>new Generic<int>();
                     message:
                         "Prefer 'as Foo' instead of '<Foo>' when doing type assertions",
                     row: 8,
-                    column: 13
+                    column: 13,
                 },
                 {
                     message:
                         "Prefer 'as Foo' instead of '<Foo>' when doing type assertions",
                     row: 9,
-                    column: 13
-                }
-            ]
+                    column: 13,
+                },
+            ],
         },
         {
             code: "const a : number = <number>5",
@@ -94,9 +94,9 @@ const bar = <Foo>new Generic<int>();
                     message:
                         "Prefer 'as number' instead of '<number>' when doing type assertions",
                     row: 1,
-                    column: 20
-                }
-            ]
+                    column: 20,
+                },
+            ],
         },
         {
             code: `
@@ -108,9 +108,9 @@ const b : number = <number>a;
                     message:
                         "Prefer 'as number' instead of '<number>' when doing type assertions",
                     row: 3,
-                    column: 20
-                }
-            ]
+                    column: 20,
+                },
+            ],
         },
         {
             code: "const a : Array<number> = <Array<number>>[1];",
@@ -119,9 +119,9 @@ const b : number = <number>a;
                     message:
                         "Prefer 'as Array<number>' instead of '<Array<number>>' when doing type assertions",
                     row: 1,
-                    column: 27
-                }
-            ]
+                    column: 27,
+                },
+            ],
         },
         {
             code: `
@@ -136,9 +136,9 @@ const a : A = <A>b;
                     message:
                         "Prefer 'as A' instead of '<A>' when doing type assertions",
                     row: 6,
-                    column: 15
-                }
-            ]
+                    column: 15,
+                },
+            ],
         },
         {
             code: `
@@ -157,9 +157,9 @@ const a: A = <A>b;
                     message:
                         "Prefer 'as A' instead of '<A>' when doing type assertions",
                     row: 9,
-                    column: 14
-                }
-            ]
-        }
-    ]
+                    column: 14,
+                },
+            ],
+        },
+    ],
 });

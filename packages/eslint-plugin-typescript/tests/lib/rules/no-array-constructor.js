@@ -17,7 +17,7 @@ const rule = require("../../../lib/rules/no-array-constructor"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser"
+    parser: "typescript-eslint-parser",
 });
 
 const message = "The array literal notation [] is preferrable.";
@@ -37,44 +37,44 @@ ruleTester.run("no-array-constructor", rule, {
         "new Array<Foo>(1, 2, 3)",
         "new Array<Foo>()",
         "Array<Foo>(1, 2, 3)",
-        "Array<Foo>()"
+        "Array<Foo>()",
     ],
 
     invalid: [
         {
             code: "new Array()",
             output: "[]",
-            errors: [{ message, type: "NewExpression" }]
+            errors: [{ message, type: "NewExpression" }],
         },
         {
             code: "Array()",
             output: "[]",
-            errors: [{ message, type: "CallExpression" }]
+            errors: [{ message, type: "CallExpression" }],
         },
         {
             code: "new Array",
             output: "[]",
-            errors: [{ message, type: "NewExpression" }]
+            errors: [{ message, type: "NewExpression" }],
         },
         {
             code: "new Array(x, y)",
             output: "[x, y]",
-            errors: [{ message, type: "NewExpression" }]
+            errors: [{ message, type: "NewExpression" }],
         },
         {
             code: "Array(x, y)",
             output: "[x, y]",
-            errors: [{ message, type: "CallExpression" }]
+            errors: [{ message, type: "CallExpression" }],
         },
         {
             code: "new Array(0, 1, 2)",
             output: "[0, 1, 2]",
-            errors: [{ message, type: "NewExpression" }]
+            errors: [{ message, type: "NewExpression" }],
         },
         {
             code: "Array(0, 1, 2)",
             output: "[0, 1, 2]",
-            errors: [{ message, type: "CallExpression" }]
+            errors: [{ message, type: "CallExpression" }],
         },
         {
             code: `new Array(
@@ -87,7 +87,7 @@ ruleTester.run("no-array-constructor", rule, {
                 1,
                 2
             ]`,
-            errors: [{ message, type: "NewExpression" }]
-        }
-    ]
+            errors: [{ message, type: "NewExpression" }],
+        },
+    ],
 });
