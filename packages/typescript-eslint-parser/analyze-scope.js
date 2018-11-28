@@ -215,6 +215,14 @@ class Referencer extends OriginalReferencer {
      */
     visitClass(node) {
         this.visitDecorators(node.decorators);
+
+        if (node.superTypeParameters) {
+            const upperTypeMode = this.typeMode;
+            this.typeMode = true;
+            this.visit(node.superTypeParameters);
+            this.typeMode = upperTypeMode;
+        }
+
         super.visitClass(node);
     }
 

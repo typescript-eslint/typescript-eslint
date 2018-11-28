@@ -565,6 +565,389 @@ Object {
 }
 `;
 
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/class-supper-type.ts 1`] = `
+Object {
+  "$id": 11,
+  "block": Object {
+    "range": Array [
+      0,
+      117,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 6,
+      "block": Object {
+        "range": Array [
+          0,
+          40,
+        ],
+        "type": "TSAbstractClassDeclaration",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "class",
+      "upperScope": Object {
+        "$ref": 11,
+      },
+      "variableMap": Object {
+        "Foo": Object {
+          "$ref": 5,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 11,
+      },
+      "variables": Array [
+        Object {
+          "$id": 5,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "Foo",
+                "range": Array [
+                  15,
+                  18,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  40,
+                ],
+                "type": "TSAbstractClassDeclaration",
+              },
+              "parent": undefined,
+              "type": "ClassName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "Foo",
+              "range": Array [
+                15,
+                18,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "Foo",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 6,
+          },
+        },
+      ],
+    },
+    Object {
+      "$id": 8,
+      "block": Object {
+        "range": Array [
+          42,
+          82,
+        ],
+        "type": "ClassDeclaration",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "class",
+      "upperScope": Object {
+        "$ref": 11,
+      },
+      "variableMap": Object {
+        "Foo2": Object {
+          "$ref": 7,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 11,
+      },
+      "variables": Array [
+        Object {
+          "$id": 7,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "Foo2",
+                "range": Array [
+                  56,
+                  60,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  42,
+                  82,
+                ],
+                "type": "ClassDeclaration",
+              },
+              "parent": undefined,
+              "type": "ClassName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "Foo2",
+              "range": Array [
+                56,
+                60,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "Foo2",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 8,
+          },
+        },
+      ],
+    },
+    Object {
+      "$id": 10,
+      "block": Object {
+        "range": Array [
+          84,
+          116,
+        ],
+        "type": "ClassDeclaration",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "class",
+      "upperScope": Object {
+        "$ref": 11,
+      },
+      "variableMap": Object {
+        "Foo3": Object {
+          "$ref": 9,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 11,
+      },
+      "variables": Array [
+        Object {
+          "$id": 9,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "Foo3",
+                "range": Array [
+                  90,
+                  94,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  84,
+                  116,
+                ],
+                "type": "ClassDeclaration",
+              },
+              "parent": undefined,
+              "type": "ClassName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "Foo3",
+              "range": Array [
+                90,
+                94,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "Foo3",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 10,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [
+    Object {
+      "$id": 2,
+      "from": Object {
+        "$ref": 11,
+      },
+      "identifier": Object {
+        "name": "Bar",
+        "range": Array [
+          27,
+          30,
+        ],
+        "type": "Identifier",
+      },
+      "kind": "r",
+      "resolved": null,
+      "writeExpr": undefined,
+    },
+    Object {
+      "$id": 3,
+      "from": Object {
+        "$ref": 11,
+      },
+      "identifier": Object {
+        "name": "Bar",
+        "range": Array [
+          69,
+          72,
+        ],
+        "type": "Identifier",
+      },
+      "kind": "r",
+      "resolved": null,
+      "writeExpr": undefined,
+    },
+    Object {
+      "$id": 4,
+      "from": Object {
+        "$ref": 11,
+      },
+      "identifier": Object {
+        "name": "Bar",
+        "range": Array [
+          103,
+          106,
+        ],
+        "type": "Identifier",
+      },
+      "kind": "r",
+      "resolved": null,
+      "writeExpr": undefined,
+    },
+  ],
+  "throughReferences": Array [
+    Object {
+      "$ref": 2,
+    },
+    Object {
+      "$ref": 3,
+    },
+    Object {
+      "$ref": 4,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "Foo2": Object {
+      "$ref": 0,
+    },
+    "Foo3": Object {
+      "$ref": 1,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 11,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "Foo2",
+            "range": Array [
+              56,
+              60,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              42,
+              82,
+            ],
+            "type": "ClassDeclaration",
+          },
+          "parent": null,
+          "type": "ClassName",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "Foo2",
+          "range": Array [
+            56,
+            60,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "Foo2",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 11,
+      },
+    },
+    Object {
+      "$id": 1,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "Foo3",
+            "range": Array [
+              90,
+              94,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              84,
+              116,
+            ],
+            "type": "ClassDeclaration",
+          },
+          "parent": null,
+          "type": "ClassName",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "Foo3",
+          "range": Array [
+            90,
+            94,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "Foo3",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 11,
+      },
+    },
+  ],
+}
+`;
+
 exports[`TypeScript scope analysis tests/fixtures/scope-analysis/computed-properties-in-interface.ts 1`] = `
 Object {
   "$id": 8,
