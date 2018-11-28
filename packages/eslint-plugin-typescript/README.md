@@ -10,12 +10,6 @@ You'll first need to install [ESLint](http://eslint.org):
 $ npm i eslint --save-dev
 ```
 
-Next, install `typescript-eslint-parser`:
-
-```
-$ npm install typescript-eslint-parser --save-dev
-```
-
 Last, install `eslint-plugin-typescript`:
 
 ```
