@@ -23,7 +23,7 @@ module.exports = Evk.unionWith({
     // Additional Nodes.
     ClassProperty: ["decorators", "key", "typeAnnotation", "value"],
     Decorator: ["expression"],
-    TSAbstractClassProperty: ["typeAnnotation", "key", "value"],
+    TSAbstractClassProperty: ["decorators", "key", "typeAnnotation", "value"],
     TSAbstractClassDeclaration: ["id", "body", "superClass", "implements"],
     TSAbstractKeyword: [],
     TSAbstractMethodDefinition: ["key", "value"],
