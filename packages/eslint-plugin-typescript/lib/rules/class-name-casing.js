@@ -45,7 +45,7 @@ module.exports = {
          * @returns {undefined}
          */
         function report(decl, id) {
-            id = id || decl.id;
+            const resolvedId = id || decl.id;
 
             let friendlyName;
 
@@ -62,8 +62,10 @@ module.exports = {
             }
 
             context.report({
-                node: id,
-                message: `${friendlyName} '${id.name}' must be PascalCased`,
+                node: resolvedId,
+                message: `${friendlyName} '${
+                    resolvedId.name
+                }' must be PascalCased`,
             });
         }
 

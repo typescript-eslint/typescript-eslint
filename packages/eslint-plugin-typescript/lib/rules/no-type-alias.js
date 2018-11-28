@@ -196,10 +196,10 @@ module.exports = {
             }
 
             return compositionType === "TSUnionType"
-                ? `${type[0].toUpperCase()}${type.substring(
+                ? `${type[0].toUpperCase()}${type.slice(
                       1
                   )} in union types are not allowed`
-                : `${type[0].toUpperCase()}${type.substring(
+                : `${type[0].toUpperCase()}${type.slice(
                       1
                   )} in intersection types are not allowed`;
         }
