@@ -26,14 +26,12 @@ $ npm install eslint-plugin-typescript --save-dev
 
 ## Usage
 
-Add `typescript-eslint-parser` to the `parser` field and `typescript` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
+Add `eslint-plugin-typescript/parser` to the `parser` field and `typescript` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
 
 ```json
 {
-    "parser": "typescript-eslint-parser",
-    "plugins": [
-        "typescript"
-    ]
+    "parser": "eslint-plugin-typescript/parser",
+    "plugins": ["typescript"]
 }
 ```
 
@@ -46,6 +44,9 @@ Then configure the rules you want to use under the rules section.
     }
 }
 ```
+
+Note: The plugin provides its own version of the `typescript-eslint-parser` via `eslint-plugin-typescript/parser`.
+This guarantees 100% compatibility between the plugin and the parser.
 
 ## Supported Rules
 

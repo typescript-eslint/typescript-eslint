@@ -156,7 +156,9 @@ module.exports = {
                         if (missingDelimiter) {
                             // add the missing delimiter
                             return fixer.insertTextAfter(lastToken, token);
-                        } else if (isLast && !opts.requireLast) {
+                        }
+
+                        if (isLast && !opts.requireLast) {
                             return fixer.remove(lastToken);
                         }
 
