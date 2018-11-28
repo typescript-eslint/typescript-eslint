@@ -1,6 +1,7 @@
 /**
  * @fileoverview Enforces PascalCased class and interface names.
  * @author Jed Fox
+ * @author Armano <https://github.com/armano2>
  */
 "use strict";
 
@@ -31,6 +32,8 @@ ruleTester.run("class-name-casing", rule, {
         "var Foo = class {};",
         "interface SomeInterface {}",
         "class ClassNameWithDigit2 {}",
+        "abstract class ClassNameWithDigit2 {}",
+        "var ba_zz = class Foo {};",
     ],
 
     invalid: [
@@ -66,6 +69,16 @@ ruleTester.run("class-name-casing", rule, {
             ],
         },
         {
+            code: "const foo = class {};",
+            errors: [
+                {
+                    message: "Class 'foo' must be PascalCased",
+                    line: 1,
+                    column: 7,
+                },
+            ],
+        },
+        {
             code: "var bar = class invalidName {}",
             errors: [
                 {
@@ -82,6 +95,27 @@ ruleTester.run("class-name-casing", rule, {
                     message: "Interface 'someInterface' must be PascalCased",
                     line: 1,
                     column: 11,
+                },
+            ],
+        },
+        {
+            code: "abstract class invalidClassName {}",
+            errors: [
+                {
+                    message:
+                        "Abstract class 'invalidClassName' must be PascalCased",
+                    line: 1,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: "declare class invalidClassName {}",
+            errors: [
+                {
+                    message: "Class 'invalidClassName' must be PascalCased",
+                    line: 1,
+                    column: 15,
                 },
             ],
         },

@@ -1,6 +1,7 @@
 /**
  * @fileoverview Enforces PascalCased class and interface names.
  * @author Jed Fox
+ * @author Armano <https://github.com/armano2>
  */
 "use strict";
 
@@ -54,6 +55,9 @@ module.exports = {
                 case "ClassExpression":
                     friendlyName = "Class";
                     break;
+                case "TSAbstractClassDeclaration":
+                    friendlyName = "Abstract class";
+                    break;
                 case "TSInterfaceDeclaration":
                     friendlyName = "Interface";
                     break;
@@ -74,21 +78,19 @@ module.exports = {
         //----------------------------------------------------------------------
 
         return {
-            "ClassDeclaration, TSInterfaceDeclaration"(node) {
+            "ClassDeclaration, TSInterfaceDeclaration, TSAbstractClassDeclaration, ClassExpression"(
+                node
+            ) {
                 // class expressions (i.e. export default class {}) are OK
                 if (node.id && !isPascalCase(node.id.name)) {
                     report(node);
                 }
             },
-            VariableDeclarator(node) {
-                if (node.init && node.init.type === "ClassExpression") {
-                    const id = node.id;
+            "VariableDeclarator[init.type='ClassExpression']"(node) {
+                const id = node.id;
 
-                    if (node.init.id && !isPascalCase(node.init.id.name)) {
-                        report(node.init);
-                    } else if (id && !isPascalCase(id.name)) {
-                        report(node.init, id);
-                    }
+                if (id && !node.init.id && !isPascalCase(id.name)) {
+                    report(node.init, id);
                 }
             },
         };
