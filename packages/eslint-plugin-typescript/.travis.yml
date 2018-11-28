@@ -5,3 +5,9 @@ node_js:
     - "8"
     - "10"
     - "11"
+install: yarn
+script:
+    - yarn lint
+    - yarn format-check
+    - yarn docs:check
+    - yarn test

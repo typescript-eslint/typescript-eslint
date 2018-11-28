@@ -1,7 +1,4 @@
 {
-    // Format a file on save. A formatter must be available, the file must not be auto-saved, and editor must not be shutting down.
-    "editor.formatOnSave": true,
-
     // An array of languages where Emmet abbreviations should not be expanded.
     "emmet.excludeLanguages": [
         "markdown",
