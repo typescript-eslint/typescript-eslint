@@ -219,6 +219,20 @@ class Referencer extends OriginalReferencer {
     }
 
     /**
+     * Visit typeParameters.
+     * @param {*} node The node to visit.
+     * @returns {void}
+     */
+    visitTypeParameters(node) {
+        if (node.typeParameters) {
+            const upperTypeMode = this.typeMode;
+            this.typeMode = true;
+            this.visit(node.typeParameters);
+            this.typeMode = upperTypeMode;
+        }
+    }
+
+    /**
      * Override.
      * Don't create the reference object in the type mode.
      * @param {Identifier} node The Identifier node to visit.
@@ -284,6 +298,34 @@ class Referencer extends OriginalReferencer {
         this.visit(value);
 
         this.typeMode = upperTypeMode;
+    }
+
+    /**
+     * Visit new expression.
+     * @param {NewExpression} node The NewExpression node to visit.
+     * @returns {void}
+     */
+    NewExpression(node) {
+        this.visitTypeParameters(node);
+        this.visit(node.callee);
+        if (node.arguments) {
+            node.arguments.forEach(this.visit, this);
+        }
+    }
+
+    /**
+     * Override.
+     * Visit call expression.
+     * @param {CallExpression} node The CallExpression node to visit.
+     * @returns {void}
+     */
+    CallExpression(node) {
+        this.visitTypeParameters(node);
+
+        this.visit(node.callee);
+        if (node.arguments) {
+            node.arguments.forEach(this.visit, this);
+        }
     }
 
     /**
