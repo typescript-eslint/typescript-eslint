@@ -1,54 +1,54 @@
 {
-  "name": "eslint-plugin-typescript",
-  "version": "0.14.0",
-  "description": "TypeScript plugin for ESLint",
-  "keywords": [
-    "eslint",
-    "eslintplugin",
-    "eslint-plugin"
-  ],
-  "repository": "nzakas/eslint-plugin-typescript",
-  "author": "Nicholas C. Zakas",
-  "main": "lib/index.js",
-  "scripts": {
-    "lint": "eslint lib/ tests/",
-    "lint:fix": "eslint lib/ tests/ --fix",
-    "docs": "eslint-docs",
-    "docs:check": "eslint-docs check",
-    "format-no-write": "prettier-eslint lib/**/*.js tests/**/*.js --eslint-config-path=.eslintrc --eslint-ignore --prettier-ignore --eslint-path=node_modules/eslint --config=.prettierrc",
-    "format": "yarn format-no-write --write",
-    "format-check": "yarn format-no-write --list-different",
-    "mocha": "mocha tests --recursive --reporter=dot",
-    "pretest": "npm run lint",
-    "test": "mocha tests --recursive --reporter=dot",
-    "posttest": "npm run docs:check",
-    "precommit": "npm test && lint-staged"
-  },
-  "dependencies": {
-    "requireindex": "~1.1.0"
-  },
-  "devDependencies": {
-    "eslint": "^4.13.1",
-    "eslint-config-eslint": "^4.0.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-docs": "^0.1.1",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-prettier": "^2.2.0",
-    "husky": "^0.14.3",
-    "lint-staged": "^6.0.0",
-    "mocha": "^4.0.1",
-    "prettier-eslint-cli": "^4.7.1",
-    "typescript": "~2.9",
-    "typescript-eslint-parser": "^17.0.1"
-  },
-  "lint-staged": {
-    "*.js": [
-      "yarn format-check",
-      "git add"
-    ]
-  },
-  "engines": {
-    "node": ">=6"
-  },
-  "license": "MIT"
+    "name": "eslint-plugin-typescript",
+    "version": "0.14.0",
+    "description": "TypeScript plugin for ESLint",
+    "keywords": [
+        "eslint",
+        "eslintplugin",
+        "eslint-plugin"
+    ],
+    "repository": "nzakas/eslint-plugin-typescript",
+    "author": "Nicholas C. Zakas",
+    "main": "lib/index.js",
+    "scripts": {
+        "lint": "eslint lib/ tests/",
+        "lint:fix": "eslint lib/ tests/ --fix",
+        "docs": "eslint-docs",
+        "docs:check": "eslint-docs check",
+        "format-no-write": "prettier-eslint lib/**/*.js tests/**/*.js --eslint-config-path=.eslintrc --eslint-ignore --prettier-ignore --eslint-path=node_modules/eslint --config=.prettierrc",
+        "format": "yarn format-no-write --write",
+        "format-check": "yarn format-no-write --list-different",
+        "mocha": "mocha tests --recursive --reporter=dot",
+        "pretest": "npm run lint",
+        "test": "mocha tests --recursive --reporter=dot",
+        "posttest": "npm run docs:check",
+        "precommit": "npm test && lint-staged"
+    },
+    "dependencies": {
+        "requireindex": "~1.1.0"
+    },
+    "devDependencies": {
+        "eslint": "^4.13.1",
+        "eslint-config-eslint": "^4.0.0",
+        "eslint-config-prettier": "^2.9.0",
+        "eslint-docs": "^0.1.1",
+        "eslint-plugin-node": "^6.0.1",
+        "eslint-plugin-prettier": "^2.2.0",
+        "husky": "^0.14.3",
+        "lint-staged": "^6.0.0",
+        "mocha": "^4.0.1",
+        "prettier-eslint-cli": "^4.7.1",
+        "typescript": "~2.9",
+        "typescript-eslint-parser": "^17.0.1"
+    },
+    "lint-staged": {
+        "*.js": [
+            "yarn format",
+            "git add"
+        ]
+    },
+    "engines": {
+        "node": ">=6"
+    },
+    "license": "MIT"
 }
