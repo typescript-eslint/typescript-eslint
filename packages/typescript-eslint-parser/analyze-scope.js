@@ -210,18 +210,21 @@ class Referencer extends OriginalReferencer {
     /**
      * Override.
      * Visit decorators.
-     * @param {ClassDeclaration|ClassExpression} node The class node to visit.
+     * @param {ClassDeclaration|ClassExpression|TSAbstractClassDeclaration} node The class node to visit.
      * @returns {void}
      */
     visitClass(node) {
         this.visitDecorators(node.decorators);
 
+        const upperTypeMode = this.typeMode;
+        this.typeMode = true;
         if (node.superTypeParameters) {
-            const upperTypeMode = this.typeMode;
-            this.typeMode = true;
             this.visit(node.superTypeParameters);
-            this.typeMode = upperTypeMode;
         }
+        if (node.implements) {
+            this.visit(node.implements);
+        }
+        this.typeMode = upperTypeMode;
 
         super.visitClass(node);
     }
