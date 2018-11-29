@@ -1,6 +1,7 @@
 /**
  * @fileoverview Enforces the use of the keyword `namespace` over `module` to declare custom TypeScript modules.
  * @author Patricio Trevino
+ * @author Armano <https://github.com/armano2>
  */
 "use strict";
 
@@ -32,41 +33,27 @@ module.exports = {
         //----------------------------------------------------------------------
         return {
             TSModuleDeclaration(node) {
-                // Get tokens of the declaration header.
-                const firstToken = sourceCode.getFirstToken(node);
-                const tokens = [firstToken].concat(
-                    sourceCode.getTokensBetween(
-                        firstToken,
-                        sourceCode.getFirstToken(node.body)
-                    )
-                );
-
-                // Get 'module' token and the next one.
-                const moduleKeywordIndex = tokens.findIndex(
-                    t => t.type === "Identifier" && t.value === "module"
-                );
-                const moduleKeywordToken =
-                    moduleKeywordIndex === -1
-                        ? null
-                        : tokens[moduleKeywordIndex];
-                const moduleNameToken = tokens[moduleKeywordIndex + 1];
-
-                // Do nothing if the 'module' token was not found or the module name is a string.
-                if (!moduleKeywordToken || moduleNameToken.type === "String") {
+                // Do nothing if the name is a string.
+                if (!node.id || node.id.type === "Literal") {
                     return;
                 }
+                // Get tokens of the declaration header.
+                const moduleType = sourceCode.getTokenBefore(node.id);
 
-                context.report({
-                    node,
-                    message:
-                        "Use 'namespace' instead of 'module' to declare custom TypeScript modules",
-                    fix(fixer) {
-                        return fixer.replaceText(
-                            moduleKeywordToken,
-                            "namespace"
-                        );
-                    },
-                });
+                if (
+                    moduleType &&
+                    moduleType.type === "Identifier" &&
+                    moduleType.value === "module"
+                ) {
+                    context.report({
+                        node,
+                        message:
+                            "Use 'namespace' instead of 'module' to declare custom TypeScript modules",
+                        fix(fixer) {
+                            return fixer.replaceText(moduleType, "namespace");
+                        },
+                    });
+                }
             },
         };
     },
