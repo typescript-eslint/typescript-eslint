@@ -47,6 +47,7 @@ This guarantees 100% compatibility between the plugin and the parser.
 <!-- Please run `npm run docs` to update this section -->
 <!-- begin rule list -->
 * [`typescript/adjacent-overload-signatures`](./docs/rules/adjacent-overload-signatures.md) — Require that member overloads be consecutive
+* [`typescript/camelcase`](./docs/rules/camelcase.md) — Enforce camelCase naming convention
 * [`typescript/class-name-casing`](./docs/rules/class-name-casing.md) — Require PascalCased class and interface names (`class-name` from TSLint)
 * [`typescript/explicit-function-return-type`](./docs/rules/explicit-function-return-type.md) — Require explicit return types on functions and class methods
 * [`typescript/explicit-member-accessibility`](./docs/rules/explicit-member-accessibility.md) — Require explicit accessibility modifiers on class properties and methods (`member-access` from TSLint)
