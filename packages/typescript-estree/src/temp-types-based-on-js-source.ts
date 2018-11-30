@@ -32,6 +32,7 @@ export interface ESTreeNode {
   decorators?: any;
   const?: boolean;
   declare?: boolean;
+  global?: boolean;
   modifiers?: any;
   body?: any;
   params?: any;
