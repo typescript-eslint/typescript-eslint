@@ -76,7 +76,7 @@ Example usage:
 
 ```javascript
 const parser = require('typescript-estree');
-const code = "const hello: string = 'world';";
+const code = `const hello: string = 'world';`;
 const ast = parser.parse(code, {
   range: true,
   loc: true
