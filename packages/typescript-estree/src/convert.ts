@@ -2527,6 +2527,9 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
       // apply modifiers first...
       applyModifiersToResult((node as any).modifiers);
+      if (node.flags & ts.NodeFlags.GlobalAugmentation) {
+        result.global = true;
+      }
       // ...then check for exports
       result = nodeUtils.fixExports(node, result as any, ast);
       break;
