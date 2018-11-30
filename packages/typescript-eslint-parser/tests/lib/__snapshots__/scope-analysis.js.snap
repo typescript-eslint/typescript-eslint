@@ -4480,6 +4480,101 @@ Object {
 }
 `;
 
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/import-equals.ts 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      28,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 1,
+      "block": Object {
+        "range": Array [
+          0,
+          28,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {
+        "foo": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 1,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "foo",
+                "range": Array [
+                  7,
+                  10,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  27,
+                ],
+                "type": "TSImportEqualsDeclaration",
+              },
+              "parent": null,
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "foo",
+              "range": Array [
+                7,
+                10,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "foo",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 1,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 2,
+  },
+  "variables": Array [],
+}
+`;
+
 exports[`TypeScript scope analysis tests/fixtures/scope-analysis/interface-type.ts 1`] = `
 Object {
   "$id": 0,

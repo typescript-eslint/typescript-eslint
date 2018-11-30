@@ -611,6 +611,22 @@ class Referencer extends OriginalReferencer {
     }
 
     /**
+     * Process import equal declaration
+     * @param {TSImportEqualsDeclaration} node The TSImportEqualsDeclaration node to visit.
+     * @returns {void}
+     */
+    TSImportEqualsDeclaration(node) {
+        const { name, moduleReference } = node;
+        if (name && name.type === "Identifier") {
+            this.currentScope().__define(
+                name,
+                new Definition("ImportBinding", name, node, null, null, null)
+            );
+        }
+        this.visit(moduleReference);
+    }
+
+    /**
      * Process the global augmentation.
      * 1. Set the global scope as the current scope.
      * 2. Configure the global scope to set `variable.eslintUsed = true` for all defined variables. This means `no-unused-vars` doesn't warn those.
