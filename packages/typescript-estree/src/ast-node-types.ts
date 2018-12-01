@@ -12,6 +12,7 @@ export const AST_NODE_TYPES: { [key: string]: string } = {
   AssignmentExpression: 'AssignmentExpression',
   AssignmentPattern: 'AssignmentPattern',
   AwaitExpression: 'AwaitExpression',
+  BigIntLiteral: 'BigIntLiteral',
   BinaryExpression: 'BinaryExpression',
   BlockStatement: 'BlockStatement',
   BreakStatement: 'BreakStatement',

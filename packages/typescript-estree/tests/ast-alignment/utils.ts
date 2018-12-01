@@ -126,6 +126,10 @@ export function preprocessBabylonAST(ast: any): any {
     {
       key: 'guardedHandlers',
       predicate: always
+    },
+    {
+      key: 'interpreter',
+      predicate: always
     }
   ]);
 }

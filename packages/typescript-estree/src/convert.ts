@@ -2004,6 +2004,20 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
       break;
 
+    case SyntaxKind.BigIntLiteral: {
+      const raw = ast.text.slice(
+        (result as any).range[0],
+        (result as any).range[1]
+      );
+      const value = raw.slice(0, -1); // remove suffix `n`
+      Object.assign(result, {
+        type: AST_NODE_TYPES.BigIntLiteral,
+        raw,
+        value
+      });
+      break;
+    }
+
     case SyntaxKind.RegularExpressionLiteral: {
       const pattern = (node as any).text.slice(
         1,
