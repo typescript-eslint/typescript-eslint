@@ -21,25 +21,25 @@ fixturesToTest.forEach(fixture => {
   /**
    * Parse the source with babylon typescript-plugin
    */
-  const babylonTypeScriptPluginResult = parse(source, {
-    parser: 'babylon-plugin-typescript',
-    babylonParserOptions:
-      fixture.config && fixture.config.babylonParserOptions
-        ? fixture.config.babylonParserOptions
+  const babelParserResult = parse(source, {
+    parser: '@babel/parser',
+    babelParserOptions:
+      fixture.config && fixture.config.babelParserOptions
+        ? fixture.config.babelParserOptions
         : null
   });
 
   /**
    * If babylon fails to parse the source, ensure that typescript-estree has the same fundamental issue
    */
-  if (babylonTypeScriptPluginResult.parseError) {
+  if (babelParserResult.parseError) {
     /**
      * FAIL: babylon errored but typescript-estree did not
      */
     if (!typeScriptESTreeResult.parseError) {
       it(`TEST FAIL [BABYLON ERRORED, BUT TSEP DID NOT] - ${filename}`, () => {
         expect(typeScriptESTreeResult.parseError).toEqual(
-          babylonTypeScriptPluginResult.parseError
+          babelParserResult.parseError
         );
       });
       return;
@@ -48,7 +48,7 @@ fixturesToTest.forEach(fixture => {
      * Both parsers errored - this is OK as long as the errors are of the same "type"
      */
     it(`[Both parsers error as expected] - ${filename}`, () => {
-      expect(babylonTypeScriptPluginResult.parseError.name).toEqual(
+      expect(babelParserResult.parseError.name).toEqual(
         typeScriptESTreeResult.parseError.name
       );
     });
@@ -60,7 +60,7 @@ fixturesToTest.forEach(fixture => {
    */
   if (typeScriptESTreeResult.parseError) {
     it(`TEST FAIL [TSEP ERRORED, BUT BABYLON DID NOT] - ${filename}`, () => {
-      expect(babylonTypeScriptPluginResult.parseError).toEqual(
+      expect(babelParserResult.parseError).toEqual(
         typeScriptESTreeResult.parseError
       );
     });
@@ -71,14 +71,14 @@ fixturesToTest.forEach(fixture => {
    * No errors, assert the two ASTs match
    */
   it(`${filename}`, () => {
-    expect(babylonTypeScriptPluginResult.ast).toBeTruthy();
+    expect(babelParserResult.ast).toBeTruthy();
     expect(typeScriptESTreeResult.ast).toBeTruthy();
     /**
      * Perform some extra formatting steps on the babylon AST before comparing
      */
     expect(
       parseUtils.removeLocationDataFromProgramNode(
-        parseUtils.preprocessBabylonAST(babylonTypeScriptPluginResult.ast)
+        parseUtils.preprocessBabylonAST(babelParserResult.ast)
       )
     ).toEqual(
       parseUtils.removeLocationDataFromProgramNode(typeScriptESTreeResult.ast)

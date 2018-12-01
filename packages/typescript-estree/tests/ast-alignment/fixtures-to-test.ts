@@ -1,6 +1,8 @@
 import glob from 'glob';
 import path from 'path';
 import jsxKnownIssues from '../jsx-known-issues';
+import { ParserOptions as BabelParserOptions } from '@babel/parser';
+import { ParserOptions } from '../../src/temp-types-based-on-js-source';
 
 interface Fixture {
   filename: string;
@@ -10,8 +12,8 @@ interface Fixture {
 interface FixturePatternConfig {
   pattern: string;
   config?: {
-    babylonParserOptions?: any;
-    typeScriptESTreeOptions?: any;
+    babelParserOptions?: BabelParserOptions;
+    typeScriptESTreeOptions?: ParserOptions;
   };
 }
 
@@ -77,16 +79,17 @@ function createFixturePatternConfigFor(
       config.ignore,
       config.parseWithSourceTypeModule
     );
-    fixturesRequiringSourceTypeModule = ([] as FixturePatternConfig[]).concat(
-      fixturesRequiringSourceTypeModule,
-      config.parseWithSourceTypeModule.map(fixture => ({
+    for (const fixture of config.parseWithSourceTypeModule) {
+      fixturesRequiringSourceTypeModule.push({
         // It needs to be the full path from within fixtures/ for the pattern
-        pattern: `${fixturesSubPath}/${fixture}.src.${
-          (config as CreateFixturePatternConfig).fileType
-        }`,
-        config: { babylonParserOptions: { sourceType: 'module' } }
-      }))
-    );
+        pattern: `${fixturesSubPath}/${fixture}.src.${config.fileType}`,
+        config: {
+          babelParserOptions: {
+            sourceType: 'module'
+          }
+        }
+      });
+    }
   }
   return {
     pattern: `${fixturesSubPath}/!(${config.ignore.join('|')}).src.${
@@ -370,8 +373,6 @@ let fixturePatternConfigsToTest = [
       'interface-with-all-property-types', // babylon parse errors
       'interface-with-construct-signature-with-parameter-accessibility', // babylon parse errors
       'class-with-implements-and-extends', // babylon parse errors
-      'var-with-definite-assignment', // babylon parse errors
-      'class-with-definite-assignment', // babylon parse errors
       /**
        * typescript-estree erroring, but babylon not.
        */
