@@ -2,6 +2,8 @@
 
 TypeScript support for ESLint. (This is still in the very early stages, so please be patient.)
 
+### The below readme is for the upcoming 1.0.0 release. [Please see this tag for the current NPM version (0.14.0)](https://github.com/bradzacher/eslint-plugin-typescript/tree/0.14.0)
+
 ## Installation
 
 You'll first need to install [ESLint](http://eslint.org):
