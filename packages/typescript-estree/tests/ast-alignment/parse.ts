@@ -15,7 +15,7 @@ function createError(message: string, line: number, column: number) {
 
 function parseWithBabylonPluginTypescript(text: string, parserOptions?: any) {
   parserOptions = parserOptions || {};
-  const babylon = require('babylon');
+  const babylon = require('@babel/parser');
   return babylon.parse(
     text,
     Object.assign(
@@ -28,11 +28,12 @@ function parseWithBabylonPluginTypescript(text: string, parserOptions?: any) {
           'jsx',
           'typescript',
           'objectRestSpread',
-          'decorators',
+          'decorators-legacy',
           'classProperties',
           'asyncGenerators',
           'dynamicImport',
-          'estree'
+          'estree',
+          'bigInt'
         ]
       },
       parserOptions
