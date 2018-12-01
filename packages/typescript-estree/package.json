@@ -18,6 +18,7 @@
   },
   "license": "BSD-2-Clause",
   "devDependencies": {
+    "@babel/parser": "7.1.6",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@commitlint/travis-cli": "^7.1.2",
@@ -29,7 +30,6 @@
     "@types/semver": "^5.5.0",
     "@types/shelljs": "^0.8.0",
     "babel-code-frame": "6.26.0",
-    "babylon": "7.0.0-beta.39",
     "cz-conventional-changelog": "2.1.0",
     "glob": "7.1.2",
     "husky": "0.14.3",
@@ -41,7 +41,7 @@
     "shelljs": "0.8.2",
     "travis-deploy-once": "^5.0.8",
     "ts-jest": "^23.10.4",
-    "typescript": "~3.1.1"
+    "typescript": "~3.2.1"
   },
   "keywords": [
     "ast",

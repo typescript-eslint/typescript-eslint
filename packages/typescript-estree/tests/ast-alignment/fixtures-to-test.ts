@@ -141,6 +141,7 @@ let fixturePatternConfigsToTest = [
     ]
   }),
 
+  createFixturePatternConfigFor('javascript/bigIntLiterals'),
   createFixturePatternConfigFor('javascript/binaryLiterals'),
   createFixturePatternConfigFor('javascript/blockBindings'),
 
