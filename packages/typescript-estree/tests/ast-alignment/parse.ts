@@ -1,7 +1,8 @@
 import codeFrame from 'babel-code-frame';
 import * as parser from '../../src/parser';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
 import * as parseUtils from './utils';
+import { ParserOptions as BabelParserOptions } from '@babel/parser';
+import { ParserOptions } from '../../src/temp-types-based-on-js-source';
 
 function createError(message: string, line: number, column: number) {
   // Construct an error similar to the ones thrown by Babylon.
@@ -13,7 +14,10 @@ function createError(message: string, line: number, column: number) {
   return error;
 }
 
-function parseWithBabylonPluginTypescript(text: string, parserOptions?: any) {
+function parseWithBabelParser(
+  text: string,
+  parserOptions?: BabelParserOptions
+) {
   parserOptions = parserOptions || {};
   const babylon = require('@babel/parser');
   return babylon.parse(
@@ -67,7 +71,7 @@ function parseWithTypeScriptESTree(
 interface ASTComparisonParseOptions {
   parser: string;
   typeScriptESTreeOptions?: ParserOptions;
-  babylonParserOptions?: any;
+  babelParserOptions?: BabelParserOptions;
 }
 
 export function parse(text: string, opts: ASTComparisonParseOptions) {
@@ -87,14 +91,14 @@ export function parse(text: string, opts: ASTComparisonParseOptions) {
           parseWithTypeScriptESTree(text, opts.typeScriptESTreeOptions)
         );
         break;
-      case 'babylon-plugin-typescript':
+      case '@babel/parser':
         result.ast = parseUtils.normalizeNodeTypes(
-          parseWithBabylonPluginTypescript(text, opts.babylonParserOptions)
+          parseWithBabelParser(text, opts.babelParserOptions)
         );
         break;
       default:
         throw new Error(
-          'Please provide a valid parser: either "typescript-estree" or "babylon-plugin-typescript"'
+          'Please provide a valid parser: either "typescript-estree" or "@babel/parser"'
         );
     }
   } catch (error) {
