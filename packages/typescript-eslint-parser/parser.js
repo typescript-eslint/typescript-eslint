@@ -41,7 +41,7 @@ exports.parseForESLint = function parseForESLint(code, options) {
     traverser.traverse(ast, {
         enter: node => {
             switch (node.type) {
-                // Just for backword compatibility.
+                // Just for backward compatibility.
                 case "DeclareFunction":
                     if (!node.body) {
                         node.type = `TSEmptyBody${node.type}`;
@@ -58,7 +58,7 @@ exports.parseForESLint = function parseForESLint(code, options) {
 
                 // Import/Export declarations cannot appear in script.
                 // But if those appear only in namespace/module blocks, `ast.sourceType` was `"script"`.
-                // This doesn't modify `ast.sourceType` directly for backrard compatibility.
+                // This doesn't modify `ast.sourceType` directly for backward compatibility.
                 case "ImportDeclaration":
                 case "ExportAllDeclaration":
                 case "ExportDefaultDeclaration":

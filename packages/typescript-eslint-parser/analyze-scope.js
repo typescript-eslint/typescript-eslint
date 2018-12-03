@@ -9,38 +9,7 @@ const Reference = require("eslint-scope/lib/reference");
 const OriginalReferencer = require("eslint-scope/lib/referencer");
 const Scope = require("eslint-scope/lib/scope").Scope;
 const fallback = require("eslint-visitor-keys").getKeys;
-const lodash = require("lodash");
 const childVisitorKeys = require("./visitor-keys");
-
-/**
- * Get `.range[0]` of a given object.
- * @param {{range: number[]}} x The object to get.
- * @returns {number} The gotten value.
- */
-function byRange0(x) {
-    return x.range[0];
-}
-
-/**
- * Check the TSModuleDeclaration node is `declare global {}` or not.
- * @param {TSModuleDeclaration} node The TSModuleDeclaration node to check.
- * @param {Token[]} tokens The token list.
- * @returns {boolean} `true` if the node is `declare global {}`.
- */
-function isGlobalAugmentation(node, tokens) {
-    const i = lodash.sortedIndexBy(tokens, node, byRange0);
-    const token1 = tokens[i];
-    const token2 = tokens[i + 1];
-
-    return Boolean(
-        token1 &&
-        token2 &&
-        (token1.type === "Keyword" || token1.type === "Identifier") &&
-        token1.value === "declare" &&
-        (token2.type === "Keyword" || token2.type === "Identifier") &&
-        token2.value === "global"
-    );
-}
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -570,12 +539,10 @@ class Referencer extends OriginalReferencer {
      * @returns {void}
      */
     TSModuleDeclaration(node) {
-        const astRoot = this.scopeManager.globalScope.block;
         const scope = this.currentScope();
         const { id, body } = node;
 
-        // https://github.com/JamesHenry/typescript-estree/issues/27
-        if (isGlobalAugmentation(node, astRoot.tokens)) {
+        if (node.global) {
             this.visitGlobalAugmentation(node);
             return;
         }
