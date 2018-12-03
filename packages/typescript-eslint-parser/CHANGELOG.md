@@ -1,3 +1,15 @@
+v21.0.2 - December 3, 2018
+
+* [`fed0a5a`](https://github.com/eslint/typescript-eslint-parser/commit/fed0a5a4bc7b3c6a242081adf91af50e848fcf62) Docs: Update README.md (#567) (dudiharush)
+* [`47abd82`](https://github.com/eslint/typescript-eslint-parser/commit/47abd8282384617793d800209b5eb5d71d0c5730) Fix: issue with global augmentation when tokens are not present (#574) (Armano)
+* [`c5ffad3`](https://github.com/eslint/typescript-eslint-parser/commit/c5ffad3ecafdc9596174d1a2de5fd978d386035a) Fix: scope for TSImportEqualsDeclaration (#571) (Armano)
+* [`8ff0ad1`](https://github.com/eslint/typescript-eslint-parser/commit/8ff0ad153cf66b873c21624b7af31d33ce9d7073) Fix: missing implements in classes (#562) (Armano)
+* [`cc92044`](https://github.com/eslint/typescript-eslint-parser/commit/cc920441093356a7a47ff5fdb752643b6c42cff8) Fix: visiting superTypeParameters in classes (#561) (Armano)
+* [`83dbabb`](https://github.com/eslint/typescript-eslint-parser/commit/83dbabb626e5592c07085743a44586378956a153) Fix: visiting typeParameters in expressions (#565) (Armano)
+* [`c19e479`](https://github.com/eslint/typescript-eslint-parser/commit/c19e4798ae6067daf9994b90fabcdf2d1953d70c) Fix: visitor-keys for TSAbstractClassProperty (#560) (Armano)
+* [`491ebca`](https://github.com/eslint/typescript-eslint-parser/commit/491ebcaff9815071d4194584e3d94d0edf601e3b) Fix: crash in no-unused-vars when using enum (#556) (Armano)
+* [`ae7c4e6`](https://github.com/eslint/typescript-eslint-parser/commit/ae7c4e661737b0db8cb0f7b612f58a94e1cced7c) Fix: missing visitor-keys (#554) (Armano)
+
 v21.0.1 - November 15, 2018
 
 * [`3715584`](https://github.com/eslint/typescript-eslint-parser/commit/3715584404de566c9b6db975328122e819993768) Fix: wrong reference on TSQualifiedName (fixes #550) (#551) (Toru Nagashima)
