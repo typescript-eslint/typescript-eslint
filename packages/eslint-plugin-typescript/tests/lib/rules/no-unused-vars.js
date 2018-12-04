@@ -238,6 +238,20 @@ new Foo();
 		`,
         `
 import { Nullable } from 'nullable';
+import { SomeOther } from 'some';
+import { Component } from 'react';
+class Foo implements Component<Nullable<SomeOther>, {}>{}
+new Foo();
+		`,
+        `
+import { Nullable } from 'nullable';
+import { SomeOther } from 'some';
+import { Component, Component2 } from 'react';
+class Foo implements Component<Nullable<SomeOther>, {}>, Component2{}
+new Foo();
+		`,
+        `
+import { Nullable } from 'nullable';
 import { Another } from 'some';
 class A {
     do = (a: Nullable<Another>) => { console.log(a); }
@@ -402,7 +416,7 @@ export const a: A<SomeOther> = {
     foo: "bar"
 };
         `,
-        // https://github.com/nzakas/eslint-plugin-typescript/issues/150
+        // https://github.com/bradzacher/eslint-plugin-typescript/issues/150
         `
 export class App {
     constructor(private logger: Logger) {
@@ -441,6 +455,51 @@ export class App {
         console.log(this.logger);
     }
 }
+        `,
+        // https://github.com/bradzacher/eslint-plugin-typescript/issues/126
+        `
+import { Component, Vue } from 'vue-property-decorator';
+import HelloWorld from './components/HelloWorld.vue';
+
+@Component({
+  components: {
+    HelloWorld
+  }
+})
+export default class App extends Vue {}
+        `,
+        // https://github.com/bradzacher/eslint-plugin-typescript/issues/189
+        `
+import firebase, {User} from 'firebase/app'
+// initialize firebase project
+firebase.initializeApp({
+})
+export function authenticated(cb: (user: User | null) => void): void {
+  firebase.auth().onAuthStateChanged(user => cb(user))
+}
+        `,
+        // https://github.com/bradzacher/eslint-plugin-typescript/issues/33
+        `
+import { Foo } from './types';
+export class Bar<T extends Foo> {}
+        `,
+        `
+import webpack from 'webpack';
+export default function webpackLoader(this: webpack.loader.LoaderContext) {}
+        `,
+        `
+import execa, { Options as ExecaOptions } from 'execa';
+export function foo(options: ExecaOptions): execa {
+    options()
+}
+        `,
+        `
+import { Foo, Bar } from './types';
+export class Baz<F = Foo & Bar> {}
+        `,
+        `
+// warning 'B' is defined but never used
+export const a: Array<{b: B}> = []
         `,
     ],
 
@@ -620,6 +679,24 @@ import { Nullable } from 'nullable';
 import { SomeOther } from 'some';
 import { Another } from 'some';
 class A extends Nullable {
+    other: Nullable<Another>;
+}
+new A();
+            `,
+            errors: [
+                {
+                    message: "'SomeOther' is defined but never used.",
+                    line: 3,
+                    column: 10,
+                },
+            ],
+        },
+        {
+            code: `
+import { Nullable } from 'nullable';
+import { SomeOther } from 'some';
+import { Another } from 'some';
+abstract class A extends Nullable {
     other: Nullable<Another>;
 }
 new A();

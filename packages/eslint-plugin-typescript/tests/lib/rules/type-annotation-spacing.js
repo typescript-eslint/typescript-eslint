@@ -3381,6 +3381,71 @@ type Foo = {
                 },
             ],
         },
+        // https://github.com/bradzacher/eslint-plugin-typescript/issues/152
+        {
+            code: `
+                class Some {
+                    a : {some: string, other: {more: number}};
+                    someMethod : (args : {some: string, other: {more: number}}) => void;
+                    doSomething(args : {some: string, other: {more: number}}) : void {}
+                }
+            `,
+            options: [{ after: true, before: true }],
+            output: `
+                class Some {
+                    a : {some : string, other : {more : number}};
+                    someMethod : (args : {some : string, other : {more : number}}) => void;
+                    doSomething(args : {some : string, other : {more : number}}) : void {}
+                }
+            `,
+            errors: [
+                {
+                    message: `Expected a space before the ':'`,
+                    line: 3,
+                    column: 30,
+                },
+                {
+                    message: `Expected a space before the ':'`,
+                    line: 3,
+                    column: 45,
+                },
+                {
+                    message: `Expected a space before the ':'`,
+                    line: 3,
+                    column: 52,
+                },
+                {
+                    message: `Expected a space before the ':'`,
+                    line: 4,
+                    column: 47,
+                },
+                {
+                    message: `Expected a space before the ':'`,
+                    line: 4,
+                    column: 62,
+                },
+                {
+                    message: `Expected a space before the ':'`,
+                    line: 4,
+                    column: 69,
+                },
+                {
+                    message: `Expected a space before the ':'`,
+                    line: 5,
+                    column: 45,
+                },
+                {
+                    message: `Expected a space before the ':'`,
+                    line: 5,
+                    column: 60,
+                },
+                {
+                    message: `Expected a space before the ':'`,
+                    line: 5,
+                    column: 67,
+                },
+            ],
+        },
     ],
 });
 

@@ -604,5 +604,75 @@ type obj = {
                 },
             ],
         },
+        {
+            code: `class Foo<t = any> extends Bar<any> {}`,
+            errors: [
+                {
+                    message: "Unexpected any. Specify a different type.",
+                    line: 1,
+                    column: 15,
+                },
+                {
+                    message: "Unexpected any. Specify a different type.",
+                    line: 1,
+                    column: 32,
+                },
+            ],
+        },
+        {
+            code: `abstract class Foo<t = any> extends Bar<any> {}`,
+            errors: [
+                {
+                    message: "Unexpected any. Specify a different type.",
+                    line: 1,
+                    column: 24,
+                },
+                {
+                    message: "Unexpected any. Specify a different type.",
+                    line: 1,
+                    column: 41,
+                },
+            ],
+        },
+        {
+            code: `abstract class Foo<t = any> implements Bar<any>, Baz<any> {}`,
+            errors: [
+                {
+                    message: "Unexpected any. Specify a different type.",
+                    line: 1,
+                    column: 24,
+                },
+                {
+                    message: "Unexpected any. Specify a different type.",
+                    line: 1,
+                    column: 44,
+                },
+                {
+                    message: "Unexpected any. Specify a different type.",
+                    line: 1,
+                    column: 54,
+                },
+            ],
+        },
+        {
+            code: `new Foo<any>()`,
+            errors: [
+                {
+                    message: "Unexpected any. Specify a different type.",
+                    line: 1,
+                    column: 9,
+                },
+            ],
+        },
+        {
+            code: `Foo<any>()`,
+            errors: [
+                {
+                    message: "Unexpected any. Specify a different type.",
+                    line: 1,
+                    column: 5,
+                },
+            ],
+        },
     ],
 });
