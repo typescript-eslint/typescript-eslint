@@ -157,38 +157,13 @@ module.exports = {
             }
         }
 
-        /**
-         * Checks a function node for proper return type spacing.
-         * @param {ASTNode} node The node representing a function.
-         * @returns {void}
-         * @private
-         */
-        function checkFunctionReturnTypeSpacing(node) {
-            if (node.returnType) {
-                checkTypeAnnotationSpacing(
-                    node.returnType.typeAnnotation || node.returnType
-                );
-            }
-        }
-
         //----------------------------------------------------------------------
         // Public
         //----------------------------------------------------------------------
         return {
-            Identifier(node) {
-                if (node.typeAnnotation) {
-                    checkTypeAnnotationSpacing(
-                        node.typeAnnotation.typeAnnotation ||
-                            node.typeAnnotation
-                    );
-                }
-            },
             TSTypeAnnotation(node) {
                 checkTypeAnnotationSpacing(node.typeAnnotation);
             },
-            FunctionDeclaration: checkFunctionReturnTypeSpacing,
-            FunctionExpression: checkFunctionReturnTypeSpacing,
-            ArrowFunctionExpression: checkFunctionReturnTypeSpacing,
         };
     },
 };
