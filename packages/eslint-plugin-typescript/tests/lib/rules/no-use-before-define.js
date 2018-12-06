@@ -17,7 +17,9 @@ const rule = require("../../../lib/rules/no-use-before-define"),
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parser: "typescript-eslint-parser",
+});
 
 ruleTester.run("no-use-before-define", rule, {
     valid: [
@@ -25,6 +27,8 @@ ruleTester.run("no-use-before-define", rule, {
         "function b(a) { alert(a); }",
         "Object.hasOwnProperty.call(a);",
         "function a() { alert(arguments);}",
+        "declare function a()",
+        "declare class a { foo() }",
         {
             code: `
 a();
@@ -177,7 +181,6 @@ var x: Foo = 2;
 type Foo = string | number
             `,
             options: [{ typedefs: false }],
-            parser: "typescript-eslint-parser",
         },
 
         // test for https://github.com/bradzacher/eslint-plugin-typescript/issues/142
@@ -198,6 +201,26 @@ export class Test {}
             `,
             parserOptions: { ecmaVersion: 6, sourceType: "module" },
             options: [{ classes: false }],
+        },
+        // https://github.com/bradzacher/eslint-plugin-typescript/issues/141
+        {
+            code: `
+interface ITest {
+  first : boolean;
+  second : string;
+  third : boolean;
+}
+
+let first = () => console.log('first');
+
+export let second = () => console.log('second');
+
+export namespace Third {
+  export let third = () => console.log('third');
+}
+            `,
+            parserOptions: { ecmaVersion: 6, sourceType: "module" },
+            parser: "typescript-eslint-parser",
         },
     ],
     invalid: [
@@ -337,6 +360,7 @@ a();
     function a() {}
 }
             `,
+            parser: "espree",
             errors: [
                 {
                     message: "'a' was used before it was defined.",
