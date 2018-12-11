@@ -86,6 +86,7 @@ module.exports = {
         return {
             TSModuleDeclaration(node) {
                 if (
+                    node.global ||
                     isTypeScriptModuleDeclaration(node) ||
                     (allowDefinitionFiles && isDefinitionFile()) ||
                     (allowDeclarations && isDeclaration(node))
