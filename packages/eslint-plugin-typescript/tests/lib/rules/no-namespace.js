@@ -21,6 +21,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run("no-namespace", rule, {
     valid: [
+        "declare global { }",
         "declare module 'foo' { }",
         {
             code: "declare module foo { }",
