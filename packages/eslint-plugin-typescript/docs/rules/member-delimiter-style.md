@@ -5,12 +5,12 @@ Enforces a consistent member delimiter style in interfaces and type literals. Th
 ```ts
 interface Foo {
     name: string;
-    greet(): void; // last semicolon can be ignored
+    greet(): void;
 }
 
 type Bar = {
     name: string;
-    greet(): void; // last semicolon can be ignored
+    greet(): void;
 }
 ```
 
@@ -18,12 +18,12 @@ type Bar = {
 ```ts
 interface Foo {
     name: string,
-    greet(): void, // last comma can be ignored
+    greet(): void,
 }
 
 type Bar = {
     name: string,
-    greet(): void, // last comma can be ignored
+    greet(): void,
 }
 ```
 
@@ -40,7 +40,8 @@ type Bar = {
 }
 ```
 
-The rule also enforces the presence of the delimiter in the last member of the interface and/or type literal, allowing single line declarations to be ignored.
+The rule also enforces the presence (or absence) of the delimiter in the last member of the interface and/or type literal.
+Finally, this rule can enforce separate delimiter syntax for single line declarations.
 
 ## Rule Details
 
@@ -58,13 +59,16 @@ The rule can also take one or more of the following options:
 - `"delimiter": "none"`, use this to require a linebreak.
 - `"requireLast": true`, (default) use this to require a delimiter for all members of the interface and/or type literal.
 - `"requireLast": false`, use this to ignore the last member of the interface and/or type literal.
-- `"ignoreSingleLine": true`, (default) use this to override the `requireLast` in single line declarations.
-- `"ignoreSingleLine": false`, use this to enfore the `requireLast` in single line declarations.
+- `"singleLine": "semi"`, (default) use this to require a semicolon in single line declarations.
+- `"singleLine": "comma"`, use this to require a comma in single line declarations.
+- `"singleLine": "none"`, use this to require a linebreak (i.e. disallow mulit prop, single line declarations).
 - `"overrides"`, overrides the default options for **interfaces** and **type literals**.
+
+*Note that `delimiter` and `singleLine` are independent options - if you don't provide a value for either they will use their default option.*
 
 ### defaults
 Examples of **incorrect** code for this rule with the defaults
-`{ delimiter: "semi", requireLast: true, ignoreSingleLine: true }` or no option at all:
+`{ delimiter: "semi", requireLast: true, singleLine: "semi" }` or no option at all:
 ```ts
 // missing semicolon delimiter
 interface Foo {
@@ -101,17 +105,18 @@ type Baz = {
     name: string,
     greet(): string
 }
+
+// incorrect delimiter
+type FooBar = { name: string, greet(): string }
 ```
 
 Examples of **correct** code for this rule with the default
-`{ delimiter: "semi", requireLast: true, ignoreSingleLine: true }`:
+`{ delimiter: "semi", requireLast: true, singleLine: "semi" }`:
 ```ts
 interface Foo {
     name: string;
     greet(): string;
 }
-
-interface Foo { name: string }
 
 interface Foo { name: string; }
 
@@ -120,9 +125,9 @@ type Bar = {
     greet(): string;
 }
 
-type Bar = { name: string }
-
 type Bar = { name: string; }
+
+type FooBar = { name: string; greet(): string; }
 ```
 
 ### delimiter - semi
@@ -143,12 +148,11 @@ interface Bar {
 
 Examples of **correct** code for this rule with `{ delimiter: "semi" }`:
 ```ts
-// with requireLast = true/false
+// with requireLast = true
 interface Foo {
     name: string;
     greet(): string;
 }
-
 type Bar = {
     name: string;
     greet(): string;
@@ -159,7 +163,6 @@ interface Foo {
     name: string;
     greet(): string
 }
-
 type Bar = {
     name: string;
     greet(): string
@@ -184,12 +187,11 @@ interface Bar {
 
 Examples of **correct** code for this rule with `{ delimiter: "comma" }`:
 ```ts
-// with requireLast = true/false
+// with requireLast = true
 interface Foo {
     name: string,
     greet(): string,
 }
-
 type Bar = {
     name: string,
     greet(): string,
@@ -299,42 +301,72 @@ type Baz = {
 ```
 
 ### ignoreSingleLine
-Examples of **incorrect** code for this rule with `{ ignoreSingleLine: true }`:
+Examples of **incorrect** code for this rule with `{ singleLine: "semi" }`:
 ```ts
 // using incorrect delimiter
 interface Foo { name: string, }
+interface Foo { name: string, greet(): string, }
 
-// using incorrect delimiter
 type Bar = { name: string, }
+type Bar = { name: string, greet(): string, }
 ```
 
-Examples of **correct** code for this rule with `{ ignoreSingleLine: true }`:
-```ts
-// can have a delimiter or not
-interface Foo { name: string }
-
-interface Foo { name: string; }
-
-// can have a delimiter or not
-type Bar = { name: string }
-
-type Bar = { name: string; }
-```
-
-Examples of **incorrect** code for this rule with `{ ignoreSingleLine: false }`:
-```ts
-// missing delimiter
-interface Foo { name: string }
-
-// missing delimiter
-type Bar = { name: string }
-```
-
-Examples of **correct** code for this rule with `{ ignoreSingleLine: false }`:
+Examples of **correct** code for this rule with `{ singleLine: "semi" }`:
 ```ts
 interface Foo { name: string; }
+interface Foo { name: string; greet(): string; }
 
 type Bar = { name: string; }
+type Bar = { name: string; greet(): string; }
+```
+
+Examples of **incorrect** code for this rule with `{ singleLine: "comma" }`:
+```ts
+// using incorrect delimiter
+interface Foo { name: string; }
+interface Foo { name: string; greet(): string; }
+
+type Bar = { name: string; }
+type Bar = { name: string; greet(): string; }
+```
+
+Examples of **correct** code for this rule with `{ singleLine: "comma" }`:
+```ts
+interface Foo { name: string, }
+interface Foo { name: string, greet(): string, }
+
+type Bar = { name: string, }
+type Bar = { name: string, greet(): string, }
+```
+
+Examples of **incorrect** code for this rule with `{ singleLine: "none" }`:
+```ts
+// has a delimiter when it shouldn't
+interface Foo { name: string; }
+interface Foo { name: string; greet(): string; }
+interface Foo { name: string, }
+interface Foo { name: string, greet(): string, }
+
+type Bar = { name: string; }
+type Bar = { name: string; greet(): string; }
+type Bar = { name: string, }
+type Bar = { name: string, greet(): string, }
+```
+
+Examples of **correct** code for this rule with `{ singleLine: "none" }`:
+```ts
+interface Foo { name: string }
+type Bar = { name: string }
+
+// Note that there is no syntax-valid way to do types single-line without a delimiter
+interface Foo {
+    name: string
+    greet(): string
+}
+type Bar = {
+    name: string
+    greet(): string
+}
 ```
 
 ### overrides - interface
