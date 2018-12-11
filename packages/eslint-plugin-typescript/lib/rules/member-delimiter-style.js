@@ -5,6 +5,8 @@
  */
 "use strict";
 
+const { deepMerge } = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -12,9 +14,23 @@
 const definition = {
     type: "object",
     properties: {
-        delimiter: { enum: ["none", "semi", "comma"] },
-        requireLast: { type: "boolean" },
-        singleLine: { enum: ["none", "semi", "comma"] },
+        multiline: {
+            type: "object",
+            properties: {
+                delimiter: { enum: ["none", "semi", "comma"] },
+                requireLast: { type: "boolean" },
+            },
+            additionalProperties: false,
+        },
+        singleline: {
+            type: "object",
+            properties: {
+                // note can't have "none" for single line delimiter as it's invlaid syntax
+                delimiter: { enum: ["semi", "comma"] },
+                requireLast: { type: "boolean" },
+            },
+            additionalProperties: false,
+        },
     },
     additionalProperties: false,
 };
@@ -26,7 +42,7 @@ module.exports = {
                 "Require a specific member delimiter style for interfaces and type literals",
             category: "TypeScript",
             url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-delimiter-style.md",
+                "https://github.com/bradzacher/eslint-plugin-typescript/blob/master/docs/rules/member-delimiter-style.md",
         },
         fixable: "code",
         messages: {
@@ -59,21 +75,20 @@ module.exports = {
 
         const overrides = options.overrides || {};
         const defaults = {
-            delimiter: "semi",
-            requireLast: true,
-            singleLine: "semi",
+            multiline: {
+                delimiter: "semi",
+                requireLast: true,
+            },
+            singleline: {
+                delimiter: "semi",
+                requireLast: false,
+            },
         };
 
-        const interfaceOptions = Object.assign(
-            {},
-            defaults,
-            options,
-            overrides.interface
-        );
-        const typeLiteralOptions = Object.assign(
-            {},
-            defaults,
-            options,
+        const baseOptions = deepMerge(defaults, options);
+        const interfaceOptions = deepMerge(baseOptions, overrides.interface);
+        const typeLiteralOptions = deepMerge(
+            baseOptions,
             overrides.typeLiteral
         );
 
@@ -87,12 +102,10 @@ module.exports = {
          * @param {Object} opts the options to be validated.
          * @param {boolean} isLast a flag indicating `member` is the last in the
          *                         interface or type literal.
-         * @param {boolean} isSameLine a flag indicating the interface or type
-         *                             literal was declared in a single line.
          * @returns {void}
          * @private
          */
-        function checkLastToken(member, opts, isLast, isSameLine) {
+        function checkLastToken(member, opts, isLast) {
             /**
              * Resolves the boolean value for the given setting enum value
              * @param {"semi" | "comma" | "none"} type the option name
@@ -103,11 +116,6 @@ module.exports = {
                     // only turn the option on if its expecting no delimiter for the last member
                     return type === "none";
                 }
-                if (isSameLine) {
-                    // use single line config
-                    return opts.singleLine === type;
-                }
-                // use normal config
                 return opts.delimiter === type;
             }
 
@@ -187,18 +195,19 @@ module.exports = {
          */
         function checkMemberSeparatorStyle(node) {
             const isInterface = node.type === "TSInterfaceBody";
-
             const isSingleLine = node.loc.start.line === node.loc.end.line;
-            const opts = isInterface ? interfaceOptions : typeLiteralOptions;
+
             const members = isInterface ? node.body : node.members;
 
+            const typeOpts = isInterface
+                ? interfaceOptions
+                : typeLiteralOptions;
+            const opts = isSingleLine
+                ? typeOpts.singleline
+                : typeOpts.multiline;
+
             members.forEach((member, index) => {
-                checkLastToken(
-                    member,
-                    opts,
-                    index === members.length - 1,
-                    isSingleLine
-                );
+                checkLastToken(member, opts, index === members.length - 1);
             });
         }
 
