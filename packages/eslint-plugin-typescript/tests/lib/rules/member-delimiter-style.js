@@ -37,70 +37,11 @@ interface Foo {
     age: number;
 }
                     `,
-            options: [{ delimiter: "semi", requireLast: true }],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
-}
-                    `,
-            options: [{ delimiter: "semi" }],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number
-}
-                    `,
-            options: [{ delimiter: "semi", requireLast: false }],
-        },
-        {
-            code: `
-interface Foo {
-    name: string,
-    age: number,
-}
-                    `,
-            options: [{ delimiter: "comma", requireLast: true }],
-        },
-        {
-            code: `
-interface Foo {
-    name: string,
-    age: number,
-}
-                    `,
-            options: [{ delimiter: "comma" }],
-        },
-        {
-            code: `
-interface Foo {
-    name: string,
-    age: number
-}
-                    `,
-            options: [{ delimiter: "comma", requireLast: false }],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number
-}
-                    `,
-            options: [{ delimiter: "none", requireLast: true }],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number
-}
-                    `,
-            options: [{ delimiter: "none", requireLast: false }],
+            options: [
+                {
+                    multiline: { delimiter: "semi", requireLast: true },
+                },
+            ],
         },
         {
             code: `
@@ -111,12 +52,107 @@ interface Foo {
                     `,
             options: [
                 {
-                    delimiter: "comma",
-                    requireLast: false,
+                    multiline: { delimiter: "semi" },
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number
+}
+                    `,
+            options: [
+                {
+                    multiline: { delimiter: "semi", requireLast: false },
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string,
+    age: number,
+}
+                    `,
+            options: [
+                {
+                    multiline: { delimiter: "comma", requireLast: true },
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string,
+    age: number,
+}
+                    `,
+            options: [
+                {
+                    multiline: { delimiter: "comma" },
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string,
+    age: number
+}
+                    `,
+            options: [
+                {
+                    multiline: { delimiter: "comma", requireLast: false },
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number
+}
+                    `,
+            options: [
+                {
+                    multiline: { delimiter: "none", requireLast: true },
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number
+}
+                    `,
+            options: [
+                {
+                    multiline: { delimiter: "none", requireLast: false },
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number;
+}
+                    `,
+            options: [
+                {
+                    multiline: {
+                        delimiter: "comma",
+                        requireLast: false,
+                    },
                     overrides: {
                         interface: {
-                            delimiter: "semi",
-                            requireLast: true,
+                            multiline: {
+                                delimiter: "semi",
+                                requireLast: true,
+                            },
                         },
                     },
                 },
@@ -131,8 +167,12 @@ interface Foo {
                     `,
             options: [
                 {
-                    delimiter: "comma",
-                    overrides: { interface: { delimiter: "semi" } },
+                    multiline: {
+                        delimiter: "comma",
+                    },
+                    overrides: {
+                        interface: { multiline: { delimiter: "semi" } },
+                    },
                 },
             ],
         },
@@ -145,12 +185,16 @@ interface Foo {
                     `,
             options: [
                 {
-                    delimiter: "comma",
-                    requireLast: true,
+                    multiline: {
+                        delimiter: "comma",
+                        requireLast: true,
+                    },
                     overrides: {
                         interface: {
-                            delimiter: "semi",
-                            requireLast: false,
+                            multiline: {
+                                delimiter: "semi",
+                                requireLast: false,
+                            },
                         },
                     },
                 },
@@ -165,12 +209,16 @@ interface Foo {
                     `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: false,
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: false,
+                    },
                     overrides: {
                         interface: {
-                            delimiter: "comma",
-                            requireLast: true,
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: true,
+                            },
                         },
                     },
                 },
@@ -185,8 +233,12 @@ interface Foo {
                     `,
             options: [
                 {
-                    delimiter: "semi",
-                    overrides: { interface: { delimiter: "comma" } },
+                    multiline: {
+                        delimiter: "semi",
+                    },
+                    overrides: {
+                        interface: { multiline: { delimiter: "comma" } },
+                    },
                 },
             ],
         },
@@ -199,12 +251,16 @@ interface Foo {
                     `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: true,
+                    },
                     overrides: {
                         interface: {
-                            delimiter: "comma",
-                            requireLast: false,
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: false,
+                            },
                         },
                     },
                 },
@@ -219,10 +275,14 @@ interface Foo {
                     `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: false,
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: false,
+                    },
                     overrides: {
-                        interface: { delimiter: "none", requireLast: true },
+                        interface: {
+                            multiline: { delimiter: "none", requireLast: true },
+                        },
                     },
                 },
             ],
@@ -236,10 +296,17 @@ interface Foo {
                     `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: true,
+                    },
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false },
+                        interface: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -259,7 +326,7 @@ type Foo = {
     age: number;
 }
                     `,
-            options: [{ delimiter: "semi", requireLast: true }],
+            options: [{ multiline: { delimiter: "semi", requireLast: true } }],
         },
         {
             code: `
@@ -268,7 +335,7 @@ type Foo = {
     age: number;
 }
                     `,
-            options: [{ delimiter: "semi" }],
+            options: [{ multiline: { delimiter: "semi" } }],
         },
         {
             code: `
@@ -277,7 +344,7 @@ type Foo = {
     age: number
 }
                     `,
-            options: [{ delimiter: "semi", requireLast: false }],
+            options: [{ multiline: { delimiter: "semi", requireLast: false } }],
         },
         {
             code: `
@@ -286,7 +353,7 @@ type Foo = {
     age: number,
 }
                     `,
-            options: [{ delimiter: "comma", requireLast: true }],
+            options: [{ multiline: { delimiter: "comma", requireLast: true } }],
         },
         {
             code: `
@@ -295,113 +362,7 @@ type Foo = {
     age: number,
 }
                     `,
-            options: [{ delimiter: "comma" }],
-        },
-        {
-            code: `
-type Foo = {
-    name: string,
-    age: number
-}
-                    `,
-            options: [{ delimiter: "comma", requireLast: false }],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number
-}
-                    `,
-            options: [{ delimiter: "none", requireLast: true }],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number
-}
-                    `,
-            options: [{ delimiter: "none", requireLast: false }],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-                    `,
-            options: [
-                {
-                    delimiter: "comma",
-                    requireLast: false,
-                    overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: true },
-                    },
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-                    `,
-            options: [
-                {
-                    delimiter: "comma",
-                    overrides: { typeLiteral: { delimiter: "semi" } },
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number
-}
-                    `,
-            options: [
-                {
-                    delimiter: "comma",
-                    requireLast: true,
-                    overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: false },
-                    },
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string,
-    age: number,
-}
-                    `,
-            options: [
-                {
-                    delimiter: "semi",
-                    requireLast: false,
-                    overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: true },
-                    },
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string,
-    age: number,
-}
-                    `,
-            options: [
-                {
-                    delimiter: "semi",
-                    overrides: { typeLiteral: { delimiter: "comma" } },
-                },
-            ],
+            options: [{ multiline: { delimiter: "comma" } }],
         },
         {
             code: `
@@ -411,13 +372,7 @@ type Foo = {
 }
                     `,
             options: [
-                {
-                    delimiter: "semi",
-                    requireLast: false,
-                    overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: false },
-                    },
-                },
+                { multiline: { delimiter: "comma", requireLast: false } },
             ],
         },
         {
@@ -427,12 +382,142 @@ type Foo = {
     age: number
 }
                     `,
+            options: [{ multiline: { delimiter: "none", requireLast: true } }],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number
+}
+                    `,
+            options: [{ multiline: { delimiter: "none", requireLast: false } }],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+                    `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: false,
+                    multiline: {
+                        delimiter: "comma",
+                        requireLast: false,
+                    },
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: true },
+                        typeLiteral: {
+                            multiline: { delimiter: "semi", requireLast: true },
+                        },
+                    },
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+                    `,
+            options: [
+                {
+                    multiline: {
+                        delimiter: "comma",
+                    },
+                    overrides: {
+                        typeLiteral: { multiline: { delimiter: "semi" } },
+                    },
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number
+}
+                    `,
+            options: [
+                {
+                    multiline: {
+                        delimiter: "comma",
+                        requireLast: true,
+                    },
+                    overrides: {
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "semi",
+                                requireLast: false,
+                            },
+                        },
+                    },
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string,
+    age: number,
+}
+                    `,
+            options: [
+                {
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: false,
+                    },
+                    overrides: {
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: true,
+                            },
+                        },
+                    },
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string,
+    age: number,
+}
+                    `,
+            options: [
+                {
+                    multiline: {
+                        delimiter: "semi",
+                    },
+                    overrides: {
+                        typeLiteral: { multiline: { delimiter: "comma" } },
+                    },
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string,
+    age: number
+}
+                    `,
+            options: [
+                {
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: false,
+                    },
+                    overrides: {
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -446,10 +531,38 @@ type Foo = {
                     `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: false,
+                    },
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false },
+                        typeLiteral: {
+                            multiline: { delimiter: "none", requireLast: true },
+                        },
+                    },
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number
+}
+                    `,
+            options: [
+                {
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: true,
+                    },
+                    overrides: {
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -468,149 +581,167 @@ type Bar = {
                     `,
             options: [
                 {
-                    delimiter: "none",
+                    multiline: {
+                        delimiter: "none",
+                    },
                     overrides: {
-                        interface: { delimiter: "semi" },
-                        typeLiteral: { delimiter: "comma" },
+                        interface: { multiline: { delimiter: "semi" } },
+                        typeLiteral: { multiline: { delimiter: "comma" } },
                     },
                 },
             ],
         },
         {
-            code: "interface Foo { [key: string]: any; }",
+            code: "interface Foo { a: any; [key: string]: any }",
         },
         {
-            code: "interface Foo { [key: string]: any }",
+            code: "interface Foo { a: any; [key: string]: any }",
             options: [
                 {
-                    singleLine: "none",
+                    singleline: { requireLast: false },
                 },
             ],
         },
         {
-            code: "interface Foo { [key: string]: any }",
+            code: "interface Foo { a: any; [key: string]: any; }",
             options: [
                 {
-                    delimiter: "comma",
-                    singleLine: "none",
+                    singleline: { requireLast: true },
                 },
             ],
         },
         {
-            code: "interface Foo { [key: string]: any; }",
+            code: "interface Foo { a: any, [key: string]: any }",
             options: [
                 {
-                    singleLine: "semi",
+                    singleline: { delimiter: "comma" },
                 },
             ],
         },
         {
-            code: "interface Foo { [key: string]: any, }",
+            code: "interface Foo { a: any, [key: string]: any, }",
             options: [
                 {
-                    delimiter: "comma",
-                    singleLine: "comma",
+                    singleline: { delimiter: "comma", requireLast: true },
                 },
             ],
         },
         {
-            code: "interface Foo { [key: string]: any }",
+            code: "interface Foo { a: any, [key: string]: any }",
             options: [
                 {
-                    singleLine: "semi",
-                    overrides: {
-                        interface: { singleLine: "none" },
+                    singleline: { delimiter: "comma", requireLast: false },
+                },
+            ],
+        },
+        {
+            code: "interface Foo { a: any; [key: string]: any }",
+            options: [
+                {
+                    singleline: { delimiter: "semi" },
+                },
+            ],
+        },
+        {
+            code: "interface Foo { a: any; [key: string]: any; }",
+            options: [
+                {
+                    singleline: { delimiter: "semi", requireLast: true },
+                },
+            ],
+        },
+        {
+            code: "interface Foo { a: any; [key: string]: any }",
+            options: [
+                {
+                    singleline: { delimiter: "semi", requireLast: false },
+                },
+            ],
+        },
+        {
+            code: "type Foo = { a: any; [key: string]: any }",
+        },
+        {
+            code: "type Foo = { a: any; [key: string]: any }",
+            options: [
+                {
+                    singleline: { requireLast: false },
+                },
+            ],
+        },
+        {
+            code: "type Foo = { a: any; [key: string]: any; }",
+            options: [
+                {
+                    singleline: { requireLast: true },
+                },
+            ],
+        },
+        {
+            code: "type Foo = { a: any, [key: string]: any }",
+            options: [
+                {
+                    singleline: { delimiter: "comma" },
+                },
+            ],
+        },
+        {
+            code: "type Foo = { a: any, [key: string]: any, }",
+            options: [
+                {
+                    singleline: { delimiter: "comma", requireLast: true },
+                },
+            ],
+        },
+        {
+            code: "type Foo = { a: any, [key: string]: any }",
+            options: [
+                {
+                    singleline: { delimiter: "comma", requireLast: false },
+                },
+            ],
+        },
+        {
+            code: "type Foo = { a: any; [key: string]: any }",
+            options: [
+                {
+                    singleline: { delimiter: "semi" },
+                },
+            ],
+        },
+        {
+            code: "type Foo = { a: any; [key: string]: any; }",
+            options: [
+                {
+                    singleline: { delimiter: "semi", requireLast: true },
+                },
+            ],
+        },
+        {
+            code: "type Foo = { a: any; [key: string]: any }",
+            options: [
+                {
+                    singleline: { delimiter: "semi", requireLast: false },
+                },
+            ],
+        },
+
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number;
+}
+
+interface Bar { name: string, age: number }
+                `,
+            options: [
+                {
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: true,
                     },
-                },
-            ],
-        },
-        {
-            code: "interface Foo { [key: string]: any }",
-            options: [
-                {
-                    requireLast: true,
-                    singleLine: "none",
-                },
-            ],
-        },
-        {
-            code: "interface Foo { [key: string]: any; }",
-            options: [
-                {
-                    requireLast: true,
-                    singleLine: "semi",
-                },
-            ],
-        },
-        {
-            code: "interface Foo { [key: string]: any }",
-            options: [
-                {
-                    requireLast: true,
-                    singleLine: "semi",
-                    overrides: {
-                        interface: { singleLine: "none" },
-                    },
-                },
-            ],
-        },
-        {
-            code: "type Foo = { [key: string]: any; }",
-        },
-        {
-            code: "type Foo = { [key: string]: any }",
-            options: [
-                {
-                    singleLine: "none",
-                },
-            ],
-        },
-        {
-            code: "type Foo = { [key: string]: any; }",
-            options: [
-                {
-                    singleLine: "semi",
-                },
-            ],
-        },
-        {
-            code: "type Foo = { [key: string]: any }",
-            options: [
-                {
-                    singleLine: "semi",
-                    overrides: {
-                        typeLiteral: { singleLine: "none" },
-                    },
-                },
-            ],
-        },
-        {
-            code: "type Foo = { [key: string]: any }",
-            options: [
-                {
-                    requireLast: true,
-                    singleLine: "none",
-                },
-            ],
-        },
-        {
-            code: "type Foo = { [key: string]: any; }",
-            options: [
-                {
-                    requireLast: true,
-                    singleLine: "semi",
-                },
-            ],
-        },
-        {
-            code: "type Foo = { [key: string]: any }",
-            options: [
-                {
-                    requireLast: true,
-                    singleLine: "semi",
-                    overrides: {
-                        typeLiteral: { singleLine: "none" },
-                    },
+                    singleline: { delimiter: "comma", requireLast: false },
                 },
             ],
         },
@@ -621,32 +752,22 @@ interface Foo {
     age: number;
 }
 
-interface Bar { name: string }
+type Bar = { name: string, age: number }
                 `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
-                    singleLine: "none",
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
-}
-
-type Bar = { name: string }
-                `,
-            options: [
-                {
-                    delimiter: "semi",
-                    requireLast: true,
-                    singleLine: "semi",
+                    multiline: {
+                        delimiter: "semi",
+                        requireLast: true,
+                    },
+                    singleline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        typeLiteral: { singleLine: "none" },
+                        typeLiteral: {
+                            singleline: {
+                                delimiter: "comma",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -692,7 +813,7 @@ interface Foo {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi" }],
+            options: [{ multiline: { delimiter: "semi" } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -719,7 +840,7 @@ interface Foo {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: true }],
+            options: [{ multiline: { delimiter: "semi", requireLast: true } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -746,7 +867,7 @@ interface Foo {
     age: number
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }],
+            options: [{ multiline: { delimiter: "semi", requireLast: false } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -768,479 +889,7 @@ interface Foo {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: true }],
-            errors: [
-                {
-                    messageId: "expectedSemi",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number,
-}
-            `,
-            options: [{ delimiter: "comma" }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "expectedComma",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number,
-}
-            `,
-            options: [{ delimiter: "comma", requireLast: true }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "expectedComma",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number
-}
-            `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number,
-}
-            `,
-            options: [{ delimiter: "comma" }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "expectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number,
-}
-            `,
-            options: [{ delimiter: "comma", requireLast: true }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "expectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number
-}
-            `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 18,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number;
-}
-            `,
-            output: `
-interface Foo {
-    name: string,
-    age: number
-}
-            `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "unexpectedSemi",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none" }],
-            errors: [
-                {
-                    messageId: "unexpectedSemi",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "unexpectedSemi",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: true }],
-            errors: [
-                {
-                    messageId: "unexpectedSemi",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "unexpectedSemi",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: false }],
-            errors: [
-                {
-                    messageId: "unexpectedSemi",
-                    line: 3,
-                    column: 18,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number;
-}
-            `,
-            output: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: false }],
-            errors: [
-                {
-                    messageId: "unexpectedSemi",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string,
-    age: number,
-}
-            `,
-            output: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none" }],
-            errors: [
-                {
-                    messageId: "unexpectedComma",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "unexpectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string,
-    age: number,
-}
-            `,
-            output: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: true }],
-            errors: [
-                {
-                    messageId: "unexpectedComma",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "unexpectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string,
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: false }],
-            errors: [
-                {
-                    messageId: "unexpectedComma",
-                    line: 3,
-                    column: 18,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number,
-}
-            `,
-            output: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: false }],
-            errors: [
-                {
-                    messageId: "unexpectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string;
-    age: number;
-}
-            `,
-            options: [
-                {
-                    delimiter: "comma",
-                    overrides: { interface: { delimiter: "semi" } },
-                },
-            ],
-            errors: [
-                {
-                    messageId: "expectedSemi",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "expectedSemi",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string;
-    age: number;
-}
-            `,
-            options: [
-                {
-                    delimiter: "comma",
-                    requireLast: false,
-                    overrides: {
-                        interface: { delimiter: "semi", requireLast: true },
-                    },
-                },
-            ],
-            errors: [
-                {
-                    messageId: "expectedSemi",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "expectedSemi",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number
-}
-            `,
-            output: `
-interface Foo {
-    name: string;
-    age: number;
-}
-            `,
-            options: [
-                {
-                    delimiter: "comma",
-                    requireLast: false,
-                    overrides: {
-                        interface: { delimiter: "semi", requireLast: true },
-                    },
-                },
-            ],
+            options: [{ multiline: { delimiter: "semi", requireLast: true } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -1262,12 +911,7 @@ interface Foo {
     age: number,
 }
             `,
-            options: [
-                {
-                    delimiter: "semi",
-                    overrides: { interface: { delimiter: "comma" } },
-                },
-            ],
+            options: [{ multiline: { delimiter: "comma" } }],
             errors: [
                 {
                     messageId: "expectedComma",
@@ -1294,15 +938,7 @@ interface Foo {
     age: number,
 }
             `,
-            options: [
-                {
-                    delimiter: "semi",
-                    requireLast: false,
-                    overrides: {
-                        interface: { delimiter: "comma", requireLast: true },
-                    },
-                },
-            ],
+            options: [{ multiline: { delimiter: "comma", requireLast: true } }],
             errors: [
                 {
                     messageId: "expectedComma",
@@ -1330,13 +966,7 @@ interface Foo {
 }
             `,
             options: [
-                {
-                    delimiter: "semi",
-                    requireLast: true,
-                    overrides: {
-                        interface: { delimiter: "comma", requireLast: false },
-                    },
-                },
+                { multiline: { delimiter: "comma", requireLast: false } },
             ],
             errors: [
                 {
@@ -1359,12 +989,7 @@ interface Foo {
     age: number,
 }
             `,
-            options: [
-                {
-                    delimiter: "semi",
-                    overrides: { interface: { delimiter: "comma" } },
-                },
-            ],
+            options: [{ multiline: { delimiter: "comma" } }],
             errors: [
                 {
                     messageId: "expectedComma",
@@ -1391,12 +1016,534 @@ interface Foo {
     age: number,
 }
             `,
+            options: [{ multiline: { delimiter: "comma", requireLast: true } }],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "expectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
+}
+            `,
+            options: [
+                { multiline: { delimiter: "comma", requireLast: false } },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 18,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
+}
+            `,
+            options: [
+                { multiline: { delimiter: "comma", requireLast: false } },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "unexpectedSemi",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none" } }],
+            errors: [
+                {
+                    messageId: "unexpectedSemi",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "unexpectedSemi",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: true } }],
+            errors: [
+                {
+                    messageId: "unexpectedSemi",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "unexpectedSemi",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: false } }],
+            errors: [
+                {
+                    messageId: "unexpectedSemi",
+                    line: 3,
+                    column: 18,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: false } }],
+            errors: [
+                {
+                    messageId: "unexpectedSemi",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none" } }],
+            errors: [
+                {
+                    messageId: "unexpectedComma",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "unexpectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: true } }],
+            errors: [
+                {
+                    messageId: "unexpectedComma",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "unexpectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string,
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: false } }],
+            errors: [
+                {
+                    messageId: "unexpectedComma",
+                    line: 3,
+                    column: 18,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number,
+}
+            `,
+            output: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: false } }],
+            errors: [
+                {
+                    messageId: "unexpectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: false,
+                    multiline: { delimiter: "comma" },
                     overrides: {
-                        interface: { delimiter: "comma", requireLast: true },
+                        interface: { multiline: { delimiter: "semi" } },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedSemi",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "expectedSemi",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "comma", requireLast: false },
+                    overrides: {
+                        interface: {
+                            multiline: { delimiter: "semi", requireLast: true },
+                        },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedSemi",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "expectedSemi",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "comma", requireLast: false },
+                    overrides: {
+                        interface: {
+                            multiline: { delimiter: "semi", requireLast: true },
+                        },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedSemi",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi" },
+                    overrides: {
+                        interface: { multiline: { delimiter: "comma" } },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "expectedComma",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi", requireLast: false },
+                    overrides: {
+                        interface: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: true,
+                            },
+                        },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "expectedComma",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string
+    age: number
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi", requireLast: true },
+                    overrides: {
+                        interface: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: false,
+                            },
+                        },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi" },
+                    overrides: {
+                        interface: { multiline: { delimiter: "comma" } },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "expectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+interface Foo {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+interface Foo {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi", requireLast: false },
+                    overrides: {
+                        interface: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: true,
+                            },
+                        },
                     },
                 },
             ],
@@ -1428,10 +1575,14 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        interface: { delimiter: "comma", requireLast: false },
+                        interface: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -1458,10 +1609,14 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        interface: { delimiter: "comma", requireLast: false },
+                        interface: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -1493,8 +1648,10 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    overrides: { interface: { delimiter: "none" } },
+                    multiline: { delimiter: "semi" },
+                    overrides: {
+                        interface: { multiline: { delimiter: "none" } },
+                    },
                 },
             ],
             errors: [
@@ -1525,10 +1682,11 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: false,
+                    multiline: { delimiter: "semi", requireLast: false },
                     overrides: {
-                        interface: { delimiter: "none", requireLast: true },
+                        interface: {
+                            multiline: { delimiter: "none", requireLast: true },
+                        },
                     },
                 },
             ],
@@ -1560,10 +1718,14 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false },
+                        interface: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -1590,10 +1752,14 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false },
+                        interface: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -1620,8 +1786,10 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    overrides: { interface: { delimiter: "none" } },
+                    multiline: { delimiter: "semi" },
+                    overrides: {
+                        interface: { multiline: { delimiter: "none" } },
+                    },
                 },
             ],
             errors: [
@@ -1652,10 +1820,11 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: false,
+                    multiline: { delimiter: "semi", requireLast: false },
                     overrides: {
-                        interface: { delimiter: "none", requireLast: true },
+                        interface: {
+                            multiline: { delimiter: "none", requireLast: true },
+                        },
                     },
                 },
             ],
@@ -1687,10 +1856,14 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false },
+                        interface: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -1717,10 +1890,14 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        interface: { delimiter: "none", requireLast: false },
+                        interface: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -1771,7 +1948,7 @@ type Foo = {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi" }],
+            options: [{ multiline: { delimiter: "semi" } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -1798,7 +1975,7 @@ type Foo = {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: true }],
+            options: [{ multiline: { delimiter: "semi", requireLast: true } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -1825,7 +2002,7 @@ type Foo = {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: true }],
+            options: [{ multiline: { delimiter: "semi", requireLast: true } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -1847,7 +2024,7 @@ type Foo = {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma" }],
+            options: [{ multiline: { delimiter: "comma" } }],
             errors: [
                 {
                     messageId: "expectedComma",
@@ -1874,492 +2051,7 @@ type Foo = {
     age: number,
 }
             `,
-            options: [{ delimiter: "comma", requireLast: true }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "expectedComma",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number
-}
-            `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number,
-}
-            `,
-            options: [{ delimiter: "comma" }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "expectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number,
-}
-            `,
-            options: [{ delimiter: "comma", requireLast: true }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "expectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number
-}
-            `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 18,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number;
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number
-}
-            `,
-            options: [{ delimiter: "comma", requireLast: false }],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "unexpectedSemi",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none" }],
-            errors: [
-                {
-                    messageId: "unexpectedSemi",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "unexpectedSemi",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `,
-            output: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: true }],
-            errors: [
-                {
-                    messageId: "unexpectedSemi",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "unexpectedSemi",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: false }],
-            errors: [
-                {
-                    messageId: "unexpectedSemi",
-                    line: 3,
-                    column: 18,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number;
-}
-            `,
-            output: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: false }],
-            errors: [
-                {
-                    messageId: "unexpectedSemi",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string,
-    age: number,
-}
-            `,
-            output: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none" }],
-            errors: [
-                {
-                    messageId: "unexpectedComma",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "unexpectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string,
-    age: number,
-}
-            `,
-            output: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: true }],
-            errors: [
-                {
-                    messageId: "unexpectedComma",
-                    line: 3,
-                    column: 18,
-                },
-                {
-                    messageId: "unexpectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string,
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: false }],
-            errors: [
-                {
-                    messageId: "unexpectedComma",
-                    line: 3,
-                    column: 18,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number,
-}
-            `,
-            output: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            options: [{ delimiter: "none", requireLast: false }],
-            errors: [
-                {
-                    messageId: "unexpectedComma",
-                    line: 4,
-                    column: 17,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `,
-            options: [
-                {
-                    delimiter: "comma",
-                    overrides: { typeLiteral: { delimiter: "semi" } },
-                },
-            ],
-            errors: [
-                {
-                    messageId: "expectedSemi",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "expectedSemi",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `,
-            options: [
-                {
-                    delimiter: "comma",
-                    requireLast: false,
-                    overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: true },
-                    },
-                },
-            ],
-            errors: [
-                {
-                    messageId: "expectedSemi",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "expectedSemi",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string;
-    age: number;
-}
-            `,
-            options: [
-                {
-                    delimiter: "comma",
-                    requireLast: false,
-                    overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: true },
-                    },
-                },
-            ],
-            errors: [
-                {
-                    messageId: "expectedSemi",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number,
-}
-            `,
-            options: [
-                {
-                    delimiter: "semi",
-                    overrides: { typeLiteral: { delimiter: "comma" } },
-                },
-            ],
-            errors: [
-                {
-                    messageId: "expectedComma",
-                    line: 3,
-                    column: 17,
-                },
-                {
-                    messageId: "expectedComma",
-                    line: 4,
-                    column: 16,
-                },
-            ],
-        },
-        {
-            code: `
-type Foo = {
-    name: string
-    age: number
-}
-            `,
-            output: `
-type Foo = {
-    name: string,
-    age: number,
-}
-            `,
-            options: [
-                {
-                    delimiter: "semi",
-                    requireLast: false,
-                    overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: true },
-                    },
-                },
-            ],
+            options: [{ multiline: { delimiter: "comma", requireLast: true } }],
             errors: [
                 {
                     messageId: "expectedComma",
@@ -2387,13 +2079,7 @@ type Foo = {
 }
             `,
             options: [
-                {
-                    delimiter: "semi",
-                    requireLast: true,
-                    overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: false },
-                    },
-                },
+                { multiline: { delimiter: "comma", requireLast: false } },
             ],
             errors: [
                 {
@@ -2416,12 +2102,7 @@ type Foo = {
     age: number,
 }
             `,
-            options: [
-                {
-                    delimiter: "semi",
-                    overrides: { typeLiteral: { delimiter: "comma" } },
-                },
-            ],
+            options: [{ multiline: { delimiter: "comma" } }],
             errors: [
                 {
                     messageId: "expectedComma",
@@ -2448,12 +2129,534 @@ type Foo = {
     age: number,
 }
             `,
+            options: [{ multiline: { delimiter: "comma", requireLast: true } }],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "expectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
+}
+            `,
+            options: [
+                { multiline: { delimiter: "comma", requireLast: false } },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 18,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
+}
+            `,
+            options: [
+                { multiline: { delimiter: "comma", requireLast: false } },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "unexpectedSemi",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none" } }],
+            errors: [
+                {
+                    messageId: "unexpectedSemi",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "unexpectedSemi",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: true } }],
+            errors: [
+                {
+                    messageId: "unexpectedSemi",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "unexpectedSemi",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: false } }],
+            errors: [
+                {
+                    messageId: "unexpectedSemi",
+                    line: 3,
+                    column: 18,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: false } }],
+            errors: [
+                {
+                    messageId: "unexpectedSemi",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none" } }],
+            errors: [
+                {
+                    messageId: "unexpectedComma",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "unexpectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: true } }],
+            errors: [
+                {
+                    messageId: "unexpectedComma",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "unexpectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string,
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: false } }],
+            errors: [
+                {
+                    messageId: "unexpectedComma",
+                    line: 3,
+                    column: 18,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number,
+}
+            `,
+            output: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            options: [{ multiline: { delimiter: "none", requireLast: false } }],
+            errors: [
+                {
+                    messageId: "unexpectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: false,
+                    multiline: { delimiter: "comma" },
                     overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: true },
+                        typeLiteral: { multiline: { delimiter: "semi" } },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedSemi",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "expectedSemi",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "comma", requireLast: false },
+                    overrides: {
+                        typeLiteral: {
+                            multiline: { delimiter: "semi", requireLast: true },
+                        },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedSemi",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "expectedSemi",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "comma", requireLast: false },
+                    overrides: {
+                        typeLiteral: {
+                            multiline: { delimiter: "semi", requireLast: true },
+                        },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedSemi",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi" },
+                    overrides: {
+                        typeLiteral: { multiline: { delimiter: "comma" } },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "expectedComma",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi", requireLast: false },
+                    overrides: {
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: true,
+                            },
+                        },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 17,
+                },
+                {
+                    messageId: "expectedComma",
+                    line: 4,
+                    column: 16,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string
+    age: number
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi", requireLast: true },
+                    overrides: {
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: false,
+                            },
+                        },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi" },
+                    overrides: {
+                        typeLiteral: { multiline: { delimiter: "comma" } },
+                    },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedComma",
+                    line: 3,
+                    column: 18,
+                },
+                {
+                    messageId: "expectedComma",
+                    line: 4,
+                    column: 17,
+                },
+            ],
+        },
+        {
+            code: `
+type Foo = {
+    name: string;
+    age: number;
+}
+            `,
+            output: `
+type Foo = {
+    name: string,
+    age: number,
+}
+            `,
+            options: [
+                {
+                    multiline: { delimiter: "semi", requireLast: false },
+                    overrides: {
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: true,
+                            },
+                        },
                     },
                 },
             ],
@@ -2485,10 +2688,14 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: false },
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -2515,10 +2722,14 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        typeLiteral: { delimiter: "comma", requireLast: false },
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "comma",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -2550,8 +2761,10 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    overrides: { typeLiteral: { delimiter: "none" } },
+                    multiline: { delimiter: "semi" },
+                    overrides: {
+                        typeLiteral: { multiline: { delimiter: "none" } },
+                    },
                 },
             ],
             errors: [
@@ -2582,10 +2795,11 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: false,
+                    multiline: { delimiter: "semi", requireLast: false },
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: true },
+                        typeLiteral: {
+                            multiline: { delimiter: "none", requireLast: true },
+                        },
                     },
                 },
             ],
@@ -2617,10 +2831,14 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false },
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -2647,10 +2865,14 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "semi",
-                    requireLast: true,
+                    multiline: { delimiter: "semi", requireLast: true },
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false },
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -2677,8 +2899,10 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "comma",
-                    overrides: { typeLiteral: { delimiter: "none" } },
+                    multiline: { delimiter: "comma" },
+                    overrides: {
+                        typeLiteral: { multiline: { delimiter: "none" } },
+                    },
                 },
             ],
             errors: [
@@ -2709,10 +2933,11 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "comma",
-                    requireLast: false,
+                    multiline: { delimiter: "comma", requireLast: false },
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: true },
+                        typeLiteral: {
+                            multiline: { delimiter: "none", requireLast: true },
+                        },
                     },
                 },
             ],
@@ -2744,10 +2969,14 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "comma",
-                    requireLast: true,
+                    multiline: { delimiter: "comma", requireLast: true },
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false },
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -2774,10 +3003,14 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "comma",
-                    requireLast: true,
+                    multiline: { delimiter: "comma", requireLast: true },
                     overrides: {
-                        typeLiteral: { delimiter: "none", requireLast: false },
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "none",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -2814,11 +3047,10 @@ type Bar = {
             `,
             options: [
                 {
-                    delimiter: "none",
-                    requireLast: true,
+                    multiline: { delimiter: "none", requireLast: true },
                     overrides: {
-                        interface: { delimiter: "comma" },
-                        typeLiteral: { delimiter: "semi" },
+                        interface: { multiline: { delimiter: "comma" } },
+                        typeLiteral: { multiline: { delimiter: "semi" } },
                     },
                 },
             ],
@@ -2875,7 +3107,7 @@ interface Foo {
     [key: string]: any;
 }
             `,
-            options: [{ singleLine: "none" }],
+            options: [{ singleline: { delimiter: "comma" } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -2885,14 +3117,36 @@ interface Foo {
             ],
         },
         {
-            code: "interface Foo { [key: string]: any }",
-            output: "interface Foo { [key: string]: any; }",
-            options: [{ singleLine: "semi" }],
+            code: "interface Foo { a: any, [key: string]: any }",
+            output: "interface Foo { a: any; [key: string]: any }",
+            options: [{ singleline: { delimiter: "semi" } }],
             errors: [
                 {
                     messageId: "expectedSemi",
                     line: 1,
-                    column: 35,
+                    column: 24,
+                },
+            ],
+        },
+        {
+            code: "interface Foo { a: any, [key: string]: any, }",
+            output: "interface Foo { a: any; [key: string]: any }",
+            options: [
+                {
+                    multiline: { requireLast: true },
+                    singleline: { delimiter: "semi" },
+                },
+            ],
+            errors: [
+                {
+                    messageId: "expectedSemi",
+                    line: 1,
+                    column: 24,
+                },
+                {
+                    messageId: "unexpectedComma",
+                    line: 1,
+                    column: 44,
                 },
             ],
         },
@@ -2901,27 +3155,15 @@ interface Foo {
             output: "interface Foo { [key: string]: any; }",
             options: [
                 {
-                    requireLast: true,
-                    singleLine: "semi",
-                },
-            ],
-            errors: [
-                {
-                    messageId: "expectedSemi",
-                    line: 1,
-                    column: 35,
-                },
-            ],
-        },
-        {
-            code: "interface Foo { [key: string]: any }",
-            output: "interface Foo { [key: string]: any; }",
-            options: [
-                {
-                    requireLast: true,
-                    singleLine: "none",
+                    multiline: { requireLast: true },
+                    singleline: { delimiter: "comma", requireLast: false },
                     overrides: {
-                        interface: { singleLine: "semi" },
+                        interface: {
+                            singleline: {
+                                delimiter: "semi",
+                                requireLast: true,
+                            },
+                        },
                     },
                 },
             ],
@@ -2963,7 +3205,7 @@ type Foo = {
     [key: string]: any;
 }
             `,
-            options: [{ singleLine: "semi" }],
+            options: [{ singleline: { delimiter: "semi" } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -2975,7 +3217,7 @@ type Foo = {
         {
             code: "type Foo = { [key: string]: any }",
             output: "type Foo = { [key: string]: any; }",
-            options: [{ singleLine: "semi" }],
+            options: [{ singleline: { delimiter: "semi", requireLast: true } }],
             errors: [
                 {
                     messageId: "expectedSemi",
@@ -2989,8 +3231,8 @@ type Foo = {
             output: "type Foo = { [key: string]: any; }",
             options: [
                 {
-                    requireLast: true,
-                    singleLine: "semi",
+                    multiline: { requireLast: false },
+                    singleline: { delimiter: "semi", requireLast: true },
                 },
             ],
             errors: [
@@ -3002,14 +3244,14 @@ type Foo = {
             ],
         },
         {
-            code: "type Foo = { [key: string]: any }",
-            output: "type Foo = { [key: string]: any; }",
+            code: "type Foo = { a: any, [key: string]: any }",
+            output: "type Foo = { a: any; [key: string]: any }",
             options: [
                 {
-                    requireLast: true,
-                    singleLine: "none",
+                    multiline: { requireLast: true },
+                    singleline: { delimiter: "comma" },
                     overrides: {
-                        typeLiteral: { singleLine: "semi" },
+                        typeLiteral: { singleline: { delimiter: "semi" } },
                     },
                 },
             ],
@@ -3017,7 +3259,7 @@ type Foo = {
                 {
                     messageId: "expectedSemi",
                     line: 1,
-                    column: 32,
+                    column: 21,
                 },
             ],
         },
@@ -3028,7 +3270,7 @@ interface Foo {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }],
+            options: [{ multiline: { delimiter: "semi", requireLast: false } }],
             errors: [
                 {
                     messageId: "unexpectedSemi",
@@ -3046,12 +3288,13 @@ interface Foo {
             `,
             options: [
                 {
-                    delimiter: "comma",
-                    requireLast: true,
+                    multiline: { delimiter: "comma", requireLast: true },
                     overrides: {
                         interface: {
-                            delimiter: "semi",
-                            requireLast: false,
+                            multiline: {
+                                delimiter: "semi",
+                                requireLast: false,
+                            },
                         },
                     },
                 },
@@ -3065,12 +3308,12 @@ interface Foo {
             ],
         },
         {
-            code: "interface Foo { [key: string]: any }",
+            code: "interface Foo { a: any, [key: string]: any }",
             errors: [
                 {
                     messageId: "expectedSemi",
                     line: 1,
-                    column: 35,
+                    column: 24,
                 },
             ],
         },
@@ -3081,7 +3324,7 @@ type Foo = {
     age: number;
 }
             `,
-            options: [{ delimiter: "semi", requireLast: false }],
+            options: [{ multiline: { delimiter: "semi", requireLast: false } }],
             errors: [
                 {
                     messageId: "unexpectedSemi",
@@ -3099,10 +3342,14 @@ type Foo = {
             `,
             options: [
                 {
-                    delimiter: "comma",
-                    requireLast: true,
+                    multiline: { delimiter: "comma", requireLast: true },
                     overrides: {
-                        typeLiteral: { delimiter: "semi", requireLast: false },
+                        typeLiteral: {
+                            multiline: {
+                                delimiter: "semi",
+                                requireLast: false,
+                            },
+                        },
                     },
                 },
             ],
@@ -3115,12 +3362,12 @@ type Foo = {
             ],
         },
         {
-            code: "type Foo = { [key: string]: any }",
+            code: "type Foo = { a: any, [key: string]: any }",
             errors: [
                 {
                     messageId: "expectedSemi",
                     line: 1,
-                    column: 32,
+                    column: 21,
                 },
             ],
         },
