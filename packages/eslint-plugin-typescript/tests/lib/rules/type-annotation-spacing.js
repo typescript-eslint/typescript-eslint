@@ -1041,11 +1041,6 @@ type Bar = Record<keyof Foo, string>
             parser: "typescript-eslint-parser",
         },
         "let resolver: (() => PromiseLike<T>) | PromiseLike<T>;",
-        `
-interface resolve {
-    resolver: (() => PromiseLike<T>) | PromiseLike<T>;
-}
-        `,
     ],
     invalid: [
         {
@@ -4234,11 +4229,6 @@ type Bar = Record<keyof Foo, string>
             ],
             parser: "typescript-eslint-parser",
         },
-        `
-interface resolve {
-    resolver?: (() => PromiseLike<T>) | PromiseLike<T>;
-}
-        `,
     ],
     invalid: [
         {

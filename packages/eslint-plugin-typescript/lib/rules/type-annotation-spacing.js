@@ -117,7 +117,10 @@ module.exports = {
             if (after && nextDelta === 0) {
                 context.report({
                     node: punctuatorTokenEnd,
-                    message: `Expected a space after the '${type}'`,
+                    message: "Expected a space after the '{{type}}'",
+                    data: {
+                        type,
+                    },
                     fix(fixer) {
                         return fixer.insertTextAfter(punctuatorTokenEnd, " ");
                     },
@@ -125,7 +128,10 @@ module.exports = {
             } else if (!after && nextDelta > 0) {
                 context.report({
                     node: punctuatorTokenEnd,
-                    message: `Unexpected space after the '${type}'`,
+                    message: "Unexpected space after the '{{type}}'",
+                    data: {
+                        type,
+                    },
                     fix(fixer) {
                         return fixer.removeRange([
                             punctuatorTokenEnd.range[1],
@@ -138,7 +144,10 @@ module.exports = {
             if (before && previousDelta === 0) {
                 context.report({
                     node: punctuatorTokenStart,
-                    message: `Expected a space before the '${type}'`,
+                    message: "Expected a space before the '{{type}}'",
+                    data: {
+                        type,
+                    },
                     fix(fixer) {
                         return fixer.insertTextAfter(previousToken, " ");
                     },
@@ -146,7 +155,10 @@ module.exports = {
             } else if (!before && previousDelta > 0) {
                 context.report({
                     node: punctuatorTokenStart,
-                    message: `Unexpected space before the '${type}'`,
+                    message: "Unexpected space before the '{{type}}'",
+                    data: {
+                        type,
+                    },
                     fix(fixer) {
                         return fixer.removeRange([
                             previousToken.range[1],

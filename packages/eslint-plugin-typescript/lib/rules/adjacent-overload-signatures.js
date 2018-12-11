@@ -27,7 +27,7 @@ module.exports = {
         /**
          * Gets the name of the member being processed.
          * @param {ASTNode} member the member being processed.
-         * @returns {string} the name of the member or null if it's a member not relevant to the rule.
+         * @returns {string|null} the name of the member or null if it's a member not relevant to the rule.
          * @private
          */
         function getMemberName(member) {
@@ -92,7 +92,11 @@ module.exports = {
                     if (index > -1 && lastName !== name) {
                         context.report({
                             node: member,
-                            message: `All '${name}' signatures should be adjacent`,
+                            message:
+                                "All '{{name}}' signatures should be adjacent",
+                            data: {
+                                name,
+                            },
                         });
                     } else if (name && index === -1) {
                         seen.push(name);

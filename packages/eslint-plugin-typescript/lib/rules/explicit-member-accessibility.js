@@ -41,9 +41,11 @@ module.exports = {
             ) {
                 context.report({
                     node: methodDefinition,
-                    message: `Missing accessibility modifier on method definition ${
-                        methodDefinition.key.name
-                    }.`,
+                    message:
+                        "Missing accessibility modifier on method definition {{name}}.",
+                    data: {
+                        name: methodDefinition.key.name,
+                    },
                 });
             }
         }
@@ -61,9 +63,11 @@ module.exports = {
             ) {
                 context.report({
                     node: classProperty,
-                    message: `Missing accessibility modifier on class property ${
-                        classProperty.key.name
-                    }.`,
+                    message:
+                        "Missing accessibility modifier on class property {{name}}.",
+                    data: {
+                        name: classProperty.key.name,
+                    },
                 });
             }
         }

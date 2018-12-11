@@ -67,9 +67,11 @@ module.exports = {
 
             context.report({
                 node: resolvedId,
-                message: `${friendlyName} '${
-                    resolvedId.name
-                }' must be PascalCased`,
+                message: "{{friendlyName}} '{{name}}' must be PascalCased",
+                data: {
+                    friendlyName,
+                    name: resolvedId.name,
+                },
             });
         }
 

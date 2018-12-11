@@ -33,7 +33,6 @@ const foo = {} as Foo<int>;
 const bar = new Generic<int>() as Foo;
         `,
         "const array : Array<string> = [];",
-        "const array : Array<string> = [];",
         `
 class A {}
 class B extends A {}

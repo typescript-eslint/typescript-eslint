@@ -122,7 +122,11 @@ module.exports = {
 
             context.report({
                 node,
-                message: `Type ${type} trivially inferred from a ${type} literal, remove type annotation`,
+                message:
+                    "Type {{type}} trivially inferred from a {{type}} literal, remove type annotation",
+                data: {
+                    type,
+                },
                 fix: fixer => fixer.remove(typeNode),
             });
         }
