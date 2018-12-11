@@ -49,7 +49,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint && yarn test && yarn docs:check && lint-staged"
+      "pre-commit": "yarn check --verify-tree && yarn lint && yarn format-check && yarn test && yarn docs:check && lint-staged"
     }
   },
   "engines": {
