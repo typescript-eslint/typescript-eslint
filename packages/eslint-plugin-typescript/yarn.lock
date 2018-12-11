@@ -708,6 +708,11 @@ eslint-docs@^0.1.1:
     read-pkg-up "^2.0.0"
     regenerator-runtime "^0.11.0"
 
+eslint-plugin-eslint-plugin@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-eslint-plugin/-/eslint-plugin-eslint-plugin-2.0.0.tgz#9825af354c8fcefda7c99c951243d70687dd9a1d"
+  integrity sha512-NLJ+Rw23xykBV12hQ/e4Kz8jbmtWSx++Q5dizfM8SjNQyUu/+AU4NUP4hih6iFMByKllTLR/hmVV8xwLpRBCPA==
+
 eslint-plugin-node@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-node/-/eslint-plugin-node-6.0.1.tgz#bf19642298064379315d7a4b2a75937376fa05e4"

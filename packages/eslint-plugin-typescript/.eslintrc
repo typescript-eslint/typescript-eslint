@@ -2,12 +2,14 @@
     "root": true,
     "plugins": [
         "node",
-        "prettier"
+        "prettier",
+        "eslint-plugin"
     ],
     "extends": [
         "eslint",
         "plugin:node/recommended",
-        "prettier"
+        "prettier",
+        "plugin:eslint-plugin/recommended"
     ],
     "rules": {
         "prettier/prettier": [
@@ -16,6 +18,9 @@
                 "tabWidth": 4
             }
         ],
-        "lines-around-comment": "off"
+        "lines-around-comment": "off",
+        "eslint-plugin/prefer-placeholders": "error",
+        "eslint-plugin/prefer-replace-text": "error",
+        "eslint-plugin/no-deprecated-report-api": "error"
     }
 }
