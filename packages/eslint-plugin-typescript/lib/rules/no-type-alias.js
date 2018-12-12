@@ -191,17 +191,17 @@ module.exports = {
         function getMessage(compositionType, isRoot, type) {
             if (isRoot) {
                 return type
-                    ? `Type ${type} are not allowed`
-                    : "Type aliases are not allowed";
+                    ? `Type ${type} are not allowed.`
+                    : "Type aliases are not allowed.";
             }
 
             return compositionType === "TSUnionType"
                 ? `${type[0].toUpperCase()}${type.slice(
                       1
-                  )} in union types are not allowed`
+                  )} in union types are not allowed.`
                 : `${type[0].toUpperCase()}${type.slice(
                       1
-                  )} in intersection types are not allowed`;
+                  )} in intersection types are not allowed.`;
         }
 
         /**

@@ -21,6 +21,7 @@
         "lines-around-comment": "off",
         "eslint-plugin/prefer-placeholders": "error",
         "eslint-plugin/prefer-replace-text": "error",
-        "eslint-plugin/no-deprecated-report-api": "error"
+        "eslint-plugin/no-deprecated-report-api": "error",
+        "eslint-plugin/report-message-format": ["error", "^[A-Z'{].*[\\.}]$"]
     }
 }

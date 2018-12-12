@@ -81,7 +81,7 @@ module.exports = {
                     context.report({
                         node,
                         message:
-                            "Property {{parameter}} cannot be declared in the constructor",
+                            "Property {{parameter}} cannot be declared in the constructor.",
                         data: {
                             parameter: node.parameter.name,
                         },

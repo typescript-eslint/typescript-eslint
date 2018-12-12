@@ -48,7 +48,7 @@ module.exports = {
                     context.report({
                         node,
                         message:
-                            "Use 'namespace' instead of 'module' to declare custom TypeScript modules",
+                            "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
                         fix(fixer) {
                             return fixer.replaceText(moduleType, "namespace");
                         },

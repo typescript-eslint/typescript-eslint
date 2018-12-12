@@ -58,14 +58,15 @@ module.exports = {
                 if (isPrefixedWithI(interfaceNode.id.name)) {
                     context.report({
                         node: interfaceNode.id,
-                        message: 'Interface name must not be prefixed with "I"',
+                        message:
+                            'Interface name must not be prefixed with "I".',
                     });
                 }
             } else {
                 if (!isPrefixedWithI(interfaceNode.id.name)) {
                     context.report({
                         node: interfaceNode.id,
-                        message: 'Interface name must be prefixed with "I"',
+                        message: 'Interface name must be prefixed with "I".',
                     });
                 }
             }

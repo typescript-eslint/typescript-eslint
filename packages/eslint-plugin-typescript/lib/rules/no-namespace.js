@@ -97,7 +97,7 @@ module.exports = {
                 context.report({
                     node,
                     message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces",
+                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
                 });
             },
         };

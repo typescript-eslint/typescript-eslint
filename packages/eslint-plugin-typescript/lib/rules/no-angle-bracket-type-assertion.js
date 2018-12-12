@@ -36,7 +36,7 @@ module.exports = {
                 context.report({
                     node,
                     message:
-                        "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions",
+                        "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions.",
                     data: {
                         cast: sourceCode.getText(
                             node.typeAnnotation.typeAnnotation

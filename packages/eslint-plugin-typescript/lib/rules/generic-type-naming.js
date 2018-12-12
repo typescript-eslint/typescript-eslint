@@ -29,8 +29,7 @@ function createTypeParameterChecker(context, rule) {
 
                     context.report({
                         node,
-                        message:
-                            "Type parameter {{name}} does not match rule {{rule}}",
+                        messageId: "paramNotMatchRule",
                         data,
                     });
                 }
@@ -46,6 +45,10 @@ module.exports = {
             category: "TypeScript",
             url:
                 "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/generic-type-naming.md",
+        },
+        messages: {
+            paramNotMatchRule:
+                "Type parameter {{name}} does not match rule {{rule}}.",
         },
     },
 

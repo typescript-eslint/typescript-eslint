@@ -76,7 +76,7 @@ interface IAnimal {
             `,
             errors: [
                 {
-                    message: 'Interface name must not be prefixed with "I"',
+                    message: 'Interface name must not be prefixed with "I".',
                     line: 2,
                     column: 11,
                 },
@@ -91,7 +91,7 @@ interface Animal {
             options: ["always"],
             errors: [
                 {
-                    message: 'Interface name must be prefixed with "I"',
+                    message: 'Interface name must be prefixed with "I".',
                     line: 2,
                     column: 11,
                 },
@@ -106,7 +106,7 @@ interface Iguana {
             options: ["always"],
             errors: [
                 {
-                    message: 'Interface name must be prefixed with "I"',
+                    message: 'Interface name must be prefixed with "I".',
                     line: 2,
                     column: 11,
                 },
@@ -121,7 +121,7 @@ interface IIguana {
             options: ["never"],
             errors: [
                 {
-                    message: 'Interface name must not be prefixed with "I"',
+                    message: 'Interface name must not be prefixed with "I".',
                     line: 2,
                     column: 11,
                 },
@@ -136,7 +136,7 @@ interface IAnimal {
             options: ["never"],
             errors: [
                 {
-                    message: 'Interface name must not be prefixed with "I"',
+                    message: 'Interface name must not be prefixed with "I".',
                     line: 2,
                     column: 11,
                 },

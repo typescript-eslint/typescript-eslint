@@ -36,7 +36,7 @@ module.exports = {
                     context.report({
                         node,
                         message:
-                            "Require statement not part of import statement",
+                            "Require statement not part of import statement.",
                     });
                 }
             },
