@@ -31,7 +31,7 @@ module.exports = {
             TSNonNullExpression(node) {
                 context.report({
                     node,
-                    message: "Forbidden non-null assertion",
+                    message: "Forbidden non-null assertion.",
                 });
             },
         };

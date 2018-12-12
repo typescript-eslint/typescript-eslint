@@ -26,7 +26,7 @@ ruleTester.run("no-non-null-assertion", rule, {
             code: "const x = null; x!.y;",
             errors: [
                 {
-                    message: "Forbidden non-null assertion",
+                    message: "Forbidden non-null assertion.",
                     line: 1,
                     column: 17,
                 },

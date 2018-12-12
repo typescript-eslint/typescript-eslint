@@ -29,7 +29,7 @@ ruleTester.run("no-triple-slash-reference", rule, {
             code: '/// <reference path="Animal" />',
             errors: [
                 {
-                    message: "Do not use a triple slash reference",
+                    message: "Do not use a triple slash reference.",
                     line: 1,
                     column: 1,
                 },
@@ -43,7 +43,7 @@ let a
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Do not use a triple slash reference",
+                    message: "Do not use a triple slash reference.",
                     line: 2,
                     column: 1,
                 },

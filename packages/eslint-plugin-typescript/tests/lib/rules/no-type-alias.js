@@ -514,7 +514,7 @@ type Foo<T> = {
             code: "type Foo = 'a'",
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -525,7 +525,7 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -536,7 +536,7 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -546,12 +546,12 @@ type Foo<T> = {
             code: "type Foo = 'a' | 'b';",
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -562,12 +562,12 @@ type Foo<T> = {
             options: [{ allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -578,12 +578,12 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -594,12 +594,12 @@ type Foo<T> = {
             options: [{ allowAliases: false, allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -610,12 +610,12 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -626,12 +626,12 @@ type Foo<T> = {
             options: [{ allowAliases: "never", allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -647,12 +647,12 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -662,17 +662,17 @@ type Foo<T> = {
             code: "type Foo = 'a' | 'b' | 'c';",
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -683,17 +683,17 @@ type Foo<T> = {
             options: [{ allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -704,17 +704,17 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -725,17 +725,17 @@ type Foo<T> = {
             options: [{ allowAliases: false, allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -746,17 +746,17 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -767,17 +767,17 @@ type Foo<T> = {
             options: [{ allowAliases: "never", allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -788,17 +788,17 @@ type Foo<T> = {
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -814,17 +814,17 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -834,12 +834,12 @@ type Foo<T> = {
             code: "type Foo = 'a' & 'b';",
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -850,12 +850,12 @@ type Foo<T> = {
             options: [{ allowLiterals: "in-intersections" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -866,12 +866,12 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -884,12 +884,12 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -900,12 +900,12 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -918,12 +918,12 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -934,12 +934,12 @@ type Foo<T> = {
             options: [{ allowAliases: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -955,12 +955,12 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -970,17 +970,17 @@ type Foo<T> = {
             code: "type Foo = 'a' & 'b' & 'c';",
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -991,17 +991,17 @@ type Foo<T> = {
             options: [{ allowLiterals: "in-intersections" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1012,17 +1012,17 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1035,17 +1035,17 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1056,17 +1056,17 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1079,17 +1079,17 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1100,17 +1100,17 @@ type Foo<T> = {
             options: [{ allowAliases: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1126,17 +1126,17 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1146,17 +1146,17 @@ type Foo<T> = {
             code: "type Foo = 'a' | 'b' & 'c';",
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1167,17 +1167,17 @@ type Foo<T> = {
             options: [{ allowLiterals: "in-intersections" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1188,17 +1188,17 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1211,17 +1211,17 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1232,17 +1232,17 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1255,17 +1255,17 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1276,12 +1276,12 @@ type Foo<T> = {
             options: [{ allowAliases: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1297,12 +1297,12 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 24,
                 },
@@ -1313,7 +1313,7 @@ type Foo<T> = {
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1329,7 +1329,7 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1339,7 +1339,7 @@ type Foo<T> = {
             code: "type Foo = string;",
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1350,7 +1350,7 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1361,7 +1361,7 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1372,7 +1372,7 @@ type Foo<T> = {
             options: [{ allowAliases: "in-unions" }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1383,7 +1383,7 @@ type Foo<T> = {
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1394,7 +1394,7 @@ type Foo<T> = {
             options: [{ allowAliases: "in-unions-and-intersections" }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1404,12 +1404,12 @@ type Foo<T> = {
             code: "type Foo = string | string[];",
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
@@ -1420,12 +1420,12 @@ type Foo<T> = {
             options: [{ allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
@@ -1436,12 +1436,12 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
@@ -1452,12 +1452,12 @@ type Foo<T> = {
             options: [{ allowAliases: false, allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
@@ -1468,12 +1468,12 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
@@ -1484,12 +1484,12 @@ type Foo<T> = {
             options: [{ allowAliases: "never", allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
@@ -1500,12 +1500,12 @@ type Foo<T> = {
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
@@ -1521,12 +1521,12 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
@@ -1536,17 +1536,17 @@ type Foo<T> = {
             code: "type Foo = string | string[] | number;",
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1557,17 +1557,17 @@ type Foo<T> = {
             options: [{ allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1578,17 +1578,17 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1599,17 +1599,17 @@ type Foo<T> = {
             options: [{ allowAliases: false, allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1620,17 +1620,17 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1641,17 +1641,17 @@ type Foo<T> = {
             options: [{ allowAliases: "never", allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1662,17 +1662,17 @@ type Foo<T> = {
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1688,17 +1688,17 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1708,17 +1708,17 @@ type Foo<T> = {
             code: "type Foo = string | string[] & number;",
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1729,17 +1729,17 @@ type Foo<T> = {
             options: [{ allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1750,17 +1750,17 @@ type Foo<T> = {
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1771,17 +1771,17 @@ type Foo<T> = {
             options: [{ allowAliases: false, allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1792,17 +1792,17 @@ type Foo<T> = {
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1813,17 +1813,17 @@ type Foo<T> = {
             options: [{ allowAliases: "never", allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1834,12 +1834,12 @@ type Foo<T> = {
             options: [{ allowAliases: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1852,12 +1852,12 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -1868,7 +1868,7 @@ type Foo<T> = {
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1884,7 +1884,7 @@ type Foo<T> = {
             ],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1897,7 +1897,7 @@ type Foo = Bar;
             `,
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1911,7 +1911,7 @@ type Foo = Bar;
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1925,7 +1925,7 @@ type Foo = Bar;
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1939,7 +1939,7 @@ type Foo = Bar;
             options: [{ allowAliases: "in-unions" }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1953,7 +1953,7 @@ type Foo = Bar;
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1967,7 +1967,7 @@ type Foo = Bar;
             options: [{ allowAliases: "in-unions-and-intersections" }],
             errors: [
                 {
-                    message: "Type aliases are not allowed",
+                    message: "Type aliases are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -1980,12 +1980,12 @@ type Foo = Bar | {};
             `,
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -1999,12 +1999,12 @@ type Foo = Bar | {};
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2018,12 +2018,12 @@ type Foo = Bar | {};
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2037,7 +2037,7 @@ type Foo = Bar | {};
             options: [{ allowAliases: "in-unions" }],
             errors: [
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2051,12 +2051,12 @@ type Foo = Bar | {};
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2070,7 +2070,7 @@ type Foo = Bar | {};
             options: [{ allowAliases: "in-unions-and-intersections" }],
             errors: [
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2083,12 +2083,12 @@ type Foo = Bar & {};
             `,
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2102,12 +2102,12 @@ type Foo = Bar & {};
             options: [{ allowAliases: false }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2121,12 +2121,12 @@ type Foo = Bar & {};
             options: [{ allowAliases: "never" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2140,12 +2140,12 @@ type Foo = Bar & {};
             options: [{ allowAliases: "in-unions" }],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2159,7 +2159,7 @@ type Foo = Bar & {};
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2173,7 +2173,7 @@ type Foo = Bar & {};
             options: [{ allowAliases: "in-unions-and-intersections" }],
             errors: [
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 18,
                 },
@@ -2183,7 +2183,7 @@ type Foo = Bar & {};
             code: "type Foo = () => void;",
             errors: [
                 {
-                    message: "Type callbacks are not allowed",
+                    message: "Type callbacks are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2194,7 +2194,7 @@ type Foo = Bar & {};
             options: [{ allowCallbacks: false }],
             errors: [
                 {
-                    message: "Type callbacks are not allowed",
+                    message: "Type callbacks are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2205,7 +2205,7 @@ type Foo = Bar & {};
             options: [{ allowCallbacks: "never" }],
             errors: [
                 {
-                    message: "Type callbacks are not allowed",
+                    message: "Type callbacks are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2215,7 +2215,7 @@ type Foo = Bar & {};
             code: "type Foo = {};",
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2226,7 +2226,7 @@ type Foo = Bar & {};
             options: [{ allowLiterals: false }],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2237,7 +2237,7 @@ type Foo = Bar & {};
             options: [{ allowLiterals: "never" }],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2248,7 +2248,7 @@ type Foo = Bar & {};
             options: [{ allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2259,7 +2259,7 @@ type Foo = Bar & {};
             options: [{ allowLiterals: "in-intersections" }],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2270,7 +2270,7 @@ type Foo = Bar & {};
             options: [{ allowLiterals: "in-unions-and-intersections" }],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2281,7 +2281,7 @@ type Foo = Bar & {};
             options: [{ allowAliases: "in-intersections" }],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2294,7 +2294,7 @@ type Foo = Bar & {};
             ],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2307,7 +2307,7 @@ type Foo = Bar & {};
             ],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2323,7 +2323,7 @@ type Foo = Bar & {};
             ],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2339,7 +2339,7 @@ type Foo = Bar & {};
             ],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2355,7 +2355,7 @@ type Foo = Bar & {};
             ],
             errors: [
                 {
-                    message: "Type literals are not allowed",
+                    message: "Type literals are not allowed.",
                     row: 1,
                     column: 12,
                 },
@@ -2365,12 +2365,12 @@ type Foo = Bar & {};
             code: "type Foo = {} | {};",
             errors: [
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 17,
                 },
@@ -2381,12 +2381,12 @@ type Foo = Bar & {};
             options: [{ allowLiterals: false }],
             errors: [
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 17,
                 },
@@ -2397,12 +2397,12 @@ type Foo = Bar & {};
             options: [{ allowLiterals: "never" }],
             errors: [
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 17,
                 },
@@ -2413,12 +2413,12 @@ type Foo = Bar & {};
             options: [{ allowLiterals: "in-intersections" }],
             errors: [
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in union types are not allowed",
+                    message: "Literals in union types are not allowed.",
                     row: 1,
                     column: 17,
                 },
@@ -2428,12 +2428,12 @@ type Foo = Bar & {};
             code: "type Foo = {} & {};",
             errors: [
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 17,
                 },
@@ -2444,12 +2444,12 @@ type Foo = Bar & {};
             options: [{ allowLiterals: false }],
             errors: [
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 17,
                 },
@@ -2460,12 +2460,12 @@ type Foo = Bar & {};
             options: [{ allowLiterals: "never" }],
             errors: [
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 17,
                 },
@@ -2476,12 +2476,12 @@ type Foo = Bar & {};
             options: [{ allowLiterals: "in-unions" }],
             errors: [
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 17,
                 },
@@ -2494,12 +2494,12 @@ type Foo = Bar & {};
             ],
             errors: [
                 {
-                    message: "Aliases in intersection types are not allowed",
+                    message: "Aliases in intersection types are not allowed.",
                     row: 1,
                     column: 12,
                 },
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
@@ -2515,17 +2515,17 @@ type Foo = Bar & {};
             ],
             errors: [
                 {
-                    message: "Literals in intersection types are not allowed",
+                    message: "Literals in intersection types are not allowed.",
                     row: 1,
                     column: 21,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 26,
                 },
                 {
-                    message: "Aliases in union types are not allowed",
+                    message: "Aliases in union types are not allowed.",
                     row: 1,
                     column: 32,
                 },
@@ -2539,7 +2539,7 @@ type Foo<T> = {
             `,
             errors: [
                 {
-                    message: "Type mapped types are not allowed",
+                    message: "Type mapped types are not allowed.",
                     row: 1,
                     column: 15,
                 },
@@ -2554,7 +2554,7 @@ type Foo<T> = {
             options: [{ allowMappedTypes: false }],
             errors: [
                 {
-                    message: "Type mapped types are not allowed",
+                    message: "Type mapped types are not allowed.",
                     row: 1,
                     column: 15,
                 },
@@ -2569,7 +2569,7 @@ type Foo<T> = {
             options: [{ allowMappedTypes: "never" }],
             errors: [
                 {
-                    message: "Type mapped types are not allowed",
+                    message: "Type mapped types are not allowed.",
                     row: 1,
                     column: 15,
                 },
@@ -2584,7 +2584,7 @@ type Foo<T> = {
             options: [{ allowMappedTypes: "in-unions" }],
             errors: [
                 {
-                    message: "Type mapped types are not allowed",
+                    message: "Type mapped types are not allowed.",
                     row: 1,
                     column: 15,
                 },
@@ -2599,7 +2599,7 @@ type Foo<T> = {
             options: [{ allowMappedTypes: "in-intersections" }],
             errors: [
                 {
-                    message: "Type mapped types are not allowed",
+                    message: "Type mapped types are not allowed.",
                     row: 1,
                     column: 15,
                 },
@@ -2614,7 +2614,7 @@ type Foo<T> = {
             options: [{ allowMappedTypes: "in-unions-and-intersections" }],
             errors: [
                 {
-                    message: "Type mapped types are not allowed",
+                    message: "Type mapped types are not allowed.",
                     row: 1,
                     column: 15,
                 },
@@ -2630,12 +2630,12 @@ type Foo<T> = {
             `,
             errors: [
                 {
-                    message: "Mapped types in union types are not allowed",
+                    message: "Mapped types in union types are not allowed.",
                     row: 1,
                     column: 15,
                 },
                 {
-                    message: "Mapped types in union types are not allowed",
+                    message: "Mapped types in union types are not allowed.",
                     row: 4,
                     column: 5,
                 },
@@ -2652,12 +2652,12 @@ type Foo<T> = {
             options: [{ allowMappedTypes: false }],
             errors: [
                 {
-                    message: "Mapped types in union types are not allowed",
+                    message: "Mapped types in union types are not allowed.",
                     row: 1,
                     column: 15,
                 },
                 {
-                    message: "Mapped types in union types are not allowed",
+                    message: "Mapped types in union types are not allowed.",
                     row: 4,
                     column: 5,
                 },
@@ -2674,12 +2674,12 @@ type Foo<T> = {
             options: [{ allowMappedTypes: "never" }],
             errors: [
                 {
-                    message: "Mapped types in union types are not allowed",
+                    message: "Mapped types in union types are not allowed.",
                     row: 1,
                     column: 15,
                 },
                 {
-                    message: "Mapped types in union types are not allowed",
+                    message: "Mapped types in union types are not allowed.",
                     row: 4,
                     column: 5,
                 },
@@ -2696,12 +2696,12 @@ type Foo<T> = {
             options: [{ allowMappedTypes: "in-intersections" }],
             errors: [
                 {
-                    message: "Mapped types in union types are not allowed",
+                    message: "Mapped types in union types are not allowed.",
                     row: 1,
                     column: 15,
                 },
                 {
-                    message: "Mapped types in union types are not allowed",
+                    message: "Mapped types in union types are not allowed.",
                     row: 4,
                     column: 5,
                 },
@@ -2718,13 +2718,13 @@ type Foo<T> = {
             errors: [
                 {
                     message:
-                        "Mapped types in intersection types are not allowed",
+                        "Mapped types in intersection types are not allowed.",
                     row: 1,
                     column: 15,
                 },
                 {
                     message:
-                        "Mapped types in intersection types are not allowed",
+                        "Mapped types in intersection types are not allowed.",
                     row: 4,
                     column: 5,
                 },
@@ -2742,13 +2742,13 @@ type Foo<T> = {
             errors: [
                 {
                     message:
-                        "Mapped types in intersection types are not allowed",
+                        "Mapped types in intersection types are not allowed.",
                     row: 1,
                     column: 15,
                 },
                 {
                     message:
-                        "Mapped types in intersection types are not allowed",
+                        "Mapped types in intersection types are not allowed.",
                     row: 4,
                     column: 5,
                 },
@@ -2766,13 +2766,13 @@ type Foo<T> = {
             errors: [
                 {
                     message:
-                        "Mapped types in intersection types are not allowed",
+                        "Mapped types in intersection types are not allowed.",
                     row: 1,
                     column: 15,
                 },
                 {
                     message:
-                        "Mapped types in intersection types are not allowed",
+                        "Mapped types in intersection types are not allowed.",
                     row: 4,
                     column: 5,
                 },
@@ -2790,13 +2790,13 @@ type Foo<T> = {
             errors: [
                 {
                     message:
-                        "Mapped types in intersection types are not allowed",
+                        "Mapped types in intersection types are not allowed.",
                     row: 1,
                     column: 15,
                 },
                 {
                     message:
-                        "Mapped types in intersection types are not allowed",
+                        "Mapped types in intersection types are not allowed.",
                     row: 4,
                     column: 5,
                 },

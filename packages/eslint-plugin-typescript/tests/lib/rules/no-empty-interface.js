@@ -44,7 +44,7 @@ interface Baz extends Foo, Bar {}
             code: "interface Foo {}",
             errors: [
                 {
-                    message: "An empty interface is equivalent to `{}`",
+                    message: "An empty interface is equivalent to `{}`.",
                     line: 1,
                     column: 11,
                 },
@@ -54,7 +54,7 @@ interface Baz extends Foo, Bar {}
             code: "interface Foo extends {}",
             errors: [
                 {
-                    message: "An empty interface is equivalent to `{}`",
+                    message: "An empty interface is equivalent to `{}`.",
                     line: 1,
                     column: 11,
                 },

@@ -36,7 +36,7 @@ module.exports = {
                         node: node.id,
                         message:
                             heritage === 0
-                                ? "An empty interface is equivalent to `{}`"
+                                ? "An empty interface is equivalent to `{}`."
                                 : "An interface declaring no members is equivalent to its supertype.",
                     });
                 }

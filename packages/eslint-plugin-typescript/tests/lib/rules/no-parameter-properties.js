@@ -120,7 +120,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -135,7 +135,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -150,7 +150,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -165,7 +165,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -180,7 +180,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -195,7 +195,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -210,7 +210,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -225,7 +225,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -240,13 +240,13 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
                 {
                     message:
-                        "Property age cannot be declared in the constructor",
+                        "Property age cannot be declared in the constructor.",
                     line: 3,
                     column: 39,
                 },
@@ -261,13 +261,13 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
                 {
                     message:
-                        "Property age cannot be declared in the constructor",
+                        "Property age cannot be declared in the constructor.",
                     line: 3,
                     column: 41,
                 },
@@ -282,13 +282,13 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
                 {
                     message:
-                        "Property age cannot be declared in the constructor",
+                        "Property age cannot be declared in the constructor.",
                     line: 3,
                     column: 38,
                 },
@@ -304,7 +304,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 4,
                     column: 17,
                 },
@@ -320,13 +320,13 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 4,
                     column: 17,
                 },
@@ -342,19 +342,19 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 4,
                     column: 17,
                 },
                 {
                     message:
-                        "Property age cannot be declared in the constructor",
+                        "Property age cannot be declared in the constructor.",
                     line: 4,
                     column: 39,
                 },
@@ -370,7 +370,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 4,
                     column: 17,
                 },
@@ -386,13 +386,13 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 4,
                     column: 17,
                 },
@@ -408,19 +408,19 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 4,
                     column: 17,
                 },
                 {
                     message:
-                        "Property age cannot be declared in the constructor",
+                        "Property age cannot be declared in the constructor.",
                     line: 4,
                     column: 41,
                 },
@@ -436,7 +436,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 4,
                     column: 17,
                 },
@@ -452,13 +452,13 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 4,
                     column: 17,
                 },
@@ -474,19 +474,19 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 4,
                     column: 17,
                 },
                 {
                     message:
-                        "Property age cannot be declared in the constructor",
+                        "Property age cannot be declared in the constructor.",
                     line: 4,
                     column: 38,
                 },
@@ -503,7 +503,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -519,7 +519,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -544,7 +544,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -570,7 +570,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -586,7 +586,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -611,7 +611,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property name cannot be declared in the constructor",
+                        "Property name cannot be declared in the constructor.",
                     line: 3,
                     column: 17,
                 },
@@ -628,7 +628,7 @@ class Foo {
             errors: [
                 {
                     message:
-                        "Property age cannot be declared in the constructor",
+                        "Property age cannot be declared in the constructor.",
                     line: 4,
                     column: 39,
                 },

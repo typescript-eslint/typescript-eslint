@@ -99,7 +99,7 @@ class Class {
             options: [{ public: "^_" }],
             errors: [
                 {
-                    message: "public property fooBar should match /^_/",
+                    message: "public property fooBar should match /^_/.",
                     line: 1,
                     column: 15,
                 },
@@ -110,7 +110,7 @@ class Class {
             options: [{ public: "^_" }],
             errors: [
                 {
-                    message: "public property fooBar should match /^_/",
+                    message: "public property fooBar should match /^_/.",
                     line: 1,
                     column: 22,
                 },
@@ -121,7 +121,7 @@ class Class {
             options: [{ protected: "^_" }],
             errors: [
                 {
-                    message: "protected property fooBar should match /^_/",
+                    message: "protected property fooBar should match /^_/.",
                     line: 1,
                     column: 25,
                 },
@@ -132,7 +132,7 @@ class Class {
             options: [{ private: "^_" }],
             errors: [
                 {
-                    message: "private property fooBar should match /^_/",
+                    message: "private property fooBar should match /^_/.",
                     line: 1,
                     column: 23,
                 },
@@ -156,23 +156,23 @@ class Class {
             ],
             errors: [
                 {
-                    message: "public property one should match /^pub[A-Z]/",
+                    message: "public property one should match /^pub[A-Z]/.",
                     line: 3,
                     column: 5,
                 },
                 {
-                    message: "public property two should match /^pub[A-Z]/",
+                    message: "public property two should match /^pub[A-Z]/.",
                     line: 4,
                     column: 12,
                 },
                 {
                     message:
-                        "protected property three should match /^prot[A-Z]/",
+                        "protected property three should match /^prot[A-Z]/.",
                     line: 5,
                     column: 15,
                 },
                 {
-                    message: "private property four should match /^priv[A-Z]/",
+                    message: "private property four should match /^priv[A-Z]/.",
                     line: 6,
                     column: 13,
                 },
@@ -196,23 +196,23 @@ class Class {
             ],
             errors: [
                 {
-                    message: "public property one should match /^pub[A-Z]/",
+                    message: "public property one should match /^pub[A-Z]/.",
                     line: 3,
                     column: 5,
                 },
                 {
-                    message: "public property two should match /^pub[A-Z]/",
+                    message: "public property two should match /^pub[A-Z]/.",
                     line: 4,
                     column: 12,
                 },
                 {
                     message:
-                        "protected property three should match /^prot[A-Z]/",
+                        "protected property three should match /^prot[A-Z]/.",
                     line: 5,
                     column: 15,
                 },
                 {
-                    message: "private property four should match /^priv[A-Z]/",
+                    message: "private property four should match /^priv[A-Z]/.",
                     line: 6,
                     column: 13,
                 },
@@ -236,23 +236,23 @@ class Class {
             ],
             errors: [
                 {
-                    message: "public property one should match /^pub[A-Z]/",
+                    message: "public property one should match /^pub[A-Z]/.",
                     line: 3,
                     column: 5,
                 },
                 {
-                    message: "public property two should match /^pub[A-Z]/",
+                    message: "public property two should match /^pub[A-Z]/.",
                     line: 4,
                     column: 12,
                 },
                 {
                     message:
-                        "protected property three should match /^prot[A-Z]/",
+                        "protected property three should match /^prot[A-Z]/.",
                     line: 5,
                     column: 15,
                 },
                 {
-                    message: "private property four should match /^priv[A-Z]/",
+                    message: "private property four should match /^priv[A-Z]/.",
                     line: 6,
                     column: 13,
                 },

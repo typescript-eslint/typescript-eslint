@@ -59,7 +59,7 @@ module.exports = {
             context.report({
                 node: node.key,
                 message:
-                    "{{accessibility}} property {{name}} should match {{convention}}",
+                    "{{accessibility}} property {{name}} should match {{convention}}.",
                 data: { accessibility, name, convention },
             });
         }

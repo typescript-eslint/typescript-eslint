@@ -93,7 +93,7 @@ module.exports = {
                         context.report({
                             node: member,
                             message:
-                                "All '{{name}}' signatures should be adjacent",
+                                "All '{{name}}' signatures should be adjacent.",
                             data: {
                                 name,
                             },

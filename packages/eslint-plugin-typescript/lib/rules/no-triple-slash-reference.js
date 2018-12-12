@@ -46,7 +46,7 @@ module.exports = {
                 if (referenceRegExp.test(comment.value)) {
                     context.report({
                         node: comment,
-                        message: "Do not use a triple slash reference",
+                        message: "Do not use a triple slash reference.",
                     });
                 }
             });
