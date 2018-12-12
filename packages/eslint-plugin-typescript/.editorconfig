@@ -10,3 +10,7 @@ insert_final_newline = true
 # yarn / npm uses 2 spaces when it dumps the file after a change
 [package.json]
 indent_size = 2
+
+# yml uses 2 spaces
+[*.yml]
+indent_size = 2
