@@ -49,6 +49,7 @@ This guarantees 100% compatibility between the plugin and the parser.
 <!-- Please run `npm run docs` to update this section -->
 <!-- begin rule list -->
 * [`typescript/adjacent-overload-signatures`](./docs/rules/adjacent-overload-signatures.md) — Require that member overloads be consecutive
+* [`typescript/array-type`](./docs/rules/array-type.md) — Requires using either `T[]` or `Array<T>` for arrays (`array-type` from TSLint)
 * [`typescript/ban-types`](./docs/rules/ban-types.md) — Enforces that types will not to be used (`ban-types` from TSLint)
 * [`typescript/camelcase`](./docs/rules/camelcase.md) — Enforce camelCase naming convention
 * [`typescript/class-name-casing`](./docs/rules/class-name-casing.md) — Require PascalCased class and interface names (`class-name` from TSLint)
