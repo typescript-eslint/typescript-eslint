@@ -18,6 +18,9 @@ module.exports = {
             url: util.metaDocsUrl("adjacent-overload-signatures"),
         },
         schema: [],
+        messages: {
+            adjacentSignature: "All '{{name}}' signatures should be adjacent.",
+        },
     },
 
     create(context) {
@@ -93,8 +96,7 @@ module.exports = {
                     if (index > -1 && lastName !== name) {
                         context.report({
                             node: member,
-                            message:
-                                "All '{{name}}' signatures should be adjacent.",
+                            messageId: "adjacentSignature",
                             data: {
                                 name,
                             },
