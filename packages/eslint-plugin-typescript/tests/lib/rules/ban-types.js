@@ -58,7 +58,11 @@ ruleTester.run("ban-types", rule, {
             code: "let a: Object;",
             errors: [
                 {
-                    message: "Don't use 'Object' as a type. Use '{}' instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "Object",
+                        customMessage: " Use '{}' instead.",
+                    },
                     line: 1,
                     column: 8,
                 },
@@ -70,8 +74,11 @@ ruleTester.run("ban-types", rule, {
             output: "let b: {c: string};",
             errors: [
                 {
-                    message:
-                        "Don't use 'String' as a type. Use string instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "String",
+                        customMessage: " Use string instead.",
+                    },
                     line: 1,
                     column: 12,
                 },
@@ -83,8 +90,11 @@ ruleTester.run("ban-types", rule, {
             output: "function foo(a: string) {}",
             errors: [
                 {
-                    message:
-                        "Don't use 'String' as a type. Use string instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "String",
+                        customMessage: " Use string instead.",
+                    },
                     line: 1,
                     column: 17,
                 },
@@ -96,8 +106,11 @@ ruleTester.run("ban-types", rule, {
             output: "'a' as string;",
             errors: [
                 {
-                    message:
-                        "Don't use 'String' as a type. Use string instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "String",
+                        customMessage: " Use string instead.",
+                    },
                     line: 1,
                     column: 8,
                 },
@@ -108,7 +121,8 @@ ruleTester.run("ban-types", rule, {
             code: "let c: F;",
             errors: [
                 {
-                    message: "Don't use 'F' as a type.",
+                    messageId: "bannedTypeMessage",
+                    data: { name: "F", customMessage: "" },
                     line: 1,
                     column: 8,
                 },
@@ -138,53 +152,80 @@ ruleTester.run("ban-types", rule, {
             `,
             errors: [
                 {
-                    message:
-                        "Don't use 'String' as a type. Use string instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "String",
+                        customMessage: " Use string instead.",
+                    },
                     line: 2,
                     column: 27,
                 },
                 {
-                    message:
-                        "Don't use 'String' as a type. Use string instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "String",
+                        customMessage: " Use string instead.",
+                    },
                     line: 2,
                     column: 47,
                 },
                 {
-                    message: "Don't use 'Object' as a type. Use '{}' instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "Object",
+                        customMessage: " Use '{}' instead.",
+                    },
                     line: 2,
                     column: 70,
                 },
                 {
-                    message:
-                        "Don't use 'String' as a type. Use string instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "String",
+                        customMessage: " Use string instead.",
+                    },
                     line: 3,
                     column: 35,
                 },
                 {
-                    message: "Don't use 'Object' as a type. Use '{}' instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "Object",
+                        customMessage: " Use '{}' instead.",
+                    },
                     line: 3,
                     column: 44,
                 },
                 {
-                    message: "Don't use 'Array' as a type.",
+                    messageId: "bannedTypeMessage",
+                    data: { name: "Array", customMessage: "" },
                     line: 6,
                     column: 27,
                 },
                 {
-                    message:
-                        "Don't use 'String' as a type. Use string instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "String",
+                        customMessage: " Use string instead.",
+                    },
                     line: 6,
                     column: 33,
                 },
                 {
-                    message:
-                        "Don't use 'String' as a type. Use string instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "String",
+                        customMessage: " Use string instead.",
+                    },
                     line: 7,
                     column: 32,
                 },
                 {
-                    message:
-                        "Don't use 'String' as a type. Use string instead.",
+                    messageId: "bannedTypeMessage",
+                    data: {
+                        name: "String",
+                        customMessage: " Use string instead.",
+                    },
                     line: 7,
                     column: 46,
                 },
