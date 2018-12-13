@@ -68,6 +68,7 @@ This guarantees 100% compatibility between the plugin and the parser.
 * [`typescript/no-misused-new`](./docs/rules/no-misused-new.md) — Enforce valid definition of `new` and `constructor`. (`no-misused-new` from TSLint)
 * [`typescript/no-namespace`](./docs/rules/no-namespace.md) — Disallow the use of custom TypeScript modules and namespaces
 * [`typescript/no-non-null-assertion`](./docs/rules/no-non-null-assertion.md) — Disallows non-null assertions using the `!` postfix operator (`no-non-null-assertion` from TSLint)
+* [`typescript/no-object-literal-type-assertion`](./docs/rules/no-object-literal-type-assertion.md) — Forbids an object literal to appear in a type assertion expression (`no-object-literal-type-assertion` from TSLint)
 * [`typescript/no-parameter-properties`](./docs/rules/no-parameter-properties.md) — Disallow the use of parameter properties in class constructors. (`no-parameter-properties` from TSLint)
 * [`typescript/no-triple-slash-reference`](./docs/rules/no-triple-slash-reference.md) — Disallow `/// <reference path="" />` comments (`no-reference` from TSLint)
 * [`typescript/no-type-alias`](./docs/rules/no-type-alias.md) — Disallow the use of type aliases (`interface-over-type-literal` from TSLint)
