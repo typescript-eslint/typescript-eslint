@@ -11,6 +11,7 @@ import {
   ESTreeNode,
   ESTreeToken
 } from './temp-types-based-on-js-source';
+import { TSNode } from './ts-nodes';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -289,12 +290,12 @@ function getLocFor(
 /**
  * Returns line and column data for the given ts.Node or ts.Token,
  * for the given AST
- * @param  {ts.Token|ts.Node} nodeOrToken the ts.Node or ts.Token
+ * @param  {ts.Token|TSNode} nodeOrToken the ts.Node or ts.Token
  * @param  {ts.SourceFile} ast         the AST object
  * @returns {ESTreeLoc}             the loc data
  */
 function getLoc(
-  nodeOrToken: ts.Node | ts.Token<any>,
+  nodeOrToken: TSNode | ts.Token<ts.SyntaxKind>,
   ast: ts.SourceFile
 ): ESTreeNodeLoc {
   return getLocFor(nodeOrToken.getStart(ast), nodeOrToken.end, ast);
@@ -537,7 +538,7 @@ function isComputedProperty(node: ts.Node): boolean {
  * @param  {ts.Node} node ts.Node to be checked
  * @returns {boolean}       is Optional
  */
-function isOptional(node: any): boolean {
+function isOptional(node: { questionToken?: ts.QuestionToken }): boolean {
   return node.questionToken
     ? node.questionToken.kind === SyntaxKind.QuestionToken
     : false;
