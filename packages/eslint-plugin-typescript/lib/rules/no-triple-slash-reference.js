@@ -16,8 +16,7 @@ module.exports = {
             description: 'Disallow `/// <reference path="" />` comments',
             extraDescription: [util.tslintRule("no-reference")],
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-triple-slash-reference.md",
+            url: util.metaDocsUrl("no-triple-slash-reference"),
         },
         schema: [],
     },

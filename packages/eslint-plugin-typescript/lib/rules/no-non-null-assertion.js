@@ -17,8 +17,7 @@ module.exports = {
                 "Disallows non-null assertions using the `!` postfix operator",
             extraDescription: [util.tslintRule("no-non-null-assertion")],
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-non-null-assertion.md",
+            url: util.metaDocsUrl("no-non-null-assertion"),
         },
         schema: [],
     },

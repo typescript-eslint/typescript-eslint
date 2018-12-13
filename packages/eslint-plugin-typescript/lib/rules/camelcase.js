@@ -5,6 +5,7 @@
 "use strict";
 
 const baseRule = require("eslint/lib/rules/camelcase");
+const util = require("../util");
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -14,6 +15,7 @@ module.exports = {
     meta: Object.assign({}, baseRule.meta, {
         docs: {
             description: "Enforce camelCase naming convention",
+            url: util.metaDocsUrl("ban-types"),
         },
     }),
 

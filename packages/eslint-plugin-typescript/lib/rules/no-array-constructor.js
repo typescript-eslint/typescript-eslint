@@ -5,6 +5,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -15,8 +17,7 @@ module.exports = {
             description: "Disallow generic `Array` constructors",
             category: "Stylistic Issues",
             recommended: false,
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-array-constructor.md",
+            url: util.metaDocsUrl("no-array-constructor"),
         },
         fixable: "code",
         schema: [],

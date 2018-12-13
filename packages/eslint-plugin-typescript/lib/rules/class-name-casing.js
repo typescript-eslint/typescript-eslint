@@ -18,8 +18,7 @@ module.exports = {
             extraDescription: [util.tslintRule("class-name")],
             category: "Best Practices",
             recommended: true,
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/class-name-casing.md",
+            url: util.metaDocsUrl("class-name-casing"),
         },
     },
 

@@ -3,6 +3,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 /**
  *
  * @param {any} context ESLint context
@@ -43,8 +45,7 @@ module.exports = {
         docs: {
             description: "Enforces naming of generic type variables",
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/generic-type-naming.md",
+            url: util.metaDocsUrl("generic-type-naming"),
         },
         messages: {
             paramNotMatchRule:

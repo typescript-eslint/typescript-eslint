@@ -19,8 +19,7 @@ module.exports = {
                 util.tslintRule("no-angle-bracket-type-assertion"),
             ],
             category: "Style",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-angle-bracket-type-assertion.md",
+            url: util.metaDocsUrl("no-angle-bracket-type-assertion"),
         },
         schema: [],
     },

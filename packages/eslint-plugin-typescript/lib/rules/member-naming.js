@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -14,8 +16,7 @@ module.exports = {
             description:
                 "Enforces naming conventions for class members by visibility.",
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/member-naming.md",
+            url: util.metaDocsUrl("member-naming"),
         },
         schema: [
             {

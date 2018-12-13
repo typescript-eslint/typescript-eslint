@@ -17,8 +17,7 @@ module.exports = {
                 "Require explicit accessibility modifiers on class properties and methods",
             extraDescription: [util.tslintRule("member-access")],
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/explicit-member-accessibility.md",
+            url: util.metaDocsUrl("explicit-member-accessibility"),
         },
         schema: [],
     },

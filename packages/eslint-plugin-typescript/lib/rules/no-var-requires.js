@@ -17,8 +17,7 @@ module.exports = {
                 "Disallows the use of require statements except in import statements",
             extraDescription: [util.tslintRule("no-var-requires")],
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-var-requires.md",
+            url: util.metaDocsUrl("no-var-requires"),
         },
         schema: [],
     },
