@@ -16,8 +16,7 @@ module.exports = {
             description: "Enforces that types will not to be used",
             extraDescription: [util.tslintRule("ban-types")],
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/ban-types.md",
+            url: util.metaDocsUrl("ban-types"),
         },
         fixable: "code",
         messages: {

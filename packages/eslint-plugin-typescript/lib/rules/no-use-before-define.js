@@ -8,6 +8,8 @@
 
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
@@ -183,8 +185,7 @@ module.exports = {
                 "Disallow the use of variables before they are defined",
             category: "Variables",
             recommended: false,
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-use-before-define.md",
+            url: util.metaDocsUrl("no-use-before-define"),
         },
 
         schema: [

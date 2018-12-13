@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -14,8 +16,7 @@ module.exports = {
             description:
                 "Disallow the use of custom TypeScript modules and namespaces",
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-namespace.md",
+            url: util.metaDocsUrl("no-namespace"),
         },
         schema: [
             {

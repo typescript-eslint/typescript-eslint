@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -13,8 +15,7 @@ module.exports = {
         docs: {
             description: "Require that member overloads be consecutive",
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/adjacent-overload-signatures.md",
+            url: util.metaDocsUrl("adjacent-overload-signatures"),
         },
         schema: [],
     },

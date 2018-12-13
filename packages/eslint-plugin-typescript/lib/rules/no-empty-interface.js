@@ -16,8 +16,7 @@ module.exports = {
             description: "Disallow the declaration of empty interfaces",
             extraDescription: [util.tslintRule("no-empty-interface")],
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-empty-interface.md",
+            url: util.metaDocsUrl("no-empty-interface"),
         },
         schema: [],
     },

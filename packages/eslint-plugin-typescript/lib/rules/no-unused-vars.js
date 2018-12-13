@@ -4,6 +4,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -15,8 +17,7 @@ module.exports = {
                 "Prevent TypeScript-specific constructs from being erroneously flagged as unused",
             category: "TypeScript",
             recommended: true,
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-unused-vars.md",
+            url: util.metaDocsUrl("no-unused-vars"),
         },
         schema: [],
     },

@@ -5,7 +5,7 @@
  */
 "use strict";
 
-const { deepMerge } = require("../util");
+const { deepMerge, metaDocsUrl } = require("../util");
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -41,8 +41,7 @@ module.exports = {
             description:
                 "Require a specific member delimiter style for interfaces and type literals",
             category: "TypeScript",
-            url:
-                "https://github.com/bradzacher/eslint-plugin-typescript/blob/master/docs/rules/member-delimiter-style.md",
+            url: metaDocsUrl("member-delimiter-style"),
         },
         fixable: "code",
         messages: {

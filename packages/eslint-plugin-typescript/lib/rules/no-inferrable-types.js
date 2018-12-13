@@ -2,7 +2,6 @@
  * @fileoverview Disallows explicit type declarations for inferrable types
  * @author James Garbutt <https://github.com/43081j>
  */
-
 "use strict";
 
 const util = require("../util");
@@ -18,8 +17,7 @@ module.exports = {
                 "Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.",
             extraDescription: [util.tslintRule("no-inferrable-types")],
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/no-inferrable-types.md",
+            url: util.metaDocsUrl("no-inferrable-types"),
         },
         fixable: "code",
         schema: [

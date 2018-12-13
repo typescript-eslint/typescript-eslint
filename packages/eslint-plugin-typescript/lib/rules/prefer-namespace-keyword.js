@@ -18,8 +18,7 @@ module.exports = {
                 "Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules.",
             extraDescription: [util.tslintRule("no-internal-module")],
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/prefer-namespace-keyword.md",
+            url: util.metaDocsUrl("prefer-namespace-keyword"),
         },
         fixable: "code",
         schema: [],

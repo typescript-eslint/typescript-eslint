@@ -84,8 +84,7 @@ module.exports = {
             description: "Requires using either `T[]` or `Array<T>` for arrays",
             extraDescription: [util.tslintRule("array-type")],
             category: "TypeScript",
-            url:
-                "https://github.com/bradzacher/eslint-plugin-typescript/blob/master/docs/rules/array-type.md",
+            url: util.metaDocsUrl("array-type"),
         },
         fixable: "code",
         messages: {

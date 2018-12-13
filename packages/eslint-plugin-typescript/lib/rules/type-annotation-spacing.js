@@ -5,6 +5,8 @@
  */
 "use strict";
 
+const util = require("../util");
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -23,8 +25,7 @@ module.exports = {
         docs: {
             description: "Require consistent spacing around type annotations",
             category: "TypeScript",
-            url:
-                "https://github.com/nzakas/eslint-plugin-typescript/blob/master/docs/rules/type-annotation-spacing.md",
+            url: util.metaDocsUrl("type-annotation-spacing"),
         },
         fixable: "code",
         schema: [
