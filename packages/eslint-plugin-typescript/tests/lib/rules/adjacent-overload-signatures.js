@@ -228,7 +228,8 @@ export function foo(sn: string | number) {}
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 6,
                     column: 1,
                 },
@@ -244,7 +245,8 @@ export function foo(sn: string | number) {}
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 6,
                     column: 1,
                 },
@@ -260,7 +262,8 @@ function foo(sn: string | number) {}
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 6,
                     column: 1,
                 },
@@ -276,7 +279,8 @@ function foo(sn: string | number) {}
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 6,
                     column: 1,
                 },
@@ -292,7 +296,8 @@ function foo(sn: string | number) {}
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 6,
                     column: 1,
                 },
@@ -307,7 +312,8 @@ function foo(sn: string | number) {}
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 5,
                     column: 1,
                 },
@@ -327,7 +333,8 @@ class Bar {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 9,
                     column: 5,
                 },
@@ -343,7 +350,8 @@ declare function foo(sn: string | number);
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 6,
                     column: 1,
                 },
@@ -359,7 +367,8 @@ declare function foo(sn: string | number);
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 6,
                     column: 1,
                 },
@@ -377,7 +386,8 @@ declare module "Foo" {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -397,7 +407,8 @@ declare module "Foo" {
             `,
             errors: [
                 {
-                    message: "All 'baz' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "baz" },
                     line: 8,
                     column: 5,
                 },
@@ -415,7 +426,8 @@ declare namespace Foo {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -435,7 +447,8 @@ declare namespace Foo {
             `,
             errors: [
                 {
-                    message: "All 'baz' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "baz" },
                     line: 8,
                     column: 5,
                 },
@@ -453,7 +466,8 @@ type Foo = {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -471,7 +485,8 @@ type Foo = {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -490,7 +505,8 @@ type Foo = {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 5,
                     column: 5,
                 },
@@ -509,7 +525,8 @@ interface Foo {
             `,
             errors: [
                 {
-                    message: "All 'call' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "call" },
                     line: 5,
                     column: 5,
                 },
@@ -527,7 +544,8 @@ interface Foo {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -545,7 +563,8 @@ interface Foo {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -563,7 +582,8 @@ interface Foo {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -582,7 +602,8 @@ interface Foo {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 5,
                     column: 5,
                 },
@@ -602,7 +623,8 @@ interface Foo {
             `,
             errors: [
                 {
-                    message: "All 'baz' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "baz" },
                     line: 8,
                     column: 9,
                 },
@@ -620,7 +642,8 @@ interface Foo {
             `,
             errors: [
                 {
-                    message: "All 'new' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "new" },
                     line: 7,
                     column: 5,
                 },
@@ -638,12 +661,14 @@ interface Foo {
             `,
             errors: [
                 {
-                    message: "All 'new' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "new" },
                     line: 5,
                     column: 5,
                 },
                 {
-                    message: "All 'new' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "new" },
                     line: 7,
                     column: 5,
                 },
@@ -661,7 +686,8 @@ class Foo {
             `,
             errors: [
                 {
-                    message: "All 'constructor' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "constructor" },
                     line: 7,
                     column: 5,
                 },
@@ -679,7 +705,8 @@ class Foo {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -697,7 +724,8 @@ class Foo {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -715,7 +743,8 @@ class Foo {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 7,
                     column: 5,
                 },
@@ -734,7 +763,8 @@ class Foo {
             `,
             errors: [
                 {
-                    message: "All 'constructor' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "constructor" },
                     line: 5,
                     column: 5,
                 },
@@ -753,7 +783,8 @@ class Foo {
             `,
             errors: [
                 {
-                    message: "All 'foo' signatures should be adjacent.",
+                    messageId: "adjacentSignature",
+                    data: { name: "foo" },
                     line: 5,
                     column: 5,
                 },
