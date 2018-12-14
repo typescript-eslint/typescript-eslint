@@ -21,15 +21,22 @@ const ruleTester = new RuleTester({
 
 ruleTester.run("no-triple-slash-reference", rule, {
     valid: [
+        `/// <reference types="foo" />`,
+        `/// <reference lib="es2017.string" />`,
+        `/// <reference no-default-lib="true"/>`,
         "/// Non-reference triple-slash comment",
         "// <reference path='Animal' />",
+        `/*
+/// <reference path="Animal" />
+let a
+*/`,
     ],
     invalid: [
         {
             code: '/// <reference path="Animal" />',
             errors: [
                 {
-                    message: "Do not use a triple slash reference.",
+                    messageId: "tripleSlashReference",
                     line: 1,
                     column: 1,
                 },
@@ -43,7 +50,7 @@ let a
             parser: "typescript-eslint-parser",
             errors: [
                 {
-                    message: "Do not use a triple slash reference.",
+                    messageId: "tripleSlashReference",
                     line: 2,
                     column: 1,
                 },
