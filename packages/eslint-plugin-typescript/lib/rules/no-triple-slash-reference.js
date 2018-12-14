@@ -19,10 +19,13 @@ module.exports = {
             url: util.metaDocsUrl("no-triple-slash-reference"),
         },
         schema: [],
+        messages: {
+            tripleSlashReference: "Do not use a triple slash reference.",
+        },
     },
 
     create(context) {
-        const referenceRegExp = /^\/\s*<reference/;
+        const referenceRegExp = /^\/\s*<reference\s*path=/;
         const sourceCode = context.getSourceCode();
 
         //----------------------------------------------------------------------
@@ -45,7 +48,7 @@ module.exports = {
                 if (referenceRegExp.test(comment.value)) {
                     context.report({
                         node: comment,
-                        message: "Do not use a triple slash reference.",
+                        messageId: "tripleSlashReference",
                     });
                 }
             });
