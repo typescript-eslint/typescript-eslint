@@ -16,8 +16,7 @@ module.exports = {
             description: "Enforce valid definition of `new` and `constructor`.",
             extraDescription: [util.tslintRule("no-misused-new")],
             category: "TypeScript",
-            url:
-                "https://github.com/bradzacher/eslint-plugin-typescript/blob/master/docs/rules/no-misused-new.md",
+            url: util.metaDocsUrl("no-misused-new"),
         },
         schema: [],
         messages: {

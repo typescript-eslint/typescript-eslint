@@ -15,6 +15,7 @@ module.exports = {
         docs: {
             description:
                 "Disallow the use of custom TypeScript modules and namespaces",
+            extraDescription: [util.tslintRule("no-namespace")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-namespace"),
         },

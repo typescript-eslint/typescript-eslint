@@ -22,6 +22,8 @@
         "eslint-plugin/prefer-placeholders": "error",
         "eslint-plugin/prefer-replace-text": "error",
         "eslint-plugin/no-deprecated-report-api": "error",
-        "eslint-plugin/report-message-format": ["error", "^[A-Z'{].*[\\.}]$"]
+        "eslint-plugin/report-message-format": ["error", "^[A-Z'{].*[\\.}]$"],
+        "eslint-plugin/no-deprecated-context-methods": "error",
+        "eslint-plugin/prefer-output-null": "error"
     }
 }
