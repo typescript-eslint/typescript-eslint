@@ -21,7 +21,7 @@
     "test": "mocha tests --recursive --reporter=dot"
   },
   "dependencies": {
-    "requireindex": "~1.2.0",
+    "requireindex": "^1.2.0",
     "typescript-eslint-parser": "21.0.2"
   },
   "devDependencies": {
