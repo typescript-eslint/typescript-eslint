@@ -12,7 +12,7 @@ See [the core ESLint docs](https://eslint.org/docs/rules/no-unused-vars) for how
 {
     "rules": {
         "no-unused-vars": "error",
-        "typescript/no-unused-vars": "error",
+        "typescript/no-unused-vars": "error"
     }
 }
 ```
@@ -26,7 +26,7 @@ interface Foo {}
 
 The following patterns are not warnings:
 
-```js
+```ts
 interface Foo {}
 
 class Bar implements Foo {}

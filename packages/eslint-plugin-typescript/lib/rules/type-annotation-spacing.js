@@ -24,6 +24,7 @@ module.exports = {
     meta: {
         docs: {
             description: "Require consistent spacing around type annotations",
+            extraDescription: [util.tslintRule("typedef-whitespace")],
             category: "TypeScript",
             url: util.metaDocsUrl("type-annotation-spacing"),
         },

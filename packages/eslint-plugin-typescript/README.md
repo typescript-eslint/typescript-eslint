@@ -48,7 +48,7 @@ This guarantees 100% compatibility between the plugin and the parser.
 
 <!-- Please run `npm run docs` to update this section -->
 <!-- begin rule list -->
-* [`typescript/adjacent-overload-signatures`](./docs/rules/adjacent-overload-signatures.md) — Require that member overloads be consecutive
+* [`typescript/adjacent-overload-signatures`](./docs/rules/adjacent-overload-signatures.md) — Require that member overloads be consecutive (`adjacent-overload-signatures` from TSLint)
 * [`typescript/array-type`](./docs/rules/array-type.md) — Requires using either `T[]` or `Array<T>` for arrays (`array-type` from TSLint)
 * [`typescript/ban-types`](./docs/rules/ban-types.md) — Enforces that types will not to be used (`ban-types` from TSLint)
 * [`typescript/camelcase`](./docs/rules/camelcase.md) — Enforce camelCase naming convention
@@ -66,7 +66,7 @@ This guarantees 100% compatibility between the plugin and the parser.
 * [`typescript/no-explicit-any`](./docs/rules/no-explicit-any.md) — Disallow usage of the `any` type (`no-any` from TSLint)
 * [`typescript/no-inferrable-types`](./docs/rules/no-inferrable-types.md) — Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean. (`no-inferrable-types` from TSLint)
 * [`typescript/no-misused-new`](./docs/rules/no-misused-new.md) — Enforce valid definition of `new` and `constructor`. (`no-misused-new` from TSLint)
-* [`typescript/no-namespace`](./docs/rules/no-namespace.md) — Disallow the use of custom TypeScript modules and namespaces
+* [`typescript/no-namespace`](./docs/rules/no-namespace.md) — Disallow the use of custom TypeScript modules and namespaces (`no-namespace` from TSLint)
 * [`typescript/no-non-null-assertion`](./docs/rules/no-non-null-assertion.md) — Disallows non-null assertions using the `!` postfix operator (`no-non-null-assertion` from TSLint)
 * [`typescript/no-object-literal-type-assertion`](./docs/rules/no-object-literal-type-assertion.md) — Forbids an object literal to appear in a type assertion expression (`no-object-literal-type-assertion` from TSLint)
 * [`typescript/no-parameter-properties`](./docs/rules/no-parameter-properties.md) — Disallow the use of parameter properties in class constructors. (`no-parameter-properties` from TSLint)
@@ -76,5 +76,5 @@ This guarantees 100% compatibility between the plugin and the parser.
 * [`typescript/no-use-before-define`](./docs/rules/no-use-before-define.md) — Disallow the use of variables before they are defined
 * [`typescript/no-var-requires`](./docs/rules/no-var-requires.md) — Disallows the use of require statements except in import statements (`no-var-requires` from TSLint)
 * [`typescript/prefer-namespace-keyword`](./docs/rules/prefer-namespace-keyword.md) — Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules. (`no-internal-module` from TSLint)
-* [`typescript/type-annotation-spacing`](./docs/rules/type-annotation-spacing.md) — Require consistent spacing around type annotations
+* [`typescript/type-annotation-spacing`](./docs/rules/type-annotation-spacing.md) — Require consistent spacing around type annotations (`typedef-whitespace` from TSLint)
 <!-- end rule list -->

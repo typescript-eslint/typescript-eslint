@@ -15,6 +15,7 @@ module.exports = {
         docs: {
             description: "Require that member overloads be consecutive",
             category: "TypeScript",
+            extraDescription: [util.tslintRule("adjacent-overload-signatures")],
             url: util.metaDocsUrl("adjacent-overload-signatures"),
         },
         schema: [],
