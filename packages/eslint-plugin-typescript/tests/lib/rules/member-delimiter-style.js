@@ -22,21 +22,19 @@ const ruleTester = new RuleTester({
 
 ruleTester.run("member-delimiter-style", rule, {
     valid: [
+        `
+interface Foo {
+    name: string;
+    age: number;
+}
+        `,
         {
             code: `
 interface Foo {
     name: string;
     age: number;
 }
-                `,
-        },
-        {
-            code: `
-interface Foo {
-    name: string;
-    age: number;
-}
-                    `,
+            `,
             options: [
                 {
                     multiline: { delimiter: "semi", requireLast: true },
@@ -49,7 +47,7 @@ interface Foo {
     name: string;
     age: number;
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: { delimiter: "semi" },
@@ -62,7 +60,7 @@ interface Foo {
     name: string;
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: { delimiter: "semi", requireLast: false },
@@ -75,7 +73,7 @@ interface Foo {
     name: string,
     age: number,
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: { delimiter: "comma", requireLast: true },
@@ -88,7 +86,7 @@ interface Foo {
     name: string,
     age: number,
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: { delimiter: "comma" },
@@ -101,7 +99,7 @@ interface Foo {
     name: string,
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: { delimiter: "comma", requireLast: false },
@@ -114,7 +112,7 @@ interface Foo {
     name: string
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: { delimiter: "none", requireLast: true },
@@ -127,7 +125,7 @@ interface Foo {
     name: string
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: { delimiter: "none", requireLast: false },
@@ -140,7 +138,7 @@ interface Foo {
     name: string;
     age: number;
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -164,7 +162,7 @@ interface Foo {
     name: string;
     age: number;
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -182,7 +180,7 @@ interface Foo {
     name: string;
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -206,7 +204,7 @@ interface Foo {
     name: string,
     age: number,
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -230,7 +228,7 @@ interface Foo {
     name: string,
     age: number,
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -248,7 +246,7 @@ interface Foo {
     name: string,
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -272,7 +270,7 @@ interface Foo {
     name: string
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -293,7 +291,7 @@ interface Foo {
     name: string
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -311,21 +309,19 @@ interface Foo {
                 },
             ],
         },
+        `
+type Foo = {
+    name: string;
+    age: number;
+}
+        `,
         {
             code: `
 type Foo = {
     name: string;
     age: number;
 }
-                    `,
-        },
-        {
-            code: `
-type Foo = {
-    name: string;
-    age: number;
-}
-                    `,
+            `,
             options: [{ multiline: { delimiter: "semi", requireLast: true } }],
         },
         {
@@ -334,7 +330,7 @@ type Foo = {
     name: string;
     age: number;
 }
-                    `,
+            `,
             options: [{ multiline: { delimiter: "semi" } }],
         },
         {
@@ -343,7 +339,7 @@ type Foo = {
     name: string;
     age: number
 }
-                    `,
+            `,
             options: [{ multiline: { delimiter: "semi", requireLast: false } }],
         },
         {
@@ -352,7 +348,7 @@ type Foo = {
     name: string,
     age: number,
 }
-                    `,
+            `,
             options: [{ multiline: { delimiter: "comma", requireLast: true } }],
         },
         {
@@ -361,7 +357,7 @@ type Foo = {
     name: string,
     age: number,
 }
-                    `,
+            `,
             options: [{ multiline: { delimiter: "comma" } }],
         },
         {
@@ -370,7 +366,7 @@ type Foo = {
     name: string,
     age: number
 }
-                    `,
+            `,
             options: [
                 { multiline: { delimiter: "comma", requireLast: false } },
             ],
@@ -381,7 +377,7 @@ type Foo = {
     name: string
     age: number
 }
-                    `,
+            `,
             options: [{ multiline: { delimiter: "none", requireLast: true } }],
         },
         {
@@ -390,7 +386,7 @@ type Foo = {
     name: string
     age: number
 }
-                    `,
+            `,
             options: [{ multiline: { delimiter: "none", requireLast: false } }],
         },
         {
@@ -399,7 +395,7 @@ type Foo = {
     name: string;
     age: number;
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -420,7 +416,7 @@ type Foo = {
     name: string;
     age: number;
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -438,7 +434,7 @@ type Foo = {
     name: string;
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -462,7 +458,7 @@ type Foo = {
     name: string,
     age: number,
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -486,7 +482,7 @@ type Foo = {
     name: string,
     age: number,
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -504,7 +500,7 @@ type Foo = {
     name: string,
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -528,7 +524,7 @@ type Foo = {
     name: string
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -549,7 +545,7 @@ type Foo = {
     name: string
     age: number
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -578,7 +574,7 @@ type Bar = {
     name: string,
     age: number,
 }
-                    `,
+            `,
             options: [
                 {
                     multiline: {
@@ -591,9 +587,7 @@ type Bar = {
                 },
             ],
         },
-        {
-            code: "interface Foo { a: any; [key: string]: any }",
-        },
+        "interface Foo { a: any; [key: string]: any }",
         {
             code: "interface Foo { a: any; [key: string]: any }",
             options: [
@@ -658,9 +652,7 @@ type Bar = {
                 },
             ],
         },
-        {
-            code: "type Foo = { a: any; [key: string]: any }",
-        },
+        "type Foo = { a: any; [key: string]: any }",
         {
             code: "type Foo = { a: any; [key: string]: any }",
             options: [
@@ -734,7 +726,7 @@ interface Foo {
 }
 
 interface Bar { name: string, age: number }
-                `,
+            `,
             options: [
                 {
                     multiline: {
@@ -753,7 +745,7 @@ interface Foo {
 }
 
 type Bar = { name: string, age: number }
-                `,
+            `,
             options: [
                 {
                     multiline: {

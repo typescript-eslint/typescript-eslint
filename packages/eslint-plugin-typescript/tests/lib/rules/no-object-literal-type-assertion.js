@@ -28,38 +28,18 @@ const ruleTester = new RuleTester({
 
 ruleTester.run("no-object-literal-type-assertion", rule, {
     valid: [
-        {
-            code: `<T> x;`,
-        },
-        {
-            code: `x as T;`,
-        },
-        {
-            code: `const foo = bar;`,
-        },
-        {
-            code: `const foo: baz = bar;`,
-        },
-        {
-            code: `const x: T = {};`,
-        },
-        {
-            code: `const foo = { bar: { } };`,
-        },
+        `<T> x;`,
+        `x as T;`,
+        `const foo = bar;`,
+        `const foo: baz = bar;`,
+        `const x: T = {};`,
+        `const foo = { bar: { } };`,
         // Allow cast to 'any'
-        {
-            code: `const foo = {} as any;`,
-        },
-        {
-            code: `const foo = <any> {};`,
-        },
+        `const foo = {} as any;`,
+        `const foo = <any> {};`,
         // Allow cast to 'unknown'
-        {
-            code: `const foo = {} as unknown;`,
-        },
-        {
-            code: `const foo = <unknown> {};`,
-        },
+        `const foo = {} as unknown;`,
+        `const foo = <unknown> {};`,
     ],
     invalid: [
         {

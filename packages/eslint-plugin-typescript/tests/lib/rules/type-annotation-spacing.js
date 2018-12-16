@@ -927,13 +927,11 @@ interface Foo {
             `,
             options: [{ before: true }],
         },
-        {
-            code: `
+        `
 type Foo = {
     thing: { [key in string]: number };
 }
-            `,
-        },
+        `,
         {
             code: `
 type Foo = {
@@ -974,13 +972,11 @@ type Foo = {
             `,
             options: [{ before: true }],
         },
-        {
-            code: `
+        `
 class Foo {
     greet: (name: string) => void = {}
 }
-            `,
-        },
+        `,
         {
             code: `
 class Foo {
@@ -4116,13 +4112,11 @@ interface Foo {
             `,
             options: [{ before: true }],
         },
-        {
-            code: `
+        `
 type Foo = {
     thing?: { [key in string]?: number };
 }
-            `,
-        },
+        `,
         {
             code: `
 type Foo = {
@@ -4163,13 +4157,11 @@ type Foo = {
             `,
             options: [{ before: true }],
         },
-        {
-            code: `
+        `
 class Foo {
     greet: (name?: string) => void = {}
 }
-            `,
-        },
+        `,
         {
             code: `
 class Foo {
