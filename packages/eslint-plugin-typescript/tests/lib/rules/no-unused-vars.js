@@ -501,6 +501,30 @@ export class Baz<F = Foo & Bar> {}
 // warning 'B' is defined but never used
 export const a: Array<{b: B}> = []
         `,
+        `
+export enum FormFieldIds {
+	PHONE = 'phone',
+	EMAIL = 'email',
+}
+        `,
+        `
+enum FormFieldIds {
+	PHONE = 'phone',
+	EMAIL = 'email',
+}
+interface IFoo {
+	fieldName: FormFieldIds,
+}
+        `,
+        `
+enum FormFieldIds {
+    PHONE = 'phone',
+    EMAIL = 'email',
+}
+interface IFoo {
+    fieldName: FormFieldIds.EMAIL,
+}
+        `,
     ],
 
     invalid: [
@@ -706,6 +730,21 @@ new A();
                     message: "'SomeOther' is defined but never used.",
                     line: 3,
                     column: 10,
+                },
+            ],
+        },
+        {
+            code: `
+enum FormFieldIds {
+    PHONE = 'phone',
+    EMAIL = 'email',
+}
+            `,
+            errors: [
+                {
+                    message: "'FormFieldIds' is defined but never used.",
+                    line: 2,
+                    column: 6,
                 },
             ],
         },

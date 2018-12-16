@@ -56,6 +56,9 @@ module.exports = {
                 // just assume parameter properties are used
                 context.markVariableAsUsed(node.name);
             },
+            "TSEnumMember Identifier"(node) {
+                context.markVariableAsUsed(node.name);
+            },
         };
     },
 };
