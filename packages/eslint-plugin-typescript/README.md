@@ -48,8 +48,10 @@ This guarantees 100% compatibility between the plugin and the parser.
 
 <!-- Please run `npm run docs` to update this section -->
 <!-- begin rule list -->
+
 **Key**: :heavy_check_mark: = recommended, :wrench: = fixable
 
+<!-- prettier-ignore -->
 | Name | Description | :heavy_check_mark: | :wrench: |
 | ---- | ----------- | ------------------ | -------- |
 | [`typescript/adjacent-overload-signatures`](./docs/rules/adjacent-overload-signatures.md) | Require that member overloads be consecutive (`adjacent-overload-signatures` from TSLint) |  |  |
@@ -68,6 +70,7 @@ This guarantees 100% compatibility between the plugin and the parser.
 | [`typescript/no-array-constructor`](./docs/rules/no-array-constructor.md) | Disallow generic `Array` constructors |  | :wrench: |
 | [`typescript/no-empty-interface`](./docs/rules/no-empty-interface.md) | Disallow the declaration of empty interfaces (`no-empty-interface` from TSLint) |  |  |
 | [`typescript/no-explicit-any`](./docs/rules/no-explicit-any.md) | Disallow usage of the `any` type (`no-any` from TSLint) |  |  |
+| [`typescript/no-extraneous-class`](./docs/rules/no-extraneous-class.md) | Forbids the use of classes as namespaces (`no-unnecessary-class` from TSLint) |  |  |
 | [`typescript/no-inferrable-types`](./docs/rules/no-inferrable-types.md) | Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean. (`no-inferrable-types` from TSLint) |  | :wrench: |
 | [`typescript/no-misused-new`](./docs/rules/no-misused-new.md) | Enforce valid definition of `new` and `constructor`. (`no-misused-new` from TSLint) |  |  |
 | [`typescript/no-namespace`](./docs/rules/no-namespace.md) | Disallow the use of custom TypeScript modules and namespaces (`no-namespace` from TSLint) |  |  |
@@ -82,4 +85,5 @@ This guarantees 100% compatibility between the plugin and the parser.
 | [`typescript/prefer-interface`](./docs/rules/prefer-interface.md) | Prefer an interface declaration over a type literal (type T = { ... }) (`interface-over-type-literal` from TSLint) |  | :wrench: |
 | [`typescript/prefer-namespace-keyword`](./docs/rules/prefer-namespace-keyword.md) | Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules. (`no-internal-module` from TSLint) |  | :wrench: |
 | [`typescript/type-annotation-spacing`](./docs/rules/type-annotation-spacing.md) | Require consistent spacing around type annotations (`typedef-whitespace` from TSLint) |  | :wrench: |
+
 <!-- end rule list -->
