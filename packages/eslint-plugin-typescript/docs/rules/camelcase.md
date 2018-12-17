@@ -20,6 +20,14 @@ variable that will be imported into the local module scope.
 
 ## Options
 
+```cjson
+{
+    // note you must disable the base rule as it can report incorrect errors
+    "camelcase": "off",
+    "typescript/camelcase": ["error", { "properties": "always" }]
+}
+```
+
 This rule has an object option:
 
 * `"properties": "always"` (default) enforces camelcase style for property names
@@ -33,7 +41,7 @@ This rule has an object option:
 Examples of **incorrect** code for this rule with the default `{ "properties": "always" }` option:
 
 ```js
-/*eslint camelcase: "error"*/
+/*eslint typescript/camelcase: "error"*/
 
 import { no_camelcased } from "external-module"
 
@@ -73,7 +81,7 @@ var { foo: bar_baz = 1 } = quz;
 Examples of **correct** code for this rule with the default `{ "properties": "always" }` option:
 
 ```js
-/*eslint camelcase: "error"*/
+/*eslint typescript/camelcase: "error"*/
 
 import { no_camelcased as camelCased } from "external-module";
 
@@ -115,7 +123,7 @@ var { foo: isCamelCased = 1 } = quz;
 Examples of **correct** code for this rule with the `{ "properties": "never" }` option:
 
 ```js
-/*eslint camelcase: ["error", {properties: "never"}]*/
+/*eslint typescript/camelcase: ["error", {properties: "never"}]*/
 
 var obj = {
     my_pref: 1
@@ -127,7 +135,7 @@ var obj = {
 Examples of **incorrect** code for this rule with the default `{ "ignoreDestructuring": false }` option:
 
 ```js
-/*eslint camelcase: "error"*/
+/*eslint typescript/camelcase: "error"*/
 
 var { category_id } = query;
 
@@ -145,7 +153,7 @@ var { category_id: categoryId, ...other_props } = query;
 Examples of **incorrect** code for this rule with the `{ "ignoreDestructuring": true }` option:
 
 ```js
-/*eslint camelcase: ["error", {ignoreDestructuring: true}]*/
+/*eslint typescript/camelcase: ["error", {ignoreDestructuring: true}]*/
 
 var { category_id: category_alias } = query;
 
@@ -155,7 +163,7 @@ var { category_id, ...other_props } = query;
 Examples of **correct** code for this rule with the `{ "ignoreDestructuring": true }` option:
 
 ```js
-/*eslint camelcase: ["error", {ignoreDestructuring: true}]*/
+/*eslint typescript/camelcase: ["error", {ignoreDestructuring: true}]*/
 
 var { category_id } = query;
 
@@ -169,7 +177,7 @@ var { category_id: category_id } = query;
 Examples of **correct** code for this rule with the `allow` option:
 
 ```js
-/*eslint camelcase: ["error", {allow: ["UNSAFE_componentWillMount"]}]*/
+/*eslint typescript/camelcase: ["error", {allow: ["UNSAFE_componentWillMount"]}]*/
 
 function UNSAFE_componentWillMount() {
     // ...
@@ -177,7 +185,7 @@ function UNSAFE_componentWillMount() {
 ```
 
 ```js
-/*eslint camelcase: ["error", {allow: ["^UNSAFE_"]}]*/
+/*eslint typescript/camelcase: ["error", {allow: ["^UNSAFE_"]}]*/
 
 function UNSAFE_componentWillMount() {
     // ...
