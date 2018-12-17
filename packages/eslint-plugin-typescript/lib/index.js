@@ -16,4 +16,10 @@ const path = require("path");
 //------------------------------------------------------------------------------
 
 // import all rules in lib/rules
-module.exports.rules = requireIndex(path.join(__dirname, "rules"));
+module.exports = {
+    rules: requireIndex(path.join(__dirname, "rules")),
+    configs: {
+        // eslint-disable-next-line node/no-unpublished-require
+        recommended: require("./configs/recommended"),
+    },
+};
