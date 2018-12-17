@@ -1,0 +1,6 @@
+{
+    "rules": {
+        "class-name-casing": "error",
+        "no-unused-vars": "error"
+    }
+}
