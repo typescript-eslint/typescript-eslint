@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description:
                 "Enforces naming conventions for class members by visibility.",

@@ -11,6 +11,7 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+/* eslint-disable eslint-plugin/require-meta-type */
 module.exports = {
     meta: Object.assign({}, baseRule.meta, {
         docs: {

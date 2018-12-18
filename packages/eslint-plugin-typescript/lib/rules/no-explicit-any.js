@@ -13,6 +13,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Disallow usage of the `any` type",
             extraDescription: [util.tslintRule("no-any")],

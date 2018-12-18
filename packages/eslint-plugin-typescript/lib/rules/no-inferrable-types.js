@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description:
                 "Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.",

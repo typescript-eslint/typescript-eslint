@@ -35,6 +35,7 @@ const KNOWN_NODES = new Set([
 
 module.exports = Object.assign({}, baseRule, {
     meta: {
+        type: "layout",
         docs: {
             description: "Enforce consistent indentation",
             extraDescription: [util.tslintRule("indent")],

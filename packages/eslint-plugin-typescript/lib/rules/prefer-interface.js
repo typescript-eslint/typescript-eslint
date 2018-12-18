@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description:
                 "Prefer an interface declaration over a type literal (type T = { ... })",

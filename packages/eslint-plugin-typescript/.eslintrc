@@ -28,6 +28,7 @@
         "eslint-plugin/report-message-format": ["error", "^[A-Z'{].*[\\.}]$"],
         "eslint-plugin/no-deprecated-context-methods": "error",
         "eslint-plugin/prefer-output-null": "error",
-        "eslint-plugin/test-case-shorthand-strings": "error"
+        "eslint-plugin/test-case-shorthand-strings": "error",
+        "eslint-plugin/require-meta-type": "error"
     }
 }

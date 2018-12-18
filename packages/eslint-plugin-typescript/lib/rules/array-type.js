@@ -80,6 +80,7 @@ function typeNeedsParentheses(node) {
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Requires using either `T[]` or `Array<T>` for arrays",
             extraDescription: [util.tslintRule("array-type")],

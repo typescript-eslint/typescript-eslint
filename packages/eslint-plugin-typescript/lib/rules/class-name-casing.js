@@ -13,6 +13,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Require PascalCased class and interface names",
             extraDescription: [util.tslintRule("class-name")],

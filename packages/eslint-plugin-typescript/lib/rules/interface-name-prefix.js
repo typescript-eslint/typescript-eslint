@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Require that interface names be prefixed with `I`",
             extraDescription: [util.tslintRule("interface-name")],

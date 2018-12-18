@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Require that member overloads be consecutive",
             category: "TypeScript",

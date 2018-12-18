@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Forbids the use of classes as namespaces",
             extraDescription: [util.tslintRule("no-unnecessary-class")],

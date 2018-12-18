@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "problem",
         docs: {
             description:
                 "Forbids an object literal to appear in a type assertion expression",
