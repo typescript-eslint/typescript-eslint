@@ -15,8 +15,8 @@ thrown. This rule only flags definitions and assignments but not function calls.
 In case of ES6 `import` statements, this rule only targets the name of the
 variable that will be imported into the local module scope.
 
-***This rule was taken from the ESLint core rule `camelcase`.***
-***Available options and test cases may vary depending on the version of ESLint installed in the system.***
+**_This rule was taken from the ESLint core rule `camelcase`._**
+**_Available options and test cases may vary depending on the version of ESLint installed in the system._**
 
 ## Options
 
@@ -30,11 +30,11 @@ variable that will be imported into the local module scope.
 
 This rule has an object option:
 
-* `"properties": "always"` (default) enforces camelcase style for property names
-* `"properties": "never"` does not check property names
-* `"ignoreDestructuring": false` (default) enforces camelcase style for destructured identifiers
-* `"ignoreDestructuring": true` does not check destructured identifiers
-* `allow` (`string[]`) list of properties to accept. Accept regex.
+-   `"properties": "always"` (default) enforces camelcase style for property names
+-   `"properties": "never"` does not check property names
+-   `"ignoreDestructuring": false` (default) enforces camelcase style for destructured identifiers
+-   `"ignoreDestructuring": true` does not check destructured identifiers
+-   `allow` (`string[]`) list of properties to accept. Accept regex.
 
 ### properties: "always"
 
@@ -43,7 +43,7 @@ Examples of **incorrect** code for this rule with the default `{ "properties": "
 ```js
 /*eslint typescript/camelcase: "error"*/
 
-import { no_camelcased } from "external-module"
+import { no_camelcased } from "external-module";
 
 var my_favorite_color = "#112C85";
 
@@ -57,18 +57,18 @@ obj.do_something = function() {
 
 function foo({ no_camelcased }) {
     // ...
-};
+}
 
 function foo({ isCamelcased: no_camelcased }) {
     // ...
 }
 
-function foo({ no_camelcased = 'default value' }) {
+function foo({ no_camelcased = "default value" }) {
     // ...
-};
+}
 
 var obj = {
-    my_pref: 1
+    my_pref: 1,
 };
 
 var { category_id = 1 } = query;
@@ -85,9 +85,9 @@ Examples of **correct** code for this rule with the default `{ "properties": "al
 
 import { no_camelcased as camelCased } from "external-module";
 
-var myFavoriteColor   = "#112C85";
-var _myFavoriteColor  = "#112C85";
-var myFavoriteColor_  = "#112C85";
+var myFavoriteColor = "#112C85";
+var _myFavoriteColor = "#112C85";
+var myFavoriteColor_ = "#112C85";
 var MY_FAVORITE_COLOR = "#112C85";
 var foo = bar.baz_boom;
 var foo = { qux: bar.baz_boom };
@@ -100,22 +100,21 @@ var { category_id: category } = query;
 
 function foo({ isCamelCased }) {
     // ...
-};
+}
 
 function foo({ isCamelCased: isAlsoCamelCased }) {
     // ...
 }
 
-function foo({ isCamelCased = 'default value' }) {
+function foo({ isCamelCased = "default value" }) {
     // ...
-};
+}
 
 var { categoryId = 1 } = query;
 
 var { foo: isCamelCased } = bar;
 
 var { foo: isCamelCased = 1 } = quz;
-
 ```
 
 ### properties: "never"
@@ -126,7 +125,7 @@ Examples of **correct** code for this rule with the `{ "properties": "never" }` 
 /*eslint typescript/camelcase: ["error", {properties: "never"}]*/
 
 var obj = {
-    my_pref: 1
+    my_pref: 1,
 };
 ```
 

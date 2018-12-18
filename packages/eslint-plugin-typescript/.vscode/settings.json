@@ -1,9 +1,6 @@
 {
     // An array of languages where Emmet abbreviations should not be expanded.
-    "emmet.excludeLanguages": [
-        "markdown",
-        "typescript"
-    ],
+    "emmet.excludeLanguages": ["markdown", "typescript"],
 
     // An array of language ids which should be validated by ESLint
     "eslint.validate": [
@@ -31,5 +28,5 @@
     "typescript.preferences.importModuleSpecifier": "auto",
     "javascript.preferences.quoteStyle": "double",
     "typescript.preferences.quoteStyle": "double",
-    "typescript.updateImportsOnFileMove.enabled": "always",
+    "typescript.updateImportsOnFileMove.enabled": "always"
 }

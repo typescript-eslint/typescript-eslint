@@ -15,9 +15,10 @@
     "lint:fix": "eslint lib/ tests/ tools/ --fix",
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
+    "prettier": "prettier **/*.{md,yml,json}",
     "format-no-write": "prettier-eslint lib/**/*.js tests/**/*.js tools/**/*.js --eslint-config-path=.eslintrc --eslint-ignore --prettier-ignore --eslint-path=node_modules/eslint --config=.prettierrc",
-    "format": "yarn format-no-write --write",
-    "format-check": "yarn format-no-write --list-different",
+    "format": "yarn format-no-write --write && yarn prettier --write",
+    "format-check": "yarn format-no-write --list-different && yarn prettier --list-different",
     "test": "mocha tests --recursive --reporter=dot",
     "recommended:update": "node tools/update-recommended.js"
   },

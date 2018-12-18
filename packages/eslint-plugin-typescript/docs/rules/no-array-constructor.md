@@ -11,8 +11,8 @@ Examples of **incorrect** code for this rule:
 ```ts
 /*eslint no-array-constructor: "error"*/
 
-Array(0, 1, 2)
-new Array(0, 1, 2)
+Array(0, 1, 2);
+new Array(0, 1, 2);
 ```
 
 Examples of **correct** code for this rule:
@@ -20,11 +20,11 @@ Examples of **correct** code for this rule:
 ```ts
 /*eslint no-array-constructor: "error"*/
 
-Array<number>(0, 1, 2)
-new Array<Foo>(x, y, z)
+Array<number>(0, 1, 2);
+new Array<Foo>(x, y, z);
 
-Array(500)
-new Array(someOtherArray.length)
+Array(500);
+new Array(someOtherArray.length);
 ```
 
 ## When Not To Use It

@@ -25,7 +25,7 @@ The following patterns are considered warnings:
 The following patterns are not warnings:
 
 ```ts
-import Animal from "Animal"
+import Animal from "Animal";
 ```
 
 ## When Not To Use It
@@ -34,8 +34,8 @@ If you use `/// <reference />` style imports.
 
 ## Further Reading
 
-* TypeScript [Triple-Slash Directives](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html)
+-   TypeScript [Triple-Slash Directives](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html)
 
 ## Compatibility
 
-* TSLint: [no-reference](http://palantir.github.io/tslint/rules/no-reference/)
+-   TSLint: [no-reference](http://palantir.github.io/tslint/rules/no-reference/)

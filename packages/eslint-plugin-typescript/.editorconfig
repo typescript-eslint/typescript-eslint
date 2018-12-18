@@ -6,6 +6,7 @@ indent_size = 4
 trim_trailing_whitespace = true
 end_of_line = lf
 insert_final_newline = true
+quote_type = double
 
 # yarn / npm uses 2 spaces when it dumps the file after a change
 [package.json]

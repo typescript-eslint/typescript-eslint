@@ -2,6 +2,7 @@
 
 Spacing around type annotations improves readability of the code. Although the most commonly used style guideline for type annotations in TypeScript prescribes adding a space after the colon, but not before it, it is subjective to the preferences of a project. For example:
 
+<!-- prettier-ignore -->
 ```ts
 // with space after, but not before (default if no option is specified)
 let foo: string = "bar";
@@ -35,14 +36,18 @@ This rule aims to enforce specific spacing patterns around type annotations and 
 ## Options
 
 This rule has an object option:
-- `"before": false`, (default for colon) disallows spaces before the colon/arrow.
-- `"before": true`, (default for arrow) requires a space before the colon/arrow.
-- `"after": true`, (default) requires a space after the colon/arrow.
-- `"after": false`, disallows spaces after the colon/arrow.
-- `"overrides"`, overrides the default options for type annotations with `colon` (e.g. `const foo: string`) and function types with `arrow` (e.g. `type Foo = () => {}`).
+
+-   `"before": false`, (default for colon) disallows spaces before the colon/arrow.
+-   `"before": true`, (default for arrow) requires a space before the colon/arrow.
+-   `"after": true`, (default) requires a space after the colon/arrow.
+-   `"after": false`, disallows spaces after the colon/arrow.
+-   `"overrides"`, overrides the default options for type annotations with `colon` (e.g. `const foo: string`) and function types with `arrow` (e.g. `type Foo = () => {}`).
 
 ### defaults
+
 Examples of **incorrect** code for this rule with no options at all:
+
+<!-- prettier-ignore -->
 ```ts
 let foo:string = "bar";
 let foo :string = "bar";
@@ -68,6 +73,8 @@ type Foo = ()=> {};
 ```
 
 Examples of **correct** code for this rule with no options at all:
+
+<!-- prettier-ignore -->
 ```ts
 let foo: string = "bar";
 
@@ -81,7 +88,10 @@ type Foo = () => {};
 ```
 
 ### after
+
 Examples of **incorrect** code for this rule with `{ "before": false, "after": true }`:
+
+<!-- prettier-ignore -->
 ```ts
 let foo:string = "bar";
 let foo :string = "bar";
@@ -107,6 +117,8 @@ type Foo = () => {};
 ```
 
 Examples of **correct** code for this rule with `{ "before": false, "after": true }`:
+
+<!-- prettier-ignore -->
 ```ts
 let foo: string = "bar";
 
@@ -120,7 +132,10 @@ type Foo = ()=> {};
 ```
 
 ### before
+
 Examples of **incorrect** code for this rule with `{ "before": true, "after": true }` options:
+
+<!-- prettier-ignore -->
 ```ts
 let foo: string = "bar";
 let foo:string = "bar";
@@ -144,6 +159,8 @@ class Foo {
 ```
 
 Examples of **correct** code for this rule with `{ "before": true, "after": true }` options:
+
+<!-- prettier-ignore -->
 ```ts
 let foo : string = "bar";
 
@@ -155,7 +172,10 @@ class Foo {
 ```
 
 ### overrides - colon
+
 Examples of **incorrect** code for this rule with `{ "before": false, "after": false, overrides: { colon: { before: true, after: true }} }` options:
+
+<!-- prettier-ignore -->
 ```ts
 let foo: string = "bar";
 let foo:string = "bar";
@@ -183,6 +203,8 @@ type Foo = {
 ```
 
 Examples of **correct** code for this rule with `{ "before": true, "after": true, overrides: { colon: { before: true, after: true }} }` options:
+
+<!-- prettier-ignore -->
 ```ts
 let foo : string = "bar";
 
@@ -198,7 +220,10 @@ type Foo = {
 ```
 
 ### overrides - arrow
+
 Examples of **incorrect** code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
+
+<!-- prettier-ignore -->
 ```ts
 let foo: string = "bar";
 let foo : string = "bar";
@@ -234,6 +259,8 @@ type Foo = {
 ```
 
 Examples of **correct** code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
+
+<!-- prettier-ignore -->
 ```ts
 let foo:string = "bar";
 
@@ -254,9 +281,9 @@ If you don't want to enforce spacing for your type annotations, you can safely t
 
 ## Further Reading
 
-* [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
-* [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
+-   [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
+-   [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
 ## Compatibility
 
-* TSLint: [typedef-whitespace](https://palantir.github.io/tslint/rules/typedef-whitespace/)
+-   TSLint: [typedef-whitespace](https://palantir.github.io/tslint/rules/typedef-whitespace/)

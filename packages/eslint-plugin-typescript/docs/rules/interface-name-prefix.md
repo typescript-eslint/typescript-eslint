@@ -11,8 +11,8 @@ This rule enforces consistency of interface naming prefix conventions.
 
 This rule has a string option.
 
-* `"never"` (default) disallows all interfaces being prefixed with `"I"`
-* `"always"` requires all interfaces be prefixed with `"I"`
+-   `"never"` (default) disallows all interfaces being prefixed with `"I"`
+-   `"always"` requires all interfaces be prefixed with `"I"`
 
 ### never
 

@@ -1,13 +1,13 @@
 language: node_js
 sudo: false
 node_js:
-    - "6"
-    - "8"
-    - "10"
-    - "11"
+  - "6"
+  - "8"
+  - "10"
+  - "11"
 install: yarn
 script:
-    - yarn lint
-    - yarn format-check
-    - yarn docs:check
-    - yarn test
+  - yarn lint
+  - yarn format-check
+  - yarn docs:check
+  - yarn test

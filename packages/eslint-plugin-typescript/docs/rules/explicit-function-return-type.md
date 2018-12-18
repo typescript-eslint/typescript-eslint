@@ -20,10 +20,10 @@ function test() {
 // Should indicate that a number is returned
 var fn = function() {
     return 1;
-}
+};
 
 // Should indicate that a string is returned
-var arrowFn = () => 'test';
+var arrowFn = () => "test";
 
 class Test {
     // Should indicate that no value is returned (void)
@@ -44,10 +44,10 @@ function test(): void {
 // A return value of type number
 var fn = function(): number {
     return 1;
-}
+};
 
 // A return value of type string
-var arrowFn = (): string => 'test';
+var arrowFn = (): string => "test";
 
 class Test {
     // No return value should be expected (void)
@@ -61,7 +61,7 @@ class Test {
 
 The rule accepts an options object with the following properties:
 
-* `allowExpressions` if true, only functions which are part of a declaration will be checked
+-   `allowExpressions` if true, only functions which are part of a declaration will be checked
 
 By default, `allowExpressions: false` is used, meaning all declarations and
 expressions _must_ have a return type.
@@ -71,16 +71,15 @@ expressions _must_ have a return type.
 Examples of **incorrect** code for this rule with `{ allowExpressions: true }`:
 
 ```ts
-function test() {
-}
+function test() {}
 ```
 
 Examples of **correct** code for this rule with `{ allowExpressions: true }`:
 
 ```ts
-node.addEventListener('click', () => {});
+node.addEventListener("click", () => {});
 
-node.addEventListener('click', function() {});
+node.addEventListener("click", function() {});
 
 const foo = arr.map(i => i * i);
 ```
@@ -92,4 +91,4 @@ you will not need this rule.
 
 ## Further Reading
 
-* TypeScript [Functions](https://www.typescriptlang.org/docs/handbook/functions.html#function-types)
+-   TypeScript [Functions](https://www.typescriptlang.org/docs/handbook/functions.html#function-types)

@@ -7,14 +7,14 @@ Interfaces are generally preferred over type literals because interfaces can be 
 Examples of **incorrect** code for this rule.
 
 ```ts
-type T = { x: number; }
+type T = { x: number };
 ```
 
 Examples of **correct** code for this rule.
 
 ```ts
 type T = string;
-type Foo = string | { }
+type Foo = string | {};
 
 interface T {
     x: number;
@@ -22,6 +22,7 @@ interface T {
 ```
 
 ## Options
+
 ```CJSON
 {
     "interface-over-type-literal": "error"
@@ -30,4 +31,4 @@ interface T {
 
 ## Compatibility
 
-* TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
+-   TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)

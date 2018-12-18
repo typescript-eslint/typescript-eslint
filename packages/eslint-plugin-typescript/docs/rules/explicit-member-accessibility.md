@@ -14,8 +14,8 @@ The following patterns are considered warnings:
 
 ```ts
 class Animal {
-  name: string // No accessibility modifier
-  getName (): string {} // No accessibility modifier
+    name: string; // No accessibility modifier
+    getName(): string {} // No accessibility modifier
 }
 ```
 
@@ -23,8 +23,8 @@ The following patterns are not warnings:
 
 ```ts
 class Animal {
-  private name: string // explicit accessibility modifier
-  public getName (): string {} // explicit accessibility modifier
+    private name: string; // explicit accessibility modifier
+    public getName(): string {} // explicit accessibility modifier
 }
 ```
 
@@ -35,8 +35,8 @@ this rule.
 
 ## Further Reading
 
-* TypeScript [Accessibility Modifiers](https://www.typescriptlang.org/docs/handbook/classes.html#public-private-and-protected-modifiers)
+-   TypeScript [Accessibility Modifiers](https://www.typescriptlang.org/docs/handbook/classes.html#public-private-and-protected-modifiers)
 
 ## Compatibility
 
-* TSLint: [member-access](http://palantir.github.io/tslint/rules/member-access/)
+-   TSLint: [member-access](http://palantir.github.io/tslint/rules/member-access/)
