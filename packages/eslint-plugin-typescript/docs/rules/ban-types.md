@@ -8,11 +8,10 @@ Examples of **incorrect** code for this rule `"String": "Use string instead"`
 
 ```ts
 class Foo<F = String> extends Bar<String> implements Baz<String> {
-    constructor (foo: String) {
-    }
+    constructor(foo: String) {}
 
-    exit () : Array<String> {
-        const foo: String = 1 as String
+    exit(): Array<String> {
+        const foo: String = 1 as String;
     }
 }
 ```
@@ -21,16 +20,16 @@ Examples of **correct** code for this rule `"String": "Use string instead"`
 
 ```ts
 class Foo<F = string> extends Bar<string> implements Baz<string> {
-    constructor (foo: string) {
-    }
+    constructor(foo: string) {}
 
-    exit () : Array<string> {
-        const foo: string = 1 as string
+    exit(): Array<string> {
+        const foo: string = 1 as string;
     }
 }
 ```
 
 ## Options
+
 ```CJSON
 {
     "typescript/ban-types": ["error", {
@@ -52,22 +51,25 @@ class Foo<F = string> extends Bar<string> implements Baz<string> {
 ```
 
 ### Example
+
 ```json
 {
-    "typescript/ban-types": ["error", {
-        "types": {
-            "Array": null,
-            "Object": "Use {} instead",
-            "String": {
-                "message": "Use string instead",
-                "fixWith": "string"
+    "typescript/ban-types": [
+        "error",
+        {
+            "types": {
+                "Array": null,
+                "Object": "Use {} instead",
+                "String": {
+                    "message": "Use string instead",
+                    "fixWith": "string"
+                }
             }
         }
-    }]
+    ]
 }
 ```
 
-
 ## Compatibility
 
-* TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types/)
+-   TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types/)

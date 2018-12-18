@@ -14,7 +14,7 @@ Rationale from TSLint:
 > ```js
 > const self = this;
 >
-> setTimeout(function () {
+> setTimeout(function() {
 >     self.doWork();
 > });
 > ```
@@ -26,7 +26,6 @@ Rationale from TSLint:
 >     this.doWork();
 > });
 > ```
-
 
 Examples of **incorrect** code for this rule:
 
@@ -42,10 +41,13 @@ You can pass an object option:
 
 ```json5
 {
-    "typescript/no-this-alias": ["error", {
-        "allowDestructuring": true, // Allow `const { props, state } = this`; false by default
-        "allowedNames": ["self"], // Allow `const self = this`; `[]` by default
-    }],
+    "typescript/no-this-alias": [
+        "error",
+        {
+            allowDestructuring: true, // Allow `const { props, state } = this`; false by default
+            allowedNames: ["self"], // Allow `const self = this`; `[]` by default
+        },
+    ],
 }
 ```
 
@@ -55,4 +57,4 @@ If you need to assign `this` to variables, you shouldn’t use this rule.
 
 ## Related to
 
-- TSLint: [`no-this-assignment`](https://palantir.github.io/tslint/rules/no-this-assignment/)
+-   TSLint: [`no-this-assignment`](https://palantir.github.io/tslint/rules/no-this-assignment/)

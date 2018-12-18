@@ -4,7 +4,7 @@ It can be helpful to enforce naming conventions for `private` (and sometimes `pr
 
 ## Rule Details
 
-This rule allows you to enforce conventions for class property names by their visibility.  By default, it enforces nothing.
+This rule allows you to enforce conventions for class property names by their visibility. By default, it enforces nothing.
 
 ## Options
 
@@ -36,4 +36,4 @@ If you do not want to enforce per-visibility naming rules for member properties.
 
 ## Further Reading
 
-* ESLint's [`camelcase` rule](https://eslint.org/docs/rules/camelcase)
+-   ESLint's [`camelcase` rule](https://eslint.org/docs/rules/camelcase)

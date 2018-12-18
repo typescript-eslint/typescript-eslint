@@ -71,29 +71,29 @@ let myVar: StringOrNumber;
 }
 ```
 
-* `functions` (`boolean`) -
-  The flag which shows whether or not this rule checks function declarations.
-  If this is `true`, this rule warns every reference to a function before the function declaration.
-  Otherwise, ignores those references.
-  Function declarations are hoisted, so it's safe.
-  Default is `true`.
-* `classes` (`boolean`) -
-  The flag which shows whether or not this rule checks class declarations of upper scopes.
-  If this is `true`, this rule warns every reference to a class before the class declaration.
-  Otherwise, ignores those references if the declaration is in upper function scopes.
-  Class declarations are not hoisted, so it might be danger.
-  Default is `true`.
-* `variables` (`boolean`) -
-  This flag determines whether or not the rule checks variable declarations in upper scopes.
-  If this is `true`, the rule warns every reference to a variable before the variable declaration.
-  Otherwise, the rule ignores a reference if the declaration is in an upper scope, while still reporting the reference if it's in the same scope as the declaration.
-  Default is `true`.
-* `typedefs` (`boolean`, **added** in `eslint-plugin-typescript`) -
-  The flag which shows whether or not this rule checks type declarations.
-  If this is `true`, this rule warns every reference to a type before the type declaration.
-  Otherwise, ignores those references.
-  Type declarations are hoisted, so it's safe.
-  Default is `true`.
+-   `functions` (`boolean`) -
+    The flag which shows whether or not this rule checks function declarations.
+    If this is `true`, this rule warns every reference to a function before the function declaration.
+    Otherwise, ignores those references.
+    Function declarations are hoisted, so it's safe.
+    Default is `true`.
+-   `classes` (`boolean`) -
+    The flag which shows whether or not this rule checks class declarations of upper scopes.
+    If this is `true`, this rule warns every reference to a class before the class declaration.
+    Otherwise, ignores those references if the declaration is in upper function scopes.
+    Class declarations are not hoisted, so it might be danger.
+    Default is `true`.
+-   `variables` (`boolean`) -
+    This flag determines whether or not the rule checks variable declarations in upper scopes.
+    If this is `true`, the rule warns every reference to a variable before the variable declaration.
+    Otherwise, the rule ignores a reference if the declaration is in an upper scope, while still reporting the reference if it's in the same scope as the declaration.
+    Default is `true`.
+-   `typedefs` (`boolean`, **added** in `eslint-plugin-typescript`) -
+    The flag which shows whether or not this rule checks type declarations.
+    If this is `true`, this rule warns every reference to a type before the type declaration.
+    Otherwise, ignores those references.
+    Type declarations are hoisted, so it's safe.
+    Default is `true`.
 
 This rule accepts `"nofunc"` string as an option.
 `"nofunc"` is the same as `{ "functions": false, "classes": true }`.
@@ -118,8 +118,7 @@ Examples of **incorrect** code for the `{ "classes": false }` option:
 /*eslint-env es6*/
 
 new A();
-class A {
-}
+class A {}
 ```
 
 Examples of **correct** code for the `{ "classes": false }` option:
@@ -132,8 +131,7 @@ function foo() {
     return new A();
 }
 
-class A {
-}
+class A {}
 ```
 
 ### variables
@@ -169,6 +167,5 @@ Examples of **correct** code for the `{ "typedefs": false }` option:
 let myVar: StringOrNumber;
 type StringOrNumber = string | number;
 ```
-
 
 Copied from [the original ESLint rule docs](https://github.com/eslint/eslint/blob/a113cd3/docs/rules/no-use-before-define.md)

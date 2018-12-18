@@ -12,7 +12,7 @@ class C {
 }
 
 interface I {
-    new(): I;
+    new (): I;
     constructor(): void;
 }
 ```
@@ -24,11 +24,12 @@ class C {
     constructor() {}
 }
 interface I {
-    new(): C;
+    new (): C;
 }
 ```
 
 ## Options
+
 ```json
 {
     "typescript/no-misused-new": "error"
@@ -37,4 +38,4 @@ interface I {
 
 ## Compatibility
 
-* TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)
+-   TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)

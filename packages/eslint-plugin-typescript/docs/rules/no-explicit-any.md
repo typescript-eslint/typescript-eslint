@@ -14,15 +14,15 @@ an `any` type from being implied by the compiler, but doesn't prevent
 The following patterns are considered warnings:
 
 ```ts
-const age: any = "seventeen"
+const age: any = "seventeen";
 ```
 
 ```ts
-const ages: any[] = ["seventeen"]
+const ages: any[] = ["seventeen"];
 ```
 
 ```ts
-const ages: Array<any> = ["seventeen"]
+const ages: Array<any> = ["seventeen"];
 ```
 
 ```ts
@@ -52,15 +52,15 @@ function greet(param: Array<any>): Array<any> {}
 The following patterns are not warnings:
 
 ```ts
-const age: number = 17
+const age: number = 17;
 ```
 
 ```ts
-const ages: number[] = [17]
+const ages: number[] = [17];
 ```
 
 ```ts
-const ages: Array<number> = [17]
+const ages: Array<number> = [17];
 ```
 
 ```ts
@@ -94,8 +94,8 @@ and you want to be able to specify `any`.
 
 ## Further Reading
 
-* TypeScript [any type](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
+-   TypeScript [any type](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
 
 ## Compatibility
 
-* TSLint: [no-any](https://palantir.github.io/tslint/rules/no-any/)
+-   TSLint: [no-any](https://palantir.github.io/tslint/rules/no-any/)

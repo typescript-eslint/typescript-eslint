@@ -4,7 +4,7 @@ It ensures that TypeScript-specific constructs, such as implemented interfaces, 
 
 ## Configuration
 
-***This rule only has an effect when the `no-unused-vars` core rule is enabled.***
+**_This rule only has an effect when the `no-unused-vars` core rule is enabled._**
 
 See [the core ESLint docs](https://eslint.org/docs/rules/no-unused-vars) for how to configure the base `no-unused-vars` rule.
 
@@ -16,6 +16,7 @@ See [the core ESLint docs](https://eslint.org/docs/rules/no-unused-vars) for how
     }
 }
 ```
+
 ## Rule Details
 
 The following patterns are considered warnings:

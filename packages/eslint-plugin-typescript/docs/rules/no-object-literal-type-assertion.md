@@ -19,6 +19,7 @@ const z = { ... } as unknown;
 ```
 
 ## Options
+
 ```json
 {
     "typescript/no-object-literal-type-assertion": "error"
@@ -27,4 +28,4 @@ const z = { ... } as unknown;
 
 ## Compatibility
 
-* TSLint: [no-object-literal-type-assertion](https://palantir.github.io/tslint/rules/no-object-literal-type-assertion/)
+-   TSLint: [no-object-literal-type-assertion](https://palantir.github.io/tslint/rules/no-object-literal-type-assertion/)

@@ -4,8 +4,5 @@
         "dbaeumer.vscode-eslint",
         "editorconfig.editorconfig"
     ],
-    "unwantedRecommendations": [
-        "hookyqr.beautify",
-        "dbaeumer.jshint"
-    ]
+    "unwantedRecommendations": ["hookyqr.beautify", "dbaeumer.jshint"]
 }
