@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Enforces that types will not to be used",
             extraDescription: [util.tslintRule("ban-types")],

@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: 'Disallow `/// <reference path="" />` comments',
             extraDescription: [util.tslintRule("no-reference")],

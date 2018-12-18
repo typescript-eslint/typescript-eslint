@@ -13,6 +13,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description:
                 "Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules.",

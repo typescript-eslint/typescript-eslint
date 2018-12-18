@@ -13,6 +13,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Disallow generic `Array` constructors",
             category: "Stylistic Issues",

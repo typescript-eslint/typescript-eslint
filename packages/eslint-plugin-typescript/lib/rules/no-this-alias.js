@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Disallow aliasing `this`",
             extraDescription: [util.tslintRule("no-this-assignment")],

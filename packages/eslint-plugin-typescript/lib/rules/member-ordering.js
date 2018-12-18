@@ -33,6 +33,7 @@ const schemaOptions = ["field", "method", "constructor"].reduce(
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Require a consistent member declaration order",
             extraDescription: [util.tslintRule("member-ordering")],

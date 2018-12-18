@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "problem",
         docs: {
             description: "Enforce valid definition of `new` and `constructor`.",
             extraDescription: [util.tslintRule("no-misused-new")],

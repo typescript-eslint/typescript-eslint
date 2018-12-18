@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "problem",
         docs: {
             description:
                 "Require explicit return types on functions and class methods",

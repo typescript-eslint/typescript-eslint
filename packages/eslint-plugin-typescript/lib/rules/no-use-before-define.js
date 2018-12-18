@@ -180,6 +180,7 @@ function isInInitializer(variable, reference) {
 
 module.exports = {
     meta: {
+        type: "problem",
         docs: {
             description:
                 "Disallow the use of variables before they are defined",
@@ -187,7 +188,6 @@ module.exports = {
             recommended: false,
             url: util.metaDocsUrl("no-use-before-define"),
         },
-
         schema: [
             {
                 oneOf: [

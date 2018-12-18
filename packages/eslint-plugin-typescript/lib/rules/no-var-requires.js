@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "problem",
         docs: {
             description:
                 "Disallows the use of require statements except in import statements",

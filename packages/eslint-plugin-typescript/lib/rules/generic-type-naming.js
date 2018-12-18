@@ -42,6 +42,7 @@ function createTypeParameterChecker(context, rule) {
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Enforces naming of generic type variables",
             category: "TypeScript",

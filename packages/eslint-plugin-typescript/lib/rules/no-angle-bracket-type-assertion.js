@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "problem",
         docs: {
             description:
                 "Enforces the use of `as Type` assertions instead of `<Type>` assertions",

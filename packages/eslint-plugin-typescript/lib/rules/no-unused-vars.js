@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "problem",
         docs: {
             description:
                 "Prevent TypeScript-specific constructs from being erroneously flagged as unused",

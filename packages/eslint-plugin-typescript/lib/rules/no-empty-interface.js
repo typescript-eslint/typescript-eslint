@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Disallow the declaration of empty interfaces",
             extraDescription: [util.tslintRule("no-empty-interface")],

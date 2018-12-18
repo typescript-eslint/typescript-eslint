@@ -12,6 +12,7 @@ const util = require("../util");
 
 module.exports = {
     meta: {
+        type: "suggestion",
         docs: {
             description: "Disallow the use of type aliases",
             extraDescription: [util.tslintRule("interface-over-type-literal")],

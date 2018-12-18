@@ -22,13 +22,14 @@ const definition = {
 
 module.exports = {
     meta: {
+        type: "layout",
         docs: {
             description: "Require consistent spacing around type annotations",
             extraDescription: [util.tslintRule("typedef-whitespace")],
             category: "TypeScript",
             url: util.metaDocsUrl("type-annotation-spacing"),
         },
-        fixable: "code",
+        fixable: "whitespace",
         schema: [
             {
                 type: "object",
