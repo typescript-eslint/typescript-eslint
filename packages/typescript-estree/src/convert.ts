@@ -694,15 +694,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
     case SyntaxKind.FunctionDeclaration: {
       let functionDeclarationType = AST_NODE_TYPES.FunctionDeclaration;
-
-      if (node.modifiers && node.modifiers.length) {
-        const isDeclareFunction = nodeUtils.hasModifier(
-          SyntaxKind.DeclareKeyword,
-          node
-        );
-        if (isDeclareFunction) {
-          functionDeclarationType = AST_NODE_TYPES.DeclareFunction;
-        }
+      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+        functionDeclarationType = AST_NODE_TYPES.TSDeclareFunction;
       }
 
       Object.assign(result, {
@@ -712,12 +705,16 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         expression: false,
         async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
         params: convertParameters(node.parameters),
-        body: convertChild(node.body)
+        body: convertChild(node.body) || undefined
       });
 
       // Process returnType
       if (node.type) {
         (result as any).returnType = convertTypeAnnotation(node.type);
+      }
+
+      if (functionDeclarationType === AST_NODE_TYPES.TSDeclareFunction) {
+        result.declare = true;
       }
 
       // Process typeParameters
@@ -757,6 +754,10 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         declarations: node.declarationList.declarations.map(convertChild),
         kind: nodeUtils.getDeclarationKind(node.declarationList)
       });
+
+      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+        result.declare = true;
+      }
 
       // check for exports
       result = nodeUtils.fixExports(node, result as any, ast);
@@ -1618,6 +1619,10 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         );
       }
 
+      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+        result.declare = true;
+      }
+
       if (node.decorators) {
         result.decorators = convertDecorators(node.decorators);
       }
@@ -2245,40 +2250,26 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         additionalOptions
       });
 
-    /**
-     * Convert TypeAliasDeclaration node into VariableDeclaration
-     * to allow core rules such as "semi" to work automatically
-     */
     case SyntaxKind.TypeAliasDeclaration: {
-      const typeAliasDeclarator = {
-        type: AST_NODE_TYPES.VariableDeclarator,
+      Object.assign(result, {
+        type: AST_NODE_TYPES.TSTypeAliasDeclaration,
         id: convertChild(node.name),
-        init: convertChild(node.type),
-        range: [node.name.getStart(ast), node.end]
-      };
+        typeAnnotation: convertChild(node.type)
+      });
 
-      (typeAliasDeclarator as any).loc = nodeUtils.getLocFor(
-        typeAliasDeclarator.range[0],
-        typeAliasDeclarator.range[1],
-        ast
-      );
+      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+        result.declare = true;
+      }
 
       // Process typeParameters
       if (node.typeParameters && node.typeParameters.length) {
-        (typeAliasDeclarator as any).typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
+        (result as any).typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
         );
       }
 
-      Object.assign(result, {
-        type: AST_NODE_TYPES.VariableDeclaration,
-        kind: nodeUtils.getDeclarationKind(node),
-        declarations: [typeAliasDeclarator]
-      });
-
       // check for exports
       result = nodeUtils.fixExports(node, result as any, ast);
-
       break;
     }
 
@@ -2400,10 +2391,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       const hasImplementsClause = interfaceHeritageClauses.length > 0;
-      const hasAbstractKeyword = nodeUtils.hasModifier(
-        SyntaxKind.AbstractKeyword,
-        node
-      );
       const interfaceOpenBrace = nodeUtils.findNextToken(
         interfaceLastClassToken,
         ast,
@@ -2422,7 +2409,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       };
 
       Object.assign(result, {
-        abstract: hasAbstractKeyword,
         type: AST_NODE_TYPES.TSInterfaceDeclaration,
         body: interfaceBody,
         id: convertChild(node.name),
@@ -2439,6 +2425,12 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
        */
       if (node.decorators) {
         result.decorators = convertDecorators(node.decorators);
+      }
+      if (nodeUtils.hasModifier(SyntaxKind.AbstractKeyword, node)) {
+        result.abstract = true;
+      }
+      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+        result.declare = true;
       }
       // check for exports
       result = nodeUtils.fixExports(node, result as any, ast);
