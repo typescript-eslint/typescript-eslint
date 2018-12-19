@@ -145,7 +145,6 @@ export default {
   isJSXToken,
   getDeclarationKind,
   getTSNodeAccessibility,
-  hasStaticModifierFlag,
   findNextToken,
   findFirstMatchingToken,
   findChildOfKind,
@@ -206,11 +205,14 @@ function isESTreeClassMember(node: ts.Node): boolean {
 
 /**
  * Checks if a ts.Node has a modifier
- * @param {number} modifierKind TypeScript SyntaxKind modifier
+ * @param {ts.KeywordSyntaxKind} modifierKind TypeScript SyntaxKind modifier
  * @param {ts.Node} node TypeScript AST node
  * @returns {boolean} has the modifier specified
  */
-function hasModifier(modifierKind: number, node: ts.Node): boolean {
+function hasModifier(
+  modifierKind: ts.KeywordSyntaxKind,
+  node: ts.Node
+): boolean {
   return (
     !!node.modifiers &&
     !!node.modifiers.length &&
@@ -392,19 +394,6 @@ function getTSNodeAccessibility(node: ts.Node): string | null {
     }
   }
   return null;
-}
-
-/**
- * Returns true if the given ts.Node has the modifier flag set which corresponds
- * to the static keyword.
- * @param {ts.Node} node The ts.Node
- * @returns {boolean} whether or not the static modifier flag is set
- */
-function hasStaticModifierFlag(node: ts.Node): boolean {
-  /**
-   * TODO: Remove dependency on private TypeScript method
-   */
-  return Boolean((ts as any).getModifierFlags(node) & ts.ModifierFlags.Static);
 }
 
 /**
