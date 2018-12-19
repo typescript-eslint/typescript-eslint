@@ -12,14 +12,16 @@ import {
   ESTreeToken
 } from './temp-types-based-on-js-source';
 import { TSNode } from './ts-nodes';
+import { AST_NODE_TYPES } from './ast-node-types';
 
 const SyntaxKind = ts.SyntaxKind;
 
-const ASSIGNMENT_OPERATORS = [
+const ASSIGNMENT_OPERATORS: ts.AssignmentOperator[] = [
   SyntaxKind.EqualsToken,
   SyntaxKind.PlusEqualsToken,
   SyntaxKind.MinusEqualsToken,
   SyntaxKind.AsteriskEqualsToken,
+  SyntaxKind.AsteriskAsteriskEqualsToken,
   SyntaxKind.SlashEqualsToken,
   SyntaxKind.PercentEqualsToken,
   SyntaxKind.LessThanLessThanEqualsToken,
@@ -30,72 +32,73 @@ const ASSIGNMENT_OPERATORS = [
   SyntaxKind.CaretEqualsToken
 ];
 
-const LOGICAL_OPERATORS = [
+const LOGICAL_OPERATORS: ts.LogicalOperator[] = [
   SyntaxKind.BarBarToken,
   SyntaxKind.AmpersandAmpersandToken
 ];
 
-const TOKEN_TO_TEXT: { [key: number]: string } = {};
-TOKEN_TO_TEXT[SyntaxKind.OpenBraceToken] = '{';
-TOKEN_TO_TEXT[SyntaxKind.CloseBraceToken] = '}';
-TOKEN_TO_TEXT[SyntaxKind.OpenParenToken] = '(';
-TOKEN_TO_TEXT[SyntaxKind.CloseParenToken] = ')';
-TOKEN_TO_TEXT[SyntaxKind.OpenBracketToken] = '[';
-TOKEN_TO_TEXT[SyntaxKind.CloseBracketToken] = ']';
-TOKEN_TO_TEXT[SyntaxKind.DotToken] = '.';
-TOKEN_TO_TEXT[SyntaxKind.DotDotDotToken] = '...';
-TOKEN_TO_TEXT[SyntaxKind.SemicolonToken] = ';';
-TOKEN_TO_TEXT[SyntaxKind.CommaToken] = ',';
-TOKEN_TO_TEXT[SyntaxKind.LessThanToken] = '<';
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanToken] = '>';
-TOKEN_TO_TEXT[SyntaxKind.LessThanEqualsToken] = '<=';
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanEqualsToken] = '>=';
-TOKEN_TO_TEXT[SyntaxKind.EqualsEqualsToken] = '==';
-TOKEN_TO_TEXT[SyntaxKind.ExclamationEqualsToken] = '!=';
-TOKEN_TO_TEXT[SyntaxKind.EqualsEqualsEqualsToken] = '===';
-TOKEN_TO_TEXT[SyntaxKind.InstanceOfKeyword] = 'instanceof';
-TOKEN_TO_TEXT[SyntaxKind.ExclamationEqualsEqualsToken] = '!==';
-TOKEN_TO_TEXT[SyntaxKind.EqualsGreaterThanToken] = '=>';
-TOKEN_TO_TEXT[SyntaxKind.PlusToken] = '+';
-TOKEN_TO_TEXT[SyntaxKind.MinusToken] = '-';
-TOKEN_TO_TEXT[SyntaxKind.AsteriskToken] = '*';
-TOKEN_TO_TEXT[SyntaxKind.AsteriskAsteriskToken] = '**';
-TOKEN_TO_TEXT[SyntaxKind.SlashToken] = '/';
-TOKEN_TO_TEXT[SyntaxKind.PercentToken] = '%';
-TOKEN_TO_TEXT[SyntaxKind.PlusPlusToken] = '++';
-TOKEN_TO_TEXT[SyntaxKind.MinusMinusToken] = '--';
-TOKEN_TO_TEXT[SyntaxKind.LessThanLessThanToken] = '<<';
-TOKEN_TO_TEXT[SyntaxKind.LessThanSlashToken] = '</';
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanToken] = '>>';
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanGreaterThanToken] = '>>>';
-TOKEN_TO_TEXT[SyntaxKind.AmpersandToken] = '&';
-TOKEN_TO_TEXT[SyntaxKind.BarToken] = '|';
-TOKEN_TO_TEXT[SyntaxKind.CaretToken] = '^';
-TOKEN_TO_TEXT[SyntaxKind.ExclamationToken] = '!';
-TOKEN_TO_TEXT[SyntaxKind.TildeToken] = '~';
-TOKEN_TO_TEXT[SyntaxKind.AmpersandAmpersandToken] = '&&';
-TOKEN_TO_TEXT[SyntaxKind.BarBarToken] = '||';
-TOKEN_TO_TEXT[SyntaxKind.QuestionToken] = '?';
-TOKEN_TO_TEXT[SyntaxKind.ColonToken] = ':';
-TOKEN_TO_TEXT[SyntaxKind.EqualsToken] = '=';
-TOKEN_TO_TEXT[SyntaxKind.PlusEqualsToken] = '+=';
-TOKEN_TO_TEXT[SyntaxKind.MinusEqualsToken] = '-=';
-TOKEN_TO_TEXT[SyntaxKind.AsteriskEqualsToken] = '*=';
-TOKEN_TO_TEXT[SyntaxKind.AsteriskAsteriskEqualsToken] = '**=';
-TOKEN_TO_TEXT[SyntaxKind.SlashEqualsToken] = '/=';
-TOKEN_TO_TEXT[SyntaxKind.PercentEqualsToken] = '%=';
-TOKEN_TO_TEXT[SyntaxKind.LessThanLessThanEqualsToken] = '<<=';
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanEqualsToken] = '>>=';
-TOKEN_TO_TEXT[SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken] = '>>>=';
-TOKEN_TO_TEXT[SyntaxKind.AmpersandEqualsToken] = '&=';
-TOKEN_TO_TEXT[SyntaxKind.BarEqualsToken] = '|=';
-TOKEN_TO_TEXT[SyntaxKind.CaretEqualsToken] = '^=';
-TOKEN_TO_TEXT[SyntaxKind.AtToken] = '@';
-TOKEN_TO_TEXT[SyntaxKind.InKeyword] = 'in';
-TOKEN_TO_TEXT[SyntaxKind.UniqueKeyword] = 'unique';
-TOKEN_TO_TEXT[SyntaxKind.KeyOfKeyword] = 'keyof';
-TOKEN_TO_TEXT[SyntaxKind.NewKeyword] = 'new';
-TOKEN_TO_TEXT[SyntaxKind.ImportKeyword] = 'import';
+const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
+  [SyntaxKind.OpenBraceToken]: '{',
+  [SyntaxKind.CloseBraceToken]: '}',
+  [SyntaxKind.OpenParenToken]: '(',
+  [SyntaxKind.CloseParenToken]: ')',
+  [SyntaxKind.OpenBracketToken]: '[',
+  [SyntaxKind.CloseBracketToken]: ']',
+  [SyntaxKind.DotToken]: '.',
+  [SyntaxKind.DotDotDotToken]: '...',
+  [SyntaxKind.SemicolonToken]: ',',
+  [SyntaxKind.CommaToken]: ',',
+  [SyntaxKind.LessThanToken]: '<',
+  [SyntaxKind.GreaterThanToken]: '>',
+  [SyntaxKind.LessThanEqualsToken]: '<=',
+  [SyntaxKind.GreaterThanEqualsToken]: '>=',
+  [SyntaxKind.EqualsEqualsToken]: '==',
+  [SyntaxKind.ExclamationEqualsToken]: '!=',
+  [SyntaxKind.EqualsEqualsEqualsToken]: '===',
+  [SyntaxKind.InstanceOfKeyword]: 'instanceof',
+  [SyntaxKind.ExclamationEqualsEqualsToken]: '!==',
+  [SyntaxKind.EqualsGreaterThanToken]: '=>',
+  [SyntaxKind.PlusToken]: '+',
+  [SyntaxKind.MinusToken]: '-',
+  [SyntaxKind.AsteriskToken]: '*',
+  [SyntaxKind.AsteriskAsteriskToken]: '**',
+  [SyntaxKind.SlashToken]: '/',
+  [SyntaxKind.PercentToken]: '%',
+  [SyntaxKind.PlusPlusToken]: '++',
+  [SyntaxKind.MinusMinusToken]: '--',
+  [SyntaxKind.LessThanLessThanToken]: '<<',
+  [SyntaxKind.LessThanSlashToken]: '</',
+  [SyntaxKind.GreaterThanGreaterThanToken]: '>>',
+  [SyntaxKind.GreaterThanGreaterThanGreaterThanToken]: '>>>',
+  [SyntaxKind.AmpersandToken]: '&',
+  [SyntaxKind.BarToken]: '|',
+  [SyntaxKind.CaretToken]: '^',
+  [SyntaxKind.ExclamationToken]: '!',
+  [SyntaxKind.TildeToken]: '~',
+  [SyntaxKind.AmpersandAmpersandToken]: '&&',
+  [SyntaxKind.BarBarToken]: '||',
+  [SyntaxKind.QuestionToken]: '?',
+  [SyntaxKind.ColonToken]: ':',
+  [SyntaxKind.EqualsToken]: '=',
+  [SyntaxKind.PlusEqualsToken]: '+=',
+  [SyntaxKind.MinusEqualsToken]: '-=',
+  [SyntaxKind.AsteriskEqualsToken]: '*=',
+  [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=',
+  [SyntaxKind.SlashEqualsToken]: '/=',
+  [SyntaxKind.PercentEqualsToken]: '%=',
+  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=',
+  [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=',
+  [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=',
+  [SyntaxKind.AmpersandEqualsToken]: '&=',
+  [SyntaxKind.BarEqualsToken]: '|=',
+  [SyntaxKind.CaretEqualsToken]: '^=',
+  [SyntaxKind.AtToken]: '@',
+  [SyntaxKind.InKeyword]: 'in',
+  [SyntaxKind.UniqueKeyword]: 'unique',
+  [SyntaxKind.KeyOfKeyword]: 'keyof',
+  [SyntaxKind.NewKeyword]: 'new',
+  [SyntaxKind.ImportKeyword]: 'import'
+};
 
 /**
  * Find the first matching child based on the given sourceFile and predicate function.
@@ -188,7 +191,7 @@ function isLogicalOperator(operator: ts.Token<any>): boolean {
  * @param  {number}  kind the token's SyntaxKind
  * @returns {string}          the token applicable token as a string
  */
-function getTextForTokenKind(kind: number): string {
+function getTextForTokenKind(kind: ts.SyntaxKind): string | undefined {
   return TOKEN_TO_TEXT[kind];
 }
 
@@ -252,11 +255,11 @@ function isJSDocComment(node: ts.Node): boolean {
  */
 function getBinaryExpressionType(operator: ts.Token<any>): string {
   if (isAssignmentOperator(operator)) {
-    return 'AssignmentExpression';
+    return AST_NODE_TYPES.AssignmentExpression;
   } else if (isLogicalOperator(operator)) {
-    return 'LogicalExpression';
+    return AST_NODE_TYPES.LogicalExpression;
   }
-  return 'BinaryExpression';
+  return AST_NODE_TYPES.BinaryExpression;
 }
 
 /**

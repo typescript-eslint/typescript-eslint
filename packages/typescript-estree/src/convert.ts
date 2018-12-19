@@ -1758,7 +1758,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
     case SyntaxKind.PrefixUnaryExpression:
     case SyntaxKind.PostfixUnaryExpression: {
-      const operator = nodeUtils.getTextForTokenKind(node.operator);
+      const operator = nodeUtils.getTextForTokenKind(node.operator) || '';
       Object.assign(result, {
         /**
          * ESTree uses UpdateExpression for ++/--
@@ -1836,16 +1836,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         } else {
           (result as any).expressions.push(right);
         }
-      } else if (
-        node.operatorToken &&
-        node.operatorToken.kind === SyntaxKind.AsteriskAsteriskEqualsToken
-      ) {
-        Object.assign(result, {
-          type: AST_NODE_TYPES.AssignmentExpression,
-          operator: nodeUtils.getTextForTokenKind(node.operatorToken.kind),
-          left: convertChild(node.left),
-          right: convertChild(node.right)
-        });
       } else {
         Object.assign(result, {
           type: nodeUtils.getBinaryExpressionType(node.operatorToken),
