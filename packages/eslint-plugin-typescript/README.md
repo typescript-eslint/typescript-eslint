@@ -1,5 +1,9 @@
 # eslint-plugin-typescript
 
+[![NPM version](https://img.shields.io/npm/v/eslint-plugin-typescript.svg)](https://www.npmjs.com/package/eslint-plugin-typescript)
+[![NPM downloads](https://img.shields.io/npm/dm/eslint-plugin-typescript.svg)](https://www.npmjs.com/package/eslint-plugin-typescript)
+[![TravisCI](https://img.shields.io/travis/bradzacher/eslint-plugin-typescript.svg)](https://travis-ci.com/bradzacher/eslint-plugin-typescript)
+
 TypeScript support for ESLint. (This is still in the very early stages, so please be patient.)
 
 ### The below readme is for the upcoming 1.0.0 release. [Please see this tag for the current NPM version (0.14.0)](https://github.com/bradzacher/eslint-plugin-typescript/tree/0.14.0)
