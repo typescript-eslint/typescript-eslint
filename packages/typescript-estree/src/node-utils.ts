@@ -350,10 +350,8 @@ function isTypeKeyword(kind: number): boolean {
  * @param  {ts.Node}  node TypeScript AST node
  * @returns {string}     declaration kind
  */
-function getDeclarationKind(node: ts.Node): string {
+function getDeclarationKind(node: ts.Node): 'let' | 'const' | 'var' {
   switch (node.kind) {
-    case SyntaxKind.TypeAliasDeclaration:
-      return 'type';
     case SyntaxKind.VariableDeclarationList:
       if (node.flags & ts.NodeFlags.Let) {
         return 'let';
