@@ -5,10 +5,12 @@
   "keywords": [
     "eslint",
     "eslintplugin",
-    "eslint-plugin"
+    "eslint-plugin",
+    "typescript"
   ],
-  "repository": "nzakas/eslint-plugin-typescript",
-  "author": "Nicholas C. Zakas",
+  "repository": "bradzacher/eslint-plugin-typescript",
+  "author": "Brad Zacher",
+  "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint lib/ tests/ tools/",
@@ -56,6 +58,5 @@
   },
   "engines": {
     "node": ">=6"
-  },
-  "license": "MIT"
+  }
 }
