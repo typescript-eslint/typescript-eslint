@@ -6,7 +6,10 @@ import { ParserOptions } from '../../src/temp-types-based-on-js-source';
 
 interface Fixture {
   filename: string;
-  config?: any;
+  config?: {
+    babelParserOptions?: BabelParserOptions;
+    typeScriptESTreeOptions?: ParserOptions;
+  };
 }
 
 interface FixturePatternConfig {

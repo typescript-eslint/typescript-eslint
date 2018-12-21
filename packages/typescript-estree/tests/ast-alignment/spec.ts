@@ -7,15 +7,16 @@ fixturesToTest.forEach(fixture => {
   const filename = fixture.filename;
   const source = fs.readFileSync(filename, 'utf8').replace(/\r\n/g, '\n');
 
+  const config = fixture.config || {};
+  config.typeScriptESTreeOptions = config.typeScriptESTreeOptions || {};
+  config.babelParserOptions = config.babelParserOptions || {};
+
   /**
    * Parse with typescript-estree
    */
   const typeScriptESTreeResult = parse(source, {
     parser: 'typescript-estree',
-    typeScriptESTreeOptions:
-      fixture.config && fixture.config.typeScriptESTreeOptions
-        ? fixture.config.typeScriptESTreeOptions
-        : null
+    typeScriptESTreeOptions: config.typeScriptESTreeOptions
   });
 
   /**
@@ -23,10 +24,7 @@ fixturesToTest.forEach(fixture => {
    */
   const babelParserResult = parse(source, {
     parser: '@babel/parser',
-    babelParserOptions:
-      fixture.config && fixture.config.babelParserOptions
-        ? fixture.config.babelParserOptions
-        : null
+    babelParserOptions: config.babelParserOptions
   });
 
   /**

@@ -375,7 +375,9 @@ function getDeclarationKind(node: ts.Node): 'let' | 'const' | 'var' {
  * @param {ts.Node} node The ts.Node
  * @returns {string | null} accessibility "public", "protected", "private", or null
  */
-function getTSNodeAccessibility(node: ts.Node): string | null {
+function getTSNodeAccessibility(
+  node: ts.Node
+): 'public' | 'protected' | 'private' | null {
   const modifiers = node.modifiers;
   if (!modifiers) {
     return null;
@@ -390,7 +392,7 @@ function getTSNodeAccessibility(node: ts.Node): string | null {
       case SyntaxKind.PrivateKeyword:
         return 'private';
       default:
-        continue;
+        break;
     }
   }
   return null;
