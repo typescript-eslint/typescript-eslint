@@ -709,3 +709,5 @@ if (foo) {
 
 -   **JSHint**: `indent`
 -   **JSCS**: [validateIndentation](https://jscs-dev.github.io/rule/validateIndentation)
+
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/indent.md)</sup>

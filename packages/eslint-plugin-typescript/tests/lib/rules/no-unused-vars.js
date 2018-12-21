@@ -9,7 +9,6 @@
 //------------------------------------------------------------------------------
 
 const rule = require("../../../lib/rules/no-unused-vars");
-const ruleNoUnusedVars = require("eslint/lib/rules/no-unused-vars");
 const RuleTester = require("eslint").RuleTester;
 
 const ruleTester = new RuleTester({
@@ -19,18 +18,13 @@ const ruleTester = new RuleTester({
         ecmaFeatures: {},
     },
     parser: "typescript-eslint-parser",
-    rules: {
-        "typescript/no-unused-vars": "error",
-    },
 });
-
-ruleTester.defineRule("typescript/no-unused-vars", rule);
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-ruleTester.run("no-unused-vars", ruleNoUnusedVars, {
+ruleTester.run("no-unused-vars", rule, {
     valid: [
         `
 import { ClassDecoratorFactory } from 'decorators';

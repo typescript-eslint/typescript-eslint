@@ -1,6 +1,7 @@
 {
     "rules": {
         "class-name-casing": "error",
+        "indent": "error",
         "no-unused-vars": "error"
     }
 }
