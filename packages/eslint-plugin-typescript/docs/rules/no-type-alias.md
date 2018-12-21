@@ -82,10 +82,10 @@ and simplified types (primitives, tuples, unions, intersections, etc).
 This rule, in its default state, does not require any argument. If you would like to enable one
 or more of the following you may pass an object with the options set as follows:
 
--   `allowAliases` set to `true` or `"always"` will allow you to do aliasing (Defaults to `false`/`"never"`).
--   `allowCallbacks` set to `true` or `"always"` will allow you to use type aliases with callbacks (Defaults to `false`/`"never"`)
--   `allowLiterals` set to `true` or `"always"` will allow you to use type aliases with literal objects (Defaults to `false`/`"never"`)
--   `allowMappedTypes` set to `true` or `"always"` will allow you to use type aliases as mapping tools (Defaults to `false`/`"never"`)
+-   `allowAliases` set to `"always"` will allow you to do aliasing (Defaults to `"never"`).
+-   `allowCallbacks` set to `"always"` will allow you to use type aliases with callbacks (Defaults to `"never"`)
+-   `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
+-   `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
 
 ### allowAliases
 
@@ -93,12 +93,12 @@ This applies to primitive types and reference types.
 
 The setting accepts the following values:
 
--   `true` or `false` (`"always"` or `"never"`) to active or deactivate the feature.
+-   `"always"` or `"never"` to active or deactivate the feature.
 -   `"in-unions"`, allows aliasing in union statements, e.g. `type Foo = string | string[];`
 -   `"in-intersections"`, allows aliasing in intersection statements, e.g. `type Foo = string & string[];`
 -   `"in-unions-and-intersections"`, allows aliasing in union and/or intersection statements.
 
-Examples of **correct** code for the `{ "allowAliases": true }` or `{ "allowAliases": "always" }` options:
+Examples of **correct** code for the `{ "allowAliases": "always" }` options:
 
 ```ts
 // primitives
@@ -231,9 +231,9 @@ This applies to function types.
 
 The setting accepts the following values:
 
--   `true` or `false` (`"always"` or `"never"`) to active or deactivate the feature.
+-   `"always"` or `"never"` to active or deactivate the feature.
 
-Examples of **correct** code for the `{ "allowCallbacks": true }` or `{ "allowCallbacks": "always" }` option:
+Examples of **correct** code for the `{ "allowCallbacks": "always" }` option:
 
 ```ts
 type Foo = () => void;
@@ -253,12 +253,12 @@ This applies to literal types (`type Foo = { ... }`).
 
 The setting accepts the following options:
 
--   `true` or `false` (`"always"` or `"never"`) to active or deactivate the feature.
+-   `"always"` or `"never"` to active or deactivate the feature.
 -   `"in-unions"`, allows literals in union statements, e.g. `type Foo = string | string[];`
 -   `"in-intersections"`, allows literals in intersection statements, e.g. `type Foo = string & string[];`
 -   `"in-unions-and-intersections"`, allows literals in union and/or intersection statements.
 
-Examples of **correct** code for the `{ "allowLiterals": true }` or `{ "allowLiterals": "always" }` options:
+Examples of **correct** code for the `{ "allowLiterals": "always" }` options:
 
 ```ts
 type Foo = {};
@@ -360,12 +360,12 @@ This applies to literal types.
 
 The setting accepts the following values:
 
--   `true` or `false` (`"always"` or `"never"`) to active or deactivate the feature.
+-   `"always"` or `"never"` to active or deactivate the feature.
 -   `"in-unions"`, allows aliasing in union statements, e.g. `type Foo = string | string[];`
 -   `"in-intersections"`, allows aliasing in intersection statements, e.g. `type Foo = string & string[];`
 -   `"in-unions-and-intersections"`, allows aliasing in union and/or intersection statements.
 
-Examples of **correct** code for the `{ "allowMappedTypes": true }` or `{ "allowMappedTypes": "always" }` options:
+Examples of **correct** code for the `{ "allowMappedTypes": "always" }` options:
 
 ```ts
 type Foo<T> = { readonly [P in keyof T]: T[P] };

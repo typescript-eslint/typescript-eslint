@@ -62,3 +62,13 @@ function deepMerge(first = {}, second = {}) {
     }, {});
 }
 exports.deepMerge = deepMerge;
+
+/**
+ * Upper cases the first character or the string
+ * @param {string} str a string
+ * @returns {string} upper case first
+ */
+function upperCaseFirst(str) {
+    return str[0].toUpperCase() + str.slice(1);
+}
+exports.upperCaseFirst = upperCaseFirst;
