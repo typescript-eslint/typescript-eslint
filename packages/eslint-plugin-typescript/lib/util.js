@@ -13,7 +13,15 @@ exports.metaDocsUrl = name =>
  * @returns {boolean} `true` if the file name ends in *.ts or *.tsx
  * @private
  */
-exports.isTypescript = fileName => /\.tsx?$/.test(fileName);
+exports.isTypescript = fileName => /\.tsx?$/i.test(fileName || "");
+
+/**
+ * Check if the context file name is *.d.ts or *.d.ts
+ * @param {string} fileName The context file name
+ * @returns {boolean} `true` if the file name ends in *.d.ts or *.d.ts
+ * @private
+ */
+exports.isDefinitionFile = fileName => /\.d\.tsx?$/i.test(fileName || "");
 
 /**
  * Pure function - doesn't mutate either parameter!
