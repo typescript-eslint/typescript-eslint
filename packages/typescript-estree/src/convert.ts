@@ -95,10 +95,10 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
   /**
    * Converts a child into a type annotation. This creates an intermediary
    * TypeAnnotation node to match what Flow does.
-   * @param {ts.Node} child The TypeScript AST node to convert.
+   * @param {ts.TypeNode} child The TypeScript AST node to convert.
    * @returns {ESTreeNode} The type annotation node.
    */
-  function convertTypeAnnotation(child: ts.Node): ESTreeNode {
+  function convertTypeAnnotation(child: ts.TypeNode): ESTreeNode {
     const annotation = convertChild(child);
     const annotationStartCol = child.getFullStart() - 1;
     const loc = nodeUtils.getLocFor(annotationStartCol, child.end, ast);
