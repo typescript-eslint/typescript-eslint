@@ -19,14 +19,17 @@ module.exports = {
             category: "TypeScript",
             url: util.metaDocsUrl("no-type-alias"),
         },
+        messages: {
+            noTypeAlias: "Type {{alias}} are not allowed.",
+            noCompositionAlias:
+                "{{typeName}} in {{compositionType}} types are not allowed.",
+        },
         schema: [
             {
                 type: "object",
                 properties: {
                     allowAliases: {
                         enum: [
-                            true,
-                            false,
                             "always",
                             "never",
                             "in-unions",
@@ -35,12 +38,10 @@ module.exports = {
                         ],
                     },
                     allowCallbacks: {
-                        enum: [true, false, "always", "never"],
+                        enum: ["always", "never"],
                     },
                     allowLiterals: {
                         enum: [
-                            true,
-                            false,
                             "always",
                             "never",
                             "in-unions",
@@ -50,8 +51,6 @@ module.exports = {
                     },
                     allowMappedTypes: {
                         enum: [
-                            true,
-                            false,
                             "always",
                             "never",
                             "in-unions",
@@ -66,22 +65,15 @@ module.exports = {
     },
 
     create(context) {
-        const options = context.options[0];
+        const options = context.options[0] || {};
 
-        const allowAliases = (options && options.allowAliases) || "never";
-        const allowCallbacks = (options && options.allowCallbacks) || "never";
-        const allowLiterals = (options && options.allowLiterals) || "never";
-        const allowMappedTypes =
-            (options && options.allowMappedTypes) || "never";
+        const allowAliases = options.allowAliases || "never";
+        const allowCallbacks = options.allowCallbacks || "never";
+        const allowLiterals = options.allowLiterals || "never";
+        const allowMappedTypes = options.allowMappedTypes || "never";
 
-        const unions = [
-            true,
-            "always",
-            "in-unions",
-            "in-unions-and-intersections",
-        ];
+        const unions = ["always", "in-unions", "in-unions-and-intersections"];
         const intersections = [
-            true,
             "always",
             "in-intersections",
             "in-unions-and-intersections",
@@ -181,6 +173,7 @@ module.exports = {
 
         /**
          * Gets the message to be displayed based on the node type and whether the node is a top level declaration.
+         * @param {Object} node the location
          * @param {string} compositionType the type of composition this alias is part of (undefined if not
          *                                  part of a composition)
          * @param {boolean} isRoot a flag indicating we are dealing with the top level declaration.
@@ -188,20 +181,28 @@ module.exports = {
          * @returns {string} the message to be displayed.
          * @private
          */
-        function getMessage(compositionType, isRoot, type) {
+        function getMessage(node, compositionType, isRoot, type) {
             if (isRoot) {
-                return type
-                    ? `Type ${type} are not allowed.`
-                    : "Type aliases are not allowed.";
+                return {
+                    node,
+                    messageId: "noTypeAlias",
+                    data: {
+                        alias: type || "aliases",
+                    },
+                };
             }
 
-            return compositionType === "TSUnionType"
-                ? `${type[0].toUpperCase()}${type.slice(
-                      1
-                  )} in union types are not allowed.`
-                : `${type[0].toUpperCase()}${type.slice(
-                      1
-                  )} in intersection types are not allowed.`;
+            return {
+                node,
+                messageId: "noCompositionAlias",
+                data: {
+                    compositionType:
+                        compositionType === "TSUnionType"
+                            ? "union"
+                            : "intersection",
+                    typeName: util.upperCaseFirst(type),
+                },
+            };
         }
 
         /**
@@ -223,25 +224,20 @@ module.exports = {
                         allowAliases
                     )
                 ) {
-                    context.report({
-                        node,
-                        message: getMessage(
-                            compositionType,
-                            isTopLevel,
-                            "aliases"
-                        ),
-                    });
+                    context.report(
+                        getMessage(node, compositionType, isTopLevel, "aliases")
+                    );
                 }
             } else if (isCallback(node)) {
                 if (allowCallbacks === "never") {
-                    context.report({
-                        node,
-                        message: getMessage(
+                    context.report(
+                        getMessage(
+                            node,
                             compositionType,
                             isTopLevel,
                             "callbacks"
-                        ),
-                    });
+                        )
+                    );
                 }
             } else if (isLiteral(node)) {
                 if (
@@ -252,14 +248,14 @@ module.exports = {
                         allowLiterals
                     )
                 ) {
-                    context.report({
-                        node,
-                        message: getMessage(
+                    context.report(
+                        getMessage(
+                            node,
                             compositionType,
                             isTopLevel,
                             "literals"
-                        ),
-                    });
+                        )
+                    );
                 }
             } else if (isMappedType(node)) {
                 if (
@@ -270,20 +266,17 @@ module.exports = {
                         allowMappedTypes
                     )
                 ) {
-                    context.report({
-                        node,
-                        message: getMessage(
+                    context.report(
+                        getMessage(
+                            node,
                             compositionType,
                             isTopLevel,
                             "mapped types"
-                        ),
-                    });
+                        )
+                    );
                 }
             } else {
-                context.report({
-                    node,
-                    message: getMessage(compositionType, isTopLevel),
-                });
+                context.report(getMessage(node, compositionType, isTopLevel));
             }
         }
 
