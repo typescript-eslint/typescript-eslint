@@ -4,26 +4,29 @@
  */
 "use strict";
 
+const baseRule = require("eslint/lib/rules/no-unused-vars");
 const util = require("../util");
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-module.exports = {
+module.exports = Object.assign({}, baseRule, {
     meta: {
         type: "problem",
         docs: {
-            description:
-                "Prevent TypeScript-specific constructs from being erroneously flagged as unused",
-            category: "TypeScript",
-            recommended: true,
+            description: "Disallow unused variables",
+            extraDescription: [util.tslintRule("no-unused-variable")],
+            category: "Variables",
             url: util.metaDocsUrl("no-unused-vars"),
+            recommended: true,
         },
-        schema: [],
+        schema: baseRule.meta.schema,
     },
 
     create(context) {
+        const rules = baseRule.create(context);
+
         /**
          * Mark this function parameter as used
          * @param {Identifier} node The node currently being traversed
@@ -44,7 +47,7 @@ module.exports = {
         //----------------------------------------------------------------------
         // Public
         //----------------------------------------------------------------------
-        return {
+        return Object.assign({}, rules, {
             "FunctionDeclaration Identifier[name='this']": markThisParameterAsUsed,
             "FunctionExpression Identifier[name='this']": markThisParameterAsUsed,
             "TSTypeReference Identifier"(node) {
@@ -60,6 +63,6 @@ module.exports = {
             "TSEnumMember Identifier"(node) {
                 context.markVariableAsUsed(node.name);
             },
-        };
+        });
     },
-};
+});
