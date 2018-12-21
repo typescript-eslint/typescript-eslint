@@ -20,6 +20,10 @@ module.exports = {
             category: "TypeScript",
             url: util.metaDocsUrl("no-namespace"),
         },
+        messages: {
+            moduleSyntaxIsPreferred:
+                "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+        },
         schema: [
             {
                 type: "object",
@@ -37,70 +41,28 @@ module.exports = {
     },
 
     create(context) {
-        const allowDeclarations = context.options[0]
-            ? context.options[0].allowDeclarations
-            : false;
-        const allowDefinitionFiles = context.options[0]
-            ? context.options[0].allowDefinitionFiles
-            : false;
-
-        //----------------------------------------------------------------------
-        // Helpers
-        //----------------------------------------------------------------------
-
-        /**
-         * Determines if node is a TypeScript module declaration (instead of a namespace/module).
-         * @param {ASTNode} node the node to be evaluated.
-         * @returns {boolean} true when node is an external declaration.
-         * @private
-         */
-        function isTypeScriptModuleDeclaration(node) {
-            return node.id && node.id.type === "Literal";
-        }
-
-        /**
-         * Determines if node is a module/namespace declaration.
-         * @param {ASTNode} node the node to be evaluated.
-         * @returns {boolean} true when dealing with declarations.
-         * @private
-         */
-        function isDeclaration(node) {
-            return (
-                node.declare === true && !isTypeScriptModuleDeclaration(node)
-            );
-        }
-
-        /**
-         * Determines if node is part of a declaration file (d.ts).
-         * @returns {boolean} true when dealing with declaration files.
-         * @private
-         */
-        function isDefinitionFile() {
-            const filename = context.getFilename();
-
-            return filename
-                ? filename.slice(-5).toLowerCase() === ".d.ts"
-                : false;
-        }
+        const options = context.options[0] || {};
+        const allowDeclarations = options.allowDeclarations || false;
+        const allowDefinitionFiles = options.allowDefinitionFiles || false;
+        const filename = context.getFilename();
 
         //----------------------------------------------------------------------
         // Public
         //----------------------------------------------------------------------
         return {
-            TSModuleDeclaration(node) {
+            "TSModuleDeclaration[global!=true][id.type='Identifier']"(node) {
                 if (
-                    node.global ||
-                    isTypeScriptModuleDeclaration(node) ||
-                    (allowDefinitionFiles && isDefinitionFile()) ||
-                    (allowDeclarations && isDeclaration(node))
+                    (node.parent &&
+                        node.parent.type === "TSModuleDeclaration") ||
+                    (allowDefinitionFiles && util.isDefinitionFile(filename)) ||
+                    (allowDeclarations && node.declare === true)
                 ) {
                     return;
                 }
 
                 context.report({
                     node,
-                    message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+                    messageId: "moduleSyntaxIsPreferred",
                 });
             },
         };

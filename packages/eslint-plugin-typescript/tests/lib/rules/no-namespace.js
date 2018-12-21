@@ -31,14 +31,23 @@ ruleTester.run("no-namespace", rule, {
             code: "declare namespace foo { }",
             options: [{ allowDeclarations: true }],
         },
+        {
+            filename: "test.d.ts",
+            code: "namespace foo { }",
+            options: [{ allowDefinitionFiles: true }],
+        },
+        {
+            filename: "test.d.ts",
+            code: "module foo { }",
+            options: [{ allowDefinitionFiles: true }],
+        },
     ],
     invalid: [
         {
             code: "module foo {}",
             errors: [
                 {
-                    message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+                    messageId: "moduleSyntaxIsPreferred",
                     row: 1,
                     column: 1,
                 },
@@ -48,8 +57,7 @@ ruleTester.run("no-namespace", rule, {
             code: "namespace foo {}",
             errors: [
                 {
-                    message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+                    messageId: "moduleSyntaxIsPreferred",
                     row: 1,
                     column: 1,
                 },
@@ -60,8 +68,7 @@ ruleTester.run("no-namespace", rule, {
             options: [{ allowDeclarations: false }],
             errors: [
                 {
-                    message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+                    messageId: "moduleSyntaxIsPreferred",
                     row: 1,
                     column: 1,
                 },
@@ -72,8 +79,7 @@ ruleTester.run("no-namespace", rule, {
             options: [{ allowDeclarations: false }],
             errors: [
                 {
-                    message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+                    messageId: "moduleSyntaxIsPreferred",
                     row: 1,
                     column: 1,
                 },
@@ -83,8 +89,7 @@ ruleTester.run("no-namespace", rule, {
             code: "declare module foo { }",
             errors: [
                 {
-                    message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+                    messageId: "moduleSyntaxIsPreferred",
                     row: 1,
                     column: 1,
                 },
@@ -94,8 +99,7 @@ ruleTester.run("no-namespace", rule, {
             code: "declare namespace foo { }",
             errors: [
                 {
-                    message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+                    messageId: "moduleSyntaxIsPreferred",
                     row: 1,
                     column: 1,
                 },
@@ -106,8 +110,7 @@ ruleTester.run("no-namespace", rule, {
             options: [{ allowDeclarations: false }],
             errors: [
                 {
-                    message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+                    messageId: "moduleSyntaxIsPreferred",
                     row: 1,
                     column: 1,
                 },
@@ -118,10 +121,89 @@ ruleTester.run("no-namespace", rule, {
             options: [{ allowDeclarations: false }],
             errors: [
                 {
-                    message:
-                        "ES2015 module syntax is preferred over custom TypeScript modules and namespaces.",
+                    messageId: "moduleSyntaxIsPreferred",
                     row: 1,
                     column: 1,
+                },
+            ],
+        },
+        {
+            filename: "test.d.ts",
+            code: "namespace foo { }",
+            options: [{ allowDefinitionFiles: false }],
+            errors: [
+                {
+                    messageId: "moduleSyntaxIsPreferred",
+                    row: 1,
+                    column: 1,
+                },
+            ],
+        },
+        {
+            filename: "test.d.ts",
+            code: "module foo { }",
+            options: [{ allowDefinitionFiles: false }],
+            errors: [
+                {
+                    messageId: "moduleSyntaxIsPreferred",
+                    row: 1,
+                    column: 1,
+                },
+            ],
+        },
+        {
+            filename: "test.d.ts",
+            code: "declare module foo {}",
+            options: [{ allowDefinitionFiles: false }],
+            errors: [
+                {
+                    messageId: "moduleSyntaxIsPreferred",
+                    row: 1,
+                    column: 1,
+                },
+            ],
+        },
+        {
+            filename: "test.d.ts",
+            code: "declare namespace foo {}",
+            options: [{ allowDefinitionFiles: false }],
+            errors: [
+                {
+                    messageId: "moduleSyntaxIsPreferred",
+                    row: 1,
+                    column: 1,
+                },
+            ],
+        },
+        {
+            code: "namespace Foo.Bar {}",
+            options: [{ allowDeclarations: false }],
+            errors: [
+                {
+                    messageId: "moduleSyntaxIsPreferred",
+                    row: 1,
+                    column: 1,
+                },
+            ],
+        },
+        {
+            code: `
+                namespace Foo.Bar {
+                    namespace Baz.Bas {
+                        interface X {}
+                    }
+                }
+            `,
+            errors: [
+                {
+                    messageId: "moduleSyntaxIsPreferred",
+                    row: 1,
+                    column: 17,
+                },
+                {
+                    messageId: "moduleSyntaxIsPreferred",
+                    row: 2,
+                    column: 21,
                 },
             ],
         },
