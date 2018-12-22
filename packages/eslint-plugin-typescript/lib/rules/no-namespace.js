@@ -10,6 +10,13 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+    {
+        allowDeclarations: false,
+        allowDefinitionFiles: true,
+    },
+];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -19,6 +26,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-namespace")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-namespace"),
+            recommended: "error",
         },
         messages: {
             moduleSyntaxIsPreferred:
@@ -41,9 +49,10 @@ module.exports = {
     },
 
     create(context) {
-        const options = context.options[0] || {};
-        const allowDeclarations = options.allowDeclarations || false;
-        const allowDefinitionFiles = options.allowDefinitionFiles || false;
+        const { allowDeclarations, allowDefinitionFiles } = util.applyDefault(
+            defaultOptions,
+            context.options
+        )[0];
         const filename = context.getFilename();
 
         //----------------------------------------------------------------------

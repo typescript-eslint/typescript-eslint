@@ -10,6 +10,13 @@ const util = require("../util");
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
+const defaultOptions = [
+    {
+        allow: ["^UNSAFE_"],
+        ignoreDestructuring: false,
+        properties: "never",
+    },
+];
 
 /* eslint-disable eslint-plugin/require-meta-type */
 module.exports = {
@@ -17,6 +24,7 @@ module.exports = {
         docs: {
             description: "Enforce camelCase naming convention",
             url: util.metaDocsUrl("ban-types"),
+            recommended: "error",
         },
     }),
 
@@ -29,13 +37,9 @@ module.exports = {
             "TSAbstractClassProperty",
         ];
 
-        const options = context.options[0] || {};
-        let properties = options.properties || "";
-        const allow = options.allow || [];
-
-        if (properties !== "always" && properties !== "never") {
-            properties = "always";
-        }
+        const options = util.applyDefault(defaultOptions, context.options)[0];
+        const properties = options.properties;
+        const allow = options.allow;
 
         /**
          * Checks if a string contains an underscore and isn't all upper-case

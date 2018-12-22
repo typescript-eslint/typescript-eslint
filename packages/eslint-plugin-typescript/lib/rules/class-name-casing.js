@@ -18,9 +18,10 @@ module.exports = {
             description: "Require PascalCased class and interface names",
             extraDescription: [util.tslintRule("class-name")],
             category: "Best Practices",
-            recommended: true,
             url: util.metaDocsUrl("class-name-casing"),
+            recommended: "error",
         },
+        schema: [],
     },
 
     create(context) {

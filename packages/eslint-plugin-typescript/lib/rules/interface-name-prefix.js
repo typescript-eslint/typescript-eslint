@@ -10,6 +10,8 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = ["never"];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -18,6 +20,7 @@ module.exports = {
             extraDescription: [util.tslintRule("interface-name")],
             category: "TypeScript",
             url: util.metaDocsUrl("interface-name-prefix"),
+            recommended: "error",
         },
         schema: [
             {
@@ -27,7 +30,8 @@ module.exports = {
     },
 
     create(context) {
-        const never = context.options[0] !== "always";
+        const option = util.applyDefault(defaultOptions, context.options)[0];
+        const never = option !== "always";
 
         //----------------------------------------------------------------------
         // Helpers

@@ -17,6 +17,14 @@
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "update-recommended.js",
+            "args": [
+                "${workspaceFolder}/tools/update-recommended.js"
+            ]
         }
     ]
 }

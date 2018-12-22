@@ -10,6 +10,12 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+    {
+        allows: [],
+    },
+];
+
 module.exports = {
     meta: {
         type: "problem",
@@ -19,6 +25,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-parameter-properties")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-parameter-properties"),
+            recommended: "error",
         },
         schema: [
             {
@@ -46,8 +53,10 @@ module.exports = {
     },
 
     create(context) {
-        const options = context.options[0] || {};
-        const allows = options.allows || [];
+        const { allows } = util.applyDefault(
+            defaultOptions,
+            context.options
+        )[0];
 
         //----------------------------------------------------------------------
         // Helpers

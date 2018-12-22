@@ -10,6 +10,8 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [{}];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -18,27 +20,41 @@ module.exports = {
                 "Enforces naming conventions for class members by visibility.",
             category: "TypeScript",
             url: util.metaDocsUrl("member-naming"),
+            recommended: false,
         },
         schema: [
             {
                 type: "object",
                 properties: {
-                    public: { type: "string" },
-                    protected: { type: "string" },
-                    private: { type: "string" },
+                    public: {
+                        type: "string",
+                        minLength: 1,
+                        format: "regex",
+                    },
+                    protected: {
+                        type: "string",
+                        minLength: 1,
+                        format: "regex",
+                    },
+                    private: {
+                        type: "string",
+                        minLength: 1,
+                        format: "regex",
+                    },
                 },
                 additionalProperties: false,
+                minProperties: 1,
             },
         ],
     },
 
     create(context) {
-        const config = context.options[0] || {};
-        const conventions = {};
+        const config = util.applyDefault(defaultOptions, context.options)[0];
+        const conventions = Object.keys(config).reduce((acc, accessibility) => {
+            acc[accessibility] = new RegExp(config[accessibility]);
 
-        for (const accessibility of Object.getOwnPropertyNames(config)) {
-            conventions[accessibility] = new RegExp(config[accessibility]);
-        }
+            return acc;
+        }, {});
 
         //----------------------------------------------------------------------
         // Helpers

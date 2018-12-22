@@ -18,6 +18,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-reference")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-triple-slash-reference"),
+            recommended: "error",
         },
         schema: [],
         messages: {

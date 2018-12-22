@@ -18,6 +18,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-empty-interface")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-empty-interface"),
+            recommended: "error",
         },
         schema: [],
     },

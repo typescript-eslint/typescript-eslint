@@ -37,12 +37,12 @@ class Foo<F = string> extends Bar<string> implements Baz<string> {
             // report usages of the type using the default error message
             "Foo": null,
 
-			// add a custom message to help explain why not to use it
+            // add a custom message to help explain why not to use it
             "Bar": "Don't use bar!",
 
             // add a custom message, AND tell the plugin how to fix it
             "String": {
-			    "message": "Use string instead",
+                "message": "Use string instead",
                 "fixWith": "string"
             }
         }

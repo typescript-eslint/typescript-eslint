@@ -19,6 +19,7 @@ module.exports = {
             extraDescription: [util.tslintRule("interface-over-type-literal")],
             category: "TypeScript",
             url: util.metaDocsUrl("prefer-interface"),
+            recommended: "error",
         },
         fixable: "code",
         messages: {

@@ -19,6 +19,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-non-null-assertion")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-non-null-assertion"),
+            recommended: "error",
         },
         schema: [],
     },

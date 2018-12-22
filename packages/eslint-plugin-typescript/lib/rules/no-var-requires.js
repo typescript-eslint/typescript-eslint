@@ -19,6 +19,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-var-requires")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-var-requires"),
+            recommended: "error",
         },
         schema: [],
     },

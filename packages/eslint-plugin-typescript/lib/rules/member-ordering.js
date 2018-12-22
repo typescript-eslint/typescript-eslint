@@ -31,6 +31,48 @@ const schemaOptions = ["field", "method", "constructor"].reduce(
     []
 );
 
+const defaultOptions = [
+    {
+        default: [
+            "public-static-field",
+            "protected-static-field",
+            "private-static-field",
+
+            "public-instance-field",
+            "protected-instance-field",
+            "private-instance-field",
+
+            "public-field",
+            "protected-field",
+            "private-field",
+
+            "static-field",
+            "instance-field",
+
+            "field",
+
+            "constructor",
+
+            "public-static-method",
+            "protected-static-method",
+            "private-static-method",
+
+            "public-instance-method",
+            "protected-instance-method",
+            "private-instance-method",
+
+            "public-method",
+            "protected-method",
+            "private-method",
+
+            "static-method",
+            "instance-method",
+
+            "method",
+        ],
+    },
+];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -39,6 +81,7 @@ module.exports = {
             extraDescription: [util.tslintRule("member-ordering")],
             category: "TypeScript",
             url: util.metaDocsUrl("member-ordering"),
+            recommended: false,
         },
         schema: [
             {
@@ -116,48 +159,11 @@ module.exports = {
     },
 
     create(context) {
-        const options = context.options[0] || {};
+        const options = util.applyDefault(defaultOptions, context.options)[0];
 
         const functionExpressions = [
             "FunctionExpression",
             "ArrowFunctionExpression",
-        ];
-        const defaultOrder = [
-            "public-static-field",
-            "protected-static-field",
-            "private-static-field",
-
-            "public-instance-field",
-            "protected-instance-field",
-            "private-instance-field",
-
-            "public-field",
-            "protected-field",
-            "private-field",
-
-            "static-field",
-            "instance-field",
-
-            "field",
-
-            "constructor",
-
-            "public-static-method",
-            "protected-static-method",
-            "private-static-method",
-
-            "public-instance-method",
-            "protected-instance-method",
-            "private-instance-method",
-
-            "public-method",
-            "protected-method",
-            "private-method",
-
-            "static-method",
-            "instance-method",
-
-            "method",
         ];
 
         //----------------------------------------------------------------------
@@ -350,28 +356,28 @@ module.exports = {
             ClassDeclaration(node) {
                 validateMembers(
                     node.body.body,
-                    options.classes || options.default || defaultOrder,
+                    options.classes || options.default,
                     true
                 );
             },
             ClassExpression(node) {
                 validateMembers(
                     node.body.body,
-                    options.classExpressions || options.default || defaultOrder,
+                    options.classExpressions || options.default,
                     true
                 );
             },
             TSInterfaceDeclaration(node) {
                 validateMembers(
                     node.body.body,
-                    options.interfaces || options.default || defaultOrder,
+                    options.interfaces || options.default,
                     false
                 );
             },
             TSTypeLiteral(node) {
                 validateMembers(
                     node.members,
-                    options.typeLiterals || options.default || defaultOrder,
+                    options.typeLiterals || options.default,
                     false
                 );
             },

@@ -18,6 +18,7 @@ module.exports = {
             category: "TypeScript",
             extraDescription: [util.tslintRule("adjacent-overload-signatures")],
             url: util.metaDocsUrl("adjacent-overload-signatures"),
+            recommended: "error",
         },
         schema: [],
         messages: {

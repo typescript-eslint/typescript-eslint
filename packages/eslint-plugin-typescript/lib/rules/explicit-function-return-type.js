@@ -10,6 +10,12 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+    {
+        allowExpressions: true,
+    },
+];
+
 module.exports = {
     meta: {
         type: "problem",
@@ -18,6 +24,7 @@ module.exports = {
                 "Require explicit return types on functions and class methods",
             category: "TypeScript",
             url: util.metaDocsUrl("explicit-function-return-type"),
+            recommended: "warning",
         },
         schema: [
             {
@@ -33,7 +40,7 @@ module.exports = {
     },
 
     create(context) {
-        const options = context.options[0] || {};
+        const options = util.applyDefault(defaultOptions, context.options)[0];
 
         //----------------------------------------------------------------------
         // Helpers
@@ -70,14 +77,6 @@ module.exports = {
          */
         function checkFunctionReturnType(node) {
             if (
-                options.allowExpressions &&
-                node.type !== "FunctionDeclaration" &&
-                node.parent.type !== "VariableDeclarator"
-            ) {
-                return;
-            }
-
-            if (
                 !node.returnType &&
                 !isConstructor(node.parent) &&
                 !isSetter(node.parent) &&
@@ -90,13 +89,31 @@ module.exports = {
             }
         }
 
+        /**
+         * Checks if a function declaration/expression has a return type.
+         * @param {ASTNode} node The node representing a function.
+         * @returns {void}
+         * @private
+         */
+        function checkFunctionExpressionReturnType(node) {
+            if (
+                options.allowExpressions &&
+                node.parent.type !== "VariableDeclarator" &&
+                node.parent.type !== "MethodDefinition"
+            ) {
+                return;
+            }
+
+            checkFunctionReturnType(node);
+        }
+
         //----------------------------------------------------------------------
         // Public
         //----------------------------------------------------------------------
         return {
             FunctionDeclaration: checkFunctionReturnType,
-            FunctionExpression: checkFunctionReturnType,
-            ArrowFunctionExpression: checkFunctionReturnType,
+            FunctionExpression: checkFunctionExpressionReturnType,
+            ArrowFunctionExpression: checkFunctionExpressionReturnType,
         };
     },
 };

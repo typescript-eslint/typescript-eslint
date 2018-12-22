@@ -19,6 +19,7 @@ module.exports = {
             extraDescription: [util.tslintRule("member-access")],
             category: "TypeScript",
             url: util.metaDocsUrl("explicit-member-accessibility"),
+            recommended: "error",
         },
         schema: [],
     },

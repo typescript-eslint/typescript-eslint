@@ -20,6 +20,12 @@ const definition = {
     additionalProperties: false,
 };
 
+const defaultOptions = [
+    // technically there is a default, but the overrides mean
+    // that if we apply them here, it will break the no override case.
+    {},
+];
+
 module.exports = {
     meta: {
         type: "layout",
@@ -28,6 +34,7 @@ module.exports = {
             extraDescription: [util.tslintRule("typedef-whitespace")],
             category: "TypeScript",
             url: util.metaDocsUrl("type-annotation-spacing"),
+            recommended: "error",
         },
         fixable: "whitespace",
         schema: [
@@ -52,7 +59,7 @@ module.exports = {
     create(context) {
         const punctuators = [":", "=>"];
         const sourceCode = context.getSourceCode();
-        const options = context.options[0] || {};
+        const options = util.applyDefault(defaultOptions, context.options)[0];
 
         const overrides = options.overrides || {};
 

@@ -10,6 +10,13 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+    {
+        allowDestructuring: false,
+        allowedNames: [],
+    },
+];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -17,8 +24,8 @@ module.exports = {
             description: "Disallow aliasing `this`",
             extraDescription: [util.tslintRule("no-this-assignment")],
             category: "Best Practices",
-            recommended: false,
             url: util.metaDocsUrl("no-this-alias"),
+            recommended: false,
         },
         fixable: null,
         schema: [
@@ -46,8 +53,10 @@ module.exports = {
     },
 
     create(context) {
-        const { allowDestructuring = false, allowedNames = [] } =
-            context.options[0] || {};
+        const { allowDestructuring, allowedNames } = util.applyDefault(
+            defaultOptions,
+            context.options
+        )[0];
 
         return {
             VariableDeclarator(node) {

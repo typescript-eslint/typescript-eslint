@@ -10,6 +10,13 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+    {
+        ignoreParameters: true,
+        ignoreProperties: true,
+    },
+];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -19,6 +26,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-inferrable-types")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-inferrable-types"),
+            recommended: "error",
         },
         fixable: "code",
         schema: [
@@ -38,12 +46,10 @@ module.exports = {
     },
 
     create(context) {
-        const ignoreParameters = context.options[0]
-            ? context.options[0].ignoreParameters
-            : false;
-        const ignoreProperties = context.options[0]
-            ? context.options[0].ignoreProperties
-            : false;
+        const { ignoreParameters, ignoreProperties } = util.applyDefault(
+            defaultOptions,
+            context.options
+        )[0];
 
         /**
          * Returns whether a node has an inferrable value or not

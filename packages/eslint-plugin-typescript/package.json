@@ -22,7 +22,8 @@
     "format": "yarn format-no-write --write && yarn prettier --write",
     "format-check": "yarn format-no-write --list-different && yarn prettier --list-different",
     "test": "mocha tests --recursive --reporter=dot",
-    "recommended:update": "node tools/update-recommended.js"
+    "recommended:update": "node tools/update-recommended.js",
+    "pre-commit": "yarn check --verify-tree && yarn lint && yarn format-check && yarn test && yarn docs:check"
   },
   "dependencies": {
     "requireindex": "^1.2.0",
@@ -53,7 +54,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn check --verify-tree && yarn lint && yarn format-check && yarn test && yarn docs:check && lint-staged"
+      "pre-commit": "yarn pre-commit && lint-staged"
     }
   },
   "engines": {

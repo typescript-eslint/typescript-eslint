@@ -17,8 +17,8 @@ module.exports = {
         docs: {
             description: "Disallow generic `Array` constructors",
             category: "Stylistic Issues",
-            recommended: false,
             url: util.metaDocsUrl("no-array-constructor"),
+            recommended: "error",
         },
         fixable: "code",
         schema: [],

@@ -19,6 +19,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-any")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-explicit-any"),
+            recommended: "warning",
         },
         schema: [],
     },

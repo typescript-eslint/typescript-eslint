@@ -5,11 +5,24 @@
  */
 "use strict";
 
-const { deepMerge, metaDocsUrl } = require("../util");
+const { deepMerge, metaDocsUrl, applyDefault } = require("../util");
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
+
+const defaultOptions = [
+    {
+        multiline: {
+            delimiter: "semi",
+            requireLast: true,
+        },
+        singleline: {
+            delimiter: "semi",
+            requireLast: false,
+        },
+    },
+];
 
 const definition = {
     type: "object",
@@ -43,6 +56,7 @@ module.exports = {
                 "Require a specific member delimiter style for interfaces and type literals",
             category: "TypeScript",
             url: metaDocsUrl("member-delimiter-style"),
+            recommended: "error",
         },
         fixable: "code",
         messages: {
@@ -71,21 +85,11 @@ module.exports = {
 
     create(context) {
         const sourceCode = context.getSourceCode();
-        const options = context.options[0] || {};
+        const options = applyDefault(defaultOptions, context.options)[0];
 
-        const overrides = options.overrides || {};
-        const defaults = {
-            multiline: {
-                delimiter: "semi",
-                requireLast: true,
-            },
-            singleline: {
-                delimiter: "semi",
-                requireLast: false,
-            },
-        };
-
-        const baseOptions = deepMerge(defaults, options);
+        // use the base options as the defaults for the cases
+        const baseOptions = options;
+        const overrides = baseOptions.overrides || {};
         const interfaceOptions = deepMerge(baseOptions, overrides.interface);
         const typeLiteralOptions = deepMerge(
             baseOptions,
