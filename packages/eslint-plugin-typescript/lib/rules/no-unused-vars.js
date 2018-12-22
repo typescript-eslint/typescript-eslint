@@ -19,7 +19,7 @@ module.exports = Object.assign({}, baseRule, {
             extraDescription: [util.tslintRule("no-unused-variable")],
             category: "Variables",
             url: util.metaDocsUrl("no-unused-vars"),
-            recommended: true,
+            recommended: "warning",
         },
         schema: baseRule.meta.schema,
     },

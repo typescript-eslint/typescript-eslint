@@ -24,6 +24,15 @@ exports.isTypescript = fileName => /\.tsx?$/i.test(fileName || "");
 exports.isDefinitionFile = fileName => /\.d\.tsx?$/i.test(fileName || "");
 
 /**
+ * Check if the variable contains an object stricly rejecting arrays
+ * @param {any} obj an object
+ * @returns {boolean} `true` if obj is an object
+ */
+function isObjectNotArray(obj) {
+    return typeof obj === "object" && !Array.isArray(obj);
+}
+
+/**
  * Pure function - doesn't mutate either parameter!
  * Merges two objects together deeply, overwriting the properties in first with the properties in second
  * @template TFirst,TSecond
@@ -40,12 +49,7 @@ function deepMerge(first = {}, second = {}) {
         const secondHasKey = key in second;
 
         if (firstHasKey && secondHasKey) {
-            if (
-                typeof first[key] === "object" &&
-                !Array.isArray(first[key]) &&
-                typeof second[key] === "object" &&
-                !Array.isArray(second[key])
-            ) {
+            if (isObjectNotArray(first[key]) && isObjectNotArray(second[key])) {
                 // object type
                 acc[key] = deepMerge(first[key], second[key]);
             } else {
@@ -62,6 +66,39 @@ function deepMerge(first = {}, second = {}) {
     }, {});
 }
 exports.deepMerge = deepMerge;
+
+/**
+ * Pure function - doesn't mutate either parameter!
+ * Uses the default options and overrides with the options provided by the user
+ * @template TOptions
+ * @param {TOptions} defaultOptions the defaults
+ * @param {any[]} userOptions the user opts
+ * @returns {TOptions} the options with defaults
+ */
+function applyDefault(defaultOptions, userOptions) {
+    // clone defaults
+    const options = JSON.parse(JSON.stringify(defaultOptions));
+
+    // eslint-disable-next-line eqeqeq
+    if (userOptions == null) {
+        return options;
+    }
+
+    options.forEach((opt, i) => {
+        if (userOptions[i]) {
+            const userOpt = userOptions[i];
+
+            if (isObjectNotArray(userOpt) && isObjectNotArray(opt)) {
+                options[i] = deepMerge(opt, userOpt);
+            } else {
+                options[i] = userOpt;
+            }
+        }
+    });
+
+    return options;
+}
+exports.applyDefault = applyDefault;
 
 /**
  * Upper cases the first character or the string

@@ -17,9 +17,9 @@ const ruleTester = new RuleTester({
 
 ruleTester.run("generic-type-naming", rule, {
     valid: [
-        { code: "class<T,U,V> { }", options: [] },
+        { code: "class<T1,T2,T3> { }", options: [] },
         { code: "type ReadOnly<T extends object> = {}", options: [] },
-        { code: "interface SimpleMap<V> { }", options: [] },
+        { code: "interface SimpleMap<TFoo> { }", options: [] },
         { code: "function get<T>() {}", options: [] },
         { code: "interface GenericIdentityFn { <T>(arg: T): T }", options: [] },
         { code: "class<x> { }", options: ["^x+$"] },
@@ -29,6 +29,20 @@ ruleTester.run("generic-type-naming", rule, {
         },
     ],
     invalid: [
+        {
+            code: "class<T,U,V> { }",
+            options: [],
+            errors: [
+                {
+                    messageId: "paramNotMatchRule",
+                    data: { name: "U", rule: "^T([A-Z0-9][a-zA-Z0-9]*){0,1}$" },
+                },
+                {
+                    messageId: "paramNotMatchRule",
+                    data: { name: "V", rule: "^T([A-Z0-9][a-zA-Z0-9]*){0,1}$" },
+                },
+            ],
+        },
         {
             code: "class<x> { }",
             options: ["^[A-Z]+$"],

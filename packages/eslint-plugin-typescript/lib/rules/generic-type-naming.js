@@ -40,6 +40,11 @@ function createTypeParameterChecker(context, rule) {
     };
 }
 
+const defaultOptions = [
+    // Matches: T , TA , TAbc , TA1Bca , T1 , T2
+    "^T([A-Z0-9][a-zA-Z0-9]*){0,1}$",
+];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -52,15 +57,16 @@ module.exports = {
             paramNotMatchRule:
                 "Type parameter {{name}} does not match rule {{rule}}.",
         },
+        schema: [
+            {
+                type: "string",
+            },
+        ],
+        recommended: "error",
     },
 
     create(context) {
-        const rule = context.options[0];
-
-        if (!rule) {
-            return {};
-        }
-
+        const rule = util.applyDefault(defaultOptions, context.options)[0];
         const checkTypeParameters = createTypeParameterChecker(context, rule);
 
         return {

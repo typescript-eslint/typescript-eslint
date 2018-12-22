@@ -21,6 +21,7 @@ module.exports = {
             ],
             category: "TypeScript",
             url: util.metaDocsUrl("no-object-literal-type-assertions"),
+            recommended: "error",
         },
         messages: {
             unexpectedTypeAssertion:

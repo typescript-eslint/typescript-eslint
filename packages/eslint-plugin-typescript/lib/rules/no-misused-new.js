@@ -18,6 +18,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-misused-new")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-misused-new"),
+            recommended: "error",
         },
         schema: [],
         messages: {

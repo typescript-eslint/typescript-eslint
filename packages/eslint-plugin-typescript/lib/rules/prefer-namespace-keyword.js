@@ -20,6 +20,7 @@ module.exports = {
             extraDescription: [util.tslintRule("no-internal-module")],
             category: "TypeScript",
             url: util.metaDocsUrl("prefer-namespace-keyword"),
+            recommended: "error",
         },
         fixable: "code",
         schema: [],

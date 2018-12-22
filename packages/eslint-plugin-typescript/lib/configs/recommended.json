@@ -1,7 +1,42 @@
 {
+    "parser": "eslint-plugin-typescript/parser",
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "plugins": [
+        "typescript"
+    ],
     "rules": {
-        "class-name-casing": "error",
-        "indent": "error",
-        "no-unused-vars": "error"
+        "typescript/adjacent-overload-signatures": "error",
+        "typescript/array-type": "error",
+        "typescript/ban-types": "error",
+        "camelcase": "off",
+        "typescript/camelcase": "error",
+        "typescript/class-name-casing": "error",
+        "typescript/explicit-function-return-type": "warning",
+        "typescript/explicit-member-accessibility": "error",
+        "indent": "off",
+        "typescript/indent": "error",
+        "typescript/interface-name-prefix": "error",
+        "typescript/member-delimiter-style": "error",
+        "typescript/no-angle-bracket-type-assertion": "error",
+        "no-array-constructor": "off",
+        "typescript/no-array-constructor": "error",
+        "typescript/no-empty-interface": "error",
+        "typescript/no-explicit-any": "warning",
+        "typescript/no-inferrable-types": "error",
+        "typescript/no-misused-new": "error",
+        "typescript/no-namespace": "error",
+        "typescript/no-non-null-assertion": "error",
+        "typescript/no-object-literal-type-assertion": "error",
+        "typescript/no-parameter-properties": "error",
+        "typescript/no-triple-slash-reference": "error",
+        "no-unused-vars": "off",
+        "typescript/no-unused-vars": "warning",
+        "typescript/no-use-before-define": "error",
+        "typescript/no-var-requires": "error",
+        "typescript/prefer-interface": "error",
+        "typescript/prefer-namespace-keyword": "error",
+        "typescript/type-annotation-spacing": "error"
     }
 }

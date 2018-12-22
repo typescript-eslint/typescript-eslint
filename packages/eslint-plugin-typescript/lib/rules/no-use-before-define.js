@@ -178,6 +178,15 @@ function isInInitializer(variable, reference) {
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+    {
+        functions: true,
+        classes: true,
+        variables: true,
+        typedefs: true,
+    },
+];
+
 module.exports = {
     meta: {
         type: "problem",
@@ -185,8 +194,8 @@ module.exports = {
             description:
                 "Disallow the use of variables before they are defined",
             category: "Variables",
-            recommended: false,
             url: util.metaDocsUrl("no-use-before-define"),
+            recommended: "error",
         },
         schema: [
             {
@@ -210,7 +219,9 @@ module.exports = {
     },
 
     create(context) {
-        const options = parseOptions(context.options[0]);
+        const options = parseOptions(
+            util.applyDefault(defaultOptions, context.options)[0]
+        );
 
         /**
          * Determines whether a given use-before-define case should be reported according to the options.

@@ -111,6 +111,12 @@ ruleTester.run("no-inferrable-types", rule, {
             code:
                 "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {}",
             output: "const fn = (a = 5, b = true, c = 'foo') => {}",
+            options: [
+                {
+                    ignoreParameters: false,
+                    ignoreProperties: false,
+                },
+            ],
             errors: [
                 {
                     message:
@@ -136,6 +142,12 @@ ruleTester.run("no-inferrable-types", rule, {
             code:
                 "class Foo { a: number = 5; b: boolean = true; c: string = 'foo'; }",
             output: "class Foo { a = 5; b = true; c = 'foo'; }",
+            options: [
+                {
+                    ignoreParameters: false,
+                    ignoreProperties: false,
+                },
+            ],
             errors: [
                 {
                     message:

@@ -10,6 +10,33 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+    {
+        types: {
+            String: {
+                message: "Use string instead",
+                fixWith: "string",
+            },
+            Boolean: {
+                message: "Use boolean instead",
+                fixWith: "boolean",
+            },
+            Number: {
+                message: "Use number instead",
+                fixWith: "number",
+            },
+            Object: {
+                message: "Use Record<string, any> instead",
+                fixWith: "Record<string, any>",
+            },
+            Symbol: {
+                message: "Use symbol instead",
+                fixWith: "symbol",
+            },
+        },
+    },
+];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -18,6 +45,7 @@ module.exports = {
             extraDescription: [util.tslintRule("ban-types")],
             category: "TypeScript",
             url: util.metaDocsUrl("ban-types"),
+            recommended: "error",
         },
         fixable: "code",
         messages: {
@@ -52,7 +80,8 @@ module.exports = {
     },
 
     create(context) {
-        const banedTypes = (context.options[0] || {}).types || {};
+        const banedTypes = util.applyDefault(defaultOptions, context.options)[0]
+            .types;
 
         //----------------------------------------------------------------------
         // Public

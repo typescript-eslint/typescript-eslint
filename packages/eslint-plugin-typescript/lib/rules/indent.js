@@ -33,6 +33,33 @@ const KNOWN_NODES = new Set([
     "TSTypeLiteral",
 ]);
 
+const defaultOptions = [
+    // typescript docs and playground use 4 space indent
+    4,
+    {
+        // typescript docs indent the case from the switch
+        // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-1-8.html#example-4
+        SwitchCase: 1,
+        flatTernaryExpressions: false,
+        // list derived from https://github.com/benjamn/ast-types/blob/HEAD/def/jsx.js
+        ignoredNodes: [
+            "JSXElement",
+            "JSXElement > *",
+            "JSXAttribute",
+            "JSXIdentifier",
+            "JSXNamespacedName",
+            "JSXMemberExpression",
+            "JSXSpreadAttribute",
+            "JSXExpressionContainer",
+            "JSXOpeningElement",
+            "JSXClosingElement",
+            "JSXText",
+            "JSXEmptyExpression",
+            "JSXSpreadChild",
+        ],
+    },
+];
+
 module.exports = Object.assign({}, baseRule, {
     meta: {
         type: "layout",
@@ -40,14 +67,25 @@ module.exports = Object.assign({}, baseRule, {
             description: "Enforce consistent indentation",
             extraDescription: [util.tslintRule("indent")],
             category: "Stylistic Issues",
-            recommended: true,
+            recommended: "error",
             url: util.metaDocsUrl("indent"),
         },
         fixable: "whitespace",
+        schema: baseRule.meta.schema,
     },
 
     create(context) {
-        const rules = baseRule.create(context);
+        // because we extend the base rule, have to update opts on the context
+        // the context defines options as readonly though...
+        const contextWithDefaults = Object.create(context, {
+            options: {
+                writable: false,
+                configurable: false,
+                value: util.applyDefault(defaultOptions, context.options),
+            },
+        });
+
+        const rules = baseRule.create(contextWithDefaults);
 
         /**
          * Converts from a TSPropertySignature to a Property

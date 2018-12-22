@@ -21,6 +21,7 @@ module.exports = {
             ],
             category: "Style",
             url: util.metaDocsUrl("no-angle-bracket-type-assertion"),
+            recommended: "error",
         },
         schema: [],
     },

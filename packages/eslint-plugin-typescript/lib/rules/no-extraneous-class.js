@@ -10,6 +10,14 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+    {
+        allowConstructorOnly: false,
+        allowEmpty: false,
+        allowStaticOnly: false,
+    },
+];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -17,8 +25,8 @@ module.exports = {
             description: "Forbids the use of classes as namespaces",
             extraDescription: [util.tslintRule("no-unnecessary-class")],
             category: "Best Practices",
-            recommended: false,
             url: util.metaDocsUrl("no-extraneous-class"),
+            recommended: false,
         },
         fixable: null,
         schema: [
@@ -46,8 +54,11 @@ module.exports = {
     },
 
     create(context) {
-        const { allowConstructorOnly, allowEmpty, allowStaticOnly } =
-            context.options[0] || {};
+        const {
+            allowConstructorOnly,
+            allowEmpty,
+            allowStaticOnly,
+        } = util.applyDefault(defaultOptions, context.options)[0];
 
         return {
             ClassBody(node) {

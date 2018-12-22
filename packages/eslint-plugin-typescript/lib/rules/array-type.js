@@ -78,6 +78,8 @@ function typeNeedsParentheses(node) {
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = ["array"];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -86,6 +88,7 @@ module.exports = {
             extraDescription: [util.tslintRule("array-type")],
             category: "TypeScript",
             url: util.metaDocsUrl("array-type"),
+            recommended: "error",
         },
         fixable: "code",
         messages: {
@@ -105,7 +108,7 @@ module.exports = {
         ],
     },
     create(context) {
-        const option = context.options[0] || "array";
+        const option = util.applyDefault(defaultOptions, context.options)[0];
         const sourceCode = context.getSourceCode();
 
         /**

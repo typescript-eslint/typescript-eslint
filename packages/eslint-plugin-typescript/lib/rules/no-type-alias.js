@@ -10,6 +10,15 @@ const util = require("../util");
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+    {
+        allowAliases: "never",
+        allowCallbacks: "never",
+        allowLiterals: "never",
+        allowMappedTypes: "never",
+    },
+];
+
 module.exports = {
     meta: {
         type: "suggestion",
@@ -18,6 +27,7 @@ module.exports = {
             extraDescription: [util.tslintRule("interface-over-type-literal")],
             category: "TypeScript",
             url: util.metaDocsUrl("no-type-alias"),
+            recommended: false,
         },
         messages: {
             noTypeAlias: "Type {{alias}} are not allowed.",
@@ -65,12 +75,12 @@ module.exports = {
     },
 
     create(context) {
-        const options = context.options[0] || {};
-
-        const allowAliases = options.allowAliases || "never";
-        const allowCallbacks = options.allowCallbacks || "never";
-        const allowLiterals = options.allowLiterals || "never";
-        const allowMappedTypes = options.allowMappedTypes || "never";
+        const {
+            allowAliases,
+            allowCallbacks,
+            allowLiterals,
+            allowMappedTypes,
+        } = util.applyDefault(defaultOptions, context.options)[0];
 
         const unions = ["always", "in-unions", "in-unions-and-intersections"];
         const intersections = [
