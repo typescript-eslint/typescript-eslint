@@ -13,7 +13,7 @@ versions.json
 .cache
 /packages/**/node_modules
 .sublimelinterrc
-yarn.lock
+.nyc_output
 /.vscode/*
 !/.vscode/settings.json
 !/.vscode/extensions.json

@@ -1,3 +1,4 @@
 node_modules
 lib/configs/recommended.json
 .vscode
+.nyc_output
