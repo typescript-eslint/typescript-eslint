@@ -33,6 +33,13 @@ function generate() {
             const ruleName = `typescript/${key}`;
             const setting = allRules[key].meta.docs.recommended;
 
+            if (!["error", "warn"].includes(setting)) {
+                console.log(`ERR! Invalid level for rule ${key}: "${setting}"`);
+                // Don't want to throw an error since ^ explains what happened.
+                // eslint-disable-next-line no-process-exit
+                process.exit(1);
+            }
+
             console.log(ruleName.padEnd(MAX_RULE_NAME_LENGTH), "=", setting);
             config[ruleName] = setting;
 

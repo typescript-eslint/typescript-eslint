@@ -24,7 +24,7 @@ module.exports = {
                 "Require explicit return types on functions and class methods",
             category: "TypeScript",
             url: util.metaDocsUrl("explicit-function-return-type"),
-            recommended: "warning",
+            recommended: "warn",
         },
         schema: [
             {
