@@ -9,6 +9,15 @@ import { Extra } from './temp-types-based-on-js-source';
 //------------------------------------------------------------------------------
 
 /**
+ * Default compiler options for program generation from single root file
+ * @type {ts.CompilerOptions}
+ */
+const defaultCompilerOptions: ts.CompilerOptions = {
+  allowNonTsExtensions: true,
+  allowJs: true
+};
+
+/**
  * Maps tsconfig paths to their corresponding file contents and resulting watches
  * @type {Map<string, ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>>}
  */
@@ -54,7 +63,7 @@ const noopFileWatcher = { close: () => {} };
  * @param {string[]} extra.project Provided tsconfig paths
  * @returns {ts.Program[]} The programs corresponding to the supplied tsconfig paths
  */
-export default function calculateProjectParserOptions(
+export function calculateProjectParserOptions(
   code: string,
   filePath: string,
   extra: Extra
@@ -90,7 +99,7 @@ export default function calculateProjectParserOptions(
     // create compiler host
     const watchCompilerHost = ts.createWatchCompilerHost(
       tsconfigPath,
-      /*optionsToExtend*/ undefined,
+      /*optionsToExtend*/ { allowNonTsExtensions: true } as ts.CompilerOptions,
       ts.sys,
       ts.createSemanticDiagnosticsBuilderProgram,
       diagnosticReporter,
@@ -136,6 +145,32 @@ export default function calculateProjectParserOptions(
     // ensure fileWatchers aren't created for directories
     watchCompilerHost.watchDirectory = () => noopFileWatcher;
 
+    // allow files with custom extensions to be included in program (uses internal ts api)
+    const oldOnDirectoryStructureHostCreate = (watchCompilerHost as any)
+      .onCachedDirectoryStructureHostCreate;
+    (watchCompilerHost as any).onCachedDirectoryStructureHostCreate = (
+      host: any
+    ) => {
+      const oldReadDirectory = host.readDirectory;
+      host.readDirectory = (
+        path: string,
+        extensions?: ReadonlyArray<string>,
+        exclude?: ReadonlyArray<string>,
+        include?: ReadonlyArray<string>,
+        depth?: number
+      ) =>
+        oldReadDirectory(
+          path,
+          !extensions
+            ? undefined
+            : extensions.concat(extra.extraFileExtensions),
+          exclude,
+          include,
+          depth
+        );
+      oldOnDirectoryStructureHostCreate(host);
+    };
+
     // create program
     const programWatch = ts.createWatchProgram(watchCompilerHost);
     const program = programWatch.getProgram().getProgram();
@@ -146,4 +181,44 @@ export default function calculateProjectParserOptions(
   }
 
   return results;
+}
+
+/**
+ * Create program from single root file. Requires a single tsconfig to be specified.
+ * @param code The code being linted
+ * @param filePath The file being linted
+ * @param {string} extra.tsconfigRootDir The root directory for relative tsconfig paths
+ * @param {string[]} extra.project Provided tsconfig paths
+ * @returns {ts.Program} The program containing just the file being linted and associated library files
+ */
+export function createProgram(code: string, filePath: string, extra: Extra) {
+  if (!extra.projects || extra.projects.length !== 1) {
+    return undefined;
+  }
+
+  let tsconfigPath = extra.projects[0];
+
+  // if absolute paths aren't provided, make relative to tsconfigRootDir
+  if (!path.isAbsolute(tsconfigPath)) {
+    tsconfigPath = path.join(extra.tsconfigRootDir, tsconfigPath);
+  }
+
+  const commandLine = ts.getParsedCommandLineOfConfigFile(
+    tsconfigPath,
+    defaultCompilerOptions,
+    { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} }
+  );
+
+  if (!commandLine) {
+    return undefined;
+  }
+
+  const compilerHost = ts.createCompilerHost(commandLine.options);
+  const oldReadFile = compilerHost.readFile;
+  compilerHost.readFile = (fileName: string) =>
+    path.normalize(fileName) === path.normalize(filePath)
+      ? code
+      : oldReadFile(fileName);
+
+  return ts.createProgram([filePath], commandLine.options, compilerHost);
 }
