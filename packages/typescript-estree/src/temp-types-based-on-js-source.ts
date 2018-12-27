@@ -70,6 +70,7 @@ export interface Extra {
   log: Function;
   projects: string[];
   tsconfigRootDir: string;
+  extraFileExtensions: string[];
 }
 
 export interface ParserOptions {
@@ -84,4 +85,5 @@ export interface ParserOptions {
   project?: string | string[];
   filePath?: string;
   tsconfigRootDir?: string;
+  extraFileExtensions?: string[];
 }
