@@ -5,24 +5,11 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-import convert, { getASTMaps, resetASTMaps } from './convert';
+import convert, { getASTMaps, resetASTMaps, convertError } from './convert';
 import { convertComments } from './convert-comments';
 import nodeUtils from './node-utils';
 import ts from 'typescript';
 import { Extra } from './temp-types-based-on-js-source';
-
-/**
- * Extends and formats a given error object
- * @param  {Object} error the error object
- * @returns {Object}       converted error object
- */
-function convertError(error: any) {
-  return nodeUtils.createError(
-    error.file,
-    error.start,
-    error.message || error.messageText
-  );
-}
 
 export default (
   ast: ts.SourceFile,

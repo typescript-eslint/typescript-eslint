@@ -58,6 +58,7 @@ export interface ESTreeNodeLoc {
 
 export interface Extra {
   errorOnUnknownASTType: boolean;
+  errorOnTypeScriptSyntaticAndSemanticIssues: boolean;
   useJSXTextNode: boolean;
   tokens: null | ESTreeToken[];
   comment: boolean;
@@ -80,6 +81,7 @@ export interface ParserOptions {
   comment?: boolean;
   jsx?: boolean;
   errorOnUnknownASTType?: boolean;
+  errorOnTypeScriptSyntaticAndSemanticIssues?: boolean;
   useJSXTextNode?: boolean;
   loggerFn?: Function | false;
   project?: string | string[];
