@@ -142,6 +142,7 @@ export default {
   getLocFor,
   getLoc,
   isToken,
+  canContainDirective,
   isJSXToken,
   getDeclarationKind,
   getTSNodeAccessibility,
@@ -159,8 +160,6 @@ export default {
   convertToken,
   convertTokens,
   getNodeContainer,
-  isWithinTypeAnnotation,
-  isTypeKeyword,
   isComment,
   isJSDocComment,
   createError,
@@ -293,6 +292,34 @@ function getLocFor(
 }
 
 /**
+ * Check whatever node can contain directive
+ * @param {ts.Node} node
+ * @returns {boolean} returns true if node can contain directive
+ */
+function canContainDirective(node: ts.Node): boolean {
+  switch (node.kind) {
+    case ts.SyntaxKind.SourceFile:
+    case ts.SyntaxKind.ModuleBlock:
+      return true;
+    case ts.SyntaxKind.Block:
+      switch (node.parent.kind) {
+        case ts.SyntaxKind.Constructor:
+        case ts.SyntaxKind.GetAccessor:
+        case ts.SyntaxKind.SetAccessor:
+        case ts.SyntaxKind.ArrowFunction:
+        case ts.SyntaxKind.FunctionExpression:
+        case ts.SyntaxKind.FunctionDeclaration:
+        case ts.SyntaxKind.MethodDeclaration:
+          return true;
+        default:
+          return false;
+      }
+    default:
+      return false;
+  }
+}
+
+/**
  * Returns line and column data for the given ts.Node or ts.Token,
  * for the given AST
  * @param  {ts.Token|TSNode} nodeOrToken the ts.Node or ts.Token
@@ -326,28 +353,6 @@ function isJSXToken(node: ts.Node): boolean {
   return (
     node.kind >= SyntaxKind.JsxElement && node.kind <= SyntaxKind.JsxAttribute
   );
-}
-
-/**
- * Returns true if the given ts.Node.kind value corresponds to a type keyword
- * @param {number} kind TypeScript SyntaxKind
- * @returns {boolean} is a type keyword
- */
-function isTypeKeyword(kind: number): boolean {
-  switch (kind) {
-    case SyntaxKind.AnyKeyword:
-    case SyntaxKind.BooleanKeyword:
-    case SyntaxKind.NeverKeyword:
-    case SyntaxKind.NumberKeyword:
-    case SyntaxKind.ObjectKeyword:
-    case SyntaxKind.StringKeyword:
-    case SyntaxKind.SymbolKeyword:
-    case SyntaxKind.UnknownKeyword:
-    case SyntaxKind.VoidKeyword:
-      return true;
-    default:
-      return false;
-  }
 }
 
 /**
@@ -534,19 +539,6 @@ function isOptional(node: { questionToken?: ts.QuestionToken }): boolean {
   return node.questionToken
     ? node.questionToken.kind === SyntaxKind.QuestionToken
     : false;
-}
-
-/**
- * Returns true if the given ts.Node is within the context of a "typeAnnotation",
- * which effectively means - is it coming from its parent's `type` or `types` property
- * @param  {ts.Node} node ts.Node to be checked
- * @returns {boolean}       is within "typeAnnotation context"
- */
-function isWithinTypeAnnotation(node: any): boolean {
-  return (
-    node.parent.type === node ||
-    (node.parent.types && node.parent.types.indexOf(node) > -1)
-  );
 }
 
 /**

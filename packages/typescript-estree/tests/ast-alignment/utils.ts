@@ -108,10 +108,6 @@ export function preprocessBabylonAST(ast: any): any {
       predicate: always
     },
     {
-      key: 'directive',
-      predicate: always
-    },
-    {
       key: 'innerComments',
       predicate: always
     },
@@ -142,10 +138,17 @@ export function preprocessBabylonAST(ast: any): any {
  * See: https://github.com/babel/babylon/issues/673
  *
  * @param {Object} ast the raw AST with a Program node at its top level
+ * @param {boolean} ignoreSourceType fix for issues with unambiguous type detection
  * @returns {Object} the ast with the location data removed from the Program node
  */
-export function removeLocationDataFromProgramNode(ast: any) {
+export function removeLocationDataAndSourceTypeFromProgramNode(
+  ast: any,
+  ignoreSourceType: boolean
+) {
   delete ast.loc;
   delete ast.range;
+  if (ignoreSourceType) {
+    delete ast.sourceType;
+  }
   return ast;
 }
