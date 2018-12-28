@@ -19,12 +19,12 @@ function parseWithBabelParser(
   parserOptions?: BabelParserOptions
 ) {
   parserOptions = parserOptions || {};
-  const babylon = require('@babel/parser');
-  return babylon.parse(
+  const babel = require('@babel/parser');
+  return babel.parse(
     text,
     Object.assign(
       {
-        sourceType: 'script',
+        sourceType: 'unambiguous',
         allowImportExportEverywhere: true,
         allowReturnOutsideFunction: true,
         ranges: true,

@@ -50,6 +50,8 @@ export type TSNode = ts.Node &
     | ts.ParenthesizedTypeNode
     | ts.TypeOperatorNode
     | ts.IndexedAccessTypeNode
+    | ts.FunctionTypeNode
+    | ts.ConstructorTypeNode
     | ts.MappedTypeNode
     | ts.LiteralTypeNode
     | ts.StringLiteral
