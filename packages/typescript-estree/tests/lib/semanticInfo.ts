@@ -55,8 +55,6 @@ function createOptions(fileName: string): ParserOptions & { cwd?: string } {
 describe('semanticInfo', () => {
   // test all AST snapshots
   testFiles.forEach(filename => {
-    // Uncomment and fill in filename to focus on a single file
-    // var filename = "jsx/invalid-matching-placeholder-in-closing-tag";
     const fullFileName = `${path.resolve(FIXTURES_DIR, filename)}.src.ts`;
     const code = shelljs.cat(fullFileName);
     test(

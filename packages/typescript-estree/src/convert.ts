@@ -40,6 +40,19 @@ interface ConvertConfig {
 }
 
 /**
+ * Extends and formats a given error object
+ * @param  {Object} error the error object
+ * @returns {Object}       converted error object
+ */
+export function convertError(error: any) {
+  return nodeUtils.createError(
+    error.file,
+    error.start,
+    error.message || error.messageText
+  );
+}
+
+/**
  * Converts a TypeScript node into an ESTree node
  * @param  {Object} config configuration options for the conversion
  * @param  {TSNode} config.node   the ts.Node

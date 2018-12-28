@@ -12,14 +12,16 @@ import {
 import semver from 'semver';
 import ts from 'typescript';
 import convert from './ast-converter';
-import {
-  Extra,
-  ParserOptions,
-  ESTreeToken,
-  ESTreeComment
-} from './temp-types-based-on-js-source';
+import { convertError } from './convert';
 import { Program } from './estree/spec';
 import util from './node-utils';
+import {
+  ESTreeComment,
+  ESTreeToken,
+  Extra,
+  ParserOptions
+} from './temp-types-based-on-js-source';
+import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 
 const packageJSON = require('../package.json');
 
@@ -59,6 +61,7 @@ function resetExtra(): void {
     log: console.log,
     projects: [],
     errorOnUnknownASTType: false,
+    errorOnTypeScriptSyntaticAndSemanticIssues: false,
     code: '',
     tsconfigRootDir: process.cwd(),
     extraFileExtensions: []
@@ -246,6 +249,18 @@ function generateAST<T extends ParserOptions = ParserOptions>(
       extra.errorOnUnknownASTType = true;
     }
 
+    /**
+     * Retrieve semantic and syntactic diagnostics from the underlying TypeScript Program
+     * and turn them into parse errors
+     */
+    if (
+      shouldGenerateServices &&
+      typeof options.errorOnTypeScriptSyntaticAndSemanticIssues === 'boolean' &&
+      options.errorOnTypeScriptSyntaticAndSemanticIssues
+    ) {
+      extra.errorOnTypeScriptSyntaticAndSemanticIssues = true;
+    }
+
     if (typeof options.useJSXTextNode === 'boolean' && options.useJSXTextNode) {
       extra.useJSXTextNode = true;
     }
@@ -304,7 +319,23 @@ function generateAST<T extends ParserOptions = ParserOptions>(
   );
 
   extra.code = code;
+
+  /**
+   * Convert the AST
+   */
   const { estree, astMaps } = convert(ast, extra, shouldProvideParserServices);
+
+  /**
+   * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
+   * there may be other syntactic or semantic issues in the code that we can optionally report on.
+   */
+  if (program && extra.errorOnTypeScriptSyntaticAndSemanticIssues) {
+    const error = getFirstSemanticOrSyntacticError(program, ast);
+    if (error) {
+      throw convertError(error);
+    }
+  }
+
   return {
     estree,
     program: shouldProvideParserServices ? program : undefined,
@@ -327,6 +358,11 @@ export function parse<T extends ParserOptions = ParserOptions>(
   code: string,
   options?: T
 ) {
+  if (options && options.errorOnTypeScriptSyntaticAndSemanticIssues) {
+    throw new Error(
+      `"errorOnTypeScriptSyntaticAndSemanticIssues" is only supported for parseAndGenerateServices()`
+    );
+  }
   return generateAST<T>(code, options).estree;
 }
 
