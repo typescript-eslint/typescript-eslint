@@ -190,7 +190,8 @@ let fixturePatternConfigsToTest = [
        * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
        * does not actually error on them and will produce an AST.
        */
-      'error-complex-destructured-spread-first' // babel parse errors
+      'error-complex-destructured-spread-first', // babel parse errors
+      'not-final-array' // babel parse errors
     ]
   }),
 
@@ -446,7 +447,8 @@ let fixturePatternConfigsToTest = [
       'decorator-on-enum-declaration', // babel parse errors
       'decorator-on-interface-declaration', // babel parse errors
       'interface-property-modifiers', // babel parse errors
-      'enum-with-keywords' // babel parse errors
+      'enum-with-keywords', // babel parse errors
+      'solo-const' // babel parse errors
     ]
   }),
 
