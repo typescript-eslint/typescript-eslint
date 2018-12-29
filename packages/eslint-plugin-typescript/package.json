@@ -46,7 +46,8 @@
     "typescript": "~3.1.1"
   },
   "peerDependencies": {
-    "eslint": ">=4.13.1 < 6"
+    "eslint": ">=4.13.1 < 6",
+    "typescript": "~3.1.1"
   },
   "nyc": {
     "include": [
