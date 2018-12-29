@@ -75,7 +75,7 @@ exports.deepMerge = deepMerge;
  * @param {any[]} userOptions the user opts
  * @returns {TOptions} the options with defaults
  */
-function applyDefault(defaultOptions, userOptions) {
+exports.applyDefault = (defaultOptions, userOptions) => {
     // clone defaults
     const options = JSON.parse(JSON.stringify(defaultOptions));
 
@@ -97,15 +97,32 @@ function applyDefault(defaultOptions, userOptions) {
     });
 
     return options;
-}
-exports.applyDefault = applyDefault;
+};
 
 /**
  * Upper cases the first character or the string
  * @param {string} str a string
  * @returns {string} upper case first
  */
-function upperCaseFirst(str) {
-    return str[0].toUpperCase() + str.slice(1);
-}
-exports.upperCaseFirst = upperCaseFirst;
+exports.upperCaseFirst = str => str[0].toUpperCase() + str.slice(1);
+
+/**
+ * Try to retrieve typescript parser service from context
+ * @param {RuleContext} context Rule context
+ * @returns {{esTreeNodeToTSNodeMap}|{program}|Object|*} parserServices
+ */
+exports.getParserServices = context => {
+    if (
+        !context.parserServices ||
+        !context.parserServices.program ||
+        !context.parserServices.esTreeNodeToTSNodeMap
+    ) {
+        // TODO - the message will require revisiting once the typescript-eslint-parser/typescript-estree finalises
+        //        their work around exposing the parser. They may require that there be a project config field in
+        //        the eslint config, in which case we should check and/or report that here appropriately.
+        throw new Error(
+            "This rule requires you to use `eslint-plugin-typescript/parser`."
+        );
+    }
+    return context.parserServices;
+};
