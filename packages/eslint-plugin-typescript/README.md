@@ -12,13 +12,19 @@ TypeScript support for ESLint. (This is still in the very early stages, so pleas
 
 You'll first need to install [ESLint](http://eslint.org):
 
-```
+```shellsession
 $ npm i eslint --save-dev
+```
+
+Next, install `typescript` if you haven’t already:
+
+```shellsession
+$ npm i typescript@~3.1.1 --save-dev
 ```
 
 Last, install `eslint-plugin-typescript`:
 
-```
+```shellsession
 $ npm install eslint-plugin-typescript --save-dev
 ```
 
