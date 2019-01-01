@@ -102,6 +102,7 @@ export const AST_NODE_TYPES: { [key: string]: string } = {
   TSAbstractMethodDefinition: 'TSAbstractMethodDefinition',
   TSAnyKeyword: 'TSAnyKeyword',
   TSArrayType: 'TSArrayType',
+  TSAsExpression: 'TSAsExpression',
   TSAsyncKeyword: 'TSAsyncKeyword',
   TSBooleanKeyword: 'TSBooleanKeyword',
   TSBigIntKeyword: 'TSBigIntKeyword',
