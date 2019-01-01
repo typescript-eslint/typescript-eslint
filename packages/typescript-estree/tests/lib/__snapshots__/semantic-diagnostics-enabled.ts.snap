@@ -1918,6 +1918,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" en
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/types/reference-generic-nested.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/types/this-type.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/types/this-type-expanded.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/types/tuple.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/types/tuple-empty.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
