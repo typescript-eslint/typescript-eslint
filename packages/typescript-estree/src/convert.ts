@@ -2690,7 +2690,13 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
       break;
     }
-
+    case SyntaxKind.InferType: {
+      Object.assign(result, {
+        type: AST_NODE_TYPES.TSInferType,
+        typeParameter: convertChildType(node.typeParameter)
+      });
+      break;
+    }
     default:
       deeplyCopy();
   }
