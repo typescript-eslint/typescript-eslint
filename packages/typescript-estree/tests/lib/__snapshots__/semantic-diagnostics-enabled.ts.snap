@@ -1699,6 +1699,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" en
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/basics/function-with-types-assignation.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/basics/import-equal-declaration.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/basics/import-export-equal-declaration.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/basics/import-type.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/basics/import-type-with-type-parameters-in-type-reference.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
