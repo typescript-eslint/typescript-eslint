@@ -2230,16 +2230,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         type: AST_NODE_TYPES.JSXSpreadAttribute,
         argument: convertChild(node.expression)
       });
-
       break;
 
-    case SyntaxKind.FirstNode: {
+    case SyntaxKind.QualifiedName: {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSQualifiedName,
         left: convertChild(node.left),
         right: convertChild(node.right)
       });
-
       break;
     }
 
