@@ -2674,6 +2674,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
       break;
     }
+    case SyntaxKind.AsExpression: {
+      Object.assign(result, {
+        type: AST_NODE_TYPES.TSAsExpression,
+        expression: convertChild(node.expression),
+        typeAnnotation: convertChildType(node.type)
+      });
+      break;
+    }
     case SyntaxKind.InferType: {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSInferType,
