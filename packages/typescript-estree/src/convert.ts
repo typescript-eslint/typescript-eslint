@@ -2689,6 +2689,23 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
       break;
     }
+    case SyntaxKind.ImportEqualsDeclaration: {
+      Object.assign(result, {
+        type: AST_NODE_TYPES.TSImportEqualsDeclaration,
+        id: convertChild(node.name),
+        moduleReference: convertChild(node.moduleReference),
+        isExport: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
+      });
+      break;
+    }
+    case SyntaxKind.ExternalModuleReference: {
+      Object.assign(result, {
+        type: AST_NODE_TYPES.TSExternalModuleReference,
+        expression: convertChild(node.expression)
+      });
+      break;
+    }
+
     default:
       deeplyCopy();
   }
