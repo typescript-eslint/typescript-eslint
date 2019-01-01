@@ -115,6 +115,7 @@ export const AST_NODE_TYPES: { [key: string]: string } = {
   TSExportAssignment: 'TSExportAssignment',
   TSExportKeyword: 'TSExportKeyword',
   TSImportType: 'TSImportType',
+  TSInferType: 'TSInferType',
   TSLiteralType: 'TSLiteralType',
   TSIndexedAccessType: 'TSIndexedAccessType',
   TSIndexSignature: 'TSIndexSignature',
