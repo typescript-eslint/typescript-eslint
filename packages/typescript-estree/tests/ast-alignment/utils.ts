@@ -14,59 +14,56 @@ export function normalizeNodeTypes(ast: any): any {
 
 /**
  * Removes the given keys from the given AST object recursively
- * @param {Object} obj A JavaScript object to remove keys from
- * @param {Object[]} keysToOmit Names and predicate functions use to determine what keys to omit from the final object
+ * @param root A JavaScript object to remove keys from
+ * @param keysToOmit Names and predicate functions use to determine what keys to omit from the final object
+ * @param nodes advance ast modifications
  * @returns {Object} formatted object
  */
 export function omitDeep(
-  obj: any,
-  keysToOmit: { key: string; predicate: Function }[]
-): any {
-  keysToOmit = keysToOmit || [];
-  function shouldOmit(keyName: string, val: any) {
-    if (!keysToOmit || !keysToOmit.length) {
-      return false;
-    }
-    for (const keyConfig of keysToOmit) {
-      if (keyConfig.key !== keyName) {
-        continue;
-      }
-      return keyConfig.predicate(val);
+  root: any,
+  keysToOmit: { key: string; predicate: Function }[],
+  nodes: Record<string, (node: any, parent: any) => void> = {}
+) {
+  function shouldOmit(keyName: string, val: any): boolean {
+    if (keysToOmit && keysToOmit.length) {
+      return keysToOmit.some(
+        keyConfig => keyConfig.key === keyName && keyConfig.predicate(val)
+      );
     }
     return false;
   }
 
-  for (const key in obj) {
-    if (!obj.hasOwnProperty(key)) {
-      continue;
+  function visit(node: any, parent: any) {
+    if (!node) {
+      return;
     }
-    const val = (obj as any)[key];
-    if (isPlainObject(val)) {
-      if (shouldOmit(key, val)) {
-        delete (obj as any)[key];
-        // re-run with the same arguments
-        // in case the object has multiple keys to omit
-        return omitDeep(obj, keysToOmit);
+
+    for (const prop in node) {
+      if (node.hasOwnProperty(prop)) {
+        if (shouldOmit(prop, node[prop])) {
+          delete node[prop];
+          continue;
+        }
+
+        const child = node[prop];
+
+        if (Array.isArray(child)) {
+          for (const el of child) {
+            visit(el, node);
+          }
+        } else if (isPlainObject(child)) {
+          visit(child, node);
+        }
       }
-      omitDeep(val, keysToOmit);
-    } else if (Array.isArray(val)) {
-      if (shouldOmit(key, val)) {
-        delete (obj as any)[key];
-        // re-run with the same arguments
-        // in case the object has multiple keys to omit
-        return omitDeep(obj, keysToOmit);
-      }
-      for (const i of val) {
-        omitDeep(i, keysToOmit);
-      }
-    } else if (shouldOmit(key, val)) {
-      delete (obj as any)[key];
-      // re-run with the same arguments
-      // in case the object has multiple keys to omit
-      return omitDeep(obj, keysToOmit);
+    }
+
+    if (typeof node.type === 'string' && node.type in nodes) {
+      nodes[node.type](node, parent);
     }
   }
-  return obj;
+
+  visit(root, null);
+  return root;
 }
 
 /**
@@ -84,50 +81,70 @@ const ifNumber = (val: any) => typeof val === 'number';
  * @returns {Object} processed babylon AST
  */
 export function preprocessBabylonAST(ast: any): any {
-  return omitDeep(ast.program, [
+  return omitDeep(
+    ast.program,
+    [
+      {
+        key: 'start',
+        // only remove the "start" number (not the "start" object within loc)
+        predicate: ifNumber
+      },
+      {
+        key: 'end',
+        // only remove the "end" number (not the "end" object within loc)
+        predicate: ifNumber
+      },
+      {
+        key: 'identifierName',
+        predicate: always
+      },
+      {
+        key: 'extra',
+        predicate: always
+      },
+      {
+        key: 'innerComments',
+        predicate: always
+      },
+      {
+        key: 'leadingComments',
+        predicate: always
+      },
+      {
+        key: 'trailingComments',
+        predicate: always
+      },
+      {
+        key: 'guardedHandlers',
+        predicate: always
+      },
+      {
+        key: 'interpreter',
+        predicate: always
+      }
+    ],
     {
-      key: 'start',
-      // only remove the "start" number (not the "start" object within loc)
-      predicate: ifNumber
-    },
-    {
-      key: 'end',
-      // only remove the "end" number (not the "end" object within loc)
-      predicate: ifNumber
-    },
-    {
-      key: 'identifierName',
-      predicate: always
-    },
-    {
-      key: 'extra',
-      predicate: always
-    },
-    {
-      key: 'directives',
-      predicate: always
-    },
-    {
-      key: 'innerComments',
-      predicate: always
-    },
-    {
-      key: 'leadingComments',
-      predicate: always
-    },
-    {
-      key: 'trailingComments',
-      predicate: always
-    },
-    {
-      key: 'guardedHandlers',
-      predicate: always
-    },
-    {
-      key: 'interpreter',
-      predicate: always
+      /**
+       * Not yet supported in Babel https://github.com/babel/babel/issues/9228
+       */
+      StringLiteral(node: any) {
+        node.type = 'Literal';
+      },
+      /**
+       * Not yet supported in Babel https://github.com/babel/babel/issues/9228
+       */
+      NumericLiteral(node: any) {
+        node.type = 'Literal';
+      },
+      /**
+       * Not yet supported in Babel https://github.com/babel/babel/issues/9228
+       */
+      BooleanLiteral(node: any) {
+        node.type = 'Literal';
+        node.raw = String(node.value);
+      }
     }
-  ]);
+  );
 }
 
 /**
@@ -135,7 +152,7 @@ export function preprocessBabylonAST(ast: any): any {
  * between different parsers in the ecosystem. Hack around this by removing the data
  * before comparing the ASTs.
  *
- * See: https://github.com/babel/babylon/issues/673
+ * See: https://github.com/babel/babel/issues/6681
  *
  * @param {Object} ast the raw AST with a Program node at its top level
  * @param {boolean} ignoreSourceType fix for issues with unambiguous type detection
