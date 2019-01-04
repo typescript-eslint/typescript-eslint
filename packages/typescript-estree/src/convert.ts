@@ -494,10 +494,10 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       convertBodyExpressionsToDirectives();
 
-      (result as any).range[1] = node.endOfFileToken.end;
+      result.range[1] = node.endOfFileToken.end;
       result.loc = nodeUtils.getLocFor(
         node.getStart(ast),
-        (result as any).range[1],
+        result.range[1],
         ast
       );
       break;
@@ -702,7 +702,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       // check for exports
-      result = nodeUtils.fixExports(node, result as any, ast);
+      result = nodeUtils.fixExports(node, result, ast);
 
       break;
     }
@@ -737,7 +737,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       // check for exports
-      result = nodeUtils.fixExports(node, result as any, ast);
+      result = nodeUtils.fixExports(node, result, ast);
       break;
 
     // mostly for for-of, for-in
@@ -948,7 +948,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       const accessibility = nodeUtils.getTSNodeAccessibility(node);
       if (accessibility) {
-        (result as any).accessibility = accessibility;
+        result.accessibility = accessibility;
       }
 
       if (node.name.kind === SyntaxKind.Identifier && node.questionToken) {
@@ -994,13 +994,13 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           expression: false,
           async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
           body: convertChild(node.body),
-          range: [node.parameters.pos - 1, (result as any).range[1]],
+          range: [node.parameters.pos - 1, result.range[1]],
           loc: {
             start: {
               line: methodLoc.line + 1,
               column: methodLoc.character
             },
-            end: (result as any).loc.end
+            end: result.loc.end
           }
         };
 
@@ -1053,7 +1053,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
         const accessibility = nodeUtils.getTSNodeAccessibility(node);
         if (accessibility) {
-          (result as any).accessibility = accessibility;
+          result.accessibility = accessibility;
         }
       }
 
@@ -1110,13 +1110,13 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           expression: false,
           async: false,
           body: convertChild(node.body),
-          range: [node.parameters.pos - 1, (result as any).range[1]],
+          range: [node.parameters.pos - 1, result.range[1]],
           loc: {
             start: {
               line: constructorLoc.line + 1,
               column: constructorLoc.character
             },
-            end: (result as any).loc.end
+            end: result.loc.end
           }
         };
 
@@ -1188,7 +1188,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       const accessibility = nodeUtils.getTSNodeAccessibility(node);
       if (accessibility) {
-        (result as any).accessibility = accessibility;
+        result.accessibility = accessibility;
       }
 
       break;
@@ -1588,7 +1588,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           body: [],
 
           // TODO: Fix location info
-          range: [openBrace.getStart(ast), (result as any).range[1]],
+          range: [openBrace.getStart(ast), result.range[1]],
           loc: nodeUtils.getLocFor(openBrace.getStart(ast), node.end, ast)
         },
         superClass:
@@ -1620,7 +1620,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       // check for exports
-      result = nodeUtils.fixExports(node, result as any, ast);
+      result = nodeUtils.fixExports(node, result, ast);
 
       break;
     }
@@ -1644,18 +1644,18 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       if (node.importClause) {
         if (node.importClause.name) {
-          (result as any).specifiers.push(convertChild(node.importClause));
+          result.specifiers!.push(convertChild(node.importClause));
         }
 
         if (node.importClause.namedBindings) {
           if (
             node.importClause.namedBindings.kind === SyntaxKind.NamespaceImport
           ) {
-            (result as any).specifiers.push(
+            result.specifiers!.push(
               convertChild(node.importClause.namedBindings)
             );
           } else {
-            result.specifiers = (result as any).specifiers.concat(
+            result.specifiers = result.specifiers!.concat(
               node.importClause.namedBindings.elements.map(convertChild)
             );
           }
@@ -1686,12 +1686,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
 
       // have to adjust location information due to tree differences
-      (result as any).range[1] = node.name!.end;
-      result.loc = nodeUtils.getLocFor(
-        (result as any).range[0],
-        (result as any).range[1],
-        ast
-      );
+      result.range[1] = node.name!.end;
+      result.loc = nodeUtils.getLocFor(result.range[0], result.range[1], ast);
       break;
 
     case SyntaxKind.NamedImports:
@@ -1804,10 +1800,10 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           expressions: []
         });
 
-        const left = convertChild(node.left),
-          right = convertChild(node.right);
+        const left = convertChild(node.left)!,
+          right = convertChild(node.right)!;
 
-        if ((left as any).type === AST_NODE_TYPES.SequenceExpression) {
+        if (left.type === AST_NODE_TYPES.SequenceExpression) {
           (result as any).expressions = (result as any).expressions.concat(
             (left as any).expressions
           );
@@ -1815,7 +1811,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           (result as any).expressions.push(left);
         }
 
-        if ((right as any).type === AST_NODE_TYPES.SequenceExpression) {
+        if (right.type === AST_NODE_TYPES.SequenceExpression) {
           (result as any).expressions = (result as any).expressions.concat(
             (right as any).expressions
           );
@@ -1969,7 +1965,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.StringLiteral:
       Object.assign(result, {
         type: AST_NODE_TYPES.Literal,
-        raw: ast.text.slice((result as any).range[0], (result as any).range[1])
+        raw: ast.text.slice(result.range[0], result.range[1])
       });
       if ((parent as any).name && (parent as any).name === node) {
         (result as any).value = node.text;
@@ -1982,15 +1978,12 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       Object.assign(result, {
         type: AST_NODE_TYPES.Literal,
         value: Number(node.text),
-        raw: ast.text.slice((result as any).range[0], (result as any).range[1])
+        raw: ast.text.slice(result.range[0], result.range[1])
       });
       break;
 
     case SyntaxKind.BigIntLiteral: {
-      const raw = ast.text.slice(
-        (result as any).range[0],
-        (result as any).range[1]
-      );
+      const raw = ast.text.slice(result.range[0], result.range[1]);
       const value = raw.slice(0, -1); // remove suffix `n`
       Object.assign(result, {
         type: AST_NODE_TYPES.BigIntLiteral,
@@ -2139,9 +2132,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
 
     case SyntaxKind.JsxExpression: {
-      const eloc = ast.getLineAndCharacterOfPosition(
-        (result as any).range[0] + 1
-      );
+      const eloc = ast.getLineAndCharacterOfPosition(result.range[0] + 1);
       const expression = node.expression
         ? convertChild(node.expression)
         : {
@@ -2152,11 +2143,11 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
                 column: eloc.character
               },
               end: {
-                line: (result as any).loc.end.line,
-                column: (result as any).loc.end.column - 1
+                line: result.loc.end.line,
+                column: result.loc.end.column - 1
               }
             },
-            range: [(result as any).range[0] + 1, (result as any).range[1] - 1]
+            range: [result.range[0] + 1, result.range[1] - 1]
           };
 
       Object.assign(result, {
@@ -2374,13 +2365,13 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       // Process typeParameters
       if (node.typeParameters && node.typeParameters.length) {
-        (result as any).typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
+        result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
         );
       }
 
       // check for exports
-      result = nodeUtils.fixExports(node, result as any, ast);
+      result = nodeUtils.fixExports(node, result, ast);
       break;
     }
 
@@ -2401,11 +2392,11 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       const accessibility = nodeUtils.getTSNodeAccessibility(node);
       if (accessibility) {
-        (result as any).accessibility = accessibility;
+        result.accessibility = accessibility;
       }
 
       if (node.typeParameters) {
-        (result as any).typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
+        result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
         );
       }
@@ -2433,7 +2424,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       const accessibility = nodeUtils.getTSNodeAccessibility(node);
       if (accessibility) {
-        (result as any).accessibility = accessibility;
+        result.accessibility = accessibility;
       }
 
       break;
@@ -2453,7 +2444,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       const accessibility = nodeUtils.getTSNodeAccessibility(node);
       if (accessibility) {
-        (result as any).accessibility = accessibility;
+        result.accessibility = accessibility;
       }
 
       break;
@@ -2511,7 +2502,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       const interfaceBody = {
         type: AST_NODE_TYPES.TSInterfaceBody,
         body: node.members.map((member: any) => convertChild(member)),
-        range: [interfaceOpenBrace.getStart(ast), (result as any).range[1]],
+        range: [interfaceOpenBrace.getStart(ast), result.range[1]],
         loc: nodeUtils.getLocFor(
           interfaceOpenBrace.getStart(ast),
           node.end,
@@ -2544,7 +2535,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         result.declare = true;
       }
       // check for exports
-      result = nodeUtils.fixExports(node, result as any, ast);
+      result = nodeUtils.fixExports(node, result, ast);
 
       break;
     }
@@ -2558,8 +2549,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       /**
        * Specific fix for type-guard location data
        */
-      (result as any).typeAnnotation.loc = (result as any).typeAnnotation.typeAnnotation.loc;
-      (result as any).typeAnnotation.range = (result as any).typeAnnotation.typeAnnotation.range;
+      result.typeAnnotation!.loc = result.typeAnnotation!.typeAnnotation!.loc;
+      result.typeAnnotation!.range = result.typeAnnotation!.typeAnnotation!.range;
       break;
 
     case SyntaxKind.ImportType:
@@ -2583,7 +2574,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       // apply modifiers first...
       applyModifiersToResult(node.modifiers);
       // ...then check for exports
-      result = nodeUtils.fixExports(node, result as any, ast);
+      result = nodeUtils.fixExports(node, result, ast);
       /**
        * Semantically, decorators are not allowed on enum declarations,
        * but the TypeScript compiler will parse them and produce a valid AST,
@@ -2627,7 +2618,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         result.global = true;
       }
       // ...then check for exports
-      result = nodeUtils.fixExports(node, result as any, ast);
+      result = nodeUtils.fixExports(node, result, ast);
       break;
     }
 
@@ -2715,5 +2706,5 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     esTreeNodeToTSNodeMap.set(result, node);
   }
 
-  return result as any;
+  return result;
 }
