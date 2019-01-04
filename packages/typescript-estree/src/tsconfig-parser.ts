@@ -213,7 +213,7 @@ export function createProgram(code: string, filePath: string, extra: Extra) {
     return undefined;
   }
 
-  const compilerHost = ts.createCompilerHost(commandLine.options);
+  const compilerHost = ts.createCompilerHost(commandLine.options, true);
   const oldReadFile = compilerHost.readFile;
   compilerHost.readFile = (fileName: string) =>
     path.normalize(fileName) === path.normalize(filePath)
