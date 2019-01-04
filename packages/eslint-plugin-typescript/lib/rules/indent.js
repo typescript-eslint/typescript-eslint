@@ -30,7 +30,9 @@ const KNOWN_NODES = new Set([
     "TSModuleDeclaration",
     "TSParameterProperty",
     "TSPropertySignature",
+    "TSTypeAnnotation",
     "TSTypeLiteral",
+    "TSTypeReference",
 ]);
 
 const defaultOptions = [
