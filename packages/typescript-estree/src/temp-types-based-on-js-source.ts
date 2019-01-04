@@ -23,13 +23,13 @@ export interface ESTreeNode {
   loc: ESTreeNodeLoc;
   range: [number, number];
   declaration?: ESTreeNode;
-  specifiers?: any[];
+  specifiers?: (ESTreeNode | null)[];
   source?: any;
   typeAnnotation?: ESTreeNode | null;
   typeParameters?: ESTreeNode | null;
   id?: ESTreeNode | null;
   expression?: ESTreeNode | null;
-  decorators?: any;
+  decorators?: (ESTreeNode | null)[];
   const?: boolean;
   declare?: boolean;
   global?: boolean;
@@ -42,6 +42,8 @@ export interface ESTreeNode {
   export?: boolean;
   parameter?: any;
   abstract?: boolean;
+  typeName?: ESTreeNode | null;
+  directive?: string;
 }
 
 export interface ESTreeComment extends ESTreeNode {}
