@@ -33,7 +33,7 @@
     "cz-conventional-changelog": "2.1.0",
     "glob": "7.1.2",
     "husky": "0.14.3",
-    "jest": "23.1.0",
+    "jest": "23.6.0",
     "lint-staged": "7.3.0",
     "lodash.isplainobject": "4.0.6",
     "prettier": "^1.14.3",
@@ -54,9 +54,9 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "npm run unit-tests && npm run ast-alignment-tests",
-    "unit-tests": "jest",
-    "ast-alignment-tests": "jest --config=./tests/ast-alignment/jest.config.js",
+    "test": "jest",
+    "unit-tests": "jest \"./tests/lib/.*\"",
+    "ast-alignment-tests": "jest spec.ts",
     "precommit": "npm test && lint-staged",
     "cz": "git-cz",
     "commitmsg": "commitlint -E GIT_PARAMS",
@@ -85,25 +85,6 @@
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
-    ]
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/tests/lib/.*)\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "collectCoverage": true,
-    "coverageReporters": [
-      "text-summary"
     ]
   }
 }
