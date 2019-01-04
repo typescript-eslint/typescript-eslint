@@ -9,7 +9,6 @@ import ts from 'typescript';
 import nodeUtils from './node-utils';
 import {
   ESTreeComment,
-  ESTreeToken,
   LineAndColumnData
 } from './temp-types-based-on-js-source';
 
@@ -32,7 +31,7 @@ function convertTypeScriptCommentToEsprimaComment(
   startLoc: LineAndColumnData,
   endLoc: LineAndColumnData
 ): ESTreeComment {
-  const comment: Partial<ESTreeToken> = {
+  const comment: ESTreeComment = {
     type: block ? 'Block' : 'Line',
     value: text
   };
@@ -48,7 +47,7 @@ function convertTypeScriptCommentToEsprimaComment(
     };
   }
 
-  return comment as ESTreeComment;
+  return comment;
 }
 
 /**

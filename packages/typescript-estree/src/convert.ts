@@ -78,7 +78,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
    * Create a new ESTree node
    */
   let result: ESTreeNode = {
-    type: '',
+    type: '' as AST_NODE_TYPES,
     range: [node.getStart(ast), node.end],
     loc: nodeUtils.getLoc(node, ast)
   };
@@ -309,7 +309,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
    * @returns {void}
    */
   function deeplyCopy(): void {
-    const customType = `TS${SyntaxKind[node.kind]}`;
+    const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
     /**
      * If the "errorOnUnknownASTType" option is set to true, throw an error,
      * otherwise fallback to just including the unknown type as-is.
@@ -1480,8 +1480,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       if (node.type) {
-        (parameter as any).typeAnnotation = convertTypeAnnotation(node.type);
-        fixTypeAnnotationParentLocation(parameter as any);
+        parameter!.typeAnnotation = convertTypeAnnotation(node.type);
+        fixTypeAnnotationParentLocation(parameter!);
       }
 
       if (node.questionToken) {
@@ -2255,7 +2255,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.VoidKeyword:
     case SyntaxKind.UndefinedKeyword: {
       Object.assign(result, {
-        type: AST_NODE_TYPES[`TS${SyntaxKind[node.kind]}`]
+        type: AST_NODE_TYPES[`TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES]
       });
       break;
     }
