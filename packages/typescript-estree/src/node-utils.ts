@@ -357,22 +357,19 @@ function isJSXToken(node: ts.Node): boolean {
 
 /**
  * Returns the declaration kind of the given ts.Node
- * @param  {ts.Node}  node TypeScript AST node
+ * @param  {ts.VariableDeclarationList}  node TypeScript AST node
  * @returns {string}     declaration kind
  */
-function getDeclarationKind(node: ts.Node): 'let' | 'const' | 'var' {
-  switch (node.kind) {
-    case SyntaxKind.VariableDeclarationList:
-      if (node.flags & ts.NodeFlags.Let) {
-        return 'let';
-      }
-      if (node.flags & ts.NodeFlags.Const) {
-        return 'const';
-      }
-      return 'var';
-    default:
-      throw 'Unable to determine declaration kind.';
+function getDeclarationKind(
+  node: ts.VariableDeclarationList
+): 'let' | 'const' | 'var' {
+  if (node.flags & ts.NodeFlags.Let) {
+    return 'let';
   }
+  if (node.flags & ts.NodeFlags.Const) {
+    return 'const';
+  }
+  return 'var';
 }
 
 /**
@@ -758,18 +755,18 @@ function convertTokens(ast: ts.SourceFile): ESTreeToken[] {
 
 /**
  * Get container token node between range
- * @param  {ts.SourceFile} ast the AST object
+ * @param {ts.SourceFile} ast the AST object
  * @param {number} start The index at which the comment starts.
  * @param {number} end The index at which the comment ends.
- * @returns {ts.Token}       typescript container token
+ * @returns {ts.Node}       typescript container token
  * @private
  */
 function getNodeContainer(
   ast: ts.SourceFile,
   start: number,
   end: number
-): ts.Token<any> {
-  let container = null;
+): ts.Node {
+  let container: ts.Node | null = null;
 
   /**
    * @param  {ts.Node} node the ts.Node
@@ -789,7 +786,7 @@ function getNodeContainer(
   }
   walk(ast);
 
-  return (container as unknown) as ts.Token<any>;
+  return container!;
 }
 
 /**
