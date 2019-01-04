@@ -107,7 +107,12 @@ export function convertComments(
    * Create a TypeScript Scanner, with skipTrivia set to false so that
    * we can parse the comments
    */
-  const triviaScanner = ts.createScanner(ast.languageVersion, false, 0, code);
+  const triviaScanner = ts.createScanner(
+    ast.languageVersion,
+    false,
+    ast.languageVariant,
+    code
+  );
 
   let kind = triviaScanner.scan();
   while (kind !== ts.SyntaxKind.EndOfFileToken) {
@@ -123,8 +128,21 @@ export function convertComments(
         comments.push(comment);
         break;
       }
+      case ts.SyntaxKind.GreaterThanToken:
+        container = nodeUtils.getNodeContainer(ast, start, end);
+        if (
+          container &&
+          container.parent &&
+          container.parent.kind === ts.SyntaxKind.JsxOpeningElement &&
+          container.parent.parent &&
+          container.parent.parent.kind === ts.SyntaxKind.JsxElement
+        ) {
+          kind = triviaScanner.reScanJsxToken();
+          continue;
+        }
+        break;
       case ts.SyntaxKind.CloseBraceToken:
-        container = nodeUtils.getNodeContainer(ast, start, end) as ts.Node;
+        container = nodeUtils.getNodeContainer(ast, start, end);
 
         if (
           container.kind === ts.SyntaxKind.TemplateMiddle ||

@@ -17,12 +17,66 @@ Object {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/jsx-comment-after-jsx.src.js.src 1`] = `
+Object {
+  "column": 14,
+  "index": 48,
+  "lineNumber": 3,
+  "message": "Type expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/jsx-comment-after-self-closing-jsx.src.js.src 1`] = `
+Object {
+  "column": 13,
+  "index": 47,
+  "lineNumber": 3,
+  "message": "'>' expected.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/jsx-tag-comments.src.js.src 1`] = `
 Object {
   "column": 9,
   "index": 113,
   "lineNumber": 7,
   "message": "Type expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/jsx-text-with-multiline-non-comment.src.js.src 1`] = `
+Object {
+  "column": 5,
+  "index": 81,
+  "lineNumber": 7,
+  "message": "Type expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/jsx-text-with-url.src.js.src 1`] = `
+Object {
+  "column": 17,
+  "index": 17,
+  "lineNumber": 1,
+  "message": "'>' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/jsx-with-greather-than.src.js.src 1`] = `
+Object {
+  "column": 0,
+  "index": 69,
+  "lineNumber": 4,
+  "message": "Expression expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/jsx-with-operators.src.js.src 1`] = `
+Object {
+  "column": 0,
+  "index": 69,
+  "lineNumber": 4,
+  "message": "Expression expected.",
 }
 `;
 
@@ -55,6 +109,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" en
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/switch-no-default-comment-in-nested-functions.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/template-string-block.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/comments/type-assertion-regression-test.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/arrayLiteral/array-literal-in-lhs.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
