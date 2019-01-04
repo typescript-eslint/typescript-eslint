@@ -23,7 +23,8 @@ function parseWithBabelParser(text: string, jsx: boolean = true) {
     'asyncGenerators',
     'dynamicImport',
     'estree',
-    'bigInt'
+    'bigInt',
+    'importMeta'
   ];
   if (jsx) {
     plugins.push('jsx');
