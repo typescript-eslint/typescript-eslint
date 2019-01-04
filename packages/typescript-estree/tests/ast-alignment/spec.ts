@@ -11,14 +11,16 @@ fixturesToTest.forEach(fixture => {
    * Parse with typescript-estree
    */
   const typeScriptESTreeResult = parse(source, {
-    parser: 'typescript-estree'
+    parser: 'typescript-estree',
+    jsx: fixture.jsx
   });
 
   /**
    * Parse the source with @babel/parser typescript-plugin
    */
   const babelParserResult = parse(source, {
-    parser: '@babel/parser'
+    parser: '@babel/parser',
+    jsx: fixture.jsx
   });
 
   /**
