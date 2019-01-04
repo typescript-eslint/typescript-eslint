@@ -18,10 +18,9 @@ const FIXTURES_DIR = './tests/fixtures/comments';
 
 const testFiles = shelljs
   .find(FIXTURES_DIR)
-  .filter(filename => filename.indexOf('.src.js') > -1)
-  // strip off ".src.js"
-  .map(filename =>
-    filename.substring(FIXTURES_DIR.length - 1, filename.length - 7)
+  .filter(
+    filename =>
+      filename.indexOf('.src.js') > -1 || filename.indexOf('.src.ts') > -1
   );
 
 //------------------------------------------------------------------------------
@@ -30,17 +29,19 @@ const testFiles = shelljs
 
 describe('Comments', () => {
   testFiles.forEach(filename => {
-    const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
-    const config = {
+    const code = shelljs.cat(path.resolve(filename));
+    const config: ParserOptions = {
       loc: true,
       range: true,
       tokens: true,
       comment: true,
-      jsx: true
+      jsx: path.extname(filename) === '.js'
     };
-    it(
-      `fixtures/${filename}.src`,
-      createSnapshotTestBlock(code, config as ParserOptions)
+    // strip off ".src.js" and ".src.ts"
+    const name = filename.substring(
+      FIXTURES_DIR.length - 1,
+      filename.length - 7
     );
+    it(`fixtures/${name}.src`, createSnapshotTestBlock(code, config));
   });
 });
