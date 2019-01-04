@@ -1,8 +1,7 @@
 import codeFrame from 'babel-code-frame';
 import * as parser from '../../src/parser';
 import * as parseUtils from './utils';
-import { ParserOptions as BabelParserOptions } from '@babel/parser';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserPlugin } from '@babel/parser';
 
 function createError(message: string, line: number, column: number) {
   // Construct an error similar to the ones thrown by Babylon.
@@ -14,55 +13,42 @@ function createError(message: string, line: number, column: number) {
   return error;
 }
 
-function parseWithBabelParser(
-  text: string,
-  parserOptions?: BabelParserOptions
-) {
-  parserOptions = parserOptions || {};
+function parseWithBabelParser(text: string, jsx: boolean = true) {
   const babel = require('@babel/parser');
-  return babel.parse(
-    text,
-    Object.assign(
-      {
-        sourceType: 'unambiguous',
-        allowImportExportEverywhere: true,
-        allowReturnOutsideFunction: true,
-        ranges: true,
-        plugins: [
-          'jsx',
-          'typescript',
-          'objectRestSpread',
-          'decorators-legacy',
-          'classProperties',
-          'asyncGenerators',
-          'dynamicImport',
-          'estree',
-          'bigInt'
-        ]
-      },
-      parserOptions
-    )
-  );
+  const plugins: ParserPlugin[] = [
+    'typescript',
+    'objectRestSpread',
+    'decorators-legacy',
+    'classProperties',
+    'asyncGenerators',
+    'dynamicImport',
+    'estree',
+    'bigInt'
+  ];
+  if (jsx) {
+    plugins.push('jsx');
+  }
+
+  return babel.parse(text, {
+    sourceType: 'unambiguous',
+    allowImportExportEverywhere: true,
+    allowReturnOutsideFunction: true,
+    ranges: true,
+    plugins
+  });
 }
 
-function parseWithTypeScriptESTree(
-  text: string,
-  parserOptions?: ParserOptions
-) {
-  parserOptions = parserOptions || ({} as ParserOptions);
+function parseWithTypeScriptESTree(text: string, jsx: boolean = true) {
   try {
-    return parser.parse(text, Object.assign(
-      {
-        loc: true,
-        range: true,
-        tokens: false,
-        comment: false,
-        useJSXTextNode: true,
-        errorOnUnknownASTType: true,
-        jsx: true
-      },
-      parserOptions
-    ) as any);
+    return parser.parse(text, {
+      loc: true,
+      range: true,
+      tokens: false,
+      comment: false,
+      useJSXTextNode: true,
+      errorOnUnknownASTType: true,
+      jsx
+    });
   } catch (e) {
     throw createError(e.message, e.lineNumber, e.column);
   }
@@ -70,8 +56,7 @@ function parseWithTypeScriptESTree(
 
 interface ASTComparisonParseOptions {
   parser: string;
-  typeScriptESTreeOptions?: ParserOptions;
-  babelParserOptions?: BabelParserOptions;
+  jsx?: boolean;
 }
 
 export function parse(text: string, opts: ASTComparisonParseOptions) {
@@ -88,12 +73,12 @@ export function parse(text: string, opts: ASTComparisonParseOptions) {
     switch (opts.parser) {
       case 'typescript-estree':
         result.ast = parseUtils.normalizeNodeTypes(
-          parseWithTypeScriptESTree(text, opts.typeScriptESTreeOptions)
+          parseWithTypeScriptESTree(text, opts.jsx)
         );
         break;
       case '@babel/parser':
         result.ast = parseUtils.normalizeNodeTypes(
-          parseWithBabelParser(text, opts.babelParserOptions)
+          parseWithBabelParser(text, opts.jsx)
         );
         break;
       default:

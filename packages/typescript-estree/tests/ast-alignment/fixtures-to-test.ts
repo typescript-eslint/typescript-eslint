@@ -6,11 +6,13 @@ import jsxKnownIssues from '../jsx-known-issues';
 
 interface Fixture {
   filename: string;
+  jsx: boolean;
   ignoreSourceType: boolean;
 }
 
 interface FixturePatternConfig {
   pattern: string;
+  jsx: boolean;
   ignoreSourceType: boolean;
 }
 
@@ -69,6 +71,11 @@ function createFixturePatternConfigFor(
   config.ignore = config.ignore || [];
   config.fileType = config.fileType || 'js';
   config.ignoreSourceType = config.ignoreSourceType || [];
+  const jsx =
+    config.fileType === 'js' ||
+    config.fileType === 'jsx' ||
+    config.fileType === 'tsx';
+
   /**
    * The TypeScript compiler gives us the "externalModuleIndicator" to allow typescript-estree do dynamically detect the "sourceType".
    * Babel has similar feature sourceType='unambiguous' but its not perfect, and in some specific cases we sill have to enforce it.
@@ -85,7 +92,8 @@ function createFixturePatternConfigFor(
       fixturesRequiringSourceTypeModule.push({
         // It needs to be the full path from within fixtures/ for the pattern
         pattern: `${fixturesSubPath}/${fixture}.src.${config.fileType}`,
-        ignoreSourceType: true
+        ignoreSourceType: true,
+        jsx
       });
     }
   }
@@ -93,7 +101,8 @@ function createFixturePatternConfigFor(
     pattern: `${fixturesSubPath}/!(${config.ignore.join('|')}).src.${
       config.fileType
     }`,
-    ignoreSourceType: false
+    ignoreSourceType: false,
+    jsx
   };
 }
 
@@ -403,7 +412,11 @@ let fixturePatternConfigsToTest = [
        * Not yet supported in Babel https://github.com/babel/babel/issues/9228
        * Directive field is not added to module and namespace
        */
-      'directive-in-namespace'
+      'directive-in-namespace',
+      /**
+       * there is difference in range between babel and tsep
+       */
+      'type-assertion'
     ],
     ignoreSourceType: [
       // https://github.com/babel/babel/issues/9213
@@ -525,7 +538,8 @@ fixturePatternConfigsToTest.forEach(fixturePatternConfig => {
   matchingFixtures.forEach(filename => {
     fixturesToTest.push({
       filename,
-      ignoreSourceType: fixturePatternConfig.ignoreSourceType
+      ignoreSourceType: fixturePatternConfig.ignoreSourceType,
+      jsx: fixturePatternConfig.jsx
     });
   });
 });
