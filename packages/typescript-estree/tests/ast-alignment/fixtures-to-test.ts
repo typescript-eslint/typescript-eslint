@@ -242,6 +242,8 @@ tester.addFixturePatternConfig('javascript/forOf', {
 
 tester.addFixturePatternConfig('javascript/generators');
 tester.addFixturePatternConfig('javascript/globalReturn');
+tester.addFixturePatternConfig('javascript/importMeta');
+tester.addFixturePatternConfig('javascript/labels');
 
 tester.addFixturePatternConfig('javascript/modules', {
   ignore: [
