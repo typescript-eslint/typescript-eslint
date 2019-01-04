@@ -21,7 +21,7 @@ export interface ESTreeToken {
 export interface ESTreeNode {
   type: string;
   loc: ESTreeNodeLoc;
-  range: number[];
+  range: [number, number];
   declaration?: ESTreeNode;
   specifiers?: any[];
   source?: any;
@@ -36,7 +36,7 @@ export interface ESTreeNode {
   modifiers?: any;
   body?: any;
   params?: any;
-  accessibility?: any;
+  accessibility?: 'public' | 'protected' | 'private';
   readonly?: boolean;
   static?: boolean;
   export?: boolean;
