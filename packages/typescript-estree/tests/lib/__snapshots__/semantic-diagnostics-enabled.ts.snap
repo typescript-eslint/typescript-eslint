@@ -1782,6 +1782,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" en
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/basics/type-alias-object-without-annotation.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/basics/type-assertion.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/basics/type-guard.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/typescript/basics/type-parameters-comments.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
