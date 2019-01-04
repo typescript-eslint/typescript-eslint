@@ -519,6 +519,41 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" en
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/exponentiationOperators/exponential-operators.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/for/for-empty.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/for/for-loop.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/for/for-with-coma.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/for/for-with-const.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/for/for-with-function.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/for/for-with-let.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-bare-nonstrict.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-destruction.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-object.src.js.src 1`] = `
+Object {
+  "column": 14,
+  "index": 14,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-with-assigment.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-with-bare-assigment.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-with-const.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-with-milti-asigment.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-with-var.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forOf/for-of-with-function-initializer.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled fixtures/javascript/forOf/for-of-with-var-and-braces.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
