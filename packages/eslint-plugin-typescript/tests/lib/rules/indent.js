@@ -72,6 +72,27 @@ const firebaseApp = firebase.apps.length
         messagingSenderId: __FIREBASE_MESSAGING_SENDER_ID__,
     })
         `,
+        // https://github.com/bradzacher/eslint-plugin-typescript/issues/271
+        {
+            code: `
+const foo = {
+                a: 1,
+                b: 2
+            },
+            bar = 1;
+            `,
+            options: [4, { VariableDeclarator: { const: 3 } }],
+        },
+        {
+            code: `
+const foo : Foo = {
+                a: 1,
+                b: 2
+            },
+            bar = 1;
+            `,
+            options: [4, { VariableDeclarator: { const: 3 } }],
+        },
     ],
     invalid: [
         {
