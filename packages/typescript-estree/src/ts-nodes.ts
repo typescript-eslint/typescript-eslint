@@ -35,6 +35,7 @@ export type TSNode = ts.Node &
     | ts.ThisTypeNode
     // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
     | ts.ConstructorTypeNode
+    | ts.FunctionTypeNode
     | ts.TypeReferenceNode
     | ts.TypePredicateNode
     | ts.TypeQueryNode
@@ -50,8 +51,6 @@ export type TSNode = ts.Node &
     | ts.ParenthesizedTypeNode
     | ts.TypeOperatorNode
     | ts.IndexedAccessTypeNode
-    | ts.FunctionTypeNode
-    | ts.ConstructorTypeNode
     | ts.MappedTypeNode
     | ts.LiteralTypeNode
     | ts.StringLiteral
