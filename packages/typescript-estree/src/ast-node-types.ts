@@ -131,6 +131,7 @@ export const AST_NODE_TYPES: { [key: string]: string } = {
   TSModuleBlock: 'TSModuleBlock',
   TSModuleDeclaration: 'TSModuleDeclaration',
   TSNamespaceFunctionDeclaration: 'TSNamespaceFunctionDeclaration',
+  TSNamespaceExportDeclaration: 'TSNamespaceExportDeclaration',
   TSNonNullExpression: 'TSNonNullExpression',
   TSNeverKeyword: 'TSNeverKeyword',
   TSNullKeyword: 'TSNullKeyword',

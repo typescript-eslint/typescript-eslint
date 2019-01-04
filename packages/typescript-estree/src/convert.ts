@@ -2711,6 +2711,13 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
       break;
     }
+    case SyntaxKind.NamespaceExportDeclaration: {
+      Object.assign(result, {
+        type: AST_NODE_TYPES.TSNamespaceExportDeclaration,
+        id: convertChild(node.name)
+      });
+      break;
+    }
 
     default:
       deeplyCopy();
