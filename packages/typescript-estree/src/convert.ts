@@ -2450,12 +2450,19 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
     }
 
-    case SyntaxKind.ConstructSignature: {
+    case SyntaxKind.ConstructSignature:
+    case SyntaxKind.CallSignature: {
       Object.assign(result, {
-        type: AST_NODE_TYPES.TSConstructSignature,
-        params: convertParameters(node.parameters),
-        typeAnnotation: node.type ? convertTypeAnnotation(node.type) : null
+        type:
+          node.kind === SyntaxKind.ConstructSignature
+            ? AST_NODE_TYPES.TSConstructSignatureDeclaration
+            : AST_NODE_TYPES.TSCallSignatureDeclaration,
+        params: convertParameters(node.parameters)
       });
+
+      if (node.type) {
+        (result as any).returnType = convertTypeAnnotation(node.type);
+      }
 
       if (node.typeParameters) {
         result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(

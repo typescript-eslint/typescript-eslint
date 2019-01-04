@@ -142,6 +142,32 @@ export function preprocessBabylonAST(ast: any): any {
       BooleanLiteral(node: any) {
         node.type = 'Literal';
         node.raw = String(node.value);
+      },
+      /**
+       * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
+       */
+      TSCallSignatureDeclaration(node: any) {
+        if (node.typeAnnotation) {
+          node.returnType = node.typeAnnotation;
+          delete node.typeAnnotation;
+        }
+        if (node.parameters) {
+          node.params = node.parameters;
+          delete node.parameters;
+        }
+      },
+      /**
+       * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
+       */
+      TSConstructSignatureDeclaration(node: any) {
+        if (node.typeAnnotation) {
+          node.returnType = node.typeAnnotation;
+          delete node.typeAnnotation;
+        }
+        if (node.parameters) {
+          node.params = node.parameters;
+          delete node.parameters;
+        }
       }
     }
   );
