@@ -143,6 +143,23 @@ describe('semanticInfo', () => {
     );
   });
 
+  test('non-existent file should provide parents nodes', () => {
+    const parseResult = parseCodeAndGenerateServices(
+      `function M() { return Base }`,
+      createOptions('<input>')
+    );
+
+    // https://github.com/JamesHenry/typescript-estree/issues/77
+    expect(parseResult.services.program).toBeDefined();
+    expect(
+      parseResult.services.program!.getSourceFile('<input>')
+    ).toBeDefined();
+    expect(
+      parseResult.services.program!.getSourceFile('<input>')!.statements[0]
+        .parent
+    ).toBeDefined();
+  });
+
   test('non-existent project file', () => {
     const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
