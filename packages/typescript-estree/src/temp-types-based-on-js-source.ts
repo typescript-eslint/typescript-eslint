@@ -4,11 +4,13 @@
  * They will be gradually replaced with the more accurate types derived from the ESTree spec, and its
  * applicable extensions
  */
+import { AST_NODE_TYPES } from './ast-node-types';
+
 export interface ESTreeToken {
-  type: string;
-  value: string;
+  type: AST_NODE_TYPES;
   range: [number, number];
   loc: ESTreeNodeLoc;
+  value: string;
   regex?: {
     pattern: string;
     flags: string;
@@ -19,9 +21,9 @@ export interface ESTreeToken {
 }
 
 export interface ESTreeNode {
-  type: string;
-  loc: ESTreeNodeLoc;
+  type: AST_NODE_TYPES;
   range: [number, number];
+  loc: ESTreeNodeLoc;
   declaration?: ESTreeNode;
   specifiers?: (ESTreeNode | null)[];
   source?: any;
@@ -46,7 +48,12 @@ export interface ESTreeNode {
   directive?: string;
 }
 
-export interface ESTreeComment extends ESTreeNode {}
+export interface ESTreeComment {
+  type: 'Block' | 'Line';
+  range?: [number, number];
+  loc?: ESTreeNodeLoc;
+  value: string;
+}
 
 export interface LineAndColumnData {
   line: number;
