@@ -61,7 +61,7 @@ function resetExtra(): void {
     log: console.log,
     projects: [],
     errorOnUnknownASTType: false,
-    errorOnTypeScriptSyntaticAndSemanticIssues: false,
+    errorOnTypeScriptSyntacticAndSemanticIssues: false,
     code: '',
     tsconfigRootDir: process.cwd(),
     extraFileExtensions: []
@@ -255,10 +255,11 @@ function generateAST<T extends ParserOptions = ParserOptions>(
      */
     if (
       shouldGenerateServices &&
-      typeof options.errorOnTypeScriptSyntaticAndSemanticIssues === 'boolean' &&
-      options.errorOnTypeScriptSyntaticAndSemanticIssues
+      typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
+        'boolean' &&
+      options.errorOnTypeScriptSyntacticAndSemanticIssues
     ) {
-      extra.errorOnTypeScriptSyntaticAndSemanticIssues = true;
+      extra.errorOnTypeScriptSyntacticAndSemanticIssues = true;
     }
 
     if (typeof options.useJSXTextNode === 'boolean' && options.useJSXTextNode) {
@@ -329,7 +330,7 @@ function generateAST<T extends ParserOptions = ParserOptions>(
    * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
    * there may be other syntactic or semantic issues in the code that we can optionally report on.
    */
-  if (program && extra.errorOnTypeScriptSyntaticAndSemanticIssues) {
+  if (program && extra.errorOnTypeScriptSyntacticAndSemanticIssues) {
     const error = getFirstSemanticOrSyntacticError(program, ast);
     if (error) {
       throw convertError(error);
@@ -358,9 +359,9 @@ export function parse<T extends ParserOptions = ParserOptions>(
   code: string,
   options?: T
 ) {
-  if (options && options.errorOnTypeScriptSyntaticAndSemanticIssues) {
+  if (options && options.errorOnTypeScriptSyntacticAndSemanticIssues) {
     throw new Error(
-      `"errorOnTypeScriptSyntaticAndSemanticIssues" is only supported for parseAndGenerateServices()`
+      `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`
     );
   }
   return generateAST<T>(code, options).estree;
