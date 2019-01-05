@@ -27,7 +27,7 @@ const testFiles = shelljs
 // Tests
 //------------------------------------------------------------------------------
 
-describe('Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" enabled', () => {
+describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled', () => {
   testFiles.forEach(filename => {
     const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}`);
     const config = {
@@ -35,7 +35,7 @@ describe('Parse all fixtures with "errorOnTypeScriptSyntaticAndSemanticIssues" e
       range: true,
       tokens: true,
       errorOnUnknownASTType: true,
-      errorOnTypeScriptSyntaticAndSemanticIssues: true
+      errorOnTypeScriptSyntacticAndSemanticIssues: true
     };
     it(`fixtures/${filename}.src`, () => {
       expect.assertions(1);
