@@ -1586,9 +1586,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         body: {
           type: AST_NODE_TYPES.ClassBody,
           body: [],
-
-          // TODO: Fix location info
-          range: [openBrace.getStart(ast), result.range[1]],
+          range: [openBrace.getStart(ast), node.end],
           loc: nodeUtils.getLocFor(openBrace.getStart(ast), node.end, ast)
         },
         superClass:
@@ -1648,20 +1646,20 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         }
 
         if (node.importClause.namedBindings) {
-          if (
-            node.importClause.namedBindings.kind === SyntaxKind.NamespaceImport
-          ) {
-            result.specifiers!.push(
-              convertChild(node.importClause.namedBindings)
-            );
-          } else {
-            result.specifiers = result.specifiers!.concat(
-              node.importClause.namedBindings.elements.map(convertChild)
-            );
+          switch (node.importClause.namedBindings.kind) {
+            case SyntaxKind.NamespaceImport:
+              result.specifiers!.push(
+                convertChild(node.importClause.namedBindings)
+              );
+              break;
+            case SyntaxKind.NamedImports:
+              result.specifiers = result.specifiers!.concat(
+                node.importClause.namedBindings.elements.map(convertChild)
+              );
+              break;
           }
         }
       }
-
       break;
 
     case SyntaxKind.NamespaceImport:
@@ -1688,14 +1686,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       // have to adjust location information due to tree differences
       result.range[1] = node.name!.end;
       result.loc = nodeUtils.getLocFor(result.range[0], result.range[1], ast);
-      break;
-
-    case SyntaxKind.NamedImports:
-      // TODO: node has no name field
-      Object.assign(result, {
-        type: AST_NODE_TYPES.ImportDefaultSpecifier,
-        local: convertChild((node as any).name)
-      });
       break;
 
     case SyntaxKind.ExportDeclaration:
