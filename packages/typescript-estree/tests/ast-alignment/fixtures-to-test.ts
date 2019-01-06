@@ -184,18 +184,7 @@ tester.addFixturePatternConfig('javascript/destructuring-and-arrowFunctions');
 tester.addFixturePatternConfig('javascript/destructuring-and-blockBindings');
 tester.addFixturePatternConfig('javascript/destructuring-and-defaultParams');
 tester.addFixturePatternConfig('javascript/destructuring-and-forOf');
-
-tester.addFixturePatternConfig('javascript/destructuring-and-spread', {
-  ignore: [
-    /**
-     * Expected babel parse errors - all of these files below produce parse errors in espree
-     * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
-     * does not actually error on them and will produce an AST.
-     */
-    'error-complex-destructured-spread-first', // babel parse errors
-    'not-final-array' // babel parse errors
-  ]
-});
+tester.addFixturePatternConfig('javascript/destructuring-and-spread');
 
 tester.addFixturePatternConfig('javascript/experimentalAsyncIteration');
 tester.addFixturePatternConfig('javascript/experimentalDynamicImport');
@@ -243,17 +232,7 @@ tester.addFixturePatternConfig('javascript/modules', {
   ignoreSourceType: ['error-function', 'error-strict', 'error-delete']
 });
 
-tester.addFixturePatternConfig('javascript/newTarget', {
-  ignore: [
-    /**
-     * Expected babel parse errors - all of these files below produce parse errors in espree
-     * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
-     * does not actually error on them and will produce an AST.
-     */
-    'invalid-new-target', // babel parse errors
-    'invalid-unknown-property' // babel parse errors
-  ]
-});
+tester.addFixturePatternConfig('javascript/newTarget');
 
 tester.addFixturePatternConfig('javascript/objectLiteral');
 tester.addFixturePatternConfig('javascript/objectLiteralComputedProperties');
@@ -261,12 +240,19 @@ tester.addFixturePatternConfig('javascript/objectLiteralComputedProperties');
 tester.addFixturePatternConfig('javascript/objectLiteralDuplicateProperties', {
   ignore: [
     /**
-     * Expected babel parse errors - all of these files below produce parse errors in espree
-     * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
-     * does not actually error on them and will produce an AST.
+     * Babel throws SyntaxError: Redefinition of __proto__ property
+     *
+     * TypeScript reports it via the overloaded TS 2300 "Duplicate identifier '{0}'.", which we
+     * do not currently enable as per the notes above.
      */
-    'error-proto-property', // babel parse errors
-    'error-proto-string-property' // babel parse errors
+    'error-proto-string-property', // babel parse errors
+    /**
+     * ts-estree throws thanks to TS 1117 (ts 3.2 at time of writing)
+     * "An object literal cannot have multiple properties with the same name in strict mode."
+     *
+     * Babel does not throw for some reason...
+     */
+    'strict-duplicate-properties' // ts-estree parse errors
   ]
 });
 
@@ -276,19 +262,7 @@ tester.addFixturePatternConfig('javascript/octalLiterals');
 tester.addFixturePatternConfig('javascript/regex');
 tester.addFixturePatternConfig('javascript/regexUFlag');
 tester.addFixturePatternConfig('javascript/regexYFlag');
-
-tester.addFixturePatternConfig('javascript/restParams', {
-  ignore: [
-    /**
-     * Expected babel parse errors - all of these files below produce parse errors in espree
-     * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
-     * does not actually error on them and will produce an AST.
-     */
-    'error-no-default', // babel parse errors
-    'error-not-last' // babel parse errors
-  ]
-});
-
+tester.addFixturePatternConfig('javascript/restParams');
 tester.addFixturePatternConfig('javascript/spread');
 tester.addFixturePatternConfig('javascript/unicodeCodePointEscapes');
 
