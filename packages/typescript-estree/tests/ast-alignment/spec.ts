@@ -31,7 +31,7 @@ fixturesToTest.forEach(fixture => {
      * FAIL: babel errored but typescript-estree did not
      */
     if (!typeScriptESTreeResult.parseError) {
-      it(`TEST FAIL [BABEL ERRORED, BUT TSEP DID NOT] - ${filename}`, () => {
+      it(`TEST FAIL [BABEL ERRORED, BUT TS-ESTREE DID NOT] - ${filename}`, () => {
         expect(typeScriptESTreeResult.parseError).toEqual(
           babelParserResult.parseError
         );
@@ -54,7 +54,7 @@ fixturesToTest.forEach(fixture => {
    * FAIL: typescript-estree errored but babel did not
    */
   if (typeScriptESTreeResult.parseError) {
-    it(`TEST FAIL [TSEP ERRORED, BUT BABEL DID NOT] - ${filename}`, () => {
+    it(`TEST FAIL [TS-ESTREE ERRORED, BUT BABEL DID NOT] - ${filename}`, () => {
       expect(babelParserResult.parseError).toEqual(
         typeScriptESTreeResult.parseError
       );
