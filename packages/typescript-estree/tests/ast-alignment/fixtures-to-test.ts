@@ -201,22 +201,19 @@ tester.addFixturePatternConfig('javascript/forIn', {
      */
     'for-in-with-bare-assigment',
     /**
-     * Expected babel parse errors - all of these files below produce parse errors in espree
-     * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
-     * does not actually error on them and will produce an AST.
+     * Babel correctly errors on this file, and we can report on it via:
+     * TS 1189 (ts 3.2) "The variable declaration of a 'for...in' statement cannot have an initializer."
+     *
+     * However, if we enable that, we get a lot of cases which ts-estree errors on, but Babel doesn't.
+     * Therefore, leaving this as the one ignored case for now.
+     *
+     * TODO: Investigate this in more detail
      */
     'for-in-with-assigment' // babel parse errors
   ]
 });
-tester.addFixturePatternConfig('javascript/forOf', {
-  ignore: [
-    /**
-     * TypeScript, espree and acorn parse this fine - esprima, flow and babel do not...
-     */
-    'for-of-with-function-initializer' // babel parse errors
-  ]
-});
 
+tester.addFixturePatternConfig('javascript/forOf');
 tester.addFixturePatternConfig('javascript/generators');
 tester.addFixturePatternConfig('javascript/globalReturn');
 tester.addFixturePatternConfig('javascript/importMeta');
@@ -297,15 +294,25 @@ tester.addFixturePatternConfig('typescript/basics', {
   fileType: 'ts',
   ignore: [
     /**
-     * Other babel parse errors relating to invalid syntax.
+     * TypeScript does not report any diagnostics for this file, but Babel throws:
+     * [SyntaxError: Unexpected token, expected "{" (2:8)
+      1 | class Foo {
+    > 2 |   foo?();
+        |         ^
+      3 |   bar?(): string;
+      4 |   private baz?(): string;
+      5 | }]
      */
-    'abstract-class-with-abstract-constructor', // babel parse errors
-    'class-with-export-parameter-properties', // babel parse errors
-    'class-with-implements-and-extends', // babel parse errors
     'class-with-optional-methods', // babel parse errors
-    'class-with-static-parameter-properties', // babel parse errors
+    /**
+     * There are number of things that can be reported in this file, so it's not great
+     * for comparison purposes.
+     *
+     * Nevertheless, Babel appears to throw on syntax that TypeScript doesn't report on directly.
+     *
+     * TODO: Investigate in more depth, potentially split up different parts of the interface
+     */
     'interface-with-all-property-types', // babel parse errors
-    'interface-with-construct-signature-with-parameter-accessibility', // babel parse errors
     /**
      * there is difference in range between babel and ts-estree
      */
