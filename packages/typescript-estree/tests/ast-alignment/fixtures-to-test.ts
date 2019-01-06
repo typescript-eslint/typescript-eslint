@@ -106,7 +106,7 @@ const jsxFilesWithKnownIssues = jsxKnownIssues.map(f => f.replace('jsx/', ''));
 
 /**
  * Current random error difference on jsx/invalid-no-tag-name.src.js
- * TSEP - SyntaxError
+ * ts-estree - SyntaxError
  * Babel - RangeError
  *
  * Reported here: https://github.com/babel/babel/issues/6680
@@ -151,11 +151,16 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
      * Expected babel parse errors - all of these files below produce parse errors in espree
      * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
      * does not actually error on them and will produce an AST.
+     *
+     * We are also unable to leverage diagnostics effectively here. The relevant TypeScript diagnostic is:
+     *
+     * (ts 3.2) 2300 "Duplicate identifier '{0}'."
+     *
+     * ...but this is heavily overloaded. It will also report an error for an object with two properties
+     * with the same name, for example.
      */
     'error-dup-params', // babel parse errors
-    'error-strict-dup-params', // babel parse errors
-    'error-strict-octal', // babel parse errors
-    'error-two-lines' // babel parse errors
+    'error-strict-dup-params' // babel parse errors
   ]
 });
 
@@ -219,7 +224,7 @@ tester.addFixturePatternConfig('javascript/forIn', {
   ignore: [
     /**
      * Error: AST difference
-     * tsep: AssignmentExpression
+     * ts-estree: AssignmentExpression
      * babel: AssignmentPattern
      */
     'for-in-with-bare-assigment',
@@ -345,22 +350,22 @@ tester.addFixturePatternConfig('typescript/basics', {
     'interface-with-all-property-types', // babel parse errors
     'interface-with-construct-signature-with-parameter-accessibility', // babel parse errors
     /**
-     * there is difference in range between babel and tsep
+     * there is difference in range between babel and ts-estree
      */
     'arrow-function-with-type-parameters', // typescript-estree parse errors
     /**
      * Babel: ClassDeclaration + abstract: true
-     * tsep: TSAbstractClassDeclaration
+     * ts-estree: TSAbstractClassDeclaration
      */
     'abstract-class-with-abstract-properties',
     /**
      * Babel: ClassProperty + abstract: true
-     * tsep: TSAbstractClassProperty
+     * ts-estree: TSAbstractClassProperty
      */
     'abstract-class-with-abstract-readonly-property',
     /**
      * Babel: TSExpressionWithTypeArguments
-     * tsep: ClassImplements
+     * ts-estree: ClassImplements
      */
     'class-with-implements-generic-multiple',
     'class-with-implements-generic',
@@ -445,7 +450,7 @@ tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
   ignore: [
     /**
-     * there is difference in range between babel and tsep
+     * there is difference in range between babel and ts-estree
      */
     'tagged-template-expression-type-arguments'
   ]
@@ -487,13 +492,13 @@ tester.addFixturePatternConfig('typescript/declare', {
   ignore: [
     /**
      * AST difference
-     * tsep: heritage = []
+     * ts-estree: heritage = []
      * babel: heritage = undefined
      */
     'interface',
     /**
      * AST difference
-     * tsep: TSAbstractClassDeclaration
+     * ts-estree: TSAbstractClassDeclaration
      * babel: ClassDeclaration[abstract=true]
      */
     'abstract-class'
@@ -509,7 +514,7 @@ tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
     'nested-internal-module',
     /**
      * Babel: TSDeclareFunction
-     * tsep: TSNamespaceFunctionDeclaration
+     * ts-estree: TSNamespaceFunctionDeclaration
      */
     'declare-namespace-with-exported-function'
   ],
