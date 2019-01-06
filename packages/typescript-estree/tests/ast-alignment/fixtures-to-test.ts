@@ -384,7 +384,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     'interface-with-optional-properties',
     'interface-without-type-annotation',
     'typed-this',
-    'export-type-function-declaration',
     'abstract-interface',
     /**
      * Babel bug for optional or abstract methods?
@@ -480,7 +479,14 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
 });
 
 tester.addFixturePatternConfig('typescript/types', {
-  fileType: 'ts'
+  fileType: 'ts',
+  ignore: [
+    /**
+     * AST difference
+     */
+    'function-with-rest',
+    'constructor-with-rest'
+  ]
 });
 
 tester.addFixturePatternConfig('typescript/declare', {

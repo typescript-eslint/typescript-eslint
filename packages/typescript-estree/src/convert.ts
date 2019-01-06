@@ -122,7 +122,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
    */
   function convertTypeAnnotation(child: ts.TypeNode): ESTreeNode {
     const annotation = convertChildType(child);
-    const annotationStartCol = child.getFullStart() - 1;
+    // in FunctionType and ConstructorType typeAnnotation has 2 characters `=>` and in other places is just colon
+    const offset =
+      node.kind === SyntaxKind.FunctionType ||
+      node.kind === SyntaxKind.ConstructorType
+        ? 2
+        : 1;
+    const annotationStartCol = child.getFullStart() - offset;
+
     const loc = nodeUtils.getLocFor(annotationStartCol, child.end, ast);
     return {
       type: AST_NODE_TYPES.TSTypeAnnotation,
@@ -2439,14 +2446,28 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       break;
     }
-
+    case SyntaxKind.ConstructorType:
+    case SyntaxKind.FunctionType:
     case SyntaxKind.ConstructSignature:
     case SyntaxKind.CallSignature: {
+      let type: AST_NODE_TYPES;
+      switch (node.kind) {
+        case SyntaxKind.ConstructSignature:
+          type = AST_NODE_TYPES.TSConstructSignatureDeclaration;
+          break;
+        case SyntaxKind.CallSignature:
+          type = AST_NODE_TYPES.TSCallSignatureDeclaration;
+          break;
+        case SyntaxKind.FunctionType:
+          type = AST_NODE_TYPES.TSFunctionType;
+          break;
+        case SyntaxKind.ConstructorType:
+        default:
+          type = AST_NODE_TYPES.TSConstructorType;
+          break;
+      }
       Object.assign(result, {
-        type:
-          node.kind === SyntaxKind.ConstructSignature
-            ? AST_NODE_TYPES.TSConstructSignatureDeclaration
-            : AST_NODE_TYPES.TSCallSignatureDeclaration,
+        type: type,
         params: convertParameters(node.parameters)
       });
 
