@@ -183,7 +183,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-strict-eval-return.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-strict-octal.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-strict-octal.src.js.src 1`] = `
+Object {
+  "column": 21,
+  "index": 21,
+  "lineNumber": 1,
+  "message": "Octal literals are not allowed in strict mode.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-strict-param-arguments.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -195,7 +202,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-strict-param-no-paren-eval.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-two-lines.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-two-lines.src.js.src 1`] = `
+Object {
+  "column": 1,
+  "index": 12,
+  "lineNumber": 2,
+  "message": "Line terminator not permitted before arrow.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-wrapped-param.src.js.src 1`] = `
 Object {

@@ -54,10 +54,14 @@ function whitelistSupportedDiagnostics(
 ): ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic> {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
+      case 1121:
+        return true; // ts 3.2 "Octal literals are not allowed in strict mode."
       case 1123: // ts 3.2: "Variable declaration list cannot be empty."
         return true;
       case 1141: // ts 3.2 "String literal expected."
         return true;
+      case 1200:
+        return true; // ts 3.2 "Line terminator not permitted before arrow."
     }
     return false;
   });
