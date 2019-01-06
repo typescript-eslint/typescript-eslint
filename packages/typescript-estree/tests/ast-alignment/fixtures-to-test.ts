@@ -173,30 +173,13 @@ tester.addFixturePatternConfig('javascript/classes', {
     /**
      * super() is being used outside of constructor. Other parsers (e.g. espree, acorn) do not error on this.
      */
-    'class-one-method-super', // babel parse errors
-    /**
-     * Expected babel parse errors - all of these files below produce parse errors in espree
-     * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
-     * does not actually error on them and will produce an AST.
-     */
-    'invalid-class-declaration', // babel parse errors
-    'invalid-class-setter-declaration' // babel parse errors
+    'class-one-method-super' // babel parse errors
   ]
 });
 
 tester.addFixturePatternConfig('javascript/defaultParams');
 
-tester.addFixturePatternConfig('javascript/destructuring', {
-  ignore: [
-    /**
-     * Expected babel parse errors - all of these files below produce parse errors in espree
-     * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
-     * does not actually error on them and will produce an AST.
-     */
-    'invalid-defaults-object-assign' // babel parse errors
-  ]
-});
-
+tester.addFixturePatternConfig('javascript/destructuring');
 tester.addFixturePatternConfig('javascript/destructuring-and-arrowFunctions');
 tester.addFixturePatternConfig('javascript/destructuring-and-blockBindings');
 tester.addFixturePatternConfig('javascript/destructuring-and-defaultParams');

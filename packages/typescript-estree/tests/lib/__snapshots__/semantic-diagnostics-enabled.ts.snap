@@ -347,9 +347,23 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/empty-literal-derived-class.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/invalid-class-declaration.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/invalid-class-declaration.src.js.src 1`] = `
+Object {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "A class declaration without the 'default' modifier must have a name.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/invalid-class-setter-declaration.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/invalid-class-setter-declaration.src.js.src 1`] = `
+Object {
+  "column": 14,
+  "index": 14,
+  "lineNumber": 1,
+  "message": "A 'set' accessor must have exactly one parameter.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/invalid-class-two-super-classes.src.js.src 1`] = `
 Object {
@@ -434,7 +448,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring/destructured-object-catch.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring/invalid-defaults-object-assign.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring/invalid-defaults-object-assign.src.js.src 1`] = `
+Object {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "The left-hand side of an assignment expression must be a variable or a property access.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring/named-param.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
