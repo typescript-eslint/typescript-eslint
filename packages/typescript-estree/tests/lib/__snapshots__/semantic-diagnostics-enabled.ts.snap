@@ -659,7 +659,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-with-var.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forOf/for-of-with-function-initializer.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forOf/for-of-with-function-initializer.src.js.src 1`] = `
+Object {
+  "column": 9,
+  "index": 9,
+  "lineNumber": 1,
+  "message": "The variable declaration of a 'for...of' statement cannot have an initializer.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forOf/for-of-with-var-and-braces.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1765,7 +1772,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/babylon-convergence/type-parameters.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-abstract-constructor.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-abstract-constructor.src.ts.src 1`] = `
+Object {
+  "column": 4,
+  "index": 43,
+  "lineNumber": 2,
+  "message": "'abstract' modifier can only appear on a class, method, or property declaration.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-abstract-method.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1775,7 +1789,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-optional-method.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-interface.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-interface.src.ts.src 1`] = `
+Object {
+  "column": 7,
+  "index": 7,
+  "lineNumber": 1,
+  "message": "'abstract' modifier can only appear on a class, method, or property declaration.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/arrow-function-with-type-parameters.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1801,7 +1822,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-definite-assignment.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-export-parameter-properties.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-export-parameter-properties.src.ts.src 1`] = `
+Object {
+  "column": 16,
+  "index": 28,
+  "lineNumber": 2,
+  "message": "'export' modifier cannot appear on a parameter.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-extends-and-implements.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1815,7 +1843,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-implements.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-implements-and-extends.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-implements-and-extends.src.ts.src 1`] = `
+Object {
+  "column": 57,
+  "index": 57,
+  "lineNumber": 1,
+  "message": "'extends' clause must precede 'implements' clause.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-implements-generic.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1843,7 +1878,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-readonly-property.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-static-parameter-properties.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-static-parameter-properties.src.ts.src 1`] = `
+Object {
+  "column": 16,
+  "index": 28,
+  "lineNumber": 2,
+  "message": "'static' modifier cannot appear on a parameter.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-type-parameter.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1923,7 +1965,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/interface-with-all-property-types.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/interface-with-construct-signature-with-parameter-accessibility.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/interface-with-construct-signature-with-parameter-accessibility.src.ts.src 1`] = `
+Object {
+  "column": 9,
+  "index": 26,
+  "lineNumber": 2,
+  "message": "A parameter property is only allowed in a constructor implementation.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/interface-with-extends-type-parameters.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
