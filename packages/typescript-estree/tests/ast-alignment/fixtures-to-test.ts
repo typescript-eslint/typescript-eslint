@@ -421,15 +421,13 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
      */
     'interface-empty-extends',
     /**
-     * TypeScript-specific tests taken from "errorRecovery". Babel is not being as forgiving as the TypeScript compiler here.
+     * TypeScript reports it via the overloaded TS 1097 "'{0}' list cannot be empty."
+     *
+     * Babel does not currently throw.
+     *
+     * TODO: Report this on Babel repo
      */
-    'class-empty-extends-implements', // babel parse errors
-    'class-empty-extends', // babel parse errors
-    'decorator-on-enum-declaration', // babel parse errors
-    'decorator-on-interface-declaration', // babel parse errors
-    'interface-property-modifiers', // babel parse errors
-    'enum-with-keywords', // babel parse errors
-    'solo-const' // babel parse errors
+    'class-extends-empty-implements'
   ]
 });
 
