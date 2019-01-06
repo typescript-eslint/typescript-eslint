@@ -119241,7 +119241,7 @@ Object {
         0,
         24,
       ],
-      "type": "FunctionDeclaration",
+      "type": "TSDeclareFunction",
     },
   ],
   "loc": Object {
@@ -119575,7 +119575,7 @@ Object {
         0,
         23,
       ],
-      "type": "FunctionDeclaration",
+      "type": "TSDeclareFunction",
     },
   ],
   "loc": Object {
