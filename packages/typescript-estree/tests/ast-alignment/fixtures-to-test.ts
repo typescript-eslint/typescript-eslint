@@ -315,8 +315,9 @@ tester.addFixturePatternConfig('typescript/basics', {
     'interface-with-all-property-types', // babel parse errors
     /**
      * there is difference in range between babel and ts-estree
+     * https://github.com/babel/babel/issues/9285
      */
-    'arrow-function-with-type-parameters', // typescript-estree parse errors
+    'arrow-function-with-type-parameters',
     /**
      * Babel: ClassDeclaration + abstract: true
      * ts-estree: TSAbstractClassDeclaration
@@ -432,7 +433,7 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
      *
      * Babel does not currently throw.
      *
-     * TODO: Report this on Babel repo
+     * https://github.com/babel/babel/issues/9286
      */
     'class-extends-empty-implements'
   ]
