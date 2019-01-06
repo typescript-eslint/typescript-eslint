@@ -533,13 +533,27 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/destructuring-param.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/error-complex-destructured-spread-first.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/error-complex-destructured-spread-first.src.js.src 1`] = `
+Object {
+  "column": 1,
+  "index": 1,
+  "lineNumber": 1,
+  "message": "A rest element must be last in a destructuring pattern.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/invalid-not-final-array-empty.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/multi-destructured.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/not-final-array.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/not-final-array.src.js.src 1`] = `
+Object {
+  "column": 1,
+  "index": 1,
+  "lineNumber": 1,
+  "message": "A rest element must be last in a destructuring pattern.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/single-destructured.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -972,9 +986,23 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/newTarget/invalid-new-target.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/newTarget/invalid-new-target.src.js.src 1`] = `
+Object {
+  "column": 8,
+  "index": 8,
+  "lineNumber": 1,
+  "message": "Meta-property 'new.target' is only allowed in the body of a function declaration, function expression, or constructor.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/newTarget/invalid-unknown-property.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/newTarget/invalid-unknown-property.src.js.src 1`] = `
+Object {
+  "column": 25,
+  "index": 25,
+  "lineNumber": 1,
+  "message": "'unknown_property' is not a valid meta-property for keyword 'new'. Did you mean 'target'?",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/newTarget/simple-new-target.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1014,11 +1042,25 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralComputedProperties/standalone-expression-with-method.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/error-proto-property.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/error-proto-property.src.js.src 1`] = `
+Object {
+  "column": 1,
+  "index": 62,
+  "lineNumber": 7,
+  "message": "An object literal cannot have multiple properties with the same name in strict mode.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/error-proto-string-property.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-properties.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-properties.src.js.src 1`] = `
+Object {
+  "column": 1,
+  "index": 39,
+  "lineNumber": 5,
+  "message": "An object literal cannot have multiple properties with the same name in strict mode.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1078,9 +1120,23 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/restParams/class-method.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/restParams/error-no-default.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/restParams/error-no-default.src.js.src 1`] = `
+Object {
+  "column": 17,
+  "index": 17,
+  "lineNumber": 1,
+  "message": "A rest parameter cannot have an initializer.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/restParams/error-not-last.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/restParams/error-not-last.src.js.src 1`] = `
+Object {
+  "column": 14,
+  "index": 14,
+  "lineNumber": 1,
+  "message": "A rest parameter must be last in a parameter list.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/restParams/func-expression.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 

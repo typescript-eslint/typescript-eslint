@@ -54,19 +54,19 @@ function whitelistSupportedDiagnostics(
 ): ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic> {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
+      case 1014: // ts 3.2 "A rest parameter must be last in a parameter list."
+      case 1048: // ts 3.2 "A rest parameter cannot have an initializer."
       case 1049: // ts 3.2 "A 'set' accessor must have exactly one parameter."
-        return true;
+      case 1117: // ts 3.2 "An object literal cannot have multiple properties with the same name in strict mode."
       case 1121: // ts 3.2 "Octal literals are not allowed in strict mode."
-        return true;
       case 1123: // ts 3.2: "Variable declaration list cannot be empty."
-        return true;
       case 1141: // ts 3.2 "String literal expected."
-        return true;
       case 1200: // ts 3.2 "Line terminator not permitted before arrow."
-        return true;
       case 1211: // ts 3.2 "A class declaration without the 'default' modifier must have a name."
-        return true;
       case 2364: // ts 3.2 "The left-hand side of an assignment expression must be a variable or a property access."
+      case 2462: // ts 3.2 "A rest element must be last in a destructuring pattern."
+      case 17012: // ts 3.2 "'{0}' is not a valid meta-property for keyword '{1}'. Did you mean '{2}'?"
+      case 17013: // ts 3.2 "Meta-property '{0}' is only allowed in the body of a function declaration, function expression, or constructor."
         return true;
     }
     return false;
