@@ -40,6 +40,7 @@ fixturesToTest.forEach(fixture => {
     }
     /**
      * Both parsers errored - this is OK as long as the errors are of the same "type"
+     * E.g. Both must be a SyntaxError, or both must be a RangeError etc.
      */
     it(`[Both parsers error as expected] - ${filename}`, () => {
       expect(babelParserResult.parseError.name).toEqual(

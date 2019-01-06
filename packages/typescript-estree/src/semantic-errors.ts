@@ -15,23 +15,38 @@ export function getFirstSemanticOrSyntacticError(
   program: ts.Program,
   ast: ts.SourceFile
 ): SemanticOrSyntacticError | undefined {
-  const supportedSyntacticDiagnostics = whitelistSupportedDiagnostics(
-    program.getSyntacticDiagnostics(ast)
-  );
-  if (supportedSyntacticDiagnostics.length) {
-    return convertDiagnosticToSemanticOrSyntacticError(
-      supportedSyntacticDiagnostics[0]
+  try {
+    const supportedSyntacticDiagnostics = whitelistSupportedDiagnostics(
+      program.getSyntacticDiagnostics(ast)
     );
-  }
-  const supportedSemanticDiagnostics = whitelistSupportedDiagnostics(
-    program.getSemanticDiagnostics(ast)
-  );
-  if (supportedSemanticDiagnostics.length) {
-    return convertDiagnosticToSemanticOrSyntacticError(
-      supportedSemanticDiagnostics[0]
+    if (supportedSyntacticDiagnostics.length) {
+      return convertDiagnosticToSemanticOrSyntacticError(
+        supportedSyntacticDiagnostics[0]
+      );
+    }
+    const supportedSemanticDiagnostics = whitelistSupportedDiagnostics(
+      program.getSemanticDiagnostics(ast)
     );
+    if (supportedSemanticDiagnostics.length) {
+      return convertDiagnosticToSemanticOrSyntacticError(
+        supportedSemanticDiagnostics[0]
+      );
+    }
+    return undefined;
+  } catch (e) {
+    /**
+     * TypeScript compiler has certain Debug.fail() statements in, which will cause the diagnostics
+     * retrieval above to throw.
+     *
+     * E.g. from ast-alignment-tests
+     * "Debug Failure. Shouldn't ever directly check a JsxOpeningElement"
+     *
+     * For our current use-cases this is undesired behavior, so we just suppress it
+     * and log a a warning.
+     */
+    console.warn(`Warning From TSC: "${e.message}`);
+    return undefined;
   }
-  return undefined;
 }
 
 function whitelistSupportedDiagnostics(
@@ -40,6 +55,8 @@ function whitelistSupportedDiagnostics(
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
       case 1123: // ts 3.2: "Variable declaration list cannot be empty."
+        return true;
+      case 1141: // ts 3.2 "String literal expected."
         return true;
     }
     return false;
