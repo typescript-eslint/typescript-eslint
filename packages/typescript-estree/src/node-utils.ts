@@ -171,7 +171,9 @@ export default {
  * @param  {ts.Token}  operator the operator token
  * @returns {boolean}          is assignment
  */
-function isAssignmentOperator(operator: ts.Token<any>): boolean {
+function isAssignmentOperator(
+  operator: ts.Token<ts.AssignmentOperator>
+): boolean {
   return ASSIGNMENT_OPERATORS.indexOf(operator.kind) > -1;
 }
 
@@ -180,7 +182,7 @@ function isAssignmentOperator(operator: ts.Token<any>): boolean {
  * @param  {ts.Token}  operator the operator token
  * @returns {boolean}          is a logical operator
  */
-function isLogicalOperator(operator: ts.Token<any>): boolean {
+function isLogicalOperator(operator: ts.Token<ts.LogicalOperator>): boolean {
   return LOGICAL_OPERATORS.indexOf(operator.kind) > -1;
 }
 
@@ -221,10 +223,10 @@ function hasModifier(
 
 /**
  * Returns true if the given ts.Token is a comma
- * @param  {ts.Token}  token the TypeScript token
+ * @param  {ts.Node}  token the TypeScript token
  * @returns {boolean}       is comma
  */
-function isComma(token: ts.Token<any>): boolean {
+function isComma(token: ts.Node): boolean {
   return token.kind === SyntaxKind.CommaToken;
 }
 
@@ -254,7 +256,12 @@ function isJSDocComment(node: ts.Node): boolean {
  * @param  {ts.Token} operator the operator token
  * @returns {string}          the binary expression type
  */
-function getBinaryExpressionType(operator: ts.Token<any>): string {
+function getBinaryExpressionType(
+  operator: ts.Token<any>
+):
+  | AST_NODE_TYPES.AssignmentExpression
+  | AST_NODE_TYPES.LogicalExpression
+  | AST_NODE_TYPES.BinaryExpression {
   if (isAssignmentOperator(operator)) {
     return AST_NODE_TYPES.AssignmentExpression;
   } else if (isLogicalOperator(operator)) {
@@ -322,14 +329,11 @@ function canContainDirective(node: ts.Node): boolean {
 /**
  * Returns line and column data for the given ts.Node or ts.Token,
  * for the given AST
- * @param  {ts.Token|TSNode} nodeOrToken the ts.Node or ts.Token
+ * @param  {ts.Node} nodeOrToken the ts.Node or ts.Token
  * @param  {ts.SourceFile} ast         the AST object
  * @returns {ESTreeLoc}             the loc data
  */
-function getLoc(
-  nodeOrToken: TSNode | ts.Token<ts.SyntaxKind>,
-  ast: ts.SourceFile
-): ESTreeNodeLoc {
+function getLoc(nodeOrToken: ts.Node, ast: ts.SourceFile): ESTreeNodeLoc {
   return getLocFor(nodeOrToken.getStart(ast), nodeOrToken.end, ast);
 }
 
@@ -403,19 +407,19 @@ function getTSNodeAccessibility(
 /**
  * Finds the next token based on the previous one and its parent
  * Had to copy this from TS instead of using TS's version because theirs doesn't pass the ast to getChildren
- * @param {ts.Token} previousToken The previous TSToken
+ * @param {ts.Node} previousToken The previous TSToken
  * @param {ts.Node} parent The parent TSNode
  * @param {ts.SourceFile} ast The TS AST
- * @returns {ts.Token} the next TSToken
+ * @returns {ts.Node|undefined} the next TSToken
  */
 function findNextToken(
-  previousToken: ts.Token<any>,
+  previousToken: ts.Node,
   parent: ts.Node,
   ast: ts.SourceFile
-): ts.Token<any> | undefined {
+): ts.Node | undefined {
   return find(parent);
 
-  function find(n: ts.Node): ts.Token<any> | undefined {
+  function find(n: ts.Node): ts.Node | undefined {
     if (ts.isToken(n) && n.pos === previousToken.end) {
       // this is token that starts at the end of previous token - return it
       return n;
@@ -435,18 +439,18 @@ function findNextToken(
 
 /**
  * Find the first matching token based on the given predicate function.
- * @param {ts.Token} previousToken The previous ts.Token
+ * @param {ts.Node} previousToken The previous ts.Token
  * @param {ts.Node} parent The parent ts.Node
  * @param {Function} predicate The predicate function to apply to each checked token
  * @param {ts.SourceFile} ast The TS AST
- * @returns {ts.Token|undefined} a matching ts.Token
+ * @returns {ts.Node|undefined} a matching ts.Token
  */
 function findFirstMatchingToken(
-  previousToken: ts.Token<any> | undefined,
+  previousToken: ts.Node | undefined,
   parent: ts.Node,
   predicate: (node: ts.Node) => boolean,
   ast: ts.SourceFile
-): ts.Token<any> | undefined {
+): ts.Node | undefined {
   while (previousToken) {
     if (predicate(previousToken)) {
       return previousToken;
@@ -493,10 +497,13 @@ function findFirstMatchingAncestor(
 /**
  * Finds the first parent ts.Node which matches the given kind
  * @param {ts.Node} node The current ts.Node
- * @param {number} kind The ts.Node kind to match against
+ * @param {ts.SyntaxKind} kind The ts.Node kind to match against
  * @returns {ts.Node|undefined} a matching parent ts.Node
  */
-function findAncestorOfKind(node: ts.Node, kind: number): ts.Node | undefined {
+function findAncestorOfKind(
+  node: ts.Node,
+  kind: ts.SyntaxKind
+): ts.Node | undefined {
   return findFirstMatchingAncestor(node, parent => parent.kind === kind);
 }
 
@@ -563,8 +570,8 @@ function fixExports(
     result.loc = getLocFor(result.range[0], result.range[1], ast);
 
     const declarationType = declarationIsDefault
-      ? 'ExportDefaultDeclaration'
-      : 'ExportNamedDeclaration';
+      ? AST_NODE_TYPES.ExportDefaultDeclaration
+      : AST_NODE_TYPES.ExportNamedDeclaration;
 
     const newResult: any = {
       type: declarationType,
@@ -693,11 +700,11 @@ function getTokenType(token: any): string {
 
 /**
  * Extends and formats a given ts.Token, for a given AST
- * @param  {ts.Token} token the ts.Token
+ * @param  {ts.Node} token the ts.Token
  * @param  {ts.SourceFile} ast   the AST object
  * @returns {ESTreeToken}       the converted ESTreeToken
  */
-function convertToken(token: ts.Token<any>, ast: ts.SourceFile): ESTreeToken {
+function convertToken(token: ts.Node, ast: ts.SourceFile): ESTreeToken {
   const start =
       token.kind === SyntaxKind.JsxText
         ? token.getFullStart()

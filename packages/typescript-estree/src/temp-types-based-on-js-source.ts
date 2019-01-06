@@ -46,6 +46,7 @@ export interface ESTreeNode {
   abstract?: boolean;
   typeName?: ESTreeNode | null;
   directive?: string;
+  returnType?: ESTreeNode;
 }
 
 export interface ESTreeComment {
