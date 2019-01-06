@@ -466,16 +466,12 @@ tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
     /**
      * Minor AST difference
      */
-    'nested-internal-module',
-    /**
-     * Babel: TSDeclareFunction
-     * ts-estree: TSNamespaceFunctionDeclaration
-     */
-    'declare-namespace-with-exported-function'
+    'nested-internal-module'
   ],
   ignoreSourceType: [
     'module-with-default-exports',
-    'ambient-module-declaration-with-import'
+    'ambient-module-declaration-with-import',
+    'declare-namespace-with-exported-function'
   ]
 });
 

@@ -130,7 +130,6 @@ export enum AST_NODE_TYPES {
   TSMethodSignature = 'TSMethodSignature',
   TSModuleBlock = 'TSModuleBlock',
   TSModuleDeclaration = 'TSModuleDeclaration',
-  TSNamespaceFunctionDeclaration = 'TSNamespaceFunctionDeclaration',
   TSNamespaceExportDeclaration = 'TSNamespaceExportDeclaration',
   TSNonNullExpression = 'TSNonNullExpression',
   TSNeverKeyword = 'TSNeverKeyword',

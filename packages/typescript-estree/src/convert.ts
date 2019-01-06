@@ -677,8 +677,9 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     // Declarations
 
     case SyntaxKind.FunctionDeclaration: {
+      const isDeclare = nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node);
       let functionDeclarationType = AST_NODE_TYPES.FunctionDeclaration;
-      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+      if (isDeclare || !node.body) {
         functionDeclarationType = AST_NODE_TYPES.TSDeclareFunction;
       }
 
@@ -697,7 +698,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         result.returnType = convertTypeAnnotation(node.type);
       }
 
-      if (functionDeclarationType === AST_NODE_TYPES.TSDeclareFunction) {
+      if (isDeclare) {
         result.declare = true;
       }
 
