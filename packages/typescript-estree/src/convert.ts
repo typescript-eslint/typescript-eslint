@@ -2080,22 +2080,26 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
 
     case SyntaxKind.JsxSelfClosingElement: {
-      /**
-       * Convert SyntaxKind.JsxSelfClosingElement to SyntaxKind.JsxOpeningElement,
-       * TypeScript does not seem to have the idea of openingElement when tag is self-closing
-       */
-      (node as any).kind = SyntaxKind.JsxOpeningElement;
-
-      const openingElement = convertChild(node);
-      (openingElement as any).selfClosing = true;
-
       Object.assign(result, {
         type: AST_NODE_TYPES.JSXElement,
-        openingElement,
+        /**
+         * Convert SyntaxKind.JsxSelfClosingElement to SyntaxKind.JsxOpeningElement,
+         * TypeScript does not seem to have the idea of openingElement when tag is self-closing
+         */
+        openingElement: {
+          type: AST_NODE_TYPES.JSXOpeningElement,
+          typeParameters: node.typeArguments
+            ? convertTypeArgumentsToTypeParameters(node.typeArguments)
+            : undefined,
+          selfClosing: true,
+          name: convertTypeScriptJSXTagNameToESTreeName(node.tagName),
+          attributes: node.attributes.properties.map(convertChild),
+          range: result.range,
+          loc: result.loc
+        },
         closingElement: null,
         children: []
       });
-
       break;
     }
 
