@@ -154,7 +154,9 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
             child.expression &&
             child.expression.type === AST_NODE_TYPES.Literal &&
             (child.expression as any).value &&
-            typeof (child.expression as any).value === 'string'
+            typeof (child.expression as any).value === 'string' &&
+            // ignore parenthesized expressions
+            ast.text.charAt(child.range[0]) !== '('
         )
         .forEach(
           (child: { directive: string; expression: { raw: string } }) => {
