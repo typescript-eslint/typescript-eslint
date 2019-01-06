@@ -118,7 +118,7 @@ export function convertComments(
     const start = triviaScanner.getTokenPos();
     const end = triviaScanner.getTextPos();
 
-    let container: ts.Token<any> | null = null;
+    let container: ts.Node | null = null;
     switch (kind) {
       case ts.SyntaxKind.SingleLineCommentTrivia:
       case ts.SyntaxKind.MultiLineCommentTrivia: {
@@ -153,7 +153,7 @@ export function convertComments(
         break;
       case ts.SyntaxKind.SlashToken:
       case ts.SyntaxKind.SlashEqualsToken:
-        container = nodeUtils.getNodeContainer(ast, start, end) as ts.Node;
+        container = nodeUtils.getNodeContainer(ast, start, end);
 
         if (container.kind === ts.SyntaxKind.RegularExpressionLiteral) {
           kind = triviaScanner.reScanSlashToken();
