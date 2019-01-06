@@ -847,7 +847,14 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-default-module-specifier.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-default-module-specifier.src.js.src 1`] = `
+Object {
+  "column": 16,
+  "index": 16,
+  "lineNumber": 1,
+  "message": "String literal expected.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-missing-module-specifier.src.js.src 1`] = `
 Object {
@@ -858,7 +865,14 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-module-specifier.src.js.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-module-specifier.src.js.src 1`] = `
+Object {
+  "column": 18,
+  "index": 18,
+  "lineNumber": 1,
+  "message": "String literal expected.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-named-after-named.src.js.src 1`] = `
 Object {

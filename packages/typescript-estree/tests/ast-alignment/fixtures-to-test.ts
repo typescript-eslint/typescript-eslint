@@ -248,13 +248,9 @@ tester.addFixturePatternConfig('javascript/labels');
 tester.addFixturePatternConfig('javascript/modules', {
   ignore: [
     /**
-     * Expected babel parse errors - all of these files below produce parse errors in espree
-     * as well, but the TypeScript compiler is so forgiving during parsing that typescript-estree
-     * does not actually error on them and will produce an AST.
+     * Expected babel parse errors - ts-estree is not currently throwing
      */
-    'invalid-export-named-default', // babel parse errors
-    'invalid-import-default-module-specifier', // babel parse errors
-    'invalid-import-module-specifier' // babel parse errors
+    'invalid-export-named-default' // babel parse errors
   ],
   ignoreSourceType: ['error-function', 'error-strict', 'error-delete']
 });
@@ -392,7 +388,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     'abstract-class-with-optional-method', // babel parse errors
     'declare-class-with-optional-method', // babel parse errors
     /**
-     * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/6679
+     * Reported and resolved Babel issue https://github.com/babel/babel/issues/6679
      * TODO: remove me in next babel > 7.2.3
      */
     'class-with-private-parameter-properties',
@@ -401,13 +397,13 @@ tester.addFixturePatternConfig('typescript/basics', {
     'class-with-readonly-parameter-properties',
     /**
      * Not yet supported in Babel https://github.com/babel/babel/issues/7749
+     * WIP PR is https://github.com/babel/babel/pull/8798
      */
     'import-type',
     'import-type-with-type-parameters-in-type-reference',
     /**
-     * babel is not supporting it yet https://github.com/babel/babel/pull/9230
-     * Babel: TSTypeReference -> Identifier
-     * tsep: TSBigIntKeyword
+     * PR for BigInt support has been merged into Babel: https://github.com/babel/babel/pull/9230
+     * TODO: remove me in next babel > 7.2.3
      */
     'typed-keyword-bigint',
     /**
@@ -415,14 +411,9 @@ tester.addFixturePatternConfig('typescript/basics', {
      * Directive field is not added to module and namespace
      */
     'directive-in-module',
-    /**
-     * Not yet supported in Babel https://github.com/babel/babel/issues/9228
-     * Directive field is not added to module and namespace
-     */
     'directive-in-namespace',
     /**
-     * there is difference in range between babel and tsep
-     * https://github.com/babel/babel/issues/9282
+     * Babel range bug, which will be fixed by https://github.com/babel/babel/pull/9284
      */
     'type-assertion'
   ],

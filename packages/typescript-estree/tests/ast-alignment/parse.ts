@@ -41,15 +41,23 @@ function parseWithBabelParser(text: string, jsx: boolean = true) {
 
 function parseWithTypeScriptESTree(text: string, jsx: boolean = true) {
   try {
-    return parser.parse(text, {
+    const result = parser.parseAndGenerateServices(text, {
       loc: true,
       range: true,
       tokens: false,
       comment: false,
       useJSXTextNode: true,
       errorOnUnknownASTType: true,
+      /**
+       * Babel will always throw on these types of issues, so we enable
+       * them in typescript-estree when comparing behavior between the
+       * two parsers. By default, the TypeScript compiler is much more
+       * forgiving.
+       */
+      errorOnTypeScriptSyntacticAndSemanticIssues: true,
       jsx
     });
+    return result.ast;
   } catch (e) {
     throw createError(e.message, e.lineNumber, e.column);
   }
