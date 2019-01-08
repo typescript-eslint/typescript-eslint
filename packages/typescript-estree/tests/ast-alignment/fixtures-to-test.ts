@@ -314,8 +314,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'interface-with-all-property-types', // babel parse errors
     /**
-     * there is difference in range between babel and ts-estree
-     * https://github.com/babel/babel/issues/9285
+     * PR for generic ArrowFunctionExpression ranges has been merged into Babel: https://github.com/babel/babel/pull/9295
+     * TODO: remove me in next babel > 7.2.3
      */
     'arrow-function-with-type-parameters',
     /**
@@ -358,7 +358,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     'abstract-class-with-optional-method', // babel parse errors
     'declare-class-with-optional-method', // babel parse errors
     /**
-     * Reported and resolved Babel issue https://github.com/babel/babel/issues/6679
+     * PR for parameter property ranges has been merged into Babel: https://github.com/babel/babel/pull/9284
      * TODO: remove me in next babel > 7.2.3
      */
     'class-with-private-parameter-properties',
@@ -383,12 +383,16 @@ tester.addFixturePatternConfig('typescript/basics', {
     'directive-in-module',
     'directive-in-namespace',
     /**
-     * Babel range bug, which will be fixed by https://github.com/babel/babel/pull/9284
+     * PR for type assertions ranges has been merged into Babel: https://github.com/babel/babel/pull/9284
+     * TODO: remove me in next babel > 7.2.3
      */
     'type-assertion'
   ],
   ignoreSourceType: [
-    // https://github.com/babel/babel/issues/9213
+    /**
+     * Babel reports sourceType script
+     * https://github.com/babel/babel/issues/9213
+     */
     'export-assignment',
     'import-equal-declaration',
     'import-export-equal-declaration'
@@ -425,16 +429,10 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
   fileType: 'ts',
   ignore: [
     /**
-     * AST difference
+     * PR with errors in empty extends and implements has been merged into Babel: https://github.com/babel/babel/pull/9292
+     * TODO: remove me in next babel > 7.2.3
      */
     'interface-empty-extends',
-    /**
-     * TypeScript reports it via the overloaded TS 1097 "'{0}' list cannot be empty."
-     *
-     * Babel does not currently throw.
-     *
-     * https://github.com/babel/babel/issues/9286
-     */
     'class-extends-empty-implements'
   ]
 });
