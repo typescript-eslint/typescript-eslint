@@ -34,7 +34,7 @@ When adding or changing a rule, you must:
     -   (if any) outline the settings; how to configure them and what each one does
     -   have clear examples of valid and invalid code when using the rule. Bonus points for extra cases showing what each setting does.
 
-When adding a rule, you must also add a link to the rule in the README.md.
+When adding a rule, you must also add a link to the rule in the README.md (`yarn docs` will help you with this).
 
 ## Submitting Issues
 
