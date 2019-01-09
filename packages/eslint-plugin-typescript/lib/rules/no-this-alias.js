@@ -59,11 +59,10 @@ module.exports = {
         )[0];
 
         return {
-            VariableDeclarator(node) {
-                const { id, init } = node;
+            "VariableDeclarator[init.type='ThisExpression']"(node) {
+                const { id } = node;
 
-                if (init.type !== "ThisExpression") return;
-                if (allowDestructuring && node.id.type !== "Identifier") return;
+                if (allowDestructuring && id.type !== "Identifier") return;
 
                 if (!allowedNames.includes(id.name)) {
                     context.report({
