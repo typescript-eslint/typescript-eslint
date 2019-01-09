@@ -55,6 +55,12 @@ const [foo, bar] = this;
                 },
             ],
         },
+        // https://github.com/bradzacher/eslint-plugin-typescript/issues/281
+        `
+declare module 'foo' {
+    declare const aVar: string
+}
+        `,
     ],
 
     invalid: [
