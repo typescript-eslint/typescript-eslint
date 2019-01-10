@@ -13788,7 +13788,7 @@ Object {
             "argument": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 41,
+                  "column": 34,
                   "line": 9,
                 },
                 "start": Object {
@@ -13799,60 +13799,9 @@ Object {
               "name": "args",
               "range": Array [
                 188,
-                199,
+                192,
               ],
               "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 41,
-                    "line": 9,
-                  },
-                  "start": Object {
-                    "column": 34,
-                    "line": 9,
-                  },
-                },
-                "range": Array [
-                  192,
-                  199,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "elementType": Object {
-                    "loc": Object {
-                      "end": Object {
-                        "column": 39,
-                        "line": 9,
-                      },
-                      "start": Object {
-                        "column": 36,
-                        "line": 9,
-                      },
-                    },
-                    "range": Array [
-                      194,
-                      197,
-                    ],
-                    "type": "TSAnyKeyword",
-                  },
-                  "loc": Object {
-                    "end": Object {
-                      "column": 41,
-                      "line": 9,
-                    },
-                    "start": Object {
-                      "column": 36,
-                      "line": 9,
-                    },
-                  },
-                  "range": Array [
-                    194,
-                    199,
-                  ],
-                  "type": "TSArrayType",
-                },
-              },
             },
             "loc": Object {
               "end": Object {
@@ -13869,6 +13818,57 @@ Object {
               199,
             ],
             "type": "RestElement",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 41,
+                  "line": 9,
+                },
+                "start": Object {
+                  "column": 34,
+                  "line": 9,
+                },
+              },
+              "range": Array [
+                192,
+                199,
+              ],
+              "type": "TSTypeAnnotation",
+              "typeAnnotation": Object {
+                "elementType": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 39,
+                      "line": 9,
+                    },
+                    "start": Object {
+                      "column": 36,
+                      "line": 9,
+                    },
+                  },
+                  "range": Array [
+                    194,
+                    197,
+                  ],
+                  "type": "TSAnyKeyword",
+                },
+                "loc": Object {
+                  "end": Object {
+                    "column": 41,
+                    "line": 9,
+                  },
+                  "start": Object {
+                    "column": 36,
+                    "line": 9,
+                  },
+                },
+                "range": Array [
+                  194,
+                  199,
+                ],
+                "type": "TSArrayType",
+              },
+            },
           },
         ],
         "range": Array [
@@ -38040,7 +38040,7 @@ Object {
           "argument": Object {
             "loc": Object {
               "end": Object {
-                "column": 69,
+                "column": 55,
                 "line": 1,
               },
               "start": Object {
@@ -38051,97 +38051,9 @@ Object {
             "name": "args",
             "range": Array [
               51,
-              69,
+              55,
             ],
             "type": "Identifier",
-            "typeAnnotation": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 69,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 55,
-                  "line": 1,
-                },
-              },
-              "range": Array [
-                55,
-                69,
-              ],
-              "type": "TSTypeAnnotation",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 69,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 56,
-                    "line": 1,
-                  },
-                },
-                "range": Array [
-                  56,
-                  69,
-                ],
-                "type": "TSTypeReference",
-                "typeName": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 61,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 56,
-                      "line": 1,
-                    },
-                  },
-                  "name": "Array",
-                  "range": Array [
-                    56,
-                    61,
-                  ],
-                  "type": "Identifier",
-                },
-                "typeParameters": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 69,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 61,
-                      "line": 1,
-                    },
-                  },
-                  "params": Array [
-                    Object {
-                      "loc": Object {
-                        "end": Object {
-                          "column": 68,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 62,
-                          "line": 1,
-                        },
-                      },
-                      "range": Array [
-                        62,
-                        68,
-                      ],
-                      "type": "TSStringKeyword",
-                    },
-                  ],
-                  "range": Array [
-                    61,
-                    69,
-                  ],
-                  "type": "TSTypeParameterInstantiation",
-                },
-              },
-            },
           },
           "loc": Object {
             "end": Object {
@@ -38158,6 +38070,94 @@ Object {
             69,
           ],
           "type": "RestElement",
+          "typeAnnotation": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 69,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 55,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              55,
+              69,
+            ],
+            "type": "TSTypeAnnotation",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 69,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 56,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                56,
+                69,
+              ],
+              "type": "TSTypeReference",
+              "typeName": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 61,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 56,
+                    "line": 1,
+                  },
+                },
+                "name": "Array",
+                "range": Array [
+                  56,
+                  61,
+                ],
+                "type": "Identifier",
+              },
+              "typeParameters": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 69,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 61,
+                    "line": 1,
+                  },
+                },
+                "params": Array [
+                  Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 68,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 62,
+                        "line": 1,
+                      },
+                    },
+                    "range": Array [
+                      62,
+                      68,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                ],
+                "range": Array [
+                  61,
+                  69,
+                ],
+                "type": "TSTypeParameterInstantiation",
+              },
+            },
+          },
         },
       ],
       "range": Array [
@@ -95719,7 +95719,7 @@ Object {
                     "argument": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 26,
+                          "column": 16,
                           "line": 1,
                         },
                         "start": Object {
@@ -95730,60 +95730,9 @@ Object {
                       "name": "a",
                       "range": Array [
                         15,
-                        26,
+                        16,
                       ],
                       "type": "Identifier",
-                      "typeAnnotation": Object {
-                        "loc": Object {
-                          "end": Object {
-                            "column": 26,
-                            "line": 1,
-                          },
-                          "start": Object {
-                            "column": 16,
-                            "line": 1,
-                          },
-                        },
-                        "range": Array [
-                          16,
-                          26,
-                        ],
-                        "type": "TSTypeAnnotation",
-                        "typeAnnotation": Object {
-                          "elementType": Object {
-                            "loc": Object {
-                              "end": Object {
-                                "column": 24,
-                                "line": 1,
-                              },
-                              "start": Object {
-                                "column": 18,
-                                "line": 1,
-                              },
-                            },
-                            "range": Array [
-                              18,
-                              24,
-                            ],
-                            "type": "TSNumberKeyword",
-                          },
-                          "loc": Object {
-                            "end": Object {
-                              "column": 26,
-                              "line": 1,
-                            },
-                            "start": Object {
-                              "column": 18,
-                              "line": 1,
-                            },
-                          },
-                          "range": Array [
-                            18,
-                            26,
-                          ],
-                          "type": "TSArrayType",
-                        },
-                      },
                     },
                     "loc": Object {
                       "end": Object {
@@ -95800,6 +95749,57 @@ Object {
                       26,
                     ],
                     "type": "RestElement",
+                    "typeAnnotation": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 26,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 16,
+                          "line": 1,
+                        },
+                      },
+                      "range": Array [
+                        16,
+                        26,
+                      ],
+                      "type": "TSTypeAnnotation",
+                      "typeAnnotation": Object {
+                        "elementType": Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 24,
+                              "line": 1,
+                            },
+                            "start": Object {
+                              "column": 18,
+                              "line": 1,
+                            },
+                          },
+                          "range": Array [
+                            18,
+                            24,
+                          ],
+                          "type": "TSNumberKeyword",
+                        },
+                        "loc": Object {
+                          "end": Object {
+                            "column": 26,
+                            "line": 1,
+                          },
+                          "start": Object {
+                            "column": 18,
+                            "line": 1,
+                          },
+                        },
+                        "range": Array [
+                          18,
+                          26,
+                        ],
+                        "type": "TSArrayType",
+                      },
+                    },
                   },
                 ],
                 "range": Array [
@@ -97717,7 +97717,7 @@ Object {
                     "argument": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 22,
+                          "column": 12,
                           "line": 1,
                         },
                         "start": Object {
@@ -97728,60 +97728,9 @@ Object {
                       "name": "a",
                       "range": Array [
                         11,
-                        22,
+                        12,
                       ],
                       "type": "Identifier",
-                      "typeAnnotation": Object {
-                        "loc": Object {
-                          "end": Object {
-                            "column": 22,
-                            "line": 1,
-                          },
-                          "start": Object {
-                            "column": 12,
-                            "line": 1,
-                          },
-                        },
-                        "range": Array [
-                          12,
-                          22,
-                        ],
-                        "type": "TSTypeAnnotation",
-                        "typeAnnotation": Object {
-                          "elementType": Object {
-                            "loc": Object {
-                              "end": Object {
-                                "column": 20,
-                                "line": 1,
-                              },
-                              "start": Object {
-                                "column": 14,
-                                "line": 1,
-                              },
-                            },
-                            "range": Array [
-                              14,
-                              20,
-                            ],
-                            "type": "TSNumberKeyword",
-                          },
-                          "loc": Object {
-                            "end": Object {
-                              "column": 22,
-                              "line": 1,
-                            },
-                            "start": Object {
-                              "column": 14,
-                              "line": 1,
-                            },
-                          },
-                          "range": Array [
-                            14,
-                            22,
-                          ],
-                          "type": "TSArrayType",
-                        },
-                      },
                     },
                     "loc": Object {
                       "end": Object {
@@ -97798,6 +97747,57 @@ Object {
                       22,
                     ],
                     "type": "RestElement",
+                    "typeAnnotation": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 22,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 12,
+                          "line": 1,
+                        },
+                      },
+                      "range": Array [
+                        12,
+                        22,
+                      ],
+                      "type": "TSTypeAnnotation",
+                      "typeAnnotation": Object {
+                        "elementType": Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 20,
+                              "line": 1,
+                            },
+                            "start": Object {
+                              "column": 14,
+                              "line": 1,
+                            },
+                          },
+                          "range": Array [
+                            14,
+                            20,
+                          ],
+                          "type": "TSNumberKeyword",
+                        },
+                        "loc": Object {
+                          "end": Object {
+                            "column": 22,
+                            "line": 1,
+                          },
+                          "start": Object {
+                            "column": 14,
+                            "line": 1,
+                          },
+                        },
+                        "range": Array [
+                          14,
+                          22,
+                        ],
+                        "type": "TSArrayType",
+                      },
+                    },
                   },
                 ],
                 "range": Array [

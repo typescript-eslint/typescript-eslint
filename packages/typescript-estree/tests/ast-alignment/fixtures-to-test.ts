@@ -351,6 +351,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     'class-with-implements-generic',
     'class-with-implements',
     'class-with-extends-and-implements',
+    'class-with-mixin',
     /**
      * Babel error: parameterName is not included into range of TSTypeAnnotation
      * TODO: report it to babel
@@ -363,8 +364,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Other major AST differences (e.g. fundamentally different node types)
      */
-    'class-with-mixin',
-    'function-with-types-assignation',
     'interface-extends-multiple',
     'interface-extends',
     'interface-type-parameters',
@@ -499,8 +498,6 @@ tester.addFixturePatternConfig('typescript/types', {
     /**
      * AST difference
      */
-    'function-with-rest',
-    'constructor-with-rest',
     'index-signature',
     'index-signature-readonly',
     'literal-number-negative'
