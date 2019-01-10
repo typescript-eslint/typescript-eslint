@@ -140,33 +140,39 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
   }
 
   /**
-   * Coverts body ExpressionStatements to directives
+   * Coverts body Nodes and add directive field to StringLiterals
+   * @param {ts.NodeArray<ts.Statement>} nodes of ts.Node
+   * @returns {ESTreeNode[]} Array of body statements
    */
-  function convertBodyExpressionsToDirectives() {
-    if (result.body && nodeUtils.canContainDirective(node)) {
-      const unique: string[] = [];
+  function convertBodyExpressions(
+    nodes: ts.NodeArray<ts.Statement>
+  ): ESTreeNode[] {
+    // directives has to be unique, if directive is registered twice pick only first one
+    const unique: string[] = [];
+    const allowDirectives = nodeUtils.canContainDirective(node);
 
-      // directives has to be unique, if directive is registered twice pick only first one
-      result.body
-        .filter(
-          (child: ESTreeNode) =>
-            child.type === AST_NODE_TYPES.ExpressionStatement &&
+    return (
+      nodes
+        .map(statement => {
+          const child = convertChild(statement);
+          if (
+            allowDirectives &&
+            child &&
             child.expression &&
-            child.expression.type === AST_NODE_TYPES.Literal &&
-            (child.expression as any).value &&
-            typeof (child.expression as any).value === 'string' &&
-            // ignore parenthesized expressions
-            ast.text.charAt(child.range[0]) !== '('
-        )
-        .forEach(
-          (child: { directive: string; expression: { raw: string } }) => {
-            if (!unique.includes((child.expression as any).raw)) {
-              child.directive = child.expression.raw.slice(1, -1);
-              unique.push(child.expression.raw);
+            ts.isExpressionStatement(statement) &&
+            ts.isStringLiteral(statement.expression)
+          ) {
+            const raw = child.expression.raw!;
+            if (!unique.includes(raw)) {
+              child.directive = raw.slice(1, -1);
+              unique.push(raw);
             }
           }
-        );
-    }
+          return child!; // child can be null but it's filtered below
+        })
+        // filter out unknown nodes for now
+        .filter(statement => statement)
+    );
   }
 
   /**
@@ -488,20 +494,10 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.SourceFile:
       Object.assign(result, {
         type: AST_NODE_TYPES.Program,
-        body: [],
+        body: convertBodyExpressions(node.statements),
         // externalModuleIndicator is internal field in TSC
         sourceType: (node as any).externalModuleIndicator ? 'module' : 'script'
       });
-
-      // filter out unknown nodes for now
-      node.statements.forEach((statement: any) => {
-        const convertedStatement = convertChild(statement);
-        if (convertedStatement) {
-          result.body.push(convertedStatement);
-        }
-      });
-
-      convertBodyExpressionsToDirectives();
 
       result.range[1] = node.endOfFileToken.end;
       result.loc = nodeUtils.getLocFor(
@@ -514,10 +510,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.Block:
       Object.assign(result, {
         type: AST_NODE_TYPES.BlockStatement,
-        body: node.statements.map(convertChild)
+        body: convertBodyExpressions(node.statements)
       });
-
-      convertBodyExpressionsToDirectives();
       break;
 
     case SyntaxKind.Identifier:
@@ -1637,10 +1631,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.ModuleBlock:
       Object.assign(result, {
         type: AST_NODE_TYPES.TSModuleBlock,
-        body: node.statements.map(convertChild)
+        body: convertBodyExpressions(node.statements)
       });
-
-      convertBodyExpressionsToDirectives();
       break;
 
     case SyntaxKind.ImportDeclaration:
