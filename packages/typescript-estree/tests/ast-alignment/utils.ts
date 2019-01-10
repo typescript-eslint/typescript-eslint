@@ -1,4 +1,5 @@
 import isPlainObject from 'lodash.isplainobject';
+import { AST_NODE_TYPES } from '../../src/ast-node-types';
 
 /**
  * By default, pretty-format (within Jest matchers) retains the names/types of nodes from the babylon AST,
@@ -193,6 +194,29 @@ export function preprocessBabylonAST(ast: any): any {
         if (node.parameters) {
           node.params = node.parameters;
           delete node.parameters;
+        }
+      },
+      /**
+       * We want this node to be different
+       * @see https://github.com/JamesHenry/typescript-estree/issues/109
+       */
+      TSTypeParameter(node: any) {
+        if (node.name) {
+          node.name = {
+            loc: {
+              start: {
+                column: node.loc.start.column,
+                line: node.loc.start.line
+              },
+              end: {
+                column: node.loc.start.column + node.name.length,
+                line: node.loc.start.line
+              }
+            },
+            name: node.name,
+            range: [node.range[0], node.range[0] + node.name.length],
+            type: AST_NODE_TYPES.Identifier
+          };
         }
       }
     }

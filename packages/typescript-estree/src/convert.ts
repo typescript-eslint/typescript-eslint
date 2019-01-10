@@ -2237,7 +2237,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.TypeParameter: {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSTypeParameter,
-        name: node.name.text,
+        name: convertChildType(node.name),
         constraint: node.constraint
           ? convertChildType(node.constraint)
           : undefined,
