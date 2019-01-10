@@ -372,10 +372,14 @@ tester.addFixturePatternConfig('typescript/basics', {
     'interface-with-jsdoc',
     'interface-with-optional-properties',
     'interface-without-type-annotation',
-    'interface-with-method',
     'type-guard-in-interface',
-    'typed-method-signature',
     'typed-this',
+    /**
+     * AST difference
+     * ts-estree: heritage = []
+     * babel: heritage = undefined
+     */
+    'interface-with-method',
     /**
      * Babel bug for parsing exported abstract interface
      * https://github.com/babel/babel/issues/9304
@@ -472,23 +476,7 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
     'interface-index-signature-private',
     'interface-index-signature-protected',
     'interface-index-signature-public',
-    'interface-index-signature-static',
-    /**
-     * TS1070
-     */
-    'interface-method-export',
-    'interface-method-private',
-    'interface-method-protected',
-    'interface-method-public',
-    'interface-method-static',
-    /**
-     * TS1070
-     */
-    'interface-property-export',
-    'interface-property-private',
-    'interface-property-protected',
-    'interface-property-public',
-    'interface-property-static'
+    'interface-index-signature-static'
   ]
 });
 
