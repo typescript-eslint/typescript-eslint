@@ -1435,34 +1435,33 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     }
 
     case SyntaxKind.Parameter: {
-      let parameter;
+      let parameter: ESTreeNode;
 
       if (node.dotDotDotToken) {
-        parameter = convertChild(node.name);
         Object.assign(result, {
           type: AST_NODE_TYPES.RestElement,
-          argument: parameter
+          argument: convertChild(node.name)
         });
+        parameter = result;
       } else if (node.initializer) {
-        parameter = convertChild(node.name);
+        parameter = convertChild(node.name)!;
         Object.assign(result, {
           type: AST_NODE_TYPES.AssignmentPattern,
           left: parameter,
           right: convertChild(node.initializer)
         });
       } else {
-        parameter = convert({
+        parameter = result = convert({
           node: node.name,
           parent,
           ast,
           additionalOptions
-        });
-        (result as any) = parameter;
+        })!;
       }
 
       if (node.type) {
-        parameter!.typeAnnotation = convertTypeAnnotation(node.type);
-        fixTypeAnnotationParentLocation(parameter!);
+        parameter.typeAnnotation = convertTypeAnnotation(node.type);
+        fixTypeAnnotationParentLocation(parameter);
       }
 
       if (node.questionToken) {
