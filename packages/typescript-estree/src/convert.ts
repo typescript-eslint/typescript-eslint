@@ -250,45 +250,22 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
   }
 
   /**
-   * Converts a child into a class implements node. This creates an intermediary
-   * ClassImplements node to match what Flow does.
+   * Converts a child into a specified heritage node.
+   * @param {AST_NODE_TYPES} nodeType Type of node to be used
    * @param {ts.ExpressionWithTypeArguments} child The TypeScript AST node to convert.
-   * @returns {ESTreeNode} The type annotation node.
+   * @returns {ESTreeNode} The heritage node.
    */
-  function convertClassImplements(
+  function convertHeritageClause(
+    nodeType: AST_NODE_TYPES,
     child: ts.ExpressionWithTypeArguments
   ): ESTreeNode {
-    const id = convertChild(child.expression) as ESTreeNode;
+    const id = convertChild(child.expression)!;
     const classImplementsNode: ESTreeNode = {
-      type: AST_NODE_TYPES.ClassImplements,
+      type: nodeType,
       loc: id.loc,
       range: id.range,
       id
     };
-    if (child.typeArguments && child.typeArguments.length) {
-      classImplementsNode.typeParameters = convertTypeArgumentsToTypeParameters(
-        child.typeArguments
-      );
-    }
-    return classImplementsNode;
-  }
-
-  /**
-   * Converts a child into a interface heritage node.
-   * @param {ts.ExpressionWithTypeArguments} child The TypeScript AST node to convert.
-   * @returns {ESTreeNode} The type annotation node.
-   */
-  function convertInterfaceHeritageClause(
-    child: ts.ExpressionWithTypeArguments
-  ): ESTreeNode {
-    const id = convertChild(child.expression) as ESTreeNode;
-    const classImplementsNode: ESTreeNode = {
-      type: AST_NODE_TYPES.TSInterfaceHeritage,
-      loc: id.loc,
-      range: id.range,
-      id
-    };
-
     if (child.typeArguments && child.typeArguments.length) {
       classImplementsNode.typeParameters = convertTypeArgumentsToTypeParameters(
         child.typeArguments
@@ -1600,8 +1577,9 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
 
       if (implementsClause) {
-        (result as any).implements = implementsClause.types.map(
-          convertClassImplements
+        (result as any).implements = implementsClause.types.map(el =>
+          // ClassImplements node to match what Flow does.
+          convertHeritageClause(AST_NODE_TYPES.ClassImplements, el)
         );
       }
 
@@ -2518,8 +2496,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       const interfaceBody = {
         type: AST_NODE_TYPES.TSInterfaceBody,
-        body: node.members.map((member: any) => convertChild(member)),
-        range: [interfaceOpenBrace.getStart(ast), result.range[1]],
+        body: node.members.map(member => convertChild(member)),
+        range: [interfaceOpenBrace.getStart(ast), node.end],
         loc: nodeUtils.getLocFor(
           interfaceOpenBrace.getStart(ast),
           node.end,
@@ -2532,8 +2510,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         body: interfaceBody,
         id: convertChild(node.name),
         heritage: hasImplementsClause
-          ? interfaceHeritageClauses[0].types.map(
-              convertInterfaceHeritageClause
+          ? interfaceHeritageClauses[0].types.map(el =>
+              convertHeritageClause(AST_NODE_TYPES.TSInterfaceHeritage, el)
             )
           : []
       });
