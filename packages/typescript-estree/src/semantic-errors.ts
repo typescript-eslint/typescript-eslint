@@ -59,6 +59,7 @@ function whitelistSupportedDiagnostics(
       case 1045: // ts 3.2 "A '{0}' modifier cannot be used with an interface declaration."
       case 1048: // ts 3.2 "A rest parameter cannot have an initializer."
       case 1049: // ts 3.2 "A 'set' accessor must have exactly one parameter."
+      case 1070: // ts 3.2 "'{0}' modifier cannot appear on a type member."
       case 1090: // ts 3.2 "'{0}' modifier cannot appear on a parameter."
       case 1096: // ts 3.2 "An index signature must have exactly one parameter."
       case 1097: // ts 3.2 "'{0}' list cannot be empty."

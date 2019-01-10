@@ -197,6 +197,19 @@ export function preprocessBabylonAST(ast: any): any {
         }
       },
       /**
+       * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
+       */
+      TSMethodSignature(node: any) {
+        if (node.typeAnnotation) {
+          node.returnType = node.typeAnnotation;
+          delete node.typeAnnotation;
+        }
+        if (node.parameters) {
+          node.params = node.parameters;
+          delete node.parameters;
+        }
+      },
+      /**
        * We want this node to be different
        * @see https://github.com/JamesHenry/typescript-estree/issues/109
        */
