@@ -30,6 +30,8 @@ export interface ESTreeNode {
   typeAnnotation?: ESTreeNode | null;
   typeParameters?: ESTreeNode | null;
   id?: ESTreeNode | null;
+  raw?: string;
+  value?: string;
   expression?: ESTreeNode | null;
   decorators?: (ESTreeNode | null)[];
   const?: boolean;
