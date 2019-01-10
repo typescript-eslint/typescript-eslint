@@ -933,7 +933,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       if (node.name.kind === SyntaxKind.Identifier && node.questionToken) {
-        (result as any).optional = true;
+        result.optional = true;
       }
 
       if (node.exclamationToken) {
@@ -944,7 +944,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         (result as any).key.type === AST_NODE_TYPES.Literal &&
         node.questionToken
       ) {
-        (result as any).optional = true;
+        result.optional = true;
       }
       break;
     }
@@ -2293,9 +2293,9 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       if (node.readonlyToken) {
         if (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword) {
-          (result as any).readonly = true;
+          result.readonly = true;
         } else {
-          (result as any).readonly = nodeUtils.getTextForTokenKind(
+          result.readonly = nodeUtils.getTextForTokenKind(
             node.readonlyToken.kind
           );
         }
@@ -2303,9 +2303,9 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       if (node.questionToken) {
         if (node.questionToken.kind === SyntaxKind.QuestionToken) {
-          (result as any).optional = true;
+          result.optional = true;
         } else {
-          (result as any).optional = nodeUtils.getTextForTokenKind(
+          result.optional = nodeUtils.getTextForTokenKind(
             node.questionToken.kind
           );
         }
@@ -2351,21 +2351,21 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.MethodSignature: {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSMethodSignature,
-        optional: nodeUtils.isOptional(node),
         computed: nodeUtils.isComputedProperty(node.name),
         key: convertChild(node.name),
-        params: convertParameters(node.parameters),
-        typeAnnotation: node.type ? convertTypeAnnotation(node.type) : null,
-        readonly:
-          nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
-        static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
-        export:
-          nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node) || undefined
+        params: convertParameters(node.parameters)
       });
 
-      const accessibility = nodeUtils.getTSNodeAccessibility(node);
-      if (accessibility) {
-        result.accessibility = accessibility;
+      if (nodeUtils.isOptional(node)) {
+        result.optional = true;
+      }
+
+      if (node.type) {
+        result.returnType = convertTypeAnnotation(node.type);
+      }
+
+      if (nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
+        result.readonly = true;
       }
 
       if (node.typeParameters) {
@@ -2374,6 +2374,18 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         );
       }
 
+      const accessibility = nodeUtils.getTSNodeAccessibility(node);
+      if (accessibility) {
+        result.accessibility = accessibility;
+      }
+
+      if (nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)) {
+        result.export = true;
+      }
+
+      if (nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node)) {
+        result.static = true;
+      }
       break;
     }
 
