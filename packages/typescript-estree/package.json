@@ -54,7 +54,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --coverage",
     "unit-tests": "jest \"./tests/lib/.*\"",
     "ast-alignment-tests": "jest spec.ts",
     "precommit": "npm test && lint-staged",
