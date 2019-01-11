@@ -18,8 +18,10 @@ script:
   - yarn check-format
   - yarn test
   - yarn build
+  - yarn global add codecov
 after_success:
-  - npm run travis-deploy-once "npm run semantic-release"
+  - codecov
+  - yarn travis-deploy-once "yarn semantic-release"
 branches:
   only:
     - master
