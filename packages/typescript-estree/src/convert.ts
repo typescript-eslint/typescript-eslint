@@ -6,7 +6,27 @@
  * MIT License
  */
 import ts from 'typescript';
-import nodeUtils from './node-utils';
+import {
+  canContainDirective,
+  createError,
+  getLoc,
+  getLocFor,
+  findNextToken,
+  convertToken,
+  hasModifier,
+  fixExports,
+  getTSNodeAccessibility,
+  getTextForTokenKind,
+  isJSXToken,
+  isComputedProperty,
+  isESTreeClassMember,
+  isComma,
+  getBinaryExpressionType,
+  isOptional,
+  findFirstMatchingToken,
+  unescapeStringLiteralText,
+  getDeclarationKind
+} from './node-utils';
 import { AST_NODE_TYPES } from './ast-node-types';
 import { ESTreeNode } from './temp-types-based-on-js-source';
 import { TSNode } from './ts-nodes';
@@ -46,7 +66,7 @@ interface ConvertConfig {
  * @returns {Object}       converted error object
  */
 export function convertError(error: any) {
-  return nodeUtils.createError(
+  return createError(
     error.file,
     error.start,
     error.message || error.messageText
@@ -81,7 +101,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
   let result: ESTreeNode = {
     type: '' as AST_NODE_TYPES,
     range: [node.getStart(ast), node.end],
-    loc: nodeUtils.getLoc(node, ast)
+    loc: getLoc(node, ast)
   };
 
   function converter(
@@ -145,7 +165,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         : 1;
     const annotationStartCol = child.getFullStart() - offset;
 
-    const loc = nodeUtils.getLocFor(annotationStartCol, child.end, ast);
+    const loc = getLocFor(annotationStartCol, child.end, ast);
     return {
       type: AST_NODE_TYPES.TSTypeAnnotation,
       loc,
@@ -164,7 +184,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
   ): ESTreeNode[] {
     // directives has to be unique, if directive is registered twice pick only first one
     const unique: string[] = [];
-    const allowDirectives = nodeUtils.canContainDirective(node);
+    const allowDirectives = canContainDirective(node);
 
     return (
       nodes
@@ -217,18 +237,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           typeArgumentsParent.kind === SyntaxKind.TypeReference)
       ) {
         const lastTypeArgument = typeArguments[typeArguments.length - 1];
-        const greaterThanToken = nodeUtils.findNextToken(
-          lastTypeArgument,
-          ast,
-          ast
-        );
+        const greaterThanToken = findNextToken(lastTypeArgument, ast, ast);
         end = greaterThanToken!.end;
       }
     }
     return {
       type: AST_NODE_TYPES.TSTypeParameterInstantiation,
       range: [start, end],
-      loc: nodeUtils.getLocFor(start, end, ast),
+      loc: getLocFor(start, end, ast),
       params: typeArguments.map(typeArgument => convertChildType(typeArgument))
     };
   }
@@ -244,20 +260,12 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     const firstTypeParameter = typeParameters[0];
     const lastTypeParameter = typeParameters[typeParameters.length - 1];
 
-    const greaterThanToken = nodeUtils.findNextToken(
-      lastTypeParameter,
-      ast,
-      ast
-    );
+    const greaterThanToken = findNextToken(lastTypeParameter, ast, ast);
 
     return {
       type: AST_NODE_TYPES.TSTypeParameterDeclaration,
       range: [firstTypeParameter.pos - 1, greaterThanToken!.end],
-      loc: nodeUtils.getLocFor(
-        firstTypeParameter.pos - 1,
-        greaterThanToken!.end,
-        ast
-      ),
+      loc: getLocFor(firstTypeParameter.pos - 1, greaterThanToken!.end, ast),
       params: typeParameters.map(typeParameter =>
         convertChildType(typeParameter)
       )
@@ -379,7 +387,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
   function convertTypeScriptJSXTagNameToESTreeName(
     tagName: ts.JsxTagNameExpression
   ): ESTreeNode {
-    const tagNameToken = nodeUtils.convertToken(tagName, ast);
+    const tagNameToken = convertToken(tagName, ast);
 
     if (tagNameToken.type === AST_NODE_TYPES.JSXMemberExpression) {
       const isNestedMemberExpression =
@@ -471,7 +479,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     typeAnnotationParent: ESTreeNode
   ): void {
     typeAnnotationParent.range[1] = (node as any).type.getEnd();
-    typeAnnotationParent.loc = nodeUtils.getLocFor(
+    typeAnnotationParent.loc = getLocFor(
       typeAnnotationParent.range[0],
       typeAnnotationParent.range[1],
       ast
@@ -492,11 +500,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
 
       result.range[1] = node.endOfFileToken.end;
-      result.loc = nodeUtils.getLocFor(
-        node.getStart(ast),
-        result.range[1],
-        ast
-      );
+      result.loc = getLocFor(node.getStart(ast), result.range[1], ast);
       break;
 
     case SyntaxKind.Block:
@@ -665,7 +669,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     // Declarations
 
     case SyntaxKind.FunctionDeclaration: {
-      const isDeclare = nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node);
+      const isDeclare = hasModifier(SyntaxKind.DeclareKeyword, node);
       let functionDeclarationType = AST_NODE_TYPES.FunctionDeclaration;
       if (isDeclare || !node.body) {
         functionDeclarationType = AST_NODE_TYPES.TSDeclareFunction;
@@ -676,7 +680,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         id: convertChild(node.name),
         generator: !!node.asteriskToken,
         expression: false,
-        async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
+        async: hasModifier(SyntaxKind.AsyncKeyword, node),
         params: convertParameters(node.parameters),
         body: convertChild(node.body) || undefined
       });
@@ -698,7 +702,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       // check for exports
-      result = nodeUtils.fixExports(node, result, ast);
+      result = fixExports(node, result, ast);
 
       break;
     }
@@ -725,15 +729,15 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       Object.assign(result, {
         type: AST_NODE_TYPES.VariableDeclaration,
         declarations: node.declarationList.declarations.map(convertChild),
-        kind: nodeUtils.getDeclarationKind(node.declarationList)
+        kind: getDeclarationKind(node.declarationList)
       });
 
-      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+      if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
         result.declare = true;
       }
 
       // check for exports
-      result = nodeUtils.fixExports(node, result, ast);
+      result = fixExports(node, result, ast);
       break;
 
     // mostly for for-of, for-in
@@ -741,7 +745,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       Object.assign(result, {
         type: AST_NODE_TYPES.VariableDeclaration,
         declarations: node.declarations.map(convertChild),
-        kind: nodeUtils.getDeclarationKind(node)
+        kind: getDeclarationKind(node)
       });
       break;
 
@@ -801,7 +805,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           config.inTypeMode,
           config.allowPattern
         ),
-        computed: nodeUtils.isComputedProperty(node.name),
+        computed: isComputedProperty(node.name),
         method: false,
         shorthand: false,
         kind: 'init'
@@ -858,20 +862,16 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
 
     case SyntaxKind.PropertyDeclaration: {
-      const isAbstract = nodeUtils.hasModifier(
-        SyntaxKind.AbstractKeyword,
-        node
-      );
+      const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
       Object.assign(result, {
         type: isAbstract
           ? AST_NODE_TYPES.TSAbstractClassProperty
           : AST_NODE_TYPES.ClassProperty,
         key: convertChild(node.name),
         value: convertChild(node.initializer),
-        computed: nodeUtils.isComputedProperty(node.name),
-        static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
-        readonly:
-          nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined
+        computed: isComputedProperty(node.name),
+        static: hasModifier(SyntaxKind.StaticKeyword, node),
+        readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined
       });
 
       if (node.type) {
@@ -882,7 +882,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         result.decorators = node.decorators.map(convertChild);
       }
 
-      const accessibility = nodeUtils.getTSNodeAccessibility(node);
+      const accessibility = getTSNodeAccessibility(node);
       if (accessibility) {
         result.accessibility = accessibility;
       }
@@ -907,14 +907,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.GetAccessor:
     case SyntaxKind.SetAccessor:
     case SyntaxKind.MethodDeclaration: {
-      const openingParen = nodeUtils.findFirstMatchingToken(
+      const openingParen = findFirstMatchingToken(
         node.name,
         ast,
         (token: any) => {
           if (!token || !token.kind) {
             return false;
           }
-          return nodeUtils.getTextForTokenKind(token.kind) === '(';
+          return getTextForTokenKind(token.kind) === '(';
         },
         ast
       );
@@ -928,7 +928,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           id: null,
           generator: !!node.asteriskToken,
           expression: false,
-          async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
+          async: hasModifier(SyntaxKind.AsyncKeyword, node),
           body: convertChild(node.body),
           range: [node.parameters.pos - 1, result.range[1]],
           loc: {
@@ -951,7 +951,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           type: AST_NODE_TYPES.Property,
           key: convertChild(node.name),
           value: method,
-          computed: nodeUtils.isComputedProperty(node.name),
+          computed: isComputedProperty(node.name),
           method: nodeIsMethod,
           shorthand: false,
           kind: 'init'
@@ -967,7 +967,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         /**
          * TypeScript class methods can be defined as "abstract"
          */
-        const methodDefinitionType = nodeUtils.hasModifier(
+        const methodDefinitionType = hasModifier(
           SyntaxKind.AbstractKeyword,
           node
         )
@@ -978,8 +978,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           type: methodDefinitionType,
           key: convertChild(node.name),
           value: method,
-          computed: nodeUtils.isComputedProperty(node.name),
-          static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
+          computed: isComputedProperty(node.name),
+          static: hasModifier(SyntaxKind.StaticKeyword, node),
           kind: 'method'
         });
 
@@ -987,7 +987,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           result.decorators = node.decorators.map(convertChild);
         }
 
-        const accessibility = nodeUtils.getTSNodeAccessibility(node);
+        const accessibility = getTSNodeAccessibility(node);
         if (accessibility) {
           result.accessibility = accessibility;
         }
@@ -1024,16 +1024,10 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
     // TypeScript uses this even for static methods named "constructor"
     case SyntaxKind.Constructor: {
-      const constructorIsStatic = nodeUtils.hasModifier(
-          SyntaxKind.StaticKeyword,
-          node
-        ),
-        constructorIsAbstract = nodeUtils.hasModifier(
-          SyntaxKind.AbstractKeyword,
-          node
-        ),
+      const constructorIsStatic = hasModifier(SyntaxKind.StaticKeyword, node),
+        constructorIsAbstract = hasModifier(SyntaxKind.AbstractKeyword, node),
         firstConstructorToken = constructorIsStatic
-          ? nodeUtils.findNextToken(node.getFirstToken()!, ast, ast)
+          ? findNextToken(node.getFirstToken()!, ast, ast)
           : node.getFirstToken(),
         constructorLoc = ast.getLineAndCharacterOfPosition(
           node.parameters.pos - 1
@@ -1062,8 +1056,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         constructorIdentifierLocEnd = ast.getLineAndCharacterOfPosition(
           (firstConstructorToken as any).getEnd(ast)
         ),
-        constructorIsComputed =
-          !!node.name && nodeUtils.isComputedProperty(node.name);
+        constructorIsComputed = !!node.name && isComputedProperty(node.name);
 
       let constructorKey;
 
@@ -1122,7 +1115,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
             : 'constructor'
       });
 
-      const accessibility = nodeUtils.getTSNodeAccessibility(node);
+      const accessibility = getTSNodeAccessibility(node);
       if (accessibility) {
         result.accessibility = accessibility;
       }
@@ -1137,7 +1130,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         generator: !!node.asteriskToken,
         params: convertParameters(node.parameters),
         body: convertChild(node.body),
-        async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
+        async: hasModifier(SyntaxKind.AsyncKeyword, node),
         expression: false
       });
 
@@ -1228,11 +1221,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
             left: convertChild(node.name),
             right: convertChild(node.initializer),
             range: [node.name.getStart(ast), node.initializer.end],
-            loc: nodeUtils.getLocFor(
-              node.name.getStart(ast),
-              node.initializer.end,
-              ast
-            )
+            loc: getLocFor(node.name.getStart(ast), node.initializer.end, ast)
           };
         }
       }
@@ -1245,7 +1234,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         id: null,
         params: convertParameters(node.parameters),
         body: convertChild(node.body),
-        async: nodeUtils.hasModifier(SyntaxKind.AsyncKeyword, node),
+        async: hasModifier(SyntaxKind.AsyncKeyword, node),
         expression: node.body.kind !== SyntaxKind.Block
       });
 
@@ -1396,15 +1385,11 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         return {
           type: AST_NODE_TYPES.TSParameterProperty,
           range: [node.getStart(ast), node.end],
-          loc: nodeUtils.getLoc(node, ast),
-          accessibility: nodeUtils.getTSNodeAccessibility(node) || undefined,
-          readonly:
-            nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) ||
-            undefined,
-          static:
-            nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
-          export:
-            nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
+          loc: getLoc(node, ast),
+          accessibility: getTSNodeAccessibility(node) || undefined,
+          readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
+          static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
+          export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
           parameter: result
         };
       }
@@ -1428,7 +1413,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           node.typeParameters[node.typeParameters.length - 1];
 
         if (!lastClassToken || lastTypeParameter.pos > lastClassToken.pos) {
-          lastClassToken = nodeUtils.findNextToken(lastTypeParameter, ast, ast);
+          lastClassToken = findNextToken(lastTypeParameter, ast, ast);
         }
         result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
@@ -1440,7 +1425,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
          * TypeScript class declarations can be defined as "abstract"
          */
         if (node.kind === SyntaxKind.ClassDeclaration) {
-          if (nodeUtils.hasModifier(SyntaxKind.AbstractKeyword, node)) {
+          if (hasModifier(SyntaxKind.AbstractKeyword, node)) {
             classNodeType = `TSAbstract${classNodeType}`;
           }
         }
@@ -1452,21 +1437,21 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         const lastModifier = node.modifiers![node.modifiers!.length - 1];
 
         if (!lastClassToken || lastModifier.pos > lastClassToken.pos) {
-          lastClassToken = nodeUtils.findNextToken(lastModifier, ast, ast);
+          lastClassToken = findNextToken(lastModifier, ast, ast);
         }
       } else if (!lastClassToken) {
         // no name
         lastClassToken = node.getFirstToken();
       }
 
-      const openBrace = nodeUtils.findNextToken(lastClassToken, ast, ast)!;
+      const openBrace = findNextToken(lastClassToken, ast, ast)!;
       const superClass = heritageClauses.find(
         clause => clause.token === SyntaxKind.ExtendsKeyword
       );
 
       if (superClass) {
         if (superClass.types.length > 1) {
-          throw nodeUtils.createError(
+          throw createError(
             ast,
             superClass.types[1].pos,
             'Classes can only extend a single class.'
@@ -1491,7 +1476,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           type: AST_NODE_TYPES.ClassBody,
           body: [],
           range: [openBrace.getStart(ast), node.end],
-          loc: nodeUtils.getLocFor(openBrace.getStart(ast), node.end, ast)
+          loc: getLocFor(openBrace.getStart(ast), node.end, ast)
         },
         superClass:
           superClass && superClass.types[0]
@@ -1505,7 +1490,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         );
       }
 
-      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+      if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
         result.declare = true;
       }
 
@@ -1513,16 +1498,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         result.decorators = node.decorators.map(convertChild);
       }
 
-      const filteredMembers = node.members.filter(
-        nodeUtils.isESTreeClassMember
-      );
+      const filteredMembers = node.members.filter(isESTreeClassMember);
 
       if (filteredMembers.length) {
         result.body.body = filteredMembers.map(convertChild);
       }
 
       // check for exports
-      result = nodeUtils.fixExports(node, result, ast);
+      result = fixExports(node, result, ast);
 
       break;
     }
@@ -1587,7 +1570,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       // have to adjust location information due to tree differences
       result.range[1] = node.name!.end;
-      result.loc = nodeUtils.getLocFor(result.range[0], result.range[1], ast);
+      result.loc = getLocFor(result.range[0], result.range[1], ast);
       break;
 
     case SyntaxKind.ExportDeclaration:
@@ -1632,7 +1615,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
     case SyntaxKind.PrefixUnaryExpression:
     case SyntaxKind.PostfixUnaryExpression: {
-      const operator = nodeUtils.getTextForTokenKind(node.operator) || '';
+      const operator = getTextForTokenKind(node.operator) || '';
       Object.assign(result, {
         /**
          * ESTree uses UpdateExpression for ++/--
@@ -1677,7 +1660,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.TypeOperator:
       Object.assign(result, {
         type: AST_NODE_TYPES.TSTypeOperator,
-        operator: nodeUtils.getTextForTokenKind(node.operator),
+        operator: getTextForTokenKind(node.operator),
         typeAnnotation: convertChild(node.type)
       });
       break;
@@ -1686,7 +1669,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
     case SyntaxKind.BinaryExpression:
       // TypeScript uses BinaryExpression for sequences as well
-      if (nodeUtils.isComma(node.operatorToken)) {
+      if (isComma(node.operatorToken)) {
         Object.assign(result, {
           type: AST_NODE_TYPES.SequenceExpression,
           expressions: []
@@ -1711,10 +1694,10 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           (result as any).expressions.push(right);
         }
       } else {
-        const type = nodeUtils.getBinaryExpressionType(node.operatorToken);
+        const type = getBinaryExpressionType(node.operatorToken);
         Object.assign(result, {
           type,
-          operator: nodeUtils.getTextForTokenKind(node.operatorToken.kind),
+          operator: getTextForTokenKind(node.operatorToken.kind),
           left: converter(
             node.left,
             config.inTypeMode,
@@ -1734,7 +1717,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
 
     case SyntaxKind.PropertyAccessExpression:
-      if (nodeUtils.isJSXToken(parent!)) {
+      if (isJSXToken(parent!)) {
         const jsxMemberExpression = {
           type: AST_NODE_TYPES.MemberExpression,
           object: convertChild(node.expression),
@@ -1807,14 +1790,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
 
     case SyntaxKind.MetaProperty: {
-      const newToken = nodeUtils.convertToken(node.getFirstToken()!, ast);
+      const newToken = convertToken(node.getFirstToken()!, ast);
       Object.assign(result, {
         type: AST_NODE_TYPES.MetaProperty,
         meta: {
           type: AST_NODE_TYPES.Identifier,
           range: newToken.range,
           loc: newToken.loc,
-          name: nodeUtils.getTextForTokenKind(node.keywordToken)
+          name: getTextForTokenKind(node.keywordToken)
         },
         property: convertChild(node.name)
       });
@@ -1839,7 +1822,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       if ((parent as any).name && (parent as any).name === node) {
         (result as any).value = node.text;
       } else {
-        (result as any).value = nodeUtils.unescapeStringLiteralText(node.text);
+        (result as any).value = unescapeStringLiteralText(node.text);
       }
       break;
 
@@ -2034,7 +2017,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     }
 
     case SyntaxKind.JsxAttribute: {
-      const attributeName = nodeUtils.convertToken(node.name, ast);
+      const attributeName = convertToken(node.name, ast);
       attributeName.type = AST_NODE_TYPES.JSXIdentifier;
       attributeName.name = attributeName.value;
       delete attributeName.value;
@@ -2068,7 +2051,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         raw: ast.text.slice(start, end)
       });
 
-      result.loc = nodeUtils.getLocFor(start, end, ast);
+      result.loc = getLocFor(start, end, ast);
       result.range = [start, end];
 
       break;
@@ -2195,9 +2178,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         if (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword) {
           result.readonly = true;
         } else {
-          result.readonly = nodeUtils.getTextForTokenKind(
-            node.readonlyToken.kind
-          );
+          result.readonly = getTextForTokenKind(node.readonlyToken.kind);
         }
       }
 
@@ -2205,9 +2186,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         if (node.questionToken.kind === SyntaxKind.QuestionToken) {
           result.optional = true;
         } else {
-          result.optional = nodeUtils.getTextForTokenKind(
-            node.questionToken.kind
-          );
+          result.optional = getTextForTokenKind(node.questionToken.kind);
         }
       }
 
@@ -2232,7 +2211,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         typeAnnotation: convertChildType(node.type)
       });
 
-      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+      if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
         result.declare = true;
       }
 
@@ -2244,19 +2223,19 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       // check for exports
-      result = nodeUtils.fixExports(node, result, ast);
+      result = fixExports(node, result, ast);
       break;
     }
 
     case SyntaxKind.MethodSignature: {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSMethodSignature,
-        computed: nodeUtils.isComputedProperty(node.name),
+        computed: isComputedProperty(node.name),
         key: convertChild(node.name),
         params: convertParameters(node.parameters)
       });
 
-      if (nodeUtils.isOptional(node)) {
+      if (isOptional(node)) {
         result.optional = true;
       }
 
@@ -2264,7 +2243,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         result.returnType = convertTypeAnnotation(node.type);
       }
 
-      if (nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
+      if (hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
         result.readonly = true;
       }
 
@@ -2274,16 +2253,16 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         );
       }
 
-      const accessibility = nodeUtils.getTSNodeAccessibility(node);
+      const accessibility = getTSNodeAccessibility(node);
       if (accessibility) {
         result.accessibility = accessibility;
       }
 
-      if (nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)) {
+      if (hasModifier(SyntaxKind.ExportKeyword, node)) {
         result.export = true;
       }
 
-      if (nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node)) {
+      if (hasModifier(SyntaxKind.StaticKeyword, node)) {
         result.static = true;
       }
       break;
@@ -2292,22 +2271,19 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.PropertySignature: {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSPropertySignature,
-        optional: nodeUtils.isOptional(node) || undefined,
-        computed: nodeUtils.isComputedProperty(node.name),
+        optional: isOptional(node) || undefined,
+        computed: isComputedProperty(node.name),
         key: convertChild(node.name),
         typeAnnotation: node.type
           ? convertTypeAnnotation(node.type)
           : undefined,
         initializer: convertChild(node.initializer) || undefined,
-        readonly:
-          nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
-        static:
-          nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
-        export:
-          nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node) || undefined
+        readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
+        static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
+        export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined
       });
 
-      const accessibility = nodeUtils.getTSNodeAccessibility(node);
+      const accessibility = getTSNodeAccessibility(node);
       if (accessibility) {
         result.accessibility = accessibility;
       }
@@ -2322,20 +2298,20 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         typeAnnotation: node.type ? convertTypeAnnotation(node.type) : null
       });
 
-      if (nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
+      if (hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
         result.readonly = true;
       }
 
-      const accessibility = nodeUtils.getTSNodeAccessibility(node);
+      const accessibility = getTSNodeAccessibility(node);
       if (accessibility) {
         result.accessibility = accessibility;
       }
 
-      if (nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)) {
+      if (hasModifier(SyntaxKind.ExportKeyword, node)) {
         result.export = true;
       }
 
-      if (nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node)) {
+      if (hasModifier(SyntaxKind.StaticKeyword, node)) {
         result.static = true;
       }
       break;
@@ -2393,7 +2369,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           !interfaceLastClassToken ||
           interfaceLastTypeParameter.pos > interfaceLastClassToken.pos
         ) {
-          interfaceLastClassToken = nodeUtils.findNextToken(
+          interfaceLastClassToken = findNextToken(
             interfaceLastTypeParameter,
             ast,
             ast
@@ -2404,7 +2380,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         );
       }
 
-      const interfaceOpenBrace = nodeUtils.findNextToken(
+      const interfaceOpenBrace = findNextToken(
         interfaceLastClassToken,
         ast,
         ast
@@ -2414,11 +2390,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         type: AST_NODE_TYPES.TSInterfaceBody,
         body: node.members.map(member => convertChild(member)),
         range: [interfaceOpenBrace.getStart(ast), node.end],
-        loc: nodeUtils.getLocFor(
-          interfaceOpenBrace.getStart(ast),
-          node.end,
-          ast
-        )
+        loc: getLocFor(interfaceOpenBrace.getStart(ast), node.end, ast)
       };
 
       Object.assign(result, {
@@ -2464,14 +2436,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       if (node.decorators) {
         result.decorators = node.decorators.map(convertChild);
       }
-      if (nodeUtils.hasModifier(SyntaxKind.AbstractKeyword, node)) {
+      if (hasModifier(SyntaxKind.AbstractKeyword, node)) {
         result.abstract = true;
       }
-      if (nodeUtils.hasModifier(SyntaxKind.DeclareKeyword, node)) {
+      if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
         result.declare = true;
       }
       // check for exports
-      result = nodeUtils.fixExports(node, result, ast);
+      result = fixExports(node, result, ast);
 
       break;
     }
@@ -2510,7 +2482,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       // apply modifiers first...
       applyModifiersToResult(node.modifiers);
       // ...then check for exports
-      result = nodeUtils.fixExports(node, result, ast);
+      result = fixExports(node, result, ast);
       /**
        * Semantically, decorators are not allowed on enum declarations,
        * but the TypeScript compiler will parse them and produce a valid AST,
@@ -2554,7 +2526,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         result.global = true;
       }
       // ...then check for exports
-      result = nodeUtils.fixExports(node, result, ast);
+      result = fixExports(node, result, ast);
       break;
     }
 
@@ -2636,7 +2608,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         type: AST_NODE_TYPES.TSImportEqualsDeclaration,
         id: convertChild(node.name),
         moduleReference: convertChild(node.moduleReference),
-        isExport: nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)
+        isExport: hasModifier(SyntaxKind.ExportKeyword, node)
       });
       break;
     }
