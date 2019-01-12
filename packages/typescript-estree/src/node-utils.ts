@@ -100,33 +100,6 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
   [SyntaxKind.ImportKeyword]: 'import'
 };
 
-/**
- * Find the first matching child based on the given sourceFile and predicate function.
- * @param {ts.Node} node The current ts.Node
- * @param {ts.SourceFile} sourceFile The full AST source file
- * @param {Function} predicate The predicate function to apply to each checked child
- * @returns {ts.Node|undefined} a matching child ts.Node
- */
-function findFirstMatchingChild(
-  node: ts.Node,
-  sourceFile: ts.SourceFile,
-  predicate: (node: ts.Node) => boolean
-): ts.Node | undefined {
-  const children = node.getChildren(sourceFile);
-  for (let i = 0; i < children.length; i++) {
-    const child = children[i];
-    if (child && predicate(child)) {
-      return child;
-    }
-
-    const grandChild = findFirstMatchingChild(child, sourceFile, predicate);
-    if (grandChild) {
-      return grandChild;
-    }
-  }
-  return undefined;
-}
-
 export default {
   /**
    * Expose the enum of possible TSNode `kind`s.
@@ -148,9 +121,7 @@ export default {
   getTSNodeAccessibility,
   findNextToken,
   findFirstMatchingToken,
-  findChildOfKind,
   findFirstMatchingAncestor,
-  findAncestorOfKind,
   hasJSXAncestor,
   unescapeStringLiteralText,
   isComputedProperty,
@@ -461,21 +432,6 @@ function findFirstMatchingToken(
 }
 
 /**
- * Finds the first child ts.Node which matches the given kind
- * @param {ts.Node} node The parent ts.Node
- * @param {number} kind The ts.Node kind to match against
- * @param {ts.SourceFile} sourceFile The full AST source file
- * @returns {ts.Node|undefined} a matching ts.Node
- */
-function findChildOfKind(
-  node: ts.Node,
-  kind: number,
-  sourceFile: ts.SourceFile
-): ts.Node | undefined {
-  return findFirstMatchingChild(node, sourceFile, child => child.kind === kind);
-}
-
-/**
  * Find the first matching ancestor based on the given predicate function.
  * @param {ts.Node} node The current ts.Node
  * @param {Function} predicate The predicate function to apply to each checked ancestor
@@ -492,19 +448,6 @@ function findFirstMatchingAncestor(
     node = node.parent;
   }
   return undefined;
-}
-
-/**
- * Finds the first parent ts.Node which matches the given kind
- * @param {ts.Node} node The current ts.Node
- * @param {ts.SyntaxKind} kind The ts.Node kind to match against
- * @returns {ts.Node|undefined} a matching parent ts.Node
- */
-function findAncestorOfKind(
-  node: ts.Node,
-  kind: ts.SyntaxKind
-): ts.Node | undefined {
-  return findFirstMatchingAncestor(node, parent => parent.kind === kind);
 }
 
 /**
