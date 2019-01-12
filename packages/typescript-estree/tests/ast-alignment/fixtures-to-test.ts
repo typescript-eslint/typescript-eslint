@@ -168,6 +168,8 @@ tester.addFixturePatternConfig('javascript/bigIntLiterals');
 tester.addFixturePatternConfig('javascript/binaryLiterals');
 tester.addFixturePatternConfig('javascript/blockBindings');
 
+tester.addFixturePatternConfig('javascript/callExpression');
+
 tester.addFixturePatternConfig('javascript/classes', {
   ignore: [
     /**
@@ -200,6 +202,7 @@ tester.addFixturePatternConfig('javascript/forIn', {
      * babel: ArrayExpression
      */
     'for-in-array',
+    'for-in-with-rest',
     /**
      * Error: AST difference
      * ts-estree: AssignmentExpression
@@ -226,7 +229,8 @@ tester.addFixturePatternConfig('javascript/forOf', {
      * ts-estree: ArrayPattern
      * babel: ArrayExpression
      */
-    'for-of-array'
+    'for-of-array',
+    'for-of-with-rest'
   ]
 });
 tester.addFixturePatternConfig('javascript/generators');
@@ -275,7 +279,14 @@ tester.addFixturePatternConfig('javascript/regex');
 tester.addFixturePatternConfig('javascript/regexUFlag');
 tester.addFixturePatternConfig('javascript/regexYFlag');
 tester.addFixturePatternConfig('javascript/restParams');
-tester.addFixturePatternConfig('javascript/spread');
+tester.addFixturePatternConfig('javascript/spread', {
+  ignore: [
+    /**
+     * Error: AST difference
+     */
+    'complex-spread'
+  ]
+});
 tester.addFixturePatternConfig('javascript/unicodeCodePointEscapes');
 
 /* ================================================== */
