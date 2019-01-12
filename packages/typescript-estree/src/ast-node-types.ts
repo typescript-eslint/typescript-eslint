@@ -39,7 +39,6 @@ export enum AST_NODE_TYPES {
   ForStatement = 'ForStatement',
   FunctionDeclaration = 'FunctionDeclaration',
   FunctionExpression = 'FunctionExpression',
-  GenericTypeAnnotation = 'GenericTypeAnnotation',
   Identifier = 'Identifier',
   IfStatement = 'IfStatement',
   Import = 'Import',
@@ -56,7 +55,7 @@ export enum AST_NODE_TYPES {
   JSXFragment = 'JSXFragment',
   JSXIdentifier = 'JSXIdentifier',
   JSXMemberExpression = 'JSXMemberExpression',
-  JSXNamespacedName = 'JSXNamespacedName',
+  JSXNamespacedName = 'JSXNamespacedName', // https://github.com/Microsoft/TypeScript/issues/7411
   JSXOpeningElement = 'JSXOpeningElement',
   JSXOpeningFragment = 'JSXOpeningFragment',
   JSXSpreadAttribute = 'JSXSpreadAttribute',

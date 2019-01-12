@@ -2418,20 +2418,26 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.IndexSignature: {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSIndexSignature,
-        index: convertChild(node.parameters[0]),
-        typeAnnotation: node.type ? convertTypeAnnotation(node.type) : null,
-        readonly:
-          nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
-        static: nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node),
-        export:
-          nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node) || undefined
+        parameters: node.parameters.map(convertChild),
+        typeAnnotation: node.type ? convertTypeAnnotation(node.type) : null
       });
+
+      if (nodeUtils.hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
+        result.readonly = true;
+      }
 
       const accessibility = nodeUtils.getTSNodeAccessibility(node);
       if (accessibility) {
         result.accessibility = accessibility;
       }
 
+      if (nodeUtils.hasModifier(SyntaxKind.ExportKeyword, node)) {
+        result.export = true;
+      }
+
+      if (nodeUtils.hasModifier(SyntaxKind.StaticKeyword, node)) {
+        result.static = true;
+      }
       break;
     }
     case SyntaxKind.ConstructorType:

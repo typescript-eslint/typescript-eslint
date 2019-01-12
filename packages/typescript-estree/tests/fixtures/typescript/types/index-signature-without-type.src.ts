@@ -1,0 +1,3 @@
+type foo = {
+  [a: string];
+}

@@ -2212,15 +2212,50 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-export.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-export.src.ts.src 1`] = `
+Object {
+  "column": 2,
+  "index": 18,
+  "lineNumber": 2,
+  "message": "'export' modifier cannot appear on an index signature.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-private.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-private.src.ts.src 1`] = `
+Object {
+  "column": 2,
+  "index": 18,
+  "lineNumber": 2,
+  "message": "'private' modifier cannot appear on an index signature.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-protected.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-protected.src.ts.src 1`] = `
+Object {
+  "column": 2,
+  "index": 18,
+  "lineNumber": 2,
+  "message": "'protected' modifier cannot appear on an index signature.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-public.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-public.src.ts.src 1`] = `
+Object {
+  "column": 2,
+  "index": 18,
+  "lineNumber": 2,
+  "message": "'public' modifier cannot appear on an index signature.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-static.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-static.src.ts.src 1`] = `
+Object {
+  "column": 2,
+  "index": 18,
+  "lineNumber": 2,
+  "message": "'static' modifier cannot appear on an index signature.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-method-export.src.ts.src 1`] = `
 Object {
@@ -2381,6 +2416,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/index-signature.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/index-signature-readonly.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/index-signature-without-type.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/indexed.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
