@@ -6,7 +6,7 @@
  */
 
 import ts from 'typescript';
-import nodeUtils from './node-utils';
+import { getLocFor, getNodeContainer } from './node-utils';
 import {
   ESTreeComment,
   LineAndColumnData
@@ -75,7 +75,7 @@ function getCommentFromTriviaScanner(
   const text = isBlock
     ? comment.replace(/^\/\*/, '').replace(/\*\/$/, '')
     : comment.replace(/^\/\//, '');
-  const loc = nodeUtils.getLocFor(range.pos, range.end, ast);
+  const loc = getLocFor(range.pos, range.end, ast);
 
   const esprimaComment = convertTypeScriptCommentToEsprimaComment(
     isBlock,
@@ -128,7 +128,7 @@ export function convertComments(
         break;
       }
       case ts.SyntaxKind.GreaterThanToken:
-        container = nodeUtils.getNodeContainer(ast, start, end);
+        container = getNodeContainer(ast, start, end);
         if (
           container &&
           container.parent &&
@@ -141,7 +141,7 @@ export function convertComments(
         }
         break;
       case ts.SyntaxKind.CloseBraceToken:
-        container = nodeUtils.getNodeContainer(ast, start, end);
+        container = getNodeContainer(ast, start, end);
 
         if (
           container.kind === ts.SyntaxKind.TemplateMiddle ||
@@ -153,7 +153,7 @@ export function convertComments(
         break;
       case ts.SyntaxKind.SlashToken:
       case ts.SyntaxKind.SlashEqualsToken:
-        container = nodeUtils.getNodeContainer(ast, start, end);
+        container = getNodeContainer(ast, start, end);
 
         if (container.kind === ts.SyntaxKind.RegularExpressionLiteral) {
           kind = triviaScanner.reScanSlashToken();
