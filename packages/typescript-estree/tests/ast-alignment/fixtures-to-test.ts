@@ -468,15 +468,7 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
      * TODO: remove me in next babel > 7.2.3
      */
     'interface-empty-extends',
-    'class-extends-empty-implements',
-    /**
-     * TS1071
-     */
-    'interface-index-signature-export',
-    'interface-index-signature-private',
-    'interface-index-signature-protected',
-    'interface-index-signature-public',
-    'interface-index-signature-static'
+    'class-extends-empty-implements'
   ]
 });
 
@@ -484,10 +476,15 @@ tester.addFixturePatternConfig('typescript/types', {
   fileType: 'ts',
   ignore: [
     /**
-     * AST difference
+     * Babel bug for range of Identifier in TSIndexSignature
+     * https://github.com/babel/babel/issues/9319
      */
     'index-signature',
     'index-signature-readonly',
+    'index-signature-without-type',
+    /**
+     * AST difference
+     */
     'literal-number-negative'
   ]
 });
