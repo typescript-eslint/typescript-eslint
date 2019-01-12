@@ -274,12 +274,12 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     nodeType: AST_NODE_TYPES,
     child: ts.ExpressionWithTypeArguments
   ): ESTreeNode {
-    const id = convertChild(child.expression)!;
+    const expression = convertChild(child.expression)!;
     const classImplementsNode: ESTreeNode = {
       type: nodeType,
-      loc: id.loc,
-      range: id.range,
-      id
+      loc: expression.loc,
+      range: expression.range,
+      expression
     };
     if (child.typeArguments && child.typeArguments.length) {
       classImplementsNode.typeParameters = convertTypeArgumentsToTypeParameters(
@@ -1500,9 +1500,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
 
       if (implementsClause) {
-        (result as any).implements = implementsClause.types.map(el =>
-          // ClassImplements node to match what Flow does.
-          convertHeritageClause(AST_NODE_TYPES.ClassImplements, el)
+        result.implements = implementsClause.types.map(el =>
+          convertHeritageClause(AST_NODE_TYPES.TSClassImplements, el)
         );
       }
 
@@ -2405,7 +2404,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         );
       }
 
-      const hasImplementsClause = interfaceHeritageClauses.length > 0;
       const interfaceOpenBrace = nodeUtils.findNextToken(
         interfaceLastClassToken,
         ast,
@@ -2426,13 +2424,38 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSInterfaceDeclaration,
         body: interfaceBody,
-        id: convertChild(node.name),
-        heritage: hasImplementsClause
-          ? interfaceHeritageClauses[0].types.map(el =>
-              convertHeritageClause(AST_NODE_TYPES.TSInterfaceHeritage, el)
-            )
-          : []
+        id: convertChild(node.name)
       });
+
+      if (interfaceHeritageClauses.length > 0) {
+        const interfaceExtends = [];
+        const interfaceImplements = [];
+
+        for (const heritageClause of interfaceHeritageClauses) {
+          if (heritageClause.token === SyntaxKind.ExtendsKeyword) {
+            for (const n of heritageClause.types) {
+              interfaceExtends.push(
+                convertHeritageClause(AST_NODE_TYPES.TSInterfaceHeritage, n)
+              );
+            }
+          } else if (heritageClause.token === SyntaxKind.ImplementsKeyword) {
+            for (const n of heritageClause.types) {
+              interfaceImplements.push(
+                convertHeritageClause(AST_NODE_TYPES.TSInterfaceHeritage, n)
+              );
+            }
+          }
+        }
+
+        if (interfaceExtends.length) {
+          result.extends = interfaceExtends;
+        }
+
+        if (interfaceImplements.length) {
+          result.implements = interfaceImplements;
+        }
+      }
+
       /**
        * Semantically, decorators are not allowed on interface declarations,
        * but the TypeScript compiler will parse them and produce a valid AST,

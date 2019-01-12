@@ -315,25 +315,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'arrow-function-with-type-parameters',
     /**
-     * Babel: ClassDeclaration + abstract: true
-     * ts-estree: TSAbstractClassDeclaration
-     */
-    'abstract-class-with-abstract-properties',
-    /**
-     * Babel: ClassProperty + abstract: true
-     * ts-estree: TSAbstractClassProperty
-     */
-    'abstract-class-with-abstract-readonly-property',
-    /**
-     * Babel: TSExpressionWithTypeArguments
-     * ts-estree: ClassImplements
-     */
-    'class-with-implements-generic-multiple',
-    'class-with-implements-generic',
-    'class-with-implements',
-    'class-with-extends-and-implements',
-    'class-with-mixin',
-    /**
      * Babel error: parameterName is not included into range of TSTypeAnnotation
      * TODO: report it to babel
      */
@@ -341,26 +322,11 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * there is difference in range between babel and ts-estree
      */
+    'class-with-implements-generic-multiple',
+    'class-with-implements-generic',
     'export-declare-const-named-enum',
-    /**
-     * Other major AST differences (e.g. fundamentally different node types)
-     */
-    'interface-extends-multiple',
-    'interface-extends',
-    'interface-type-parameters',
     'interface-with-extends-type-parameters',
-    'interface-with-generic',
-    'interface-with-jsdoc',
     'interface-with-optional-properties',
-    'interface-without-type-annotation',
-    'type-guard-in-interface',
-    'typed-this',
-    /**
-     * AST difference
-     * ts-estree: heritage = []
-     * babel: heritage = undefined
-     */
-    'interface-with-method',
     /**
      * Babel bug for parsing exported abstract interface
      * https://github.com/babel/babel/issues/9304
@@ -471,21 +437,7 @@ tester.addFixturePatternConfig('typescript/types', {
 });
 
 tester.addFixturePatternConfig('typescript/declare', {
-  fileType: 'ts',
-  ignore: [
-    /**
-     * AST difference
-     * ts-estree: heritage = []
-     * babel: heritage = undefined
-     */
-    'interface',
-    /**
-     * AST difference
-     * ts-estree: TSAbstractClassDeclaration
-     * babel: ClassDeclaration[abstract=true]
-     */
-    'abstract-class'
-  ]
+  fileType: 'ts'
 });
 
 tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
