@@ -7,7 +7,7 @@
  */
 import convert, { getASTMaps, resetASTMaps, convertError } from './convert';
 import { convertComments } from './convert-comments';
-import nodeUtils from './node-utils';
+import { convertTokens } from './node-utils';
 import ts from 'typescript';
 import { Extra } from './temp-types-based-on-js-source';
 
@@ -42,7 +42,7 @@ export default (
    * Optionally convert and include all tokens in the AST
    */
   if (extra.tokens) {
-    estree.tokens = nodeUtils.convertTokens(ast);
+    estree.tokens = convertTokens(ast);
   }
 
   /**

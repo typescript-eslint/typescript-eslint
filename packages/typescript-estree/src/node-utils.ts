@@ -11,7 +11,6 @@ import {
   ESTreeNode,
   ESTreeToken
 } from './temp-types-based-on-js-source';
-import { TSNode } from './ts-nodes';
 import { AST_NODE_TYPES } from './ast-node-types';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -100,49 +99,12 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
   [SyntaxKind.ImportKeyword]: 'import'
 };
 
-export default {
-  /**
-   * Expose the enum of possible TSNode `kind`s.
-   */
-  SyntaxKind,
-  isAssignmentOperator,
-  isLogicalOperator,
-  getTextForTokenKind,
-  isESTreeClassMember,
-  hasModifier,
-  isComma,
-  getBinaryExpressionType,
-  getLocFor,
-  getLoc,
-  isToken,
-  canContainDirective,
-  isJSXToken,
-  getDeclarationKind,
-  getTSNodeAccessibility,
-  findNextToken,
-  findFirstMatchingToken,
-  findFirstMatchingAncestor,
-  hasJSXAncestor,
-  unescapeStringLiteralText,
-  isComputedProperty,
-  isOptional,
-  fixExports,
-  getTokenType,
-  convertToken,
-  convertTokens,
-  getNodeContainer,
-  isComment,
-  isJSDocComment,
-  createError,
-  firstDefined
-};
-
 /**
  * Returns true if the given ts.Token is the assignment operator
  * @param  {ts.Token}  operator the operator token
  * @returns {boolean}          is assignment
  */
-function isAssignmentOperator(
+export function isAssignmentOperator(
   operator: ts.Token<ts.AssignmentOperator>
 ): boolean {
   return ASSIGNMENT_OPERATORS.indexOf(operator.kind) > -1;
@@ -153,7 +115,9 @@ function isAssignmentOperator(
  * @param  {ts.Token}  operator the operator token
  * @returns {boolean}          is a logical operator
  */
-function isLogicalOperator(operator: ts.Token<ts.LogicalOperator>): boolean {
+export function isLogicalOperator(
+  operator: ts.Token<ts.LogicalOperator>
+): boolean {
   return LOGICAL_OPERATORS.indexOf(operator.kind) > -1;
 }
 
@@ -162,7 +126,7 @@ function isLogicalOperator(operator: ts.Token<ts.LogicalOperator>): boolean {
  * @param  {number}  kind the token's SyntaxKind
  * @returns {string}          the token applicable token as a string
  */
-function getTextForTokenKind(kind: ts.SyntaxKind): string | undefined {
+export function getTextForTokenKind(kind: ts.SyntaxKind): string | undefined {
   return TOKEN_TO_TEXT[kind];
 }
 
@@ -171,7 +135,7 @@ function getTextForTokenKind(kind: ts.SyntaxKind): string | undefined {
  * @param  {ts.Node}  node TypeScript AST node
  * @returns {boolean}      is valid ESTree class member
  */
-function isESTreeClassMember(node: ts.Node): boolean {
+export function isESTreeClassMember(node: ts.Node): boolean {
   return node.kind !== SyntaxKind.SemicolonClassElement;
 }
 
@@ -181,7 +145,7 @@ function isESTreeClassMember(node: ts.Node): boolean {
  * @param {ts.Node} node TypeScript AST node
  * @returns {boolean} has the modifier specified
  */
-function hasModifier(
+export function hasModifier(
   modifierKind: ts.KeywordSyntaxKind,
   node: ts.Node
 ): boolean {
@@ -197,7 +161,7 @@ function hasModifier(
  * @param  {ts.Node}  token the TypeScript token
  * @returns {boolean}       is comma
  */
-function isComma(token: ts.Node): boolean {
+export function isComma(token: ts.Node): boolean {
   return token.kind === SyntaxKind.CommaToken;
 }
 
@@ -206,7 +170,7 @@ function isComma(token: ts.Node): boolean {
  * @param {ts.Node} node the TypeScript node
  * @returns {boolean} is comment
  */
-function isComment(node: ts.Node): boolean {
+export function isComment(node: ts.Node): boolean {
   return (
     node.kind === SyntaxKind.SingleLineCommentTrivia ||
     node.kind === SyntaxKind.MultiLineCommentTrivia
@@ -218,7 +182,7 @@ function isComment(node: ts.Node): boolean {
  * @param {ts.Node} node the TypeScript node
  * @returns {boolean} is JSDoc comment
  */
-function isJSDocComment(node: ts.Node): boolean {
+export function isJSDocComment(node: ts.Node): boolean {
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -227,7 +191,7 @@ function isJSDocComment(node: ts.Node): boolean {
  * @param  {ts.Token} operator the operator token
  * @returns {string}          the binary expression type
  */
-function getBinaryExpressionType(
+export function getBinaryExpressionType(
   operator: ts.Token<any>
 ):
   | AST_NODE_TYPES.AssignmentExpression
@@ -249,7 +213,7 @@ function getBinaryExpressionType(
  * @param  {ts.SourceFile} ast   the AST object
  * @returns {ESTreeNodeLoc}       the loc data
  */
-function getLocFor(
+export function getLocFor(
   start: number,
   end: number,
   ast: ts.SourceFile
@@ -274,7 +238,7 @@ function getLocFor(
  * @param {ts.Node} node
  * @returns {boolean} returns true if node can contain directive
  */
-function canContainDirective(node: ts.Node): boolean {
+export function canContainDirective(node: ts.Node): boolean {
   switch (node.kind) {
     case ts.SyntaxKind.SourceFile:
     case ts.SyntaxKind.ModuleBlock:
@@ -304,7 +268,10 @@ function canContainDirective(node: ts.Node): boolean {
  * @param  {ts.SourceFile} ast         the AST object
  * @returns {ESTreeLoc}             the loc data
  */
-function getLoc(nodeOrToken: ts.Node, ast: ts.SourceFile): ESTreeNodeLoc {
+export function getLoc(
+  nodeOrToken: ts.Node,
+  ast: ts.SourceFile
+): ESTreeNodeLoc {
   return getLocFor(nodeOrToken.getStart(ast), nodeOrToken.end, ast);
 }
 
@@ -313,7 +280,7 @@ function getLoc(nodeOrToken: ts.Node, ast: ts.SourceFile): ESTreeNodeLoc {
  * @param  {ts.Node} node the ts.Node
  * @returns {boolean}     is a token
  */
-function isToken(node: ts.Node): boolean {
+export function isToken(node: ts.Node): boolean {
   return (
     node.kind >= SyntaxKind.FirstToken && node.kind <= SyntaxKind.LastToken
   );
@@ -324,7 +291,7 @@ function isToken(node: ts.Node): boolean {
  * @param  {ts.Node} node ts.Node to be checked
  * @returns {boolean}       is a JSX token
  */
-function isJSXToken(node: ts.Node): boolean {
+export function isJSXToken(node: ts.Node): boolean {
   return (
     node.kind >= SyntaxKind.JsxElement && node.kind <= SyntaxKind.JsxAttribute
   );
@@ -335,7 +302,7 @@ function isJSXToken(node: ts.Node): boolean {
  * @param  {ts.VariableDeclarationList}  node TypeScript AST node
  * @returns {string}     declaration kind
  */
-function getDeclarationKind(
+export function getDeclarationKind(
   node: ts.VariableDeclarationList
 ): 'let' | 'const' | 'var' {
   if (node.flags & ts.NodeFlags.Let) {
@@ -352,7 +319,7 @@ function getDeclarationKind(
  * @param {ts.Node} node The ts.Node
  * @returns {string | null} accessibility "public", "protected", "private", or null
  */
-function getTSNodeAccessibility(
+export function getTSNodeAccessibility(
   node: ts.Node
 ): 'public' | 'protected' | 'private' | null {
   const modifiers = node.modifiers;
@@ -383,7 +350,7 @@ function getTSNodeAccessibility(
  * @param {ts.SourceFile} ast The TS AST
  * @returns {ts.Node|undefined} the next TSToken
  */
-function findNextToken(
+export function findNextToken(
   previousToken: ts.Node,
   parent: ts.Node,
   ast: ts.SourceFile
@@ -416,7 +383,7 @@ function findNextToken(
  * @param {ts.SourceFile} ast The TS AST
  * @returns {ts.Node|undefined} a matching ts.Token
  */
-function findFirstMatchingToken(
+export function findFirstMatchingToken(
   previousToken: ts.Node | undefined,
   parent: ts.Node,
   predicate: (node: ts.Node) => boolean,
@@ -437,7 +404,7 @@ function findFirstMatchingToken(
  * @param {Function} predicate The predicate function to apply to each checked ancestor
  * @returns {ts.Node|undefined} a matching parent ts.Node
  */
-function findFirstMatchingAncestor(
+export function findFirstMatchingAncestor(
   node: ts.Node,
   predicate: (node: ts.Node) => boolean
 ): ts.Node | undefined {
@@ -455,7 +422,7 @@ function findFirstMatchingAncestor(
  * @param  {ts.Node} node ts.Node to be checked
  * @returns {boolean}       has JSX ancestor
  */
-function hasJSXAncestor(node: ts.Node): boolean {
+export function hasJSXAncestor(node: ts.Node): boolean {
   return !!findFirstMatchingAncestor(node, isJSXToken);
 }
 
@@ -464,7 +431,7 @@ function hasJSXAncestor(node: ts.Node): boolean {
  * @param {string} text The escaped string literal text.
  * @returns {string} The unescaped string literal text.
  */
-function unescapeStringLiteralText(text: string): string {
+export function unescapeStringLiteralText(text: string): string {
   return unescape(text);
 }
 
@@ -473,7 +440,7 @@ function unescapeStringLiteralText(text: string): string {
  * @param  {ts.Node} node ts.Node to be checked
  * @returns {boolean}       is Computed Property
  */
-function isComputedProperty(node: ts.Node): boolean {
+export function isComputedProperty(node: ts.Node): boolean {
   return node.kind === SyntaxKind.ComputedPropertyName;
 }
 
@@ -482,7 +449,9 @@ function isComputedProperty(node: ts.Node): boolean {
  * @param  {ts.Node} node ts.Node to be checked
  * @returns {boolean}       is Optional
  */
-function isOptional(node: { questionToken?: ts.QuestionToken }): boolean {
+export function isOptional(node: {
+  questionToken?: ts.QuestionToken;
+}): boolean {
   return node.questionToken
     ? node.questionToken.kind === SyntaxKind.QuestionToken
     : false;
@@ -495,7 +464,7 @@ function isOptional(node: { questionToken?: ts.QuestionToken }): boolean {
  * @param  {ts.SourceFile} ast    the AST
  * @returns {ESTreeNode}        the ESTreeNode with fixed exports
  */
-function fixExports(
+export function fixExports(
   node: ts.Node,
   result: ESTreeNode,
   ast: ts.SourceFile
@@ -539,7 +508,7 @@ function fixExports(
  * @param  {ts.Token} token the ts.Token
  * @returns {string}       the token type
  */
-function getTokenType(token: any): string {
+export function getTokenType(token: any): string {
   // Need two checks for keywords since some are also identifiers
   if (token.originalKeywordKind) {
     switch (token.originalKeywordKind) {
@@ -647,7 +616,7 @@ function getTokenType(token: any): string {
  * @param  {ts.SourceFile} ast   the AST object
  * @returns {ESTreeToken}       the converted ESTreeToken
  */
-function convertToken(token: ts.Node, ast: ts.SourceFile): ESTreeToken {
+export function convertToken(token: ts.Node, ast: ts.SourceFile): ESTreeToken {
   const start =
       token.kind === SyntaxKind.JsxText
         ? token.getFullStart()
@@ -676,7 +645,7 @@ function convertToken(token: ts.Node, ast: ts.SourceFile): ESTreeToken {
  * @param  {ts.SourceFile} ast the AST object
  * @returns {ESTreeToken[]}     the converted ESTreeTokens
  */
-function convertTokens(ast: ts.SourceFile): ESTreeToken[] {
+export function convertTokens(ast: ts.SourceFile): ESTreeToken[] {
   const result: ESTreeToken[] = [];
   /**
    * @param  {ts.Node} node the ts.Node
@@ -711,7 +680,7 @@ function convertTokens(ast: ts.SourceFile): ESTreeToken[] {
  * @returns {ts.Node}       typescript container token
  * @private
  */
-function getNodeContainer(
+export function getNodeContainer(
   ast: ts.SourceFile,
   start: number,
   end: number
@@ -745,7 +714,11 @@ function getNodeContainer(
  * @param {string} message the error message
  * @returns {Object}       converted error object
  */
-function createError(ast: ts.SourceFile, start: number, message: string) {
+export function createError(
+  ast: ts.SourceFile,
+  start: number,
+  message: string
+) {
   const loc = ast.getLineAndCharacterOfPosition(start);
   return {
     index: start,
@@ -759,7 +732,7 @@ function createError(ast: ts.SourceFile, start: number, message: string) {
  * @param {ts.Node} n the TSNode
  * @param {ts.SourceFile} ast the TS AST
  */
-function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
+export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
   // If we have a token or node that has a non-zero width, it must have tokens.
   // Note: getWidth() does not take trivia into account.
   return n.kind === SyntaxKind.EndOfFileToken
@@ -775,7 +748,7 @@ function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
  * @param {(element: T, index: number) => (U|undefined)} callback
  * @returns {U|undefined}
  */
-function firstDefined<T, U>(
+export function firstDefined<T, U>(
   array: ReadonlyArray<T> | undefined,
   callback: (element: T, index: number) => U | undefined
 ): U | undefined {

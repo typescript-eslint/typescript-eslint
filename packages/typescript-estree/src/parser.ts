@@ -14,7 +14,7 @@ import ts from 'typescript';
 import convert from './ast-converter';
 import { convertError } from './convert';
 import { Program } from './estree/spec';
-import util from './node-utils';
+import { firstDefined } from './node-utils';
 import {
   ESTreeComment,
   ESTreeToken,
@@ -74,7 +74,7 @@ function resetExtra(): void {
  * @returns {{ast: ts.SourceFile, program: ts.Program} | undefined} If found, returns the source file corresponding to the code and the containing program
  */
 function getASTFromProject(code: string, options: ParserOptions) {
-  return util.firstDefined(
+  return firstDefined(
     calculateProjectParserOptions(
       code,
       options.filePath || getFileName(options),
