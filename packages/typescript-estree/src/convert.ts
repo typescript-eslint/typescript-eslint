@@ -35,6 +35,7 @@ interface ConvertConfig {
   node: ts.Node;
   parent?: ts.Node | null;
   inTypeMode?: boolean;
+  allowPattern?: boolean;
   ast: ts.SourceFile;
   additionalOptions: ConvertAdditionalOptions;
 }
@@ -83,7 +84,11 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     loc: nodeUtils.getLoc(node, ast)
   };
 
-  function converter(child?: ts.Node, inTypeMode?: boolean): ESTreeNode | null {
+  function converter(
+    child?: ts.Node,
+    inTypeMode?: boolean,
+    allowPattern?: boolean
+  ): ESTreeNode | null {
     if (!child) {
       return null;
     }
@@ -91,6 +96,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       node: child,
       parent: node,
       inTypeMode,
+      allowPattern,
       ast,
       additionalOptions
     });
@@ -101,8 +107,17 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
    * @param  {ts.Node} child the child ts.Node
    * @returns {ESTreeNode|null}       the converted ESTree node
    */
+  function convertPattern(child?: ts.Node): ESTreeNode | null {
+    return converter(child, config.inTypeMode, true);
+  }
+
+  /**
+   * Converts a TypeScript node into an ESTree node.
+   * @param  {ts.Node} child the child ts.Node
+   * @returns {ESTreeNode|null}       the converted ESTree node
+   */
   function convertChild(child?: ts.Node): ESTreeNode | null {
-    return converter(child, config.inTypeMode);
+    return converter(child, config.inTypeMode, false);
   }
 
   /**
@@ -111,7 +126,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
    * @returns {ESTreeNode|null}       the converted ESTree node
    */
   function convertChildType(child?: ts.Node): ESTreeNode | null {
-    return converter(child, true);
+    return converter(child, true, false);
   }
 
   /**
@@ -632,7 +647,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.ForOfStatement: {
       Object.assign(result, {
         type: SyntaxKind[node.kind],
-        left: convertChild(node.initializer),
+        left: convertPattern(node.initializer),
         right: convertChild(node.expression),
         body: convertChild(node.statement)
       });
@@ -691,7 +706,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.VariableDeclaration: {
       Object.assign(result, {
         type: AST_NODE_TYPES.VariableDeclarator,
-        id: convertChild(node.name),
+        id: convertPattern(node.name),
         init: convertChild(node.initializer)
       });
 
@@ -746,42 +761,11 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
 
     case SyntaxKind.ArrayLiteralExpression: {
-      const arrayAssignNode = nodeUtils.findAncestorOfKind(
-        node,
-        SyntaxKind.BinaryExpression
-      );
-      const arrayIsInForOf =
-        node.parent && node.parent.kind === SyntaxKind.ForOfStatement;
-      const arrayIsInForIn =
-        node.parent && node.parent.kind === SyntaxKind.ForInStatement;
-      let arrayIsInAssignment;
-
-      if (arrayAssignNode) {
-        if (node.parent.kind === SyntaxKind.ShorthandPropertyAssignment) {
-          arrayIsInAssignment = false;
-        } else if (node.parent.kind === SyntaxKind.CallExpression) {
-          arrayIsInAssignment = false;
-        } else if (
-          nodeUtils.getBinaryExpressionType(
-            (arrayAssignNode as any).operatorToken
-          ) === AST_NODE_TYPES.AssignmentExpression
-        ) {
-          arrayIsInAssignment =
-            nodeUtils.findChildOfKind(
-              (arrayAssignNode as any).left,
-              SyntaxKind.ArrayLiteralExpression,
-              ast
-            ) === node || (arrayAssignNode as any).left === node;
-        } else {
-          arrayIsInAssignment = false;
-        }
-      }
-
       // TypeScript uses ArrayLiteralExpression in destructuring assignment, too
-      if (arrayIsInAssignment || arrayIsInForOf || arrayIsInForIn) {
+      if (config.allowPattern) {
         Object.assign(result, {
           type: AST_NODE_TYPES.ArrayPattern,
-          elements: node.elements.map(convertChild)
+          elements: node.elements.map(convertPattern)
         });
       } else {
         Object.assign(result, {
@@ -793,43 +777,11 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     }
 
     case SyntaxKind.ObjectLiteralExpression: {
-      const ancestorNode = nodeUtils.findFirstMatchingAncestor(
-        node,
-        parentNode =>
-          parentNode.kind === SyntaxKind.BinaryExpression ||
-          parentNode.kind === SyntaxKind.ArrowFunction
-      );
-      const objectAssignNode =
-        ancestorNode &&
-        ancestorNode.kind === SyntaxKind.BinaryExpression &&
-        (ancestorNode as any).operatorToken.kind === SyntaxKind.FirstAssignment
-          ? ancestorNode
-          : null;
-
-      let objectIsInAssignment = false;
-
-      if (objectAssignNode) {
-        if (node.parent.kind === SyntaxKind.ShorthandPropertyAssignment) {
-          objectIsInAssignment = false;
-        } else if ((objectAssignNode as any).left === node) {
-          objectIsInAssignment = true;
-        } else if (node.parent.kind === SyntaxKind.CallExpression) {
-          objectIsInAssignment = false;
-        } else {
-          objectIsInAssignment =
-            nodeUtils.findChildOfKind(
-              (objectAssignNode as any).left,
-              SyntaxKind.ObjectLiteralExpression,
-              ast
-            ) === node;
-        }
-      }
-
       // TypeScript uses ObjectLiteralExpression in destructuring assignment, too
-      if (objectIsInAssignment) {
+      if (config.allowPattern) {
         Object.assign(result, {
           type: AST_NODE_TYPES.ObjectPattern,
-          properties: node.properties.map(convertChild)
+          properties: node.properties.map(convertPattern)
         });
       } else {
         Object.assign(result, {
@@ -837,7 +789,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           properties: node.properties.map(convertChild)
         });
       }
-
       break;
     }
 
@@ -845,7 +796,11 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       Object.assign(result, {
         type: AST_NODE_TYPES.Property,
         key: convertChild(node.name),
-        value: convertChild(node.initializer),
+        value: converter(
+          node.initializer,
+          config.inTypeMode,
+          config.allowPattern
+        ),
         computed: nodeUtils.isComputedProperty(node.name),
         method: false,
         shorthand: false,
@@ -860,7 +815,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           key: convertChild(node.name),
           value: {
             type: AST_NODE_TYPES.AssignmentPattern,
-            left: convertChild(node.name),
+            left: convertPattern(node.name),
             right: convertChild(node.objectAssignmentInitializer),
             loc: result.loc,
             range: result.range
@@ -1208,7 +1163,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.ArrayBindingPattern:
       Object.assign(result, {
         type: AST_NODE_TYPES.ArrayPattern,
-        elements: node.elements.map(convertChild)
+        elements: node.elements.map(convertPattern)
       });
       break;
 
@@ -1219,7 +1174,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.ObjectBindingPattern:
       Object.assign(result, {
         type: AST_NODE_TYPES.ObjectPattern,
-        properties: node.elements.map(convertChild)
+        properties: node.elements.map(convertPattern)
       });
       break;
 
@@ -1387,50 +1342,19 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
     // Patterns
 
+    case SyntaxKind.SpreadAssignment:
     case SyntaxKind.SpreadElement: {
-      let type = AST_NODE_TYPES.SpreadElement;
-
-      if (
-        node.parent &&
-        node.parent.parent &&
-        node.parent.parent.kind === SyntaxKind.BinaryExpression
-      ) {
-        if ((node.parent.parent as ts.BinaryExpression).left === node.parent) {
-          type = AST_NODE_TYPES.RestElement;
-        } else if (
-          (node.parent.parent as ts.BinaryExpression).right === node.parent
-        ) {
-          type = AST_NODE_TYPES.SpreadElement;
-        }
+      if (config.allowPattern) {
+        Object.assign(result, {
+          type: AST_NODE_TYPES.RestElement,
+          argument: convertPattern(node.expression)
+        });
+      } else {
+        Object.assign(result, {
+          type: AST_NODE_TYPES.SpreadElement,
+          argument: convertChild(node.expression)
+        });
       }
-
-      Object.assign(result, {
-        type,
-        argument: convertChild(node.expression)
-      });
-      break;
-    }
-    case SyntaxKind.SpreadAssignment: {
-      let type = AST_NODE_TYPES.SpreadElement;
-
-      if (
-        node.parent &&
-        node.parent.parent &&
-        node.parent.parent.kind === SyntaxKind.BinaryExpression
-      ) {
-        if ((node.parent.parent as ts.BinaryExpression).right === node.parent) {
-          type = AST_NODE_TYPES.SpreadElement;
-        } else if (
-          (node.parent.parent as ts.BinaryExpression).left === node.parent
-        ) {
-          type = AST_NODE_TYPES.RestElement;
-        }
-      }
-
-      Object.assign(result, {
-        type,
-        argument: convertChild(node.expression)
-      });
       break;
     }
 
@@ -1788,44 +1712,21 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           (result as any).expressions.push(right);
         }
       } else {
+        const type = nodeUtils.getBinaryExpressionType(node.operatorToken);
         Object.assign(result, {
-          type: nodeUtils.getBinaryExpressionType(node.operatorToken),
+          type,
           operator: nodeUtils.getTextForTokenKind(node.operatorToken.kind),
-          left: convertChild(node.left),
+          left: converter(
+            node.left,
+            config.inTypeMode,
+            type === AST_NODE_TYPES.AssignmentExpression
+          ),
           right: convertChild(node.right)
         });
 
         // if the binary expression is in a destructured array, switch it
         if (result.type === AST_NODE_TYPES.AssignmentExpression) {
-          const upperArrayNode = nodeUtils.findFirstMatchingAncestor(
-            node,
-            parent =>
-              parent.kind === SyntaxKind.ArrayLiteralExpression ||
-              parent.kind === SyntaxKind.ObjectLiteralExpression
-          );
-          const upperArrayAssignNode =
-            upperArrayNode &&
-            nodeUtils.findAncestorOfKind(
-              upperArrayNode,
-              SyntaxKind.BinaryExpression
-            );
-
-          let upperArrayIsInAssignment;
-
-          if (upperArrayAssignNode) {
-            if ((upperArrayAssignNode as any).left === upperArrayNode) {
-              upperArrayIsInAssignment = true;
-            } else {
-              upperArrayIsInAssignment =
-                nodeUtils.findChildOfKind(
-                  (upperArrayAssignNode as any).left,
-                  SyntaxKind.ArrayLiteralExpression,
-                  ast
-                ) === upperArrayNode;
-            }
-          }
-
-          if (upperArrayIsInAssignment) {
+          if (config.allowPattern) {
             delete (result as any).operator;
             result.type = AST_NODE_TYPES.AssignmentPattern;
           }

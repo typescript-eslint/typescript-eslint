@@ -51971,7 +51971,7 @@ Object {
             1,
             23,
           ],
-          "type": "ObjectPattern",
+          "type": "ObjectExpression",
         },
         "loc": Object {
           "end": Object {
@@ -88925,7 +88925,7 @@ Object {
           10,
           12,
         ],
-        "type": "ArrayPattern",
+        "type": "ArrayExpression",
       },
       "type": "ForInStatement",
     },
@@ -92385,7 +92385,6 @@ Object {
             "line": 1,
           },
         },
-        "operator": "=",
         "range": Array [
           5,
           10,
@@ -92409,7 +92408,7 @@ Object {
           "type": "Literal",
           "value": 0,
         },
-        "type": "AssignmentExpression",
+        "type": "AssignmentPattern",
       },
       "loc": Object {
         "end": Object {
@@ -93559,14 +93558,14 @@ Object {
               14,
               25,
             ],
-            "type": "SpreadElement",
+            "type": "RestElement",
           },
         ],
         "range": Array [
           5,
           27,
         ],
-        "type": "ObjectExpression",
+        "type": "ObjectPattern",
       },
       "loc": Object {
         "end": Object {
@@ -94442,7 +94441,7 @@ Object {
           14,
           16,
         ],
-        "type": "ArrayPattern",
+        "type": "ArrayExpression",
       },
       "type": "ForOfStatement",
     },
@@ -96800,14 +96799,14 @@ Object {
               14,
               25,
             ],
-            "type": "SpreadElement",
+            "type": "RestElement",
           },
         ],
         "range": Array [
           5,
           27,
         ],
-        "type": "ObjectExpression",
+        "type": "ObjectPattern",
       },
       "loc": Object {
         "end": Object {
@@ -132642,7 +132641,7 @@ Object {
                       11,
                       20,
                     ],
-                    "type": "SpreadElement",
+                    "type": "RestElement",
                   },
                 ],
                 "range": Array [
@@ -132844,14 +132843,14 @@ Object {
                                 45,
                                 55,
                               ],
-                              "type": "SpreadElement",
+                              "type": "RestElement",
                             },
                           ],
                           "range": Array [
                             43,
                             57,
                           ],
-                          "type": "ObjectExpression",
+                          "type": "ObjectPattern",
                         },
                         Object {
                           "argument": Object {
@@ -132886,7 +132885,7 @@ Object {
                             59,
                             63,
                           ],
-                          "type": "SpreadElement",
+                          "type": "RestElement",
                         },
                       ],
                       "loc": Object {
@@ -133046,14 +133045,14 @@ Object {
                             74,
                             78,
                           ],
-                          "type": "SpreadElement",
+                          "type": "RestElement",
                         },
                       ],
                       "range": Array [
                         69,
                         80,
                       ],
-                      "type": "ObjectExpression",
+                      "type": "ObjectPattern",
                     },
                   },
                   Object {
@@ -133089,14 +133088,14 @@ Object {
                       82,
                       90,
                     ],
-                    "type": "SpreadElement",
+                    "type": "RestElement",
                   },
                 ],
                 "range": Array [
                   37,
                   92,
                 ],
-                "type": "ObjectExpression",
+                "type": "ObjectPattern",
               },
             },
             Object {
