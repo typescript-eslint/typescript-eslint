@@ -2375,6 +2375,7 @@ exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-default-param-eval.sr
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -2730,6 +2731,7 @@ exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-dup-params.src 1`] = 
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -3072,6 +3074,7 @@ Object {
         "body": Object {
           "body": Array [
             Object {
+              "directive": "use strict",
               "expression": Object {
                 "loc": Object {
                   "end": Object {
@@ -3404,6 +3407,7 @@ exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-eval-return.src 1`] =
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -3669,6 +3673,7 @@ exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-octal.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -3952,6 +3957,7 @@ exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-arguments.src 1
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -4289,6 +4295,7 @@ exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-eval.src 1`] = 
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -4626,6 +4633,7 @@ exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-names.src 1`] =
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -4963,6 +4971,7 @@ exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-no-paren-argume
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -5210,6 +5219,7 @@ exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-no-paren-eval.s
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -9133,6 +9143,398 @@ Object {
       "range": Array [
         14,
         15,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`ecmaFeatures fixtures/bigIntLiterals/binary.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 4,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          4,
+        ],
+        "raw": "0b1n",
+        "type": "BigIntLiteral",
+        "value": "0b1",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    6,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        4,
+      ],
+      "type": "Identifier",
+      "value": "0b1n",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        5,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`ecmaFeatures fixtures/bigIntLiterals/decimal.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 2,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          2,
+        ],
+        "raw": "1n",
+        "type": "BigIntLiteral",
+        "value": "1",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    4,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        2,
+      ],
+      "type": "Identifier",
+      "value": "1n",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        2,
+        3,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`ecmaFeatures fixtures/bigIntLiterals/hex.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 4,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          4,
+        ],
+        "raw": "0x1n",
+        "type": "BigIntLiteral",
+        "value": "0x1",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    6,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        4,
+      ],
+      "type": "Identifier",
+      "value": "0x1n",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        5,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`ecmaFeatures fixtures/bigIntLiterals/octal.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 4,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          4,
+        ],
+        "raw": "0o1n",
+        "type": "BigIntLiteral",
+        "value": "0o1",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    6,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        4,
+      ],
+      "type": "Identifier",
+      "value": "0o1n",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        5,
       ],
       "type": "Punctuator",
       "value": ";",
@@ -41186,7 +41588,7 @@ Object {
             1,
             23,
           ],
-          "type": "ObjectPattern",
+          "type": "ObjectExpression",
         },
         "loc": Object {
           "end": Object {
@@ -93032,6 +93434,7 @@ exports[`ecmaFeatures fixtures/objectLiteralDuplicateProperties/error-proto-prop
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -93733,6 +94136,7 @@ exports[`ecmaFeatures fixtures/objectLiteralDuplicateProperties/error-proto-stri
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -94436,6 +94840,7 @@ exports[`ecmaFeatures fixtures/objectLiteralDuplicateProperties/strict-duplicate
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -94958,6 +95363,7 @@ exports[`ecmaFeatures fixtures/objectLiteralDuplicateProperties/strict-duplicate
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -99240,6 +99646,7 @@ exports[`ecmaFeatures fixtures/octalLiterals/strict-uppercase.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": "use strict",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -101637,7 +102044,6 @@ Object {
   "body": Array [
     Object {
       "async": false,
-      "body": null,
       "expression": false,
       "generator": false,
       "id": Object {
@@ -101727,7 +102133,7 @@ Object {
         0,
         24,
       ],
-      "type": "TSEmptyBodyFunctionDeclaration",
+      "type": "TSDeclareFunction",
     },
   ],
   "comments": Array [],
@@ -101955,7 +102361,6 @@ Object {
   "body": Array [
     Object {
       "async": false,
-      "body": null,
       "expression": false,
       "generator": false,
       "id": Object {
@@ -102063,7 +102468,7 @@ Object {
         0,
         23,
       ],
-      "type": "TSEmptyBodyFunctionDeclaration",
+      "type": "TSDeclareFunction",
     },
   ],
   "comments": Array [],
@@ -107373,6 +107778,7 @@ exports[`ecmaFeatures fixtures/unicodeCodePointEscapes/basic-string-literal.src 
 Object {
   "body": Array [
     Object {
+      "directive": "\\\\u{714E}\\\\u{8336}",
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -107471,6 +107877,7 @@ exports[`ecmaFeatures fixtures/unicodeCodePointEscapes/complex-string-literal.sr
 Object {
   "body": Array [
     Object {
+      "directive": "\\\\u{20BB7}\\\\u{10FFFF}\\\\u{1}",
       "expression": Object {
         "loc": Object {
           "end": Object {
