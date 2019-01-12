@@ -2686,6 +2686,13 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
       break;
     }
+    case SyntaxKind.LiteralType: {
+      Object.assign(result, {
+        type: AST_NODE_TYPES.TSLiteralType,
+        literal: convertChildType(node.literal)
+      });
+      break;
+    }
     case SyntaxKind.TypeAssertionExpression: {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSTypeAssertion,
