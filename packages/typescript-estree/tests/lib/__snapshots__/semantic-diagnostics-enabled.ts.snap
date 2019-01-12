@@ -2191,6 +2191,15 @@ Object {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/class-multiple-implements.src.ts.src 1`] = `
+Object {
+  "column": 21,
+  "index": 21,
+  "lineNumber": 1,
+  "message": "'implements' clause already seen.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-enum-declaration.src.ts.src 1`] = `
 Object {
   "column": 0,
@@ -2235,6 +2244,15 @@ Object {
   "index": 21,
   "lineNumber": 1,
   "message": "'extends' list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-implements.src.ts.src 1`] = `
+Object {
+  "column": 12,
+  "index": 12,
+  "lineNumber": 1,
+  "message": "Interface declaration cannot have 'implements' clause.",
 }
 `;
 
@@ -2325,6 +2343,15 @@ Object {
   "index": 18,
   "lineNumber": 2,
   "message": "'static' modifier cannot appear on a type member.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-multiple-extends.src.ts.src 1`] = `
+Object {
+  "column": 26,
+  "index": 26,
+  "lineNumber": 1,
+  "message": "'extends' clause already seen.",
 }
 `;
 

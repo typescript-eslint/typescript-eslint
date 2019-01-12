@@ -1,0 +1,1 @@
+interface d implements e {}
