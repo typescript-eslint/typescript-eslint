@@ -41474,58 +41474,6 @@ Object {
             },
           },
           Object {
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 16,
-                  "line": 6,
-                },
-                "start": Object {
-                  "column": 5,
-                  "line": 6,
-                },
-              },
-              "name": "eee",
-              "range": Array [
-                95,
-                106,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 16,
-                    "line": 6,
-                  },
-                  "start": Object {
-                    "column": 8,
-                    "line": 6,
-                  },
-                },
-                "range": Array [
-                  98,
-                  106,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 16,
-                      "line": 6,
-                    },
-                    "start": Object {
-                      "column": 10,
-                      "line": 6,
-                    },
-                  },
-                  "range": Array [
-                    100,
-                    106,
-                  ],
-                  "type": "TSNumberKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 26,
@@ -41536,11 +41484,64 @@ Object {
                 "line": 6,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 16,
+                    "line": 6,
+                  },
+                  "start": Object {
+                    "column": 5,
+                    "line": 6,
+                  },
+                },
+                "name": "eee",
+                "range": Array [
+                  95,
+                  106,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 16,
+                      "line": 6,
+                    },
+                    "start": Object {
+                      "column": 8,
+                      "line": 6,
+                    },
+                  },
+                  "range": Array [
+                    98,
+                    106,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 16,
+                        "line": 6,
+                      },
+                      "start": Object {
+                        "column": 10,
+                        "line": 6,
+                      },
+                    },
+                    "range": Array [
+                      100,
+                      106,
+                    ],
+                    "type": "TSNumberKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               94,
               116,
             ],
-            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -41578,59 +41579,6 @@ Object {
             },
           },
           Object {
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 17,
-                  "line": 7,
-                },
-                "start": Object {
-                  "column": 5,
-                  "line": 7,
-                },
-              },
-              "name": "fff",
-              "optional": true,
-              "range": Array [
-                122,
-                134,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 17,
-                    "line": 7,
-                  },
-                  "start": Object {
-                    "column": 9,
-                    "line": 7,
-                  },
-                },
-                "range": Array [
-                  126,
-                  134,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 17,
-                      "line": 7,
-                    },
-                    "start": Object {
-                      "column": 11,
-                      "line": 7,
-                    },
-                  },
-                  "range": Array [
-                    128,
-                    134,
-                  ],
-                  "type": "TSNumberKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -41641,11 +41589,65 @@ Object {
                 "line": 7,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 7,
+                  },
+                  "start": Object {
+                    "column": 5,
+                    "line": 7,
+                  },
+                },
+                "name": "fff",
+                "optional": true,
+                "range": Array [
+                  122,
+                  134,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 7,
+                    },
+                    "start": Object {
+                      "column": 9,
+                      "line": 7,
+                    },
+                  },
+                  "range": Array [
+                    126,
+                    134,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 17,
+                        "line": 7,
+                      },
+                      "start": Object {
+                        "column": 11,
+                        "line": 7,
+                      },
+                    },
+                    "range": Array [
+                      128,
+                      134,
+                    ],
+                    "type": "TSNumberKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               121,
               144,
             ],
-            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -78401,58 +78403,6 @@ Object {
         },
         "members": Array [
           Object {
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 12,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 3,
-                  "line": 2,
-                },
-              },
-              "name": "a",
-              "range": Array [
-                16,
-                25,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 12,
-                    "line": 2,
-                  },
-                  "start": Object {
-                    "column": 4,
-                    "line": 2,
-                  },
-                },
-                "range": Array [
-                  17,
-                  25,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 12,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 6,
-                      "line": 2,
-                    },
-                  },
-                  "range": Array [
-                    19,
-                    25,
-                  ],
-                  "type": "TSStringKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 33,
@@ -78463,11 +78413,116 @@ Object {
                 "line": 2,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 12,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 2,
+                  },
+                },
+                "name": "a",
+                "range": Array [
+                  16,
+                  25,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 12,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    17,
+                    25,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 12,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 6,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      19,
+                      25,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                },
+              },
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 23,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 14,
+                    "line": 2,
+                  },
+                },
+                "name": "b",
+                "range": Array [
+                  27,
+                  36,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 23,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 15,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    28,
+                    36,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 23,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 17,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      30,
+                      36,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               15,
               46,
             ],
-            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -79017,58 +79072,6 @@ Object {
         "body": Array [
           Object {
             "export": true,
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 21,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 10,
-                  "line": 2,
-                },
-              },
-              "name": "baz",
-              "range": Array [
-                26,
-                37,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 21,
-                    "line": 2,
-                  },
-                  "start": Object {
-                    "column": 13,
-                    "line": 2,
-                  },
-                },
-                "range": Array [
-                  29,
-                  37,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 21,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 15,
-                      "line": 2,
-                    },
-                  },
-                  "range": Array [
-                    31,
-                    37,
-                  ],
-                  "type": "TSStringKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 31,
@@ -79079,11 +79082,64 @@ Object {
                 "line": 2,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 21,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 2,
+                  },
+                },
+                "name": "baz",
+                "range": Array [
+                  26,
+                  37,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 21,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    29,
+                    37,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 21,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 15,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      31,
+                      37,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               18,
               47,
             ],
-            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -79436,58 +79492,6 @@ Object {
         "body": Array [
           Object {
             "accessibility": "private",
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 22,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 11,
-                  "line": 2,
-                },
-              },
-              "name": "baz",
-              "range": Array [
-                27,
-                38,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 22,
-                    "line": 2,
-                  },
-                  "start": Object {
-                    "column": 14,
-                    "line": 2,
-                  },
-                },
-                "range": Array [
-                  30,
-                  38,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 22,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 16,
-                      "line": 2,
-                    },
-                  },
-                  "range": Array [
-                    32,
-                    38,
-                  ],
-                  "type": "TSStringKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 32,
@@ -79498,11 +79502,64 @@ Object {
                 "line": 2,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 22,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 11,
+                    "line": 2,
+                  },
+                },
+                "name": "baz",
+                "range": Array [
+                  27,
+                  38,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 22,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 14,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    30,
+                    38,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 22,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 16,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      32,
+                      38,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               18,
               48,
             ],
-            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -79855,58 +79912,6 @@ Object {
         "body": Array [
           Object {
             "accessibility": "protected",
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 24,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 13,
-                  "line": 2,
-                },
-              },
-              "name": "baz",
-              "range": Array [
-                29,
-                40,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 24,
-                    "line": 2,
-                  },
-                  "start": Object {
-                    "column": 16,
-                    "line": 2,
-                  },
-                },
-                "range": Array [
-                  32,
-                  40,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 24,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 18,
-                      "line": 2,
-                    },
-                  },
-                  "range": Array [
-                    34,
-                    40,
-                  ],
-                  "type": "TSStringKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 34,
@@ -79917,11 +79922,64 @@ Object {
                 "line": 2,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 24,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 13,
+                    "line": 2,
+                  },
+                },
+                "name": "baz",
+                "range": Array [
+                  29,
+                  40,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 24,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 16,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    32,
+                    40,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 24,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 18,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      34,
+                      40,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               18,
               50,
             ],
-            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -80274,58 +80332,6 @@ Object {
         "body": Array [
           Object {
             "accessibility": "public",
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 21,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 10,
-                  "line": 2,
-                },
-              },
-              "name": "baz",
-              "range": Array [
-                26,
-                37,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 21,
-                    "line": 2,
-                  },
-                  "start": Object {
-                    "column": 13,
-                    "line": 2,
-                  },
-                },
-                "range": Array [
-                  29,
-                  37,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 21,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 15,
-                      "line": 2,
-                    },
-                  },
-                  "range": Array [
-                    31,
-                    37,
-                  ],
-                  "type": "TSStringKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 31,
@@ -80336,11 +80342,64 @@ Object {
                 "line": 2,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 21,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 2,
+                  },
+                },
+                "name": "baz",
+                "range": Array [
+                  26,
+                  37,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 21,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    29,
+                    37,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 21,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 15,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      31,
+                      37,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               18,
               47,
             ],
-            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -80692,58 +80751,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 21,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 10,
-                  "line": 2,
-                },
-              },
-              "name": "baz",
-              "range": Array [
-                26,
-                37,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 21,
-                    "line": 2,
-                  },
-                  "start": Object {
-                    "column": 13,
-                    "line": 2,
-                  },
-                },
-                "range": Array [
-                  29,
-                  37,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 21,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 15,
-                      "line": 2,
-                    },
-                  },
-                  "range": Array [
-                    31,
-                    37,
-                  ],
-                  "type": "TSStringKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 31,
@@ -80754,6 +80761,60 @@ Object {
                 "line": 2,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 21,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 2,
+                  },
+                },
+                "name": "baz",
+                "range": Array [
+                  26,
+                  37,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 21,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    29,
+                    37,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 21,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 15,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      31,
+                      37,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               18,
               47,
@@ -98570,58 +98631,6 @@ Object {
         },
         "members": Array [
           Object {
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 12,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 3,
-                  "line": 2,
-                },
-              },
-              "name": "a",
-              "range": Array [
-                16,
-                25,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 12,
-                    "line": 2,
-                  },
-                  "start": Object {
-                    "column": 4,
-                    "line": 2,
-                  },
-                },
-                "range": Array [
-                  17,
-                  25,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 12,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 6,
-                      "line": 2,
-                    },
-                  },
-                  "range": Array [
-                    19,
-                    25,
-                  ],
-                  "type": "TSStringKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 22,
@@ -98632,11 +98641,64 @@ Object {
                 "line": 2,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 12,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 2,
+                  },
+                },
+                "name": "a",
+                "range": Array [
+                  16,
+                  25,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 12,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    17,
+                    25,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 12,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 6,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      19,
+                      25,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               15,
               35,
             ],
-            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -98987,58 +99049,6 @@ Object {
         },
         "members": Array [
           Object {
-            "index": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 23,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 12,
-                  "line": 2,
-                },
-              },
-              "name": "key",
-              "range": Array [
-                25,
-                36,
-              ],
-              "type": "Identifier",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 23,
-                    "line": 2,
-                  },
-                  "start": Object {
-                    "column": 15,
-                    "line": 2,
-                  },
-                },
-                "range": Array [
-                  28,
-                  36,
-                ],
-                "type": "TSTypeAnnotation",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 23,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 17,
-                      "line": 2,
-                    },
-                  },
-                  "range": Array [
-                    30,
-                    36,
-                  ],
-                  "type": "TSNumberKeyword",
-                },
-              },
-            },
             "loc": Object {
               "end": Object {
                 "column": 33,
@@ -99049,12 +99059,65 @@ Object {
                 "line": 2,
               },
             },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 23,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 12,
+                    "line": 2,
+                  },
+                },
+                "name": "key",
+                "range": Array [
+                  25,
+                  36,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 23,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 15,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    28,
+                    36,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 23,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 17,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      30,
+                      36,
+                    ],
+                    "type": "TSNumberKeyword",
+                  },
+                },
+              },
+            ],
             "range": Array [
               15,
               46,
             ],
             "readonly": true,
-            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -99364,6 +99427,355 @@ Object {
       "range": Array [
         47,
         48,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`typescript fixtures/types/index-signature-without-type.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 8,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 5,
+            "line": 1,
+          },
+        },
+        "name": "foo",
+        "range": Array [
+          5,
+          8,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        29,
+      ],
+      "type": "TSTypeAliasDeclaration",
+      "typeAnnotation": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+          },
+        },
+        "members": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 2,
+              },
+            },
+            "parameters": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 12,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 2,
+                  },
+                },
+                "name": "a",
+                "range": Array [
+                  16,
+                  25,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 12,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    17,
+                    25,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 12,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 6,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      19,
+                      25,
+                    ],
+                    "type": "TSStringKeyword",
+                  },
+                },
+              },
+            ],
+            "range": Array [
+              15,
+              27,
+            ],
+            "type": "TSIndexSignature",
+            "typeAnnotation": null,
+          },
+        ],
+        "range": Array [
+          11,
+          29,
+        ],
+        "type": "TSTypeLiteral",
+      },
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 4,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    30,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        4,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        5,
+        8,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        9,
+        10,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        12,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        15,
+        16,
+      ],
+      "type": "Punctuator",
+      "value": "[",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        16,
+        17,
+      ],
+      "type": "Identifier",
+      "value": "a",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        17,
+        18,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        19,
+        25,
+      ],
+      "type": "Identifier",
+      "value": "string",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        25,
+        26,
+      ],
+      "type": "Punctuator",
+      "value": "]",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        26,
+        27,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        28,
+        29,
       ],
       "type": "Punctuator",
       "value": "}",
