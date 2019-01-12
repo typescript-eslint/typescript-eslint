@@ -7,3 +7,4 @@ _test.js
 .vscode
 yarn.lock
 .eslint-release-info.json
+.idea

@@ -500,133 +500,24 @@ Object {
       "type": "ImportDeclaration",
     },
     Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 10,
-                "line": 2,
-              },
-              "start": Object {
-                "column": 5,
-                "line": 2,
-              },
-            },
-            "name": "Props",
-            "range": Array [
-              36,
-              41,
-            ],
-            "type": "Identifier",
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 2,
           },
-          "init": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 1,
-                "line": 4,
-              },
-              "start": Object {
-                "column": 13,
-                "line": 2,
-              },
-            },
-            "members": Array [
-              Object {
-                "computed": false,
-                "key": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 7,
-                      "line": 3,
-                    },
-                    "start": Object {
-                      "column": 2,
-                      "line": 3,
-                    },
-                  },
-                  "name": "title",
-                  "range": Array [
-                    48,
-                    53,
-                  ],
-                  "type": "Identifier",
-                },
-                "loc": Object {
-                  "end": Object {
-                    "column": 15,
-                    "line": 3,
-                  },
-                  "start": Object {
-                    "column": 2,
-                    "line": 3,
-                  },
-                },
-                "range": Array [
-                  48,
-                  61,
-                ],
-                "type": "TSPropertySignature",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 15,
-                      "line": 3,
-                    },
-                    "start": Object {
-                      "column": 7,
-                      "line": 3,
-                    },
-                  },
-                  "range": Array [
-                    53,
-                    61,
-                  ],
-                  "type": "TSTypeAnnotation",
-                  "typeAnnotation": Object {
-                    "loc": Object {
-                      "end": Object {
-                        "column": 15,
-                        "line": 3,
-                      },
-                      "start": Object {
-                        "column": 9,
-                        "line": 3,
-                      },
-                    },
-                    "range": Array [
-                      55,
-                      61,
-                    ],
-                    "type": "TSStringKeyword",
-                  },
-                },
-              },
-            ],
-            "range": Array [
-              44,
-              63,
-            ],
-            "type": "TSTypeLiteral",
+          "start": Object {
+            "column": 5,
+            "line": 2,
           },
-          "loc": Object {
-            "end": Object {
-              "column": 1,
-              "line": 4,
-            },
-            "start": Object {
-              "column": 5,
-              "line": 2,
-            },
-          },
-          "range": Array [
-            36,
-            63,
-          ],
-          "type": "VariableDeclarator",
         },
-      ],
-      "kind": "type",
+        "name": "Props",
+        "range": Array [
+          36,
+          41,
+        ],
+        "type": "Identifier",
+      },
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -641,7 +532,96 @@ Object {
         31,
         63,
       ],
-      "type": "VariableDeclaration",
+      "type": "TSTypeAliasDeclaration",
+      "typeAnnotation": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 4,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 2,
+          },
+        },
+        "members": Array [
+          Object {
+            "computed": false,
+            "key": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 3,
+                },
+              },
+              "name": "title",
+              "range": Array [
+                48,
+                53,
+              ],
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 15,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              48,
+              61,
+            ],
+            "type": "TSPropertySignature",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 15,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                53,
+                61,
+              ],
+              "type": "TSTypeAnnotation",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 15,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 9,
+                    "line": 3,
+                  },
+                },
+                "range": Array [
+                  55,
+                  61,
+                ],
+                "type": "TSStringKeyword",
+              },
+            },
+          },
+        ],
+        "range": Array [
+          44,
+          63,
+        ],
+        "type": "TSTypeLiteral",
+      },
     },
     Object {
       "declaration": Object {

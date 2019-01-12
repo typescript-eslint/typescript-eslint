@@ -1689,7 +1689,7 @@ Object {
               0,
               37,
             ],
-            "type": "TSEmptyBodyDeclareFunction",
+            "type": "TSDeclareFunction",
           },
           "parent": null,
           "type": "FunctionName",
@@ -3396,6 +3396,100 @@ Object {
 }
 `;
 
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/export-as-namespace.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      23,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [
+    Object {
+      "$id": 0,
+      "from": Object {
+        "$ref": 1,
+      },
+      "identifier": Object {
+        "name": "a",
+        "range": Array [
+          20,
+          21,
+        ],
+        "type": "Identifier",
+      },
+      "kind": "r",
+      "resolved": null,
+      "writeExpr": undefined,
+    },
+  ],
+  "throughReferences": Array [
+    Object {
+      "$ref": 0,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/expression-as.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      27,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [
+    Object {
+      "$id": 0,
+      "from": Object {
+        "$ref": 1,
+      },
+      "identifier": Object {
+        "name": "a",
+        "range": Array [
+          1,
+          2,
+        ],
+        "type": "Identifier",
+      },
+      "kind": "r",
+      "resolved": null,
+      "writeExpr": undefined,
+    },
+  ],
+  "throughReferences": Array [
+    Object {
+      "$ref": 0,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [],
+}
+`;
+
 exports[`TypeScript scope analysis tests/fixtures/scope-analysis/expression-type-parameters.ts 1`] = `
 Object {
   "$id": 14,
@@ -4094,7 +4188,7 @@ Object {
               0,
               18,
             ],
-            "type": "TSEmptyBodyFunctionDeclaration",
+            "type": "TSDeclareFunction",
           },
           "parent": null,
           "type": "FunctionName",
@@ -5298,6 +5392,185 @@ Object {
 }
 `;
 
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/rest-element.ts 1`] = `
+Object {
+  "$id": 4,
+  "block": Object {
+    "range": Array [
+      0,
+      35,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 3,
+      "block": Object {
+        "range": Array [
+          0,
+          34,
+        ],
+        "type": "FunctionDeclaration",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": false,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "function",
+      "upperScope": Object {
+        "$ref": 4,
+      },
+      "variableMap": Object {
+        "args": Object {
+          "$ref": 2,
+        },
+        "arguments": Object {
+          "$ref": 1,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 3,
+      },
+      "variables": Array [
+        Object {
+          "$id": 1,
+          "defs": Array [],
+          "eslintUsed": undefined,
+          "identifiers": Array [],
+          "name": "arguments",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 3,
+          },
+        },
+        Object {
+          "$id": 2,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "args",
+                "range": Array [
+                  16,
+                  20,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  34,
+                ],
+                "type": "FunctionDeclaration",
+              },
+              "parent": null,
+              "type": "Parameter",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "args",
+              "range": Array [
+                16,
+                20,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "args",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 3,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "foo": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 4,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "foo",
+            "range": Array [
+              9,
+              12,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              0,
+              34,
+            ],
+            "type": "FunctionDeclaration",
+          },
+          "parent": null,
+          "type": "FunctionName",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "foo",
+          "range": Array [
+            9,
+            12,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "foo",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 4,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/type-alias.ts 1`] = `
+Object {
+  "$id": 0,
+  "block": Object {
+    "range": Array [
+      0,
+      18,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 0,
+  },
+  "variables": Array [],
+}
+`;
+
 exports[`TypeScript scope analysis tests/fixtures/scope-analysis/type-annotations.ts 1`] = `
 Object {
   "$id": 7,
@@ -5605,7 +5878,7 @@ Object {
           21,
           26,
         ],
-        "type": "TSTypeAssertionExpression",
+        "type": "TSTypeAssertion",
       },
     },
     Object {
@@ -5687,6 +5960,117 @@ Object {
     "$ref": 4,
   },
   "variables": Array [],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/type-parameter.ts 1`] = `
+Object {
+  "$id": 3,
+  "block": Object {
+    "range": Array [
+      0,
+      19,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 2,
+      "block": Object {
+        "range": Array [
+          0,
+          18,
+        ],
+        "type": "FunctionDeclaration",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": false,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "function",
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {
+        "arguments": Object {
+          "$ref": 1,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 2,
+      },
+      "variables": Array [
+        Object {
+          "$id": 1,
+          "defs": Array [],
+          "eslintUsed": undefined,
+          "identifiers": Array [],
+          "name": "arguments",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 2,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "f": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 3,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "f",
+            "range": Array [
+              9,
+              10,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              0,
+              18,
+            ],
+            "type": "FunctionDeclaration",
+          },
+          "parent": null,
+          "type": "FunctionName",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "f",
+          "range": Array [
+            9,
+            10,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "f",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 3,
+      },
+    },
+  ],
 }
 `;
 
@@ -5877,7 +6261,7 @@ Object {
           27,
           40,
         ],
-        "type": "TSTypeAssertionExpression",
+        "type": "TSTypeAssertion",
       },
     },
     Object {
@@ -7058,5 +7442,1766 @@ Object {
       },
     },
   ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-array-type.src.ts 1`] = `
+Object {
+  "$id": 0,
+  "block": Object {
+    "range": Array [
+      0,
+      20,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 0,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-conditional.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      49,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              47,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              47,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              48,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            47,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-conditional-with-null.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      47,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              45,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              45,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              46,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            45,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-indexed.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      13,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              11,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              12,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            11,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-infer.ts 1`] = `
+Object {
+  "$id": 0,
+  "block": Object {
+    "range": Array [
+      0,
+      147,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 0,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-intersection-type.src.ts 1`] = `
+Object {
+  "$id": 0,
+  "block": Object {
+    "range": Array [
+      0,
+      50,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 0,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-mapped.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      37,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "map": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "map",
+            "range": Array [
+              4,
+              35,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              35,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              36,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "map",
+          "range": Array [
+            4,
+            35,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "map",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-mapped-readonly.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      47,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "map": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "map",
+            "range": Array [
+              4,
+              45,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              45,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              46,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "map",
+          "range": Array [
+            4,
+            45,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "map",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-mapped-readonly-minus.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      48,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "map": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "map",
+            "range": Array [
+              4,
+              46,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              46,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              47,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "map",
+          "range": Array [
+            4,
+            46,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "map",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-mapped-readonly-plus.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      49,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "map": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "map",
+            "range": Array [
+              4,
+              47,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              47,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              48,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "map",
+          "range": Array [
+            4,
+            47,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "map",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-nested-types.src.ts 1`] = `
+Object {
+  "$id": 0,
+  "block": Object {
+    "range": Array [
+      0,
+      81,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 0,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-parenthesized-type.src.ts 1`] = `
+Object {
+  "$id": 0,
+  "block": Object {
+    "range": Array [
+      0,
+      29,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 0,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-reference.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      10,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              8,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              8,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              9,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            8,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-reference-generic.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      22,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              20,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              20,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              21,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            20,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-reference-generic-nested.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      29,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              27,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              27,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              28,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            27,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-tuple.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      33,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              31,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              31,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              32,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            31,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-tuple-empty.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      11,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              9,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              9,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              10,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            9,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-tuple-optional.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      45,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              44,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              44,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              44,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            44,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-tuple-rest.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      29,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              28,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              28,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              28,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            28,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-tuple-type.src.ts 1`] = `
+Object {
+  "$id": 0,
+  "block": Object {
+    "range": Array [
+      0,
+      29,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 0,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-type-literal.src.ts 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      24,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "obj": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "obj",
+            "range": Array [
+              4,
+              22,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              22,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              23,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "obj",
+          "range": Array [
+            4,
+            22,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "obj",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-type-operator.src.ts 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      38,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+    "y": Object {
+      "$ref": 1,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 2,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              14,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              14,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              15,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            14,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 2,
+      },
+    },
+    Object {
+      "$id": 1,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "y",
+            "range": Array [
+              20,
+              36,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              20,
+              36,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              16,
+              37,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "y",
+          "range": Array [
+            20,
+            36,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "y",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 2,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-typeof.src.ts 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      19,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [
+    Object {
+      "$id": 1,
+      "from": Object {
+        "$ref": 2,
+      },
+      "identifier": Object {
+        "name": "y",
+        "range": Array [
+          14,
+          15,
+        ],
+        "type": "Identifier",
+      },
+      "kind": "r",
+      "resolved": null,
+      "writeExpr": undefined,
+    },
+  ],
+  "throughReferences": Array [
+    Object {
+      "$ref": 1,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "x": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 2,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "x",
+            "range": Array [
+              4,
+              17,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              17,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              18,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "x",
+          "range": Array [
+            4,
+            17,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "x",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 2,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-union-intersection.src.ts 1`] = `
+Object {
+  "$id": 4,
+  "block": Object {
+    "range": Array [
+      0,
+      161,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "intersection": Object {
+      "$ref": 1,
+    },
+    "precedence1": Object {
+      "$ref": 2,
+    },
+    "precedence2": Object {
+      "$ref": 3,
+    },
+    "union": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 4,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "union",
+            "range": Array [
+              4,
+              36,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              4,
+              36,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              0,
+              37,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "union",
+          "range": Array [
+            4,
+            36,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "union",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 4,
+      },
+    },
+    Object {
+      "$id": 1,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "intersection",
+            "range": Array [
+              42,
+              71,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              42,
+              71,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              38,
+              72,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "intersection",
+          "range": Array [
+            42,
+            71,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "intersection",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 4,
+      },
+    },
+    Object {
+      "$id": 2,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "precedence1",
+            "range": Array [
+              77,
+              115,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              77,
+              115,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              73,
+              116,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "precedence1",
+          "range": Array [
+            77,
+            115,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "precedence1",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 4,
+      },
+    },
+    Object {
+      "$id": 3,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "precedence2",
+            "range": Array [
+              121,
+              159,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              121,
+              159,
+            ],
+            "type": "VariableDeclarator",
+          },
+          "parent": Object {
+            "range": Array [
+              117,
+              160,
+            ],
+            "type": "VariableDeclaration",
+          },
+          "type": "Variable",
+        },
+      ],
+      "eslintUsed": undefined,
+      "identifiers": Array [
+        Object {
+          "name": "precedence2",
+          "range": Array [
+            121,
+            159,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "precedence2",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 4,
+      },
+    },
+  ],
+}
+`;
+
+exports[`TypeScript scope analysis tests/fixtures/scope-analysis/types-union-type.src.ts 1`] = `
+Object {
+  "$id": 0,
+  "block": Object {
+    "range": Array [
+      0,
+      27,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 0,
+  },
+  "variables": Array [],
 }
 `;

@@ -41,16 +41,8 @@ exports.parseForESLint = function parseForESLint(code, options) {
     traverser.traverse(ast, {
         enter: node => {
             switch (node.type) {
-                // Just for backward compatibility.
-                case "DeclareFunction":
-                    if (!node.body) {
-                        node.type = `TSEmptyBody${node.type}`;
-                    }
-                    break;
-
                 // Function#body cannot be null in ESTree spec.
                 case "FunctionExpression":
-                case "FunctionDeclaration":
                     if (!node.body) {
                         node.type = `TSEmptyBody${node.type}`;
                     }
