@@ -197,19 +197,6 @@ tester.addFixturePatternConfig('javascript/for');
 tester.addFixturePatternConfig('javascript/forIn', {
   ignore: [
     /**
-     * Error: AST difference
-     * ts-estree: ArrayPattern
-     * babel: ArrayExpression
-     */
-    'for-in-array',
-    'for-in-with-rest',
-    /**
-     * Error: AST difference
-     * ts-estree: AssignmentExpression
-     * babel: AssignmentPattern
-     */
-    'for-in-with-bare-assigment',
-    /**
      * Babel correctly errors on this file, and we can report on it via:
      * TS 1189 (ts 3.2) "The variable declaration of a 'for...in' statement cannot have an initializer."
      *
@@ -222,17 +209,7 @@ tester.addFixturePatternConfig('javascript/forIn', {
   ]
 });
 
-tester.addFixturePatternConfig('javascript/forOf', {
-  ignore: [
-    /**
-     * Error: AST difference
-     * ts-estree: ArrayPattern
-     * babel: ArrayExpression
-     */
-    'for-of-array',
-    'for-of-with-rest'
-  ]
-});
+tester.addFixturePatternConfig('javascript/forOf');
 tester.addFixturePatternConfig('javascript/generators');
 tester.addFixturePatternConfig('javascript/globalReturn');
 tester.addFixturePatternConfig('javascript/importMeta');
@@ -279,14 +256,7 @@ tester.addFixturePatternConfig('javascript/regex');
 tester.addFixturePatternConfig('javascript/regexUFlag');
 tester.addFixturePatternConfig('javascript/regexYFlag');
 tester.addFixturePatternConfig('javascript/restParams');
-tester.addFixturePatternConfig('javascript/spread', {
-  ignore: [
-    /**
-     * Error: AST difference
-     */
-    'complex-spread'
-  ]
-});
+tester.addFixturePatternConfig('javascript/spread');
 tester.addFixturePatternConfig('javascript/unicodeCodePointEscapes');
 
 /* ================================================== */
