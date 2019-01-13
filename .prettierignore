@@ -1,1 +1,3 @@
-tests/fixtures/**/*
+**/tests/fixtures/**/*
+**/dist
+**/coverage
