@@ -21,7 +21,6 @@ script:
   - yarn global add codecov
 after_success:
   - codecov
-  - yarn travis-deploy-once "yarn semantic-release"
 branches:
   only:
     - master

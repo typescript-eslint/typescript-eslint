@@ -1,7 +1,67 @@
 {
   "name": "typescript-eslint",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "author": "James Henry <typescript-eslint@jameshenry.blog>",
+  "license": "BSD-2-Clause",
+  "repository": "typescript-eslint/typescript-eslint",
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "scripts": {
+    "postinstall": "lerna bootstrap",
+    "test": "lerna run test",
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "precommit": "yarn test && lint-staged",
+    "cz": "git-cz",
+    "commitmsg": "commitlint -E GIT_PARAMS",
+    "check-format": "prettier --list-different \"./**/*.{ts,js,json,md}\""
+  },
+  "lint-staged": {
+    "*.{ts,js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "engines": {
+    "node": ">=6.14.0"
+  },
   "devDependencies": {
-    "lerna": "^3.10.5"
+    "@babel/code-frame": "7.0.0",
+    "@babel/parser": "7.2.3",
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
+    "@commitlint/travis-cli": "^7.1.2",
+    "@types/babel-code-frame": "^6.20.1",
+    "@types/jest": "^23.3.9",
+    "@types/lodash.isplainobject": "^4.0.4",
+    "@types/lodash.unescape": "^4.0.4",
+    "@types/node": "^10.12.2",
+    "@types/semver": "^5.5.0",
+    "@types/shelljs": "^0.8.0",
+    "cz-conventional-changelog": "2.1.0",
+    "glob": "7.1.2",
+    "husky": "0.14.3",
+    "jest": "23.6.0",
+    "lerna": "^3.10.5",
+    "lint-staged": "7.3.0",
+    "lodash.isplainobject": "4.0.6",
+    "prettier": "^1.14.3",
+    "shelljs": "0.8.2",
+    "ts-jest": "^23.10.4",
+    "typescript": "~3.2.1"
   }
 }
