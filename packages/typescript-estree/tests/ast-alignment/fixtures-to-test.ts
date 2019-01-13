@@ -290,6 +290,7 @@ tester.addFixturePatternConfig('typescript/basics', {
   fileType: 'ts',
   ignore: [
     /**
+     * babel error: https://github.com/babel/babel/issues/9305
      * TypeScript does not report any diagnostics for this file, but Babel throws:
      * [SyntaxError: Unexpected token, expected "{" (2:8)
       1 | class Foo {
@@ -327,6 +328,12 @@ tester.addFixturePatternConfig('typescript/basics', {
     'export-declare-const-named-enum',
     'interface-with-extends-type-parameters',
     'interface-with-optional-properties',
+    /**
+     * Babel parses it as TSQualifiedName
+     * ts parses it as MemberExpression
+     * TODO: report it to babel
+     */
+    'interface-with-extends-member-expression',
     /**
      * Babel bug for parsing exported abstract interface
      * https://github.com/babel/babel/issues/9304
@@ -368,7 +375,36 @@ tester.addFixturePatternConfig('typescript/basics', {
      * PR for type assertions ranges has been merged into Babel: https://github.com/babel/babel/pull/9284
      * TODO: remove me in next babel > 7.2.3
      */
-    'type-assertion'
+    'type-assertion',
+    /**
+     * Babel parses this incorrectly
+     * https://github.com/babel/babel/issues/9324
+     */
+    'type-assertion-arrow-function',
+    /**
+     * Babel parses this incorrectly
+     * https://github.com/babel/babel/issues/9325
+     */
+    'class-multi-line-keyword-declare',
+    'class-multi-line-keyword-abstract',
+    /**
+     * There is difference in range between babel and ts-estree
+     */
+    'class-with-constructor-and-modifier',
+    /**
+     * ts-estree: missing returnType in constructor
+     * babel: parses it correctly
+     */
+    'class-with-constructor-and-return-type',
+    /**
+     * ts-estree: missing typeParameters in constructor
+     * babel: parses it correctly
+     */
+    'class-with-constructor-and-type-parameters',
+    /**
+     * There is deference in AST between babel and ts-estree
+     */
+    'object-with-typed-methods'
   ],
   ignoreSourceType: [
     /**
