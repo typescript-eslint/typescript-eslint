@@ -1,0 +1,7 @@
+{
+  "name": "typescript-eslint",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.10.5"
+  }
+}
