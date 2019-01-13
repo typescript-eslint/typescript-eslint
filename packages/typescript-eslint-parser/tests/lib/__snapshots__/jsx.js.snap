@@ -306,7 +306,7 @@ Object {
     0,
     45,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -1052,7 +1052,7 @@ Object {
     0,
     60,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -1657,7 +1657,7 @@ Object {
     0,
     33,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -2136,7 +2136,7 @@ Object {
     0,
     28,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -2705,7 +2705,7 @@ Object {
     0,
     42,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -3107,7 +3107,7 @@ Object {
     0,
     10,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -3782,7 +3782,7 @@ Object {
     0,
     84,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -4467,7 +4467,7 @@ Object {
     0,
     12,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -4746,7 +4746,7 @@ Object {
     0,
     14,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -5111,7 +5111,7 @@ Object {
     0,
     12,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -5586,7 +5586,7 @@ Object {
     0,
     46,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -6027,7 +6027,7 @@ Object {
     0,
     12,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -6290,7 +6290,7 @@ Object {
     0,
     6,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -6612,7 +6612,7 @@ Object {
     0,
     25,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -7039,7 +7039,7 @@ Object {
     0,
     20,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -7462,7 +7462,7 @@ Object {
     0,
     36,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -7813,7 +7813,7 @@ Object {
     0,
     19,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -8178,7 +8178,7 @@ Object {
     0,
     12,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -8667,7 +8667,7 @@ Object {
     0,
     16,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -9108,7 +9108,7 @@ Object {
     0,
     25,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -9547,7 +9547,7 @@ Object {
     0,
     54,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -10025,7 +10025,7 @@ Object {
     0,
     24,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -10401,7 +10401,7 @@ Object {
     0,
     25,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {
@@ -10790,7 +10790,7 @@ Object {
     0,
     25,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {

@@ -48,7 +48,8 @@ function createSnapshotTestBlock(code, config = {}) {
         raw: true,
         tokens: true,
         comment: true,
-        errorOnUnknownASTType: true
+        errorOnUnknownASTType: true,
+        sourceType: "module"
     };
     config = Object.assign({}, defaultConfig, config);
 

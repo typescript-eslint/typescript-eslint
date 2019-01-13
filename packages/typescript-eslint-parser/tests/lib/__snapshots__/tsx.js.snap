@@ -200,7 +200,7 @@ Object {
     0,
     34,
   ],
-  "sourceType": "script",
+  "sourceType": "module",
   "tokens": Array [
     Object {
       "loc": Object {

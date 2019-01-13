@@ -33,10 +33,15 @@ exports.parseForESLint = function parseForESLint(code, options) {
         }
     }
 
+    // https://eslint.org/docs/user-guide/configuring#specifying-parser-options
+    // if sourceType is not provided by default eslint expect that it will be set to "script"
+    options.sourceType = options.sourceType || "script";
+    if (options.sourceType !== "module" && options.sourceType !== "script") {
+        options.sourceType = "script";
+    }
+
     const ast = parse(code, options);
-    const extraOptions = {
-        sourceType: ast.sourceType
-    };
+    ast.sourceType = options.sourceType;
 
     traverser.traverse(ast, {
         enter: node => {
@@ -47,23 +52,12 @@ exports.parseForESLint = function parseForESLint(code, options) {
                         node.type = `TSEmptyBody${node.type}`;
                     }
                     break;
-
-                // Import/Export declarations cannot appear in script.
-                // But if those appear only in namespace/module blocks, `ast.sourceType` was `"script"`.
-                // This doesn't modify `ast.sourceType` directly for backward compatibility.
-                case "ImportDeclaration":
-                case "ExportAllDeclaration":
-                case "ExportDefaultDeclaration":
-                case "ExportNamedDeclaration":
-                    extraOptions.sourceType = "module";
-                    break;
-
                 // no default
             }
         }
     });
 
-    const scopeManager = analyzeScope(ast, options, extraOptions);
+    const scopeManager = analyzeScope(ast, options);
     return { ast, scopeManager, visitorKeys };
 };
 
