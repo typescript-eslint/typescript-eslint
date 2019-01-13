@@ -386,25 +386,7 @@ tester.addFixturePatternConfig('typescript/basics', {
      * https://github.com/babel/babel/issues/9325
      */
     'class-multi-line-keyword-declare',
-    'class-multi-line-keyword-abstract',
-    /**
-     * There is difference in range between babel and ts-estree
-     */
-    'class-with-constructor-and-modifier',
-    /**
-     * ts-estree: missing returnType in constructor
-     * babel: parses it correctly
-     */
-    'class-with-constructor-and-return-type',
-    /**
-     * ts-estree: missing typeParameters in constructor
-     * babel: parses it correctly
-     */
-    'class-with-constructor-and-type-parameters',
-    /**
-     * There is deference in AST between babel and ts-estree
-     */
-    'object-with-typed-methods'
+    'class-multi-line-keyword-abstract'
   ],
   ignoreSourceType: [
     /**
