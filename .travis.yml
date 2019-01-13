@@ -14,7 +14,7 @@ node_js:
 install:
   - yarn --ignore-engines
 script:
-  - commitlint-travis
+  # - commitlint-travis
   - yarn check-format
   - yarn test
   - yarn build
