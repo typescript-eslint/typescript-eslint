@@ -142,34 +142,69 @@ describe("TypeScript scope analysis", () => {
     const root = "tests/fixtures/scope-analysis";
     const files = fs.readdirSync(root).map(filename => path.join(root, filename).replace(/\\/g, "/"));
 
-    for (const filePath of files) {
-        test(filePath, () => {
-            const code = fs.readFileSync(filePath, "utf8");
-            const { scopeManager } = parser.parseForESLint(code, {
-                loc: true,
-                range: true,
-                tokens: true,
-                ecmaFeatures: {}
-            });
-            const { globalScope } = scopeManager;
+    describe("sourceType: module", () => {
+        for (const filePath of files) {
+            test(filePath, () => {
+                const code = fs.readFileSync(filePath, "utf8");
+                const { scopeManager } = parser.parseForESLint(code, {
+                    loc: true,
+                    range: true,
+                    tokens: true,
+                    sourceType: "module",
+                    ecmaFeatures: {}
+                });
+                const { globalScope } = scopeManager;
 
-            // Do the postprocess to test.
-            // https://github.com/eslint/eslint/blob/4fe328787dd02d7a1f6fc21167f6175c860825e3/lib/linter.js#L222
-            globalScope.through = globalScope.through.filter(reference => {
-                const name = reference.identifier.name;
-                const variable = globalScope.set.get(name);
-                if (variable) {
-                    reference.resolved = variable;
-                    variable.references.push(reference);
-                    return false;
-                }
-                return true;
-            });
+                // Do the postprocess to test.
+                // https://github.com/eslint/eslint/blob/4fe328787dd02d7a1f6fc21167f6175c860825e3/lib/linter.js#L222
+                globalScope.through = globalScope.through.filter(reference => {
+                    const name = reference.identifier.name;
+                    const variable = globalScope.set.get(name);
+                    if (variable) {
+                        reference.resolved = variable;
+                        variable.references.push(reference);
+                        return false;
+                    }
+                    return true;
+                });
 
-            const scopeTree = scopeToJSON(globalScope);
-            expect(scopeTree).toMatchSnapshot();
-        });
-    }
+                const scopeTree = scopeToJSON(globalScope);
+                expect(scopeTree).toMatchSnapshot();
+            });
+        }
+    });
+
+    describe("sourceType: script", () => {
+        for (const filePath of files) {
+            test(filePath, () => {
+                const code = fs.readFileSync(filePath, "utf8");
+                const { scopeManager } = parser.parseForESLint(code, {
+                    loc: true,
+                    range: true,
+                    tokens: true,
+                    sourceType: "script",
+                    ecmaFeatures: {}
+                });
+                const { globalScope } = scopeManager;
+
+                // Do the postprocess to test.
+                // https://github.com/eslint/eslint/blob/4fe328787dd02d7a1f6fc21167f6175c860825e3/lib/linter.js#L222
+                globalScope.through = globalScope.through.filter(reference => {
+                    const name = reference.identifier.name;
+                    const variable = globalScope.set.get(name);
+                    if (variable) {
+                        reference.resolved = variable;
+                        variable.references.push(reference);
+                        return false;
+                    }
+                    return true;
+                });
+
+                const scopeTree = scopeToJSON(globalScope);
+                expect(scopeTree).toMatchSnapshot();
+            });
+        }
+    });
 
     const linter = new Linter();
     linter.defineParser("typescript-eslint-parser", parser);
@@ -312,7 +347,7 @@ export default class Test {
         expect(messages).toStrictEqual([]);
     });
 
-    test("https://github.com/eslint/typescript-eslint-parser/issues/535", () => {
+    test("1: https://github.com/eslint/typescript-eslint-parser/issues/535", () => {
         const code = `
 function foo({ bar }: { bar: string }) {
     console.log(bar);
@@ -330,7 +365,7 @@ function foo({ bar }: { bar: string }) {
         expect(messages).toStrictEqual([]);
     });
 
-    test("https://github.com/eslint/typescript-eslint-parser/issues/535", () => {
+    test("2: https://github.com/eslint/typescript-eslint-parser/issues/535", () => {
         const code = `
 import {
   observable,
@@ -345,6 +380,9 @@ export default class ListModalStore {
             parser: "typescript-eslint-parser",
             rules: {
                 "no-unused-vars": "error"
+            },
+            parserOptions: {
+                sourceType: "module"
             }
         };
         const messages = linter.verify(code, config, { filename: "issue.ts" });
@@ -367,6 +405,28 @@ function test(file: Blob) {
             }
         };
         const messages = linter.verify(code, config, { filename: "issue.ts" });
+
+        expect(messages).toStrictEqual([]);
+    });
+
+    test("https://github.com/bradzacher/eslint-plugin-typescript/issues/255", () => {
+        const code = `
+window.whatevs = {
+  myFunc() {
+    console.log('yep');
+  }
+};
+`;
+        const config = {
+            parser: "typescript-eslint-parser",
+            parserOptions: {
+                sourceType: "module"
+            },
+            rules: {
+                strict: "error"
+            }
+        };
+        const messages = linter.verify(code, config, { filename: "issue255.ts" });
 
         expect(messages).toStrictEqual([]);
     });

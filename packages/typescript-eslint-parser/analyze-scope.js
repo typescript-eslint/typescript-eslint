@@ -778,17 +778,17 @@ class Referencer extends OriginalReferencer {
     }
 }
 
-module.exports = function(ast, parserOptions, extraOptions) {
+module.exports = function(ast, parserOptions) {
     const options = {
         ignoreEval: true,
         optimistic: false,
         directive: false,
         nodejsScope:
-            ast.sourceType === "script" &&
+            parserOptions.sourceType === "script" &&
             (parserOptions.ecmaFeatures &&
                 parserOptions.ecmaFeatures.globalReturn) === true,
         impliedStrict: false,
-        sourceType: extraOptions.sourceType,
+        sourceType: parserOptions.sourceType,
         ecmaVersion: parserOptions.ecmaVersion || 2018,
         childVisitorKeys,
         fallback

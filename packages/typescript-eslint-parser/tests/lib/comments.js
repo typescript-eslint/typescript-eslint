@@ -35,7 +35,8 @@ describe("Comments", () => {
     testFiles.forEach(filename => {
         const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
         const config = {
-            jsx: true
+            jsx: true,
+            sourceType: "module"
         };
         test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code, config));
     });
