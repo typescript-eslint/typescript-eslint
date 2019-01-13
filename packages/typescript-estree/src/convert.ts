@@ -25,7 +25,8 @@ import {
   isOptional,
   findFirstMatchingToken,
   unescapeStringLiteralText,
-  getDeclarationKind
+  getDeclarationKind,
+  getLastModifier
 } from './node-utils';
 import { AST_NODE_TYPES } from './ast-node-types';
 import { ESTreeNode } from './temp-types-based-on-js-source';
@@ -923,11 +924,11 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           (openingParen as any).getStart(ast)
         ),
         nodeIsMethod = node.kind === SyntaxKind.MethodDeclaration,
-        method = {
+        method: ESTreeNode = {
           type: AST_NODE_TYPES.FunctionExpression,
           id: null,
           generator: !!node.asteriskToken,
-          expression: false,
+          expression: false, // ESTreeNode as ESTreeNode here
           async: hasModifier(SyntaxKind.AsyncKeyword, node),
           body: convertChild(node.body),
           range: [node.parameters.pos - 1, result.range[1]],
@@ -938,7 +939,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
             },
             end: result.loc.end
           }
-        };
+        } as any;
 
       if (node.type) {
         (method as any).returnType = convertTypeAnnotation(node.type);
@@ -1007,16 +1008,23 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       } else if (
         !(result as any).static &&
         node.name.kind === SyntaxKind.StringLiteral &&
-        node.name.text === 'constructor'
+        node.name.text === 'constructor' &&
+        result.type !== AST_NODE_TYPES.Property
       ) {
         (result as any).kind = 'constructor';
       }
 
       // Process typeParameters
       if (node.typeParameters && node.typeParameters.length) {
-        (method as any).typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
-          node.typeParameters
-        );
+        if (result.type !== AST_NODE_TYPES.Property) {
+          method.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
+            node.typeParameters
+          );
+        } else {
+          result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
+            node.typeParameters
+          );
+        }
       }
 
       break;
@@ -1024,95 +1032,68 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
     // TypeScript uses this even for static methods named "constructor"
     case SyntaxKind.Constructor: {
-      const constructorIsStatic = hasModifier(SyntaxKind.StaticKeyword, node),
-        constructorIsAbstract = hasModifier(SyntaxKind.AbstractKeyword, node),
-        firstConstructorToken = constructorIsStatic
-          ? findNextToken(node.getFirstToken()!, ast, ast)
-          : node.getFirstToken(),
-        constructorLoc = ast.getLineAndCharacterOfPosition(
-          node.parameters.pos - 1
-        ),
-        constructor = {
-          type: AST_NODE_TYPES.FunctionExpression,
-          id: null,
-          params: convertParameters(node.parameters),
-          generator: false,
-          expression: false,
-          async: false,
-          body: convertChild(node.body),
-          range: [node.parameters.pos - 1, result.range[1]],
-          loc: {
-            start: {
-              line: constructorLoc.line + 1,
-              column: constructorLoc.character
-            },
-            end: result.loc.end
-          }
-        };
+      const lastModifier = getLastModifier(node);
+      const constructorToken =
+        (lastModifier && findNextToken(lastModifier, node, ast)) ||
+        node.getFirstToken()!;
 
-      const constructorIdentifierLocStart = ast.getLineAndCharacterOfPosition(
-          (firstConstructorToken as any).getStart(ast)
-        ),
-        constructorIdentifierLocEnd = ast.getLineAndCharacterOfPosition(
-          (firstConstructorToken as any).getEnd(ast)
-        ),
-        constructorIsComputed = !!node.name && isComputedProperty(node.name);
+      const constructorTokenRange = [
+        constructorToken.getStart(ast),
+        constructorToken.end
+      ];
 
-      let constructorKey;
+      const constructorLoc = ast.getLineAndCharacterOfPosition(
+        node.parameters.pos - 1
+      );
 
-      if (constructorIsComputed) {
-        constructorKey = {
-          type: AST_NODE_TYPES.Literal,
-          value: 'constructor',
-          raw: node.name!.getText(),
-          range: [
-            (firstConstructorToken as any).getStart(ast),
-            (firstConstructorToken as any).end
-          ],
-          loc: {
-            start: {
-              line: constructorIdentifierLocStart.line + 1,
-              column: constructorIdentifierLocStart.character
-            },
-            end: {
-              line: constructorIdentifierLocEnd.line + 1,
-              column: constructorIdentifierLocEnd.character
-            }
-          }
-        };
-      } else {
-        constructorKey = {
-          type: AST_NODE_TYPES.Identifier,
-          name: 'constructor',
-          range: [
-            (firstConstructorToken as any).getStart(ast),
-            (firstConstructorToken as any).end
-          ],
-          loc: {
-            start: {
-              line: constructorIdentifierLocStart.line + 1,
-              column: constructorIdentifierLocStart.character
-            },
-            end: {
-              line: constructorIdentifierLocEnd.line + 1,
-              column: constructorIdentifierLocEnd.character
-            }
-          }
-        };
+      const constructor: ESTreeNode = {
+        type: AST_NODE_TYPES.FunctionExpression,
+        id: null,
+        params: convertParameters(node.parameters),
+        generator: false,
+        expression: false, // is not present in ESTreeNode
+        async: false,
+        body: convertChild(node.body),
+        range: [node.parameters.pos - 1, result.range[1]],
+        loc: {
+          start: {
+            line: constructorLoc.line + 1,
+            column: constructorLoc.character
+          },
+          end: result.loc.end
+        }
+      } as any;
+
+      // Process typeParameters
+      if (node.typeParameters && node.typeParameters.length) {
+        constructor.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
+          node.typeParameters
+        );
       }
 
+      // Process returnType
+      if (node.type) {
+        constructor.returnType = convertTypeAnnotation(node.type);
+      }
+
+      const constructorKey = {
+        type: AST_NODE_TYPES.Identifier,
+        name: 'constructor',
+        range: constructorTokenRange,
+        loc: getLocFor(constructorTokenRange[0], constructorTokenRange[1], ast)
+      };
+
+      const isStatic = hasModifier(SyntaxKind.StaticKeyword, node);
+
       Object.assign(result, {
-        type: constructorIsAbstract
+        type: hasModifier(SyntaxKind.AbstractKeyword, node)
           ? AST_NODE_TYPES.TSAbstractMethodDefinition
           : AST_NODE_TYPES.MethodDefinition,
         key: constructorKey,
         value: constructor,
-        computed: constructorIsComputed,
-        static: constructorIsStatic,
-        kind:
-          constructorIsStatic || constructorIsComputed
-            ? 'method'
-            : 'constructor'
+        computed: false,
+        static: isStatic,
+        kind: isStatic ? 'method' : 'constructor'
       });
 
       const accessibility = getTSNodeAccessibility(node);

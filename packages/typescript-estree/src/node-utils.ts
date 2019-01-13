@@ -157,6 +157,20 @@ export function hasModifier(
 }
 
 /**
+ * Get last last modifier in ast
+ * @param node TypeScript AST node
+ * @returns returns last modifier if present or null
+ */
+export function getLastModifier(node: ts.Node): ts.Node | null {
+  return (
+    (!!node.modifiers &&
+      !!node.modifiers.length &&
+      node.modifiers[node.modifiers.length - 1]) ||
+    null
+  );
+}
+
+/**
  * Returns true if the given ts.Token is a comma
  * @param  {ts.Node}  token the TypeScript token
  * @returns {boolean}       is comma
