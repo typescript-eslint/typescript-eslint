@@ -1779,13 +1779,24 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
       break;
 
-    case SyntaxKind.NumericLiteral:
+    case SyntaxKind.NumericLiteral: {
+      const rawValue = node.getText();
+      let value = Number(node.text);
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Deprecated_octal
+      // http://www.ecma-international.org/ecma-262/6.0/#sec-additional-syntax-numeric-literals
+      if (/^(-?)0([0-7]+)$/i.test(rawValue)) {
+        value = parseInt(
+          node.text.replace(/^(-?)0([0-7]+)$/i, (match, p0, p1) => p0 + p1),
+          8
+        );
+      }
       Object.assign(result, {
         type: AST_NODE_TYPES.Literal,
-        value: Number(node.text),
-        raw: ast.text.slice(result.range[0], result.range[1])
+        value: value,
+        raw: rawValue
       });
       break;
+    }
 
     case SyntaxKind.BigIntLiteral: {
       const raw = ast.text.slice(result.range[0], result.range[1]);
