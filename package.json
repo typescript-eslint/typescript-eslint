@@ -53,6 +53,7 @@
     "@types/semver": "^5.5.0",
     "@types/shelljs": "^0.8.0",
     "cz-conventional-changelog": "2.1.0",
+    "eslint": "^4.19.1",
     "glob": "7.1.2",
     "husky": "0.14.3",
     "jest": "23.6.0",

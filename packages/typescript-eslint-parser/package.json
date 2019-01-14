@@ -2,7 +2,7 @@
   "name": "typescript-eslint-parser",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
-  "homepage": "https://github.com/eslint/typescript-eslint-parser",
+  "homepage": "https://github.com/typescript-eslint/typescript-eslint",
   "main": "parser.js",
   "version": "21.0.2",
   "files": [
@@ -13,9 +13,9 @@
   "engines": {
     "node": ">=6.14.0"
   },
-  "repository": "eslint/typescript-eslint-parser",
+  "repository": "typescript-eslint/typescript-eslint",
   "bugs": {
-    "url": "https://github.com/eslint/typescript-eslint-parser/issues"
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "BSD-2-Clause",
   "keywords": [
@@ -28,16 +28,9 @@
     "eslint"
   ],
   "scripts": {
-    "test": "node Makefile.js test",
-    "jest": "jest",
+    "test": "jest",
     "integration-tests": "docker-compose -f tests/integration/docker-compose.yml up",
-    "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
-    "lint": "node Makefile.js lint",
-    "generate-release": "eslint-generate-release",
-    "generate-alpharelease": "eslint-generate-prerelease alpha",
-    "generate-betarelease": "eslint-generate-prerelease beta",
-    "generate-rcrelease": "eslint-generate-prerelease rc",
-    "publish-release": "eslint-publish-release"
+    "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local"
   },
   "peerDependencies": {
     "eslint": ">=4.19.1",
@@ -47,17 +40,6 @@
     "eslint-scope": "^4.0.0",
     "eslint-visitor-keys": "^1.0.0",
     "typescript-estree": "18.0.0"
-  },
-  "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-eslint": "4.0.0",
-    "eslint-plugin-node": "6.0.1",
-    "eslint-release": "1.2.0",
-    "jest": "23.1.0",
-    "npm-license": "0.3.3",
-    "shelljs": "0.8.2",
-    "shelljs-nodecli": "0.1.1",
-    "typescript": "~3.2.1"
   },
   "jest": {
     "testEnvironment": "node",
