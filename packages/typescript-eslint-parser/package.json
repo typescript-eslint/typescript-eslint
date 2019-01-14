@@ -47,7 +47,8 @@
     "testPathIgnorePatterns": [],
     "collectCoverage": true,
     "coverageReporters": [
-      "text-summary"
+      "text-summary",
+      "lcov"
     ]
   }
 }
