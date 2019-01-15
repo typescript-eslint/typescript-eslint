@@ -1,1 +1,0 @@
-var nestedArray: Array<Array<Array<string>>>
