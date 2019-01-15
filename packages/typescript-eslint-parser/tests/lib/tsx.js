@@ -22,12 +22,12 @@ const
 // Setup
 //------------------------------------------------------------------------------
 
-const TSX_FIXTURES_DIR = "./tests/fixtures/tsx";
+const TSX_FIXTURES_DIR = "../../../typescript-estree/tests/fixtures/tsx";
 
 const testFiles = shelljs.find(TSX_FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.tsx") > -1)
     // strip off ".src.tsx"
-    .map(filename => filename.substring(TSX_FIXTURES_DIR.length - 1, filename.length - 8));
+    .map(filename => filename.substring(TSX_FIXTURES_DIR.length + 1, filename.length - 8));
 
 //------------------------------------------------------------------------------
 // Tests
