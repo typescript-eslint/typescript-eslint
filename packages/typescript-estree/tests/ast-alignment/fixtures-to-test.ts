@@ -380,9 +380,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'type-assertion-arrow-function',
     /**
-     * Babel parses this incorrectly
-     * https://github.com/babel/babel/issues/9325
-     * PR: https://github.com/babel/babel/pull/9328
+     * PR for type parsing declare and abstract classes has been merged into Babel: https://github.com/babel/babel/pull/9328
+     * TODO: remove me in next babel > 7.2.3
      */
     'class-multi-line-keyword-declare',
     'class-multi-line-keyword-abstract'
@@ -440,9 +439,8 @@ tester.addFixturePatternConfig('typescript/types', {
   fileType: 'ts',
   ignore: [
     /**
-     * Babel bug for range of Identifier in TSIndexSignature
-     * https://github.com/babel/babel/issues/9319
-     * PR: https://github.com/babel/babel/pull/9335
+     * PR for type Identifier in TSIndexSignature ranges has been merged into Babel: https://github.com/babel/babel/pull/9335
+     * TODO: remove me in next babel > 7.2.3
      */
     'index-signature',
     'index-signature-readonly',
