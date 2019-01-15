@@ -16,12 +16,13 @@ import * as parser from '../../src/parser';
  * Process all fixtures, we will only snapshot the ones that have semantic errors
  * which are ignored by default parsing logic.
  */
-const FIXTURES_DIR = './tests/fixtures/';
+const FIXTURES_DIR =
+  'node_modules/@typescript-eslint/shared-fixtures/fixtures/';
 
 const testFiles = shelljs
   .find(FIXTURES_DIR)
   .filter(filename => filename.includes('.src.'))
-  .map(filename => filename.substring(FIXTURES_DIR.length - 2));
+  .map(filename => filename.substring(FIXTURES_DIR.length));
 
 //------------------------------------------------------------------------------
 // Tests

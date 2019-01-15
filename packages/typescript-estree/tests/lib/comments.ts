@@ -14,7 +14,8 @@ import { createSnapshotTestBlock } from '../../tools/test-utils';
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = './tests/fixtures/comments';
+const FIXTURES_DIR =
+  'node_modules/@typescript-eslint/shared-fixtures/fixtures/comments';
 
 const testFiles = shelljs
   .find(FIXTURES_DIR)
@@ -39,7 +40,7 @@ describe('Comments', () => {
     };
     // strip off ".src.js" and ".src.ts"
     const name = filename.substring(
-      FIXTURES_DIR.length - 1,
+      FIXTURES_DIR.length + 1,
       filename.length - 7
     );
     it(`fixtures/${name}.src`, createSnapshotTestBlock(code, config));

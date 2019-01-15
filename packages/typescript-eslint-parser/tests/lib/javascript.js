@@ -20,7 +20,7 @@ const path = require("path"),
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = "../../../typescript-estree/tests/fixtures/javascript";
+const FIXTURES_DIR = "node_modules/@typescript-eslint/shared-fixtures/fixtures/javascript";
 
 const testFiles = shelljs.find(FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.js") > -1)

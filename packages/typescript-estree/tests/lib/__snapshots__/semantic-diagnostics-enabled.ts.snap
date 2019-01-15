@@ -1786,12 +1786,6 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/semanticInfo/export-file.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/semanticInfo/import-file.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/semanticInfo/isolated-file.src.ts.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
-
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/generic-jsx-element.src.tsx.src 1`] = `
 Object {
   "column": 21,

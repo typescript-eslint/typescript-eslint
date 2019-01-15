@@ -22,7 +22,7 @@ const
 // Setup
 //------------------------------------------------------------------------------
 
-const TSX_FIXTURES_DIR = "../../../typescript-estree/tests/fixtures/tsx";
+const TSX_FIXTURES_DIR = "node_modules/@typescript-eslint/shared-fixtures/fixtures/tsx";
 
 const testFiles = shelljs.find(TSX_FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.tsx") > -1)

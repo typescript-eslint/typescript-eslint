@@ -14,14 +14,15 @@ import { createSnapshotTestBlock } from '../../tools/test-utils';
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = './tests/fixtures/typescript';
+const FIXTURES_DIR =
+  'node_modules/@typescript-eslint/shared-fixtures/fixtures/typescript';
 
 const testFiles = shelljs
   .find(FIXTURES_DIR)
   .filter(filename => filename.indexOf('.src.ts') > -1)
   // strip off ".src.ts"
   .map(filename =>
-    filename.substring(FIXTURES_DIR.length - 1, filename.length - 7)
+    filename.substring(FIXTURES_DIR.length + 1, filename.length - 7)
   );
 
 //------------------------------------------------------------------------------

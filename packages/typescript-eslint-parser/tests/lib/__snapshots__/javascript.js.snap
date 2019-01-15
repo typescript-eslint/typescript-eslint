@@ -74462,6 +74462,196 @@ Object {
 }
 `;
 
+exports[`javascript fixtures/directives/first-expression.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 3,
+          },
+        },
+        "range": Array [
+          121,
+          122,
+        ],
+        "raw": "0",
+        "type": "Literal",
+        "value": 0,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        121,
+        123,
+      ],
+      "type": "ExpressionStatement",
+    },
+    Object {
+      "directive": "abc",
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 4,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 4,
+          },
+        },
+        "range": Array [
+          124,
+          129,
+        ],
+        "raw": "\\"abc\\"",
+        "type": "Literal",
+        "value": "abc",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        124,
+        129,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 50,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        50,
+      ],
+      "type": "Line",
+      "value": " Prevent strings from being parsed as directives",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 69,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        51,
+        120,
+      ],
+      "type": "Line",
+      "value": " See https://github.com/prettier/prettier/pull/1560#issue-227225960",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 3,
+    },
+  },
+  "range": Array [
+    121,
+    130,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        121,
+        122,
+      ],
+      "type": "Numeric",
+      "value": "0",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        122,
+        123,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        124,
+        129,
+      ],
+      "type": "String",
+      "value": "\\"abc\\"",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`javascript fixtures/directives/function-non-strict.src 1`] = `
 Object {
   "body": Array [
@@ -75821,6 +76011,250 @@ Object {
       ],
       "type": "Punctuator",
       "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/directives/non-unique-directive.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "directive": "use strict",
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          12,
+        ],
+        "raw": "\\"use strict\\"",
+        "type": "Literal",
+        "value": "use strict",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        13,
+      ],
+      "type": "ExpressionStatement",
+    },
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          14,
+          26,
+        ],
+        "raw": "\\"use strict\\"",
+        "type": "Literal",
+        "value": "use strict",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        14,
+        27,
+      ],
+      "type": "ExpressionStatement",
+    },
+    Object {
+      "directive": "test",
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 6,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 3,
+          },
+        },
+        "range": Array [
+          28,
+          34,
+        ],
+        "raw": "\\"test\\"",
+        "type": "Literal",
+        "value": "test",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        28,
+        35,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 4,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    36,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        12,
+      ],
+      "type": "String",
+      "value": "\\"use strict\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        12,
+        13,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        14,
+        26,
+      ],
+      "type": "String",
+      "value": "\\"use strict\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        26,
+        27,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        28,
+        34,
+      ],
+      "type": "String",
+      "value": "\\"test\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        34,
+        35,
+      ],
+      "type": "Punctuator",
+      "value": ";",
     },
   ],
   "type": "Program",

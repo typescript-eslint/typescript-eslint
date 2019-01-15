@@ -23,6 +23,10 @@ interface CreateFixturePatternConfig {
 }
 
 const fixturesDirPath = path.join(__dirname, '../fixtures');
+const sharedFixturesDirPath = path.join(
+  __dirname,
+  '../../node_modules/@typescript-eslint/shared-fixtures/fixtures'
+);
 
 class FixturesTester {
   protected fixtures: FixturePatternConfig[] = [];
@@ -40,13 +44,17 @@ class FixturesTester {
     fixturesSubPath: string,
     config: CreateFixturePatternConfig = {}
   ) {
+    let _fixturesDirPath = fixturesDirPath;
     if (!fs.existsSync(path.join(fixturesDirPath, fixturesSubPath))) {
-      throw new Error(
-        `Registered path '${path.join(
-          __dirname,
-          fixturesSubPath
-        )}' was not found`
-      );
+      _fixturesDirPath = sharedFixturesDirPath;
+      if (!fs.existsSync(path.join(sharedFixturesDirPath, fixturesSubPath))) {
+        throw new Error(
+          `Registered path '${path.join(
+            __dirname,
+            fixturesSubPath
+          )}' was not found`
+        );
+      }
     }
 
     const ignore = config.ignore || [];
@@ -65,7 +73,7 @@ class FixturesTester {
       for (const fixture of ignoreSourceType) {
         this.fixtures.push({
           // It needs to be the full path from within fixtures/ for the pattern
-          pattern: `${fixturesSubPath}/${fixture}.src.${fileType}`,
+          pattern: `${_fixturesDirPath}/${fixture}.src.${fileType}`,
           ignoreSourceType: true,
           jsx
         });
@@ -80,7 +88,7 @@ class FixturesTester {
   }
 
   public getFixtures(): Fixture[] {
-    return this.fixtures
+    const fixtures = this.fixtures
       .map(fixture =>
         glob
           .sync(`${fixturesDirPath}/${fixture.pattern}`, {})
@@ -91,6 +99,20 @@ class FixturesTester {
           }))
       )
       .reduce((acc, x) => acc.concat(x), []);
+
+    const sharedFixtures = this.fixtures
+      .map(fixture =>
+        glob
+          .sync(`${sharedFixturesDirPath}/${fixture.pattern}`, {})
+          .map(filename => ({
+            filename,
+            ignoreSourceType: fixture.ignoreSourceType,
+            jsx: fixture.jsx
+          }))
+      )
+      .reduce((acc, x) => acc.concat(x), []);
+
+    return [...fixtures, ...sharedFixtures];
   }
 }
 
