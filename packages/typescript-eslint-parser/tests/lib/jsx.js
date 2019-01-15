@@ -21,20 +21,20 @@ const path = require("path"),
 // Setup
 //------------------------------------------------------------------------------
 
-const JSX_FIXTURES_DIR = "./tests/fixtures/jsx";
+const JSX_FIXTURES_DIR = "../../../typescript-estree/tests/fixtures/jsx";
 
 const jsxTestFiles = shelljs.find(JSX_FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.js") > -1)
     .filter(filename => filesWithKnownIssues.every(fileName => filename.indexOf(fileName) === -1))
     // strip off ".src.js"
-    .map(filename => filename.substring(JSX_FIXTURES_DIR.length - 1, filename.length - 7));
+    .map(filename => filename.substring(JSX_FIXTURES_DIR.length + 1, filename.length - 7));
 
-const JSX_JSXTEXT_FIXTURES_DIR = "./tests/fixtures/jsx-useJSXTextNode";
+const JSX_JSXTEXT_FIXTURES_DIR = "../../../typescript-estree/tests/fixtures/jsx-useJSXTextNode";
 
 const jsxTextTestFiles = shelljs.find(JSX_JSXTEXT_FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.js") > -1)
     // strip off ".src.js"
-    .map(filename => filename.substring(JSX_JSXTEXT_FIXTURES_DIR.length - 1, filename.length - 7));
+    .map(filename => filename.substring(JSX_JSXTEXT_FIXTURES_DIR.length + 1, filename.length - 7));
 
 //------------------------------------------------------------------------------
 // Tests
