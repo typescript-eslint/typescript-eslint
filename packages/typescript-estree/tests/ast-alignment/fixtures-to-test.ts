@@ -318,6 +318,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Babel error: parameterName is not included into range of TSTypeAnnotation
      * https://github.com/babel/babel/issues/9337
+     * PR: https://github.com/babel/babel/pull/9339
      */
     'type-guard-in-method',
     /**
