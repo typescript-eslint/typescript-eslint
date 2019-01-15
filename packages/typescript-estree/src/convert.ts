@@ -273,34 +273,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
   }
 
   /**
-   * Converts a child into a specified heritage node.
-   * @param {AST_NODE_TYPES} nodeType Type of node to be used
-   * @param {ts.ExpressionWithTypeArguments} child The TypeScript AST node to convert.
-   * @returns {ESTreeNode} The heritage node.
-   */
-  function convertHeritageClause(
-    nodeType: AST_NODE_TYPES,
-    child: ts.ExpressionWithTypeArguments
-  ): ESTreeNode {
-    const expression = convertChild(child.expression)!;
-    const range: [number, number] = [child.getStart(), child.end];
-    let classImplementsNode: ESTreeNode = {
-      type: nodeType,
-      expression,
-      range: range,
-      loc: getLocFor(range[0], range[1], ast)
-    };
-
-    if (child.typeArguments && child.typeArguments.length) {
-      classImplementsNode.typeParameters = convertTypeArgumentsToTypeParameters(
-        child.typeArguments
-      );
-    }
-
-    return classImplementsNode;
-  }
-
-  /**
    * Converts an array of ts.Node parameters into an array of ESTreeNode params
    * @param  {ts.Node[]} parameters An array of ts.Node params to be converted
    * @returns {ESTreeNode[]}       an array of converted ESTreeNode params
@@ -1468,9 +1440,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       });
 
       if (implementsClause) {
-        result.implements = implementsClause.types.map(el =>
-          convertHeritageClause(AST_NODE_TYPES.TSClassImplements, el)
-        );
+        result.implements = implementsClause.types.map(convertChild);
       }
 
       if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
@@ -2337,6 +2307,23 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
     }
 
+    case SyntaxKind.ExpressionWithTypeArguments: {
+      Object.assign(result, {
+        type:
+          parent && parent.kind === SyntaxKind.InterfaceDeclaration
+            ? AST_NODE_TYPES.TSInterfaceHeritage
+            : AST_NODE_TYPES.TSClassImplements,
+        expression: convertChild(node.expression)
+      });
+
+      if (node.typeArguments && node.typeArguments.length) {
+        result.typeParameters = convertTypeArgumentsToTypeParameters(
+          node.typeArguments
+        );
+      }
+      break;
+    }
+
     case SyntaxKind.InterfaceDeclaration: {
       const interfaceHeritageClauses = node.heritageClauses || [];
 
@@ -2389,15 +2376,11 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         for (const heritageClause of interfaceHeritageClauses) {
           if (heritageClause.token === SyntaxKind.ExtendsKeyword) {
             for (const n of heritageClause.types) {
-              interfaceExtends.push(
-                convertHeritageClause(AST_NODE_TYPES.TSInterfaceHeritage, n)
-              );
+              interfaceExtends.push(convertChild(n));
             }
           } else if (heritageClause.token === SyntaxKind.ImplementsKeyword) {
             for (const n of heritageClause.types) {
-              interfaceImplements.push(
-                convertHeritageClause(AST_NODE_TYPES.TSInterfaceHeritage, n)
-              );
+              interfaceImplements.push(convertChild(n));
             }
           }
         }

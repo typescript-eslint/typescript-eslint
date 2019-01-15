@@ -34,8 +34,8 @@ export interface ESTreeNode {
   value?: string;
   expression?: ESTreeNode | null;
   decorators?: (ESTreeNode | null)[];
-  implements?: ESTreeNode[];
-  extends?: ESTreeNode[];
+  implements?: (ESTreeNode | null)[];
+  extends?: (ESTreeNode | null)[];
   const?: boolean;
   declare?: boolean;
   global?: boolean;
