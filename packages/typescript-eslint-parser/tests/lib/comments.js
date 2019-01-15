@@ -20,12 +20,12 @@ const path = require("path"),
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = "./tests/fixtures/comments";
+const FIXTURES_DIR = "../../../typescript-estree/tests/fixtures/comments";
 
 const testFiles = shelljs.find(FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.js") > -1)
     // strip off ".src.js"
-    .map(filename => filename.substring(FIXTURES_DIR.length - 1, filename.length - 7));
+    .map(filename => filename.substring(FIXTURES_DIR.length + 1, filename.length - 7));
 
 //------------------------------------------------------------------------------
 // Tests
