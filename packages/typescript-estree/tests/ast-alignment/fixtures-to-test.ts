@@ -317,16 +317,13 @@ tester.addFixturePatternConfig('typescript/basics', {
     'arrow-function-with-type-parameters',
     /**
      * Babel error: parameterName is not included into range of TSTypeAnnotation
-     * TODO: report it to babel
+     * https://github.com/babel/babel/issues/9337
      */
     'type-guard-in-method',
     /**
      * there is difference in range between babel and ts-estree
      */
-    'class-with-implements-generic-multiple',
-    'class-with-implements-generic',
     'export-declare-const-named-enum',
-    'interface-with-extends-type-parameters',
     'interface-with-optional-properties',
     /**
      * Babel parses it as TSQualifiedName
@@ -337,6 +334,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Babel bug for parsing exported abstract interface
      * https://github.com/babel/babel/issues/9304
+     * PR: https://github.com/babel/babel/pull/9336
      */
     'abstract-interface',
     /**
@@ -384,6 +382,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Babel parses this incorrectly
      * https://github.com/babel/babel/issues/9325
+     * PR: https://github.com/babel/babel/pull/9328
      */
     'class-multi-line-keyword-declare',
     'class-multi-line-keyword-abstract'
@@ -443,6 +442,7 @@ tester.addFixturePatternConfig('typescript/types', {
     /**
      * Babel bug for range of Identifier in TSIndexSignature
      * https://github.com/babel/babel/issues/9319
+     * PR: https://github.com/babel/babel/pull/9335
      */
     'index-signature',
     'index-signature-readonly',
