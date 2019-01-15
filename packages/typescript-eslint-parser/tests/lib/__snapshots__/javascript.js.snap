@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ecmaFeatures fixtures/arrowFunctions/as-param.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/as-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -282,7 +282,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/as-param-with-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/as-param-with-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -655,7 +655,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/basic.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/basic.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -829,7 +829,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/basic-in-binary-expression.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/basic-in-binary-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1513,7 +1513,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/block-body.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/block-body.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1778,7 +1778,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/block-body-not-object.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/block-body-not-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2096,7 +2096,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-dup-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-dup-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2361,17 +2361,17 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-missing-paren.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/arrowFunctions/error-missing-paren.src 1`] = `"';' expected."`;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-not-arrow.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/arrowFunctions/error-not-arrow.src 1`] = `"Expression expected."`;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-numeric-param.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/arrowFunctions/error-numeric-param.src 1`] = `"';' expected."`;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-numeric-param-multi.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/arrowFunctions/error-numeric-param-multi.src 1`] = `"';' expected."`;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-reverse-arrow.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/arrowFunctions/error-reverse-arrow.src 1`] = `"Expression expected."`;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-default-param-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-default-param-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2727,7 +2727,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-dup-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-dup-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -3065,7 +3065,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -3403,7 +3403,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-eval-return.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-eval-return.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -3669,7 +3669,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-octal.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-octal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -3953,7 +3953,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-arguments.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-arguments.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -4291,7 +4291,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -4629,7 +4629,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-names.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-names.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -4967,7 +4967,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-no-paren-arguments.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-no-paren-arguments.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -5215,7 +5215,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-strict-param-no-paren-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-strict-param-no-paren-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -5463,7 +5463,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-two-lines.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/error-two-lines.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -5729,9 +5729,9 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/error-wrapped-param.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/arrowFunctions/error-wrapped-param.src 1`] = `"';' expected."`;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/expression.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -5941,7 +5941,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/iife.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/iife.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -6282,7 +6282,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/multiple-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/multiple-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -6547,7 +6547,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/no-auto-return.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/no-auto-return.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -6902,7 +6902,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/not-strict-arguments.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/not-strict-arguments.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -7077,7 +7077,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/not-strict-eval.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/not-strict-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -7252,7 +7252,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/not-strict-eval-params.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/not-strict-eval-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -7517,7 +7517,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/not-strict-octal.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/not-strict-octal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -7728,7 +7728,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/return-arrow-function.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/return-arrow-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -7980,7 +7980,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/return-sequence.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/return-sequence.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -8556,7 +8556,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/single-param.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/single-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -8731,7 +8731,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/single-param-parens.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/single-param-parens.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -8942,7 +8942,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/arrowFunctions/single-param-return-identifier.src 1`] = `
+exports[`javascript fixtures/arrowFunctions/single-param-return-identifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9152,7 +9152,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/bigIntLiterals/binary.src 1`] = `
+exports[`javascript fixtures/bigIntLiterals/binary.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9250,7 +9250,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/bigIntLiterals/decimal.src 1`] = `
+exports[`javascript fixtures/bigIntLiterals/decimal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9348,7 +9348,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/bigIntLiterals/hex.src 1`] = `
+exports[`javascript fixtures/bigIntLiterals/hex.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9446,7 +9446,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/bigIntLiterals/octal.src 1`] = `
+exports[`javascript fixtures/bigIntLiterals/octal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9544,9 +9544,9 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/binaryLiterals/invalid.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/binaryLiterals/invalid.src 1`] = `"';' expected."`;
 
-exports[`ecmaFeatures fixtures/binaryLiterals/lowercase.src 1`] = `
+exports[`javascript fixtures/binaryLiterals/lowercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9644,7 +9644,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/binaryLiterals/uppercase.src 1`] = `
+exports[`javascript fixtures/binaryLiterals/uppercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9742,7 +9742,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/blockBindings/const.src 1`] = `
+exports[`javascript fixtures/blockBindings/const.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9931,7 +9931,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/blockBindings/let.src 1`] = `
+exports[`javascript fixtures/blockBindings/let.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -10120,7 +10120,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/blockBindings/let-in-switchcase.src 1`] = `
+exports[`javascript fixtures/blockBindings/let-in-switchcase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -10601,7 +10601,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-accessor-properties.src 1`] = `
+exports[`javascript fixtures/classes/class-accessor-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -11216,7 +11216,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-computed-static-method.src 1`] = `
+exports[`javascript fixtures/classes/class-computed-static-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -11644,7 +11644,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-expression.src 1`] = `
+exports[`javascript fixtures/classes/class-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -11832,7 +11832,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-method-named-prototype.src 1`] = `
+exports[`javascript fixtures/classes/class-method-named-prototype.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -12188,7 +12188,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-method-named-static.src 1`] = `
+exports[`javascript fixtures/classes/class-method-named-static.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -12562,7 +12562,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-method-named-with-space.src 1`] = `
+exports[`javascript fixtures/classes/class-method-named-with-space.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -12883,7 +12883,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-one-method.src 1`] = `
+exports[`javascript fixtures/classes/class-one-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -13239,7 +13239,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-one-method-super.src 1`] = `
+exports[`javascript fixtures/classes/class-one-method-super.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -13720,7 +13720,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-static-method.src 1`] = `
+exports[`javascript fixtures/classes/class-static-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -14112,7 +14112,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-static-method-named-prototype.src 1`] = `
+exports[`javascript fixtures/classes/class-static-method-named-prototype.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -14523,7 +14523,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-static-method-named-static.src 1`] = `
+exports[`javascript fixtures/classes/class-static-method-named-static.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -14915,7 +14915,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-static-methods-and-accessor-properties.src 1`] = `
+exports[`javascript fixtures/classes/class-static-methods-and-accessor-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -15734,7 +15734,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-two-computed-static-methods.src 1`] = `
+exports[`javascript fixtures/classes/class-two-computed-static-methods.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -16384,7 +16384,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-two-methods.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -16908,7 +16908,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-two-methods-computed-constructor.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods-computed-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -17470,7 +17470,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-two-methods-semi.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -18012,7 +18012,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-two-methods-three-semi.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods-three-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -18590,7 +18590,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-two-methods-two-semi.src 1`] = `
+exports[`javascript fixtures/classes/class-two-methods-two-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -19150,7 +19150,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-two-static-methods-named-constructor.src 1`] = `
+exports[`javascript fixtures/classes/class-two-static-methods-named-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -19710,7 +19710,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-with-constructor.src 1`] = `
+exports[`javascript fixtures/classes/class-with-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -20066,7 +20066,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-with-constructor-parameters.src 1`] = `
+exports[`javascript fixtures/classes/class-with-constructor-parameters.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -20478,7 +20478,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/class-with-constructor-with-space.src 1`] = `
+exports[`javascript fixtures/classes/class-with-constructor-with-space.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -20834,7 +20834,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/derived-class-assign-to-var.src 1`] = `
+exports[`javascript fixtures/classes/derived-class-assign-to-var.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -21167,7 +21167,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/derived-class-expression.src 1`] = `
+exports[`javascript fixtures/classes/derived-class-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -21409,7 +21409,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/empty-class.src 1`] = `
+exports[`javascript fixtures/classes/empty-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -21596,7 +21596,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/empty-class-double-semi.src 1`] = `
+exports[`javascript fixtures/classes/empty-class-double-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -21783,7 +21783,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/empty-class-semi.src 1`] = `
+exports[`javascript fixtures/classes/empty-class-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -21988,7 +21988,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/empty-literal-derived-class.src 1`] = `
+exports[`javascript fixtures/classes/empty-literal-derived-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -22229,7 +22229,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/invalid-class-declaration.src 1`] = `
+exports[`javascript fixtures/classes/invalid-class-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -22381,7 +22381,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/invalid-class-setter-declaration.src 1`] = `
+exports[`javascript fixtures/classes/invalid-class-setter-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -22755,9 +22755,9 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/invalid-class-two-super-classes.src 1`] = `"Classes can only extend a single class."`;
+exports[`javascript fixtures/classes/invalid-class-two-super-classes.src 1`] = `"Classes can only extend a single class."`;
 
-exports[`ecmaFeatures fixtures/classes/named-class-expression.src 1`] = `
+exports[`javascript fixtures/classes/named-class-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -22980,7 +22980,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/classes/named-derived-class-expression.src 1`] = `
+exports[`javascript fixtures/classes/named-derived-class-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -23257,7 +23257,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/defaultParams/class-constructor.src 1`] = `
+exports[`javascript fixtures/defaultParams/class-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -23687,7 +23687,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/defaultParams/class-method.src 1`] = `
+exports[`javascript fixtures/defaultParams/class-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -24117,7 +24117,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/defaultParams/declaration.src 1`] = `
+exports[`javascript fixtures/defaultParams/declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -24417,7 +24417,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/defaultParams/expression.src 1`] = `
+exports[`javascript fixtures/defaultParams/expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -24771,7 +24771,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/defaultParams/method.src 1`] = `
+exports[`javascript fixtures/defaultParams/method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -25255,7 +25255,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/defaultParams/not-all-params.src 1`] = `
+exports[`javascript fixtures/defaultParams/not-all-params.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -25755,7 +25755,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/array-member.src 1`] = `
+exports[`javascript fixtures/destructuring/array-member.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -26052,7 +26052,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/array-to-array.src 1`] = `
+exports[`javascript fixtures/destructuring/array-to-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -26439,7 +26439,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/array-var-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring/array-var-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -26701,7 +26701,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/class-constructor-params-array.src 1`] = `
+exports[`javascript fixtures/destructuring/class-constructor-params-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -27168,7 +27168,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/class-constructor-params-defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring/class-constructor-params-defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -27779,7 +27779,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/class-constructor-params-defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring/class-constructor-params-defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -28468,7 +28468,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/class-constructor-params-object.src 1`] = `
+exports[`javascript fixtures/destructuring/class-constructor-params-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -29013,7 +29013,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/class-method-params-array.src 1`] = `
+exports[`javascript fixtures/destructuring/class-method-params-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -29480,7 +29480,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/class-method-params-defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring/class-method-params-defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -30091,7 +30091,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/class-method-params-defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring/class-method-params-defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -30780,7 +30780,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/class-method-params-object.src 1`] = `
+exports[`javascript fixtures/destructuring/class-method-params-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -31325,7 +31325,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -31603,7 +31603,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-array-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -32171,7 +32171,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-array-longform-nested-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-longform-nested-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -32950,7 +32950,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-array-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -33374,7 +33374,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-array-nested-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-nested-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -33871,7 +33871,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-array-nested-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-array-nested-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -34296,7 +34296,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -34633,7 +34633,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-object-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -35318,7 +35318,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-object-longform.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-longform.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -35709,7 +35709,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-object-longform-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-longform-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -36502,7 +36502,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-object-longform-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-longform-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -37151,7 +37151,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-object-mixed-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-mixed-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -37728,7 +37728,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-object-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -38269,7 +38269,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-object-nested-all.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-nested-all.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -38919,7 +38919,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/defaults-object-nested-multi.src 1`] = `
+exports[`javascript fixtures/destructuring/defaults-object-nested-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -39497,7 +39497,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/destructured-array-catch.src 1`] = `
+exports[`javascript fixtures/destructuring/destructured-array-catch.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -40419,7 +40419,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/destructured-object-catch.src 1`] = `
+exports[`javascript fixtures/destructuring/destructured-object-catch.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -41380,7 +41380,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/invalid-defaults-object-assign.src 1`] = `
+exports[`javascript fixtures/destructuring/invalid-defaults-object-assign.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -41916,7 +41916,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/named-param.src 1`] = `
+exports[`javascript fixtures/destructuring/named-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -42251,7 +42251,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/nested-array.src 1`] = `
+exports[`javascript fixtures/destructuring/nested-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -42918,7 +42918,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/nested-object.src 1`] = `
+exports[`javascript fixtures/destructuring/nested-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -43887,7 +43887,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/object-var-named.src 1`] = `
+exports[`javascript fixtures/destructuring/object-var-named.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -44224,7 +44224,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/object-var-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring/object-var-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -44525,7 +44525,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/param-defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring/param-defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -44880,7 +44880,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/param-defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring/param-defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -45274,7 +45274,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/param-defaults-object-nested.src 1`] = `
+exports[`javascript fixtures/destructuring/param-defaults-object-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -45998,7 +45998,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/params-array.src 1`] = `
+exports[`javascript fixtures/destructuring/params-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -46370,7 +46370,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/params-array-wrapped.src 1`] = `
+exports[`javascript fixtures/destructuring/params-array-wrapped.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -46778,7 +46778,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/params-multi-object.src 1`] = `
+exports[`javascript fixtures/destructuring/params-multi-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -47189,7 +47189,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/params-nested-array.src 1`] = `
+exports[`javascript fixtures/destructuring/params-nested-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -47654,7 +47654,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/params-nested-object.src 1`] = `
+exports[`javascript fixtures/destructuring/params-nested-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -48306,7 +48306,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/params-object.src 1`] = `
+exports[`javascript fixtures/destructuring/params-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -48756,7 +48756,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/params-object-wrapped.src 1`] = `
+exports[`javascript fixtures/destructuring/params-object-wrapped.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -49242,7 +49242,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring/sparse-array.src 1`] = `
+exports[`javascript fixtures/destructuring/sparse-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -49539,7 +49539,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-arrowFunctions/arrow-param-array.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -49804,7 +49804,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-arrowFunctions/arrow-param-nested-array.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-nested-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -50178,7 +50178,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-arrowFunctions/arrow-param-nested-object.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-nested-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -50705,7 +50705,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-arrowFunctions/arrow-param-nested-object-named.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-nested-object-named.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -51304,7 +51304,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-arrowFunctions/arrow-param-object.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/arrow-param-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -51608,7 +51608,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-arrowFunctions/param-defaults-array.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/param-defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -51927,7 +51927,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-arrowFunctions/param-defaults-object.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/param-defaults-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -52285,7 +52285,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-arrowFunctions/param-defaults-object-nested.src 1`] = `
+exports[`javascript fixtures/destructuring-and-arrowFunctions/param-defaults-object-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -53047,7 +53047,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-blockBindings/array-const-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/array-const-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -53309,7 +53309,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-blockBindings/array-let-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/array-let-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -53571,7 +53571,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-blockBindings/object-const-named.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/object-const-named.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -53908,7 +53908,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-blockBindings/object-const-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/object-const-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -54209,7 +54209,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-blockBindings/object-let-named.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/object-let-named.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -54546,7 +54546,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-blockBindings/object-let-undefined.src 1`] = `
+exports[`javascript fixtures/destructuring-and-blockBindings/object-let-undefined.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -54847,7 +54847,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-defaultParams/param-array.src 1`] = `
+exports[`javascript fixtures/destructuring-and-defaultParams/param-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -55292,7 +55292,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-defaultParams/param-object.src 1`] = `
+exports[`javascript fixtures/destructuring-and-defaultParams/param-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -55888,7 +55888,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-defaultParams/param-object-short.src 1`] = `
+exports[`javascript fixtures/destructuring-and-defaultParams/param-object-short.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -56542,7 +56542,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-forOf/loop.src 1`] = `
+exports[`javascript fixtures/destructuring-and-forOf/loop.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -56820,7 +56820,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/complex-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/complex-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -57320,7 +57320,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/destructured-array-literal.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/destructured-array-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -57742,7 +57742,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/destructuring-param.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/destructuring-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -58258,7 +58258,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/error-complex-destructured-spread-first.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/error-complex-destructured-spread-first.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -58758,7 +58758,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/multi-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/multi-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -59071,7 +59071,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/single-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/single-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -59330,7 +59330,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/var-complex-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/var-complex-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -59850,7 +59850,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/var-destructured-array-literal.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/var-destructured-array-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -60292,7 +60292,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/var-multi-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/var-multi-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -60625,7 +60625,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/destructuring-and-spread/var-single-destructured.src 1`] = `
+exports[`javascript fixtures/destructuring-and-spread/var-single-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -60904,7 +60904,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalAsyncIteration/async-generators.src 1`] = `
+exports[`javascript fixtures/experimentalAsyncIteration/async-generators.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -61131,7 +61131,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalAsyncIteration/async-iterator.src 1`] = `
+exports[`javascript fixtures/experimentalAsyncIteration/async-iterator.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -61631,7 +61631,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalDynamicImport/dynamic-import.src 1`] = `
+exports[`javascript fixtures/experimentalDynamicImport/dynamic-import.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -61982,7 +61982,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/arg-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/arg-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -62393,7 +62393,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/destructuring-assign-mirror.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/destructuring-assign-mirror.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -62946,7 +62946,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/function-parameter-object-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/function-parameter-object-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -63264,9 +63264,9 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/invalid-rest.src 1`] = `"',' expected."`;
+exports[`javascript fixtures/experimentalObjectRestSpread/invalid-rest.src 1`] = `"',' expected."`;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -63749,7 +63749,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/object-rest.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/object-rest.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -64735,7 +64735,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/property-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/property-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -65598,7 +65598,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/shorthand-method-args.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/shorthand-method-args.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -66251,7 +66251,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/shorthand-methods.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/shorthand-methods.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -66960,7 +66960,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/shorthand-properties.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/shorthand-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -67679,7 +67679,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/single-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/single-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -68470,7 +68470,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/spread-trailing-comma.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/spread-trailing-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -68879,7 +68879,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalObjectRestSpread/two-spread.src 1`] = `
+exports[`javascript fixtures/experimentalObjectRestSpread/two-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -69630,7 +69630,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalOptionalCatchBinding/optional-catch-binding.src 1`] = `
+exports[`javascript fixtures/experimentalOptionalCatchBinding/optional-catch-binding.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -69836,7 +69836,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/experimentalOptionalCatchBinding/optional-catch-binding-finally.src 1`] = `
+exports[`javascript fixtures/experimentalOptionalCatchBinding/optional-catch-binding-finally.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -70113,7 +70113,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/exponentiationOperators/exponential-operators.src 1`] = `
+exports[`javascript fixtures/exponentiationOperators/exponential-operators.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -70520,7 +70520,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/forOf/for-of-with-function-initializer.src 1`] = `
+exports[`javascript fixtures/forOf/for-of-with-function-initializer.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -71236,7 +71236,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/forOf/for-of-with-var-and-braces.src 1`] = `
+exports[`javascript fixtures/forOf/for-of-with-var-and-braces.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -71660,7 +71660,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/forOf/for-of-with-var-and-no-braces.src 1`] = `
+exports[`javascript fixtures/forOf/for-of-with-var-and-no-braces.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -72029,7 +72029,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/forOf/invalid-for-of-with-const-and-no-braces.src 1`] = `
+exports[`javascript fixtures/forOf/invalid-for-of-with-const-and-no-braces.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -72398,7 +72398,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/forOf/invalid-for-of-with-let-and-no-braces.src 1`] = `
+exports[`javascript fixtures/forOf/invalid-for-of-with-let-and-no-braces.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -72767,7 +72767,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/anonymous-generator.src 1`] = `
+exports[`javascript fixtures/generators/anonymous-generator.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -73102,7 +73102,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/async-generator-function.src 1`] = `
+exports[`javascript fixtures/generators/async-generator-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -73329,7 +73329,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/async-generator-method.src 1`] = `
+exports[`javascript fixtures/generators/async-generator-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -73958,7 +73958,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/double-yield.src 1`] = `
+exports[`javascript fixtures/generators/double-yield.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -74330,7 +74330,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/empty-generator-declaration.src 1`] = `
+exports[`javascript fixtures/generators/empty-generator-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -74574,7 +74574,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/generator-declaration.src 1`] = `
+exports[`javascript fixtures/generators/generator-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -74926,7 +74926,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/yield-delegation.src 1`] = `
+exports[`javascript fixtures/generators/yield-delegation.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -75279,7 +75279,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/yield-without-value.src 1`] = `
+exports[`javascript fixtures/generators/yield-without-value.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -75597,7 +75597,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/yield-without-value-in-call.src 1`] = `
+exports[`javascript fixtures/generators/yield-without-value-in-call.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76006,7 +76006,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/generators/yield-without-value-no-semi.src 1`] = `
+exports[`javascript fixtures/generators/yield-without-value-no-semi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76306,7 +76306,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/globalReturn/return-identifier.src 1`] = `
+exports[`javascript fixtures/globalReturn/return-identifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76421,7 +76421,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/globalReturn/return-no-arg.src 1`] = `
+exports[`javascript fixtures/globalReturn/return-no-arg.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76501,7 +76501,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/globalReturn/return-true.src 1`] = `
+exports[`javascript fixtures/globalReturn/return-true.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76617,7 +76617,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/importMeta/simple-import-meta.src 1`] = `
+exports[`javascript fixtures/importMeta/simple-import-meta.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -76857,7 +76857,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/error-delete.src 1`] = `
+exports[`javascript fixtures/modules/error-delete.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -77154,7 +77154,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/error-function.src 1`] = `
+exports[`javascript fixtures/modules/error-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -77453,7 +77453,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/error-strict.src 1`] = `
+exports[`javascript fixtures/modules/error-strict.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78038,7 +78038,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-default-array.src 1`] = `
+exports[`javascript fixtures/modules/export-default-array.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78189,7 +78189,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-default-class.src 1`] = `
+exports[`javascript fixtures/modules/export-default-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78359,7 +78359,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-default-expression.src 1`] = `
+exports[`javascript fixtures/modules/export-default-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78602,7 +78602,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-default-function.src 1`] = `
+exports[`javascript fixtures/modules/export-default-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -78811,7 +78811,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-default-named-class.src 1`] = `
+exports[`javascript fixtures/modules/export-default-named-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79016,7 +79016,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-default-named-function.src 1`] = `
+exports[`javascript fixtures/modules/export-default-named-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79260,7 +79260,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-default-number.src 1`] = `
+exports[`javascript fixtures/modules/export-default-number.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79394,7 +79394,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-default-object.src 1`] = `
+exports[`javascript fixtures/modules/export-default-object.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79658,7 +79658,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-default-value.src 1`] = `
+exports[`javascript fixtures/modules/export-default-value.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79791,7 +79791,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-from-batch.src 1`] = `
+exports[`javascript fixtures/modules/export-from-batch.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -79943,7 +79943,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-from-default.src 1`] = `
+exports[`javascript fixtures/modules/export-from-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -80187,7 +80187,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-from-named-as-default.src 1`] = `
+exports[`javascript fixtures/modules/export-from-named-as-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -80467,7 +80467,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-from-named-as-specifier.src 1`] = `
+exports[`javascript fixtures/modules/export-from-named-as-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -80747,7 +80747,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-from-named-as-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/export-from-named-as-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -81116,7 +81116,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-from-specifier.src 1`] = `
+exports[`javascript fixtures/modules/export-from-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -81360,7 +81360,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-from-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/export-from-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -81693,7 +81693,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-function.src 1`] = `
+exports[`javascript fixtures/modules/export-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -81921,7 +81921,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-named-as-default.src 1`] = `
+exports[`javascript fixtures/modules/export-named-as-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82147,7 +82147,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-named-as-specifier.src 1`] = `
+exports[`javascript fixtures/modules/export-named-as-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82373,7 +82373,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-named-as-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/export-named-as-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82688,7 +82688,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-named-class.src 1`] = `
+exports[`javascript fixtures/modules/export-named-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82877,7 +82877,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-named-empty.src 1`] = `
+exports[`javascript fixtures/modules/export-named-empty.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -82995,7 +82995,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-named-specifier.src 1`] = `
+exports[`javascript fixtures/modules/export-named-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -83185,7 +83185,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-named-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/export-named-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -83464,7 +83464,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-named-specifiers-comma.src 1`] = `
+exports[`javascript fixtures/modules/export-named-specifiers-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -83761,7 +83761,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-var.src 1`] = `
+exports[`javascript fixtures/modules/export-var.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -83934,7 +83934,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-var-anonymous-function.src 1`] = `
+exports[`javascript fixtures/modules/export-var-anonymous-function.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -84254,7 +84254,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/export-var-number.src 1`] = `
+exports[`javascript fixtures/modules/export-var-number.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -84481,7 +84481,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-default.src 1`] = `
+exports[`javascript fixtures/modules/import-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -84670,7 +84670,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-default-and-named-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/import-default-and-named-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -84984,7 +84984,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-default-and-namespace-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/import-default-and-namespace-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -85280,7 +85280,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-default-as.src 1`] = `
+exports[`javascript fixtures/modules/import-default-as.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -85559,7 +85559,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-jquery.src 1`] = `
+exports[`javascript fixtures/modules/import-jquery.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -85730,7 +85730,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-module.src 1`] = `
+exports[`javascript fixtures/modules/import-module.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -85847,7 +85847,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-named-as-specifier.src 1`] = `
+exports[`javascript fixtures/modules/import-named-as-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -86126,7 +86126,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-named-as-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/import-named-as-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -86494,7 +86494,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-named-empty.src 1`] = `
+exports[`javascript fixtures/modules/import-named-empty.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -86665,7 +86665,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-named-specifier.src 1`] = `
+exports[`javascript fixtures/modules/import-named-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -86908,7 +86908,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-named-specifiers.src 1`] = `
+exports[`javascript fixtures/modules/import-named-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -87240,7 +87240,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-named-specifiers-comma.src 1`] = `
+exports[`javascript fixtures/modules/import-named-specifiers-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -87590,7 +87590,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-namespace-specifier.src 1`] = `
+exports[`javascript fixtures/modules/import-namespace-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -87815,7 +87815,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/import-null-as-nil.src 1`] = `
+exports[`javascript fixtures/modules/import-null-as-nil.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88076,7 +88076,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/invalid-await.src 1`] = `
+exports[`javascript fixtures/modules/invalid-await.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88249,7 +88249,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/invalid-class.src 1`] = `
+exports[`javascript fixtures/modules/invalid-class.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88419,17 +88419,17 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/invalid-export-batch-missing-from-clause.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-export-batch-missing-from-clause.src 1`] = `"'from' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-export-batch-token.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-export-batch-token.src 1`] = `"'from' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-export-default.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/modules/invalid-export-default.src 1`] = `"';' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-export-default-equal.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/modules/invalid-export-default-equal.src 1`] = `"Expression expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-export-default-token.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/modules/invalid-export-default-token.src 1`] = `"';' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-export-named-default.src 1`] = `
+exports[`javascript fixtures/modules/invalid-export-named-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88601,19 +88601,19 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/invalid-export-named-extra-comma.src 1`] = `"Identifier expected."`;
+exports[`javascript fixtures/modules/invalid-export-named-extra-comma.src 1`] = `"Identifier expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-export-named-middle-comma.src 1`] = `"Identifier expected."`;
+exports[`javascript fixtures/modules/invalid-export-named-middle-comma.src 1`] = `"Identifier expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-default.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/modules/invalid-import-default.src 1`] = `"Expression expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-default-after-named.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-default-after-named.src 1`] = `"'from' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-default-after-named-after-default.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-default-after-named-after-default.src 1`] = `"'from' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-default-missing-module-specifier.src 1`] = `"'=' expected."`;
+exports[`javascript fixtures/modules/invalid-import-default-missing-module-specifier.src 1`] = `"'=' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-default-module-specifier.src 1`] = `
+exports[`javascript fixtures/modules/invalid-import-default-module-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -88801,9 +88801,9 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-missing-module-specifier.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-missing-module-specifier.src 1`] = `"'from' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-module-specifier.src 1`] = `
+exports[`javascript fixtures/modules/invalid-import-module-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -89028,21 +89028,21 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-named-after-named.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-after-named.src 1`] = `"'from' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-named-after-namespace.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-after-namespace.src 1`] = `"'from' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-named-as-missing-from.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-as-missing-from.src 1`] = `"'from' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-named-extra-comma.src 1`] = `"Identifier expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-extra-comma.src 1`] = `"Identifier expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-named-middle-comma.src 1`] = `"Identifier expected."`;
+exports[`javascript fixtures/modules/invalid-import-named-middle-comma.src 1`] = `"Identifier expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-namespace-after-named.src 1`] = `"'from' expected."`;
+exports[`javascript fixtures/modules/invalid-import-namespace-after-named.src 1`] = `"'from' expected."`;
 
-exports[`ecmaFeatures fixtures/modules/invalid-import-namespace-missing-as.src 1`] = `"'as' expected."`;
+exports[`javascript fixtures/modules/invalid-import-namespace-missing-as.src 1`] = `"'as' expected."`;
 
-exports[`ecmaFeatures fixtures/newTarget/invalid-new-target.src 1`] = `
+exports[`javascript fixtures/newTarget/invalid-new-target.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -89302,7 +89302,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/newTarget/invalid-unknown-property.src 1`] = `
+exports[`javascript fixtures/newTarget/invalid-unknown-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -89710,7 +89710,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/newTarget/simple-new-target.src 1`] = `
+exports[`javascript fixtures/newTarget/simple-new-target.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -90136,7 +90136,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/computed-addition-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-addition-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -90565,7 +90565,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/computed-and-identifier.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-and-identifier.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -90995,7 +90995,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/computed-getter-and-setter.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-getter-and-setter.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -91648,7 +91648,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/computed-string-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-string-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -92004,7 +92004,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/computed-variable-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/computed-variable-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -92359,11 +92359,11 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/invalid-computed-variable-property.src 1`] = `"':' expected."`;
+exports[`javascript fixtures/objectLiteralComputedProperties/invalid-computed-variable-property.src 1`] = `"':' expected."`;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/invalid-standalone-computed-variable-property.src 1`] = `"':' expected."`;
+exports[`javascript fixtures/objectLiteralComputedProperties/invalid-standalone-computed-variable-property.src 1`] = `"':' expected."`;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/standalone-expression.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/standalone-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -92663,7 +92663,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/standalone-expression-with-addition.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/standalone-expression-with-addition.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -93037,7 +93037,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralComputedProperties/standalone-expression-with-method.src 1`] = `
+exports[`javascript fixtures/objectLiteralComputedProperties/standalone-expression-with-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -93430,7 +93430,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralDuplicateProperties/error-proto-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralDuplicateProperties/error-proto-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -94132,7 +94132,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -94836,7 +94836,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralDuplicateProperties/strict-duplicate-properties.src 1`] = `
+exports[`javascript fixtures/objectLiteralDuplicateProperties/strict-duplicate-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -95359,7 +95359,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `
+exports[`javascript fixtures/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -95884,9 +95884,9 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralShorthandMethods/invalid-method-no-braces.src 1`] = `"'{' expected."`;
+exports[`javascript fixtures/objectLiteralShorthandMethods/invalid-method-no-braces.src 1`] = `"'{' expected."`;
 
-exports[`ecmaFeatures fixtures/objectLiteralShorthandMethods/method-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/method-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -96353,7 +96353,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralShorthandMethods/simple-method.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -96745,7 +96745,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralShorthandMethods/simple-method-named-get.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method-named-get.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -97137,7 +97137,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralShorthandMethods/simple-method-named-set.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method-named-set.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -97529,7 +97529,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralShorthandMethods/simple-method-with-argument.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method-with-argument.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -97958,7 +97958,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralShorthandMethods/simple-method-with-string-name.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/simple-method-with-string-name.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -98351,7 +98351,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralShorthandMethods/string-name-method-property.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandMethods/string-name-method-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -98819,7 +98819,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/objectLiteralShorthandProperties/shorthand-properties.src 1`] = `
+exports[`javascript fixtures/objectLiteralShorthandProperties/shorthand-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -99542,9 +99542,9 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/octalLiterals/invalid.src 1`] = `"';' expected."`;
+exports[`javascript fixtures/octalLiterals/invalid.src 1`] = `"';' expected."`;
 
-exports[`ecmaFeatures fixtures/octalLiterals/lowercase.src 1`] = `
+exports[`javascript fixtures/octalLiterals/lowercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -99642,7 +99642,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/octalLiterals/strict-uppercase.src 1`] = `
+exports[`javascript fixtures/octalLiterals/strict-uppercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -99813,7 +99813,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/octalLiterals/uppercase.src 1`] = `
+exports[`javascript fixtures/octalLiterals/uppercase.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -99911,7 +99911,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/regex/regexp-simple.src 1`] = `
+exports[`javascript fixtures/regex/regexp-simple.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100109,7 +100109,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/regexUFlag/regex-u-extended-escape.src 1`] = `
+exports[`javascript fixtures/regexUFlag/regex-u-extended-escape.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100307,7 +100307,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/regexUFlag/regex-u-invalid-extended-escape.src 1`] = `
+exports[`javascript fixtures/regexUFlag/regex-u-invalid-extended-escape.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100505,7 +100505,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/regexUFlag/regex-u-simple.src 1`] = `
+exports[`javascript fixtures/regexUFlag/regex-u-simple.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100703,7 +100703,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/regexYFlag/regexp-y-simple.src 1`] = `
+exports[`javascript fixtures/regexYFlag/regexp-y-simple.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -100901,7 +100901,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/restParams/basic-rest.src 1`] = `
+exports[`javascript fixtures/restParams/basic-rest.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -101253,7 +101253,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/restParams/class-constructor.src 1`] = `
+exports[`javascript fixtures/restParams/class-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -101646,7 +101646,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/restParams/class-method.src 1`] = `
+exports[`javascript fixtures/restParams/class-method.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -102039,7 +102039,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/restParams/error-no-default.src 1`] = `
+exports[`javascript fixtures/restParams/error-no-default.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -102356,7 +102356,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/restParams/error-not-last.src 1`] = `
+exports[`javascript fixtures/restParams/error-not-last.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -102691,7 +102691,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/restParams/func-expression.src 1`] = `
+exports[`javascript fixtures/restParams/func-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -103046,7 +103046,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/restParams/func-expression-multi.src 1`] = `
+exports[`javascript fixtures/restParams/func-expression-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -103455,7 +103455,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/restParams/invalid-rest-param.src 1`] = `
+exports[`javascript fixtures/restParams/invalid-rest-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -103847,7 +103847,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/restParams/single-rest.src 1`] = `
+exports[`javascript fixtures/restParams/single-rest.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -104145,11 +104145,11 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/spread/error-invalid-if.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/spread/error-invalid-if.src 1`] = `"Expression expected."`;
 
-exports[`ecmaFeatures fixtures/spread/error-invalid-sequence.src 1`] = `"Expression expected."`;
+exports[`javascript fixtures/spread/error-invalid-sequence.src 1`] = `"Expression expected."`;
 
-exports[`ecmaFeatures fixtures/spread/multi-function-call.src 1`] = `
+exports[`javascript fixtures/spread/multi-function-call.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -104426,7 +104426,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/spread/not-final-param.src 1`] = `
+exports[`javascript fixtures/spread/not-final-param.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -104703,7 +104703,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/spread/simple-function-call.src 1`] = `
+exports[`javascript fixtures/spread/simple-function-call.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -104926,7 +104926,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/templateStrings/deeply-nested.src 1`] = `
+exports[`javascript fixtures/templateStrings/deeply-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -105392,7 +105392,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/templateStrings/error-octal-literal.src 1`] = `
+exports[`javascript fixtures/templateStrings/error-octal-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -105513,7 +105513,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/templateStrings/escape-characters.src 1`] = `
+exports[`javascript fixtures/templateStrings/escape-characters.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -105728,7 +105728,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/templateStrings/expressions.src 1`] = `
+exports[`javascript fixtures/templateStrings/expressions.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -106403,7 +106403,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/templateStrings/multi-line-template-string.src 1`] = `
+exports[`javascript fixtures/templateStrings/multi-line-template-string.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -106539,7 +106539,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/templateStrings/simple-template-string.src 1`] = `
+exports[`javascript fixtures/templateStrings/simple-template-string.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -106660,7 +106660,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/templateStrings/single-dollar-sign.src 1`] = `
+exports[`javascript fixtures/templateStrings/single-dollar-sign.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -106873,7 +106873,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/templateStrings/tagged-no-placeholders.src 1`] = `
+exports[`javascript fixtures/templateStrings/tagged-no-placeholders.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -107047,7 +107047,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/templateStrings/tagged-template-string.src 1`] = `
+exports[`javascript fixtures/templateStrings/tagged-template-string.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -107774,7 +107774,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/unicodeCodePointEscapes/basic-string-literal.src 1`] = `
+exports[`javascript fixtures/unicodeCodePointEscapes/basic-string-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -107873,7 +107873,7 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/unicodeCodePointEscapes/complex-string-literal.src 1`] = `
+exports[`javascript fixtures/unicodeCodePointEscapes/complex-string-literal.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -107972,6 +107972,6 @@ Object {
 }
 `;
 
-exports[`ecmaFeatures fixtures/unicodeCodePointEscapes/invalid-empty-escape.src 1`] = `"Hexadecimal digit expected."`;
+exports[`javascript fixtures/unicodeCodePointEscapes/invalid-empty-escape.src 1`] = `"Hexadecimal digit expected."`;
 
-exports[`ecmaFeatures fixtures/unicodeCodePointEscapes/invalid-too-large-escape.src 1`] = `"An extended Unicode escape value must be between 0x0 and 0x10FFFF inclusive."`;
+exports[`javascript fixtures/unicodeCodePointEscapes/invalid-too-large-escape.src 1`] = `"An extended Unicode escape value must be between 0x0 and 0x10FFFF inclusive."`;

@@ -20,7 +20,7 @@ const path = require("path"),
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = "./tests/fixtures/ecma-features";
+const FIXTURES_DIR = "./tests/fixtures/javascript";
 
 const testFiles = shelljs.find(FIXTURES_DIR)
     .filter(filename => filename.indexOf(".src.js") > -1)
@@ -31,7 +31,7 @@ const testFiles = shelljs.find(FIXTURES_DIR)
 // Tests
 //------------------------------------------------------------------------------
 
-describe("ecmaFeatures", () => {
+describe("javascript", () => {
     testFiles.forEach(filename => {
         const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
         test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code));
