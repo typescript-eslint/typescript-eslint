@@ -316,9 +316,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'arrow-function-with-type-parameters',
     /**
-     * Babel error: parameterName is not included into range of TSTypeAnnotation
-     * https://github.com/babel/babel/issues/9337
-     * PR: https://github.com/babel/babel/pull/9339
+     * PR for this type predicate ranges has been merged into Babel: https://github.com/babel/babel/pull/9339
+     * TODO: remove me in next babel > 7.2.3
      */
     'type-guard-in-method',
     /**
