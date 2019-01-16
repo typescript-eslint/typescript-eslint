@@ -14,7 +14,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const parser = require("../parser");
+import * as parser from "../src/parser";
 
 //------------------------------------------------------------------------------
 //   Private
@@ -25,7 +25,7 @@ const parser = require("../parser");
  * @param  {Object} ast the AST object
  * @returns {Object}     copy of the AST object
  */
-function getRaw(ast) {
+function getRaw(ast: any) {
     return JSON.parse(JSON.stringify(ast, (key, value) => {
         if ((key === "start" || key === "end") && typeof value === "number") {
             return undefined;
@@ -41,7 +41,7 @@ function getRaw(ast) {
  * @param {*} config the parser configuration
  * @returns {Function} callback for Jest test() block
  */
-function createSnapshotTestBlock(code, config = {}) {
+function createSnapshotTestBlock(code: any, config = {}) {
     const defaultConfig = {
         loc: true,
         range: true,
@@ -79,11 +79,11 @@ function createSnapshotTestBlock(code, config = {}) {
 
 }
 
-function formatSnapshotName(filename, fixturesDir, fileExtension = '.js') {
+function formatSnapshotName(filename: any, fixturesDir: any, fileExtension = '.js') {
     return `fixtures/${filename.replace(fixturesDir + '/', '').replace(fileExtension, '')}`;
 }
 
-module.exports = {
+export default {
     getRaw,
     createSnapshotTestBlock,
     formatSnapshotName
