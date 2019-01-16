@@ -1,6 +1,6 @@
 ---
 name: typescript-estree
-about: Report an issue in typescript estree
+about: Report an issue in `typescript-estree`
 ---
 
 **What version of TypeScript are you using?**
