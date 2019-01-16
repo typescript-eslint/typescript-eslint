@@ -18,7 +18,8 @@
     "precommit": "yarn test && lint-staged",
     "cz": "git-cz",
     "commitmsg": "commitlint -E GIT_PARAMS",
-    "check-format": "prettier --list-different \"./**/*.{ts,js,json,md}\""
+    "check-format": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\""
   },
   "lint-staged": {
     "*.{ts,js,json,md}": [
