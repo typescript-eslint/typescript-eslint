@@ -1,6 +1,6 @@
 ---
-name: @typescript-eslint/parser
-about: Report an issue with the `@typescript-eslint/parser` package
+name: '@typescript-eslint/parser'
+about: Report an issue with the @typescript-eslint/parser package
 ---
 
 **What version of TypeScript are you using?**
