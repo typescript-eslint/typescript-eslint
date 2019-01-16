@@ -14823,7 +14823,7 @@ Object {
           },
           "loc": Object {
             "end": Object {
-              "column": 24,
+              "column": 27,
               "line": 1,
             },
             "start": Object {
@@ -14833,7 +14833,7 @@ Object {
           },
           "range": Array [
             21,
-            24,
+            27,
           ],
           "type": "TSClassImplements",
           "typeParameters": Object {
@@ -15155,7 +15155,7 @@ Object {
           },
           "loc": Object {
             "end": Object {
-              "column": 24,
+              "column": 30,
               "line": 1,
             },
             "start": Object {
@@ -15165,7 +15165,7 @@ Object {
           },
           "range": Array [
             21,
-            24,
+            30,
           ],
           "type": "TSClassImplements",
           "typeParameters": Object {
@@ -51372,7 +51372,7 @@ Object {
           },
           "loc": Object {
             "end": Object {
-              "column": 28,
+              "column": 31,
               "line": 1,
             },
             "start": Object {
@@ -51382,7 +51382,7 @@ Object {
           },
           "range": Array [
             25,
-            28,
+            31,
           ],
           "type": "TSInterfaceHeritage",
           "typeParameters": Object {
