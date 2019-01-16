@@ -79,7 +79,12 @@ function createSnapshotTestBlock(code, config = {}) {
 
 }
 
+function formatSnapshotName(filename, fixturesDir, fileExtension = '.js') {
+    return `fixtures/${filename.replace(fixturesDir + '/', '').replace(fileExtension, '')}`;
+}
+
 module.exports = {
     getRaw,
-    createSnapshotTestBlock
+    createSnapshotTestBlock,
+    formatSnapshotName
 };

@@ -12,20 +12,16 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const path = require("path"),
-    shelljs = require("shelljs"),
+const fs = require("fs"),
+    glob = require('glob'),
     testUtils = require("../../tools/test-utils");
 
 //------------------------------------------------------------------------------
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = "node_modules/@typescript-eslint/shared-fixtures/fixtures/typescript";
-
-const testFiles = shelljs.find(FIXTURES_DIR)
-    .filter(filename => filename.indexOf(".src.ts") > -1)
-    // strip off ".src.ts"
-    .map(filename => filename.substring(FIXTURES_DIR.length + 1, filename.length - 7));
+const FIXTURES_DIR = "../../node_modules/@typescript-eslint/shared-fixtures/fixtures/typescript";
+const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
 
 //------------------------------------------------------------------------------
 // Tests
@@ -34,8 +30,8 @@ const testFiles = shelljs.find(FIXTURES_DIR)
 describe("typescript", () => {
 
     testFiles.forEach(filename => {
-        const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.ts`);
-        test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code));
+        const code = fs.readFileSync(filename, 'utf8');
+        test(testUtils.formatSnapshotName(filename, FIXTURES_DIR, '.ts'), testUtils.createSnapshotTestBlock(code));
     });
 
 });

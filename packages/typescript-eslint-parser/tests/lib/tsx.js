@@ -11,10 +11,9 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const
-    path = require("path"),
+const fs = require("fs"),
+    glob = require('glob'),
     { Linter } = require("eslint"),
-    shelljs = require("shelljs"),
     parser = require("../../"),
     testUtils = require("../../tools/test-utils");
 
@@ -22,12 +21,8 @@ const
 // Setup
 //------------------------------------------------------------------------------
 
-const TSX_FIXTURES_DIR = "node_modules/@typescript-eslint/shared-fixtures/fixtures/tsx";
-
-const testFiles = shelljs.find(TSX_FIXTURES_DIR)
-    .filter(filename => filename.indexOf(".src.tsx") > -1)
-    // strip off ".src.tsx"
-    .map(filename => filename.substring(TSX_FIXTURES_DIR.length + 1, filename.length - 8));
+const FIXTURES_DIR = "../../node_modules/@typescript-eslint/shared-fixtures/fixtures/tsx";
+const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.tsx`);
 
 //------------------------------------------------------------------------------
 // Tests
@@ -35,12 +30,12 @@ const testFiles = shelljs.find(TSX_FIXTURES_DIR)
 
 describe("TSX", () => {
     testFiles.forEach(filename => {
-        const code = shelljs.cat(`${path.resolve(TSX_FIXTURES_DIR, filename)}.src.tsx`);
+        const code = fs.readFileSync(filename, 'utf8');
         const config = {
             useJSXTextNode: true,
             jsx: true
         };
-        test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code, config));
+        test(testUtils.formatSnapshotName(filename, FIXTURES_DIR, '.tsx'), testUtils.createSnapshotTestBlock(code, config));
     });
 
     describe("if the filename ends with '.tsx', enable jsx option automatically.", () => {
