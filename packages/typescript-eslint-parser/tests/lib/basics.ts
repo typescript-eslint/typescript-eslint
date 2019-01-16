@@ -25,7 +25,7 @@ describe('basics', () => {
     const code = `
 export const Price: React.SFC<PriceProps> = function Price(props) {}
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         test: 'error'
@@ -33,16 +33,20 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
     };
 
     linter.defineParser('typescript-eslint-parser', parser);
-    linter.defineRule('test', (context: any) => ({
-      TSTypeReference(node: any) {
-        const name = context.getSourceCode().getText(node.typeName);
-        context.report({
-          node,
-          message: 'called on {{name}}',
-          data: { name }
-        });
+    linter.defineRule('test', {
+      create(context: any) {
+        return {
+          TSTypeReference(node: any) {
+            const name = context.getSourceCode().getText(node.typeName);
+            context.report({
+              node,
+              message: 'called on {{name}}',
+              data: { name }
+            });
+          }
+        };
       }
-    }));
+    });
 
     const messages = linter.verify(code, config, { filename: 'issue.ts' });
 
