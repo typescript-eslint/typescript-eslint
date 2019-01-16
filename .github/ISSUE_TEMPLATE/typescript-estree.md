@@ -1,3 +1,8 @@
+---
+name: Typescript Estree
+about: Report an issue in typescript estree parser
+
+---
 **What version of TypeScript are you using?**
 
 **What version of `typescript-estree` are you using?**

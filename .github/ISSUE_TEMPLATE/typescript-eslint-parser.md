@@ -1,3 +1,8 @@
+---
+name: Typescript eslint parser
+about: Report an issue in typescript eslint parser
+
+---
 **What version of TypeScript are you using?**
 
 **What version of `typescript-eslint-parser` are you using?**
