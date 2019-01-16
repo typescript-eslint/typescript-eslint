@@ -1,4 +1,4 @@
-import escope from 'eslint-scope';
+import { ScopeManager } from 'eslint-scope';
 import { Definition, ParameterDefinition } from 'eslint-scope/lib/definition';
 import OriginalPatternVisitor from 'eslint-scope/lib/pattern-visitor';
 import Reference from 'eslint-scope/lib/reference';
@@ -28,12 +28,14 @@ function overrideDefine(define: any) {
 /** The scope class for enum. */
 class EnumScope extends Scope {
   constructor(scopeManager: any, upperScope: any, block: any) {
+    // @ts-ignore
     super(scopeManager, 'enum', upperScope, block, false);
   }
 }
 
 class PatternVisitor extends OriginalPatternVisitor {
   constructor(...args: any[]) {
+    // @ts-ignore
     super(...args);
   }
 
@@ -76,7 +78,10 @@ class PatternVisitor extends OriginalPatternVisitor {
 }
 
 class Referencer extends OriginalReferencer {
+  protected typeMode: boolean;
+
   constructor(...args: any[]) {
+    // @ts-ignore
     super(...args);
     this.typeMode = false;
   }
@@ -125,11 +130,12 @@ class Referencer extends OriginalReferencer {
       );
 
       // Remove overload definition to avoid confusion of no-redeclare rule.
-      const { defs, identifiers } = upperScope.set.get(id.name);
+      const { defs, identifiers } = upperScope.set.get(id.name)!;
       for (let i = 0; i < defs.length; ++i) {
         const def = defs[i];
         if (
           def.type === 'FunctionName' &&
+          // @ts-ignore
           def.node.type === 'TSDeclareFunction'
         ) {
           defs.splice(i, 1);
@@ -781,7 +787,7 @@ export function analyzeScope(ast: any, parserOptions: ParserOptions) {
     fallback
   };
 
-  const scopeManager = new escope.ScopeManager(options);
+  const scopeManager = new ScopeManager(options);
   const referencer = new Referencer(options, scopeManager);
 
   referencer.visit(ast);
