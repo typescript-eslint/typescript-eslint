@@ -1,0 +1,2 @@
+@sealed
+class Qux {}

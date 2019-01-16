@@ -1,0 +1,6 @@
+root: true
+
+# typescript-eslint-parser
+parser: /usr/parser/parser.js
+
+extends: eslint:all

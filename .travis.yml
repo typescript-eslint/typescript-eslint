@@ -14,10 +14,14 @@ node_js:
 install:
   - yarn --ignore-engines
 script:
+  # TODO: Reenable after migrations are complete
   # - commitlint-travis
   - yarn check-format
   - yarn test
   - yarn build
+  # TODO: Reimplement automated integration-tests from typescript-eslint-parser
+  # for the monorepo, after the migrations are complete
+  # yarn integration-tests
   - yarn global add codecov
 after_success:
   - codecov

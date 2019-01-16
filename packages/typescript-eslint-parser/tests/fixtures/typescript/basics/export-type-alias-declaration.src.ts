@@ -1,0 +1,1 @@
+export type TestAlias = string | number;

@@ -1,0 +1,214 @@
+[{
+    "filePath": "/usr/linked/index.ts",
+    "messages": [{
+        "ruleId": "strict",
+        "severity": 2,
+        "message": "Use the function form of 'use strict'.",
+        "line": 1,
+        "column": 1,
+        "nodeType": "ExpressionStatement",
+        "source": "\"use strict\";",
+        "endLine": 1,
+        "endColumn": 14
+    }, {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'FF' is not defined.",
+        "line": 3,
+        "column": 19,
+        "nodeType": "Identifier",
+        "source": "declare namespace FF {",
+        "endLine": 3,
+        "endColumn": 21
+    }, {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'Foo' is defined but never used.",
+        "line": 4,
+        "column": 11,
+        "nodeType": "Identifier",
+        "source": "    class Foo extends Bar.Baz {",
+        "endLine": 4,
+        "endColumn": 14
+    }, {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'Bar' is not defined.",
+        "line": 4,
+        "column": 23,
+        "nodeType": "Identifier",
+        "source": "    class Foo extends Bar.Baz {",
+        "endLine": 4,
+        "endColumn": 26
+    }, {
+        "ruleId": "padded-blocks",
+        "severity": 2,
+        "message": "Block must be padded by blank lines.",
+        "line": 4,
+        "column": 31,
+        "nodeType": "ClassBody",
+        "source": "    class Foo extends Bar.Baz {",
+        "fix": {
+            "range": [69, 69],
+            "text": "\n"
+        }
+    }, {
+        "ruleId": "padded-blocks",
+        "severity": 2,
+        "message": "Block must be padded by blank lines.",
+        "line": 6,
+        "column": 5,
+        "nodeType": "ClassBody",
+        "source": "    }",
+        "fix": {
+            "range": [94, 94],
+            "text": "\n"
+        }
+    }, {
+        "ruleId": "no-redeclare",
+        "severity": 2,
+        "message": "'Foo' is already defined.",
+        "line": 10,
+        "column": 11,
+        "nodeType": "Identifier",
+        "source": "    class Foo extends Bar.Baz {",
+        "endLine": 10,
+        "endColumn": 14
+    }, {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'Bar' is not defined.",
+        "line": 10,
+        "column": 23,
+        "nodeType": "Identifier",
+        "source": "    class Foo extends Bar.Baz {",
+        "endLine": 10,
+        "endColumn": 26
+    }, {
+        "ruleId": "padded-blocks",
+        "severity": 2,
+        "message": "Block must be padded by blank lines.",
+        "line": 10,
+        "column": 31,
+        "nodeType": "ClassBody",
+        "source": "    class Foo extends Bar.Baz {",
+        "fix": {
+            "range": [152, 152],
+            "text": "\n"
+        }
+    }, {
+        "ruleId": "padded-blocks",
+        "severity": 2,
+        "message": "Block must be padded by blank lines.",
+        "line": 12,
+        "column": 5,
+        "nodeType": "ClassBody",
+        "source": "    }",
+        "fix": {
+            "range": [177, 177],
+            "text": "\n"
+        }
+    }, {
+        "ruleId": "no-redeclare",
+        "severity": 2,
+        "message": "'Foo' is already defined.",
+        "line": 15,
+        "column": 15,
+        "nodeType": "Identifier",
+        "source": "declare class Foo extends Bar.Baz {",
+        "endLine": 15,
+        "endColumn": 18
+    }, {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'Bar' is not defined.",
+        "line": 15,
+        "column": 27,
+        "nodeType": "Identifier",
+        "source": "declare class Foo extends Bar.Baz {",
+        "endLine": 15,
+        "endColumn": 30
+    }, {
+        "ruleId": "padded-blocks",
+        "severity": 2,
+        "message": "Block must be padded by blank lines.",
+        "line": 15,
+        "column": 35,
+        "nodeType": "ClassBody",
+        "source": "declare class Foo extends Bar.Baz {",
+        "fix": {
+            "range": [217, 217],
+            "text": "\n"
+        }
+    }, {
+        "ruleId": "padded-blocks",
+        "severity": 2,
+        "message": "Block must be padded by blank lines.",
+        "line": 17,
+        "column": 1,
+        "nodeType": "ClassBody",
+        "source": "}",
+        "fix": {
+            "range": [234, 234],
+            "text": "\n"
+        }
+    }, {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'d3' is not defined.",
+        "line": 19,
+        "column": 19,
+        "nodeType": "Identifier",
+        "source": "declare namespace d3 {",
+        "endLine": 19,
+        "endColumn": 21
+    }, {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'select' is not defined.",
+        "line": 20,
+        "column": 21,
+        "nodeType": "Identifier",
+        "source": "    export function select(selector: string): Selection<any>;",
+        "endLine": 20,
+        "endColumn": 27
+    }, {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'selector' is not defined.",
+        "line": 20,
+        "column": 28,
+        "nodeType": "Identifier",
+        "source": "    export function select(selector: string): Selection<any>;",
+        "endLine": 20,
+        "endColumn": 44
+    }, {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'Selection' is not defined.",
+        "line": 20,
+        "column": 47,
+        "nodeType": "Identifier",
+        "source": "    export function select(selector: string): Selection<any>;",
+        "endLine": 20,
+        "endColumn": 56
+    }, {
+        "ruleId": "eol-last",
+        "severity": 2,
+        "message": "Newline required at end of file but not found.",
+        "line": 21,
+        "column": 2,
+        "nodeType": "Program",
+        "source": "}",
+        "messageId": "missing",
+        "fix": {
+            "range": [323, 323],
+            "text": "\n"
+        }
+    }],
+    "errorCount": 19,
+    "warningCount": 0,
+    "fixableErrorCount": 7,
+    "fixableWarningCount": 0,
+    "source": "\"use strict\";\n\ndeclare namespace FF {\n    class Foo extends Bar.Baz {\n        far(): any;\n    }\n}\n\ndeclare module \"FF\" {\n    class Foo extends Bar.Baz {\n        far(): any;\n    }\n}\n\ndeclare class Foo extends Bar.Baz {\n    far(): any;\n}\n\ndeclare namespace d3 {\n    export function select(selector: string): Selection<any>;\n}"
+}]

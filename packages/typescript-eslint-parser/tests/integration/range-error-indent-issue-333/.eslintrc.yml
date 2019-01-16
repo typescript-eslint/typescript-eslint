@@ -1,0 +1,7 @@
+root: true
+
+# typescript-eslint-parser
+parser: /usr/parser/parser.js
+
+rules:
+    indent: 2

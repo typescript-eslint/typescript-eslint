@@ -1,0 +1,2 @@
+interface Test<T> {
+}
