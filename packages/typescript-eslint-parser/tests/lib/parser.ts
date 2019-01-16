@@ -1,5 +1,5 @@
 import * as typescriptESTree from 'typescript-estree';
-import { parse, parseForESLint } from '../../src/parser';
+import { parse, parseForESLint, Syntax } from '../../src/parser';
 
 describe('parser', () => {
   it('parse() should return just the AST from parseForESLint()', () => {
@@ -20,5 +20,14 @@ describe('parser', () => {
       sourceType: 'script',
       useJSXTextNode: true
     });
+  });
+
+  it('Syntax should contain a frozen object of typescriptESTree.AST_NODE_TYPES', () => {
+    expect(Syntax).toEqual(typescriptESTree.AST_NODE_TYPES);
+    expect(
+      () => ((Syntax as any).ArrayExpression = 'foo')
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Cannot assign to read only property 'ArrayExpression' of object '#<Object>'"`
+    );
   });
 });

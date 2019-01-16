@@ -18,16 +18,7 @@ export function parse(code: string, options?: ParserOptions) {
   return parseForESLint(code, options).ast;
 }
 
-export const Syntax = (function() {
-  const types = Object.create(null);
-  const astNodeTypes = typescriptESTree.AST_NODE_TYPES;
-  for (const name in astNodeTypes) {
-    if (astNodeTypes.hasOwnProperty(name)) {
-      types[name] = astNodeTypes[name];
-    }
-  }
-  return Object.freeze(types);
-})();
+export const Syntax = Object.freeze(typescriptESTree.AST_NODE_TYPES);
 
 export function parseForESLint<T extends ParserOptions = ParserOptions>(
   code: string,
