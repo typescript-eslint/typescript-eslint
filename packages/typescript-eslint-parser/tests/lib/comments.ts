@@ -1,6 +1,6 @@
 import fs from 'fs';
 import glob from 'glob';
-import testUtils from '../../tools/test-utils';
+import * as testUtils from '../../tools/test-utils';
 
 const FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/comments';

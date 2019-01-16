@@ -33,6 +33,10 @@ class EnumScope extends Scope {
 }
 
 class PatternVisitor extends OriginalPatternVisitor {
+  constructor(...args: any[]) {
+    super(...args);
+  }
+
   Identifier(node: any) {
     super.Identifier(node);
     if (node.decorators) {
@@ -94,7 +98,7 @@ class Referencer extends OriginalReferencer {
       options = { processRightHandNodes: false };
     }
 
-    const visitor = (new PatternVisitor() as any)(this.options, node, callback);
+    const visitor = new PatternVisitor(this.options, node, callback);
     visitor.visit(node);
 
     if (options.processRightHandNodes) {

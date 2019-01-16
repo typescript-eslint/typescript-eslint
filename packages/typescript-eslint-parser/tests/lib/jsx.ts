@@ -1,7 +1,7 @@
 import fs from 'fs';
 import glob from 'glob';
 import filesWithKnownIssues from '../../../typescript-eslint-shared-fixtures/jsx-known-issues';
-import testUtils from '../../tools/test-utils';
+import * as testUtils from '../../tools/test-utils';
 
 const JSX_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx';

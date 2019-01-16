@@ -2,7 +2,7 @@ import { Linter } from 'eslint';
 import fs from 'fs';
 import glob from 'glob';
 import * as parser from '../../src/parser';
-import testUtils from '../../tools/test-utils';
+import * as testUtils from '../../tools/test-utils';
 
 const FIXTURES_DIR = './tests/fixtures/basics';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.js`);
