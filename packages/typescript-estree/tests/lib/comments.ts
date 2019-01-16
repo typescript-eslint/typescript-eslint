@@ -5,23 +5,22 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-import path from 'path';
-import shelljs from 'shelljs';
+import { readFileSync } from 'fs';
+import glob from 'glob';
+import { extname } from 'path';
 import { ParserOptions } from '../../src/temp-types-based-on-js-source';
-import { createSnapshotTestBlock } from '../../tools/test-utils';
+import {
+  createSnapshotTestBlock,
+  formatSnapshotName
+} from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = './tests/fixtures/comments';
-
-const testFiles = shelljs
-  .find(FIXTURES_DIR)
-  .filter(
-    filename =>
-      filename.indexOf('.src.js') > -1 || filename.indexOf('.src.ts') > -1
-  );
+const FIXTURES_DIR =
+  '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/comments';
+const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.*`);
 
 //------------------------------------------------------------------------------
 // Tests
@@ -29,19 +28,18 @@ const testFiles = shelljs
 
 describe('Comments', () => {
   testFiles.forEach(filename => {
-    const code = shelljs.cat(path.resolve(filename));
+    const code = readFileSync(filename, 'utf8');
+    const fileExtension = extname(filename);
     const config: ParserOptions = {
       loc: true,
       range: true,
       tokens: true,
       comment: true,
-      jsx: path.extname(filename) === '.js'
+      jsx: fileExtension === '.js'
     };
-    // strip off ".src.js" and ".src.ts"
-    const name = filename.substring(
-      FIXTURES_DIR.length - 1,
-      filename.length - 7
+    it(
+      formatSnapshotName(filename, FIXTURES_DIR, fileExtension),
+      createSnapshotTestBlock(code, config)
     );
-    it(`fixtures/${name}.src`, createSnapshotTestBlock(code, config));
   });
 });

@@ -1,1 +1,0 @@
-function a({x: y, z: { a: b } }) {};

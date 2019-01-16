@@ -39,6 +39,7 @@
     "typescript": "*"
   },
   "devDependencies": {
+    "@typescript-eslint/shared-fixtures": "*",
     "typescript": "~3.2.1"
   }
 }

@@ -1,1 +1,0 @@
-type Result<T extends {}> = Success<T> | Failure

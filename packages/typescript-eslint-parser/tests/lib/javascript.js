@@ -1,5 +1,5 @@
 /**
- * @fileoverview Tests for parsing and attaching comments.
+ * @fileoverview Tests for ECMA feature flags
  * @author Nicholas C. Zakas
  * @author James Henry <https://github.com/JamesHenry>
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
@@ -20,20 +20,16 @@ const fs = require("fs"),
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = "../../node_modules/@typescript-eslint/shared-fixtures/fixtures/comments";
+const FIXTURES_DIR = "../../node_modules/@typescript-eslint/shared-fixtures/fixtures/javascript";
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.js`);
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-describe("Comments", () => {
+describe("javascript", () => {
   testFiles.forEach(filename => {
     const code = fs.readFileSync(filename, 'utf8');
-    const config = {
-      jsx: true,
-      sourceType: "module"
-    };
-    test(testUtils.formatSnapshotName(filename, FIXTURES_DIR), testUtils.createSnapshotTestBlock(code, config));
+    test(testUtils.formatSnapshotName(filename, FIXTURES_DIR), testUtils.createSnapshotTestBlock(code));
   });
 });
