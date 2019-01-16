@@ -2,3 +2,4 @@
 **/dist
 **/coverage
 **/typescript-eslint-shared-fixtures
+**/tests/integration/**/*
