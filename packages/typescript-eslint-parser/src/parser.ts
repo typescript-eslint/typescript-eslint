@@ -14,7 +14,7 @@ interface ParseForESLintResult {
 
 export const version = packageJSON.version;
 
-export function parse(code: string, options: ParserOptions) {
+export function parse(code: string, options?: ParserOptions) {
   return parseForESLint(code, options).ast;
 }
 
@@ -31,7 +31,7 @@ export const Syntax = (function() {
 
 export function parseForESLint<T extends ParserOptions = ParserOptions>(
   code: string,
-  options?: T
+  options?: T | null
 ): ParseForESLintResult {
   if (typeof options !== 'object' || options === null) {
     options = { useJSXTextNode: true } as T;
