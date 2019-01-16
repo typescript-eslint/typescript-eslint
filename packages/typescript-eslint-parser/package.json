@@ -1,14 +1,12 @@
 {
-  "name": "typescript-eslint-parser",
+  "name": "@typescript-eslint/parser",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
-  "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
-  "homepage": "https://github.com/typescript-eslint/typescript-eslint",
-  "main": "parser.js",
+  "main": "dist/parser.js",
   "version": "21.0.2",
   "files": [
-    "parser.js",
-    "analyze-scope.js",
-    "visitor-keys.js"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=6.14.0"
@@ -28,7 +26,8 @@
     "eslint"
   ],
   "scripts": {
-    "test": "jest",
+    "build": "tsc",
+    "test": "jest --coverage",
     "integration-tests": "docker-compose -f tests/integration/docker-compose.yml up",
     "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local"
   },
@@ -43,15 +42,5 @@
   },
   "devDependencies": {
     "@typescript-eslint/shared-fixtures": "*"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "testRegex": "tests/lib/.+\\.js$",
-    "testPathIgnorePatterns": [],
-    "collectCoverage": true,
-    "coverageReporters": [
-      "text-summary",
-      "lcov"
-    ]
   }
 }

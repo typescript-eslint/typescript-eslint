@@ -22,8 +22,6 @@ This repo contains several packages which allow ESLint users to lint their TypeS
 
 - `typescript-eslint-parser` - An ESLint-specific parser which leverages `typescript-estree` and is designed to be used as a replacement for ESLint's default parser, `espree`.
 
-  - PENDING MIGRATION TO MONOREPO
-
 - `eslint-plugin-typescript` - An ESLint-specific plugin which, when used in conjunction with `typescript-eslint-parser`, allows for TypeScript-specific linting rules to run.
 
   - PENDING MIGRATION TO MONOREPO
