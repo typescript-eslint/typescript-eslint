@@ -37,20 +37,16 @@ describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" 
       errorOnUnknownASTType: true,
       errorOnTypeScriptSyntacticAndSemanticIssues: true
     };
-    it(
-      formatSnapshotName(filename, FIXTURES_DIR, fileExtension) +
-        `${fileExtension}.src`,
-      () => {
-        expect.assertions(1);
-        try {
-          parser.parseAndGenerateServices(code, config);
-          expect(
-            'TEST OUTPUT: No semantic or syntactic issues found'
-          ).toMatchSnapshot();
-        } catch (err) {
-          expect(err).toMatchSnapshot();
-        }
+    it(formatSnapshotName(filename, FIXTURES_DIR, fileExtension), () => {
+      expect.assertions(1);
+      try {
+        parser.parseAndGenerateServices(code, config);
+        expect(
+          'TEST OUTPUT: No semantic or syntactic issues found'
+        ).toMatchSnapshot();
+      } catch (err) {
+        expect(err).toMatchSnapshot();
       }
-    );
+    });
   });
 });
