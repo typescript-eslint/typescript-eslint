@@ -8,7 +8,7 @@
 
 "use strict";
 
-const parse = require("typescript-estree").parse;
+const parse = require("typescript-estree").parseAndGenerateServices;
 const astNodeTypes = require("typescript-estree").AST_NODE_TYPES;
 const traverser = require("eslint/lib/util/traverser");
 const analyzeScope = require("./analyze-scope");
@@ -40,7 +40,7 @@ exports.parseForESLint = function parseForESLint(code, options) {
         options.sourceType = "script";
     }
 
-    const ast = parse(code, options);
+    const { ast, services } = parse(code, options);
     ast.sourceType = options.sourceType;
 
     traverser.traverse(ast, {
@@ -58,7 +58,7 @@ exports.parseForESLint = function parseForESLint(code, options) {
     });
 
     const scopeManager = analyzeScope(ast, options);
-    return { ast, scopeManager, visitorKeys };
+    return { ast, services, scopeManager, visitorKeys };
 };
 
 exports.parse = function(code, options) {

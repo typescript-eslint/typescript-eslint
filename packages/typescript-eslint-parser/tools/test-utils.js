@@ -20,6 +20,16 @@ const parser = require("../parser");
 //   Private
 //--------------------------------------------------------------------------------
 
+const defaultConfig = {
+  loc: true,
+  range: true,
+  raw: true,
+  tokens: true,
+  comment: true,
+  errorOnUnknownASTType: true,
+  sourceType: "module"
+};
+
 /**
  * Returns a raw copy of the given AST
  * @param  {Object} ast the AST object
@@ -42,15 +52,6 @@ function getRaw(ast) {
  * @returns {Function} callback for Jest test() block
  */
 function createSnapshotTestBlock(code, config = {}) {
-    const defaultConfig = {
-        loc: true,
-        range: true,
-        raw: true,
-        tokens: true,
-        comment: true,
-        errorOnUnknownASTType: true,
-        sourceType: "module"
-    };
     config = Object.assign({}, defaultConfig, config);
 
     /**
@@ -79,6 +80,21 @@ function createSnapshotTestBlock(code, config = {}) {
 
 }
 
+/**
+ * @param {string} code The code being parsed
+ * @param {Object} config The configuration object for the parser
+ * @returns {void}
+ */
+function testServices(code, config = {}) {
+  config = Object.assign({}, defaultConfig, config);
+
+  const services = parser.parseForESLint(code, config).services;
+  expect(services).toBeDefined();
+  expect(services.program).toBeDefined();
+  expect(services.esTreeNodeToTSNodeMap).toBeDefined();
+  expect(services.tsNodeToESTreeNodeMap).toBeDefined();
+}
+
 function formatSnapshotName(filename, fixturesDir, fileExtension = '.js') {
     return `fixtures/${filename.replace(fixturesDir + '/', '').replace(fileExtension, '')}`;
 }
@@ -86,5 +102,6 @@ function formatSnapshotName(filename, fixturesDir, fileExtension = '.js') {
 module.exports = {
     getRaw,
     createSnapshotTestBlock,
+    testServices,
     formatSnapshotName
 };
