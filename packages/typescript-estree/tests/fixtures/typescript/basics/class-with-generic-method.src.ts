@@ -1,3 +1,0 @@
-class Foo {
-  getBar<T>() {}
-}

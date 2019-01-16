@@ -1,3 +1,0 @@
-class X {
-  a!: string;
-}

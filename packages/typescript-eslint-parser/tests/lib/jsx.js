@@ -12,8 +12,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const path = require("path"),
-    shelljs = require("shelljs"),
+const fs = require("fs"),
+    glob = require('glob'),
     testUtils = require("../../tools/test-utils"),
     filesWithKnownIssues = require("../jsx-known-issues");
 
@@ -21,20 +21,12 @@ const path = require("path"),
 // Setup
 //------------------------------------------------------------------------------
 
-const JSX_FIXTURES_DIR = "./tests/fixtures/jsx";
+const JSX_FIXTURES_DIR = "../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx";
+const jsxTestFiles = glob.sync(`${JSX_FIXTURES_DIR}/**/*.src.js`)
+    .filter(filename => filesWithKnownIssues.every(fileName => !filename.includes(fileName)));
 
-const jsxTestFiles = shelljs.find(JSX_FIXTURES_DIR)
-    .filter(filename => filename.indexOf(".src.js") > -1)
-    .filter(filename => filesWithKnownIssues.every(fileName => filename.indexOf(fileName) === -1))
-    // strip off ".src.js"
-    .map(filename => filename.substring(JSX_FIXTURES_DIR.length - 1, filename.length - 7));
-
-const JSX_JSXTEXT_FIXTURES_DIR = "./tests/fixtures/jsx-useJSXTextNode";
-
-const jsxTextTestFiles = shelljs.find(JSX_JSXTEXT_FIXTURES_DIR)
-    .filter(filename => filename.indexOf(".src.js") > -1)
-    // strip off ".src.js"
-    .map(filename => filename.substring(JSX_JSXTEXT_FIXTURES_DIR.length - 1, filename.length - 7));
+const JSX_JSXTEXT_FIXTURES_DIR = "../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx-useJSXTextNode";
+const jsxTextTestFiles = glob.sync(`${JSX_JSXTEXT_FIXTURES_DIR}/**/*.src.js`)
 
 //------------------------------------------------------------------------------
 // Tests
@@ -51,12 +43,12 @@ describe("JSX", () => {
     function testFixture(fixturesDir, useJSXTextNode) {
 
         return filename => {
-            const code = shelljs.cat(`${path.resolve(fixturesDir, filename)}.src.js`);
+            const code = fs.readFileSync(filename, 'utf8');
             const config = {
                 useJSXTextNode,
                 jsx: true
             };
-            test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code, config));
+            test(testUtils.formatSnapshotName(filename, fixturesDir), testUtils.createSnapshotTestBlock(code, config));
         };
     }
 

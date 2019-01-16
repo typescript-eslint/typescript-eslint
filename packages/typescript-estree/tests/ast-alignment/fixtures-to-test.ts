@@ -13,6 +13,7 @@ interface Fixture {
 interface FixturePatternConfig {
   pattern: string;
   jsx: boolean;
+  directory: string;
   ignoreSourceType: boolean;
 }
 
@@ -23,6 +24,10 @@ interface CreateFixturePatternConfig {
 }
 
 const fixturesDirPath = path.join(__dirname, '../fixtures');
+const sharedFixturesDirPath = path.join(
+  __dirname,
+  '../../node_modules/@typescript-eslint/shared-fixtures/fixtures'
+);
 
 class FixturesTester {
   protected fixtures: FixturePatternConfig[] = [];
@@ -40,13 +45,17 @@ class FixturesTester {
     fixturesSubPath: string,
     config: CreateFixturePatternConfig = {}
   ) {
+    let _fixturesDirPath = fixturesDirPath;
     if (!fs.existsSync(path.join(fixturesDirPath, fixturesSubPath))) {
-      throw new Error(
-        `Registered path '${path.join(
-          __dirname,
-          fixturesSubPath
-        )}' was not found`
-      );
+      _fixturesDirPath = sharedFixturesDirPath;
+      if (!fs.existsSync(path.join(sharedFixturesDirPath, fixturesSubPath))) {
+        throw new Error(
+          `Registered path '${path.join(
+            __dirname,
+            fixturesSubPath
+          )}' was not found`
+        );
+      }
     }
 
     const ignore = config.ignore || [];
@@ -67,6 +76,7 @@ class FixturesTester {
           // It needs to be the full path from within fixtures/ for the pattern
           pattern: `${fixturesSubPath}/${fixture}.src.${fileType}`,
           ignoreSourceType: true,
+          directory: _fixturesDirPath,
           jsx
         });
       }
@@ -75,15 +85,16 @@ class FixturesTester {
     this.fixtures.push({
       pattern: `${fixturesSubPath}/!(${ignore.join('|')}).src.${fileType}`,
       ignoreSourceType: false,
+      directory: _fixturesDirPath,
       jsx
     });
   }
 
   public getFixtures(): Fixture[] {
-    return this.fixtures
+    const fixtures = this.fixtures
       .map(fixture =>
         glob
-          .sync(`${fixturesDirPath}/${fixture.pattern}`, {})
+          .sync(`${fixture.directory}/${fixture.pattern}`, {})
           .map(filename => ({
             filename,
             ignoreSourceType: fixture.ignoreSourceType,
@@ -91,6 +102,8 @@ class FixturesTester {
           }))
       )
       .reduce((acc, x) => acc.concat(x), []);
+
+    return fixtures;
   }
 }
 

@@ -3,34 +3,27 @@
  * @author Benjamin Lichtman
  */
 
-'use strict';
-
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-import path from 'path';
-import shelljs from 'shelljs';
-import {
-  parseCodeAndGenerateServices,
-  createSnapshotTestBlock
-} from '../../tools/test-utils';
+import { readFileSync } from 'fs';
+import glob from 'glob';
+import { extname, join, resolve } from 'path';
 import ts from 'typescript';
 import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import {
+  createSnapshotTestBlock,
+  formatSnapshotName,
+  parseCodeAndGenerateServices
+} from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
 // Setup
 //------------------------------------------------------------------------------
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
-
-const testFiles = shelljs
-  .find(FIXTURES_DIR)
-  .filter(filename => filename.indexOf('.src.ts') > -1)
-  // strip off ".src.ts"
-  .map(filename =>
-    filename.substring(FIXTURES_DIR.length - 1, filename.length - 7)
-  );
+const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
 
 function createOptions(fileName: string): ParserOptions & { cwd?: string } {
   return {
@@ -42,7 +35,7 @@ function createOptions(fileName: string): ParserOptions & { cwd?: string } {
     useJSXTextNode: false,
     errorOnUnknownASTType: true,
     filePath: fileName,
-    tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
+    tsconfigRootDir: join(process.cwd(), FIXTURES_DIR),
     project: './tsconfig.json',
     loggerFn: false
   };
@@ -55,43 +48,45 @@ function createOptions(fileName: string): ParserOptions & { cwd?: string } {
 describe('semanticInfo', () => {
   // test all AST snapshots
   testFiles.forEach(filename => {
-    const fullFileName = `${path.resolve(FIXTURES_DIR, filename)}.src.ts`;
-    const code = shelljs.cat(fullFileName);
-    test(
-      `fixtures/${filename}.src`,
+    const code = readFileSync(filename, 'utf8');
+    it(
+      formatSnapshotName(filename, FIXTURES_DIR, extname(filename)),
       createSnapshotTestBlock(
         code,
-        createOptions(fullFileName),
+        createOptions(filename),
         /*generateServices*/ true
       )
     );
   });
 
   // case-specific tests
-  test('isolated-file tests', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+  it('isolated-file tests', () => {
+    const fileName = resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const parseResult = parseCodeAndGenerateServices(
-      shelljs.cat(fileName),
+      readFileSync(fileName, 'utf8'),
       createOptions(fileName)
     );
 
     testIsolatedFile(parseResult);
   });
 
-  test('isolated-vue-file tests', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'extra-file-extension.vue');
-    const parseResult = parseCodeAndGenerateServices(shelljs.cat(fileName), {
-      ...createOptions(fileName),
-      extraFileExtensions: ['.vue']
-    });
+  it('isolated-vue-file tests', () => {
+    const fileName = resolve(FIXTURES_DIR, 'extra-file-extension.vue');
+    const parseResult = parseCodeAndGenerateServices(
+      readFileSync(fileName, 'utf8'),
+      {
+        ...createOptions(fileName),
+        extraFileExtensions: ['.vue']
+      }
+    );
 
     testIsolatedFile(parseResult);
   });
 
-  test('imported-file tests', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'import-file.src.ts');
+  it('imported-file tests', () => {
+    const fileName = resolve(FIXTURES_DIR, 'import-file.src.ts');
     const parseResult = parseCodeAndGenerateServices(
-      shelljs.cat(fileName),
+      readFileSync(fileName, 'utf8'),
       createOptions(fileName)
     );
 
@@ -117,7 +112,7 @@ describe('semanticInfo', () => {
     ).toBe(arrayBoundName);
   });
 
-  test('non-existent file tests', () => {
+  it('non-existent file tests', () => {
     const parseResult = parseCodeAndGenerateServices(
       `const x = [parseInt("5")];`,
       createOptions('<input>')
@@ -143,7 +138,7 @@ describe('semanticInfo', () => {
     );
   });
 
-  test('non-existent file should provide parents nodes', () => {
+  it('non-existent file should provide parents nodes', () => {
     const parseResult = parseCodeAndGenerateServices(
       `function M() { return Base }`,
       createOptions('<input>')
@@ -160,30 +155,30 @@ describe('semanticInfo', () => {
     ).toBeDefined();
   });
 
-  test('non-existent project file', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+  it('non-existent project file', () => {
+    const fileName = resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
     badConfig.project = './tsconfigs.json';
     expect(() =>
-      parseCodeAndGenerateServices(shelljs.cat(fileName), badConfig)
+      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
     ).toThrowError(/File .+tsconfigs\.json' not found/);
   });
 
-  test('fail to read project file', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+  it('fail to read project file', () => {
+    const fileName = resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
     badConfig.project = '.';
     expect(() =>
-      parseCodeAndGenerateServices(shelljs.cat(fileName), badConfig)
+      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
     ).toThrowError(/File .+semanticInfo' not found/);
   });
 
-  test('malformed project file', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+  it('malformed project file', () => {
+    const fileName = resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
     badConfig.project = './badTSConfig/tsconfig.json';
     expect(() =>
-      parseCodeAndGenerateServices(shelljs.cat(fileName), badConfig)
+      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
     ).toThrowErrorMatchingSnapshot();
   });
 });

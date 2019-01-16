@@ -1,6 +1,7 @@
 **/tests/fixtures/**/*
 **/dist
 **/coverage
+**/typescript-eslint-shared-fixtures
 
 # Temp ignore typescript-eslint-parser
 **/typescript-eslint-parser

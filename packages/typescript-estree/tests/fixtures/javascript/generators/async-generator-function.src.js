@@ -1,4 +1,0 @@
-
-async function *foo() {
-
-}
