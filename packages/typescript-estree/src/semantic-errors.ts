@@ -61,6 +61,7 @@ function whitelistSupportedDiagnostics(
       case 1049: // ts 3.2 "A 'set' accessor must have exactly one parameter."
       case 1070: // ts 3.2 "'{0}' modifier cannot appear on a type member."
       case 1071: // ts 3.2 "'{0}' modifier cannot appear on an index signature."
+      case 1085: // ts 3.2 "Octal literals are not available when targeting ECMAScript 5 and higher. Use the syntax '{0}'."
       case 1090: // ts 3.2 "'{0}' modifier cannot appear on a parameter."
       case 1096: // ts 3.2 "An index signature must have exactly one parameter."
       case 1097: // ts 3.2 "'{0}' list cannot be empty."
@@ -83,6 +84,7 @@ function whitelistSupportedDiagnostics(
       case 2364: // ts 3.2 "The left-hand side of an assignment expression must be a variable or a property access."
       case 2369: // ts 3.2 "A parameter property is only allowed in a constructor implementation."
       case 2462: // ts 3.2 "A rest element must be last in a destructuring pattern."
+      case 8017: // ts 3.2 "Octal literal types must use ES2015 syntax. Use the syntax '{0}'."
       case 17012: // ts 3.2 "'{0}' is not a valid meta-property for keyword '{1}'. Did you mean '{2}'?"
       case 17013: // ts 3.2 "Meta-property '{0}' is only allowed in the body of a function declaration, function expression, or constructor."
         return true;

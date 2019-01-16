@@ -8054,7 +8054,7 @@ Object {
         "body": Object {
           "loc": Object {
             "end": Object {
-              "column": 9,
+              "column": 10,
               "line": 1,
             },
             "start": Object {
@@ -8064,9 +8064,9 @@ Object {
           },
           "range": Array [
             7,
-            9,
+            10,
           ],
-          "raw": "00",
+          "raw": "0o0",
           "type": "Literal",
           "value": 0,
         },
@@ -8075,7 +8075,7 @@ Object {
         "id": null,
         "loc": Object {
           "end": Object {
-            "column": 9,
+            "column": 10,
             "line": 1,
           },
           "start": Object {
@@ -8105,13 +8105,13 @@ Object {
         ],
         "range": Array [
           0,
-          9,
+          10,
         ],
         "type": "ArrowFunctionExpression",
       },
       "loc": Object {
         "end": Object {
-          "column": 10,
+          "column": 11,
           "line": 1,
         },
         "start": Object {
@@ -8121,15 +8121,15 @@ Object {
       },
       "range": Array [
         0,
-        10,
+        11,
       ],
       "type": "ExpressionStatement",
     },
   ],
   "loc": Object {
     "end": Object {
-      "column": 10,
-      "line": 1,
+      "column": 0,
+      "line": 2,
     },
     "start": Object {
       "column": 0,
@@ -8138,7 +8138,7 @@ Object {
   },
   "range": Array [
     0,
-    10,
+    12,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -8217,7 +8217,7 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 9,
+          "column": 10,
           "line": 1,
         },
         "start": Object {
@@ -8227,25 +8227,25 @@ Object {
       },
       "range": Array [
         7,
-        9,
+        10,
       ],
       "type": "Numeric",
-      "value": "00",
+      "value": "0o0",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 10,
+          "column": 11,
           "line": 1,
         },
         "start": Object {
-          "column": 9,
+          "column": 10,
           "line": 1,
         },
       },
       "range": Array [
-        9,
         10,
+        11,
       ],
       "type": "Punctuator",
       "value": ";",
@@ -102893,6 +102893,202 @@ Object {
 }
 `;
 
+exports[`javascript fixtures/hexLiterals/invalid.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/hexLiterals/lowercase.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 6,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          6,
+        ],
+        "raw": "0x2343",
+        "type": "Literal",
+        "value": 9027,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        7,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    8,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Numeric",
+      "value": "0x2343",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`javascript fixtures/hexLiterals/uppercase.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 6,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          6,
+        ],
+        "raw": "0X2343",
+        "type": "Literal",
+        "value": 9027,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        7,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    8,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Numeric",
+      "value": "0X2343",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`javascript fixtures/importMeta/simple-import-meta.src 1`] = `
 Object {
   "body": Array [
@@ -126898,6 +127094,103 @@ Object {
 `;
 
 exports[`javascript fixtures/octalLiterals/invalid.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/octalLiterals/legacy.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "raw": "02343",
+        "type": "Literal",
+        "value": 2343,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    7,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "Numeric",
+      "value": "02343",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        5,
+        6,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
 
 exports[`javascript fixtures/octalLiterals/lowercase.src 1`] = `
 Object {

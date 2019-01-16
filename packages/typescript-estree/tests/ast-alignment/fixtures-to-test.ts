@@ -91,7 +91,7 @@ class FixturesTester {
   }
 
   public getFixtures(): Fixture[] {
-    const fixtures = this.fixtures
+    return this.fixtures
       .map(fixture =>
         glob
           .sync(`${fixture.directory}/${fixture.pattern}`, {})
@@ -102,8 +102,6 @@ class FixturesTester {
           }))
       )
       .reduce((acc, x) => acc.concat(x), []);
-
-    return fixtures;
   }
 }
 
@@ -225,6 +223,7 @@ tester.addFixturePatternConfig('javascript/forIn', {
 tester.addFixturePatternConfig('javascript/forOf');
 tester.addFixturePatternConfig('javascript/generators');
 tester.addFixturePatternConfig('javascript/globalReturn');
+tester.addFixturePatternConfig('javascript/hexLiterals');
 tester.addFixturePatternConfig('javascript/importMeta');
 tester.addFixturePatternConfig('javascript/labels');
 
@@ -264,7 +263,15 @@ tester.addFixturePatternConfig('javascript/objectLiteralDuplicateProperties', {
 
 tester.addFixturePatternConfig('javascript/objectLiteralShorthandMethods');
 tester.addFixturePatternConfig('javascript/objectLiteralShorthandProperties');
-tester.addFixturePatternConfig('javascript/octalLiterals');
+tester.addFixturePatternConfig('javascript/octalLiterals', {
+  ignore: [
+    /**
+     * Old-style octal literals are not supported in typescript
+     * @see https://github.com/Microsoft/TypeScript/issues/10101
+     */
+    'legacy'
+  ]
+});
 tester.addFixturePatternConfig('javascript/regex');
 tester.addFixturePatternConfig('javascript/regexUFlag');
 tester.addFixturePatternConfig('javascript/regexYFlag');

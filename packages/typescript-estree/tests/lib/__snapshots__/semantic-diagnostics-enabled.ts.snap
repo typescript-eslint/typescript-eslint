@@ -742,6 +742,19 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/globalReturn/return-true.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/hexLiterals/invalid.src 1`] = `
+Object {
+  "column": 4,
+  "index": 4,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/hexLiterals/lowercase.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/hexLiterals/uppercase.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/importMeta/simple-import-meta.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/labels/label-break.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -1142,6 +1155,15 @@ Object {
   "index": 4,
   "lineNumber": 1,
   "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/octalLiterals/legacy.src 1`] = `
+Object {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "Octal literals are not available when targeting ECMAScript 5 and higher. Use the syntax '0o2343'.",
 }
 `;
 
