@@ -1,22 +1,7 @@
-/**
- * @fileoverview Tests for JSX
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
-import { readFileSync } from 'fs';
+import fs from 'fs';
 import glob from 'glob';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
-import {
-  createSnapshotTestBlock,
-  formatSnapshotName
-} from '../../tools/test-utils';
 import filesWithKnownIssues from '../../../typescript-eslint-shared-fixtures/jsx-known-issues';
-
-//------------------------------------------------------------------------------
-// Setup
-//------------------------------------------------------------------------------
+import * as testUtils from '../../tools/test-utils';
 
 const JSX_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx';
@@ -38,23 +23,16 @@ describe('JSX', () => {
   /**
    * Test each fixture file
    */
-  function testFixture(
-    fixturesDir: string,
-    useJSXTextNode: boolean
-  ): (filename: string) => void {
-    return filename => {
-      const code = readFileSync(filename, 'utf8');
-      const config: ParserOptions = {
-        loc: true,
-        range: true,
-        tokens: true,
-        errorOnUnknownASTType: true,
+  function testFixture(fixturesDir: string, useJSXTextNode: boolean) {
+    return (filename: string) => {
+      const code = fs.readFileSync(filename, 'utf8');
+      const config = {
         useJSXTextNode,
         jsx: true
       };
       it(
-        formatSnapshotName(filename, fixturesDir),
-        createSnapshotTestBlock(code, config)
+        testUtils.formatSnapshotName(filename, fixturesDir),
+        testUtils.createSnapshotTestBlock(code, config)
       );
     };
   }

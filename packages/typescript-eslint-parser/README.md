@@ -2,7 +2,6 @@
 
 An ESLint custom parser which leverages [TypeScript ESTree](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree) to allow for ESLint to lint TypeScript source code.
 
-
 ## Installation:
 
 ```sh
@@ -15,7 +14,7 @@ In your ESLint configuration file, set the `parser` property:
 
 ```json
 {
-    "parser": "typescript-eslint-parser"
+  "parser": "typescript-eslint-parser"
 }
 ```
 
@@ -34,9 +33,10 @@ By far the most common case will be installing the [eslint-plugin-typescript](ht
 The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring#specifying-parser-options) in your ESLint configuration file.
 
 - **`jsx`** - default `false`. Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
-    - It's `false` on `*.ts` files regardless of this option.
-    - It's `true` on `*.tsx` files regardless of this option.
-    - Otherwise, it respects this option.
+
+  - It's `false` on `*.ts` files regardless of this option.
+  - It's `true` on `*.tsx` files regardless of this option.
+  - Otherwise, it respects this option.
 
 - **`useJSXTextNode`** - default `true`. Please set `false` if you use this parser on ESLint v4. If this is `false`, the parser creates the AST of JSX texts as the legacy style.
 
@@ -44,11 +44,11 @@ The following additional configuration options are available by specifying them 
 
 ```json
 {
-    "parser": "typescript-eslint-parser",
-    "parserOptions": {
-        "jsx": true,
-        "useJSXTextNode": true
-    }
+  "parser": "typescript-eslint-parser",
+  "parserOptions": {
+    "jsx": true,
+    "useJSXTextNode": true
+  }
 }
 ```
 
