@@ -1158,7 +1158,14 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/octalLiterals/legacy.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/octalLiterals/legacy.src 1`] = `
+Object {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "Octal literals are not available when targeting ECMAScript 5 and higher. Use the syntax '0o2343'.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/octalLiterals/lowercase.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
