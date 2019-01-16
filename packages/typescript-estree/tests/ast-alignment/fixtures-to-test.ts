@@ -13,6 +13,7 @@ interface Fixture {
 interface FixturePatternConfig {
   pattern: string;
   jsx: boolean;
+  directory: string;
   ignoreSourceType: boolean;
 }
 
@@ -73,8 +74,9 @@ class FixturesTester {
       for (const fixture of ignoreSourceType) {
         this.fixtures.push({
           // It needs to be the full path from within fixtures/ for the pattern
-          pattern: `${_fixturesDirPath}/${fixture}.src.${fileType}`,
+          pattern: `${fixturesSubPath}/${fixture}.src.${fileType}`,
           ignoreSourceType: true,
+          directory: _fixturesDirPath,
           jsx
         });
       }
@@ -83,6 +85,7 @@ class FixturesTester {
     this.fixtures.push({
       pattern: `${fixturesSubPath}/!(${ignore.join('|')}).src.${fileType}`,
       ignoreSourceType: false,
+      directory: _fixturesDirPath,
       jsx
     });
   }
@@ -91,7 +94,7 @@ class FixturesTester {
     const fixtures = this.fixtures
       .map(fixture =>
         glob
-          .sync(`${fixturesDirPath}/${fixture.pattern}`, {})
+          .sync(`${fixture.directory}/${fixture.pattern}`, {})
           .map(filename => ({
             filename,
             ignoreSourceType: fixture.ignoreSourceType,
@@ -100,19 +103,7 @@ class FixturesTester {
       )
       .reduce((acc, x) => acc.concat(x), []);
 
-    const sharedFixtures = this.fixtures
-      .map(fixture =>
-        glob
-          .sync(`${sharedFixturesDirPath}/${fixture.pattern}`, {})
-          .map(filename => ({
-            filename,
-            ignoreSourceType: fixture.ignoreSourceType,
-            jsx: fixture.jsx
-          }))
-      )
-      .reduce((acc, x) => acc.concat(x), []);
-
-    return [...fixtures, ...sharedFixtures];
+    return fixtures;
   }
 }
 
