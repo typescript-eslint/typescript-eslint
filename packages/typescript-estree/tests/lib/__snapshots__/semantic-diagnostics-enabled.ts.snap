@@ -2444,6 +2444,24 @@ Object {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/object-assertion-not-allowed.src 1`] = `
+Object {
+  "column": 3,
+  "index": 3,
+  "lineNumber": 1,
+  "message": "A definite assignment assertion '!' is not permitted in this context.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/object-optional-not-allowed.src 1`] = `
+Object {
+  "column": 3,
+  "index": 3,
+  "lineNumber": 1,
+  "message": "An object member cannot be declared optional.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/solo-const.src 1`] = `
 Object {
   "column": 5,
