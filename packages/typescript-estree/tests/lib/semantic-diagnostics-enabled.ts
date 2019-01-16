@@ -4,9 +4,11 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-import path from 'path';
-import shelljs from 'shelljs';
+import { readFileSync } from 'fs';
+import glob from 'glob';
 import * as parser from '../../src/parser';
+import { extname } from 'path';
+import { formatSnapshotName } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -17,12 +19,8 @@ import * as parser from '../../src/parser';
  * which are ignored by default parsing logic.
  */
 const FIXTURES_DIR =
-  'node_modules/@typescript-eslint/shared-fixtures/fixtures/';
-
-const testFiles = shelljs
-  .find(FIXTURES_DIR)
-  .filter(filename => filename.includes('.src.'))
-  .map(filename => filename.substring(FIXTURES_DIR.length));
+  '../../node_modules/@typescript-eslint/shared-fixtures/fixtures';
+const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.*`);
 
 //------------------------------------------------------------------------------
 // Tests
@@ -30,7 +28,8 @@ const testFiles = shelljs
 
 describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled', () => {
   testFiles.forEach(filename => {
-    const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}`);
+    const code = readFileSync(filename, 'utf8');
+    const fileExtension = extname(filename);
     const config = {
       loc: true,
       range: true,
@@ -38,16 +37,20 @@ describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" 
       errorOnUnknownASTType: true,
       errorOnTypeScriptSyntacticAndSemanticIssues: true
     };
-    it(`fixtures/${filename}.src`, () => {
-      expect.assertions(1);
-      try {
-        parser.parseAndGenerateServices(code, config);
-        expect(
-          'TEST OUTPUT: No semantic or syntactic issues found'
-        ).toMatchSnapshot();
-      } catch (err) {
-        expect(err).toMatchSnapshot();
+    it(
+      formatSnapshotName(filename, FIXTURES_DIR, fileExtension) +
+        `${fileExtension}.src`,
+      () => {
+        expect.assertions(1);
+        try {
+          parser.parseAndGenerateServices(code, config);
+          expect(
+            'TEST OUTPUT: No semantic or syntactic issues found'
+          ).toMatchSnapshot();
+        } catch (err) {
+          expect(err).toMatchSnapshot();
+        }
       }
-    });
+    );
   });
 });

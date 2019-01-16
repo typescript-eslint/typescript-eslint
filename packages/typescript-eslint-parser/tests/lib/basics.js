@@ -12,10 +12,9 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const
-    path = require("path"),
+const fs = require("fs"),
+    glob = require('glob'),
     { Linter } = require("eslint"),
-    shelljs = require("shelljs"),
     testUtils = require("../../tools/test-utils"),
     parser = require("../../");
 
@@ -24,11 +23,7 @@ const
 //------------------------------------------------------------------------------
 
 const FIXTURES_DIR = "./tests/fixtures/basics";
-
-const testFiles = shelljs.find(FIXTURES_DIR)
-    .filter(filename => filename.indexOf(".src.js") > -1)
-    // strip off ".src.js"
-    .map(filename => filename.substring(FIXTURES_DIR.length - 1, filename.length - 7));
+const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.js`);
 
 //------------------------------------------------------------------------------
 // Tests
@@ -36,8 +31,8 @@ const testFiles = shelljs.find(FIXTURES_DIR)
 
 describe("basics", () => {
     testFiles.forEach(filename => {
-        const code = shelljs.cat(`${path.resolve(FIXTURES_DIR, filename)}.src.js`);
-        test(`fixtures/${filename}.src`, testUtils.createSnapshotTestBlock(code));
+        const code = fs.readFileSync(filename, 'utf8');
+        test(testUtils.formatSnapshotName(filename, FIXTURES_DIR), testUtils.createSnapshotTestBlock(code));
     });
 
     test("https://github.com/eslint/typescript-eslint-parser/issues/476", () => {

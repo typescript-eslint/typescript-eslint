@@ -69,3 +69,13 @@ export function createSnapshotTestBlock(
     }
   };
 }
+
+export function formatSnapshotName(
+  filename: string,
+  fixturesDir: string,
+  fileExtension = '.js'
+): string {
+  return `fixtures/${filename
+    .replace(fixturesDir + '/', '')
+    .replace(fileExtension, '')}`;
+}
