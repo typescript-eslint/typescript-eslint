@@ -329,17 +329,14 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'arrow-function-with-type-parameters',
     /**
-     * Babel error: parameterName is not included into range of TSTypeAnnotation
-     * TODO: report it to babel
+     * PR for this type predicate ranges has been merged into Babel: https://github.com/babel/babel/pull/9339
+     * TODO: remove me in next babel > 7.2.3
      */
     'type-guard-in-method',
     /**
      * there is difference in range between babel and ts-estree
      */
-    'class-with-implements-generic-multiple',
-    'class-with-implements-generic',
     'export-declare-const-named-enum',
-    'interface-with-extends-type-parameters',
     'interface-with-optional-properties',
     /**
      * Babel parses it as TSQualifiedName
@@ -350,6 +347,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Babel bug for parsing exported abstract interface
      * https://github.com/babel/babel/issues/9304
+     * PR: https://github.com/babel/babel/pull/9336
      */
     'abstract-interface',
     /**
@@ -395,8 +393,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'type-assertion-arrow-function',
     /**
-     * Babel parses this incorrectly
-     * https://github.com/babel/babel/issues/9325
+     * PR for type parsing declare and abstract classes has been merged into Babel: https://github.com/babel/babel/pull/9328
+     * TODO: remove me in next babel > 7.2.3
      */
     'class-multi-line-keyword-declare',
     'class-multi-line-keyword-abstract'
@@ -454,8 +452,8 @@ tester.addFixturePatternConfig('typescript/types', {
   fileType: 'ts',
   ignore: [
     /**
-     * Babel bug for range of Identifier in TSIndexSignature
-     * https://github.com/babel/babel/issues/9319
+     * PR for type Identifier in TSIndexSignature ranges has been merged into Babel: https://github.com/babel/babel/pull/9335
+     * TODO: remove me in next babel > 7.2.3
      */
     'index-signature',
     'index-signature-readonly',
