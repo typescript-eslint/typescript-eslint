@@ -65,7 +65,7 @@ module.exports = {
     }
 
     return {
-      'TSInterfaceBody > TSConstructSignature'(node) {
+      'TSInterfaceBody > TSConstructSignatureDeclaration'(node) {
         if (isMatchingParentType(node.parent.parent, node.typeAnnotation)) {
           // constructor
           context.report({

@@ -20,8 +20,7 @@
   "scripts": {
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
-    "test": "nyc mocha tests --recursive --reporter=dot",
-    "test:coverage": "nyc check-coverage --lines 95 --per-file",
+    "test": "jest --coverage", 
     "recommended:update": "node tools/update-recommended.js"
   },
   "dependencies": {
@@ -30,17 +29,10 @@
   },
   "devDependencies": {
     "eslint": "^5.9.0",
-    "nyc": "^13.1.0",
-    "eslint-docs": "^0.2.6",
-    "mocha": "^5.2.0"
+    "eslint-docs": "^0.2.6"
   },
   "peerDependencies": {
     "eslint": ">=4.13.1 < 6",
     "typescript": "~3.2.1"
-  },
-  "nyc": {
-    "include": [
-      "lib"
-    ]
   }
 }
