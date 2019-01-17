@@ -23,7 +23,7 @@
     "test": "jest --coverage",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "clean": "rm -rf dist/"
+    "clean": "rimraf dist/"
   },
   "dependencies": {
     "lodash.memoize": "^4.1.2"
