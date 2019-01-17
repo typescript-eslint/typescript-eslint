@@ -12,7 +12,7 @@
   },
   "scripts": {
     "postinstall": "lerna bootstrap && yarn build && lerna link",
-    "test": "lerna run test",
+    "test": "lerna run test --parallel",
     "build": "lerna run build",
     "clean": "lerna clean && lerna run clean",
     "precommit": "yarn test && lint-staged",
