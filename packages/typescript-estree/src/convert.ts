@@ -1779,13 +1779,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
       break;
 
-    case SyntaxKind.NumericLiteral:
+    case SyntaxKind.NumericLiteral: {
       Object.assign(result, {
         type: AST_NODE_TYPES.Literal,
         value: Number(node.text),
-        raw: ast.text.slice(result.range[0], result.range[1])
+        raw: node.getText()
       });
       break;
+    }
 
     case SyntaxKind.BigIntLiteral: {
       const raw = ast.text.slice(result.range[0], result.range[1]);

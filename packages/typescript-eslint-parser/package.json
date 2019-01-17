@@ -41,6 +41,9 @@
     "typescript-estree": "18.0.0"
   },
   "devDependencies": {
+    "@types/eslint": "^4.16.5",
+    "@types/estree": "^0.0.39",
+    "@types/eslint-visitor-keys": "^1.0.0",
     "@typescript-eslint/shared-fixtures": "*"
   }
 }

@@ -224,7 +224,7 @@ export type SomeThing = {
     id: string;
 }
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-undef': 'error'
@@ -242,7 +242,7 @@ interface Foo {
 }
 const bar = 'blah'
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-use-before-define': 'error'
@@ -260,7 +260,7 @@ interface Runnable {
   toString (): string
 }
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-undef': 'error'
@@ -276,7 +276,7 @@ interface Runnable {
 const Foo = 1;
 type Foo = 1;
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-redeclare': 'error'
@@ -292,7 +292,7 @@ type Foo = 1;
 type foo = any;
 function bar(foo: any) {}
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-shadow': 'error'
@@ -308,7 +308,7 @@ function bar(foo: any) {}
 /*globals document, selector */
 const links = document.querySelectorAll( selector ) as NodeListOf<HTMLElement>
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-undef': 'error'
@@ -325,7 +325,7 @@ class X {
   field = {}
 }
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-undef': 'error'
@@ -345,7 +345,7 @@ export default class Test {
     }
 }
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-restricted-globals': ['error', 'status']
@@ -362,7 +362,7 @@ function foo({ bar }: { bar: string }) {
     console.log(bar);
 }
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-dupe-args': 'error',
@@ -385,7 +385,7 @@ export default class ListModalStore {
   orderList: IObservableArray<BizPurchaseOrderTO> = observable([]);
 }
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-unused-vars': 'error'
@@ -407,7 +407,7 @@ function test(file: Blob) {
   return slice
 }
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       rules: {
         'no-use-before-define': 'error'
@@ -426,7 +426,7 @@ window.whatevs = {
   }
 };
 `;
-    const config = {
+    const config: Linter.Config = {
       parser: 'typescript-eslint-parser',
       parserOptions: {
         sourceType: 'module'

@@ -1,4 +1,4 @@
-import escope from 'eslint-scope';
+import { ScopeManager } from 'eslint-scope';
 import { Definition, ParameterDefinition } from 'eslint-scope/lib/definition';
 import OriginalPatternVisitor from 'eslint-scope/lib/pattern-visitor';
 import Reference from 'eslint-scope/lib/reference';
@@ -7,6 +7,11 @@ import { Scope } from 'eslint-scope/lib/scope';
 import { getKeys as fallback } from 'eslint-visitor-keys';
 import { ParserOptions } from './parser-options';
 import { visitorKeys as childVisitorKeys } from './visitor-keys';
+import {
+  PatternVisitorCallback,
+  PatternVisitorOptions
+} from 'eslint-scope/lib/options';
+import { Node } from 'estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -27,14 +32,23 @@ function overrideDefine(define: any) {
 
 /** The scope class for enum. */
 class EnumScope extends Scope {
-  constructor(scopeManager: any, upperScope: any, block: any) {
+  constructor(
+    scopeManager: ScopeManager,
+    upperScope: Scope,
+    block: Node | null
+  ) {
+    // @ts-ignore
     super(scopeManager, 'enum', upperScope, block, false);
   }
 }
 
 class PatternVisitor extends OriginalPatternVisitor {
-  constructor(...args: any[]) {
-    super(...args);
+  constructor(
+    options: PatternVisitorOptions,
+    rootPattern: any,
+    callback: PatternVisitorCallback
+  ) {
+    super(options, rootPattern, callback);
   }
 
   Identifier(node: any) {
@@ -76,8 +90,10 @@ class PatternVisitor extends OriginalPatternVisitor {
 }
 
 class Referencer extends OriginalReferencer {
-  constructor(...args: any[]) {
-    super(...args);
+  protected typeMode: boolean;
+
+  constructor(options: any, scopeManager: ScopeManager) {
+    super(options, scopeManager);
     this.typeMode = false;
   }
 
@@ -88,7 +104,11 @@ class Referencer extends OriginalReferencer {
    * @param {Function} callback The callback function for left-hand side nodes.
    * @returns {void}
    */
-  visitPattern(node: any, options: any, callback: any) {
+  visitPattern(
+    node: any,
+    options: PatternVisitorOptions,
+    callback: PatternVisitorCallback
+  ) {
     if (!node) {
       return;
     }
@@ -102,6 +122,7 @@ class Referencer extends OriginalReferencer {
     visitor.visit(node);
 
     if (options.processRightHandNodes) {
+      // @ts-ignore
       visitor.rightHandNodes.forEach(this.visit, this);
     }
   }
@@ -125,11 +146,12 @@ class Referencer extends OriginalReferencer {
       );
 
       // Remove overload definition to avoid confusion of no-redeclare rule.
-      const { defs, identifiers } = upperScope.set.get(id.name);
+      const { defs, identifiers } = upperScope.set.get(id.name)!;
       for (let i = 0; i < defs.length; ++i) {
         const def = defs[i];
         if (
           def.type === 'FunctionName' &&
+          // @ts-ignore
           def.node.type === 'TSDeclareFunction'
         ) {
           defs.splice(i, 1);
@@ -153,7 +175,7 @@ class Referencer extends OriginalReferencer {
       this.visitPattern(
         params[i],
         { processRightHandNodes: true },
-        (pattern: any, info: any) => {
+        (pattern, info) => {
           innerScope.__define(
             pattern,
             new ParameterDefinition(pattern, node, i, info.rest)
@@ -305,7 +327,7 @@ class Referencer extends OriginalReferencer {
     if (id) {
       const variable = scope.set.get(id.name);
       const defs = variable && variable.defs;
-      const existed = defs && defs.some((d: any) => d.type === 'FunctionName');
+      const existed = defs && defs.some(d => d.type === 'FunctionName');
       if (!existed) {
         scope.__define(
           id,
@@ -743,7 +765,7 @@ class Referencer extends OriginalReferencer {
    * @param {Decorator[]|undefined} decorators The decorator nodes to visit.
    * @returns {void}
    */
-  visitDecorators(decorators: any[] | undefined) {
+  visitDecorators(decorators?: any[]) {
     if (decorators) {
       decorators.forEach(this.visit, this);
     }
@@ -781,7 +803,7 @@ export function analyzeScope(ast: any, parserOptions: ParserOptions) {
     fallback
   };
 
-  const scopeManager = new escope.ScopeManager(options);
+  const scopeManager = new ScopeManager(options);
   const referencer = new Referencer(options, scopeManager);
 
   referencer.visit(ast);

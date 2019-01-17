@@ -1,18 +1,25 @@
 ---
-name: @typescript-eslint/parser
-about: Report an issue with the `@typescript-eslint/parser` package
+name: '@typescript-eslint/parser'
+about: Report an issue with the @typescript-eslint/parser package
 ---
 
-**What version of TypeScript are you using?**
+**What version of Node.js and npm are you using?**
 
-**What version of `@typescript-eslint/parser` are you using?**
+- Node: <!-- Please fill in -->
+- npm: <!-- Please fill in -->
+
+**What version of the following packages are you using?**
+
+- @typescript-eslint/parser: <!-- Please fill in -->
+- TypeScript: <!-- Please fill in -->
+- ESLint: <!-- Please fill in -->
 
 **What code were you trying to parse?**
 
 ```ts
-// Put your code here
+// Please put code here
 ```
 
 **What did you expect to happen?**
 
-**What happened?**
+**What actually happened?**
