@@ -15,7 +15,7 @@ function createTypeParameterChecker(context, rule) {
   const regex = new RegExp(rule);
 
   return function checkTypeParameters(pnode) {
-    const params = pnode.typeParameters && pnode.typeParameters.params;
+    const params = pnode.typeParameters && pnode.typeParameters.parameters;
 
     if (!Array.isArray(params) || params.length === 0) {
       return;
