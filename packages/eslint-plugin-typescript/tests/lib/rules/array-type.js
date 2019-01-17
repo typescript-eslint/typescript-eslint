@@ -18,162 +18,162 @@ const rule = require('../../../lib/rules/array-type'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new eslint.RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('array-type', rule, {
   valid: [
     {
       code: 'let a = []',
-      options: ['array'],
+      options: ['array']
     },
     {
       code: 'let a = new Array()',
-      options: ['array'],
+      options: ['array']
     },
     {
       code: 'let a: string[] = []',
-      options: ['array'],
+      options: ['array']
     },
     {
       code: 'let a: (string | number)[] = []',
-      options: ['array'],
+      options: ['array']
     },
     {
       code: 'let a: ({ foo: Bar[] })[] = []',
-      options: ['array'],
+      options: ['array']
     },
     {
       code: 'let a: Array<string> = []',
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: 'let a: Array<string| number> = []',
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: 'let a: Array<{ foo: Array<Bar> }> = []',
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: `function foo (a: Array<Bar>): Array<Bar> {}`,
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: `let yy: number[][] = [[4, 5], [6]];`,
-      options: ['array-simple'],
+      options: ['array-simple']
     },
     {
       code: `function fooFunction(foo: Array<ArrayClass<string>>) {
     return foo.map(e => e.foo);
 }`,
-      options: ['array-simple'],
+      options: ['array-simple']
     },
     {
       code: `function bazFunction(baz: Arr<ArrayClass<String>>) {
     return baz.map(e => e.baz);
 }`,
-      options: ['array-simple'],
+      options: ['array-simple']
     },
     {
       code: `let fooVar: Array<(c: number) => number>;`,
-      options: ['array-simple'],
+      options: ['array-simple']
     },
     {
       code: `type fooUnion = Array<string|number|boolean>;`,
-      options: ['array-simple'],
+      options: ['array-simple']
     },
     {
       code: `type fooIntersection = Array<string & number>;`,
-      options: ['array-simple'],
+      options: ['array-simple']
     },
     {
       code: `namespace fooName {
     type BarType = { bar: string };
     type BazType<T> = Arr<T>;
 }`,
-      options: ['array-simple'],
+      options: ['array-simple']
     },
     {
       code: `interface FooInterface {
     '.bar': {baz: string[];};
 }`,
-      options: ['array-simple'],
+      options: ['array-simple']
     },
     {
       code: `let yy: number[][] = [[4, 5], [6]];`,
-      options: ['array'],
+      options: ['array']
     },
     {
       code: `let ya = [[1, "2"]] as[number, string][];`,
-      options: ['array'],
+      options: ['array']
     },
     {
       code: `function barFunction(bar: ArrayClass<String>[]) {
     return bar.map(e => e.bar);
 }`,
-      options: ['array'],
+      options: ['array']
     },
     {
       code: `function bazFunction(baz: Arr<ArrayClass<String>>) {
     return baz.map(e => e.baz);
 }`,
-      options: ['array'],
+      options: ['array']
     },
     {
       code: `let barVar: ((c: number) => number)[];`,
-      options: ['array'],
+      options: ['array']
     },
     {
       code: `type barUnion = (string|number|boolean)[];`,
-      options: ['array'],
+      options: ['array']
     },
     {
       code: `type barIntersection = (string & number)[];`,
-      options: ['array'],
+      options: ['array']
     },
     {
       code: `interface FooInterface {
     '.bar': {baz: string[];};
 }`,
-      options: ['array'],
+      options: ['array']
     },
     {
       code: `let z: Array = [3, "4"];`,
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: `let xx: Array<Array<number>> = [[1, 2], [3]];`,
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: `type Arr<T> = Array<T>;`,
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: `function fooFunction(foo: Array<ArrayClass<string>>) {
     return foo.map(e => e.foo);
 }`,
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: `function bazFunction(baz: Arr<ArrayClass<String>>) {
     return baz.map(e => e.baz);
 }`,
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: `let fooVar: Array<(c: number) => number>;`,
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: `type fooUnion = Array<string|number|boolean>;`,
-      options: ['generic'],
+      options: ['generic']
     },
     {
       code: `type fooIntersection = Array<string & number>;`,
-      options: ['generic'],
-    },
+      options: ['generic']
+    }
   ],
   invalid: [
     {
@@ -185,9 +185,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringArray',
           data: { type: 'string' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: 'let a: Array<string | number> = []',
@@ -198,9 +198,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringArray',
           data: { type: 'T' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: 'let a: ({ foo: Array<Bar> })[] = []',
@@ -211,9 +211,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringArray',
           data: { type: 'Bar' },
           line: 1,
-          column: 16,
-        },
-      ],
+          column: 16
+        }
+      ]
     },
     {
       code: 'let a: string[] = []',
@@ -224,9 +224,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringGeneric',
           data: { type: 'string' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: 'let a: (string | number)[] = []',
@@ -237,9 +237,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringGeneric',
           data: { type: 'T' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: 'let a: Array<{ foo: Bar[] }> = []',
@@ -250,9 +250,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringGeneric',
           data: { type: 'Bar' },
           line: 1,
-          column: 21,
-        },
-      ],
+          column: 21
+        }
+      ]
     },
     {
       code: 'let a: Array<{ foo: Foo | Bar[] }> = []',
@@ -263,9 +263,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringGeneric',
           data: { type: 'Bar' },
           line: 1,
-          column: 27,
-        },
-      ],
+          column: 27
+        }
+      ]
     },
     {
       code: 'function foo (a: Array<Bar>): Array<Bar> {}',
@@ -275,15 +275,15 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringArray',
           data: { type: 'Bar' },
           line: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'errorStringArray',
           data: { type: 'Bar' },
           line: 1,
-          column: 31,
-        },
-      ],
+          column: 31
+        }
+      ]
     },
     {
       code: `let x: Array<undefined> = [undefined] as undefined[];`,
@@ -294,9 +294,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringArraySimple',
           data: { type: 'undefined' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: `let xx: Array<object> = [];`,
@@ -307,9 +307,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringArraySimple',
           data: { type: 'object' },
           line: 1,
-          column: 9,
-        },
-      ],
+          column: 9
+        }
+      ]
     },
     {
       code: `let y: string[] = <Array<string>>["2"];`,
@@ -320,9 +320,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringArraySimple',
           data: { type: 'string' },
           line: 1,
-          column: 20,
-        },
-      ],
+          column: 20
+        }
+      ]
     },
     {
       code: `let z: Array = [3, "4"];`,
@@ -333,9 +333,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringArraySimple',
           data: { type: 'any' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: `let ya = [[1, "2"]] as[number, string][];`,
@@ -346,9 +346,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringGenericSimple',
           data: { type: 'T' },
           line: 1,
-          column: 23,
-        },
-      ],
+          column: 23
+        }
+      ]
     },
     {
       code: `type Arr<T> = Array<T>;`,
@@ -359,9 +359,9 @@ ruleTester.run('array-type', rule, {
           messageId: 'errorStringArraySimple',
           data: { type: 'T' },
           line: 1,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `// Ignore user defined aliases
@@ -374,9 +374,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGenericSimple',
           data: { type: 'T' },
           line: 2,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `interface ArrayClass<T> {
@@ -397,9 +397,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringArraySimple',
           data: { type: 'T' },
           line: 2,
-          column: 10,
-        },
-      ],
+          column: 10
+        }
+      ]
     },
     {
       code: `function barFunction(bar: ArrayClass<String>[]) {
@@ -414,9 +414,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGenericSimple',
           data: { type: 'T' },
           line: 1,
-          column: 27,
-        },
-      ],
+          column: 27
+        }
+      ]
     },
     {
       code: `let barVar: ((c: number) => number)[];`,
@@ -427,9 +427,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGenericSimple',
           data: { type: 'T' },
           line: 1,
-          column: 13,
-        },
-      ],
+          column: 13
+        }
+      ]
     },
     {
       code: `type barUnion = (string|number|boolean)[];`,
@@ -440,9 +440,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGenericSimple',
           data: { type: 'T' },
           line: 1,
-          column: 17,
-        },
-      ],
+          column: 17
+        }
+      ]
     },
     {
       code: `type barIntersection = (string & number)[];`,
@@ -453,9 +453,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGenericSimple',
           data: { type: 'T' },
           line: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: `let v: Array<fooName.BarType> = [{ bar: "bar" }];`,
@@ -466,9 +466,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringArraySimple',
           data: { type: 'fooName.BarType' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: `let w: fooName.BazType<string>[] = [["baz"]];`,
@@ -479,9 +479,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGenericSimple',
           data: { type: 'T' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: `let x: Array<undefined> = [undefined] as undefined[];`,
@@ -492,9 +492,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'undefined' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: `let y: string[] = <Array<string>>["2"];`,
@@ -505,9 +505,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'string' },
           line: 1,
-          column: 20,
-        },
-      ],
+          column: 20
+        }
+      ]
     },
     {
       code: `let z: Array = [3, "4"];`,
@@ -518,9 +518,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'any' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: `type Arr<T> = Array<T>;`,
@@ -531,9 +531,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'T' },
           line: 1,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `// Ignore user defined aliases
@@ -546,9 +546,9 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'T' },
           line: 2,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `interface ArrayClass<T> {
@@ -567,9 +567,9 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'T' },
           line: 2,
-          column: 10,
-        },
-      ],
+          column: 10
+        }
+      ]
     },
     {
       code: `function fooFunction(foo: Array<ArrayClass<string>>) {
@@ -584,9 +584,9 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'T' },
           line: 1,
-          column: 27,
-        },
-      ],
+          column: 27
+        }
+      ]
     },
     {
       code: `let fooVar: Array<(c: number) => number>;`,
@@ -597,9 +597,9 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'T' },
           line: 1,
-          column: 13,
-        },
-      ],
+          column: 13
+        }
+      ]
     },
     {
       code: `type fooUnion = Array<string|number|boolean>;`,
@@ -610,9 +610,9 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'T' },
           line: 1,
-          column: 17,
-        },
-      ],
+          column: 17
+        }
+      ]
     },
     {
       code: `type fooIntersection = Array<string & number>;`,
@@ -623,9 +623,9 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           messageId: 'errorStringArray',
           data: { type: 'T' },
           line: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: `let x: Array<number> = [1] as number[];`,
@@ -636,9 +636,9 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'number' },
           line: 1,
-          column: 31,
-        },
-      ],
+          column: 31
+        }
+      ]
     },
     {
       code: `let y: string[] = <Array<string>>["2"];`,
@@ -649,9 +649,9 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'string' },
           line: 1,
-          column: 8,
-        },
-      ],
+          column: 8
+        }
+      ]
     },
     {
       code: `let ya = [[1, "2"]] as[number, string][];`,
@@ -662,9 +662,9 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'T' },
           line: 1,
-          column: 23,
-        },
-      ],
+          column: 23
+        }
+      ]
     },
     {
       code: `// Ignore user defined aliases
@@ -677,9 +677,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'T' },
           line: 2,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `interface ArrayClass<T> {
@@ -698,9 +698,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'T' },
           line: 3,
-          column: 10,
-        },
-      ],
+          column: 10
+        }
+      ]
     },
     {
       code: `function barFunction(bar: ArrayClass<String>[]) {
@@ -715,9 +715,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'T' },
           line: 1,
-          column: 27,
-        },
-      ],
+          column: 27
+        }
+      ]
     },
     {
       code: `let barVar: ((c: number) => number)[];`,
@@ -728,9 +728,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'T' },
           line: 1,
-          column: 13,
-        },
-      ],
+          column: 13
+        }
+      ]
     },
     {
       code: `type barUnion = (string|number|boolean)[];`,
@@ -741,9 +741,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'T' },
           line: 1,
-          column: 17,
-        },
-      ],
+          column: 17
+        }
+      ]
     },
     {
       code: `type barIntersection = (string & number)[];`,
@@ -754,9 +754,9 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'T' },
           line: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: `interface FooInterface {
@@ -771,11 +771,11 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           messageId: 'errorStringGeneric',
           data: { type: 'string' },
           line: 2,
-          column: 19,
-        },
-      ],
-    },
-  ],
+          column: 19
+        }
+      ]
+    }
+  ]
 });
 
 // eslint rule tester is not working with multi-pass
@@ -791,12 +791,12 @@ describe('array-type (nested)', () => {
         code,
         {
           rules: {
-            'array-type': [2, option],
+            'array-type': [2, option]
           },
-          parser: '@typescript-eslint/parser',
+          parser: '@typescript-eslint/parser'
         },
         {
-          fix: true,
+          fix: true
         }
       );
 

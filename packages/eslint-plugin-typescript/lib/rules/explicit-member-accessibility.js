@@ -19,9 +19,9 @@ module.exports = {
       extraDescription: [util.tslintRule('member-access')],
       category: 'TypeScript',
       url: util.metaDocsUrl('explicit-member-accessibility'),
-      recommended: 'error',
+      recommended: 'error'
     },
-    schema: [],
+    schema: []
   },
 
   create(context) {
@@ -45,8 +45,8 @@ module.exports = {
           message:
             'Missing accessibility modifier on method definition {{name}}.',
           data: {
-            name: methodDefinition.key.name,
-          },
+            name: methodDefinition.key.name
+          }
         });
       }
     }
@@ -66,8 +66,8 @@ module.exports = {
           node: classProperty,
           message: 'Missing accessibility modifier on class property {{name}}.',
           data: {
-            name: classProperty.key.name,
-          },
+            name: classProperty.key.name
+          }
         });
       }
     }
@@ -77,7 +77,7 @@ module.exports = {
     //----------------------------------------------------------------------
     return {
       ClassProperty: checkPropertyAccessibilityModifier,
-      MethodDefinition: checkMethodAccessibilityModifier,
+      MethodDefinition: checkMethodAccessibilityModifier
     };
-  },
+  }
 };

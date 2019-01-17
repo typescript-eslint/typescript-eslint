@@ -12,8 +12,8 @@ const util = require('../util');
 
 const defaultOptions = [
   {
-    allowExpressions: true,
-  },
+    allowExpressions: true
+  }
 ];
 
 module.exports = {
@@ -24,19 +24,19 @@ module.exports = {
         'Require explicit return types on functions and class methods',
       category: 'TypeScript',
       url: util.metaDocsUrl('explicit-function-return-type'),
-      recommended: 'warn',
+      recommended: 'warn'
     },
     schema: [
       {
         type: 'object',
         properties: {
           allowExpressions: {
-            type: 'boolean',
-          },
+            type: 'boolean'
+          }
         },
-        additionalProperties: false,
-      },
-    ],
+        additionalProperties: false
+      }
+    ]
   },
 
   create(context) {
@@ -83,7 +83,7 @@ module.exports = {
       ) {
         context.report({
           node,
-          message: `Missing return type on function.`,
+          message: `Missing return type on function.`
         });
       }
     }
@@ -112,7 +112,7 @@ module.exports = {
     return {
       FunctionDeclaration: checkFunctionReturnType,
       FunctionExpression: checkFunctionExpressionReturnType,
-      ArrowFunctionExpression: checkFunctionExpressionReturnType,
+      ArrowFunctionExpression: checkFunctionExpressionReturnType
     };
-  },
+  }
 };

@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/adjacent-overload-signatures'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('adjacent-overload-signatures', rule, {
@@ -28,7 +28,7 @@ function error(b: number);
 function error(ab: string|number){ }
 export { error };
             `,
-      parserOptions: { sourceType: 'module' },
+      parserOptions: { sourceType: 'module' }
     },
     {
       code: `
@@ -38,7 +38,7 @@ function mapStateToProps() { }
 function mapDispatchToProps() { }
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorMessage);
             `,
-      parserOptions: { sourceType: 'module' },
+      parserOptions: { sourceType: 'module' }
     },
     `
 export const foo = "a", bar = "b";
@@ -215,7 +215,7 @@ class Foo {
         `,
     // examples from https://github.com/nzakas/eslint-plugin-typescript/issues/138
     'export default function<T>(foo : T) {}',
-    'export default function named<T>(foo : T) {}',
+    'export default function named<T>(foo : T) {}'
   ],
   invalid: [
     {
@@ -231,9 +231,9 @@ export function foo(sn: string | number) {}
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 6,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -248,9 +248,9 @@ export function foo(sn: string | number) {}
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 6,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -265,9 +265,9 @@ function foo(sn: string | number) {}
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 6,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -282,9 +282,9 @@ function foo(sn: string | number) {}
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 6,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -299,9 +299,9 @@ function foo(sn: string | number) {}
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 6,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -315,9 +315,9 @@ function foo(sn: string | number) {}
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 5,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -336,9 +336,9 @@ class Bar {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 9,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -353,9 +353,9 @@ declare function foo(sn: string | number);
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 6,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -370,9 +370,9 @@ declare function foo(sn: string | number);
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 6,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -389,9 +389,9 @@ declare module "Foo" {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -410,9 +410,9 @@ declare module "Foo" {
           messageId: 'adjacentSignature',
           data: { name: 'baz' },
           line: 8,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -429,9 +429,9 @@ declare namespace Foo {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -450,9 +450,9 @@ declare namespace Foo {
           messageId: 'adjacentSignature',
           data: { name: 'baz' },
           line: 8,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -469,9 +469,9 @@ type Foo = {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -488,9 +488,9 @@ type Foo = {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -508,9 +508,9 @@ type Foo = {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 5,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -528,9 +528,9 @@ interface Foo {
           messageId: 'adjacentSignature',
           data: { name: 'call' },
           line: 5,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -547,9 +547,9 @@ interface Foo {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -566,9 +566,9 @@ interface Foo {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -585,9 +585,9 @@ interface Foo {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -605,9 +605,9 @@ interface Foo {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 5,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -626,9 +626,9 @@ interface Foo {
           messageId: 'adjacentSignature',
           data: { name: 'baz' },
           line: 8,
-          column: 9,
-        },
-      ],
+          column: 9
+        }
+      ]
     },
     {
       code: `
@@ -645,9 +645,9 @@ interface Foo {
           messageId: 'adjacentSignature',
           data: { name: 'new' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -664,15 +664,15 @@ interface Foo {
           messageId: 'adjacentSignature',
           data: { name: 'new' },
           line: 5,
-          column: 5,
+          column: 5
         },
         {
           messageId: 'adjacentSignature',
           data: { name: 'new' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -689,9 +689,9 @@ class Foo {
           messageId: 'adjacentSignature',
           data: { name: 'constructor' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -708,9 +708,9 @@ class Foo {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -727,9 +727,9 @@ class Foo {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -746,9 +746,9 @@ class Foo {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 7,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -766,9 +766,9 @@ class Foo {
           messageId: 'adjacentSignature',
           data: { name: 'constructor' },
           line: 5,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -786,9 +786,9 @@ class Foo {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
           line: 5,
-          column: 5,
-        },
-      ],
-    },
-  ],
+          column: 5
+        }
+      ]
+    }
+  ]
 });

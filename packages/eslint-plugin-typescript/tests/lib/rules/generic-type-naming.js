@@ -12,7 +12,7 @@ const rule = require('../../../lib/rules/generic-type-naming'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('generic-type-naming', rule, {
@@ -25,8 +25,8 @@ ruleTester.run('generic-type-naming', rule, {
     { code: 'class<x> { }', options: ['^x+$'] },
     {
       code: 'class CounterContainer extends Container<Counter> { }',
-      options: ['^T$'],
-    },
+      options: ['^T$']
+    }
   ],
   invalid: [
     {
@@ -35,13 +35,13 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'U', rule: '^T([A-Z0-9][a-zA-Z0-9]*){0,1}$' },
+          data: { name: 'U', rule: '^T([A-Z0-9][a-zA-Z0-9]*){0,1}$' }
         },
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'V', rule: '^T([A-Z0-9][a-zA-Z0-9]*){0,1}$' },
-        },
-      ],
+          data: { name: 'V', rule: '^T([A-Z0-9][a-zA-Z0-9]*){0,1}$' }
+        }
+      ]
     },
     {
       code: 'class<x> { }',
@@ -49,9 +49,9 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' },
-        },
-      ],
+          data: { name: 'x', rule: '^[A-Z]+$' }
+        }
+      ]
     },
     {
       code: 'interface SimpleMap<x> { }',
@@ -59,9 +59,9 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' },
-        },
-      ],
+          data: { name: 'x', rule: '^[A-Z]+$' }
+        }
+      ]
     },
     {
       code: 'type R<x> = {}',
@@ -69,9 +69,9 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' },
-        },
-      ],
+          data: { name: 'x', rule: '^[A-Z]+$' }
+        }
+      ]
     },
     {
       code: 'function get<x>() {}',
@@ -79,9 +79,9 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' },
-        },
-      ],
+          data: { name: 'x', rule: '^[A-Z]+$' }
+        }
+      ]
     },
     {
       code: 'interface GenericIdentityFn { <x>(arg: x): x }',
@@ -89,9 +89,9 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' },
-        },
-      ],
-    },
-  ],
+          data: { name: 'x', rule: '^[A-Z]+$' }
+        }
+      ]
+    }
+  ]
 });

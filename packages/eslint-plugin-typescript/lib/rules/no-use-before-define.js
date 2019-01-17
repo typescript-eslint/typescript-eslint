@@ -183,8 +183,8 @@ const defaultOptions = [
     functions: true,
     classes: true,
     variables: true,
-    typedefs: true,
-  },
+    typedefs: true
+  }
 ];
 
 module.exports = {
@@ -194,13 +194,13 @@ module.exports = {
       description: 'Disallow the use of variables before they are defined',
       category: 'Variables',
       url: util.metaDocsUrl('no-use-before-define'),
-      recommended: 'error',
+      recommended: 'error'
     },
     schema: [
       {
         oneOf: [
           {
-            enum: ['nofunc'],
+            enum: ['nofunc']
           },
           {
             type: 'object',
@@ -208,13 +208,13 @@ module.exports = {
               functions: { type: 'boolean' },
               classes: { type: 'boolean' },
               variables: { type: 'boolean' },
-              typedefs: { type: 'boolean' },
+              typedefs: { type: 'boolean' }
             },
-            additionalProperties: false,
-          },
-        ],
-      },
-    ],
+            additionalProperties: false
+          }
+        ]
+      }
+    ]
   },
 
   create(context) {
@@ -275,7 +275,7 @@ module.exports = {
         context.report({
           node: reference.identifier,
           message: "'{{name}}' was used before it was defined.",
-          data: reference.identifier,
+          data: reference.identifier
         });
       });
 
@@ -285,7 +285,7 @@ module.exports = {
     return {
       Program() {
         findVariablesInScope(context.getScope());
-      },
+      }
     };
-  },
+  }
 };

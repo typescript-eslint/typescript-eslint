@@ -9,7 +9,7 @@ const bannedRecommendedRules = new Set([
   'camelcase',
   'indent',
   'no-array-constructor',
-  'no-unused-vars',
+  'no-unused-vars'
 ]);
 const MAX_RULE_NAME_LENGTH = 32 + 'typescript/'.length;
 
@@ -51,10 +51,10 @@ function generate() {
   const recommendedConfig = {
     parser: 'eslint-plugin-typescript/parser',
     parserOptions: {
-      sourceType: 'module',
+      sourceType: 'module'
     },
     plugins: ['typescript'],
-    rules,
+    rules
   };
 
   fs.writeFileSync(filePath, `${JSON.stringify(recommendedConfig, null, 4)}\n`);

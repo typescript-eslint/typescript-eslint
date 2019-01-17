@@ -13,8 +13,8 @@ const util = require('../util');
 const defaultOptions = [
   {
     allowDestructuring: false,
-    allowedNames: [],
-  },
+    allowedNames: []
+  }
 ];
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
       extraDescription: [util.tslintRule('no-this-assignment')],
       category: 'Best Practices',
       url: util.metaDocsUrl('no-this-alias'),
-      recommended: false,
+      recommended: false
     },
     fixable: null,
     schema: [
@@ -34,22 +34,22 @@ module.exports = {
         additionalProperties: false,
         properties: {
           allowDestructuring: {
-            type: 'boolean',
+            type: 'boolean'
           },
           allowedNames: {
             type: 'array',
             items: {
-              type: 'string',
-            },
-          },
-        },
-      },
+              type: 'string'
+            }
+          }
+        }
+      }
     ],
     messages: {
       thisAssignment: "Unexpected aliasing of 'this' to local variable.",
       thisDestructure:
-        "Unexpected aliasing of members of 'this' to local variables.",
-    },
+        "Unexpected aliasing of members of 'this' to local variables."
+    }
   },
 
   create(context) {
@@ -68,10 +68,10 @@ module.exports = {
           context.report({
             node: id,
             messageId:
-              id.type === 'Identifier' ? 'thisAssignment' : 'thisDestructure',
+              id.type === 'Identifier' ? 'thisAssignment' : 'thisDestructure'
           });
         }
-      },
+      }
     };
-  },
+  }
 };

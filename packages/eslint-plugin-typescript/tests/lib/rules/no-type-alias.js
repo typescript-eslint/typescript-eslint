@@ -16,288 +16,288 @@ const rule = require('../../../lib/rules/no-type-alias'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('no-type-alias', rule, {
   valid: [
     {
       code: "type Foo = 'a';",
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: "type Foo = 'a' | 'b';",
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: "type Foo = 'a' | 'b';",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: "type Foo = 'a' | 'b';",
-      options: [{ allowAliases: 'in-unions' }],
+      options: [{ allowAliases: 'in-unions' }]
     },
     {
       code: "type Foo = 'a' | 'b' | 'c';",
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: "type Foo = 'a' | 'b' | 'c';",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: "type Foo = 'a' | 'b' | 'c';",
-      options: [{ allowAliases: 'in-unions' }],
+      options: [{ allowAliases: 'in-unions' }]
     },
     {
       code: "type Foo = 'a' & 'b';",
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: "type Foo = 'a' & 'b';",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: "type Foo = 'a' & 'b';",
-      options: [{ allowAliases: 'in-intersections' }],
+      options: [{ allowAliases: 'in-intersections' }]
     },
     {
       code: "type Foo = 'a' & 'b' & 'c';",
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: "type Foo = 'a' & 'b' & 'c';",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: "type Foo = 'a' & 'b' & 'c';",
-      options: [{ allowAliases: 'in-intersections' }],
+      options: [{ allowAliases: 'in-intersections' }]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = 1;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = 1 | 2;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = 1 | 2;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = 1 | 2;',
-      options: [{ allowAliases: 'in-unions' }],
+      options: [{ allowAliases: 'in-unions' }]
     },
     {
       code: 'type Foo = 1 | 2 | 3;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = 1 | 2 | 3;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = 1 | 2 | 3;',
-      options: [{ allowAliases: 'in-unions' }],
+      options: [{ allowAliases: 'in-unions' }]
     },
     {
       code: 'type Foo = 1 & 2;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = 1 & 2;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = 1 & 2;',
-      options: [{ allowAliases: 'in-intersections' }],
+      options: [{ allowAliases: 'in-intersections' }]
     },
     {
       code: 'type Foo = 1 & 2 & 3;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = 1 & 2 & 3;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = 1 & 2 & 3;',
-      options: [{ allowAliases: 'in-intersections' }],
+      options: [{ allowAliases: 'in-intersections' }]
     },
     {
       code: 'type Foo = 1 | 2 & 3;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = 1 | 2 & 3;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = true;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = true | false;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = true | false;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = true | false;',
-      options: [{ allowAliases: 'in-unions' }],
+      options: [{ allowAliases: 'in-unions' }]
     },
     {
       code: 'type Foo = true & false;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = true & false;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = true & false;',
-      options: [{ allowAliases: 'in-intersections' }],
+      options: [{ allowAliases: 'in-intersections' }]
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar | string;
             `,
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar | string;
             `,
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar | string;
             `,
-      options: [{ allowAliases: 'in-unions' }],
+      options: [{ allowAliases: 'in-unions' }]
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar & string;
             `,
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar & string;
             `,
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar & string;
             `,
-      options: [{ allowAliases: 'in-intersections' }],
+      options: [{ allowAliases: 'in-intersections' }]
     },
     {
       code: 'type Foo = string;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = string | string[];',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = string | string[];',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = string | string[];',
-      options: [{ allowAliases: 'in-unions' }],
+      options: [{ allowAliases: 'in-unions' }]
     },
     {
       code: 'type Foo = string | string[] | number;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = string | string[] | number;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = string | string[] | number;',
-      options: [{ allowAliases: 'in-unions' }],
+      options: [{ allowAliases: 'in-unions' }]
     },
     {
       code: 'type Foo = string & string[];',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = string & string[];',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = string & string[];',
-      options: [{ allowAliases: 'in-intersections' }],
+      options: [{ allowAliases: 'in-intersections' }]
     },
     {
       code: 'type Foo = string & string[] & number;',
-      options: [{ allowAliases: 'always' }],
+      options: [{ allowAliases: 'always' }]
     },
     {
       code: 'type Foo = string & string[] & number;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
+      options: [{ allowAliases: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = string & string[] & number;',
-      options: [{ allowAliases: 'in-intersections' }],
+      options: [{ allowAliases: 'in-intersections' }]
     },
     {
       code: 'type Foo = () => void;',
-      options: [{ allowCallbacks: 'always' }],
+      options: [{ allowCallbacks: 'always' }]
     },
     {
       code: 'type Foo = () => void | string;',
-      options: [{ allowCallbacks: 'always' }],
+      options: [{ allowCallbacks: 'always' }]
     },
     {
       code: 'type Foo = {};',
-      options: [{ allowLiterals: 'always' }],
+      options: [{ allowLiterals: 'always' }]
     },
     {
       code: 'type Foo = {} | {};',
-      options: [{ allowLiterals: 'always' }],
+      options: [{ allowLiterals: 'always' }]
     },
     {
       code: 'type Foo = {} | {};',
-      options: [{ allowLiterals: 'in-unions-and-intersections' }],
+      options: [{ allowLiterals: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = {} | {};',
-      options: [{ allowLiterals: 'in-unions' }],
+      options: [{ allowLiterals: 'in-unions' }]
     },
     {
       code: 'type Foo = {} & {};',
-      options: [{ allowLiterals: 'always' }],
+      options: [{ allowLiterals: 'always' }]
     },
     {
       code: 'type Foo = {} & {};',
-      options: [{ allowLiterals: 'in-unions-and-intersections' }],
+      options: [{ allowLiterals: 'in-unions-and-intersections' }]
     },
     {
       code: 'type Foo = {} & {};',
-      options: [{ allowLiterals: 'in-intersections' }],
+      options: [{ allowLiterals: 'in-intersections' }]
     },
     {
       code: `
@@ -305,7 +305,7 @@ type Foo<T> = {
     readonly [P in keyof T] : T[P]
 };
             `,
-      options: [{ allowMappedTypes: 'always' }],
+      options: [{ allowMappedTypes: 'always' }]
     },
     {
       code: `
@@ -315,7 +315,7 @@ type Foo<T> = {
     readonly [P in keyof T] : T[P]
 };
             `,
-      options: [{ allowMappedTypes: 'always' }],
+      options: [{ allowMappedTypes: 'always' }]
     },
     {
       code: `
@@ -325,7 +325,7 @@ type Foo<T> = {
     readonly [P in keyof T] : T[P]
 };
             `,
-      options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
+      options: [{ allowMappedTypes: 'in-unions-and-intersections' }]
     },
     {
       code: `
@@ -335,7 +335,7 @@ type Foo<T> = {
     readonly [P in keyof T] : T[P]
 };
             `,
-      options: [{ allowMappedTypes: 'in-unions' }],
+      options: [{ allowMappedTypes: 'in-unions' }]
     },
     {
       code: `
@@ -345,7 +345,7 @@ type Foo<T> = {
     readonly [P in keyof T] : T[P]
 };
             `,
-      options: [{ allowMappedTypes: 'always' }],
+      options: [{ allowMappedTypes: 'always' }]
     },
     {
       code: `
@@ -355,7 +355,7 @@ type Foo<T> = {
     readonly [P in keyof T] : T[P]
 };
             `,
-      options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
+      options: [{ allowMappedTypes: 'in-unions-and-intersections' }]
     },
     {
       code: `
@@ -365,7 +365,7 @@ type Foo<T> = {
     readonly [P in keyof T] : T[P]
 };
             `,
-      options: [{ allowMappedTypes: 'in-intersections' }],
+      options: [{ allowMappedTypes: 'in-intersections' }]
     },
     {
       code: `export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | false;`,
@@ -374,10 +374,10 @@ type Foo<T> = {
           allowAliases: 'in-unions-and-intersections',
           allowCallbacks: 'always',
           allowLiterals: 'in-unions-and-intersections',
-          allowMappedTypes: 'in-unions-and-intersections',
-        },
-      ],
-    },
+          allowMappedTypes: 'in-unions-and-intersections'
+        }
+      ]
+    }
   ],
   invalid: [
     {
@@ -386,12 +386,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: "type Foo = 'a'",
@@ -400,12 +400,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b';",
@@ -414,21 +414,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b';",
@@ -438,21 +438,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b';",
@@ -462,21 +462,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b';",
@@ -486,50 +486,50 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b';",
       options: [
         {
           allowAliases: 'in-intersections',
-          allowLiterals: 'in-unions',
-        },
+          allowLiterals: 'in-unions'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' | 'c';",
@@ -538,30 +538,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' | 'c';",
@@ -571,30 +571,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' | 'c';",
@@ -604,30 +604,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' | 'c';",
@@ -637,30 +637,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' | 'c';",
@@ -670,68 +670,68 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' | 'c';",
       options: [
         {
           allowAliases: 'in-intersections',
-          allowLiterals: 'in-unions',
-        },
+          allowLiterals: 'in-unions'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b';",
@@ -740,21 +740,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b';",
@@ -764,21 +764,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b';",
@@ -788,21 +788,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b';",
@@ -812,21 +812,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b';",
@@ -836,50 +836,50 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b';",
       options: [
         {
           allowAliases: 'in-unions',
-          allowLiterals: 'in-intersections',
-        },
+          allowLiterals: 'in-intersections'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b' & 'c';",
@@ -888,30 +888,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b' & 'c';",
@@ -921,30 +921,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b' & 'c';",
@@ -954,30 +954,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b' & 'c';",
@@ -987,30 +987,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b' & 'c';",
@@ -1020,68 +1020,68 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' & 'b' & 'c';",
       options: [
         {
           allowAliases: 'in-unions',
-          allowLiterals: 'in-intersections',
-        },
+          allowLiterals: 'in-intersections'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
@@ -1090,30 +1090,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
@@ -1123,30 +1123,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
@@ -1156,30 +1156,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
@@ -1189,30 +1189,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
@@ -1222,50 +1222,50 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
       options: [
         {
           allowAliases: 'in-unions',
-          allowLiterals: 'in-intersections',
-        },
+          allowLiterals: 'in-intersections'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
+          column: 18
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 24,
-        },
-      ],
+          column: 24
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
@@ -1275,32 +1275,32 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: "type Foo = 'a' | 'b' & 'c';",
       options: [
         {
           allowAliases: 'in-intersections',
-          allowLiterals: 'in-intersections',
-        },
+          allowLiterals: 'in-intersections'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = string;',
@@ -1308,12 +1308,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = string;',
@@ -1322,12 +1322,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = string;',
@@ -1336,12 +1336,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = string;',
@@ -1350,12 +1350,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = string;',
@@ -1364,12 +1364,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[];',
@@ -1378,21 +1378,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
-        },
-      ],
+          column: 21
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[];',
@@ -1402,21 +1402,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
-        },
-      ],
+          column: 21
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[];',
@@ -1426,21 +1426,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
-        },
-      ],
+          column: 21
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[];',
@@ -1450,21 +1450,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
-        },
-      ],
+          column: 21
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[];',
@@ -1474,50 +1474,50 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
-        },
-      ],
+          column: 21
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[];',
       options: [
         {
           allowAliases: 'in-intersections',
-          allowLiterals: 'in-unions',
-        },
+          allowLiterals: 'in-unions'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
-        },
-      ],
+          column: 21
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] | number;',
@@ -1526,30 +1526,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] | number;',
@@ -1559,30 +1559,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] | number;',
@@ -1592,30 +1592,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] | number;',
@@ -1625,30 +1625,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] | number;',
@@ -1658,68 +1658,68 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] | number;',
       options: [
         {
           allowAliases: 'in-intersections',
-          allowLiterals: 'in-unions',
-        },
+          allowLiterals: 'in-unions'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] & number;',
@@ -1728,30 +1728,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] & number;',
@@ -1761,30 +1761,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] & number;',
@@ -1794,30 +1794,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] & number;',
@@ -1827,30 +1827,30 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] & number;',
@@ -1860,21 +1860,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] & number;',
@@ -1884,21 +1884,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] & number;',
@@ -1908,32 +1908,32 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = string | string[] & number;',
       options: [
         {
           allowAliases: 'in-intersections',
-          allowLiterals: 'in-unions',
-        },
+          allowLiterals: 'in-unions'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: `
@@ -1944,12 +1944,12 @@ type Foo = Bar;
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: `
@@ -1961,12 +1961,12 @@ type Foo = Bar;
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: `
@@ -1978,12 +1978,12 @@ type Foo = Bar;
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: `
@@ -1995,12 +1995,12 @@ type Foo = Bar;
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: `
@@ -2012,12 +2012,12 @@ type Foo = Bar;
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'aliases'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: `
@@ -2029,21 +2029,21 @@ type Foo = Bar | {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: `
@@ -2056,21 +2056,21 @@ type Foo = Bar | {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: `
@@ -2083,12 +2083,12 @@ type Foo = Bar | {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: `
@@ -2101,21 +2101,21 @@ type Foo = Bar | {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: `
@@ -2128,12 +2128,12 @@ type Foo = Bar | {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: `
@@ -2145,21 +2145,21 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: `
@@ -2172,21 +2172,21 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: `
@@ -2199,21 +2199,21 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: `
@@ -2226,12 +2226,12 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: `
@@ -2244,12 +2244,12 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 18,
-        },
-      ],
+          column: 18
+        }
+      ]
     },
     {
       code: 'type Foo = () => void;',
@@ -2257,12 +2257,12 @@ type Foo = Bar & {};
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'callbacks',
+            alias: 'callbacks'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = () => void;',
@@ -2271,12 +2271,12 @@ type Foo = Bar & {};
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'callbacks',
+            alias: 'callbacks'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
@@ -2284,12 +2284,12 @@ type Foo = Bar & {};
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
@@ -2298,12 +2298,12 @@ type Foo = Bar & {};
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
@@ -2312,12 +2312,12 @@ type Foo = Bar & {};
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
@@ -2326,12 +2326,12 @@ type Foo = Bar & {};
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
@@ -2340,12 +2340,12 @@ type Foo = Bar & {};
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
@@ -2354,12 +2354,12 @@ type Foo = Bar & {};
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
@@ -2368,69 +2368,69 @@ type Foo = Bar & {};
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
       options: [
         {
           allowLiterals: 'in-unions',
-          allowAliases: 'in-intersections',
-        },
+          allowAliases: 'in-intersections'
+        }
       ],
       errors: [
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
       options: [
         {
           allowLiterals: 'in-intersections',
-          allowAliases: 'in-intersections',
-        },
+          allowAliases: 'in-intersections'
+        }
       ],
       errors: [
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {};',
       options: [
         {
           allowLiterals: 'in-unions-and-intersections',
-          allowAliases: 'in-intersections',
-        },
+          allowAliases: 'in-intersections'
+        }
       ],
       errors: [
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'literals',
+            alias: 'literals'
           },
           row: 1,
-          column: 12,
-        },
-      ],
+          column: 12
+        }
+      ]
     },
     {
       code: 'type Foo = {} | {};',
@@ -2439,21 +2439,21 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 17,
-        },
-      ],
+          column: 17
+        }
+      ]
     },
     {
       code: 'type Foo = {} | {};',
@@ -2463,21 +2463,21 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 17,
-        },
-      ],
+          column: 17
+        }
+      ]
     },
     {
       code: 'type Foo = {} | {};',
@@ -2487,21 +2487,21 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 17,
-        },
-      ],
+          column: 17
+        }
+      ]
     },
     {
       code: 'type Foo = {} & {};',
@@ -2510,21 +2510,21 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 17,
-        },
-      ],
+          column: 17
+        }
+      ]
     },
     {
       code: 'type Foo = {} & {};',
@@ -2534,21 +2534,21 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 17,
-        },
-      ],
+          column: 17
+        }
+      ]
     },
     {
       code: 'type Foo = {} & {};',
@@ -2558,21 +2558,21 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 17,
-        },
-      ],
+          column: 17
+        }
+      ]
     },
     {
       code: "type Foo = string & {} | 'a' | 1;",
@@ -2582,59 +2582,59 @@ type Foo = Bar & {};
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 12,
+          column: 12
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 21,
-        },
-      ],
+          column: 21
+        }
+      ]
     },
     {
       code: "type Foo = string & {} | 'a' | 1;",
       options: [
         {
           allowAliases: 'in-intersections',
-          allowLiterals: 'in-unions',
-        },
+          allowLiterals: 'in-unions'
+        }
       ],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Literals',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 21,
+          column: 21
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 26,
+          column: 26
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Aliases',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 32,
-        },
-      ],
+          column: 32
+        }
+      ]
     },
     {
       code: `
@@ -2646,12 +2646,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'mapped types',
+            alias: 'mapped types'
           },
           row: 1,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `
@@ -2664,12 +2664,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'mapped types',
+            alias: 'mapped types'
           },
           row: 1,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `
@@ -2682,12 +2682,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'mapped types',
+            alias: 'mapped types'
           },
           row: 1,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `
@@ -2700,12 +2700,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'mapped types',
+            alias: 'mapped types'
           },
           row: 1,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `
@@ -2718,12 +2718,12 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'mapped types',
+            alias: 'mapped types'
           },
           row: 1,
-          column: 15,
-        },
-      ],
+          column: 15
+        }
+      ]
     },
     {
       code: `
@@ -2738,21 +2738,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 15,
+          column: 15
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 4,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2768,21 +2768,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 15,
+          column: 15
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 4,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2798,21 +2798,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 1,
-          column: 15,
+          column: 15
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'union',
+            compositionType: 'union'
           },
           row: 4,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2827,21 +2827,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 15,
+          column: 15
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 4,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2857,21 +2857,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 15,
+          column: 15
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 4,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2887,21 +2887,21 @@ type Foo<T> = {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 1,
-          column: 15,
+          column: 15
         },
         {
           messageId: 'noCompositionAlias',
           data: {
             typeName: 'Mapped types',
-            compositionType: 'intersection',
+            compositionType: 'intersection'
           },
           row: 4,
-          column: 5,
-        },
-      ],
-    },
-  ],
+          column: 5
+        }
+      ]
+    }
+  ]
 });

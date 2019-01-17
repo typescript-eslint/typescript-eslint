@@ -19,13 +19,13 @@ module.exports = {
       extraDescription: [util.tslintRule('interface-over-type-literal')],
       category: 'TypeScript',
       url: util.metaDocsUrl('prefer-interface'),
-      recommended: 'error',
+      recommended: 'error'
     },
     fixable: 'code',
     messages: {
-      interfaceOverType: 'Use an interface instead of a type literal.',
+      interfaceOverType: 'Use an interface instead of a type literal.'
     },
-    schema: [],
+    schema: []
   },
   create(context) {
     const sourceCode = context.getSourceCode();
@@ -52,7 +52,7 @@ module.exports = {
               fixer.replaceTextRange(
                 [typeNode.range[1], node.init.range[0]],
                 ' '
-              ),
+              )
             ];
 
             const afterToken = sourceCode.getTokenAfter(node.init);
@@ -66,9 +66,9 @@ module.exports = {
             }
 
             return fixes;
-          },
+          }
         });
-      },
+      }
     };
-  },
+  }
 };

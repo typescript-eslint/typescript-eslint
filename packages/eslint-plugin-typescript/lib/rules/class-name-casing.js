@@ -19,9 +19,9 @@ module.exports = {
       extraDescription: [util.tslintRule('class-name')],
       category: 'Best Practices',
       url: util.metaDocsUrl('class-name-casing'),
-      recommended: 'error',
+      recommended: 'error'
     },
-    schema: [],
+    schema: []
   },
 
   create(context) {
@@ -71,8 +71,8 @@ module.exports = {
         message: "{{friendlyName}} '{{name}}' must be PascalCased.",
         data: {
           friendlyName,
-          name: resolvedId.name,
-        },
+          name: resolvedId.name
+        }
       });
     }
 
@@ -95,7 +95,7 @@ module.exports = {
         if (id && !node.init.id && !isPascalCase(id.name)) {
           report(node.init, id);
         }
-      },
+      }
     };
-  },
+  }
 };

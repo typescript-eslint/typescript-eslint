@@ -18,12 +18,12 @@ module.exports = {
       extraDescription: [util.tslintRule('no-reference')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-triple-slash-reference'),
-      recommended: 'error',
+      recommended: 'error'
     },
     schema: [],
     messages: {
-      tripleSlashReference: 'Do not use a triple slash reference.',
-    },
+      tripleSlashReference: 'Do not use a triple slash reference.'
+    }
   },
 
   create(context) {
@@ -50,7 +50,7 @@ module.exports = {
         if (referenceRegExp.test(comment.value)) {
           context.report({
             node: comment,
-            messageId: 'tripleSlashReference',
+            messageId: 'tripleSlashReference'
           });
         }
       });
@@ -60,7 +60,7 @@ module.exports = {
     // Public
     //----------------------------------------------------------------------
     return {
-      Program: checkTripleSlashReference,
+      Program: checkTripleSlashReference
     };
-  },
+  }
 };

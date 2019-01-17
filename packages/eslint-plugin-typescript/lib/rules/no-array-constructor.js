@@ -18,10 +18,10 @@ module.exports = {
       description: 'Disallow generic `Array` constructors',
       category: 'Stylistic Issues',
       url: util.metaDocsUrl('no-array-constructor'),
-      recommended: 'error',
+      recommended: 'error'
     },
     fixable: 'code',
-    schema: [],
+    schema: []
   },
 
   create(context) {
@@ -52,14 +52,14 @@ module.exports = {
               node,
               `[${fullText.slice(preambleLength + 1, -1)}]`
             );
-          },
+          }
         });
       }
     }
 
     return {
       CallExpression: check,
-      NewExpression: check,
+      NewExpression: check
     };
-  },
+  }
 };

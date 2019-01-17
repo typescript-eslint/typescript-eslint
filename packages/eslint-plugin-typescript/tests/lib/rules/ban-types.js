@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/ban-types'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 const options = [
@@ -24,13 +24,13 @@ const options = [
     types: {
       String: {
         message: 'Use string instead.',
-        fixWith: 'string',
+        fixWith: 'string'
       },
       Object: "Use '{}' instead.",
       Array: null,
-      F: null,
-    },
-  },
+      F: null
+    }
+  }
 ];
 
 ruleTester.run('ban-types', rule, {
@@ -38,20 +38,20 @@ ruleTester.run('ban-types', rule, {
     'let f = Object();', // Should not fail if there is no options set
     {
       code: 'let f = Object();',
-      options,
+      options
     },
     {
       code: 'let g = Object.create(null);',
-      options,
+      options
     },
     {
       code: 'let h = String(false);',
-      options,
+      options
     },
     {
       code: 'let e: foo.String;',
-      options,
-    },
+      options
+    }
   ],
   invalid: [
     {
@@ -61,13 +61,13 @@ ruleTester.run('ban-types', rule, {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'Object',
-            customMessage: " Use '{}' instead.",
+            customMessage: " Use '{}' instead."
           },
           line: 1,
-          column: 8,
-        },
+          column: 8
+        }
       ],
-      options,
+      options
     },
     {
       code: 'let b: {c: String};',
@@ -77,13 +77,13 @@ ruleTester.run('ban-types', rule, {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'String',
-            customMessage: ' Use string instead.',
+            customMessage: ' Use string instead.'
           },
           line: 1,
-          column: 12,
-        },
+          column: 12
+        }
       ],
-      options,
+      options
     },
     {
       code: 'function foo(a: String) {}',
@@ -93,13 +93,13 @@ ruleTester.run('ban-types', rule, {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'String',
-            customMessage: ' Use string instead.',
+            customMessage: ' Use string instead.'
           },
           line: 1,
-          column: 17,
-        },
+          column: 17
+        }
       ],
-      options,
+      options
     },
     {
       code: "'a' as String;",
@@ -109,13 +109,13 @@ ruleTester.run('ban-types', rule, {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'String',
-            customMessage: ' Use string instead.',
+            customMessage: ' Use string instead.'
           },
           line: 1,
-          column: 8,
-        },
+          column: 8
+        }
       ],
-      options,
+      options
     },
     {
       code: 'let c: F;',
@@ -124,10 +124,10 @@ ruleTester.run('ban-types', rule, {
           messageId: 'bannedTypeMessage',
           data: { name: 'F', customMessage: '' },
           line: 1,
-          column: 8,
-        },
+          column: 8
+        }
       ],
-      options,
+      options
     },
     {
       code: `
@@ -155,82 +155,82 @@ ruleTester.run('ban-types', rule, {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'String',
-            customMessage: ' Use string instead.',
+            customMessage: ' Use string instead.'
           },
           line: 2,
-          column: 27,
+          column: 27
         },
         {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'String',
-            customMessage: ' Use string instead.',
+            customMessage: ' Use string instead.'
           },
           line: 2,
-          column: 47,
+          column: 47
         },
         {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'Object',
-            customMessage: " Use '{}' instead.",
+            customMessage: " Use '{}' instead."
           },
           line: 2,
-          column: 70,
+          column: 70
         },
         {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'String',
-            customMessage: ' Use string instead.',
+            customMessage: ' Use string instead.'
           },
           line: 3,
-          column: 35,
+          column: 35
         },
         {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'Object',
-            customMessage: " Use '{}' instead.",
+            customMessage: " Use '{}' instead."
           },
           line: 3,
-          column: 44,
+          column: 44
         },
         {
           messageId: 'bannedTypeMessage',
           data: { name: 'Array', customMessage: '' },
           line: 6,
-          column: 27,
+          column: 27
         },
         {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'String',
-            customMessage: ' Use string instead.',
+            customMessage: ' Use string instead.'
           },
           line: 6,
-          column: 33,
+          column: 33
         },
         {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'String',
-            customMessage: ' Use string instead.',
+            customMessage: ' Use string instead.'
           },
           line: 7,
-          column: 32,
+          column: 32
         },
         {
           messageId: 'bannedTypeMessage',
           data: {
             name: 'String',
-            customMessage: ' Use string instead.',
+            customMessage: ' Use string instead.'
           },
           line: 7,
-          column: 46,
-        },
+          column: 46
+        }
       ],
-      options,
-    },
-  ],
+      options
+    }
+  ]
 });

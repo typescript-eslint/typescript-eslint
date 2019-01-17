@@ -21,7 +21,7 @@ const onlyConstructor = { messageId: 'onlyConstructor', type: 'Identifier' };
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('no-extraneous-class', rule, {
@@ -50,7 +50,7 @@ class Foo {
 `.trim(),
     {
       code: 'class Foo {}',
-      options: [{ allowEmpty: true }],
+      options: [{ allowEmpty: true }]
     },
     {
       code: `
@@ -58,7 +58,7 @@ class Foo {
     constructor() {}
 }
 `.trim(),
-      options: [{ allowConstructorOnly: true }],
+      options: [{ allowConstructorOnly: true }]
     },
     {
       code: `
@@ -69,14 +69,14 @@ export class Bar {
     }
 }
 `.trim(),
-      options: [{ allowStaticOnly: true }],
-    },
+      options: [{ allowStaticOnly: true }]
+    }
   ],
 
   invalid: [
     {
       code: 'class Foo {}',
-      errors: [empty],
+      errors: [empty]
     },
     {
       code: `
@@ -95,7 +95,7 @@ export class Bar {
     }
 }
 `.trim(),
-      errors: [onlyStatic, onlyStatic],
+      errors: [onlyStatic, onlyStatic]
     },
     {
       code: `
@@ -103,7 +103,7 @@ class Foo {
     constructor() {}
 }
 `.trim(),
-      errors: [onlyConstructor],
+      errors: [onlyConstructor]
     },
     {
       code: `
@@ -119,7 +119,7 @@ export class AClass {
 }
 
 `.trim(),
-      errors: [onlyStatic, empty],
-    },
-  ],
+      errors: [onlyStatic, empty]
+    }
+  ]
 });

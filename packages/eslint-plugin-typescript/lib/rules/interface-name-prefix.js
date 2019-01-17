@@ -20,13 +20,13 @@ module.exports = {
       extraDescription: [util.tslintRule('interface-name')],
       category: 'TypeScript',
       url: util.metaDocsUrl('interface-name-prefix'),
-      recommended: 'error',
+      recommended: 'error'
     },
     schema: [
       {
-        enum: ['never', 'always'],
-      },
-    ],
+        enum: ['never', 'always']
+      }
+    ]
   },
 
   create(context) {
@@ -62,14 +62,14 @@ module.exports = {
         if (isPrefixedWithI(interfaceNode.id.name)) {
           context.report({
             node: interfaceNode.id,
-            message: 'Interface name must not be prefixed with "I".',
+            message: 'Interface name must not be prefixed with "I".'
           });
         }
       } else {
         if (!isPrefixedWithI(interfaceNode.id.name)) {
           context.report({
             node: interfaceNode.id,
-            message: 'Interface name must be prefixed with "I".',
+            message: 'Interface name must be prefixed with "I".'
           });
         }
       }
@@ -79,7 +79,7 @@ module.exports = {
     // Public
     //----------------------------------------------------------------------
     return {
-      TSInterfaceDeclaration: checkInterfacePrefix,
+      TSInterfaceDeclaration: checkInterfacePrefix
     };
-  },
+  }
 };

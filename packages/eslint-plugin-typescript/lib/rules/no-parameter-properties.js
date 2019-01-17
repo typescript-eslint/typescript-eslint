@@ -12,8 +12,8 @@ const util = require('../util');
 
 const defaultOptions = [
   {
-    allows: [],
-  },
+    allows: []
+  }
 ];
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
       extraDescription: [util.tslintRule('no-parameter-properties')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-parameter-properties'),
-      recommended: 'error',
+      recommended: 'error'
     },
     schema: [
       {
@@ -41,15 +41,15 @@ module.exports = {
                 'public',
                 'private readonly',
                 'protected readonly',
-                'public readonly',
-              ],
+                'public readonly'
+              ]
             },
-            minItems: 1,
-          },
+            minItems: 1
+          }
         },
-        additionalProperties: false,
-      },
-    ],
+        additionalProperties: false
+      }
+    ]
   },
 
   create(context) {
@@ -89,11 +89,11 @@ module.exports = {
             message:
               'Property {{parameter}} cannot be declared in the constructor.',
             data: {
-              parameter: node.parameter.name,
-            },
+              parameter: node.parameter.name
+            }
           });
         }
-      },
+      }
     };
-  },
+  }
 };

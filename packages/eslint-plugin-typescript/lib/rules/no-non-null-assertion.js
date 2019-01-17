@@ -19,9 +19,9 @@ module.exports = {
       extraDescription: [util.tslintRule('no-non-null-assertion')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-non-null-assertion'),
-      recommended: 'error',
+      recommended: 'error'
     },
-    schema: [],
+    schema: []
   },
   create(context) {
     //----------------------------------------------------------------------
@@ -32,9 +32,9 @@ module.exports = {
       TSNonNullExpression(node) {
         context.report({
           node,
-          message: 'Forbidden non-null assertion.',
+          message: 'Forbidden non-null assertion.'
         });
-      },
+      }
     };
-  },
+  }
 };

@@ -20,7 +20,7 @@ module.exports = {
         'Enforces naming conventions for class members by visibility.',
       category: 'TypeScript',
       url: util.metaDocsUrl('member-naming'),
-      recommended: false,
+      recommended: false
     },
     schema: [
       {
@@ -29,23 +29,23 @@ module.exports = {
           public: {
             type: 'string',
             minLength: 1,
-            format: 'regex',
+            format: 'regex'
           },
           protected: {
             type: 'string',
             minLength: 1,
-            format: 'regex',
+            format: 'regex'
           },
           private: {
             type: 'string',
             minLength: 1,
-            format: 'regex',
-          },
+            format: 'regex'
+          }
         },
         additionalProperties: false,
-        minProperties: 1,
-      },
-    ],
+        minProperties: 1
+      }
+    ]
   },
 
   create(context) {
@@ -78,7 +78,7 @@ module.exports = {
         node: node.key,
         message:
           '{{accessibility}} property {{name}} should match {{convention}}.',
-        data: { accessibility, name, convention },
+        data: { accessibility, name, convention }
       });
     }
 
@@ -88,7 +88,7 @@ module.exports = {
 
     return {
       MethodDefinition: validateName,
-      ClassProperty: validateName,
+      ClassProperty: validateName
     };
-  },
+  }
 };

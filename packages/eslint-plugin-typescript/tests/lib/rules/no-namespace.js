@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/no-namespace'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('no-namespace', rule, {
@@ -25,22 +25,22 @@ ruleTester.run('no-namespace', rule, {
     "declare module 'foo' { }",
     {
       code: 'declare module foo { }',
-      options: [{ allowDeclarations: true }],
+      options: [{ allowDeclarations: true }]
     },
     {
       code: 'declare namespace foo { }',
-      options: [{ allowDeclarations: true }],
+      options: [{ allowDeclarations: true }]
     },
     {
       filename: 'test.d.ts',
       code: 'namespace foo { }',
-      options: [{ allowDefinitionFiles: true }],
+      options: [{ allowDefinitionFiles: true }]
     },
     {
       filename: 'test.d.ts',
       code: 'module foo { }',
-      options: [{ allowDefinitionFiles: true }],
-    },
+      options: [{ allowDefinitionFiles: true }]
+    }
   ],
   invalid: [
     {
@@ -49,9 +49,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: 'namespace foo {}',
@@ -59,9 +59,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: 'module foo {}',
@@ -70,9 +70,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: 'namespace foo {}',
@@ -81,9 +81,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: 'declare module foo { }',
@@ -91,9 +91,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: 'declare namespace foo { }',
@@ -101,9 +101,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: 'declare module foo {}',
@@ -112,9 +112,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: 'declare namespace foo {}',
@@ -123,9 +123,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       filename: 'test.d.ts',
@@ -135,9 +135,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       filename: 'test.d.ts',
@@ -147,9 +147,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       filename: 'test.d.ts',
@@ -159,9 +159,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       filename: 'test.d.ts',
@@ -171,9 +171,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: 'namespace Foo.Bar {}',
@@ -182,9 +182,9 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -198,14 +198,14 @@ ruleTester.run('no-namespace', rule, {
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 1,
-          column: 17,
+          column: 17
         },
         {
           messageId: 'moduleSyntaxIsPreferred',
           row: 2,
-          column: 21,
-        },
-      ],
-    },
-  ],
+          column: 21
+        }
+      ]
+    }
+  ]
 });

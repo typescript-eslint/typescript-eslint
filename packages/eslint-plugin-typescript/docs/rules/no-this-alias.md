@@ -45,9 +45,9 @@ You can pass an object option:
     'error',
     {
       allowDestructuring: true, // Allow `const { props, state } = this`; false by default
-      allowedNames: ['self'], // Allow `const self = this`; `[]` by default
-    },
-  ],
+      allowedNames: ['self'] // Allow `const self = this`; `[]` by default
+    }
+  ]
 }
 ```
 

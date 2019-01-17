@@ -20,6 +20,6 @@ module.exports = {
   rules: requireIndex(path.join(__dirname, 'rules')),
   configs: {
     // eslint-disable-next-line node/no-unpublished-require
-    recommended: require('./configs/recommended'),
-  },
+    recommended: require('./configs/recommended')
+  }
 };

@@ -13,7 +13,7 @@ describe('isTypescript', () => {
       'test.ts.js',
       'test.ts.map',
       'test.ts-js',
-      'ts',
+      'ts'
     ];
 
     invalid.forEach(f => {
@@ -30,7 +30,7 @@ describe('isTypescript', () => {
       'test.d.ts',
       'test.d.tsx',
       'test.D.TS',
-      'test.D.TSX',
+      'test.D.TSX'
     ];
 
     valid.forEach(f => {
@@ -53,7 +53,7 @@ describe('isDefinitionFile', () => {
       'ts',
       'test.tsx',
       'test.TS',
-      'test.TSX',
+      'test.TSX'
     ];
 
     invalid.forEach(f => {
@@ -91,8 +91,8 @@ describe('deepMerge', () => {
         numberA2: 2,
         boolA2: false,
         arrayA2: [3, 2, 1],
-        objA2: {},
-      },
+        objA2: {}
+      }
     };
     const b = {
       stringB1: 'asdf',
@@ -104,8 +104,8 @@ describe('deepMerge', () => {
         numberB2: 2,
         boolB2: false,
         arrayB2: [3, 2, 1],
-        objB2: {},
-      },
+        objB2: {}
+      }
     };
 
     assert.deepStrictEqual(util.deepMerge(a, b), Object.assign({}, a, b));
@@ -114,13 +114,13 @@ describe('deepMerge', () => {
   it('deeply overwrites properties in the first one with the second', () => {
     const a = {
       prop1: {
-        prop2: 'hi',
-      },
+        prop2: 'hi'
+      }
     };
     const b = {
       prop1: {
-        prop2: 'bye',
-      },
+        prop2: 'bye'
+      }
     };
 
     assert.deepStrictEqual(util.deepMerge(a, b), b);
@@ -131,8 +131,8 @@ describe('applyDefault', () => {
   it('returns a clone of the default if no options given', () => {
     const defaults = [
       {
-        prop: 'setting',
-      },
+        prop: 'setting'
+      }
     ];
     const user = null;
     const result = util.applyDefault(defaults, user);
@@ -144,28 +144,28 @@ describe('applyDefault', () => {
   it('returns applies a deepMerge to each element in the array', () => {
     const defaults = [
       {
-        prop: 'setting1',
+        prop: 'setting1'
       },
       {
-        prop: 'setting2',
-      },
+        prop: 'setting2'
+      }
     ];
     const user = [
       {
         prop: 'new',
-        other: 'something',
-      },
+        other: 'something'
+      }
     ];
     const result = util.applyDefault(defaults, user);
 
     assert.deepStrictEqual(result, [
       {
         prop: 'new',
-        other: 'something',
+        other: 'something'
       },
       {
-        prop: 'setting2',
-      },
+        prop: 'setting2'
+      }
     ]);
     assert.notStrictEqual(result, defaults);
     assert.notStrictEqual(result, user);

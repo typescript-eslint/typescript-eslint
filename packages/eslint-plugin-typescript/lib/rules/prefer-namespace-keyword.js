@@ -20,10 +20,10 @@ module.exports = {
       extraDescription: [util.tslintRule('no-internal-module')],
       category: 'TypeScript',
       url: util.metaDocsUrl('prefer-namespace-keyword'),
-      recommended: 'error',
+      recommended: 'error'
     },
     fixable: 'code',
-    schema: [],
+    schema: []
   },
 
   create(context) {
@@ -52,10 +52,10 @@ module.exports = {
               "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
             fix(fixer) {
               return fixer.replaceText(moduleType, 'namespace');
-            },
+            }
           });
         }
-      },
+      }
     };
-  },
+  }
 };
