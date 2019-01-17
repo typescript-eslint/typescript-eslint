@@ -17,6 +17,7 @@ script:
   # TODO: Reenable after migrations are complete
   # - commitlint-travis
   - yarn check-format
+  - yarn workspace eslint-plugin-typescript docs:check
   - yarn build
   - yarn test
   # TODO: Reimplement automated integration-tests from typescript-eslint-parser

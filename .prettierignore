@@ -3,3 +3,5 @@
 **/coverage
 **/typescript-eslint-shared-fixtures
 **/tests/integration/**/*
+**/lib/configs/recommended.json
+**/.vscode
