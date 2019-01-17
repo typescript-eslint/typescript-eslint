@@ -28,7 +28,7 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "tsc",
-    "clean": "rm -rf dist/",
+    "clean": "rimraf dist/",
     "test": "jest --coverage",
     "unit-tests": "jest \"./tests/lib/.*\"",
     "ast-alignment-tests": "jest spec.ts"
