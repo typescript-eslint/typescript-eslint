@@ -217,7 +217,7 @@ module.exports = {
         case 'TSPropertySignature':
         case 'TSMethodSignature':
           return node.key.name;
-        case 'TSConstructSignature':
+        case 'TSConstructSignatureDeclaration':
           return 'new';
         default:
           return null;
