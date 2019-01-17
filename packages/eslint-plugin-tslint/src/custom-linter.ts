@@ -1,11 +1,10 @@
 import { ILinterOptions, Linter, LintResult } from 'tslint';
-import ts from 'typescript';
-import { typescriptService } from './typescript-service';
+import { Program } from 'typescript';
 
 const TSLintLinter = Linter as any;
 
 export class CustomLinter extends TSLintLinter {
-  constructor(options: ILinterOptions, program?: ts.Program | undefined) {
+  constructor(options: ILinterOptions, private program: Program) {
     super(options, program);
   }
 
@@ -13,13 +12,8 @@ export class CustomLinter extends TSLintLinter {
     return super.getResult();
   }
 
-  getSourceFile(fileName: string, source: string) {
-    if (this.program === undefined) {
-      return super.getSourceFile(fileName, source);
-    }
-    const service = typescriptService();
-    const result = service.getSourceFile(fileName, source);
-    this.program = service.getProgram();
+  getSourceFile(fileName: string) {
+    const result = this.program.getSourceFile(fileName);
     return result;
   }
 }

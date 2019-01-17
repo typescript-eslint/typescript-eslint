@@ -1,13 +1,21 @@
 import { Rule } from 'eslint';
 import memoize from 'lodash.memoize';
 import { Configuration, RuleSeverity } from 'tslint';
-import ts from 'typescript';
+import { Program } from 'typescript';
 import { CustomLinter } from './custom-linter';
-import { typescriptService } from './typescript-service';
 
 //------------------------------------------------------------------------------
 // Plugin Definition
 //------------------------------------------------------------------------------
+
+/**
+ * @todo share types between packages
+ */
+interface ParserServices {
+  program: Program | undefined;
+  esTreeNodeToTSNodeMap: WeakMap<object, any> | undefined;
+  tsNodeToESTreeNodeMap: WeakMap<object, any> | undefined;
+}
 
 type RawRuleConfig =
   | null
@@ -93,6 +101,17 @@ export const rules = {
     create: function(context: Rule.RuleContext) {
       const fileName = context.getFilename();
       const sourceCode = context.getSourceCode().text;
+      const parserServices: ParserServices | undefined = context.parserServices;
+
+      /**
+       * The user needs to have configured "project" in their parserOptions
+       * for @typescript-eslint/parser
+       */
+      if (!parserServices || !parserServices.program) {
+        throw new Error(
+          `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`
+        );
+      }
 
       /**
        * The TSLint rules configuration passed in by the user
@@ -100,17 +119,10 @@ export const rules = {
       const {
         rules: tslintRules,
         rulesDirectory: tslintRulesDirectory,
-        configFile,
-        lintFile,
-        compilerOptions
+        lintFile
       } = context.options[0];
 
-      let program: ts.Program | undefined = undefined;
-
-      if (fileName !== '<input>' && configFile) {
-        const service = typescriptService({ configFile, compilerOptions });
-        program = service.getProgram();
-      }
+      const program: Program = parserServices.program;
 
       /**
        * Create an instance of TSLint

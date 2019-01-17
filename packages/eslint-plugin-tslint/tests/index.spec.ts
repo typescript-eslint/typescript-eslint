@@ -7,7 +7,12 @@ const ruleTester = new RuleTester();
 const parserOptions: any = {
   ecmaVersion: 6,
   sourceType: 'module',
-  ecmaFeatures: {}
+  ecmaFeatures: {},
+  /**
+   * Project is needed to generate the parserServices
+   * within @typescript-eslint/parser
+   */
+  project: './tests/tsconfig.json'
 };
 
 /**
