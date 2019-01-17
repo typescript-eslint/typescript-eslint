@@ -294,10 +294,8 @@ module.exports = {
     // Public
     //----------------------------------------------------------------------
     return {
-      VariableDeclaration(node) {
-        if (node.kind === 'type') {
-          validateNode(node.declarations[0].init, true);
-        }
+      TSTypeAliasDeclaration(node) {
+        validateNode(node.typeAnnotation, true);
       }
     };
   }
