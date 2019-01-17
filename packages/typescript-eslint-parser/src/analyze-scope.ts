@@ -7,6 +7,11 @@ import { Scope } from 'eslint-scope/lib/scope';
 import { getKeys as fallback } from 'eslint-visitor-keys';
 import { ParserOptions } from './parser-options';
 import { visitorKeys as childVisitorKeys } from './visitor-keys';
+import {
+  PatternVisitorCallback,
+  PatternVisitorOptions
+} from 'eslint-scope/lib/options';
+import { Node } from 'estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -27,16 +32,23 @@ function overrideDefine(define: any) {
 
 /** The scope class for enum. */
 class EnumScope extends Scope {
-  constructor(scopeManager: any, upperScope: any, block: any) {
+  constructor(
+    scopeManager: ScopeManager,
+    upperScope: Scope,
+    block: Node | null
+  ) {
     // @ts-ignore
     super(scopeManager, 'enum', upperScope, block, false);
   }
 }
 
 class PatternVisitor extends OriginalPatternVisitor {
-  constructor(...args: any[]) {
-    // @ts-ignore
-    super(...args);
+  constructor(
+    options: PatternVisitorOptions,
+    rootPattern: any,
+    callback: PatternVisitorCallback
+  ) {
+    super(options, rootPattern, callback);
   }
 
   Identifier(node: any) {
@@ -80,9 +92,8 @@ class PatternVisitor extends OriginalPatternVisitor {
 class Referencer extends OriginalReferencer {
   protected typeMode: boolean;
 
-  constructor(...args: any[]) {
-    // @ts-ignore
-    super(...args);
+  constructor(options: any, scopeManager: ScopeManager) {
+    super(options, scopeManager);
     this.typeMode = false;
   }
 
@@ -93,7 +104,11 @@ class Referencer extends OriginalReferencer {
    * @param {Function} callback The callback function for left-hand side nodes.
    * @returns {void}
    */
-  visitPattern(node: any, options: any, callback: any) {
+  visitPattern(
+    node: any,
+    options: PatternVisitorOptions,
+    callback: PatternVisitorCallback
+  ) {
     if (!node) {
       return;
     }
@@ -107,6 +122,7 @@ class Referencer extends OriginalReferencer {
     visitor.visit(node);
 
     if (options.processRightHandNodes) {
+      // @ts-ignore
       visitor.rightHandNodes.forEach(this.visit, this);
     }
   }
@@ -159,7 +175,7 @@ class Referencer extends OriginalReferencer {
       this.visitPattern(
         params[i],
         { processRightHandNodes: true },
-        (pattern: any, info: any) => {
+        (pattern, info) => {
           innerScope.__define(
             pattern,
             new ParameterDefinition(pattern, node, i, info.rest)
@@ -311,7 +327,7 @@ class Referencer extends OriginalReferencer {
     if (id) {
       const variable = scope.set.get(id.name);
       const defs = variable && variable.defs;
-      const existed = defs && defs.some((d: any) => d.type === 'FunctionName');
+      const existed = defs && defs.some(d => d.type === 'FunctionName');
       if (!existed) {
         scope.__define(
           id,
@@ -749,7 +765,7 @@ class Referencer extends OriginalReferencer {
    * @param {Decorator[]|undefined} decorators The decorator nodes to visit.
    * @returns {void}
    */
-  visitDecorators(decorators: any[] | undefined) {
+  visitDecorators(decorators?: any[]) {
     if (decorators) {
       decorators.forEach(this.visit, this);
     }

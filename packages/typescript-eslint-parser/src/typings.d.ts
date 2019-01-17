@@ -1,6 +1,19 @@
 // Type definitions for eslint-scope 4.0.0
 // Project: http://github.com/eslint/eslint-scope
 // Definitions by: Armano <https://github.com/armano2>
+declare module 'eslint-scope/lib/options' {
+  export type PatternVisitorCallback = (pattern: any, info: any) => void;
+
+  export interface PatternVisitorOptions {
+    processRightHandNodes?: boolean;
+  }
+
+  export abstract class Visitor {
+    visitChildren(node: Node): void;
+    visit(node: Node): void;
+  }
+}
+
 declare module 'eslint-scope/lib/variable' {
   import * as eslint from 'eslint';
   import { Identifier } from 'estree';
@@ -53,11 +66,11 @@ declare module 'eslint-scope/lib/definition' {
 declare module 'eslint-scope/lib/pattern-visitor' {
   import ScopeManager from 'eslint-scope/lib/scope-manager';
   import { Node } from 'estree';
-
-  class Visitor {
-    visitChildren(node: Node): void;
-    visit(node: Node): void;
-  }
+  import {
+    PatternVisitorCallback,
+    PatternVisitorOptions,
+    Visitor
+  } from 'eslint-scope/lib/options';
 
   class PatternVisitor extends Visitor {
     protected options: any;
@@ -67,7 +80,11 @@ declare module 'eslint-scope/lib/pattern-visitor' {
 
     static isPattern(node: Node): boolean;
 
-    constructor(options: any, rootPattern: any, callback: any);
+    constructor(
+      options: PatternVisitorOptions,
+      rootPattern: any,
+      callback: PatternVisitorCallback
+    );
 
     Identifier(pattern: Node): void;
     Property(property: Node): void;
@@ -88,11 +105,11 @@ declare module 'eslint-scope/lib/referencer' {
   import { Scope } from 'eslint-scope/lib/scope';
   import ScopeManager from 'eslint-scope/lib/scope-manager';
   import { Node } from 'estree';
-
-  class Visitor {
-    visitChildren(node: Node): void;
-    visit(node: Node): void;
-  }
+  import {
+    PatternVisitorCallback,
+    PatternVisitorOptions,
+    Visitor
+  } from 'eslint-scope/lib/options';
 
   class Referencer extends Visitor {
     protected isInnerMethodDefinition: boolean;
@@ -111,9 +128,13 @@ declare module 'eslint-scope/lib/referencer' {
       pattern: any,
       assignments: any,
       maybeImplicitGlobal: any,
-      init: any
+      init: boolean
     ): void;
-    visitPattern(node: Node, options: any, callback: any): void;
+    visitPattern(
+      node: Node,
+      options: PatternVisitorOptions,
+      callback: PatternVisitorCallback
+    ): void;
     visitFunction(node: Node): void;
     visitClass(node: Node): void;
     visitProperty(node: Node): void;
@@ -167,6 +188,7 @@ declare module 'eslint-scope/lib/scope' {
   import Reference from 'eslint-scope/lib/reference';
   import Variable from 'eslint-scope/lib/variable';
   import ScopeManager from 'eslint-scope/lib/scope-manager';
+  import { Definition } from 'eslint-scope/lib/definition';
 
   type ScopeType =
     | 'block'
@@ -218,15 +240,15 @@ declare module 'eslint-scope/lib/scope' {
       set: any,
       variables: any,
       node: any,
-      def: any
+      def: Definition
     ): void;
 
-    __define(node: Node, def: any): void;
+    __define(node: Node, def: Definition): void;
 
     __referencing(
       node: Node,
-      assign: any,
-      writeExpr: any,
+      assign: number,
+      writeExpr: Node,
       maybeImplicitGlobal: any,
       partial: any,
       init: any
@@ -326,9 +348,6 @@ declare module 'eslint-scope/lib/scope' {
       block: Node | null,
       isMethodDefinition: boolean
     );
-
-    isArgumentsMaterialized(): boolean;
-    isThisMaterialized(): boolean;
   }
 
   class ForScope extends Scope {
