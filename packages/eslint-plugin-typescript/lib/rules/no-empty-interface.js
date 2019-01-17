@@ -30,13 +30,11 @@ module.exports = {
   create(context) {
     return {
       TSInterfaceDeclaration(node) {
-        const heritage = node.heritage.length;
-
-        if (node.body.body.length === 0 && heritage < 2) {
+        if (node.body.body.length === 0) {
           context.report({
             node: node.id,
             message:
-              heritage === 0
+              (!node.extends || node.extends.length === 0)
                 ? 'An empty interface is equivalent to `{}`.'
                 : 'An interface declaring no members is equivalent to its supertype.'
           });
