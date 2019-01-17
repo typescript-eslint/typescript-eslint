@@ -2,7 +2,7 @@
   "name": "typescript-estree",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "main": "dist/parser.js",
-  "version": "0.0.0-development",
+  "version": "18.1.0",
   "files": [
     "dist",
     "README.md",
