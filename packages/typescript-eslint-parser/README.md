@@ -5,7 +5,7 @@ An ESLint custom parser which leverages [TypeScript ESTree](https://github.com/t
 ## Installation:
 
 ```sh
-npm install --save-dev typescript-eslint-parser
+npm install --save-dev @typescript-eslint/parser
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ In your ESLint configuration file, set the `parser` property:
 
 ```json
 {
-  "parser": "typescript-eslint-parser"
+  "parser": "@typescript-eslint/parser"
 }
 ```
 
@@ -44,7 +44,7 @@ The following additional configuration options are available by specifying them 
 
 ```json
 {
-  "parser": "typescript-eslint-parser",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "jsx": true,
     "useJSXTextNode": true
@@ -68,7 +68,7 @@ Please check the current list of open and known issues and ensure the issue has 
 
 - ESLint Version
 - TypeScript version
-- The `typescript-eslint-parser` version
+- The `@typescript-eslint/parser` version
 - ESLint config or rules and plugins currently enabled
 
 ## Integration Tests
@@ -95,7 +95,7 @@ npm run kill-integration-test-containers
 
 ## Contributing
 
-Issues and pull requests will be triaged and responded to as quickly as possible. We operate under the [ESLint Contributor Guidelines](http://eslint.org/docs/developer-guide/contributing), so please be sure to read them before contributing. If you're not sure where to dig in, check out the [issues](https://github.com/eslint/typescript-eslint-parser/issues).
+Issues and pull requests will be triaged and responded to as quickly as possible. We operate under the [ESLint Contributor Guidelines](http://eslint.org/docs/developer-guide/contributing), so please be sure to read them before contributing. If you're not sure where to dig in, check out the [issues](https://github.com/typescript-eslint/typescript-eslint/issues).
 
 ## Build Commands
 
