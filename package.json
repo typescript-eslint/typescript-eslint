@@ -4,7 +4,13 @@
   "workspaces": [
     "packages/*"
   ],
-  "author": "James Henry <typescript-eslint@jameshenry.blog>",
+  "contributors": [
+    "James Henry <typescript-eslint@jameshenry.blog>",
+    "Nicholas C. Zakas",
+    "Brad Zacher",
+    "armano2",
+    "Jed Fox"
+  ],
   "license": "BSD-2-Clause",
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {

@@ -8,64 +8,39 @@
     "eslint-plugin",
     "typescript"
   ],
-  "repository": "bradzacher/eslint-plugin-typescript",
-  "author": "Brad Zacher",
+  "engines": {
+    "node": ">=6"
+  },
+  "repository": "typescript-eslint/typescript-eslint",
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
-    "lint": "eslint lib/ tests/ tools/",
-    "lint:fix": "eslint lib/ tests/ tools/ --fix",
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
-    "prettier": "prettier **/*.{md,yml,json}",
-    "format-no-write": "prettier-eslint lib/**/*.js tests/**/*.js tools/**/*.js --eslint-config-path=.eslintrc --eslint-ignore --prettier-ignore --eslint-path=node_modules/eslint --config=.prettierrc",
-    "format": "yarn format-no-write --write && yarn prettier --write",
-    "format-check": "yarn format-no-write --list-different && yarn prettier --list-different",
     "test": "nyc mocha tests --recursive --reporter=dot",
     "test:coverage": "nyc check-coverage --lines 95 --per-file",
-    "recommended:update": "node tools/update-recommended.js",
-    "pre-commit": "yarn check --verify-tree && yarn lint && yarn format-check && yarn test && yarn docs:check"
+    "recommended:update": "node tools/update-recommended.js"
   },
   "dependencies": {
     "requireindex": "^1.2.0",
-    "typescript-eslint-parser": "21.0.2"
+    "@typescript-eslint/parser": "21.0.2"
   },
   "devDependencies": {
     "eslint": "^5.9.0",
     "nyc": "^13.1.0",
-    "eslint-config-eslint": "^5.0.1",
-    "eslint-config-prettier": "^3.3.0",
     "eslint-docs": "^0.2.6",
-    "eslint-plugin-eslint-plugin": "^2.0.0",
-    "eslint-plugin-node": "^8.0.0",
-    "eslint-plugin-prettier": "^3.0.0",
-    "husky": "^1.2.0",
-    "lint-staged": "^8.1.0",
-    "mocha": "^5.2.0",
-    "prettier-eslint-cli": "^4.7.1",
-    "typescript": "~3.1.1"
+    "mocha": "^5.2.0"
   },
   "peerDependencies": {
     "eslint": ">=4.13.1 < 6",
-    "typescript": "~3.1.1"
+    "typescript": "~3.2.1"
   },
   "nyc": {
     "include": [
       "lib"
     ]
-  },
-  "lint-staged": {
-    "*.js": [
-      "yarn format",
-      "git add"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn pre-commit && lint-staged"
-    }
-  },
-  "engines": {
-    "node": ">=6"
   }
 }

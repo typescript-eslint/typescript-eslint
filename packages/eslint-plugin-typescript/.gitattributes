@@ -1,4 +1,0 @@
-# avoids End-of-line problems for Windows Devs
-# automatically converts crlf -> lf
-#   (linters can turn off their line-ending checks)
-* text eol=lf
