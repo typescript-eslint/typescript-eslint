@@ -28,8 +28,6 @@ This repo contains several packages which allow ESLint users to lint their TypeS
 
 - `eslint-plugin-tslint` - An ESLint-specific plugin which runs an instance of TSLint within your ESLint setup to allow for users to more easily migrate from TSLint to ESLint.
 
-  - PENDING MIGRATION TO MONOREPO
-
 ## Supported TypeScript Version
 
 We will always endeavor to support the latest stable version of TypeScript.
