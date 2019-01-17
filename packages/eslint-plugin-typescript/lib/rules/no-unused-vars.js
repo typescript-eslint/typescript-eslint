@@ -53,7 +53,7 @@ module.exports = Object.assign({}, baseRule, {
       'TSTypeReference Identifier'(node) {
         context.markVariableAsUsed(node.name);
       },
-      'ClassImplements Identifier'(node) {
+      'TSClassImplements Identifier'(node) {
         context.markVariableAsUsed(node.name);
       },
       'TSParameterProperty Identifier'(node) {

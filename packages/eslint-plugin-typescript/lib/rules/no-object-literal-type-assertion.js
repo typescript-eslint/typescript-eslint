@@ -38,8 +38,8 @@ module.exports = {
      * @returns {*} true or false
      */
     function checkType(node) {
-      if (node && node.type === 'TSTypeAnnotation' && node.typeAnnotation) {
-        switch (node.typeAnnotation.type) {
+      if (node) {
+        switch (node.type) {
           case 'TSAnyKeyword':
           case 'TSUnknownKeyword':
             return false;
@@ -51,7 +51,7 @@ module.exports = {
     }
 
     return {
-      'TSTypeAssertionExpression, TSAsExpression'(node) {
+      'TSTypeAssertion, TSAsExpression'(node) {
         if (
           checkType(node.typeAnnotation) &&
           node.expression.type === 'ObjectExpression'

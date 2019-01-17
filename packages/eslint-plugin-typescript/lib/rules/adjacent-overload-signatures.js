@@ -47,7 +47,7 @@ module.exports = {
           // have no declarations, so ignore them
           return member.declaration ? getMemberName(member.declaration) : null;
         }
-        case 'DeclareFunction':
+        case 'TSDeclareFunction':
         case 'FunctionDeclaration':
         case 'TSNamespaceFunctionDeclaration':
         case 'TSEmptyBodyFunctionDeclaration':
@@ -60,10 +60,10 @@ module.exports = {
             (member.name && (member.name.name || member.name.value))
           );
         }
-        case 'TSCallSignature': {
+        case 'TSCallSignatureDeclaration': {
           return 'call';
         }
-        case 'TSConstructSignature': {
+        case 'TSConstructSignatureDeclaration': {
           return 'new';
         }
         case 'MethodDefinition': {
