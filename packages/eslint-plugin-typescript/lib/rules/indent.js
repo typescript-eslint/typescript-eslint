@@ -75,7 +75,7 @@ const KNOWN_NODES = new Set([
   'TSTypeParameter',
   'TSTypeParameterDeclaration',
   'TSTypeReference',
-  'TSUnionType',
+  'TSUnionType'
 ]);
 
 const defaultOptions = [
@@ -86,8 +86,8 @@ const defaultOptions = [
     // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-1-8.html#example-4
     SwitchCase: 1,
     flatTernaryExpressions: false,
-    ignoredNodes: [],
-  },
+    ignoredNodes: []
+  }
 ];
 
 module.exports = Object.assign({}, baseRule, {
@@ -98,10 +98,10 @@ module.exports = Object.assign({}, baseRule, {
       extraDescription: [util.tslintRule('indent')],
       category: 'Stylistic Issues',
       recommended: 'error',
-      url: util.metaDocsUrl('indent'),
+      url: util.metaDocsUrl('indent')
     },
     fixable: 'whitespace',
-    schema: baseRule.meta.schema,
+    schema: baseRule.meta.schema
   },
 
   create(context) {
@@ -111,8 +111,8 @@ module.exports = Object.assign({}, baseRule, {
       options: {
         writable: false,
         configurable: false,
-        value: util.applyDefault(defaultOptions, context.options),
-      },
+        value: util.applyDefault(defaultOptions, context.options)
+      }
     });
 
     const rules = baseRule.create(contextWithDefaults);
@@ -139,7 +139,7 @@ module.exports = Object.assign({}, baseRule, {
         // location data
         parent: node.parent,
         range: node.range,
-        loc: node.loc,
+        loc: node.loc
       };
     }
 
@@ -164,7 +164,7 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -182,8 +182,8 @@ module.exports = Object.assign({}, baseRule, {
             range: [node.checkType.range[0], node.extendsType.range[1]],
             loc: {
               start: node.checkType.loc.start,
-              end: node.extendsType.loc.end,
-            },
+              end: node.extendsType.loc.end
+            }
           },
           consequent: node.trueType,
           alternate: node.falseType,
@@ -191,7 +191,7 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -204,7 +204,7 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -221,7 +221,7 @@ module.exports = Object.assign({}, baseRule, {
               range: [name.range[0], moduleReference.range[1]],
               loc: {
                 start: name.loc.start,
-                end: moduleReference.loc.end,
+                end: moduleReference.loc.end
               },
               id: name,
               init: {
@@ -231,29 +231,29 @@ module.exports = Object.assign({}, baseRule, {
                   name: 'require',
                   range: [
                     moduleReference.range[0],
-                    moduleReference.range[0] + 'require'.length,
+                    moduleReference.range[0] + 'require'.length
                   ],
                   loc: {
                     start: moduleReference.loc.start,
                     end: {
                       line: moduleReference.loc.end.line,
-                      column: moduleReference.loc.start + 'require'.length,
-                    },
-                  },
+                      column: moduleReference.loc.start + 'require'.length
+                    }
+                  }
                 },
                 arguments: [moduleReference.expression],
 
                 // location data
                 range: moduleReference.range,
-                loc: moduleReference.loc,
-              },
-            },
+                loc: moduleReference.loc
+              }
+            }
           ],
 
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -267,7 +267,7 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -282,7 +282,7 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -298,7 +298,7 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -320,19 +320,19 @@ module.exports = Object.assign({}, baseRule, {
               // location data
               range: [
                 squareBracketStart.range[0],
-                node.typeAnnotation.range[1],
+                node.typeAnnotation.range[1]
               ],
               loc: {
                 start: squareBracketStart.loc.start,
-                end: node.typeAnnotation.loc.end,
-              },
-            },
+                end: node.typeAnnotation.loc.end
+              }
+            }
           ],
 
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -345,7 +345,7 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -358,7 +358,7 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -371,7 +371,7 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
       },
 
@@ -389,9 +389,9 @@ module.exports = Object.assign({}, baseRule, {
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc,
+          loc: node.loc
         });
-      },
+      }
     });
-  },
+  }
 });

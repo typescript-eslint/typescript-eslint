@@ -18,12 +18,12 @@ module.exports = {
       category: 'TypeScript',
       extraDescription: [util.tslintRule('adjacent-overload-signatures')],
       url: util.metaDocsUrl('adjacent-overload-signatures'),
-      recommended: 'error',
+      recommended: 'error'
     },
     schema: [],
     messages: {
-      adjacentSignature: "All '{{name}}' signatures should be adjacent.",
-    },
+      adjacentSignature: "All '{{name}}' signatures should be adjacent."
+    }
   },
 
   create(context) {
@@ -99,8 +99,8 @@ module.exports = {
               node: member,
               messageId: 'adjacentSignature',
               data: {
-                name,
-              },
+                name
+              }
             });
           } else if (name && index === -1) {
             seen.push(name);
@@ -119,7 +119,7 @@ module.exports = {
       TSTypeLiteral: checkBodyForOverloadMethods,
       TSInterfaceBody: checkBodyForOverloadMethods,
       ClassBody: checkBodyForOverloadMethods,
-      Program: checkBodyForOverloadMethods,
+      Program: checkBodyForOverloadMethods
     };
-  },
+  }
 };

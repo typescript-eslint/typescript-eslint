@@ -19,13 +19,13 @@ module.exports = {
       extraDescription: [util.tslintRule('no-object-literal-type-assertion')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-object-literal-type-assertions'),
-      recommended: 'error',
+      recommended: 'error'
     },
     messages: {
       unexpectedTypeAssertion:
-        'Type assertion on object literals is forbidden, use a type annotation instead.',
+        'Type assertion on object literals is forbidden, use a type annotation instead.'
     },
-    schema: [],
+    schema: []
   },
   create(context) {
     //----------------------------------------------------------------------
@@ -58,10 +58,10 @@ module.exports = {
         ) {
           context.report({
             node,
-            messageId: 'unexpectedTypeAssertion',
+            messageId: 'unexpectedTypeAssertion'
           });
         }
-      },
+      }
     };
-  },
+  }
 };

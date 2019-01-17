@@ -15,8 +15,8 @@ const defaultOptions = [
     allowAliases: 'never',
     allowCallbacks: 'never',
     allowLiterals: 'never',
-    allowMappedTypes: 'never',
-  },
+    allowMappedTypes: 'never'
+  }
 ];
 
 module.exports = {
@@ -27,12 +27,12 @@ module.exports = {
       extraDescription: [util.tslintRule('interface-over-type-literal')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-type-alias'),
-      recommended: false,
+      recommended: false
     },
     messages: {
       noTypeAlias: 'Type {{alias}} are not allowed.',
       noCompositionAlias:
-        '{{typeName}} in {{compositionType}} types are not allowed.',
+        '{{typeName}} in {{compositionType}} types are not allowed.'
     },
     schema: [
       {
@@ -44,11 +44,11 @@ module.exports = {
               'never',
               'in-unions',
               'in-intersections',
-              'in-unions-and-intersections',
-            ],
+              'in-unions-and-intersections'
+            ]
           },
           allowCallbacks: {
-            enum: ['always', 'never'],
+            enum: ['always', 'never']
           },
           allowLiterals: {
             enum: [
@@ -56,8 +56,8 @@ module.exports = {
               'never',
               'in-unions',
               'in-intersections',
-              'in-unions-and-intersections',
-            ],
+              'in-unions-and-intersections'
+            ]
           },
           allowMappedTypes: {
             enum: [
@@ -65,13 +65,13 @@ module.exports = {
               'never',
               'in-unions',
               'in-intersections',
-              'in-unions-and-intersections',
-            ],
-          },
+              'in-unions-and-intersections'
+            ]
+          }
         },
-        additionalProperties: false,
-      },
-    ],
+        additionalProperties: false
+      }
+    ]
   },
 
   create(context) {
@@ -79,25 +79,25 @@ module.exports = {
       allowAliases,
       allowCallbacks,
       allowLiterals,
-      allowMappedTypes,
+      allowMappedTypes
     } = util.applyDefault(defaultOptions, context.options)[0];
 
     const unions = ['always', 'in-unions', 'in-unions-and-intersections'];
     const intersections = [
       'always',
       'in-intersections',
-      'in-unions-and-intersections',
+      'in-unions-and-intersections'
     ];
     const compositions = [
       'in-unions',
       'in-intersections',
-      'in-unions-and-intersections',
+      'in-unions-and-intersections'
     ];
     const aliasTypes = [
       'TSLastTypeNode',
       'TSArrayType',
       'TSTypeReference',
-      'TSLiteralType',
+      'TSLiteralType'
     ];
 
     //----------------------------------------------------------------------
@@ -195,8 +195,8 @@ module.exports = {
           node,
           messageId: 'noTypeAlias',
           data: {
-            alias: type || 'aliases',
-          },
+            alias: type || 'aliases'
+          }
         };
       }
 
@@ -206,8 +206,8 @@ module.exports = {
         data: {
           compositionType:
             compositionType === 'TSUnionType' ? 'union' : 'intersection',
-          typeName: util.upperCaseFirst(type),
-        },
+          typeName: util.upperCaseFirst(type)
+        }
       };
     }
 
@@ -298,7 +298,7 @@ module.exports = {
         if (node.kind === 'type') {
           validateNode(node.declarations[0].init, true);
         }
-      },
+      }
     };
-  },
+  }
 };

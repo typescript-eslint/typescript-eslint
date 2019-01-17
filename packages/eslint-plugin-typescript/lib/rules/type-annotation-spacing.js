@@ -15,15 +15,15 @@ const definition = {
   type: 'object',
   properties: {
     before: { type: 'boolean' },
-    after: { type: 'boolean' },
+    after: { type: 'boolean' }
   },
-  additionalProperties: false,
+  additionalProperties: false
 };
 
 const defaultOptions = [
   // technically there is a default, but the overrides mean
   // that if we apply them here, it will break the no override case.
-  {},
+  {}
 ];
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
       extraDescription: [util.tslintRule('typedef-whitespace')],
       category: 'TypeScript',
       url: util.metaDocsUrl('type-annotation-spacing'),
-      recommended: 'error',
+      recommended: 'error'
     },
     fixable: 'whitespace',
     schema: [
@@ -47,13 +47,13 @@ module.exports = {
             type: 'object',
             properties: {
               colon: definition,
-              arrow: definition,
+              arrow: definition
             },
-            additionalProperties: false,
-          },
-        },
-      },
-    ],
+            additionalProperties: false
+          }
+        }
+      }
+    ]
   },
 
   create(context) {
@@ -124,25 +124,25 @@ module.exports = {
           node: punctuatorTokenEnd,
           message: "Expected a space after the '{{type}}'.",
           data: {
-            type,
+            type
           },
           fix(fixer) {
             return fixer.insertTextAfter(punctuatorTokenEnd, ' ');
-          },
+          }
         });
       } else if (!after && nextDelta > 0) {
         context.report({
           node: punctuatorTokenEnd,
           message: "Unexpected space after the '{{type}}'.",
           data: {
-            type,
+            type
           },
           fix(fixer) {
             return fixer.removeRange([
               punctuatorTokenEnd.range[1],
-              nextToken.range[0],
+              nextToken.range[0]
             ]);
-          },
+          }
         });
       }
 
@@ -151,25 +151,25 @@ module.exports = {
           node: punctuatorTokenStart,
           message: "Expected a space before the '{{type}}'.",
           data: {
-            type,
+            type
           },
           fix(fixer) {
             return fixer.insertTextAfter(previousToken, ' ');
-          },
+          }
         });
       } else if (!before && previousDelta > 0) {
         context.report({
           node: punctuatorTokenStart,
           message: "Unexpected space before the '{{type}}'.",
           data: {
-            type,
+            type
           },
           fix(fixer) {
             return fixer.removeRange([
               previousToken.range[1],
-              punctuatorTokenStart.range[0],
+              punctuatorTokenStart.range[0]
             ]);
-          },
+          }
         });
       }
     }
@@ -180,7 +180,7 @@ module.exports = {
     return {
       TSTypeAnnotation(node) {
         checkTypeAnnotationSpacing(node.typeAnnotation);
-      },
+      }
     };
-  },
+  }
 };

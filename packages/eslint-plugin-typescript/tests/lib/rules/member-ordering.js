@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/member-ordering'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('member-ordering', rule, {
@@ -58,7 +58,7 @@ interface Foo {
     L();
 }
             `,
-      options: [{ default: 'never' }],
+      options: [{ default: 'never' }]
     },
     {
       code: `
@@ -79,7 +79,7 @@ interface Foo {
     L();
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['field', 'constructor', 'method'] }]
     },
 
     {
@@ -101,7 +101,7 @@ interface Foo {
     L();
 }
             `,
-      options: [{ interfaces: 'never' }],
+      options: [{ interfaces: 'never' }]
     },
     {
       code: `
@@ -122,7 +122,7 @@ interface Foo {
     F: string;
 }
             `,
-      options: [{ interfaces: ['method', 'constructor', 'field'] }],
+      options: [{ interfaces: ['method', 'constructor', 'field'] }]
     },
     {
       code: `
@@ -146,9 +146,9 @@ interface Foo {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          interfaces: ['method', 'constructor', 'field'],
-        },
-      ],
+          interfaces: ['method', 'constructor', 'field']
+        }
+      ]
     },
     {
       code: `
@@ -175,10 +175,10 @@ interface Foo {
           default: [
             'private-instance-method',
             'public-constructor',
-            'protected-static-field',
-          ],
-        },
-      ],
+            'protected-static-field'
+          ]
+        }
+      ]
     },
     {
       code: `
@@ -201,9 +201,9 @@ interface Foo {
             `,
       options: [
         {
-          default: ['method', 'public-constructor', 'protected-static-field'],
-        },
-      ],
+          default: ['method', 'public-constructor', 'protected-static-field']
+        }
+      ]
     },
     `
 // no accessibility === public
@@ -241,7 +241,7 @@ type Foo = {
     L();
 }
             `,
-      options: [{ default: 'never' }],
+      options: [{ default: 'never' }]
     },
     {
       code: `
@@ -261,7 +261,7 @@ type Foo = {
     L();
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['field', 'constructor', 'method'] }]
     },
     {
       code: `
@@ -282,7 +282,7 @@ type Foo = {
     L();
 }
             `,
-      options: [{ default: ['field', 'method'] }],
+      options: [{ default: ['field', 'method'] }]
     },
     {
       code: `
@@ -302,7 +302,7 @@ type Foo = {
     F: string;
 }
             `,
-      options: [{ typeLiterals: 'never' }],
+      options: [{ typeLiterals: 'never' }]
     },
     {
       code: `
@@ -322,7 +322,7 @@ type Foo = {
     F: string;
 }
             `,
-      options: [{ typeLiterals: ['method', 'field'] }],
+      options: [{ typeLiterals: ['method', 'field'] }]
     },
     {
       code: `
@@ -342,7 +342,7 @@ type Foo = {
     F: string;
 }
             `,
-      options: [{ typeLiterals: ['method', 'constructor', 'field'] }],
+      options: [{ typeLiterals: ['method', 'constructor', 'field'] }]
     },
     {
       code: `
@@ -365,9 +365,9 @@ type Foo = {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          typeLiterals: ['method', 'constructor', 'field'],
-        },
-      ],
+          typeLiterals: ['method', 'constructor', 'field']
+        }
+      ]
     },
     {
       code: `
@@ -392,11 +392,11 @@ type Foo = {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field',
+            'protected-static-field'
           ],
-          typeLiterals: ['field', 'method'],
-        },
-      ],
+          typeLiterals: ['field', 'method']
+        }
+      ]
     },
     `
 class Foo {
@@ -433,7 +433,7 @@ class Foo {
     private L() {}
 }
             `,
-      options: [{ default: 'never' }],
+      options: [{ default: 'never' }]
     },
     {
       code: `
@@ -453,7 +453,7 @@ class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['field', 'constructor', 'method'] }]
     },
     {
       code: `
@@ -473,7 +473,7 @@ class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'method'] }],
+      options: [{ default: ['field', 'method'] }]
     },
     {
       code: `
@@ -493,7 +493,7 @@ class Foo {
     private F: string = "";
 }
             `,
-      options: [{ classes: 'never' }],
+      options: [{ classes: 'never' }]
     },
     {
       code: `
@@ -513,7 +513,7 @@ class Foo {
     constructor() {}
 }
             `,
-      options: [{ classes: ['method', 'field'] }],
+      options: [{ classes: ['method', 'field'] }]
     },
     {
       code: `
@@ -533,7 +533,7 @@ class Foo {
     private F: string = "";
 }
             `,
-      options: [{ classes: ['method', 'constructor', 'field'] }],
+      options: [{ classes: ['method', 'constructor', 'field'] }]
     },
     {
       code: `
@@ -548,7 +548,7 @@ class Foo {
     }
 }
             `,
-      options: [{ classes: ['field', 'constructor', 'method'] }],
+      options: [{ classes: ['field', 'constructor', 'method'] }]
     },
     {
       code: `
@@ -571,9 +571,9 @@ class Foo {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          classes: ['method', 'constructor', 'field'],
-        },
-      ],
+          classes: ['method', 'constructor', 'field']
+        }
+      ]
     },
     {
       code: `
@@ -600,10 +600,10 @@ class Foo {
             'constructor',
             'public-field',
             'private-field',
-            'protected-field',
-          ],
-        },
-      ],
+            'protected-field'
+          ]
+        }
+      ]
     },
     {
       code: `
@@ -633,10 +633,10 @@ class Foo {
             'constructor',
             'public-field',
             'protected-field',
-            'private-field',
-          ],
-        },
-      ],
+            'private-field'
+          ]
+        }
+      ]
     },
     {
       code: `
@@ -663,10 +663,10 @@ class Foo {
             'public-field',
             'constructor',
             'method',
-            'field',
-          ],
-        },
-      ],
+            'field'
+          ]
+        }
+      ]
     },
     {
       code: `
@@ -695,10 +695,10 @@ class Foo {
             'protected-instance-method',
             'private-instance-method',
             'constructor',
-            'field',
-          ],
-        },
-      ],
+            'field'
+          ]
+        }
+      ]
     },
     {
       code: `
@@ -721,9 +721,9 @@ class Foo {
             `,
       options: [
         {
-          classes: ['private-instance-method', 'protected-static-field'],
-        },
-      ],
+          classes: ['private-instance-method', 'protected-static-field']
+        }
+      ]
     },
     {
       code: `
@@ -746,9 +746,9 @@ class Foo {
             `,
       options: [
         {
-          default: ['public-instance-method', 'protected-static-field'],
-        },
-      ],
+          default: ['public-instance-method', 'protected-static-field']
+        }
+      ]
     },
     {
       code: `
@@ -771,9 +771,9 @@ class Foo {
             `,
       options: [
         {
-          classes: ['public-instance-method', 'protected-static-field'],
-        },
-      ],
+          classes: ['public-instance-method', 'protected-static-field']
+        }
+      ]
     },
     {
       code: `
@@ -798,15 +798,15 @@ class Foo {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field',
+            'protected-static-field'
           ],
           classes: [
             'public-instance-field',
             'private-constructor',
-            'protected-instance-method',
-          ],
-        },
-      ],
+            'protected-instance-method'
+          ]
+        }
+      ]
     },
     {
       code: `
@@ -831,15 +831,15 @@ class Foo {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field',
+            'protected-static-field'
           ],
           classes: [
             'public-instance-field',
             'private-constructor',
-            'protected-instance-method',
-          ],
-        },
-      ],
+            'protected-instance-method'
+          ]
+        }
+      ]
     },
     `
 const foo = class Foo {
@@ -876,7 +876,7 @@ const foo = class Foo {
     private L() {}
 }
             `,
-      options: [{ default: 'never' }],
+      options: [{ default: 'never' }]
     },
     {
       code: `
@@ -896,7 +896,7 @@ const foo = class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['field', 'constructor', 'method'] }]
     },
     {
       code: `
@@ -916,7 +916,7 @@ const foo = class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'method'] }],
+      options: [{ default: ['field', 'method'] }]
     },
     {
       code: `
@@ -936,7 +936,7 @@ const foo = class Foo {
     private F: string = "";
 }
             `,
-      options: [{ classExpressions: 'never' }],
+      options: [{ classExpressions: 'never' }]
     },
     {
       code: `
@@ -956,7 +956,7 @@ const foo = class Foo {
     constructor() {}
 }
             `,
-      options: [{ classExpressions: ['method', 'field'] }],
+      options: [{ classExpressions: ['method', 'field'] }]
     },
     {
       code: `
@@ -976,7 +976,7 @@ const foo = class Foo {
     private F: string = "";
 }
             `,
-      options: [{ classExpressions: ['method', 'constructor', 'field'] }],
+      options: [{ classExpressions: ['method', 'constructor', 'field'] }]
     },
     {
       code: `
@@ -999,9 +999,9 @@ const foo = class Foo {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          classExpressions: ['method', 'constructor', 'field'],
-        },
-      ],
+          classExpressions: ['method', 'constructor', 'field']
+        }
+      ]
     },
     {
       code: `
@@ -1026,10 +1026,10 @@ const foo = class Foo {
         {
           classExpressions: [
             'private-instance-method',
-            'protected-static-field',
-          ],
-        },
-      ],
+            'protected-static-field'
+          ]
+        }
+      ]
     },
     {
       code: `
@@ -1052,9 +1052,9 @@ const foo = class Foo {
             `,
       options: [
         {
-          default: ['public-instance-method', 'protected-static-field'],
-        },
-      ],
+          default: ['public-instance-method', 'protected-static-field']
+        }
+      ]
     },
     {
       code: `
@@ -1077,12 +1077,9 @@ const foo = class Foo {
             `,
       options: [
         {
-          classExpressions: [
-            'public-instance-method',
-            'protected-static-field',
-          ],
-        },
-      ],
+          classExpressions: ['public-instance-method', 'protected-static-field']
+        }
+      ]
     },
     {
       code: `
@@ -1107,20 +1104,20 @@ const foo = class Foo {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field',
+            'protected-static-field'
           ],
           classes: [
             'public-instance-method',
             'protected-constructor',
-            'protected-static-method',
+            'protected-static-method'
           ],
           classExpressions: [
             'public-instance-field',
             'private-constructor',
-            'protected-instance-method',
-          ],
-        },
-      ],
+            'protected-instance-method'
+          ]
+        }
+      ]
     },
     {
       code: `
@@ -1145,20 +1142,20 @@ const foo = class Foo {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field',
+            'protected-static-field'
           ],
           classes: [
             'public-instance-method',
             'protected-constructor',
-            'protected-static-method',
+            'protected-static-method'
           ],
           classExpressions: [
             'public-instance-field',
             'private-constructor',
-            'protected-instance-method',
-          ],
-        },
-      ],
+            'protected-instance-method'
+          ]
+        }
+      ]
     },
     `
 class Foo {
@@ -1177,7 +1174,7 @@ class Foo {
     A: string;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['method', 'constructor', 'field'] }]
     },
     {
       code: `
@@ -1189,7 +1186,7 @@ class Foo {
     L: () => {}
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['method', 'constructor', 'field'] }]
     },
     `
 interface Foo {
@@ -1206,7 +1203,7 @@ interface Foo {
     A: string;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['method', 'constructor', 'field'] }]
     },
     `
 type Foo = {
@@ -1223,8 +1220,8 @@ type Foo = {
     A: string;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
-    },
+      options: [{ default: ['method', 'constructor', 'field'] }]
+    }
   ],
   invalid: [
     {
@@ -1251,9 +1248,9 @@ interface Foo {
           message:
             'Member new should be declared before all method definitions.',
           line: 16,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1279,40 +1276,40 @@ interface Foo {
         {
           message: 'Member G should be declared before all field definitions.',
           line: 10,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member H should be declared before all field definitions.',
           line: 11,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member I should be declared before all field definitions.',
           line: 12,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 14,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 15,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member new should be declared before all field definitions.',
           line: 16,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1338,40 +1335,40 @@ interface Foo {
         {
           message: 'Member G should be declared before all field definitions.',
           line: 10,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member H should be declared before all field definitions.',
           line: 11,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member I should be declared before all field definitions.',
           line: 12,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 14,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 15,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member new should be declared before all field definitions.',
           line: 16,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1395,47 +1392,47 @@ interface Foo {
       options: [
         {
           default: ['field', 'method', 'constructor'],
-          interfaces: ['method', 'constructor', 'field'],
-        },
+          interfaces: ['method', 'constructor', 'field']
+        }
       ],
       errors: [
         {
           message: 'Member G should be declared before all field definitions.',
           line: 10,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member H should be declared before all field definitions.',
           line: 11,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member I should be declared before all field definitions.',
           line: 12,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 14,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 15,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member new should be declared before all field definitions.',
           line: 16,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1458,36 +1455,36 @@ interface Foo {
             `,
       options: [
         {
-          interfaces: ['constructor', 'field', 'method'],
-        },
+          interfaces: ['constructor', 'field', 'method']
+        }
       ],
       errors: [
         {
           message: 'Member B should be declared before all method definitions.',
           line: 7,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member C should be declared before all method definitions.',
           line: 9,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member D should be declared before all method definitions.',
           line: 11,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member E should be declared before all method definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member F should be declared before all method definitions.',
           line: 15,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1513,9 +1510,9 @@ type Foo = {
           message:
             'Member new should be declared before all method definitions.',
           line: 16,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1541,40 +1538,40 @@ type Foo = {
         {
           message: 'Member G should be declared before all field definitions.',
           line: 10,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member H should be declared before all field definitions.',
           line: 11,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member I should be declared before all field definitions.',
           line: 12,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 14,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 15,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member new should be declared before all field definitions.',
           line: 16,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1600,40 +1597,40 @@ type Foo = {
         {
           message: 'Member G should be declared before all field definitions.',
           line: 10,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member H should be declared before all field definitions.',
           line: 11,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member I should be declared before all field definitions.',
           line: 12,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 14,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 15,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member new should be declared before all field definitions.',
           line: 16,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1657,47 +1654,47 @@ type Foo = {
       options: [
         {
           default: ['field', 'method', 'constructor'],
-          typeLiterals: ['method', 'constructor', 'field'],
-        },
+          typeLiterals: ['method', 'constructor', 'field']
+        }
       ],
       errors: [
         {
           message: 'Member G should be declared before all field definitions.',
           line: 10,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member H should be declared before all field definitions.',
           line: 11,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member I should be declared before all field definitions.',
           line: 12,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 14,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 15,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member new should be declared before all field definitions.',
           line: 16,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1720,36 +1717,36 @@ type Foo = {
             `,
       options: [
         {
-          typeLiterals: ['constructor', 'field', 'method'],
-        },
+          typeLiterals: ['constructor', 'field', 'method']
+        }
       ],
       errors: [
         {
           message: 'Member B should be declared before all method definitions.',
           line: 7,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member C should be declared before all method definitions.',
           line: 9,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member D should be declared before all method definitions.',
           line: 11,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member E should be declared before all method definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member F should be declared before all method definitions.',
           line: 15,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1774,21 +1771,21 @@ class Foo {
           message:
             'Member G should be declared before all public instance method definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member H should be declared before all public instance method definitions.',
           line: 14,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member I should be declared before all public instance method definitions.',
           line: 15,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1814,39 +1811,39 @@ class Foo {
           message:
             'Member A should be declared before all constructor definitions.',
           line: 4,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member B should be declared before all constructor definitions.',
           line: 5,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member C should be declared before all constructor definitions.',
           line: 6,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member D should be declared before all constructor definitions.',
           line: 7,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member E should be declared before all constructor definitions.',
           line: 8,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member F should be declared before all constructor definitions.',
           line: 9,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1871,9 +1868,9 @@ class Foo {
         {
           message: 'Member A should be declared before all method definitions.',
           line: 10,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1898,9 +1895,9 @@ class Foo {
         {
           message: 'Member G should be declared before all field definitions.',
           line: 9,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1925,30 +1922,30 @@ class Foo {
         {
           message: 'Member I should be declared before all field definitions.',
           line: 6,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 7,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 8,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 9,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member constructor should be declared before all field definitions.',
           line: 11,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -1971,47 +1968,47 @@ class Foo {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          classes: ['method', 'constructor', 'field'],
-        },
+          classes: ['method', 'constructor', 'field']
+        }
       ],
       errors: [
         {
           message: 'Member G should be declared before all field definitions.',
           line: 4,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member H should be declared before all field definitions.',
           line: 5,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member I should be declared before all field definitions.',
           line: 6,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 7,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 8,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 9,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member constructor should be declared before all field definitions.',
           line: 10,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2040,24 +2037,24 @@ class Foo {
             'constructor',
             'public-field',
             'private-field',
-            'protected-field',
-          ],
-        },
+            'protected-field'
+          ]
+        }
       ],
       errors: [
         {
           message:
             'Member A should be declared before all private field definitions.',
           line: 12,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member F should be declared before all protected field definitions.',
           line: 15,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2087,24 +2084,24 @@ class Foo {
             'constructor',
             'public-field',
             'protected-field',
-            'private-field',
-          ],
-        },
+            'private-field'
+          ]
+        }
       ],
       errors: [
         {
           message:
             'Member H should be declared before all public instance method definitions.',
           line: 6,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member constructor should be declared before all public field definitions.',
           line: 10,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2131,18 +2128,18 @@ class Foo {
             'public-field',
             'constructor',
             'method',
-            'field',
-          ],
-        },
+            'field'
+          ]
+        }
       ],
       errors: [
         {
           message:
             'Member constructor should be declared before all method definitions.',
           line: 8,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2171,24 +2168,24 @@ class Foo {
             'protected-instance-method',
             'private-instance-method',
             'constructor',
-            'field',
-          ],
-        },
+            'field'
+          ]
+        }
       ],
       errors: [
         {
           message:
             'Member G should be declared before all private static method definitions.',
           line: 5,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member H should be declared before all private static method definitions.',
           line: 6,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2210,17 +2207,17 @@ class Foo {
             `,
       options: [
         {
-          classes: ['private-instance-method', 'protected-static-field'],
-        },
+          classes: ['private-instance-method', 'protected-static-field']
+        }
       ],
       errors: [
         {
           message:
             'Member L should be declared before all protected static field definitions.',
           line: 10,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2243,17 +2240,17 @@ class Foo {
             `,
       options: [
         {
-          default: ['public-instance-method', 'protected-static-field'],
-        },
+          default: ['public-instance-method', 'protected-static-field']
+        }
       ],
       errors: [
         {
           message:
             'Member J should be declared before all protected static field definitions.',
           line: 8,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2278,21 +2275,21 @@ const foo = class Foo {
           message:
             'Member G should be declared before all public instance method definitions.',
           line: 13,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member H should be declared before all public instance method definitions.',
           line: 14,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member I should be declared before all public instance method definitions.',
           line: 15,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2318,39 +2315,39 @@ const foo = class {
           message:
             'Member A should be declared before all constructor definitions.',
           line: 4,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member B should be declared before all constructor definitions.',
           line: 5,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member C should be declared before all constructor definitions.',
           line: 6,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member D should be declared before all constructor definitions.',
           line: 7,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member E should be declared before all constructor definitions.',
           line: 8,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member F should be declared before all constructor definitions.',
           line: 9,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2375,9 +2372,9 @@ const foo = class {
         {
           message: 'Member A should be declared before all method definitions.',
           line: 10,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2402,9 +2399,9 @@ const foo = class {
         {
           message: 'Member G should be declared before all field definitions.',
           line: 9,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2429,30 +2426,30 @@ const foo = class {
         {
           message: 'Member I should be declared before all field definitions.',
           line: 6,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 7,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 8,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 9,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member constructor should be declared before all field definitions.',
           line: 11,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2475,47 +2472,47 @@ const foo = class {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          classExpressions: ['method', 'constructor', 'field'],
-        },
+          classExpressions: ['method', 'constructor', 'field']
+        }
       ],
       errors: [
         {
           message: 'Member G should be declared before all field definitions.',
           line: 4,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member H should be declared before all field definitions.',
           line: 5,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member I should be declared before all field definitions.',
           line: 6,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member J should be declared before all field definitions.',
           line: 7,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member K should be declared before all field definitions.',
           line: 8,
-          column: 5,
+          column: 5
         },
         {
           message: 'Member L should be declared before all field definitions.',
           line: 9,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member constructor should be declared before all field definitions.',
           line: 10,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2544,24 +2541,24 @@ const foo = class {
             'constructor',
             'public-field',
             'private-field',
-            'protected-field',
-          ],
-        },
+            'protected-field'
+          ]
+        }
       ],
       errors: [
         {
           message:
             'Member A should be declared before all private field definitions.',
           line: 12,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member F should be declared before all protected field definitions.',
           line: 15,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2591,24 +2588,24 @@ const foo = class {
             'constructor',
             'public-field',
             'protected-field',
-            'private-field',
-          ],
-        },
+            'private-field'
+          ]
+        }
       ],
       errors: [
         {
           message:
             'Member H should be declared before all public instance method definitions.',
           line: 6,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member constructor should be declared before all public field definitions.',
           line: 10,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2635,18 +2632,18 @@ const foo = class {
             'public-field',
             'constructor',
             'method',
-            'field',
-          ],
-        },
+            'field'
+          ]
+        }
       ],
       errors: [
         {
           message:
             'Member constructor should be declared before all method definitions.',
           line: 8,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2675,24 +2672,24 @@ const foo = class {
             'protected-instance-method',
             'private-instance-method',
             'constructor',
-            'field',
-          ],
-        },
+            'field'
+          ]
+        }
       ],
       errors: [
         {
           message:
             'Member G should be declared before all private static method definitions.',
           line: 5,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member H should be declared before all private static method definitions.',
           line: 6,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2717,18 +2714,18 @@ const foo = class {
         {
           classExpressions: [
             'private-instance-method',
-            'protected-static-field',
-          ],
-        },
+            'protected-static-field'
+          ]
+        }
       ],
       errors: [
         {
           message:
             'Member L should be declared before all protected static field definitions.',
           line: 10,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2751,17 +2748,17 @@ const foo = class {
             `,
       options: [
         {
-          default: ['public-instance-method', 'protected-static-field'],
-        },
+          default: ['public-instance-method', 'protected-static-field']
+        }
       ],
       errors: [
         {
           message:
             'Member J should be declared before all protected static field definitions.',
           line: 8,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
 
     {
@@ -2778,15 +2775,15 @@ class Foo {
           message:
             'Member A should be declared before all public instance method definitions.',
           line: 4,
-          column: 5,
+          column: 5
         },
         {
           message:
             'Member constructor should be declared before all public instance method definitions.',
           line: 5,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2803,9 +2800,9 @@ class Foo {
           message:
             'Member K should be declared before all constructor definitions.',
           line: 5,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2823,9 +2820,9 @@ class Foo {
           message:
             'Member K should be declared before all constructor definitions.',
           line: 5,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2839,9 +2836,9 @@ interface Foo {
         {
           message: 'Member A should be declared before all method definitions.',
           line: 5,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2855,9 +2852,9 @@ type Foo = {
         {
           message: 'Member A should be declared before all method definitions.',
           line: 5,
-          column: 5,
-        },
-      ],
+          column: 5
+        }
+      ]
     },
     {
       code: `
@@ -2872,9 +2869,9 @@ type Foo = {
         {
           message: 'Member J should be declared before all field definitions.',
           line: 5,
-          column: 5,
-        },
-      ],
-    },
-  ],
+          column: 5
+        }
+      ]
+    }
+  ]
 });

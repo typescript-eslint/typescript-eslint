@@ -13,8 +13,8 @@ const util = require('../util');
 const defaultOptions = [
   {
     ignoreParameters: true,
-    ignoreProperties: true,
-  },
+    ignoreProperties: true
+  }
 ];
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
       extraDescription: [util.tslintRule('no-inferrable-types')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-inferrable-types'),
-      recommended: 'error',
+      recommended: 'error'
     },
     fixable: 'code',
     schema: [
@@ -34,15 +34,15 @@ module.exports = {
         type: 'object',
         properties: {
           ignoreParameters: {
-            type: 'boolean',
+            type: 'boolean'
           },
           ignoreProperties: {
-            type: 'boolean',
-          },
+            type: 'boolean'
+          }
         },
-        additionalProperties: false,
-      },
-    ],
+        additionalProperties: false
+      }
+    ]
   },
 
   create(context) {
@@ -117,7 +117,7 @@ module.exports = {
       const typeMap = {
         TSBooleanKeyword: 'boolean',
         TSNumberKeyword: 'number',
-        TSStringKeyword: 'string',
+        TSStringKeyword: 'string'
       };
 
       const type = typeMap[typeNode.typeAnnotation.type];
@@ -127,9 +127,9 @@ module.exports = {
         message:
           'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.',
         data: {
-          type,
+          type
         },
-        fix: fixer => fixer.remove(typeNode),
+        fix: fixer => fixer.remove(typeNode)
       });
     }
 
@@ -185,7 +185,7 @@ module.exports = {
       FunctionExpression: inferrableParameterVisitor,
       FunctionDeclaration: inferrableParameterVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
-      ClassProperty: inferrablePropertyVisitor,
+      ClassProperty: inferrablePropertyVisitor
     };
-  },
+  }
 };

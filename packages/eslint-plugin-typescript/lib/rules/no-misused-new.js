@@ -18,13 +18,13 @@ module.exports = {
       extraDescription: [util.tslintRule('no-misused-new')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-misused-new'),
-      recommended: 'error',
+      recommended: 'error'
     },
     schema: [],
     messages: {
       errorMessageInterface: 'Interfaces cannot be constructed, only classes.',
-      errorMessageClass: 'Class cannon have method named `new`.',
-    },
+      errorMessageClass: 'Class cannon have method named `new`.'
+    }
   },
 
   //----------------------------------------------------------------------
@@ -70,14 +70,14 @@ module.exports = {
           // constructor
           context.report({
             node,
-            messageId: 'errorMessageInterface',
+            messageId: 'errorMessageInterface'
           });
         }
       },
       "TSMethodSignature[key.name='constructor']"(node) {
         context.report({
           node,
-          messageId: 'errorMessageInterface',
+          messageId: 'errorMessageInterface'
         });
       },
       "ClassBody > MethodDefinition[key.name='new']"(node) {
@@ -89,11 +89,11 @@ module.exports = {
           if (isMatchingParentType(node.parent.parent, node.value.returnType)) {
             context.report({
               node,
-              messageId: 'errorMessageClass',
+              messageId: 'errorMessageClass'
             });
           }
         }
-      },
+      }
     };
-  },
+  }
 };

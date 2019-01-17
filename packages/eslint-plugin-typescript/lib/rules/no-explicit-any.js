@@ -19,9 +19,9 @@ module.exports = {
       extraDescription: [util.tslintRule('no-any')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-explicit-any'),
-      recommended: 'warn',
+      recommended: 'warn'
     },
-    schema: [],
+    schema: []
   },
 
   create(context) {
@@ -29,9 +29,9 @@ module.exports = {
       TSAnyKeyword(node) {
         context.report({
           node,
-          message: 'Unexpected any. Specify a different type.',
+          message: 'Unexpected any. Specify a different type.'
         });
-      },
+      }
     };
-  },
+  }
 };

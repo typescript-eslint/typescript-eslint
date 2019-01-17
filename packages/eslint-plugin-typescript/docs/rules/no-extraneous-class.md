@@ -42,7 +42,7 @@ const StaticOnly = {
   version: 42,
   hello() {
     console.log('Hello, world!');
-  },
+  }
 };
 ```
 

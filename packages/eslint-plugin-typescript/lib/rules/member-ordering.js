@@ -68,9 +68,9 @@ const defaultOptions = [
       'static-method',
       'instance-method',
 
-      'method',
-    ],
-  },
+      'method'
+    ]
+  }
 ];
 
 module.exports = {
@@ -81,7 +81,7 @@ module.exports = {
       extraDescription: [util.tslintRule('member-ordering')],
       category: 'TypeScript',
       url: util.metaDocsUrl('member-ordering'),
-      recommended: false,
+      recommended: false
     },
     schema: [
       {
@@ -90,72 +90,72 @@ module.exports = {
           default: {
             oneOf: [
               {
-                enum: ['never'],
+                enum: ['never']
               },
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions,
-                },
-              },
-            ],
+                  enum: schemaOptions
+                }
+              }
+            ]
           },
           classes: {
             oneOf: [
               {
-                enum: ['never'],
+                enum: ['never']
               },
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions,
-                },
-              },
-            ],
+                  enum: schemaOptions
+                }
+              }
+            ]
           },
           classExpressions: {
             oneOf: [
               {
-                enum: ['never'],
+                enum: ['never']
               },
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions,
-                },
-              },
-            ],
+                  enum: schemaOptions
+                }
+              }
+            ]
           },
           interfaces: {
             oneOf: [
               {
-                enum: ['never'],
+                enum: ['never']
               },
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor'],
-                },
-              },
-            ],
+                  enum: ['field', 'method', 'constructor']
+                }
+              }
+            ]
           },
           typeLiterals: {
             oneOf: [
               {
-                enum: ['never'],
+                enum: ['never']
               },
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor'],
-                },
-              },
-            ],
-          },
+                  enum: ['field', 'method', 'constructor']
+                }
+              }
+            ]
+          }
         },
-        additionalProperties: false,
-      },
-    ],
+        additionalProperties: false
+      }
+    ]
   },
 
   create(context) {
@@ -163,7 +163,7 @@ module.exports = {
 
     const functionExpressions = [
       'FunctionExpression',
-      'ArrowFunctionExpression',
+      'ArrowFunctionExpression'
     ];
 
     //----------------------------------------------------------------------
@@ -330,8 +330,8 @@ module.exports = {
                   'Member {{name}} should be declared before all {{rank}} definitions.',
                 data: {
                   name: getMemberName(member),
-                  rank: getLowestRank(previousRanks, rank, order),
-                },
+                  rank: getLowestRank(previousRanks, rank, order)
+                }
               });
             } else {
               previousRanks.push(rank);
@@ -372,7 +372,7 @@ module.exports = {
           options.typeLiterals || options.default,
           false
         );
-      },
+      }
     };
-  },
+  }
 };

@@ -21,9 +21,9 @@ const ruleTester = new RuleTester({
     ecmaVersion: 6,
     sourceType: 'module',
     ecmaFeatures: {
-      jsx: false,
-    },
-  },
+      jsx: false
+    }
+  }
 });
 
 ruleTester.run('no-object-literal-type-assertion', rule, {
@@ -39,7 +39,7 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
     `const foo = <any> {};`,
     // Allow cast to 'unknown'
     `const foo = {} as unknown;`,
-    `const foo = <unknown> {};`,
+    `const foo = <unknown> {};`
   ],
   invalid: [
     {
@@ -48,9 +48,9 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
         {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `({}) as T;`,
@@ -58,9 +58,9 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
         {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `const x = {} as T;`,
@@ -68,9 +68,9 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
         {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
-          column: 11,
-        },
-      ],
-    },
-  ],
+          column: 11
+        }
+      ]
+    }
+  ]
 });

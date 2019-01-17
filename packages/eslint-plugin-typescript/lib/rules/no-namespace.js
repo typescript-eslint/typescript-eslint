@@ -13,8 +13,8 @@ const util = require('../util');
 const defaultOptions = [
   {
     allowDeclarations: false,
-    allowDefinitionFiles: true,
-  },
+    allowDefinitionFiles: true
+  }
 ];
 
 module.exports = {
@@ -26,26 +26,26 @@ module.exports = {
       extraDescription: [util.tslintRule('no-namespace')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-namespace'),
-      recommended: 'error',
+      recommended: 'error'
     },
     messages: {
       moduleSyntaxIsPreferred:
-        'ES2015 module syntax is preferred over custom TypeScript modules and namespaces.',
+        'ES2015 module syntax is preferred over custom TypeScript modules and namespaces.'
     },
     schema: [
       {
         type: 'object',
         properties: {
           allowDeclarations: {
-            type: 'boolean',
+            type: 'boolean'
           },
           allowDefinitionFiles: {
-            type: 'boolean',
-          },
+            type: 'boolean'
+          }
         },
-        additionalProperties: false,
-      },
-    ],
+        additionalProperties: false
+      }
+    ]
   },
 
   create(context) {
@@ -70,9 +70,9 @@ module.exports = {
 
         context.report({
           node,
-          messageId: 'moduleSyntaxIsPreferred',
+          messageId: 'moduleSyntaxIsPreferred'
         });
-      },
+      }
     };
-  },
+  }
 };

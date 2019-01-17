@@ -14,8 +14,8 @@ const defaultOptions = [
   {
     allow: ['^UNSAFE_'],
     ignoreDestructuring: false,
-    properties: 'never',
-  },
+    properties: 'never'
+  }
 ];
 
 /* eslint-disable eslint-plugin/require-meta-type */
@@ -24,8 +24,8 @@ module.exports = {
     docs: {
       description: 'Enforce camelCase naming convention',
       url: util.metaDocsUrl('ban-types'),
-      recommended: 'error',
-    },
+      recommended: 'error'
+    }
   }),
 
   create(context) {
@@ -34,7 +34,7 @@ module.exports = {
       'TSPropertySignature',
       'ClassProperty',
       'TSParameterProperty',
-      'TSAbstractClassProperty',
+      'TSAbstractClassProperty'
     ];
 
     const options = util.applyDefault(defaultOptions, context.options)[0];
@@ -105,7 +105,7 @@ module.exports = {
             context.report({
               node,
               messageId: 'notCamelCase',
-              data: { name: node.name },
+              data: { name: node.name }
             });
           }
 
@@ -115,7 +115,7 @@ module.exports = {
         // Let the base rule deal with the rest
         // eslint-disable-next-line new-cap
         rules.Identifier(node);
-      },
+      }
     };
-  },
+  }
 };

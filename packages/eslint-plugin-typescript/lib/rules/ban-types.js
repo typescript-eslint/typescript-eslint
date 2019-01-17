@@ -15,26 +15,26 @@ const defaultOptions = [
     types: {
       String: {
         message: 'Use string instead',
-        fixWith: 'string',
+        fixWith: 'string'
       },
       Boolean: {
         message: 'Use boolean instead',
-        fixWith: 'boolean',
+        fixWith: 'boolean'
       },
       Number: {
         message: 'Use number instead',
-        fixWith: 'number',
+        fixWith: 'number'
       },
       Object: {
         message: 'Use Record<string, any> instead',
-        fixWith: 'Record<string, any>',
+        fixWith: 'Record<string, any>'
       },
       Symbol: {
         message: 'Use symbol instead',
-        fixWith: 'symbol',
-      },
-    },
-  },
+        fixWith: 'symbol'
+      }
+    }
+  }
 ];
 
 module.exports = {
@@ -45,11 +45,11 @@ module.exports = {
       extraDescription: [util.tslintRule('ban-types')],
       category: 'TypeScript',
       url: util.metaDocsUrl('ban-types'),
-      recommended: 'error',
+      recommended: 'error'
     },
     fixable: 'code',
     messages: {
-      bannedTypeMessage: "Don't use '{{name}}' as a type.{{customMessage}}",
+      bannedTypeMessage: "Don't use '{{name}}' as a type.{{customMessage}}"
     },
     schema: [
       {
@@ -65,17 +65,17 @@ module.exports = {
                   type: 'object',
                   properties: {
                     message: { type: 'string' },
-                    fixWith: { type: 'string' },
+                    fixWith: { type: 'string' }
                   },
-                  additionalProperties: false,
-                },
-              ],
-            },
-          },
+                  additionalProperties: false
+                }
+              ]
+            }
+          }
         },
-        additionalProperties: false,
-      },
-    ],
+        additionalProperties: false
+      }
+    ]
   },
 
   create(context) {
@@ -110,14 +110,14 @@ module.exports = {
               messageId: 'bannedTypeMessage',
               data: {
                 name: node.name,
-                customMessage,
+                customMessage
               },
               fix:
-                fixWith !== null && (fixer => fixer.replaceText(node, fixWith)),
+                fixWith !== null && (fixer => fixer.replaceText(node, fixWith))
             });
           }
         }
-      },
+      }
     };
-  },
+  }
 };

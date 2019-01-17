@@ -18,9 +18,9 @@ module.exports = {
       extraDescription: [util.tslintRule('no-empty-interface')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-empty-interface'),
-      recommended: 'error',
+      recommended: 'error'
     },
-    schema: [],
+    schema: []
   },
 
   //----------------------------------------------------------------------
@@ -38,10 +38,10 @@ module.exports = {
             message:
               heritage === 0
                 ? 'An empty interface is equivalent to `{}`.'
-                : 'An interface declaring no members is equivalent to its supertype.',
+                : 'An interface declaring no members is equivalent to its supertype.'
           });
         }
-      },
+      }
     };
-  },
+  }
 };

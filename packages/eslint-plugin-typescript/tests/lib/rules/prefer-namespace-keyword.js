@@ -17,7 +17,7 @@ const rule = require('../../../lib/rules/prefer-namespace-keyword'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('prefer-namespace-keyword', rule, {
@@ -26,7 +26,7 @@ ruleTester.run('prefer-namespace-keyword', rule, {
     "declare module 'foo' { }",
     'namespace foo { }',
     'declare namespace foo { }',
-    'declare global { }',
+    'declare global { }'
   ],
   invalid: [
     {
@@ -37,9 +37,9 @@ ruleTester.run('prefer-namespace-keyword', rule, {
           message:
             "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: 'declare module foo { }',
@@ -49,9 +49,9 @@ ruleTester.run('prefer-namespace-keyword', rule, {
           message:
             "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
           row: 1,
-          column: 1,
-        },
-      ],
+          column: 1
+        }
+      ]
     },
     {
       code: `
@@ -69,15 +69,15 @@ declare namespace foo {
           message:
             "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
           row: 2,
-          column: 1,
+          column: 1
         },
         {
           message:
             "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
           row: 3,
-          column: 5,
-        },
-      ],
-    },
-  ],
+          column: 5
+        }
+      ]
+    }
+  ]
 });

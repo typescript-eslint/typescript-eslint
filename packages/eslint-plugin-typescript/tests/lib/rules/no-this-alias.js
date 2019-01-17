@@ -15,11 +15,11 @@ const rule = require('../../../lib/rules/no-this-alias'),
 const idError = { messageId: 'thisAssignment', type: 'Identifier' };
 const destructureError = {
   messageId: 'thisDestructure',
-  type: 'ObjectPattern',
+  type: 'ObjectPattern'
 };
 const arrayDestructureError = {
   messageId: 'thisDestructure',
-  type: 'ArrayPattern',
+  type: 'ArrayPattern'
 };
 
 //------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ const arrayDestructureError = {
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('no-this-alias', rule, {
@@ -43,24 +43,24 @@ const [foo, bar] = this;
 `.trim(),
       options: [
         {
-          allowDestructuring: true,
-        },
-      ],
+          allowDestructuring: true
+        }
+      ]
     },
     {
       code: 'const self = this;',
       options: [
         {
-          allowedNames: ['self'],
-        },
-      ],
+          allowedNames: ['self']
+        }
+      ]
     },
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/281
     `
 declare module 'foo' {
     declare const aVar: string
 }
-        `,
+        `
   ],
 
   invalid: [
@@ -68,18 +68,18 @@ declare module 'foo' {
       code: 'const self = this;',
       options: [
         {
-          allowDestructuring: true,
-        },
+          allowDestructuring: true
+        }
       ],
-      errors: [idError],
+      errors: [idError]
     },
     {
       code: 'const self = this;',
-      errors: [idError],
+      errors: [idError]
     },
     {
       code: 'const { props, state } = this;',
-      errors: [destructureError],
+      errors: [destructureError]
     },
     {
       code: `
@@ -92,7 +92,7 @@ const testLambda = () => {
     const inLambda = this;
 };
 `.trim(),
-      errors: [idError, idError, idError],
+      errors: [idError, idError, idError]
     },
     {
       code: `
@@ -122,8 +122,8 @@ class TestClass {
         destructureError,
         destructureError,
         arrayDestructureError,
-        arrayDestructureError,
-      ],
-    },
-  ],
+        arrayDestructureError
+      ]
+    }
+  ]
 });

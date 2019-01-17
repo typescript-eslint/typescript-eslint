@@ -88,7 +88,7 @@ module.exports = {
       extraDescription: [util.tslintRule('array-type')],
       category: 'TypeScript',
       url: util.metaDocsUrl('array-type'),
-      recommended: 'error',
+      recommended: 'error'
     },
     fixable: 'code',
     messages: {
@@ -99,13 +99,13 @@ module.exports = {
       errorStringArray:
         "Array type using 'Array<{{type}}>' is forbidden. Use '{{type}}[]' instead.",
       errorStringArraySimple:
-        "Array type using 'Array<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead.",
+        "Array type using 'Array<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead."
     },
     schema: [
       {
-        enum: ['array', 'generic', 'array-simple'],
-      },
-    ],
+        enum: ['array', 'generic', 'array-simple']
+      }
+    ]
   },
   create(context) {
     const option = util.applyDefault(defaultOptions, context.options)[0];
@@ -163,13 +163,13 @@ module.exports = {
           node,
           messageId,
           data: {
-            type: getMessageType(node.elementType),
+            type: getMessageType(node.elementType)
           },
           fix(fixer) {
             const startText = requireWhitespaceBefore(node);
             const toFix = [
               fixer.replaceTextRange([node.range[1] - 2, node.range[1]], '>'),
-              fixer.insertTextBefore(node, `${startText ? ' ' : ''}Array<`),
+              fixer.insertTextBefore(node, `${startText ? ' ' : ''}Array<`)
             ];
 
             if (node.elementType.type === 'TSParenthesizedType') {
@@ -182,7 +182,7 @@ module.exports = {
             }
 
             return toFix;
-          },
+          }
         });
       },
       TSTypeReference(node) {
@@ -204,11 +204,11 @@ module.exports = {
             node,
             messageId,
             data: {
-              type: 'any',
+              type: 'any'
             },
             fix(fixer) {
               return fixer.replaceText(node, 'any[]');
-            },
+            }
           });
           return;
         }
@@ -227,7 +227,7 @@ module.exports = {
           node,
           messageId,
           data: {
-            type: getMessageType(type),
+            type: getMessageType(type)
           },
           fix(fixer) {
             return [
@@ -238,11 +238,11 @@ module.exports = {
               fixer.replaceTextRange(
                 [type.range[1], node.range[1]],
                 parens ? ')[]' : '[]'
-              ),
+              )
             ];
-          },
+          }
         });
-      },
+      }
     };
-  },
+  }
 };

@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/prefer-interface'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('interface-over-type-literal', rule, {
@@ -28,7 +28,7 @@ ruleTester.run('interface-over-type-literal', rule, {
 type Record<T, U> = {
     [K in T]: U;
 }
-        `,
+        `
   ],
   invalid: [
     {
@@ -38,9 +38,9 @@ type Record<T, U> = {
         {
           messageId: 'interfaceOverType',
           line: 1,
-          column: 6,
-        },
-      ],
+          column: 6
+        }
+      ]
     },
     {
       code: `type T={ x: number; }`,
@@ -49,9 +49,9 @@ type Record<T, U> = {
         {
           messageId: 'interfaceOverType',
           line: 1,
-          column: 6,
-        },
-      ],
+          column: 6
+        }
+      ]
     },
     {
       code: `type T=                         { x: number; }`,
@@ -60,9 +60,9 @@ type Record<T, U> = {
         {
           messageId: 'interfaceOverType',
           line: 1,
-          column: 6,
-        },
-      ],
+          column: 6
+        }
+      ]
     },
     {
       code: `
@@ -79,9 +79,9 @@ export interface W<T> {
         {
           messageId: 'interfaceOverType',
           line: 2,
-          column: 13,
-        },
-      ],
-    },
-  ],
+          column: 13
+        }
+      ]
+    }
+  ]
 });

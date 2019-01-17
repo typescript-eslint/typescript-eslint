@@ -19,9 +19,9 @@ module.exports = {
       extraDescription: [util.tslintRule('no-var-requires')],
       category: 'TypeScript',
       url: util.metaDocsUrl('no-var-requires'),
-      recommended: 'error',
+      recommended: 'error'
     },
-    schema: [],
+    schema: []
   },
   create(context) {
     //----------------------------------------------------------------------
@@ -36,10 +36,10 @@ module.exports = {
         ) {
           context.report({
             node,
-            message: 'Require statement not part of import statement.',
+            message: 'Require statement not part of import statement.'
           });
         }
-      },
+      }
     };
-  },
+  }
 };

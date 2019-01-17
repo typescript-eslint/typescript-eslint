@@ -19,9 +19,9 @@ module.exports = Object.assign({}, baseRule, {
       extraDescription: [util.tslintRule('no-unused-variable')],
       category: 'Variables',
       url: util.metaDocsUrl('no-unused-vars'),
-      recommended: 'warn',
+      recommended: 'warn'
     },
-    schema: baseRule.meta.schema,
+    schema: baseRule.meta.schema
   },
 
   create(context) {
@@ -62,7 +62,7 @@ module.exports = Object.assign({}, baseRule, {
       },
       'TSEnumMember Identifier'(node) {
         context.markVariableAsUsed(node.name);
-      },
+      }
     });
-  },
+  }
 });

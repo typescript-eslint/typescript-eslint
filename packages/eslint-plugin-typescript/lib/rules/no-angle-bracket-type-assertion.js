@@ -19,9 +19,9 @@ module.exports = {
       extraDescription: [util.tslintRule('no-angle-bracket-type-assertion')],
       category: 'Style',
       url: util.metaDocsUrl('no-angle-bracket-type-assertion'),
-      recommended: 'error',
+      recommended: 'error'
     },
-    schema: [],
+    schema: []
   },
 
   create(context) {
@@ -37,10 +37,10 @@ module.exports = {
           message:
             "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions.",
           data: {
-            cast: sourceCode.getText(node.typeAnnotation.typeAnnotation),
-          },
+            cast: sourceCode.getText(node.typeAnnotation.typeAnnotation)
+          }
         });
-      },
+      }
     };
-  },
+  }
 };

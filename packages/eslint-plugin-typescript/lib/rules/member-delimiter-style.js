@@ -15,13 +15,13 @@ const defaultOptions = [
   {
     multiline: {
       delimiter: 'semi',
-      requireLast: true,
+      requireLast: true
     },
     singleline: {
       delimiter: 'semi',
-      requireLast: false,
-    },
-  },
+      requireLast: false
+    }
+  }
 ];
 
 const definition = {
@@ -31,21 +31,21 @@ const definition = {
       type: 'object',
       properties: {
         delimiter: { enum: ['none', 'semi', 'comma'] },
-        requireLast: { type: 'boolean' },
+        requireLast: { type: 'boolean' }
       },
-      additionalProperties: false,
+      additionalProperties: false
     },
     singleline: {
       type: 'object',
       properties: {
         // note can't have "none" for single line delimiter as it's invlaid syntax
         delimiter: { enum: ['semi', 'comma'] },
-        requireLast: { type: 'boolean' },
+        requireLast: { type: 'boolean' }
       },
-      additionalProperties: false,
-    },
+      additionalProperties: false
+    }
   },
-  additionalProperties: false,
+  additionalProperties: false
 };
 
 module.exports = {
@@ -56,14 +56,14 @@ module.exports = {
         'Require a specific member delimiter style for interfaces and type literals',
       category: 'TypeScript',
       url: metaDocsUrl('member-delimiter-style'),
-      recommended: 'error',
+      recommended: 'error'
     },
     fixable: 'code',
     messages: {
       unexpectedComma: 'Unexpected separator (,).',
       unexpectedSemi: 'Unexpected separator (;).',
       expectedComma: 'Expected a comma.',
-      expectedSemi: 'Expected a semicolon.',
+      expectedSemi: 'Expected a semicolon.'
     },
     schema: [
       {
@@ -73,14 +73,14 @@ module.exports = {
             type: 'object',
             properties: {
               interface: definition,
-              typeLiteral: definition,
+              typeLiteral: definition
             },
-            additionalProperties: false,
-          },
+            additionalProperties: false
+          }
         }),
-        additionalProperties: false,
-      },
-    ],
+        additionalProperties: false
+      }
+    ]
   },
 
   create(context) {
@@ -123,7 +123,7 @@ module.exports = {
       let messageId;
       let missingDelimiter = false;
       const lastToken = sourceCode.getLastToken(member, {
-        includeComments: false,
+        includeComments: false
       });
 
       const optsSemi = getOption('semi');
@@ -160,12 +160,12 @@ module.exports = {
           loc: {
             start: {
               line: lastToken.loc.end.line,
-              column: lastToken.loc.end.column,
+              column: lastToken.loc.end.column
             },
             end: {
               line: lastToken.loc.end.line,
-              column: lastToken.loc.end.column,
-            },
+              column: lastToken.loc.end.column
+            }
           },
           messageId,
           fix(fixer) {
@@ -183,7 +183,7 @@ module.exports = {
 
             // correct the current delimiter
             return fixer.replaceText(lastToken, token);
-          },
+          }
         });
       }
     }
@@ -214,7 +214,7 @@ module.exports = {
 
     return {
       TSInterfaceBody: checkMemberSeparatorStyle,
-      TSTypeLiteral: checkMemberSeparatorStyle,
+      TSTypeLiteral: checkMemberSeparatorStyle
     };
-  },
+  }
 };

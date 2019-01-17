@@ -14,8 +14,8 @@ const defaultOptions = [
   {
     allowConstructorOnly: false,
     allowEmpty: false,
-    allowStaticOnly: false,
-  },
+    allowStaticOnly: false
+  }
 ];
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
       extraDescription: [util.tslintRule('no-unnecessary-class')],
       category: 'Best Practices',
       url: util.metaDocsUrl('no-extraneous-class'),
-      recommended: false,
+      recommended: false
     },
     fixable: null,
     schema: [
@@ -35,29 +35,29 @@ module.exports = {
         additionalProperties: false,
         properties: {
           allowConstructorOnly: {
-            type: 'boolean',
+            type: 'boolean'
           },
           allowEmpty: {
-            type: 'boolean',
+            type: 'boolean'
           },
           allowStaticOnly: {
-            type: 'boolean',
-          },
-        },
-      },
+            type: 'boolean'
+          }
+        }
+      }
     ],
     messages: {
       empty: 'Unexpected empty class.',
       onlyStatic: 'Unexpected class with only static properties.',
-      onlyConstructor: 'Unexpected class with only a constructor.',
-    },
+      onlyConstructor: 'Unexpected class with only a constructor.'
+    }
   },
 
   create(context) {
     const {
       allowConstructorOnly,
       allowEmpty,
-      allowStaticOnly,
+      allowStaticOnly
     } = util.applyDefault(defaultOptions, context.options)[0];
 
     return {
@@ -98,7 +98,7 @@ module.exports = {
           if (!allowConstructorOnly) {
             context.report({
               node: id,
-              messageId: 'onlyConstructor',
+              messageId: 'onlyConstructor'
             });
           }
           return;
@@ -106,7 +106,7 @@ module.exports = {
         if (onlyStatic && !allowStaticOnly) {
           context.report({ node: id, messageId: 'onlyStatic' });
         }
-      },
+      }
     };
-  },
+  }
 };
