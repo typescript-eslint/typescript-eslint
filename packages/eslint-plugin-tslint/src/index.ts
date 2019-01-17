@@ -83,15 +83,8 @@ export const rules = {
                 type: 'string'
               }
             },
-            configFile: {
-              type: 'string'
-            },
             lintFile: {
               type: 'string'
-            },
-            compilerOptions: {
-              type: 'object',
-              additionalProperties: true
             }
           },
           additionalProperties: false

@@ -51,11 +51,13 @@ ruleTester.run('tslint/config', rules.config, {
         ' '
       ),
       parser: '@typescript-eslint/parser',
-      parserOptions,
+      parserOptions: {
+        ...parserOptions,
+        project: `${__dirname}/test-project/tsconfig.json`
+      },
       options: [
         {
-          ...tslintRulesConfig,
-          configFile: `${__dirname}/test-project/tsconfig-files.json`
+          ...tslintRulesConfig
         }
       ]
     },
@@ -115,14 +117,16 @@ ruleTester.run('tslint/config', rules.config, {
         ' '
       ),
       parser: '@typescript-eslint/parser',
-      parserOptions,
+      parserOptions: {
+        ...parserOptions,
+        project: `${__dirname}/test-project/tsconfig.json`
+      },
       options: [
         {
           rulesDirectory: [
             `${__dirname}/../../../node_modules/tslint/lib/rules`
           ],
-          rules: { 'restrict-plus-operands': true },
-          configFile: `${__dirname}/test-project/tsconfig.json`
+          rules: { 'restrict-plus-operands': true }
         }
       ],
       errors: [
