@@ -1,39 +1,8 @@
 {
-	"compilerOptions": {
-		"target": "es5",
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"removeComments": true,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"sourceMap": true,
-		"pretty": true,
-		"allowUnreachableCode": false,
-		"noFallthroughCasesInSwitch": false,
-		"noImplicitReturns": true,
-		"noImplicitAny": true,
-		"strictNullChecks": true,
-		"noUnusedParameters": true,
-		"noUnusedLocals": true,
-		"skipLibCheck": true,
-		"skipDefaultLibCheck": true,
-		"outDir": "./dist",
-		"types": [
-			"node"
-		],
-		"lib": [
-			"es2015"
-		]
-	},
-	"include": [
-		"src/**/*.ts"
-	],
-	"exclude": [
-		"node_modules"
-	],
-	"compileOnSave": false,
-	"buildOnSave": false,
-	"atom": {
-		"rewriteTsconfig": false
-	}
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "./dist"
+  },
+  "include": ["src"]
 }
