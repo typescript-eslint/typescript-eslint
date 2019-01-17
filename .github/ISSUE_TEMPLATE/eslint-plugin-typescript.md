@@ -1,7 +1,6 @@
 ---
-name: Bug report
-about: Report an issue
-labels:
+name: eslint-plugin-typescript
+about: Report an issue with the eslint-plugin-typescript package
 ---
 
 <!--
