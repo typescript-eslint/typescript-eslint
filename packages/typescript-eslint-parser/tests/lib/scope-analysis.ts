@@ -216,7 +216,7 @@ describe('TypeScript scope analysis', () => {
   });
 
   const linter = new Linter();
-  linter.defineParser('typescript-eslint-parser', parser);
+  linter.defineParser('@typescript-eslint/parser', parser);
 
   it('https://github.com/eslint/typescript-eslint-parser/issues/416', () => {
     const code = `
@@ -225,7 +225,7 @@ export type SomeThing = {
 }
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-undef': 'error'
       }
@@ -243,7 +243,7 @@ interface Foo {
 const bar = 'blah'
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-use-before-define': 'error'
       }
@@ -261,7 +261,7 @@ interface Runnable {
 }
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-undef': 'error'
       }
@@ -277,7 +277,7 @@ const Foo = 1;
 type Foo = 1;
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-redeclare': 'error'
       }
@@ -293,7 +293,7 @@ type foo = any;
 function bar(foo: any) {}
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-shadow': 'error'
       }
@@ -309,7 +309,7 @@ function bar(foo: any) {}
 const links = document.querySelectorAll( selector ) as NodeListOf<HTMLElement>
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-undef': 'error'
       }
@@ -326,7 +326,7 @@ class X {
 }
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-undef': 'error'
       }
@@ -346,7 +346,7 @@ export default class Test {
 }
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-restricted-globals': ['error', 'status']
       }
@@ -363,7 +363,7 @@ function foo({ bar }: { bar: string }) {
 }
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-dupe-args': 'error',
         'no-redeclare': 'error'
@@ -386,7 +386,7 @@ export default class ListModalStore {
 }
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-unused-vars': 'error'
       },
@@ -408,7 +408,7 @@ function test(file: Blob) {
 }
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       rules: {
         'no-use-before-define': 'error'
       }
@@ -427,7 +427,7 @@ window.whatevs = {
 };
 `;
     const config: Linter.Config = {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       parserOptions: {
         sourceType: 'module'
       },

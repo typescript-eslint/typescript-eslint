@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/no-namespace'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: 'typescript-eslint-parser',
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-namespace', rule, {
