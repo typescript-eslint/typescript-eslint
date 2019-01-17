@@ -11,10 +11,10 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "scripts": {
-    "postinstall": "lerna bootstrap && lerna link",
-    "test": "lerna run test",
+    "postinstall": "lerna bootstrap && yarn build && lerna link",
+    "test": "lerna run test --parallel",
     "build": "lerna run build",
-    "clean": "lerna run clean",
+    "clean": "lerna clean && lerna run clean",
     "precommit": "yarn test && lint-staged",
     "cz": "git-cz",
     "commitmsg": "commitlint -E GIT_PARAMS",

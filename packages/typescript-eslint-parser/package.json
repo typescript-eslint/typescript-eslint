@@ -26,7 +26,9 @@
     "eslint"
   ],
   "scripts": {
+    "prebuild": "npm run clean",
     "build": "tsc",
+    "clean": "rm -rf dist/",
     "test": "jest --coverage",
     "integration-tests": "docker-compose -f tests/integration/docker-compose.yml up",
     "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local"

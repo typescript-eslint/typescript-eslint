@@ -1,0 +1,40 @@
+{
+  "name": "eslint-plugin-tslint",
+  "version": "3.1.0",
+  "main": "dist/index.js",
+  "typings": "src/index.ts",
+  "author": "James Henry <typescript-eslint@jameshenry.blog>",
+  "contributors": [
+    "Roman Vasilev (https://github.com/unlight)"
+  ],
+  "description": "TSLint wrapper plugin for ESLint",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "tslint"
+  ],
+  "repository": "typescript-eslint/typescript-eslint",
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --coverage",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "clean": "rm -rf dist/"
+  },
+  "dependencies": {
+    "lodash.memoize": "^4.1.2"
+  },
+  "peerDependencies": {
+    "tslint": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^4.16.3",
+    "@types/lodash.memoize": "^4.1.4",
+    "@typescript-eslint/parser": "21.0.2",
+    "tslint": "^5.11.0"
+  }
+}

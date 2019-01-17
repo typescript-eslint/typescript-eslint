@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "no-string-throw": true,
+    "no-var-keyword": true,
+    "prefer-const": true,
+    "radix": true
+  }
+}
