@@ -27,7 +27,7 @@ const arrayDestructureError = {
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: 'typescript-eslint-parser',
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-this-alias', rule, {

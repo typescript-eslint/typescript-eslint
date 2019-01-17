@@ -17,7 +17,7 @@ const rule = require('../../../lib/rules/class-name-casing'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: 'typescript-eslint-parser',
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('class-name-casing', rule, {

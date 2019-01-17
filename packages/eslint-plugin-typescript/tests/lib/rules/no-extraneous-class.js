@@ -21,7 +21,7 @@ const onlyConstructor = { messageId: 'onlyConstructor', type: 'Identifier' };
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: 'typescript-eslint-parser',
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-extraneous-class', rule, {

@@ -5,3 +5,4 @@
 **/tests/integration/**/*
 **/lib/configs/recommended.json
 **/.vscode
+**/.nyc_output

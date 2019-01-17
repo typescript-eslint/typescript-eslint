@@ -17,7 +17,7 @@ const ruleTester = new RuleTester({
     sourceType: 'module',
     ecmaFeatures: {},
   },
-  parser: 'typescript-eslint-parser',
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-undef', rule, {

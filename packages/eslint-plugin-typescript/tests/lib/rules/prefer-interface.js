@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/prefer-interface'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: 'typescript-eslint-parser',
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('interface-over-type-literal', rule, {

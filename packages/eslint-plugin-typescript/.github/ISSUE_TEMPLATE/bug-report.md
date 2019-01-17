@@ -36,8 +36,8 @@ Please try to avoid code that isn't directly related to the bug, as it makes it 
 
 **Versions**
 
-| package                    | version |
-| -------------------------- | ------- |
-| `eslint-plugin-typescript` | `X.Y.Z` |
-| `typescript-eslint-parser` | `X.Y.Z` |
-| `typescript`               | `X.Y.Z` |
+| package                     | version |
+| --------------------------- | ------- |
+| `eslint-plugin-typescript`  | `X.Y.Z` |
+| `@typescript-eslint/parser` | `X.Y.Z` |
+| `typescript`                | `X.Y.Z` |
