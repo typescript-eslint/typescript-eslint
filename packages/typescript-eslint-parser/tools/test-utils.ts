@@ -1,4 +1,15 @@
 import * as parser from '../src/parser';
+import { ParserOptions } from '../src/parser-options';
+
+const defaultConfig = {
+  loc: true,
+  range: true,
+  raw: true,
+  tokens: true,
+  comment: true,
+  errorOnUnknownASTType: true,
+  sourceType: 'module'
+};
 
 /**
  * Returns a raw copy of the given AST
@@ -20,19 +31,10 @@ function getRaw(ast: any) {
  * Returns a function which can be used as the callback of a Jest test() block,
  * and which performs an assertion on the snapshot for the given code and config.
  * @param {string} code The source code to parse
- * @param {*} config the parser configuration
+ * @param {ParserOptions} config the parser configuration
  * @returns {Function} callback for Jest test() block
  */
-export function createSnapshotTestBlock(code: any, config = {}) {
-  const defaultConfig = {
-    loc: true,
-    range: true,
-    raw: true,
-    tokens: true,
-    comment: true,
-    errorOnUnknownASTType: true,
-    sourceType: 'module'
-  };
+export function createSnapshotTestBlock(code: any, config: ParserOptions = {}) {
   config = Object.assign({}, defaultConfig, config);
 
   /**
@@ -58,6 +60,21 @@ export function createSnapshotTestBlock(code: any, config = {}) {
       expect(parse).toThrowErrorMatchingSnapshot();
     }
   };
+}
+
+/**
+ * @param {string} code The code being parsed
+ * @param {ParserOptions} config The configuration object for the parser
+ * @returns {void}
+ */
+export function testServices(code: string, config: ParserOptions = {}) {
+  config = Object.assign({}, defaultConfig, config);
+
+  const services = parser.parseForESLint(code, config).services;
+  expect(services).toBeDefined();
+  expect(services.program).toBeDefined();
+  expect(services.esTreeNodeToTSNodeMap).toBeDefined();
+  expect(services.tsNodeToESTreeNodeMap).toBeDefined();
 }
 
 export function formatSnapshotName(

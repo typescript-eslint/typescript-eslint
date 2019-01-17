@@ -3,11 +3,19 @@ import * as typescriptESTree from 'typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
+import { Program } from 'typescript';
 
 const packageJSON = require('../package.json');
 
+interface ParserServices {
+  program: Program | undefined;
+  esTreeNodeToTSNodeMap: WeakMap<object, any> | undefined;
+  tsNodeToESTreeNodeMap: WeakMap<object, any> | undefined;
+}
+
 interface ParseForESLintResult {
   ast: any;
+  services: ParserServices;
   visitorKeys: typeof visitorKeys;
   scopeManager: ReturnType<typeof analyzeScope>;
 }
@@ -43,7 +51,10 @@ export function parseForESLint<T extends ParserOptions = ParserOptions>(
     options.sourceType = 'script';
   }
 
-  const ast = typescriptESTree.parse(code, options);
+  const { ast, services } = typescriptESTree.parseAndGenerateServices(
+    code,
+    options
+  );
   ast.sourceType = options.sourceType;
 
   traverser.traverse(ast, {
@@ -63,5 +74,5 @@ export function parseForESLint<T extends ParserOptions = ParserOptions>(
   });
 
   const scopeManager = analyzeScope(ast, options);
-  return { ast, scopeManager, visitorKeys };
+  return { ast, services, scopeManager, visitorKeys };
 }
