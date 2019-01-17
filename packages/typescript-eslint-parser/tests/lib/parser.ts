@@ -14,7 +14,7 @@ describe('parser', () => {
 
   it('parseForESLint() should set the sourceType to script, if an invalid one is provided', () => {
     const code = 'const valid = true;';
-    const spy = jest.spyOn(typescriptESTree, 'parse');
+    const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
     parseForESLint(code, { sourceType: 'foo' as any });
     expect(spy).toHaveBeenCalledWith(code, {
       sourceType: 'script',
