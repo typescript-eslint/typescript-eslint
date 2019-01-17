@@ -13,14 +13,14 @@ declare all properties in the class.
 This rule, in its default state, does not require any argument and would completely disallow the use of parameter properties.
 If you would like to allow certain types of parameter properties then you may pass an object with the following options:
 
--   `allows`, an array containing one or more fo the allowed modifiers. Valid values are:
-    -   `readonly`, allows **readonly** parameter properties.
-    -   `private`, allows **private** parameter properties.
-    -   `protected`, allows **protected** parameter properties.
-    -   `public`, allows **public** parameter properties.
-    -   `private readonly`, allows **private readonly** parameter properties.
-    -   `protected readonly`, allows **protected readonly** parameter properties.
-    -   `public readonly`, allows **public readonly** parameter properties.
+- `allows`, an array containing one or more fo the allowed modifiers. Valid values are:
+  - `readonly`, allows **readonly** parameter properties.
+  - `private`, allows **private** parameter properties.
+  - `protected`, allows **protected** parameter properties.
+  - `public`, allows **public** parameter properties.
+  - `private readonly`, allows **private readonly** parameter properties.
+  - `protected readonly`, allows **protected readonly** parameter properties.
+  - `public readonly`, allows **public readonly** parameter properties.
 
 ### default
 
@@ -28,31 +28,31 @@ Examples of **incorrect** code for this rule with no options at all:
 
 ```ts
 class Foo {
-    constructor(readonly name: string) {}
+  constructor(readonly name: string) {}
 }
 
 class Foo {
-    constructor(private name: string) {}
+  constructor(private name: string) {}
 }
 
 class Foo {
-    constructor(protected name: string) {}
+  constructor(protected name: string) {}
 }
 
 class Foo {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 
 class Foo {
-    constructor(private readonly name: string) {}
+  constructor(private readonly name: string) {}
 }
 
 class Foo {
-    constructor(protected readonly name: string) {}
+  constructor(protected readonly name: string) {}
 }
 
 class Foo {
-    constructor(public readonly name: string) {}
+  constructor(public readonly name: string) {}
 }
 ```
 
@@ -60,7 +60,7 @@ Examples of **correct** code for this rule with no options at all:
 
 ```ts
 class Foo {
-    constructor(name: string) {}
+  constructor(name: string) {}
 }
 ```
 
@@ -70,27 +70,27 @@ Examples of **incorrect** code for the `{ "allows": ["readonly"] }` options:
 
 ```ts
 class Foo {
-    constructor(private name: string) {}
+  constructor(private name: string) {}
 }
 
 class Foo {
-    constructor(protected name: string) {}
+  constructor(protected name: string) {}
 }
 
 class Foo {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 
 class Foo {
-    constructor(private readonly name: string) {}
+  constructor(private readonly name: string) {}
 }
 
 class Foo {
-    constructor(protected readonly name: string) {}
+  constructor(protected readonly name: string) {}
 }
 
 class Foo {
-    constructor(public readonly name: string) {}
+  constructor(public readonly name: string) {}
 }
 ```
 
@@ -98,11 +98,11 @@ Examples of **correct** code for the `{ "allows": ["readonly"] }` options:
 
 ```ts
 class Foo {
-    constructor(name: string) {}
+  constructor(name: string) {}
 }
 
 class Foo {
-    constructor(readonly name: string) {}
+  constructor(readonly name: string) {}
 }
 ```
 
@@ -112,27 +112,27 @@ Examples of **incorrect** code for the `{ "allows": ["private"] }` options:
 
 ```ts
 class Foo {
-    constructor(readonly name: string) {}
+  constructor(readonly name: string) {}
 }
 
 class Foo {
-    constructor(protected name: string) {}
+  constructor(protected name: string) {}
 }
 
 class Foo {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 
 class Foo {
-    constructor(private readonly name: string) {}
+  constructor(private readonly name: string) {}
 }
 
 class Foo {
-    constructor(protected readonly name: string) {}
+  constructor(protected readonly name: string) {}
 }
 
 class Foo {
-    constructor(public readonly name: string) {}
+  constructor(public readonly name: string) {}
 }
 ```
 
@@ -140,11 +140,11 @@ Examples of **correct** code for the `{ "allows": ["private"] }` options:
 
 ```ts
 class Foo {
-    constructor(name: string) {}
+  constructor(name: string) {}
 }
 
 class Foo {
-    constructor(private name: string) {}
+  constructor(private name: string) {}
 }
 ```
 
@@ -154,27 +154,27 @@ Examples of **incorrect** code for the `{ "allows": ["protected"] }` options:
 
 ```ts
 class Foo {
-    constructor(readonly name: string) {}
+  constructor(readonly name: string) {}
 }
 
 class Foo {
-    constructor(private name: string) {}
+  constructor(private name: string) {}
 }
 
 class Foo {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 
 class Foo {
-    constructor(private readonly name: string) {}
+  constructor(private readonly name: string) {}
 }
 
 class Foo {
-    constructor(protected readonly name: string) {}
+  constructor(protected readonly name: string) {}
 }
 
 class Foo {
-    constructor(public readonly name: string) {}
+  constructor(public readonly name: string) {}
 }
 ```
 
@@ -182,11 +182,11 @@ Examples of **correct** code for the `{ "allows": ["protected"] }` options:
 
 ```ts
 class Foo {
-    constructor(name: string) {}
+  constructor(name: string) {}
 }
 
 class Foo {
-    constructor(protected name: string) {}
+  constructor(protected name: string) {}
 }
 ```
 
@@ -196,27 +196,27 @@ Examples of **incorrect** code for the `{ "allows": ["public"] }` options:
 
 ```ts
 class Foo {
-    constructor(readonly name: string) {}
+  constructor(readonly name: string) {}
 }
 
 class Foo {
-    constructor(private name: string) {}
+  constructor(private name: string) {}
 }
 
 class Foo {
-    constructor(protected name: string) {}
+  constructor(protected name: string) {}
 }
 
 class Foo {
-    constructor(private readonly name: string) {}
+  constructor(private readonly name: string) {}
 }
 
 class Foo {
-    constructor(protected readonly name: string) {}
+  constructor(protected readonly name: string) {}
 }
 
 class Foo {
-    constructor(public readonly name: string) {}
+  constructor(public readonly name: string) {}
 }
 ```
 
@@ -224,11 +224,11 @@ Examples of **correct** code for the `{ "allows": ["public"] }` options:
 
 ```ts
 class Foo {
-    constructor(name: string) {}
+  constructor(name: string) {}
 }
 
 class Foo {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 ```
 
@@ -238,27 +238,27 @@ Examples of **incorrect** code for the `{ "allows": ["private readonly"] }` opti
 
 ```ts
 class Foo {
-    constructor(readonly name: string) {}
+  constructor(readonly name: string) {}
 }
 
 class Foo {
-    constructor(private name: string) {}
+  constructor(private name: string) {}
 }
 
 class Foo {
-    constructor(protected name: string) {}
+  constructor(protected name: string) {}
 }
 
 class Foo {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 
 class Foo {
-    constructor(protected readonly name: string) {}
+  constructor(protected readonly name: string) {}
 }
 
 class Foo {
-    constructor(public readonly name: string) {}
+  constructor(public readonly name: string) {}
 }
 ```
 
@@ -266,11 +266,11 @@ Examples of **correct** code for the `{ "allows": ["private readonly"] }` option
 
 ```ts
 class Foo {
-    constructor(name: string) {}
+  constructor(name: string) {}
 }
 
 class Foo {
-    constructor(private readonly name: string) {}
+  constructor(private readonly name: string) {}
 }
 ```
 
@@ -280,27 +280,27 @@ Examples of **incorrect** code for the `{ "allows": ["protected readonly"] }` op
 
 ```ts
 class Foo {
-    constructor(readonly name: string) {}
+  constructor(readonly name: string) {}
 }
 
 class Foo {
-    constructor(private name: string) {}
+  constructor(private name: string) {}
 }
 
 class Foo {
-    constructor(protected name: string) {}
+  constructor(protected name: string) {}
 }
 
 class Foo {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 
 class Foo {
-    constructor(private readonly name: string) {}
+  constructor(private readonly name: string) {}
 }
 
 class Foo {
-    constructor(public readonly name: string) {}
+  constructor(public readonly name: string) {}
 }
 ```
 
@@ -308,11 +308,11 @@ Examples of **correct** code for the `{ "allows": ["protected readonly"] }` opti
 
 ```ts
 class Foo {
-    constructor(name: string) {}
+  constructor(name: string) {}
 }
 
 class Foo {
-    constructor(protected readonly name: string) {}
+  constructor(protected readonly name: string) {}
 }
 ```
 
@@ -322,27 +322,27 @@ Examples of **incorrect** code for the `{ "allows": ["public readonly"] }` optio
 
 ```ts
 class Foo {
-    constructor(readonly name: string) {}
+  constructor(readonly name: string) {}
 }
 
 class Foo {
-    constructor(private name: string) {}
+  constructor(private name: string) {}
 }
 
 class Foo {
-    constructor(protected name: string) {}
+  constructor(protected name: string) {}
 }
 
 class Foo {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 
 class Foo {
-    constructor(private readonly name: string) {}
+  constructor(private readonly name: string) {}
 }
 
 class Foo {
-    constructor(protected readonly name: string) {}
+  constructor(protected readonly name: string) {}
 }
 ```
 
@@ -350,11 +350,11 @@ Examples of **correct** code for the `{ "allows": ["public readonly"] }` options
 
 ```ts
 class Foo {
-    constructor(name: string) {}
+  constructor(name: string) {}
 }
 
 class Foo {
-    constructor(public readonly name: string) {}
+  constructor(public readonly name: string) {}
 }
 ```
 
@@ -364,4 +364,4 @@ If you don't care about the using parameter properties in constructors, then you
 
 ## Compatibility
 
--   TSLint: [no-parameter-properties](https://palantir.github.io/tslint/rules/no-parameter-properties/)
+- TSLint: [no-parameter-properties](https://palantir.github.io/tslint/rules/no-parameter-properties/)

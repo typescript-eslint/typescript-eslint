@@ -3,36 +3,36 @@
  * Some tests adapted from  https://github.com/palantir/tslint/tree/c7fc99b5/test/rules/no-unnecessary-class
  * @author Jed Fox
  */
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/no-extraneous-class"),
-    RuleTester = require("eslint").RuleTester;
+const rule = require('../../../lib/rules/no-extraneous-class'),
+  RuleTester = require('eslint').RuleTester;
 
-const empty = { messageId: "empty", type: "Identifier" };
-const onlyStatic = { messageId: "onlyStatic", type: "Identifier" };
-const onlyConstructor = { messageId: "onlyConstructor", type: "Identifier" };
+const empty = { messageId: 'empty', type: 'Identifier' };
+const onlyStatic = { messageId: 'onlyStatic', type: 'Identifier' };
+const onlyConstructor = { messageId: 'onlyConstructor', type: 'Identifier' };
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser",
+  parser: 'typescript-eslint-parser',
 });
 
-ruleTester.run("no-extraneous-class", rule, {
-    valid: [
-        `
+ruleTester.run('no-extraneous-class', rule, {
+  valid: [
+    `
 class Foo {
     public prop = 1;
     constructor() {}
 }
 `.trim(),
-        `
+    `
 export class CClass extends BaseClass {
     public static helper(): void {}
     private static privateHelper(): boolean {
@@ -41,27 +41,27 @@ export class CClass extends BaseClass {
     constructor() {}
 }
 `.trim(),
-        `
+    `
 class Foo {
    constructor(
      public bar: string
    ) {}
 }
 `.trim(),
-        {
-            code: "class Foo {}",
-            options: [{ allowEmpty: true }],
-        },
-        {
-            code: `
+    {
+      code: 'class Foo {}',
+      options: [{ allowEmpty: true }],
+    },
+    {
+      code: `
 class Foo {
     constructor() {}
 }
 `.trim(),
-            options: [{ allowConstructorOnly: true }],
-        },
-        {
-            code: `
+      options: [{ allowConstructorOnly: true }],
+    },
+    {
+      code: `
 export class Bar {
     public static helper(): void {}
     private static privateHelper(): boolean {
@@ -69,17 +69,17 @@ export class Bar {
     }
 }
 `.trim(),
-            options: [{ allowStaticOnly: true }],
-        },
-    ],
+      options: [{ allowStaticOnly: true }],
+    },
+  ],
 
-    invalid: [
-        {
-            code: "class Foo {}",
-            errors: [empty],
-        },
-        {
-            code: `
+  invalid: [
+    {
+      code: 'class Foo {}',
+      errors: [empty],
+    },
+    {
+      code: `
 class Foo {
     public prop = 1;
     constructor() {
@@ -95,18 +95,18 @@ export class Bar {
     }
 }
 `.trim(),
-            errors: [onlyStatic, onlyStatic],
-        },
-        {
-            code: `
+      errors: [onlyStatic, onlyStatic],
+    },
+    {
+      code: `
 class Foo {
     constructor() {}
 }
 `.trim(),
-            errors: [onlyConstructor],
-        },
-        {
-            code: `
+      errors: [onlyConstructor],
+    },
+    {
+      code: `
 export class AClass {
     public static helper(): void {}
     private static privateHelper(): boolean {
@@ -119,7 +119,7 @@ export class AClass {
 }
 
 `.trim(),
-            errors: [onlyStatic, empty],
-        },
-    ],
+      errors: [onlyStatic, empty],
+    },
+  ],
 });

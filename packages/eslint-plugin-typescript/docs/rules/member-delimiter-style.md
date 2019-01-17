@@ -2,7 +2,7 @@
 
 Enforces a consistent member delimiter style in interfaces and type literals. There are three member delimiter styles primarily used in TypeScript:
 
--   Semicolon style (default, preferred in TypeScript).
+- Semicolon style (default, preferred in TypeScript).
 
 <!-- prettier-ignore -->
 ```ts
@@ -17,7 +17,7 @@ type Bar = {
 }
 ```
 
--   Comma style (JSON style).
+- Comma style (JSON style).
 
 <!-- prettier-ignore -->
 ```ts
@@ -32,7 +32,7 @@ type Bar = {
 }
 ```
 
--   Linebreak (none) style.
+- Linebreak (none) style.
 
 <!-- prettier-ignore -->
 ```ts
@@ -58,20 +58,20 @@ This rule aims to standardise the way interface and type literal members are del
 
 ```ts
 interface BaseConfig {
-    multiline?: {
-        delimiter?: "none" | "semi" | "comma";
-        requireLast?: boolean;
-    };
-    singleline?: {
-        delimiter?: "semi" | "comma";
-        requireLast?: boolean;
-    };
+  multiline?: {
+    delimiter?: 'none' | 'semi' | 'comma';
+    requireLast?: boolean;
+  };
+  singleline?: {
+    delimiter?: 'semi' | 'comma';
+    requireLast?: boolean;
+  };
 }
 type Config = BaseConfig & {
-    overrides?: {
-        interface?: BaseConfig;
-        typeLiteral?: BaseConfig;
-    };
+  overrides?: {
+    interface?: BaseConfig;
+    typeLiteral?: BaseConfig;
+  };
 };
 ```
 
@@ -98,17 +98,17 @@ The two configs are entirely separate, and do not effect one another.
 
 Accepts three values (or two for `singleline`):
 
--   `comma` - each member should be delimited with a comma (`,`).
--   `semi` - each member should be delimited with a semicolon (`;`).
--   `none` - each member should be delimited with nothing.
-    -   NOTE - this is not an option for `singleline` because having no delimiter between members on a single line is a syntax error in TS.
+- `comma` - each member should be delimited with a comma (`,`).
+- `semi` - each member should be delimited with a semicolon (`;`).
+- `none` - each member should be delimited with nothing.
+  - NOTE - this is not an option for `singleline` because having no delimiter between members on a single line is a syntax error in TS.
 
 ### `requireLast`
 
 Determines whether or not the last member in the `interface`/`type` should have a delimiter:
 
--   `true` - the last member **_must_** have a delimiter.
--   `false` - the last member **_must not_** have a delimiter.
+- `true` - the last member **_must_** have a delimiter.
+- `false` - the last member **_must not_** have a delimiter.
 
 ### `overrides`
 

@@ -17,7 +17,7 @@ type T = string;
 type Foo = string | {};
 
 interface T {
-    x: number;
+  x: number;
 }
 ```
 
@@ -31,4 +31,4 @@ interface T {
 
 ## Compatibility
 
--   TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
+- TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)

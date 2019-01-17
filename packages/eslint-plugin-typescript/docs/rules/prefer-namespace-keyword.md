@@ -13,10 +13,10 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 
 ## Further Reading
 
--   [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
--   [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
--   [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
+- [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
+- [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
+- [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
 
 ## Compatibility
 
--   TSLint: [no-internal-module](https://palantir.github.io/tslint/rules/no-internal-module/)
+- TSLint: [no-internal-module](https://palantir.github.io/tslint/rules/no-internal-module/)

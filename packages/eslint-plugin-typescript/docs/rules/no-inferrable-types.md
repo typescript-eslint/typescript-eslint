@@ -13,8 +13,8 @@ This rule has an options object:
 
 ```json
 {
-    "ignoreProperties": false,
-    "ignoreParameters": false
+  "ignoreProperties": false,
+  "ignoreParameters": false
 }
 ```
 
@@ -25,10 +25,10 @@ When none of the options are truthy, the following patterns are valid:
 ```ts
 const foo = 5;
 const bar = true;
-const baz = "str";
+const baz = 'str';
 
 class Foo {
-    prop = 5;
+  prop = 5;
 }
 
 function fn(a = 5, b = true) {}
@@ -41,10 +41,10 @@ The following are invalid:
 ```ts
 const foo: number = 5;
 const bar: boolean = true;
-const baz: string = "str";
+const baz: string = 'str';
 
 class Foo {
-    prop: number = 5;
+  prop: number = 5;
 }
 
 function fn(a: number = 5, b: boolean = true) {}
@@ -56,7 +56,7 @@ When set to true, the following pattern is considered valid:
 
 ```ts
 class Foo {
-    prop: number = 5;
+  prop: number = 5;
 }
 ```
 
@@ -66,7 +66,7 @@ When set to true, the following pattern is considered valid:
 
 ```ts
 function foo(a: number = 5, b: boolean = true) {
-    // ...
+  // ...
 }
 ```
 

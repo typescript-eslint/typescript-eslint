@@ -8,12 +8,12 @@ Examples of **incorrect** code for this rule.
 
 ```ts
 class C {
-    new(): C;
+  new(): C;
 }
 
 interface I {
-    new (): I;
-    constructor(): void;
+  new (): I;
+  constructor(): void;
 }
 ```
 
@@ -21,10 +21,10 @@ Examples of **correct** code for this rule.
 
 ```ts
 class C {
-    constructor() {}
+  constructor() {}
 }
 interface I {
-    new (): C;
+  new (): C;
 }
 ```
 
@@ -32,10 +32,10 @@ interface I {
 
 ```json
 {
-    "typescript/no-misused-new": "error"
+  "typescript/no-misused-new": "error"
 }
 ```
 
 ## Compatibility
 
--   TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)
+- TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)

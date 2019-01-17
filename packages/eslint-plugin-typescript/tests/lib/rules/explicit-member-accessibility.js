@@ -2,28 +2,28 @@
  * @fileoverview Enforces explicit accessibility modifiers for class members
  * @author Danny Fritz
  */
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/explicit-member-accessibility"),
-    RuleTester = require("eslint").RuleTester;
+const rule = require('../../../lib/rules/explicit-member-accessibility'),
+  RuleTester = require('eslint').RuleTester;
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser",
+  parser: 'typescript-eslint-parser',
 });
 
-ruleTester.run("explicit-member-accessibility", rule, {
-    valid: [
-        {
-            filename: "test.ts",
-            code: `
+ruleTester.run('explicit-member-accessibility', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      code: `
 class Test {
   protected name: string
   private x: number
@@ -32,32 +32,32 @@ class Test {
   }
 }
             `,
-        },
-        {
-            filename: "test.ts",
-            code: `
+    },
+    {
+      filename: 'test.ts',
+      code: `
 class Test {
   protected name: string
   protected foo?: string
   public "foo-bar"?: string
 }
             `,
-        },
-        {
-            filename: "test.js",
-            code: `
+    },
+    {
+      filename: 'test.js',
+      code: `
 class Test {
   getX () {
     return 1;
   }
 }
             `,
-        },
-    ],
-    invalid: [
-        {
-            filename: "test.ts",
-            code: `
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      code: `
 class Test {
   x: number
   public getX () {
@@ -65,18 +65,17 @@ class Test {
   }
 }
             `,
-            errors: [
-                {
-                    message:
-                        "Missing accessibility modifier on class property x.",
-                    line: 3,
-                    column: 3,
-                },
-            ],
-        },
+      errors: [
         {
-            filename: "test.ts",
-            code: `
+          message: 'Missing accessibility modifier on class property x.',
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
 class Test {
   private x: number
   getX () {
@@ -84,18 +83,17 @@ class Test {
   }
 }
             `,
-            errors: [
-                {
-                    message:
-                        "Missing accessibility modifier on method definition getX.",
-                    line: 4,
-                    column: 3,
-                },
-            ],
-        },
+      errors: [
         {
-            filename: "test.ts",
-            code: `
+          message: 'Missing accessibility modifier on method definition getX.',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
 class Test {
   x?: number
   getX? () {
@@ -103,20 +101,18 @@ class Test {
   }
 }
             `,
-            errors: [
-                {
-                    message:
-                        "Missing accessibility modifier on class property x.",
-                    line: 3,
-                    column: 3,
-                },
-                {
-                    message:
-                        "Missing accessibility modifier on method definition getX.",
-                    line: 4,
-                    column: 3,
-                },
-            ],
+      errors: [
+        {
+          message: 'Missing accessibility modifier on class property x.',
+          line: 3,
+          column: 3,
         },
-    ],
+        {
+          message: 'Missing accessibility modifier on method definition getX.',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+  ],
 });

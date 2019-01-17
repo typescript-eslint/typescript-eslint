@@ -36,8 +36,8 @@ Add `eslint-plugin-typescript/parser` to the `parser` field and `typescript` to 
 
 ```json
 {
-    "parser": "eslint-plugin-typescript/parser",
-    "plugins": ["typescript"]
+  "parser": "eslint-plugin-typescript/parser",
+  "plugins": ["typescript"]
 }
 ```
 
@@ -48,11 +48,11 @@ Then configure the rules you want to use under the rules section.
 
 ```json
 {
-    "parser": "eslint-plugin-typescript/parser",
-    "plugins": ["typescript"],
-    "rules": {
-        "typescript/rule-name": "error"
-    }
+  "parser": "eslint-plugin-typescript/parser",
+  "plugins": ["typescript"],
+  "rules": {
+    "typescript/rule-name": "error"
+  }
 }
 ```
 
@@ -60,7 +60,7 @@ You can also enable all the recommended rules at once. Add `plugin:typescript/re
 
 ```json
 {
-    "extends": ["plugin:typescript/recommended"]
+  "extends": ["plugin:typescript/recommended"]
 }
 ```
 

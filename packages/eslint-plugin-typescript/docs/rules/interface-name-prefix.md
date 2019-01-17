@@ -11,8 +11,8 @@ This rule enforces consistency of interface naming prefix conventions.
 
 This rule has a string option.
 
--   `"never"` (default) disallows all interfaces being prefixed with `"I"`
--   `"always"` requires all interfaces be prefixed with `"I"`
+- `"never"` (default) disallows all interfaces being prefixed with `"I"`
+- `"always"` requires all interfaces be prefixed with `"I"`
 
 ### never
 
@@ -22,7 +22,7 @@ The following patterns are considered warnings:
 
 ```ts
 interface IAnimal {
-    name: string;
+  name: string;
 }
 ```
 
@@ -30,7 +30,7 @@ The following patterns are not warnings:
 
 ```ts
 interface Animal {
-    name: string;
+  name: string;
 }
 ```
 
@@ -40,7 +40,7 @@ The following patterns are considered warnings:
 
 ```ts
 interface Animal {
-    name: string;
+  name: string;
 }
 ```
 
@@ -48,7 +48,7 @@ The following patterns are not warnings:
 
 ```ts
 interface IAnimal {
-    name: string;
+  name: string;
 }
 ```
 

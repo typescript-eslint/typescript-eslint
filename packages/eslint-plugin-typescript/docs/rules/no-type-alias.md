@@ -2,7 +2,7 @@
 
 In TypeScript, type aliases serve three purposes:
 
--   Aliasing other types so that we can refer to them using a simpler name.
+- Aliasing other types so that we can refer to them using a simpler name.
 
 ```ts
 // this...
@@ -18,8 +18,8 @@ function addPerson(person : Person) { ... }
 function addPerson(person : { firstName: string, lastName: string, age: number}) { ... }
 ```
 
--   Act sort of like an interface, providing a set of methods and properties that must exist
-    in the objects implementing the type.
+- Act sort of like an interface, providing a set of methods and properties that must exist
+  in the objects implementing the type.
 
 ```ts
 type Person = {
@@ -38,20 +38,20 @@ var person : Person = { ... }
 person.walk();
 ```
 
--   Act like mapping tools between types to allow quick modifications.
+- Act like mapping tools between types to allow quick modifications.
 
 ```ts
 type Immutable<T> = { readonly [P in keyof T]: T[P] };
 
 type Person = {
-    name: string;
-    age: number;
+  name: string;
+  age: number;
 };
 
 type ImmutablePerson = Immutable<Person>;
 
-var person: ImmutablePerson = { name: "John", age: 30 };
-person.name = "Brad"; // error, readonly property
+var person: ImmutablePerson = { name: 'John', age: 30 };
+person.name = 'Brad'; // error, readonly property
 ```
 
 When aliasing, the type alias does not create a new type, it just creates a new name
@@ -65,9 +65,9 @@ type myString = string;
 
 On the other hand, using a type alias as an interface can limit your ability to:
 
--   Reuse your code: interfaces can be extended or implemented by other types. Type aliases cannot.
--   Debug your code: interfaces create a new name, so is easy to identify the base type of an object
-    while debugging the application.
+- Reuse your code: interfaces can be extended or implemented by other types. Type aliases cannot.
+- Debug your code: interfaces create a new name, so is easy to identify the base type of an object
+  while debugging the application.
 
 Finally, mapping types is an advance technique, leaving it open can quickly become a pain point
 in your application.
@@ -82,10 +82,10 @@ and simplified types (primitives, tuples, unions, intersections, etc).
 This rule, in its default state, does not require any argument. If you would like to enable one
 or more of the following you may pass an object with the options set as follows:
 
--   `allowAliases` set to `"always"` will allow you to do aliasing (Defaults to `"never"`).
--   `allowCallbacks` set to `"always"` will allow you to use type aliases with callbacks (Defaults to `"never"`)
--   `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
--   `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
+- `allowAliases` set to `"always"` will allow you to do aliasing (Defaults to `"never"`).
+- `allowCallbacks` set to `"always"` will allow you to use type aliases with callbacks (Defaults to `"never"`)
+- `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
+- `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
 
 ### allowAliases
 
@@ -93,18 +93,18 @@ This applies to primitive types and reference types.
 
 The setting accepts the following values:
 
--   `"always"` or `"never"` to active or deactivate the feature.
--   `"in-unions"`, allows aliasing in union statements, e.g. `type Foo = string | string[];`
--   `"in-intersections"`, allows aliasing in intersection statements, e.g. `type Foo = string & string[];`
--   `"in-unions-and-intersections"`, allows aliasing in union and/or intersection statements.
+- `"always"` or `"never"` to active or deactivate the feature.
+- `"in-unions"`, allows aliasing in union statements, e.g. `type Foo = string | string[];`
+- `"in-intersections"`, allows aliasing in intersection statements, e.g. `type Foo = string & string[];`
+- `"in-unions-and-intersections"`, allows aliasing in union and/or intersection statements.
 
 Examples of **correct** code for the `{ "allowAliases": "always" }` options:
 
 ```ts
 // primitives
-type Foo = "a";
+type Foo = 'a';
 
-type Foo = "a" | "b";
+type Foo = 'a' | 'b';
 
 type Foo = string;
 
@@ -127,7 +127,7 @@ Examples of **incorrect** code for the `{ "allowAliases": "in-unions" }` option:
 
 ```ts
 // primitives
-type Foo = "a";
+type Foo = 'a';
 
 type Foo = string;
 
@@ -146,7 +146,7 @@ Examples of **correct** code for the `{ "allowAliases": "in-unions" }` option:
 
 ```ts
 // primitives
-type Foo = "a" | "b";
+type Foo = 'a' | 'b';
 
 type Foo = string | string[];
 
@@ -161,9 +161,9 @@ Examples of **incorrect** code for the `{ "allowAliases": "in-intersections" }` 
 
 ```ts
 // primitives
-type Foo = "a";
+type Foo = 'a';
 
-type Foo = "a" | "b";
+type Foo = 'a' | 'b';
 
 type Foo = string;
 
@@ -195,7 +195,7 @@ Examples of **incorrect** code for the `{ "allowAliases": "in-unions-and-interse
 
 ```ts
 // primitives
-type Foo = "a";
+type Foo = 'a';
 
 type Foo = string;
 
@@ -210,7 +210,7 @@ Examples of **correct** code for the `{ "allowAliases": "in-unions-and-intersect
 
 ```ts
 // primitives
-type Foo = "a" | "b";
+type Foo = 'a' | 'b';
 
 type Foo = string | string[];
 
@@ -231,7 +231,7 @@ This applies to function types.
 
 The setting accepts the following values:
 
--   `"always"` or `"never"` to active or deactivate the feature.
+- `"always"` or `"never"` to active or deactivate the feature.
 
 Examples of **correct** code for the `{ "allowCallbacks": "always" }` option:
 
@@ -253,10 +253,10 @@ This applies to literal types (`type Foo = { ... }`).
 
 The setting accepts the following options:
 
--   `"always"` or `"never"` to active or deactivate the feature.
--   `"in-unions"`, allows literals in union statements, e.g. `type Foo = string | string[];`
--   `"in-intersections"`, allows literals in intersection statements, e.g. `type Foo = string & string[];`
--   `"in-unions-and-intersections"`, allows literals in union and/or intersection statements.
+- `"always"` or `"never"` to active or deactivate the feature.
+- `"in-unions"`, allows literals in union statements, e.g. `type Foo = string | string[];`
+- `"in-intersections"`, allows literals in intersection statements, e.g. `type Foo = string & string[];`
+- `"in-unions-and-intersections"`, allows literals in union and/or intersection statements.
 
 Examples of **correct** code for the `{ "allowLiterals": "always" }` options:
 
@@ -264,14 +264,14 @@ Examples of **correct** code for the `{ "allowLiterals": "always" }` options:
 type Foo = {};
 
 type Foo = {
-    name: string;
-    age: number;
+  name: string;
+  age: number;
 };
 
 type Foo = {
-    name: string;
-    age: number;
-    walk: (miles: number) => void;
+  name: string;
+  age: number;
+  walk: (miles: number) => void;
 };
 
 type Foo = { name: string } | { age: number };
@@ -285,14 +285,14 @@ Examples of **incorrect** code for the `{ "allowLiterals": "in-unions" }` option
 type Foo = {};
 
 type Foo = {
-    name: string;
-    age: number;
+  name: string;
+  age: number;
 };
 
 type Foo = {
-    name: string;
-    age: number;
-    walk: (miles: number) => void;
+  name: string;
+  age: number;
+  walk: (miles: number) => void;
 };
 
 type Foo = { name: string } & { age: number };
@@ -310,14 +310,14 @@ Examples of **incorrect** code for the `{ "allowLiterals": "in-intersections" }`
 type Foo = {};
 
 type Foo = {
-    name: string;
-    age: number;
+  name: string;
+  age: number;
 };
 
 type Foo = {
-    name: string;
-    age: number;
-    walk: (miles: number) => void;
+  name: string;
+  age: number;
+  walk: (miles: number) => void;
 };
 
 type Foo = { name: string } | { age: number };
@@ -335,14 +335,14 @@ Examples of **incorrect** code for the `{ "allowLiterals": "in-unions-and-inters
 type Foo = {};
 
 type Foo = {
-    name: string;
-    age: number;
+  name: string;
+  age: number;
 };
 
 type Foo = {
-    name: string;
-    age: number;
-    walk: (miles: number) => void;
+  name: string;
+  age: number;
+  walk: (miles: number) => void;
 };
 ```
 
@@ -360,10 +360,10 @@ This applies to literal types.
 
 The setting accepts the following values:
 
--   `"always"` or `"never"` to active or deactivate the feature.
--   `"in-unions"`, allows aliasing in union statements, e.g. `type Foo = string | string[];`
--   `"in-intersections"`, allows aliasing in intersection statements, e.g. `type Foo = string & string[];`
--   `"in-unions-and-intersections"`, allows aliasing in union and/or intersection statements.
+- `"always"` or `"never"` to active or deactivate the feature.
+- `"in-unions"`, allows aliasing in union statements, e.g. `type Foo = string | string[];`
+- `"in-intersections"`, allows aliasing in intersection statements, e.g. `type Foo = string & string[];`
+- `"in-unions-and-intersections"`, allows aliasing in union and/or intersection statements.
 
 Examples of **correct** code for the `{ "allowMappedTypes": "always" }` options:
 
@@ -373,13 +373,13 @@ type Foo<T> = { readonly [P in keyof T]: T[P] };
 type Foo<T> = { [P in keyof T]?: T[P] };
 
 type Foo<T, U> =
-    | { readonly [P in keyof T]: T[P] }
-    | { readonly [P in keyof U]: U[P] };
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 
 type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-    { readonly [P in keyof U]: U[P] };
+  { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -392,7 +392,7 @@ type Foo<T> = { readonly [P in keyof T]: T[P] };
 type Foo<T> = { [P in keyof T]?: T[P] };
 
 type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-    { readonly [P in keyof U]: U[P] };
+  { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -401,8 +401,8 @@ Examples of **correct** code for the `{ "allowMappedTypes": "in-unions" }` optio
 
 ```ts
 type Foo<T, U> =
-    | { readonly [P in keyof T]: T[P] }
-    | { readonly [P in keyof U]: U[P] };
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 ```
@@ -415,8 +415,8 @@ type Foo<T> = { readonly [P in keyof T]: T[P] };
 type Foo<T> = { [P in keyof T]?: T[P] };
 
 type Foo<T, U> =
-    | { readonly [P in keyof T]: T[P] }
-    | { readonly [P in keyof U]: U[P] };
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 ```
@@ -425,7 +425,7 @@ Examples of **correct** code for the `{ "allowMappedTypes": "in-intersections" }
 
 ```ts
 type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-    { readonly [P in keyof U]: U[P] };
+  { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -442,13 +442,13 @@ Examples of **correct** code for the `{ "allowMappedTypes": "in-unions-and-inter
 
 ```ts
 type Foo<T, U> =
-    | { readonly [P in keyof T]: T[P] }
-    | { readonly [P in keyof U]: U[P] };
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 
 type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-    { readonly [P in keyof U]: U[P] };
+  { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -460,8 +460,8 @@ callback, etc. that would cause the code to be unreadable or impractical.
 
 ## Further Reading
 
--   [Advance Types](https://www.typescriptlang.org/docs/handbook/advanced-types.html)
+- [Advance Types](https://www.typescriptlang.org/docs/handbook/advanced-types.html)
 
 ## Related to
 
--   TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
+- TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)

@@ -37,11 +37,11 @@ This rule aims to enforce specific spacing patterns around type annotations and 
 
 This rule has an object option:
 
--   `"before": false`, (default for colon) disallows spaces before the colon/arrow.
--   `"before": true`, (default for arrow) requires a space before the colon/arrow.
--   `"after": true`, (default) requires a space after the colon/arrow.
--   `"after": false`, disallows spaces after the colon/arrow.
--   `"overrides"`, overrides the default options for type annotations with `colon` (e.g. `const foo: string`) and function types with `arrow` (e.g. `type Foo = () => {}`).
+- `"before": false`, (default for colon) disallows spaces before the colon/arrow.
+- `"before": true`, (default for arrow) requires a space before the colon/arrow.
+- `"after": true`, (default) requires a space after the colon/arrow.
+- `"after": false`, disallows spaces after the colon/arrow.
+- `"overrides"`, overrides the default options for type annotations with `colon` (e.g. `const foo: string`) and function types with `arrow` (e.g. `type Foo = () => {}`).
 
 ### defaults
 
@@ -281,9 +281,9 @@ If you don't want to enforce spacing for your type annotations, you can safely t
 
 ## Further Reading
 
--   [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
--   [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
+- [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
+- [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
 ## Compatibility
 
--   TSLint: [typedef-whitespace](https://palantir.github.io/tslint/rules/typedef-whitespace/)
+- TSLint: [typedef-whitespace](https://palantir.github.io/tslint/rules/typedef-whitespace/)

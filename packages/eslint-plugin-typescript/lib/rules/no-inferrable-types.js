@@ -2,199 +2,190 @@
  * @fileoverview Disallows explicit type declarations for inferrable types
  * @author James Garbutt <https://github.com/43081j>
  */
-"use strict";
+'use strict';
 
-const util = require("../util");
+const util = require('../util');
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
 const defaultOptions = [
-    {
-        ignoreParameters: true,
-        ignoreProperties: true,
-    },
+  {
+    ignoreParameters: true,
+    ignoreProperties: true,
+  },
 ];
 
 module.exports = {
-    meta: {
-        type: "suggestion",
-        docs: {
-            description:
-                "Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.",
-            extraDescription: [util.tslintRule("no-inferrable-types")],
-            category: "TypeScript",
-            url: util.metaDocsUrl("no-inferrable-types"),
-            recommended: "error",
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.',
+      extraDescription: [util.tslintRule('no-inferrable-types')],
+      category: 'TypeScript',
+      url: util.metaDocsUrl('no-inferrable-types'),
+      recommended: 'error',
+    },
+    fixable: 'code',
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignoreParameters: {
+            type: 'boolean',
+          },
+          ignoreProperties: {
+            type: 'boolean',
+          },
         },
-        fixable: "code",
-        schema: [
-            {
-                type: "object",
-                properties: {
-                    ignoreParameters: {
-                        type: "boolean",
-                    },
-                    ignoreProperties: {
-                        type: "boolean",
-                    },
-                },
-                additionalProperties: false,
-            },
-        ],
-    },
+        additionalProperties: false,
+      },
+    ],
+  },
 
-    create(context) {
-        const { ignoreParameters, ignoreProperties } = util.applyDefault(
-            defaultOptions,
-            context.options
-        )[0];
+  create(context) {
+    const { ignoreParameters, ignoreProperties } = util.applyDefault(
+      defaultOptions,
+      context.options
+    )[0];
 
-        /**
-         * Returns whether a node has an inferrable value or not
-         * @param {ASTNode} node the node to check
-         * @param {ASTNode} init the initializer
-         * @returns {boolean} whether the node has an inferrable type
-         */
-        function isInferrable(node, init) {
-            if (node.type !== "TSTypeAnnotation" || !node.typeAnnotation) {
-                return false;
-            }
+    /**
+     * Returns whether a node has an inferrable value or not
+     * @param {ASTNode} node the node to check
+     * @param {ASTNode} init the initializer
+     * @returns {boolean} whether the node has an inferrable type
+     */
+    function isInferrable(node, init) {
+      if (node.type !== 'TSTypeAnnotation' || !node.typeAnnotation) {
+        return false;
+      }
 
-            if (!init) {
-                return false;
-            }
+      if (!init) {
+        return false;
+      }
 
-            const annotation = node.typeAnnotation;
+      const annotation = node.typeAnnotation;
 
-            if (annotation.type === "TSStringKeyword") {
-                return (
-                    (init.type === "Literal" &&
-                        typeof init.value === "string") ||
-                    (init.type === "TemplateElement" &&
-                        (!init.expressions || init.expressions.length === 0))
-                );
-            }
+      if (annotation.type === 'TSStringKeyword') {
+        return (
+          (init.type === 'Literal' && typeof init.value === 'string') ||
+          (init.type === 'TemplateElement' &&
+            (!init.expressions || init.expressions.length === 0))
+        );
+      }
 
-            if (annotation.type === "TSBooleanKeyword") {
-                return init.type === "Literal";
-            }
+      if (annotation.type === 'TSBooleanKeyword') {
+        return init.type === 'Literal';
+      }
 
-            if (annotation.type === "TSNumberKeyword") {
-                // Infinity is special
-                if (
-                    (init.type === "UnaryExpression" &&
-                        init.operator === "-" &&
-                        init.argument.type === "Identifier" &&
-                        init.argument.name === "Infinity") ||
-                    (init.type === "Identifier" && init.name === "Infinity")
-                ) {
-                    return true;
-                }
-
-                return (
-                    init.type === "Literal" && typeof init.value === "number"
-                );
-            }
-
-            return false;
+      if (annotation.type === 'TSNumberKeyword') {
+        // Infinity is special
+        if (
+          (init.type === 'UnaryExpression' &&
+            init.operator === '-' &&
+            init.argument.type === 'Identifier' &&
+            init.argument.name === 'Infinity') ||
+          (init.type === 'Identifier' && init.name === 'Infinity')
+        ) {
+          return true;
         }
 
-        /**
-         * Reports an inferrable type declaration, if any
-         * @param {ASTNode} node the node being visited
-         * @param {ASTNode} typeNode the type annotation node
-         * @param {ASTNode} initNode the initializer node
-         * @returns {void}
-         */
-        function reportInferrableType(node, typeNode, initNode) {
-            if (!typeNode || !initNode || !typeNode.typeAnnotation) {
-                return;
-            }
+        return init.type === 'Literal' && typeof init.value === 'number';
+      }
 
-            if (!isInferrable(typeNode, initNode)) {
-                return;
-            }
+      return false;
+    }
 
-            const typeMap = {
-                TSBooleanKeyword: "boolean",
-                TSNumberKeyword: "number",
-                TSStringKeyword: "string",
-            };
+    /**
+     * Reports an inferrable type declaration, if any
+     * @param {ASTNode} node the node being visited
+     * @param {ASTNode} typeNode the type annotation node
+     * @param {ASTNode} initNode the initializer node
+     * @returns {void}
+     */
+    function reportInferrableType(node, typeNode, initNode) {
+      if (!typeNode || !initNode || !typeNode.typeAnnotation) {
+        return;
+      }
 
-            const type = typeMap[typeNode.typeAnnotation.type];
+      if (!isInferrable(typeNode, initNode)) {
+        return;
+      }
 
-            context.report({
-                node,
-                message:
-                    "Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.",
-                data: {
-                    type,
-                },
-                fix: fixer => fixer.remove(typeNode),
-            });
-        }
+      const typeMap = {
+        TSBooleanKeyword: 'boolean',
+        TSNumberKeyword: 'number',
+        TSStringKeyword: 'string',
+      };
 
-        /**
-         * Visits variables
-         * @param {ASTNode} node the node to be visited
-         * @returns {void}
-         */
-        function inferrableVariableVisitor(node) {
-            if (!node.id) {
-                return;
-            }
-            reportInferrableType(node, node.id.typeAnnotation, node.init);
-        }
+      const type = typeMap[typeNode.typeAnnotation.type];
 
-        /**
-         * Visits parameters
-         * @param {ASTNode} node the node to be visited
-         * @returns {void}
-         */
-        function inferrableParameterVisitor(node) {
-            if (ignoreParameters || !node.params) {
-                return;
-            }
-            node.params
-                .filter(
-                    param =>
-                        param.type === "AssignmentPattern" &&
-                        param.left &&
-                        param.right
-                )
-                .forEach(param => {
-                    reportInferrableType(
-                        param,
-                        param.left.typeAnnotation,
-                        param.right
-                    );
-                });
-        }
+      context.report({
+        node,
+        message:
+          'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.',
+        data: {
+          type,
+        },
+        fix: fixer => fixer.remove(typeNode),
+      });
+    }
 
-        /**
-         * Visits properties
-         * @param {ASTNode} node the node to be visited
-         * @returns {void}
-         */
-        function inferrablePropertyVisitor(node) {
-            // We ignore `readonly` because of Microsoft/TypeScript#14416
-            // Essentially a readonly property without a type
-            // will result in its value being the type, leading to
-            // compile errors if the type is stripped.
-            if (ignoreProperties || node.readonly) {
-                return;
-            }
-            reportInferrableType(node, node.typeAnnotation, node.value);
-        }
+    /**
+     * Visits variables
+     * @param {ASTNode} node the node to be visited
+     * @returns {void}
+     */
+    function inferrableVariableVisitor(node) {
+      if (!node.id) {
+        return;
+      }
+      reportInferrableType(node, node.id.typeAnnotation, node.init);
+    }
 
-        return {
-            VariableDeclarator: inferrableVariableVisitor,
-            FunctionExpression: inferrableParameterVisitor,
-            FunctionDeclaration: inferrableParameterVisitor,
-            ArrowFunctionExpression: inferrableParameterVisitor,
-            ClassProperty: inferrablePropertyVisitor,
-        };
-    },
+    /**
+     * Visits parameters
+     * @param {ASTNode} node the node to be visited
+     * @returns {void}
+     */
+    function inferrableParameterVisitor(node) {
+      if (ignoreParameters || !node.params) {
+        return;
+      }
+      node.params
+        .filter(
+          param =>
+            param.type === 'AssignmentPattern' && param.left && param.right
+        )
+        .forEach(param => {
+          reportInferrableType(param, param.left.typeAnnotation, param.right);
+        });
+    }
+
+    /**
+     * Visits properties
+     * @param {ASTNode} node the node to be visited
+     * @returns {void}
+     */
+    function inferrablePropertyVisitor(node) {
+      // We ignore `readonly` because of Microsoft/TypeScript#14416
+      // Essentially a readonly property without a type
+      // will result in its value being the type, leading to
+      // compile errors if the type is stripped.
+      if (ignoreProperties || node.readonly) {
+        return;
+      }
+      reportInferrableType(node, node.typeAnnotation, node.value);
+    }
+
+    return {
+      VariableDeclarator: inferrableVariableVisitor,
+      FunctionExpression: inferrableParameterVisitor,
+      FunctionDeclaration: inferrableParameterVisitor,
+      ArrowFunctionExpression: inferrableParameterVisitor,
+      ClassProperty: inferrablePropertyVisitor,
+    };
+  },
 };
