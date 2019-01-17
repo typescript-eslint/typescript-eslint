@@ -17,8 +17,8 @@ script:
   # TODO: Reenable after migrations are complete
   # - commitlint-travis
   - yarn check-format
-  - yarn test
   - yarn build
+  - yarn test
   # TODO: Reimplement automated integration-tests from typescript-eslint-parser
   # for the monorepo, after the migrations are complete
   # yarn integration-tests
