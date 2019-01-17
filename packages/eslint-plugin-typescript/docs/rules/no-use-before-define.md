@@ -21,14 +21,14 @@ f();
 function f() {}
 
 function g() {
-    return b;
+  return b;
 }
 var b = 1;
 
 // With blockBindings: true
 {
-    alert(c);
-    let c = 1;
+  alert(c);
+  let c = 1;
 }
 
 let myVar: StringOrNumber;
@@ -50,13 +50,13 @@ f(1);
 
 var b = 1;
 function g() {
-    return b;
+  return b;
 }
 
 // With blockBindings: true
 {
-    let C;
-    c++;
+  let C;
+  c++;
 }
 
 type StringOrNumber = string | number;
@@ -67,33 +67,33 @@ let myVar: StringOrNumber;
 
 ```json
 {
-    "no-use-before-define": ["error", { "functions": true, "classes": true }]
+  "no-use-before-define": ["error", { "functions": true, "classes": true }]
 }
 ```
 
--   `functions` (`boolean`) -
-    The flag which shows whether or not this rule checks function declarations.
-    If this is `true`, this rule warns every reference to a function before the function declaration.
-    Otherwise, ignores those references.
-    Function declarations are hoisted, so it's safe.
-    Default is `true`.
--   `classes` (`boolean`) -
-    The flag which shows whether or not this rule checks class declarations of upper scopes.
-    If this is `true`, this rule warns every reference to a class before the class declaration.
-    Otherwise, ignores those references if the declaration is in upper function scopes.
-    Class declarations are not hoisted, so it might be danger.
-    Default is `true`.
--   `variables` (`boolean`) -
-    This flag determines whether or not the rule checks variable declarations in upper scopes.
-    If this is `true`, the rule warns every reference to a variable before the variable declaration.
-    Otherwise, the rule ignores a reference if the declaration is in an upper scope, while still reporting the reference if it's in the same scope as the declaration.
-    Default is `true`.
--   `typedefs` (`boolean`, **added** in `eslint-plugin-typescript`) -
-    The flag which shows whether or not this rule checks type declarations.
-    If this is `true`, this rule warns every reference to a type before the type declaration.
-    Otherwise, ignores those references.
-    Type declarations are hoisted, so it's safe.
-    Default is `true`.
+- `functions` (`boolean`) -
+  The flag which shows whether or not this rule checks function declarations.
+  If this is `true`, this rule warns every reference to a function before the function declaration.
+  Otherwise, ignores those references.
+  Function declarations are hoisted, so it's safe.
+  Default is `true`.
+- `classes` (`boolean`) -
+  The flag which shows whether or not this rule checks class declarations of upper scopes.
+  If this is `true`, this rule warns every reference to a class before the class declaration.
+  Otherwise, ignores those references if the declaration is in upper function scopes.
+  Class declarations are not hoisted, so it might be danger.
+  Default is `true`.
+- `variables` (`boolean`) -
+  This flag determines whether or not the rule checks variable declarations in upper scopes.
+  If this is `true`, the rule warns every reference to a variable before the variable declaration.
+  Otherwise, the rule ignores a reference if the declaration is in an upper scope, while still reporting the reference if it's in the same scope as the declaration.
+  Default is `true`.
+- `typedefs` (`boolean`, **added** in `eslint-plugin-typescript`) -
+  The flag which shows whether or not this rule checks type declarations.
+  If this is `true`, this rule warns every reference to a type before the type declaration.
+  Otherwise, ignores those references.
+  Type declarations are hoisted, so it's safe.
+  Default is `true`.
 
 This rule accepts `"nofunc"` string as an option.
 `"nofunc"` is the same as `{ "functions": false, "classes": true }`.
@@ -128,7 +128,7 @@ Examples of **correct** code for the `{ "classes": false }` option:
 /*eslint-env es6*/
 
 function foo() {
-    return new A();
+  return new A();
 }
 
 class A {}
@@ -151,7 +151,7 @@ Examples of **correct** code for the `{ "variables": false }` option:
 /*eslint no-use-before-define: ["error", { "variables": false }]*/
 
 function baz() {
-    console.log(foo);
+  console.log(foo);
 }
 
 var foo = 1;

@@ -25,12 +25,12 @@ The following patterns are not warnings:
 ```ts
 // an interface with any number of members
 interface Foo {
-    name: string;
+  name: string;
 }
 
 // same as above
 interface Bar {
-    age: number;
+  age: number;
 }
 
 // an interface with more than one supertype
@@ -44,4 +44,4 @@ If you don't care about having empty/meaningless interfaces, then you will not n
 
 ## Compatibility
 
--   TSLint: [no-empty-interface](https://palantir.github.io/tslint/rules/no-empty-interface/)
+- TSLint: [no-empty-interface](https://palantir.github.io/tslint/rules/no-empty-interface/)

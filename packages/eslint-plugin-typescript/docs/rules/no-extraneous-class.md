@@ -15,17 +15,17 @@ Examples of **incorrect** code for this rule:
 class EmptyClass {}
 
 class ConstructorOnly {
-    constructor() {
-        foo();
-    }
+  constructor() {
+    foo();
+  }
 }
 
 // Use an object instead:
 class StaticOnly {
-    static version = 42;
-    static hello() {
-        console.log("Hello, world!");
-    }
+  static version = 42;
+  static hello() {
+    console.log('Hello, world!');
+  }
 }
 ```
 
@@ -35,14 +35,14 @@ Examples of **correct** code for this rule:
 class EmptyClass extends SuperClass {}
 
 class ParameterProperties {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 
 const StaticOnly = {
-    version: 42,
-    hello() {
-        console.log("Hello, world!");
-    },
+  version: 42,
+  hello() {
+    console.log('Hello, world!');
+  },
 };
 ```
 
@@ -50,9 +50,9 @@ const StaticOnly = {
 
 This rule accepts a single object option.
 
--   `constructorOnly: true` will silence warnings about classes containing only a constructor.
--   `allowEmpty: true` will silence warnings about empty classes.
--   `staticOnly: true` will silence warnings about classes containing only static members.
+- `constructorOnly: true` will silence warnings about classes containing only a constructor.
+- `allowEmpty: true` will silence warnings about empty classes.
+- `staticOnly: true` will silence warnings about classes containing only static members.
 
 ## When Not To Use It
 

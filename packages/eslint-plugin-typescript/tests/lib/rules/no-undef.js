@@ -2,27 +2,27 @@
  * @fileoverview Check internal rule
  * @author Armano <https://github.com/armano2>
  */
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("eslint/lib/rules/no-undef"),
-    RuleTester = require("eslint").RuleTester;
+const rule = require('eslint/lib/rules/no-undef'),
+  RuleTester = require('eslint').RuleTester;
 
 const ruleTester = new RuleTester({
-    parserOptions: {
-        ecmaVersion: 6,
-        sourceType: "module",
-        ecmaFeatures: {},
-    },
-    parser: "typescript-eslint-parser",
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {},
+  },
+  parser: 'typescript-eslint-parser',
 });
 
-ruleTester.run("no-undef", rule, {
-    valid: [
-        `
+ruleTester.run('no-undef', rule, {
+  valid: [
+    `
 import Beemo from './Beemo';
 import Driver from './Driver';
 import Script from './Script';
@@ -38,6 +38,6 @@ export * from './types';
 
 export default Beemo;
         `,
-    ],
-    invalid: [],
+  ],
+  invalid: [],
 });

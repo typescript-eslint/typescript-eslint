@@ -4,104 +4,104 @@
  * @author Jed Fox
  */
 
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/no-use-before-define"),
-    RuleTester = require("eslint").RuleTester;
+const rule = require('../../../lib/rules/no-use-before-define'),
+  RuleTester = require('eslint').RuleTester;
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser",
+  parser: 'typescript-eslint-parser',
 });
 
-ruleTester.run("no-use-before-define", rule, {
-    valid: [
-        "var a=10; alert(a);",
-        "function b(a) { alert(a); }",
-        "Object.hasOwnProperty.call(a);",
-        "function a() { alert(arguments);}",
-        "declare function a()",
-        "declare class a { foo() }",
-        {
-            code: `
+ruleTester.run('no-use-before-define', rule, {
+  valid: [
+    'var a=10; alert(a);',
+    'function b(a) { alert(a); }',
+    'Object.hasOwnProperty.call(a);',
+    'function a() { alert(arguments);}',
+    'declare function a()',
+    'declare class a { foo() }',
+    {
+      code: `
 a();
 function a() { alert(arguments); }
             `,
-            options: ["nofunc"],
-        },
-        {
-            code: "(() => { var a = 42; alert(a); })();",
-            parserOptions: { ecmaVersion: 6 },
-        },
-        `
+      options: ['nofunc'],
+    },
+    {
+      code: '(() => { var a = 42; alert(a); })();',
+      parserOptions: { ecmaVersion: 6 },
+    },
+    `
 a();
 try {
     throw new Error()
 } catch (a) {}
         `,
-        {
-            code: `
+    {
+      code: `
 class A {}
 new A();
             `,
-            parserOptions: { ecmaVersion: 6 },
-        },
-        "var a = 0, b = a;",
-        { code: "var {a = 0, b = a} = {};", parserOptions: { ecmaVersion: 6 } },
-        { code: "var [a = 0, b = a] = {};", parserOptions: { ecmaVersion: 6 } },
-        `
+      parserOptions: { ecmaVersion: 6 },
+    },
+    'var a = 0, b = a;',
+    { code: 'var {a = 0, b = a} = {};', parserOptions: { ecmaVersion: 6 } },
+    { code: 'var [a = 0, b = a] = {};', parserOptions: { ecmaVersion: 6 } },
+    `
 function foo() {
     foo();
 }
         `,
-        `
+    `
 var foo = function() {
     foo();
 };
         `,
-        `
+    `
 var a;
 for (a in a) {}
         `,
-        {
-            code: `
+    {
+      code: `
 var a;
 for (a of a) {}
             `,
-            parserOptions: { ecmaVersion: 6 },
-        },
+      parserOptions: { ecmaVersion: 6 },
+    },
 
-        // Block-level bindings
-        {
-            code: `
+    // Block-level bindings
+    {
+      code: `
 "use strict";
 a();
 {
     function a() {}
 }
             `,
-            parserOptions: { ecmaVersion: 6 },
-        },
-        {
-            code: `
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
 "use strict";
 {
     a();
     function a() {}
 }
             `,
-            options: ["nofunc"],
-            parserOptions: { ecmaVersion: 6 },
-        },
-        {
-            code: `
+      options: ['nofunc'],
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
 switch (foo) {
     case 1: {
         a();
@@ -111,100 +111,100 @@ switch (foo) {
     }
 }
             `,
-            parserOptions: { ecmaVersion: 6 },
-        },
-        {
-            code: `
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
 a();
 {
     let a = function () {};
 }
             `,
-            parserOptions: { ecmaVersion: 6 },
-        },
+      parserOptions: { ecmaVersion: 6 },
+    },
 
-        // object style options
-        {
-            code: `
+    // object style options
+    {
+      code: `
 a();
 function a() {
     alert(arguments);
 }
             `,
-            options: [{ functions: false }],
-        },
-        {
-            code: `
+      options: [{ functions: false }],
+    },
+    {
+      code: `
 "use strict";
 {
     a();
     function a() {}
 }
             `,
-            options: [{ functions: false }],
-            parserOptions: { ecmaVersion: 6 },
-        },
-        {
-            code: `
+      options: [{ functions: false }],
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
 function foo() {
     new A();
 }
 class A {};
             `,
-            options: [{ classes: false }],
-            parserOptions: { ecmaVersion: 6 },
-        },
+      options: [{ classes: false }],
+      parserOptions: { ecmaVersion: 6 },
+    },
 
-        // "variables" option
-        {
-            code: `
+    // "variables" option
+    {
+      code: `
 function foo() {
     bar;
 }
 var bar;
             `,
-            options: [{ variables: false }],
-        },
-        {
-            code: `
+      options: [{ variables: false }],
+    },
+    {
+      code: `
 var foo = () => bar;
 var bar;
             `,
-            options: [{ variables: false }],
-            parserOptions: { ecmaVersion: 6 },
-        },
+      options: [{ variables: false }],
+      parserOptions: { ecmaVersion: 6 },
+    },
 
-        // "typedefs" option
-        {
-            code: `
+    // "typedefs" option
+    {
+      code: `
 var x: Foo = 2;
 type Foo = string | number
             `,
-            options: [{ typedefs: false }],
-        },
+      options: [{ typedefs: false }],
+    },
 
-        // test for https://github.com/bradzacher/eslint-plugin-typescript/issues/142
-        {
-            code: `
+    // test for https://github.com/bradzacher/eslint-plugin-typescript/issues/142
+    {
+      code: `
 var alias = Test;
 
 class Test {}
             `,
-            parserOptions: { ecmaVersion: 6 },
-            options: [{ classes: false }],
-        },
-        {
-            code: `
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ classes: false }],
+    },
+    {
+      code: `
 var alias = Test;
 
 export class Test {}
             `,
-            parserOptions: { ecmaVersion: 6, sourceType: "module" },
-            options: [{ classes: false }],
-        },
-        // https://github.com/bradzacher/eslint-plugin-typescript/issues/141
-        {
-            code: `
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      options: [{ classes: false }],
+    },
+    // https://github.com/bradzacher/eslint-plugin-typescript/issues/141
+    {
+      code: `
 interface ITest {
   first : boolean;
   second : string;
@@ -219,75 +219,75 @@ export namespace Third {
   export let third = () => console.log('third');
 }
             `,
-            parserOptions: { ecmaVersion: 6, sourceType: "module" },
-            parser: "typescript-eslint-parser",
-        },
-    ],
-    invalid: [
-        {
-            code: `
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      parser: 'typescript-eslint-parser',
+    },
+  ],
+  invalid: [
+    {
+      code: `
 a++;
 var a=19;
             `,
-            parserOptions: { sourceType: "module" },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { sourceType: 'module' },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 a++;
 var a=19;
             `,
-            parserOptions: { parserOptions: { ecmaVersion: 6 } },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { parserOptions: { ecmaVersion: 6 } },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 a++;
 var a=19;
             `,
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 a();
 var a=function() {};
             `,
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 alert(a[1]);
 var a=[1,3];
             `,
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 a();
 function a() {
     alert(b);
@@ -295,33 +295,33 @@ function a() {
     a();
 }
             `,
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-                {
-                    message: "'b' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+      errors: [
+        {
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
         {
-            code: `
+          message: "'b' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 a();
 var a=function() {};
 
             `,
-            options: ["nofunc"],
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      options: ['nofunc'],
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 (
     () => {
         alert(a);
@@ -329,47 +329,47 @@ var a=function() {};
     }
 )();
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 (
     () => a()
 )();
 function a() { }
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 "use strict";
 a();
 {
     function a() {}
 }
             `,
-            parser: "espree",
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parser: 'espree',
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 a();
 try {
     throw new Error()
@@ -377,132 +377,132 @@ try {
     var a;
 }
             `,
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 var f = () => a;
 var a;
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 new A();
 class A {};
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'A' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'A' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 function foo() {
     new A();
 }
 class A {};
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'A' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'A' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 new A();
 var A = class {};
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'A' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'A' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 function foo() {
     new A();
 }
 var A = class {};
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'A' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
+        {
+          message: "'A' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
 
-        // Block-level bindings
-        {
-            code: `
+    // Block-level bindings
+    {
+      code: `
 a++;
 {
     var a;
 }
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 "use strict";
 {
     a();
     function a() {}
 }
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 {
     a;
     let a = 1
 }
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 switch (foo) {
     case 1:
         a();
@@ -510,16 +510,16 @@ switch (foo) {
         let a;
 }
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 if (true) {
     function foo() {
         a;
@@ -527,197 +527,197 @@ if (true) {
     let a;
 }
             `,
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
-
-        // object style options
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+
+    // object style options
+    {
+      code: `
 a();
 var a=function() {};
             `,
-            options: [{ functions: false, classes: false }],
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      options: [{ functions: false, classes: false }],
+      errors: [
         {
-            code: `
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 new A();
 var A = class {};
             `,
-            options: [{ classes: false }],
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'A' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
-        },
+      options: [{ classes: false }],
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: `
+          message: "'A' was used before it was defined.",
+          type: 'Identifier',
+        },
+      ],
+    },
+    {
+      code: `
 function foo() {
     new A();
 }
 var A = class {};
             `,
-            options: [{ classes: false }],
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'A' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+      options: [{ classes: false }],
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
+        {
+          message: "'A' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
 
-        // invalid initializers
+    // invalid initializers
+    {
+      code: 'var a = a;',
+      errors: [
         {
-            code: "var a = a;",
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'let a = a + b;',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "let a = a + b;",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'const a = foo(a);',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "const a = foo(a);",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'function foo(a = a) {}',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "function foo(a = a) {}",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'var {a = a} = [];',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "var {a = a} = [];",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'var [a = a] = [];',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "var [a = a] = [];",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'var {b = a, a} = {};',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "var {b = a, a} = {};",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'var [b = a, a] = {};',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "var [b = a, a] = {};",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'var {a = 0} = a;',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "var {a = 0} = a;",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'var [a = 0] = a;',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "var [a = 0] = a;",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'for (var a in a) {}',
+      errors: [
         {
-            code: "for (var a in a) {}",
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
+    {
+      code: 'for (var a of a) {}',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
         {
-            code: "for (var a of a) {}",
-            parserOptions: { ecmaVersion: 6 },
-            errors: [
-                {
-                    message: "'a' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+          message: "'a' was used before it was defined.",
+          type: 'Identifier',
         },
+      ],
+    },
 
-        // "variables" option
-        {
-            code: `
+    // "variables" option
+    {
+      code: `
 function foo() {
     bar;
     var bar = 1;
 }
 var bar;
             `,
-            parserOptions: { ecmaVersion: 6 },
-            options: [{ variables: false }],
-            errors: [
-                {
-                    message: "'bar' was used before it was defined.",
-                    type: "Identifier",
-                },
-            ],
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ variables: false }],
+      errors: [
+        {
+          message: "'bar' was used before it was defined.",
+          type: 'Identifier',
         },
-    ],
+      ],
+    },
+  ],
 });

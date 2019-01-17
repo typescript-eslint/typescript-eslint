@@ -2,14 +2,14 @@
  * @fileoverview Check internal rule
  * @author Armano <https://github.com/armano2>
  */
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/indent"),
-    RuleTester = require("eslint").RuleTester;
+const rule = require('../../../lib/rules/indent'),
+  RuleTester = require('eslint').RuleTester;
 
 /**
  * Marks a test case as a plain javascript case which should be indented the same
@@ -17,14 +17,14 @@ const rule = require("../../../lib/rules/indent"),
  * @returns {string} marked code
  */
 function nonTsTestCase(example) {
-    return [`// Non-TS Test Case`, example].join("\n");
+  return [`// Non-TS Test Case`, example].join('\n');
 }
 
 const individualNodeTests = [
-    {
-        node: "TSAbstractClassDeclaration",
-        code: [
-            `
+  {
+    node: 'TSAbstractClassDeclaration',
+    code: [
+      `
 abstract class Foo {
     constructor() {}
     method() {
@@ -32,12 +32,12 @@ abstract class Foo {
     }
 }
             `,
-        ],
-    },
-    {
-        node: "TSAbstractClassProperty",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSAbstractClassProperty',
+    code: [
+      `
 class Foo {
     abstract bar : baz;
     abstract foo : {
@@ -46,12 +46,12 @@ class Foo {
     };
 }
             `,
-        ],
-    },
-    {
-        node: "TSAbstractMethodDefinition",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSAbstractMethodDefinition',
+    code: [
+      `
 class Foo {
     abstract bar() : baz;
     abstract foo() : {
@@ -60,45 +60,45 @@ class Foo {
     };
 }
             `,
-        ],
-    },
-    {
-        node: "TSArrayType",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSArrayType',
+    code: [
+      `
 type foo = ArrType[];
             `,
-        ],
-    },
-    {
-        node: "TSAsExpression",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSAsExpression',
+    code: [
+      `
 const foo = {} as {
     foo: string,
     bar: number,
 };
             `,
-            nonTsTestCase`
+      nonTsTestCase`
 const foo = {} ===
 {
     foo: string,
     bar: number,
 };
             `,
-            `
+      `
 const foo = {} as
 {
     foo: string,
     bar: number,
 };
             `,
-        ],
-    },
-    {
-        node: "TSConditionalType",
-        code: [
-            nonTsTestCase`
+    ],
+  },
+  {
+    node: 'TSConditionalType',
+    code: [
+      nonTsTestCase`
 const Foo = T
     ? {
         a: number,
@@ -108,7 +108,7 @@ const Foo = T
         c: string
     };
             `,
-            `
+      `
 type Foo<T> = T extends string
     ? {
         a: number,
@@ -118,34 +118,34 @@ type Foo<T> = T extends string
         c: string
     };
             `,
-            nonTsTestCase`
+      nonTsTestCase`
 const Foo = T ? {
     a: number,
     b: boolean
 } : string;
             `,
-            `
+      `
 type Foo<T> = T extends string ? {
     a: number,
     b: boolean
 } : string;
             `,
-        ],
-    },
-    {
-        node: "TSConstructorType",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSConstructorType',
+    code: [
+      `
 type Constructor<T> = new (
     ...args: any[]
 ) => T;
             `,
-        ],
-    },
-    {
-        node: "TSConstructSignature",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSConstructSignature',
+    code: [
+      `
 interface Foo {
     new () : Foo
     new () : {
@@ -154,23 +154,23 @@ interface Foo {
     }
 }
             `,
-        ],
-    },
-    {
-        node: "TSEmptyBodyDeclareFunction",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSEmptyBodyDeclareFunction',
+    code: [
+      `
 declare function foo() : {
     bar : number,
     baz : string,
 };
             `,
-        ],
-    },
-    {
-        node: "TSEmptyBodyFunctionExpression",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSEmptyBodyFunctionExpression',
+    code: [
+      `
 class Foo {
     constructor(
         a : string,
@@ -180,40 +180,40 @@ class Foo {
     )
 }
             `,
-        ],
-    },
-    {
-        node: "TSEnumDeclaration, TSEnumMember",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSEnumDeclaration, TSEnumMember',
+    code: [
+      `
 enum Foo {
     bar = 1,
     baz = 1,
 }
             `,
-        ],
-    },
-    {
-        node: "TSExportAssignment",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSExportAssignment',
+    code: [
+      `
 export = {
     a: 1,
     b: 2,
 }
             `,
-        ],
-    },
-    {
-        node: "TSFunctionType",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSFunctionType',
+    code: [
+      `
 const foo: () => void = () => ({
     a: 1,
     b: 2,
 });
             `,
-            `
+      `
 const foo: () => {
     a: number,
     b: number,
@@ -222,7 +222,7 @@ const foo: () => {
     b: 2,
 });
             `,
-            `
+      `
 const foo: ({
     a: number,
     b: number,
@@ -231,7 +231,7 @@ const foo: ({
     b: 2,
 });
             `,
-            `
+      `
 const foo: ({
     a: number,
     b: number,
@@ -243,18 +243,18 @@ const foo: ({
     b: arg.b,
 });
             `,
-        ],
-    },
-    {
-        node: "TSImportType",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSImportType',
+    code: [
+      `
 const foo: import("bar") = {
     a: 1,
     b: 2,
 };
             `,
-            `
+      `
 const foo: import(
     "bar"
 ) = {
@@ -262,27 +262,27 @@ const foo: import(
     b: 2,
 };
             `,
-        ],
-    },
-    {
-        node: "TSIndexedAccessType",
-        code: [
-            nonTsTestCase`
+    ],
+  },
+  {
+    node: 'TSIndexedAccessType',
+    code: [
+      nonTsTestCase`
 const Foo = Bar[
     'asdf'
 ];
             `,
-            `
+      `
 type Foo = Bar[
     'asdf'
 ];
             `,
-        ],
-    },
-    {
-        node: "TSIndexSignature",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSIndexSignature',
+    code: [
+      `
 type Foo = {
     [a : string] : {
         x : foo
@@ -290,24 +290,24 @@ type Foo = {
     }
 }
             `,
-        ],
-    },
-    {
-        node: "TSInferType",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSInferType',
+    code: [
+      `
 type Foo<T> = T extends string
     ? infer U
     : {
         a : string
     };
             `,
-        ],
-    },
-    {
-        node: "TSInterfaceBody, TSInterfaceDeclaration",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSInterfaceBody, TSInterfaceDeclaration',
+    code: [
+      `
 interface Foo {
     a : string
     b : {
@@ -316,12 +316,12 @@ interface Foo {
     }
 }
             `,
-        ],
-    },
-    {
-        node: "TSInterfaceHeritage",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSInterfaceHeritage',
+    code: [
+      `
 interface Foo extends Bar {
     a : string
     b : {
@@ -330,66 +330,66 @@ interface Foo extends Bar {
     }
 }
             `,
-        ],
-    },
-    {
-        node: "TSIntersectionType",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSIntersectionType',
+    code: [
+      `
 type Foo = "string" & {
     a : number
 } & number;
             `,
-        ],
-    },
-    {
-        node: "TSImportEqualsDeclaration, TSExternalModuleReference",
-        code: [
-            nonTsTestCase`
+    ],
+  },
+  {
+    node: 'TSImportEqualsDeclaration, TSExternalModuleReference',
+    code: [
+      nonTsTestCase`
 const foo = require(
     'asdf'
 );
             `,
-            `
+      `
 import foo = require(
     'asdf'
 );
             `,
-        ],
-    },
-    // TSLiteralType
-    {
-        node: "TSMappedType",
-        code: [
-            `
+    ],
+  },
+  // TSLiteralType
+  {
+    node: 'TSMappedType',
+    code: [
+      `
 type Partial<T> = {
     [P in keyof T]: T[P];
 }
             `,
-            `
+      `
 // TSQuestionToken
 type Partial<T> = {
     [P in keyof T]?: T[P];
 }
             `,
-            `
+      `
 // TSPlusToken
 type Partial<T> = {
     [P in keyof T]+?: T[P];
 }
             `,
-            `
+      `
 // TSMinusToken
 type Partial<T> = {
     [P in keyof T]-?: T[P];
 }
             `,
-        ],
-    },
-    {
-        node: "TSMethodSignature",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSMethodSignature',
+    code: [
+      `
 interface Foo {
     method() : string
     method2() : {
@@ -398,13 +398,13 @@ interface Foo {
     }
 }
             `,
-        ],
-    },
-    // TSMinusToken - tested in TSMappedType
-    {
-        node: "TSModuleBlock, TSModuleDeclaration",
-        code: [
-            `
+    ],
+  },
+  // TSMinusToken - tested in TSMappedType
+  {
+    node: 'TSModuleBlock, TSModuleDeclaration',
+    code: [
+      `
 declare module "foo" {
     export const bar : {
         a : string,
@@ -412,27 +412,27 @@ declare module "foo" {
     }
 }
             `,
-        ],
-    },
-    {
-        node: "TSNonNullExpression",
-        code: [
-            nonTsTestCase`
+    ],
+  },
+  {
+    node: 'TSNonNullExpression',
+    code: [
+      nonTsTestCase`
 const foo = a
     .b.
     c;
             `,
-            `
+      `
 const foo = a!
     .b!.
     c;
             `,
-        ],
-    },
-    {
-        node: "TSParameterProperty",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSParameterProperty',
+    code: [
+      `
 class Foo {
     constructor(
         private foo : string,
@@ -445,12 +445,12 @@ class Foo {
     }
 }
             `,
-        ],
-    },
-    {
-        node: "TSParenthesizedType",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSParenthesizedType',
+    code: [
+      `
 const x: Array<(
     | {
         __typename: "Foo",
@@ -468,13 +468,13 @@ const x: Array<(
     )
 )>;
             `,
-        ],
-    },
-    // TSPlusToken - tested in TSMappedType
-    {
-        node: "TSPropertySignature",
-        code: [
-            `
+    ],
+  },
+  // TSPlusToken - tested in TSMappedType
+  {
+    node: 'TSPropertySignature',
+    code: [
+      `
 interface Foo {
     bar : string
     baz : {
@@ -483,18 +483,18 @@ interface Foo {
     }
 }
             `,
-        ],
-    },
-    {
-        node: "TSQualifiedName",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSQualifiedName',
+    code: [
+      `
 const a: Foo.bar = {
     a: 1,
     b: 2,
 };
             `,
-            nonTsTestCase`
+      nonTsTestCase`
 const a = Foo.
     bar
     .baz = {
@@ -502,7 +502,7 @@ const a = Foo.
         b: 2,
     };
             `,
-            `
+      `
 const a: Foo.
     bar
     .baz = {
@@ -510,24 +510,24 @@ const a: Foo.
         b: 2,
     };
             `,
-        ],
-    },
-    // TSQuestionToken - tested in TSMappedType
-    {
-        node: "TSRestType",
-        code: [
-            `
+    ],
+  },
+  // TSQuestionToken - tested in TSMappedType
+  {
+    node: 'TSRestType',
+    code: [
+      `
 type foo = [
     string,
     ...string[],
 ];
             `,
-        ],
-    },
-    {
-        node: "TSThisType",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSThisType',
+    code: [
+      `
 declare class MyArray<T> extends Array<T> {
     sort(compareFn?: (a: T, b: T) => number): this;
     meth() : {
@@ -535,24 +535,24 @@ declare class MyArray<T> extends Array<T> {
     }
 }
             `,
-        ],
-    },
-    {
-        node: "TSTupleType",
-        code: [
-            nonTsTestCase`
+    ],
+  },
+  {
+    node: 'TSTupleType',
+    code: [
+      nonTsTestCase`
 const foo = [
     string,
     number,
 ];
             `,
-            `
+      `
 type foo = [
     string,
     number,
 ];
             `,
-            nonTsTestCase`
+      nonTsTestCase`
 const foo = [
     [
         string,
@@ -560,7 +560,7 @@ const foo = [
     ],
 ];
             `,
-            `
+      `
 type foo = [
     [
         string,
@@ -568,31 +568,31 @@ type foo = [
     ],
 ];
             `,
-        ],
-    },
-    // TSTypeAnnotation - tested in everything..
-    // TSTypeLiteral - tested in everything..
-    {
-        node: "TSTypeOperator",
-        code: [
-            `
+    ],
+  },
+  // TSTypeAnnotation - tested in everything..
+  // TSTypeLiteral - tested in everything..
+  {
+    node: 'TSTypeOperator',
+    code: [
+      `
 type T = keyof {
     a: 1,
     b: 2,
 };
             `,
-        ],
-    },
-    {
-        node: "TSTypeParameter, TSTypeParameterDeclaration",
-        code: [
-            `
+    ],
+  },
+  {
+    node: 'TSTypeParameter, TSTypeParameterDeclaration',
+    code: [
+      `
 type Foo<T> = {
     a : unknown,
     b : never,
 }
             `,
-            `
+      `
 function foo<
     T,
     U
@@ -600,77 +600,77 @@ function foo<
     console.log('');
 }
             `,
-        ],
-    },
-    // TSTypeReference - tested in everything..
-    {
-        node: "TSUnionType",
-        code: [
-            `
+    ],
+  },
+  // TSTypeReference - tested in everything..
+  {
+    node: 'TSUnionType',
+    code: [
+      `
 type Foo = string | {
     a : number
 } | number;
             `,
-        ],
-    },
+    ],
+  },
 ].reduce(
-    (acc, testCase) => {
-        const indent = "    ";
+  (acc, testCase) => {
+    const indent = '    ';
 
-        const codeCases = testCase.code.map(code =>
-            [
-                "", // newline to make test error messages nicer
-                `// ${testCase.node}`, // add comment to easily identify which node a test belongs to
-                code.trim(), // remove leading/trailing spaces from the case
-            ].join("\n")
-        );
+    const codeCases = testCase.code.map(code =>
+      [
+        '', // newline to make test error messages nicer
+        `// ${testCase.node}`, // add comment to easily identify which node a test belongs to
+        code.trim(), // remove leading/trailing spaces from the case
+      ].join('\n')
+    );
 
-        codeCases.forEach(code => {
-            // valid test case is just the code
-            acc.valid.push(code);
+    codeCases.forEach(code => {
+      // valid test case is just the code
+      acc.valid.push(code);
 
-            acc.invalid.push({
-                // test the fixer by removing all the spaces
-                code: code.replace(new RegExp(indent, "g"), ""),
-                output: code,
-                errors: code
-                    .split("\n")
-                    .map((line, lineNum) => {
-                        const indentCount = line.split(indent).length - 1;
-                        const spaceCount = indentCount * indent.length;
+      acc.invalid.push({
+        // test the fixer by removing all the spaces
+        code: code.replace(new RegExp(indent, 'g'), ''),
+        output: code,
+        errors: code
+          .split('\n')
+          .map((line, lineNum) => {
+            const indentCount = line.split(indent).length - 1;
+            const spaceCount = indentCount * indent.length;
 
-                        if (indentCount < 1) {
-                            return null;
-                        }
+            if (indentCount < 1) {
+              return null;
+            }
 
-                        return {
-                            message: `Expected indentation of ${spaceCount} spaces but found 0.`,
-                            line: lineNum + 1,
-                            column: 1,
-                        };
-                    })
-                    .filter(error => error !== null),
-            });
-        });
+            return {
+              message: `Expected indentation of ${spaceCount} spaces but found 0.`,
+              line: lineNum + 1,
+              column: 1,
+            };
+          })
+          .filter(error => error !== null),
+      });
+    });
 
-        return acc;
-    },
-    { valid: [], invalid: [] }
+    return acc;
+  },
+  { valid: [], invalid: [] }
 );
 
 const ruleTester = new RuleTester({
-    parserOptions: {
-        ecmaVersion: 6,
-        sourceType: "module",
-        ecmaFeatures: {},
-    },
-    parser: "typescript-eslint-parser",
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {},
+  },
+  parser: 'typescript-eslint-parser',
 });
 
-ruleTester.run("indent", rule, {
-    valid: [
-        ...individualNodeTests.valid,
-        `
+ruleTester.run('indent', rule, {
+  valid: [
+    ...individualNodeTests.valid,
+    `
 @Component({
     components: {
         ErrorPage: () => import('@/components/ErrorPage.vue'),
@@ -699,8 +699,8 @@ export default class App extends Vue
     }
 }
         `,
-        // https://github.com/eslint/typescript-eslint-parser/issues/474
-        `
+    // https://github.com/eslint/typescript-eslint-parser/issues/474
+    `
 /**
  * @param {string} name
  * @param {number} age
@@ -708,7 +708,7 @@ export default class App extends Vue
  */
 function foo(name: string, age: number): string {}
         `,
-        `
+    `
 const firebaseApp = firebase.apps.length
     ? firebase.app()
     : firebase.initializeApp({
@@ -720,58 +720,58 @@ const firebaseApp = firebase.apps.length
         messagingSenderId: __FIREBASE_MESSAGING_SENDER_ID__,
     })
         `,
-        // https://github.com/bradzacher/eslint-plugin-typescript/issues/271
-        {
-            code: `
+    // https://github.com/bradzacher/eslint-plugin-typescript/issues/271
+    {
+      code: `
 const foo = {
                 a: 1,
                 b: 2
             },
             bar = 1;
             `,
-            options: [4, { VariableDeclarator: { const: 3 } }],
-        },
-        {
-            code: `
+      options: [4, { VariableDeclarator: { const: 3 } }],
+    },
+    {
+      code: `
 const foo : Foo = {
                 a: 1,
                 b: 2
             },
             bar = 1;
             `,
-            options: [4, { VariableDeclarator: { const: 3 } }],
-        },
-    ],
-    invalid: [
-        ...individualNodeTests.invalid,
-        {
-            code: `
+      options: [4, { VariableDeclarator: { const: 3 } }],
+    },
+  ],
+  invalid: [
+    ...individualNodeTests.invalid,
+    {
+      code: `
 type Foo = {
 bar : string,
 age : number,
 }
             `,
-            output: `
+      output: `
 type Foo = {
     bar : string,
     age : number,
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
 bar : string,
 age : number,
@@ -785,7 +785,7 @@ asdf: string,
 ): Foo,
 }
             `,
-            output: `
+      output: `
 interface Foo {
     bar : string,
     age : number,
@@ -799,61 +799,61 @@ interface Foo {
     ): Foo,
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 6,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 7,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 8,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 9,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 10,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 11,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 12,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 6,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 7,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 8,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 9,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 10,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 11,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 12,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
 bar : {
 baz : string,
@@ -861,7 +861,7 @@ baz : string,
 age : number,
 }
             `,
-            output: `
+      output: `
 interface Foo {
     bar : {
         baz : string,
@@ -869,151 +869,151 @@ interface Foo {
     age : number,
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 6,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 6,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo extends Bar {
 bar : string,
 age : number,
 }
             `,
-            output: `
+      output: `
 interface Foo extends Bar {
     bar : string,
     age : number,
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-            ],
-        },
-        // this is just to show how eslint handles class with extends on a new line so we can keep the interface indent
-        // handling the same
+      errors: [
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+      ],
+    },
+    // this is just to show how eslint handles class with extends on a new line so we can keep the interface indent
+    // handling the same
+    {
+      code: `
 class Foo
 extends Bar {
 bar : string = "asdf";
 age : number = 1;
 }
             `,
-            output: `
+      output: `
 class Foo
     extends Bar {
     bar : string = "asdf";
     age : number = 1;
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo
 extends Bar {
 bar : string,
 age : number,
 }
             `,
-            output: `
+      output: `
 interface Foo
     extends Bar {
     bar : string,
     age : number,
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 const foo : Foo<{
 bar : string,
 age : number,
 }>
             `,
-            output: `
+      output: `
 const foo : Foo<{
     bar : string,
     age : number,
 }>
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 type T = {
 bar : string,
 age : number,
@@ -1022,7 +1022,7 @@ bar : string,
 age : number,
 }
             `,
-            output: `
+      output: `
 type T = {
     bar : string,
     age : number,
@@ -1031,31 +1031,31 @@ type T = {
     age : number,
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 6,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 7,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 6,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 7,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 type T =
     | {
 bar : string,
@@ -1066,7 +1066,7 @@ age : number,
     age : number,
 }
             `,
-            output: `
+      output: `
 type T =
     | {
         bar : string,
@@ -1077,56 +1077,56 @@ type T =
         age : number,
     }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 6,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 4.`,
-                    line: 8,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 4.`,
-                    line: 9,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 10,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 4,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 6,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 8 spaces but found 4.`,
+          line: 8,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 8 spaces but found 4.`,
+          line: 9,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 10,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
     import Dialogs = require("widgets/Dialogs");
             `,
-            output: `
+      output: `
 import Dialogs = require("widgets/Dialogs");
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 0 spaces but found 4.`,
-                    line: 2,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          message: `Expected indentation of 0 spaces but found 4.`,
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
 public bar : string;
 private bar : string;
@@ -1142,7 +1142,7 @@ private test : boolean,
 ) {}
 }
             `,
-            output: `
+      output: `
 class Foo {
     public bar : string;
     private bar : string;
@@ -1158,271 +1158,271 @@ class Foo {
     ) {}
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 6,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 7,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 8,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 9,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 10,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 11,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 12,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 13,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 14,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 6,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 7,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 8,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 9,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 10,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 11,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 12,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 13,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 14,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
     abstract class Foo {}
     class Foo {}
             `,
-            output: `
+      output: `
 abstract class Foo {}
 class Foo {}
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 0 spaces but found 4.`,
-                    line: 2,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 0 spaces but found 4.`,
-                    line: 3,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 0 spaces but found 4.`,
+          line: 2,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 0 spaces but found 4.`,
+          line: 3,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 enum Foo {
 bar,
 baz = 1,
 buzz = '',
 }
             `,
-            output: `
+      output: `
 enum Foo {
     bar,
     baz = 1,
     buzz = '',
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 const enum Foo {
 bar,
 baz = 1,
 buzz = '',
 }
             `,
-            output: `
+      output: `
 const enum Foo {
     bar,
     baz = 1,
     buzz = '',
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
     export = Foo;
             `,
-            output: `
+      output: `
 export = Foo;
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 0 spaces but found 4.`,
-                    line: 2,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          message: `Expected indentation of 0 spaces but found 4.`,
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
     declare function h(x: number): number;
             `,
-            output: `
+      output: `
 declare function h(x: number): number;
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 0 spaces but found 4.`,
-                    line: 2,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          message: `Expected indentation of 0 spaces but found 4.`,
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 declare function h(
 x: number,
 ): number;
             `,
-            output: `
+      output: `
 declare function h(
     x: number,
 ): number;
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 namespace Validation {
 export interface StringValidator {
 isAcceptable(s: string): boolean;
 }
 }
             `,
-            output: `
+      output: `
 namespace Validation {
     export interface StringValidator {
         isAcceptable(s: string): boolean;
     }
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
         {
-            code: `
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 declare module "Validation" {
 export interface StringValidator {
 isAcceptable(s: string): boolean;
 }
 }
             `,
-            output: `
+      output: `
 declare module "Validation" {
     export interface StringValidator {
         isAcceptable(s: string): boolean;
     }
 }
             `,
-            errors: [
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 3,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 8 spaces but found 0.`,
-                    line: 4,
-                    column: 1,
-                },
-                {
-                    message: `Expected indentation of 4 spaces but found 0.`,
-                    line: 5,
-                    column: 1,
-                },
-            ],
+      errors: [
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 3,
+          column: 1,
         },
-    ],
+        {
+          message: `Expected indentation of 8 spaces but found 0.`,
+          line: 4,
+          column: 1,
+        },
+        {
+          message: `Expected indentation of 4 spaces but found 0.`,
+          line: 5,
+          column: 1,
+        },
+      ],
+    },
+  ],
 });

@@ -37,4 +37,4 @@ you use a different type of casing.
 
 ## Further Reading
 
--   [`class-name`](https://palantir.github.io/tslint/rules/class-name/) in [TSLint](https://palantir.github.io/tslint/)
+- [`class-name`](https://palantir.github.io/tslint/rules/class-name/) in [TSLint](https://palantir.github.io/tslint/)

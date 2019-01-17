@@ -2,85 +2,84 @@
  * @fileoverview Enforces interface names are prefixed with "I".
  * @author Danny Fritz
  */
-"use strict";
+'use strict';
 
-const util = require("../util");
+const util = require('../util');
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = ["never"];
+const defaultOptions = ['never'];
 
 module.exports = {
-    meta: {
-        type: "suggestion",
-        docs: {
-            description: "Require that interface names be prefixed with `I`",
-            extraDescription: [util.tslintRule("interface-name")],
-            category: "TypeScript",
-            url: util.metaDocsUrl("interface-name-prefix"),
-            recommended: "error",
-        },
-        schema: [
-            {
-                enum: ["never", "always"],
-            },
-        ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Require that interface names be prefixed with `I`',
+      extraDescription: [util.tslintRule('interface-name')],
+      category: 'TypeScript',
+      url: util.metaDocsUrl('interface-name-prefix'),
+      recommended: 'error',
     },
+    schema: [
+      {
+        enum: ['never', 'always'],
+      },
+    ],
+  },
 
-    create(context) {
-        const option = util.applyDefault(defaultOptions, context.options)[0];
-        const never = option !== "always";
+  create(context) {
+    const option = util.applyDefault(defaultOptions, context.options)[0];
+    const never = option !== 'always';
 
-        //----------------------------------------------------------------------
-        // Helpers
-        //----------------------------------------------------------------------
+    //----------------------------------------------------------------------
+    // Helpers
+    //----------------------------------------------------------------------
 
-        /**
-         * Checks if a string is prefixed with "I".
-         * @param {string} name The string to check
-         * @returns {boolean} true if it is prefixed with "I"
-         * @private
-         */
-        function isPrefixedWithI(name) {
-            if (typeof name !== "string") {
-                return false;
-            }
+    /**
+     * Checks if a string is prefixed with "I".
+     * @param {string} name The string to check
+     * @returns {boolean} true if it is prefixed with "I"
+     * @private
+     */
+    function isPrefixedWithI(name) {
+      if (typeof name !== 'string') {
+        return false;
+      }
 
-            return /^I[A-Z]/.test(name);
+      return /^I[A-Z]/.test(name);
+    }
+
+    /**
+     * Checks if interface is prefixed with "I".
+     * @param {ASTNode} interfaceNode The node representing an Interface.
+     * @returns {void}
+     * @private
+     */
+    function checkInterfacePrefix(interfaceNode) {
+      if (never) {
+        if (isPrefixedWithI(interfaceNode.id.name)) {
+          context.report({
+            node: interfaceNode.id,
+            message: 'Interface name must not be prefixed with "I".',
+          });
         }
-
-        /**
-         * Checks if interface is prefixed with "I".
-         * @param {ASTNode} interfaceNode The node representing an Interface.
-         * @returns {void}
-         * @private
-         */
-        function checkInterfacePrefix(interfaceNode) {
-            if (never) {
-                if (isPrefixedWithI(interfaceNode.id.name)) {
-                    context.report({
-                        node: interfaceNode.id,
-                        message:
-                            'Interface name must not be prefixed with "I".',
-                    });
-                }
-            } else {
-                if (!isPrefixedWithI(interfaceNode.id.name)) {
-                    context.report({
-                        node: interfaceNode.id,
-                        message: 'Interface name must be prefixed with "I".',
-                    });
-                }
-            }
+      } else {
+        if (!isPrefixedWithI(interfaceNode.id.name)) {
+          context.report({
+            node: interfaceNode.id,
+            message: 'Interface name must be prefixed with "I".',
+          });
         }
+      }
+    }
 
-        //----------------------------------------------------------------------
-        // Public
-        //----------------------------------------------------------------------
-        return {
-            TSInterfaceDeclaration: checkInterfacePrefix,
-        };
-    },
+    //----------------------------------------------------------------------
+    // Public
+    //----------------------------------------------------------------------
+    return {
+      TSInterfaceDeclaration: checkInterfacePrefix,
+    };
+  },
 };

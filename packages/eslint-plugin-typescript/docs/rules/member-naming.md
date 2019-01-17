@@ -14,9 +14,9 @@ Examples of **correct** code with `{ "private": "^_" }` specified:
 
 ```ts
 class HappyClass {
-    private _foo: string;
-    private _bar = 123;
-    private _fizz() {}
+  private _foo: string;
+  private _bar = 123;
+  private _fizz() {}
 }
 ```
 
@@ -24,9 +24,9 @@ Examples of **incorrect** code with `{ "private": "^_" }` specified:
 
 ```ts
 class SadClass {
-    private foo: string;
-    private bar = 123;
-    private fizz() {}
+  private foo: string;
+  private bar = 123;
+  private fizz() {}
 }
 ```
 
@@ -36,4 +36,4 @@ If you do not want to enforce per-visibility naming rules for member properties.
 
 ## Further Reading
 
--   ESLint's [`camelcase` rule](https://eslint.org/docs/rules/camelcase)
+- ESLint's [`camelcase` rule](https://eslint.org/docs/rules/camelcase)

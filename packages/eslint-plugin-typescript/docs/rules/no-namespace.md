@@ -14,9 +14,9 @@ This rule aims to standardise the way modules are declared.
 This rule, in its default state, does not require any argument. If you would like to enable one
 or more of the following you may pass an object with the options set as follows:
 
--   `allowDeclarations` set to `true` will allow you to `declare` custom TypeScript modules and namespaces (Default: `false`).
--   `allowDefinitionFiles` set to `true` will allow you to `declare` and use custom TypeScript modules and namespaces
-    inside definition files (Default: `false`).
+- `allowDeclarations` set to `true` will allow you to `declare` custom TypeScript modules and namespaces (Default: `false`).
+- `allowDefinitionFiles` set to `true` will allow you to `declare` and use custom TypeScript modules and namespaces
+  inside definition files (Default: `false`).
 
 Examples of **incorrect** code for the default `{ "allowDeclarations": false, "allowDefinitionFiles": false }` options:
 
@@ -33,7 +33,7 @@ declare namespace foo {}
 Examples of **correct** code for the default `{ "allowDeclarations": false, "allowDefinitionFiles": false }` options:
 
 ```ts
-declare module "foo" {}
+declare module 'foo' {}
 ```
 
 ### allowDeclarations
@@ -48,7 +48,7 @@ namespace foo {}
 Examples of **correct** code for the `{ "allowDeclarations": true }` option:
 
 ```ts
-declare module "foo" {}
+declare module 'foo' {}
 declare module foo {}
 declare namespace foo {}
 ```
@@ -65,7 +65,7 @@ declare namespace foo {}
 Examples of **correct** code for the `{ "allowDeclarations": false }` option:
 
 ```ts
-declare module "foo" {}
+declare module 'foo' {}
 ```
 
 ### allowDefinitionFiles
@@ -87,7 +87,7 @@ declare namespace foo {}
 Examples of **correct** code for the `{ "allowDefinitionFiles": true }` option:
 
 ```ts
-declare module "foo" {}
+declare module 'foo' {}
 
 // anything inside a d.ts file
 ```
@@ -98,10 +98,10 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 
 ## Further Reading
 
--   [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
--   [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
--   [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
+- [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
+- [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
+- [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
 
 ## Compatibility
 
--   TSLint: [no-namespace](https://palantir.github.io/tslint/rules/no-namespace/)
+- TSLint: [no-namespace](https://palantir.github.io/tslint/rules/no-namespace/)

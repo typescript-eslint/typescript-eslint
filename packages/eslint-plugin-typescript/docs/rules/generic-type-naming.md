@@ -15,11 +15,11 @@ Examples of **correct** code with a configuration of `'^T[A-Z][a-zA-Z]+$'`:
 
 ```typescript
 type ReadOnly<TType extends object> = {
-    readonly [TKey in keyof TType]: TType[TKey]
+  readonly [TKey in keyof TType]: TType[TKey]
 };
 
 interface SimpleMap<TValue> {
-    [key: string]: TValue;
+  [key: string]: TValue;
 }
 ```
 
@@ -29,7 +29,7 @@ Examples of **incorrect** code with a configuration of `'^T[A-Z][a-zA-Z]+$'`:
 type ReadOnly<T extends object> = { readonly [Key in keyof T]: T[Key] };
 
 interface SimpleMap<T> {
-    [key: string]: T;
+  [key: string]: T;
 }
 ```
 
@@ -39,4 +39,4 @@ If you do not want to enforce a naming convention for type variables.
 
 ## Further Reading
 
--   [TypeScript Generics](https://www.typescriptlang.org/docs/handbook/generics.html)
+- [TypeScript Generics](https://www.typescriptlang.org/docs/handbook/generics.html)

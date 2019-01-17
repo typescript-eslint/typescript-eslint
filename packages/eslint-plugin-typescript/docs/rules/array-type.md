@@ -2,12 +2,12 @@
 
 ```ts
 class Foo<T = Array<Array<Bar>>> extends Bar<T, Array<T>>
-    implements Baz<Array<T>> {
-    private s: Array<T>;
+  implements Baz<Array<T>> {
+  private s: Array<T>;
 
-    constructor(p: Array<T>) {
-        return new Array();
-    }
+  constructor(p: Array<T>) {
+    return new Array();
+  }
 }
 ```
 
@@ -25,10 +25,10 @@ Default config:
 }
 ```
 
--   `array` enforces use of `T[]` for all types `T`.
--   `generic` enforces use of `Array<T>` for all types `T`.
--   `array-simple` enforces use of `T[]` if `T` is a simple type.
+- `array` enforces use of `T[]` for all types `T`.
+- `generic` enforces use of `Array<T>` for all types `T`.
+- `array-simple` enforces use of `T[]` if `T` is a simple type.
 
 ## Related to
 
--   TSLint: [array-type](https://palantir.github.io/tslint/rules/array-type/)
+- TSLint: [array-type](https://palantir.github.io/tslint/rules/array-type/)

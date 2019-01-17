@@ -2,99 +2,99 @@
  * @fileoverview Enforces member overloads to be consecutive.
  * @author Patricio Trevino
  */
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/adjacent-overload-signatures"),
-    RuleTester = require("eslint").RuleTester;
+const rule = require('../../../lib/rules/adjacent-overload-signatures'),
+  RuleTester = require('eslint').RuleTester;
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser",
+  parser: 'typescript-eslint-parser',
 });
 
-ruleTester.run("adjacent-overload-signatures", rule, {
-    valid: [
-        {
-            code: `
+ruleTester.run('adjacent-overload-signatures', rule, {
+  valid: [
+    {
+      code: `
 function error(a: string);
 function error(b: number);
 function error(ab: string|number){ }
 export { error };
             `,
-            parserOptions: { sourceType: "module" },
-        },
-        {
-            code: `
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: `
 import { connect } from 'react-redux';
 export interface ErrorMessageModel { message: string; }
 function mapStateToProps() { }
 function mapDispatchToProps() { }
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorMessage);
             `,
-            parserOptions: { sourceType: "module" },
-        },
-        `
+      parserOptions: { sourceType: 'module' },
+    },
+    `
 export const foo = "a", bar = "b";
 export interface Foo {}
 export class Foo {}
         `,
-        `
+    `
 export interface Foo {}
 export const foo = "a", bar = "b";
 export class Foo {}
         `,
-        `
+    `
 const foo = "a", bar = "b";
 interface Foo {}
 class Foo {}
         `,
-        `
+    `
 interface Foo {}
 const foo = "a", bar = "b";
 class Foo {}
         `,
-        `
+    `
 export class Foo {}
 export class Bar {}
 
 export type FooBar = Foo | Bar;
         `,
-        `
+    `
 export interface Foo {}
 export class Foo {}
 export class Bar {}
 
 export type FooBar = Foo | Bar;
         `,
-        `
+    `
 export function foo(s: string);
 export function foo(n: number);
 export function foo(sn: string | number) {}
 export function bar(): void {}
 export function baz(): void {}
         `,
-        `
+    `
 function foo(s: string);
 function foo(n: number);
 function foo(sn: string | number) {}
 function bar(): void {}
 function baz(): void {}
         `,
-        `
+    `
 declare function foo(s: string);
 declare function foo(n: number);
 declare function foo(sn: string | number);
 declare function bar(): void;
 declare function baz(): void;
         `,
-        `
+    `
 declare module "Foo" {
     export function foo(s: string): void;
     export function foo(n: number): void;
@@ -103,7 +103,7 @@ declare module "Foo" {
     export function baz(): void;
 }
         `,
-        `
+    `
 declare namespace Foo {
     export function foo(s: string): void;
     export function foo(n: number): void;
@@ -112,7 +112,7 @@ declare namespace Foo {
     export function baz(): void;
 }
         `,
-        `
+    `
 type Foo = {
     foo(s: string): void;
     foo(n: number): void;
@@ -121,7 +121,7 @@ type Foo = {
     baz(): void;
 }
         `,
-        `
+    `
 type Foo = {
     foo(s: string): void;
     ["foo"](n: number): void;
@@ -130,7 +130,7 @@ type Foo = {
     baz(): void;
 }
         `,
-        `
+    `
 interface Foo {
     (s: string): void;
     (n: number): void;
@@ -140,7 +140,7 @@ interface Foo {
     baz(): void;
 }
         `,
-        `
+    `
 interface Foo {
     foo(s: string): void;
     foo(n: number): void;
@@ -149,7 +149,7 @@ interface Foo {
     baz(): void;
 }
         `,
-        `
+    `
 interface Foo {
     foo(s: string): void;
     ["foo"](n: number): void;
@@ -158,7 +158,7 @@ interface Foo {
     baz(): void;
 }
         `,
-        `
+    `
 interface Foo {
     foo(): void;
     bar: {
@@ -168,7 +168,7 @@ interface Foo {
     }
 }
         `,
-        `
+    `
 interface Foo {
     new(s: string);
     new(n: number);
@@ -176,7 +176,7 @@ interface Foo {
     foo(): void;
 }
         `,
-        `
+    `
 class Foo {
     constructor(s: string);
     constructor(n: number);
@@ -185,7 +185,7 @@ class Foo {
     baz(): void {}
 }
         `,
-        `
+    `
 class Foo {
     foo(s: string): void;
     foo(n: number): void;
@@ -194,7 +194,7 @@ class Foo {
     baz(): void {}
 }
         `,
-        `
+    `
 class Foo {
     foo(s: string): void;
     ["foo"](n: number): void;
@@ -203,7 +203,7 @@ class Foo {
     baz(): void {}
 }
         `,
-        `
+    `
 class Foo {
     name: string;
     foo(s: string): void;
@@ -213,114 +213,114 @@ class Foo {
     baz(): void {}
 }
         `,
-        // examples from https://github.com/nzakas/eslint-plugin-typescript/issues/138
-        "export default function<T>(foo : T) {}",
-        "export default function named<T>(foo : T) {}",
-    ],
-    invalid: [
-        {
-            code: `
+    // examples from https://github.com/nzakas/eslint-plugin-typescript/issues/138
+    'export default function<T>(foo : T) {}',
+    'export default function named<T>(foo : T) {}',
+  ],
+  invalid: [
+    {
+      code: `
 export function foo(s: string);
 export function foo(n: number);
 export function bar(): void {}
 export function baz(): void {}
 export function foo(sn: string | number) {}
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 6,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 export function foo(s: string);
 export function foo(n: number);
 export type bar = number;
 export type baz = number | string;
 export function foo(sn: string | number) {}
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 6,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 function foo(s: string);
 function foo(n: number);
 function bar(): void {}
 function baz(): void {}
 function foo(sn: string | number) {}
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 6,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 function foo(s: string);
 function foo(n: number);
 type bar = number;
 type baz = number | string;
 function foo(sn: string | number) {}
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 6,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 function foo(s: string) {}
 function foo(n: number) {}
 const a = "";
 const b = "";
 function foo(sn: string | number) {}
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 6,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 function foo(s: string) {}
 function foo(n: number) {}
 class Bar {}
 function foo(sn: string | number) {}
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 5,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 5,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 function foo(s: string) {}
 function foo(n: number) {}
 function foo(sn: string | number) {}
@@ -331,51 +331,51 @@ class Bar {
     foo(sn: string | number) { }
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 9,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 9,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 declare function foo(s: string);
 declare function foo(n: number);
 declare function bar(): void;
 declare function baz(): void;
 declare function foo(sn: string | number);
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 6,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 declare function foo(s: string);
 declare function foo(n: number);
 const a = "";
 const b = "";
 declare function foo(sn: string | number);
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 6,
-                    column: 1,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
 declare module "Foo" {
     export function foo(s: string): void;
     export function foo(n: number): void;
@@ -384,17 +384,17 @@ declare module "Foo" {
     export function foo(sn: string | number): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 declare module "Foo" {
     export function foo(s: string): void;
     export function foo(n: number): void;
@@ -405,17 +405,17 @@ declare module "Foo" {
     function baz(sn: string | number): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "baz" },
-                    line: 8,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'baz' },
+          line: 8,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 declare namespace Foo {
     export function foo(s: string): void;
     export function foo(n: number): void;
@@ -424,17 +424,17 @@ declare namespace Foo {
     export function foo(sn: string | number): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 declare namespace Foo {
     export function foo(s: string): void;
     export function foo(n: number): void;
@@ -445,17 +445,17 @@ declare namespace Foo {
     function baz(sn: string | number): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "baz" },
-                    line: 8,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'baz' },
+          line: 8,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 type Foo = {
     foo(s: string): void;
     foo(n: number): void;
@@ -464,17 +464,17 @@ type Foo = {
     foo(sn: string | number): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 type Foo = {
     foo(s: string): void;
     ["foo"](n: number): void;
@@ -483,17 +483,17 @@ type Foo = {
     foo(sn: string | number): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 type Foo = {
     foo(s: string): void;
     name: string;
@@ -503,17 +503,17 @@ type Foo = {
     baz(): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 5,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
     (s: string): void;
     foo(n: number): void;
@@ -523,17 +523,17 @@ interface Foo {
     baz(): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "call" },
-                    line: 5,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'call' },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
     foo(s: string): void;
     foo(n: number): void;
@@ -542,17 +542,17 @@ interface Foo {
     foo(sn: string | number): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
     foo(s: string): void;
     ["foo"](n: number): void;
@@ -561,17 +561,17 @@ interface Foo {
     foo(sn: string | number): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
     foo(s: string): void;
     "foo"(n: number): void;
@@ -580,17 +580,17 @@ interface Foo {
     foo(sn: string | number): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
     foo(s: string): void;
     name: string;
@@ -600,17 +600,17 @@ interface Foo {
     baz(): void;
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 5,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
     foo(): void;
     bar: {
@@ -621,17 +621,17 @@ interface Foo {
     }
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "baz" },
-                    line: 8,
-                    column: 9,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'baz' },
+          line: 8,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
     new(s: string);
     new(n: number);
@@ -640,17 +640,17 @@ interface Foo {
     new(sn: string | number);
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "new" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'new' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
     new(s: string);
     foo(): void;
@@ -659,23 +659,23 @@ interface Foo {
     new(sn: string | number);
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "new" },
-                    line: 5,
-                    column: 5,
-                },
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "new" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
+      errors: [
+        {
+          messageId: 'adjacentSignature',
+          data: { name: 'new' },
+          line: 5,
+          column: 5,
         },
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'new' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
     constructor(s: string);
     constructor(n: number);
@@ -684,17 +684,17 @@ class Foo {
     constructor(sn: string | number) {}
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "constructor" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'constructor' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
     foo(s: string): void;
     foo(n: number): void;
@@ -703,17 +703,17 @@ class Foo {
     foo(sn: string | number): void {}
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
     foo(s: string): void;
     ["foo"](n: number): void;
@@ -722,17 +722,17 @@ class Foo {
     foo(sn: string | number): void {}
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
     foo(s: string): void;
     "foo"(n: number): void;
@@ -741,17 +741,17 @@ class Foo {
     foo(sn: string | number): void {}
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 7,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
     constructor(s: string);
     name: string;
@@ -761,17 +761,17 @@ class Foo {
     baz(): void {}
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "constructor" },
-                    line: 5,
-                    column: 5,
-                },
-            ],
-        },
+      errors: [
         {
-            code: `
+          messageId: 'adjacentSignature',
+          data: { name: 'constructor' },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
     foo(s: string): void;
     name: string;
@@ -781,14 +781,14 @@ class Foo {
     baz(): void {}
 }
             `,
-            errors: [
-                {
-                    messageId: "adjacentSignature",
-                    data: { name: "foo" },
-                    line: 5,
-                    column: 5,
-                },
-            ],
+      errors: [
+        {
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 5,
+          column: 5,
         },
-    ],
+      ],
+    },
+  ],
 });

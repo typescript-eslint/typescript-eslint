@@ -3,23 +3,23 @@
  * Some tests taken from TSLint:  https://github.com/palantir/tslint/tree/c7fc99b5/test/rules/no-this-assignment
  * @author Jed Fox
  */
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/no-this-alias"),
-    RuleTester = require("eslint").RuleTester;
+const rule = require('../../../lib/rules/no-this-alias'),
+  RuleTester = require('eslint').RuleTester;
 
-const idError = { messageId: "thisAssignment", type: "Identifier" };
+const idError = { messageId: 'thisAssignment', type: 'Identifier' };
 const destructureError = {
-    messageId: "thisDestructure",
-    type: "ObjectPattern",
+  messageId: 'thisDestructure',
+  type: 'ObjectPattern',
 };
 const arrayDestructureError = {
-    messageId: "thisDestructure",
-    type: "ArrayPattern",
+  messageId: 'thisDestructure',
+  type: 'ArrayPattern',
 };
 
 //------------------------------------------------------------------------------
@@ -27,62 +27,62 @@ const arrayDestructureError = {
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser",
+  parser: 'typescript-eslint-parser',
 });
 
-ruleTester.run("no-this-alias", rule, {
-    valid: [
-        "const self = foo(this);",
-        {
-            code: `
+ruleTester.run('no-this-alias', rule, {
+  valid: [
+    'const self = foo(this);',
+    {
+      code: `
 const { props, state } = this;
 const { length } = this;
 const { length, toString } = this;
 const [foo] = this;
 const [foo, bar] = this;
 `.trim(),
-            options: [
-                {
-                    allowDestructuring: true,
-                },
-            ],
-        },
+      options: [
         {
-            code: "const self = this;",
-            options: [
-                {
-                    allowedNames: ["self"],
-                },
-            ],
+          allowDestructuring: true,
         },
-        // https://github.com/bradzacher/eslint-plugin-typescript/issues/281
-        `
+      ],
+    },
+    {
+      code: 'const self = this;',
+      options: [
+        {
+          allowedNames: ['self'],
+        },
+      ],
+    },
+    // https://github.com/bradzacher/eslint-plugin-typescript/issues/281
+    `
 declare module 'foo' {
     declare const aVar: string
 }
         `,
-    ],
+  ],
 
-    invalid: [
+  invalid: [
+    {
+      code: 'const self = this;',
+      options: [
         {
-            code: "const self = this;",
-            options: [
-                {
-                    allowDestructuring: true,
-                },
-            ],
-            errors: [idError],
+          allowDestructuring: true,
         },
-        {
-            code: "const self = this;",
-            errors: [idError],
-        },
-        {
-            code: "const { props, state } = this;",
-            errors: [destructureError],
-        },
-        {
-            code: `
+      ],
+      errors: [idError],
+    },
+    {
+      code: 'const self = this;',
+      errors: [idError],
+    },
+    {
+      code: 'const { props, state } = this;',
+      errors: [destructureError],
+    },
+    {
+      code: `
 var unscoped = this;
 
 function testFunction() {
@@ -92,10 +92,10 @@ const testLambda = () => {
     const inLambda = this;
 };
 `.trim(),
-            errors: [idError, idError, idError],
-        },
-        {
-            code: `
+      errors: [idError, idError, idError],
+    },
+    {
+      code: `
 class TestClass {
     constructor() {
         const inConstructor = this;
@@ -115,15 +115,15 @@ class TestClass {
     }
 }
 `.trim(),
-            errors: [
-                idError,
-                idError,
-                idError,
-                destructureError,
-                destructureError,
-                arrayDestructureError,
-                arrayDestructureError,
-            ],
-        },
-    ],
+      errors: [
+        idError,
+        idError,
+        idError,
+        destructureError,
+        destructureError,
+        arrayDestructureError,
+        arrayDestructureError,
+      ],
+    },
+  ],
 });

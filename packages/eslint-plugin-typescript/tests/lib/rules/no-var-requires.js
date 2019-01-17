@@ -2,55 +2,55 @@
  * @fileoverview Disallows the use of require statements except in import statements.
  * @author Macklin Underdown
  */
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/no-var-requires"),
-    RuleTester = require("eslint").RuleTester;
+const rule = require('../../../lib/rules/no-var-requires'),
+  RuleTester = require('eslint').RuleTester;
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-    parser: "typescript-eslint-parser",
+  parser: 'typescript-eslint-parser',
 });
 
-ruleTester.run("no-var-requires", rule, {
-    valid: ["import foo = require('foo')", "require('foo')"],
-    invalid: [
+ruleTester.run('no-var-requires', rule, {
+  valid: ["import foo = require('foo')", "require('foo')"],
+  invalid: [
+    {
+      code: "var foo = require('foo')",
+      errors: [
         {
-            code: "var foo = require('foo')",
-            errors: [
-                {
-                    message: "Require statement not part of import statement.",
-                    line: 1,
-                    column: 11,
-                },
-            ],
+          message: 'Require statement not part of import statement.',
+          line: 1,
+          column: 11,
         },
+      ],
+    },
+    {
+      code: "const foo = require('foo')",
+      errors: [
         {
-            code: "const foo = require('foo')",
-            errors: [
-                {
-                    message: "Require statement not part of import statement.",
-                    line: 1,
-                    column: 13,
-                },
-            ],
+          message: 'Require statement not part of import statement.',
+          line: 1,
+          column: 13,
         },
+      ],
+    },
+    {
+      code: "let foo = require('foo')",
+      errors: [
         {
-            code: "let foo = require('foo')",
-            errors: [
-                {
-                    message: "Require statement not part of import statement.",
-                    line: 1,
-                    column: 11,
-                },
-            ],
+          message: 'Require statement not part of import statement.',
+          line: 1,
+          column: 11,
         },
-    ],
+      ],
+    },
+  ],
 });
