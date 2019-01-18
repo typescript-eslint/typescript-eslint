@@ -4,7 +4,6 @@ about: Report an issue with the `typescript-estree` package
 title: ''
 labels: 'package: typescript-estree, triage'
 assignees: ''
-
 ---
 
 **What version of TypeScript are you using?**

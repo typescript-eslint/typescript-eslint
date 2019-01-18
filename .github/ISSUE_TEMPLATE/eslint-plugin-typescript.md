@@ -4,7 +4,6 @@ about: Report an issue with the eslint-plugin-typescript package
 title: ''
 labels: 'package: eslint-plugin, triage'
 assignees: ''
-
 ---
 
 <!--

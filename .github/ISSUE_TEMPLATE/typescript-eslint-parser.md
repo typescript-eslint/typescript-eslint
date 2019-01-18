@@ -1,10 +1,9 @@
 ---
-name: "@typescript-eslint/parser"
+name: '@typescript-eslint/parser'
 about: Report an issue with the @typescript-eslint/parser package
 title: ''
 labels: 'package: parser, triage'
 assignees: ''
-
 ---
 
 **What version of Node.js and npm are you using?**
