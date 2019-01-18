@@ -60,18 +60,17 @@ function isSimpleType(node) {
  * @returns {*} true or false
  */
 function typeNeedsParentheses(node) {
-  if (node.type === 'TSTypeReference') {
-    switch (node.typeName.type) {
-      case 'TSUnionType':
-      case 'TSFunctionType':
-      case 'TSIntersectionType':
-      case 'TSTypeOperator':
-        return true;
-      default:
-        return false;
-    }
+  switch (node.type) {
+    case 'TSTypeReference':
+      return typeNeedsParentheses(node.typeName);
+    case 'TSUnionType':
+    case 'TSFunctionType':
+    case 'TSIntersectionType':
+    case 'TSTypeOperator':
+      return true;
+    default:
+      return false;
   }
-  return false;
 }
 
 //------------------------------------------------------------------------------
