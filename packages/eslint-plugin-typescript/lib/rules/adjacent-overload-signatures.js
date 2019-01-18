@@ -50,8 +50,7 @@ module.exports = {
         case 'TSDeclareFunction':
         case 'FunctionDeclaration':
         case 'TSNamespaceFunctionDeclaration':
-        case 'TSEmptyBodyFunctionDeclaration':
-        case 'TSEmptyBodyDeclareFunction': {
+        case 'TSEmptyBodyFunctionDeclaration': {
           return member.id && member.id.name;
         }
         case 'TSMethodSignature': {

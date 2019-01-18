@@ -34,10 +34,11 @@ const KNOWN_NODES = new Set([
   'TSAbstractMethodDefinition',
   'TSArrayType',
   'TSAsExpression',
+  'TSCallSignatureDeclaration',
   'TSConditionalType',
   'TSConstructorType',
-  'TSConstructSignature',
-  'TSEmptyBodyDeclareFunction',
+  'TSConstructSignatureDeclaration',
+  'TSDeclareFunction',
   'TSEmptyBodyFunctionExpression',
   'TSEnumDeclaration',
   'TSEnumMember',
@@ -211,19 +212,19 @@ module.exports = Object.assign({}, baseRule, {
       TSImportEqualsDeclaration(node) {
         // transform it to an VariableDeclaration
         // use VariableDeclaration instead of ImportDeclaration because it's essentially the same thing
-        const { name, moduleReference } = node;
+        const { id, moduleReference } = node;
 
         return rules.VariableDeclaration({
           type: 'VariableDeclaration',
           declarations: [
             {
               type: 'VariableDeclarator',
-              range: [name.range[0], moduleReference.range[1]],
+              range: [id.range[0], moduleReference.range[1]],
               loc: {
-                start: name.loc.start,
+                start: id.loc.start,
                 end: moduleReference.loc.end
               },
-              id: name,
+              id: id,
               init: {
                 type: 'CallExpression',
                 callee: {
@@ -286,14 +287,15 @@ module.exports = Object.assign({}, baseRule, {
         });
       },
 
-      'TSInterfaceDeclaration[heritage.length > 0]'(node) {
+      'TSInterfaceDeclaration[extends.length > 0]'(node) {
         // transform it to a ClassDeclaration
         return rules[
           'ClassDeclaration[superClass], ClassExpression[superClass]'
         ]({
           type: 'ClassDeclaration',
           body: node.body,
-          superClass: node.heritage[0].id,
+          // TODO: This is invalid, there can be more than one extends in interface
+          superClass: node.extends[0].expression,
 
           // location data
           parent: node.parent,
