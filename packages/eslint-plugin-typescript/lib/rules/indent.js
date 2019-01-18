@@ -159,7 +159,7 @@ module.exports = Object.assign({}, baseRule, {
           operator: 'as',
           left: node.expression,
           // the first typeAnnotation includes the as token
-          right: node.typeAnnotation.typeAnnotation,
+          right: node.typeAnnotation,
 
           // location data
           parent: node.parent,

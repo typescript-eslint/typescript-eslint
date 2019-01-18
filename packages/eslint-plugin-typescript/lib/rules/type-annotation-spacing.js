@@ -178,6 +178,11 @@ module.exports = {
     // Public
     //----------------------------------------------------------------------
     return {
+      TSMappedType(node) {
+        if (node.typeAnnotation) {
+          checkTypeAnnotationSpacing(node.typeAnnotation);
+        }
+      },
       TSTypeAnnotation(node) {
         checkTypeAnnotationSpacing(node.typeAnnotation);
       }

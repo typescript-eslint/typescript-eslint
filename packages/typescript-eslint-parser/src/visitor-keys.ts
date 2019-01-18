@@ -82,7 +82,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   TSInterfaceHeritage: ['expression', 'typeParameters'],
   TSImportEqualsDeclaration: ['id', 'moduleReference'],
   TSFunctionType: ['typeParameters', 'params', 'returnType'],
-  TSMappedType: ['typeParameter'],
+  TSMappedType: ['typeParameter', 'typeAnnotation'],
   TSMethodSignature: ['typeParameters', 'key', 'params', 'returnType'],
   TSModuleBlock: ['body'],
   TSModuleDeclaration: ['id', 'body'],
