@@ -35,9 +35,7 @@ module.exports = {
     //----------------------------------------------------------------------
     return {
       // VariableDeclaration with kind type has only one VariableDeclarator
-      "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
-        node
-      ) {
+      "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(node) {
         context.report({
           node: node.id,
           messageId: 'interfaceOverType',
@@ -45,10 +43,7 @@ module.exports = {
             const typeNode = node.typeParameters || node.id;
 
             const fixes = [
-              fixer.replaceText(
-                sourceCode.getFirstToken(node),
-                'interface'
-              ),
+              fixer.replaceText(sourceCode.getFirstToken(node), 'interface'),
               fixer.replaceTextRange(
                 [typeNode.range[1], node.typeAnnotation.range[0]],
                 ' '

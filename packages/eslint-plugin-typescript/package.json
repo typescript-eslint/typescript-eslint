@@ -20,7 +20,7 @@
   "scripts": {
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
-    "test": "jest --coverage", 
+    "test": "jest --coverage",
     "recommended:update": "node tools/update-recommended.js"
   },
   "dependencies": {
