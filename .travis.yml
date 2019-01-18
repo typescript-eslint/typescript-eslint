@@ -14,8 +14,7 @@ node_js:
 install:
   - yarn --ignore-engines
 script:
-  # TODO: Reenable after migrations are complete
-  # - commitlint-travis
+  - commitlint-travis
   - yarn check-format
   - yarn workspace eslint-plugin-typescript docs:check
   - yarn build
