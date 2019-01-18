@@ -66,7 +66,7 @@ module.exports = {
 
     return {
       'TSInterfaceBody > TSConstructSignatureDeclaration'(node) {
-        if (isMatchingParentType(node.parent.parent, node.typeAnnotation)) {
+        if (isMatchingParentType(node.parent.parent, node.returnType)) {
           // constructor
           context.report({
             node,
@@ -84,7 +84,7 @@ module.exports = {
         if (
           node.value &&
           (node.value.type === 'TSEmptyBodyFunctionExpression' ||
-            node.value.type === 'TSEmptyBodyFunctionDeclaration')
+            (node.value.type === 'TSDeclareFunction' && !node.value.body))
         ) {
           if (isMatchingParentType(node.parent.parent, node.value.returnType)) {
             context.report({
