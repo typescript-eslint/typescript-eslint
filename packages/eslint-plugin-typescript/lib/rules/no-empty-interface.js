@@ -37,7 +37,8 @@ module.exports = {
         if (!node.extends || node.extends.length === 0) {
           message = 'An empty interface is equivalent to `{}`.';
         } else if (node.extends.length === 1) {
-          message = 'An interface declaring no members is equivalent to its supertype.'
+          message =
+            'An interface declaring no members is equivalent to its supertype.';
         }
         if (!message) {
           return;
