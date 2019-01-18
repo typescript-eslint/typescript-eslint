@@ -1,6 +1,9 @@
 ---
 name: eslint-plugin-tslint
 about: Report an issue with the eslint-plugin-tslint package
+title: ''
+labels: 'package: eslint-plugin-tslint, triage'
+assignees: ''
 ---
 
 **What version of Node.js and npm are you using?**
