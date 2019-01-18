@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Enforces naming of generic type variables.
+ */
 'use strict';
 
 //------------------------------------------------------------------------------
@@ -23,6 +26,21 @@ ruleTester.run('generic-type-naming', rule, {
     { code: 'function get<T>() {}', options: [] },
     { code: 'interface GenericIdentityFn { <T>(arg: T): T }', options: [] },
     { code: 'class<x> { }', options: ['^x+$'] },
+    { code: 'class<A> { }', options: ['^[A-Z]$'] },
+    {
+      code: 'class<A> extends B<Test> implements Foo<Test> { }',
+      options: ['^[A-Z]$']
+    },
+    {
+      code: `
+class<A> extends B<Test> implements Foo<Test> {
+    test<Z> () {
+        type Foo = Bar<Test>
+    }
+}
+            `,
+      options: ['^[A-Z]$']
+    },
     {
       code: 'class CounterContainer extends Container<Counter> { }',
       options: ['^T$']
@@ -49,7 +67,9 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' }
+          data: { name: 'x', rule: '^[A-Z]+$' },
+          line: 1,
+          column: 7
         }
       ]
     },
@@ -59,7 +79,9 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' }
+          data: { name: 'x', rule: '^[A-Z]+$' },
+          line: 1,
+          column: 21
         }
       ]
     },
@@ -69,7 +91,9 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' }
+          data: { name: 'x', rule: '^[A-Z]+$' },
+          line: 1,
+          column: 8
         }
       ]
     },
@@ -79,7 +103,9 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' }
+          data: { name: 'x', rule: '^[A-Z]+$' },
+          line: 1,
+          column: 14
         }
       ]
     },
@@ -89,7 +115,75 @@ ruleTester.run('generic-type-naming', rule, {
       errors: [
         {
           messageId: 'paramNotMatchRule',
-          data: { name: 'x', rule: '^[A-Z]+$' }
+          data: { name: 'x', rule: '^[A-Z]+$' },
+          line: 1,
+          column: 32
+        }
+      ]
+    },
+    {
+      code: `
+class<A> extends B<Test> implements Foo<Test> {
+    test<Z> () {
+        type Foo<T> = Bar<Test>
+    }
+}
+            `,
+      options: ['^[A-Z][0-9]$'],
+      errors: [
+        {
+          messageId: 'paramNotMatchRule',
+          data: { name: 'A', rule: '^[A-Z][0-9]$' },
+          line: 2,
+          column: 7
+        },
+        {
+          messageId: 'paramNotMatchRule',
+          data: { name: 'Z', rule: '^[A-Z][0-9]$' },
+          line: 3,
+          column: 10
+        },
+        {
+          messageId: 'paramNotMatchRule',
+          data: { name: 'T', rule: '^[A-Z][0-9]$' },
+          line: 4,
+          column: 18
+        }
+      ]
+    },
+    {
+      code: `
+abstract class<A, B> extends B<Test> implements Foo<Test> {
+    test<Z> () {
+        type Foo<T> = Bar<Test>
+    }
+}
+            `,
+      options: ['^[A-Z][0-9]$'],
+      errors: [
+        {
+          messageId: 'paramNotMatchRule',
+          data: { name: 'A', rule: '^[A-Z][0-9]$' },
+          line: 2,
+          column: 16
+        },
+        {
+          messageId: 'paramNotMatchRule',
+          data: { name: 'B', rule: '^[A-Z][0-9]$' },
+          line: 2,
+          column: 19
+        },
+        {
+          messageId: 'paramNotMatchRule',
+          data: { name: 'Z', rule: '^[A-Z][0-9]$' },
+          line: 3,
+          column: 10
+        },
+        {
+          messageId: 'paramNotMatchRule',
+          data: { name: 'T', rule: '^[A-Z][0-9]$' },
+          line: 4,
+          column: 18
         }
       ]
     }
