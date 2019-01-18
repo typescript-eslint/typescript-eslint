@@ -18,6 +18,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('strict', rule, {
   valid: [
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/255
+    // https://github.com/typescript-eslint/typescript-eslint/issues/58
     `
 window.whatevs = {
   myFunc() {
@@ -29,6 +30,7 @@ window.whatevs = {
   invalid: [
     {
       // https://github.com/bradzacher/eslint-plugin-typescript/issues/255
+      // https://github.com/typescript-eslint/typescript-eslint/issues/58
       code: `
 window.whatevs = {
   myFunc() {
