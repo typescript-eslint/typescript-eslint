@@ -188,12 +188,13 @@ module.exports = {
      * @private
      */
     function getNodeType(node) {
+      // TODO: add missing TSCallSignatureDeclaration
       switch (node.type) {
         case 'MethodDefinition':
           return node.kind;
         case 'TSMethodSignature':
           return 'method';
-        case 'TSConstructSignature':
+        case 'TSConstructSignatureDeclaration':
           return 'constructor';
         case 'ClassProperty':
         case 'TSPropertySignature':
