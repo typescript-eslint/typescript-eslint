@@ -673,6 +673,25 @@ type obj = {
           column: 5
         }
       ]
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/64
+      code: `
+        function test<T extends Partial<any>>() {}
+        const test = <T extends Partial<any>>() => {};
+      `,
+      errors: [
+        {
+          message: 'Unexpected any. Specify a different type.',
+          line: 2,
+          column: 41
+        },
+        {
+          message: 'Unexpected any. Specify a different type.',
+          line: 3,
+          column: 41
+        }
+      ]
     }
   ]
 });

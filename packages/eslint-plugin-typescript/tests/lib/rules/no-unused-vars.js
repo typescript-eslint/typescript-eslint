@@ -518,7 +518,14 @@ enum FormFieldIds {
 interface IFoo {
     fieldName: FormFieldIds.EMAIL,
 }
-        `
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/25
+    `
+import * as fastify from 'fastify'
+import { Server, IncomingMessage, ServerResponse } from 'http'
+const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify({})
+server.get('/ping')
+    `
   ],
 
   invalid: [
