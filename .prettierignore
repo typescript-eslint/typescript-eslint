@@ -1,4 +1,5 @@
 **/tests/fixtures/**/*
+**/tests/rules/*
 **/dist
 **/coverage
 **/typescript-eslint-shared-fixtures
