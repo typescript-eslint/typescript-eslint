@@ -11,7 +11,6 @@ const project = path.dirname(__dirname);
 const tests = path.join(project, 'tests', 'rules');
 
 const format = new CLIEngine().getFormatter('codeframe');
-const fakeName = 'source.ts';
 
 const linter = new Linter();
 
@@ -27,7 +26,8 @@ for (const rule of testedRules) {
 
   const snapPath = path.join(tests, `${rule}.snap.ts`);
 
-  const source = fs.readFileSync(path.join(tests, `${rule}.src.ts`), 'utf8');
+  const sourceName = `${rule}.src.ts`;
+  const source = fs.readFileSync(path.join(tests, sourceName), 'utf8');
   const messages = linter.verify(
     source,
     {
@@ -36,7 +36,7 @@ for (const rule of testedRules) {
       useEslintrc: false,
       rules: { [rule]: 'error' }
     },
-    fakeName
+    sourceName
   );
 
   try {
@@ -48,7 +48,7 @@ for (const rule of testedRules) {
 
   const received = format([
     {
-      filePath: fakeName,
+      filePath: sourceName,
       messages,
       errorCount: messages.length,
       warningCount: 0,
@@ -59,7 +59,7 @@ for (const rule of testedRules) {
   ])
     .replace(
       new RegExp(
-        String.raw`^error: (.+?) \(${rule}\) at ${fakeName.replace(
+        String.raw`^error: (.+?) \(${rule}\) at ${sourceName.replace(
           '.',
           '\\.'
         )}:(\d+:\d+):$`,
