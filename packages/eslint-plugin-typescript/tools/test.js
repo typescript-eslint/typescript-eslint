@@ -34,7 +34,10 @@ for (const rule of testedRules) {
       parser: path.join(project, 'parser.js'),
       plugins: [require('../lib/index')],
       useEslintrc: false,
-      rules: { [rule]: 'error' }
+      rules: { [rule]: 'error' },
+      parserOptions: {
+        sourceType: 'module'
+      }
     },
     sourceName
   );
