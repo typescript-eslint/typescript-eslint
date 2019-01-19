@@ -16,15 +16,15 @@
 
 This repo contains several packages which allow ESLint users to lint their TypeScript code.
 
-- `typescript-estree` - An entirely generic TypeScript parser which takes TypeScript source code and produces an <a href="https://github.com/estree/estree">ESTree</a>-compatible AST</p>
+- [`typescript-estree`](./packages/typescript-estree/) - An entirely generic TypeScript parser which takes TypeScript source code and produces an <a href="https://github.com/estree/estree">ESTree</a>-compatible AST</p>
 
   - This package is also used to power the amazing opinionated code formatter [Prettier](https://prettier.io)'s own TypeScript use-case.
 
-- `typescript-eslint-parser` - An ESLint-specific parser which leverages `typescript-estree` and is designed to be used as a replacement for ESLint's default parser, `espree`.
+- [`typescript-eslint-parser`](./packages/typescript-eslint-parser/) - An ESLint-specific parser which leverages `typescript-estree` and is designed to be used as a replacement for ESLint's default parser, `espree`.
 
-- `eslint-plugin-typescript` - An ESLint-specific plugin which, when used in conjunction with `typescript-eslint-parser`, allows for TypeScript-specific linting rules to run.
+- [`eslint-plugin-typescript`](./packages/eslint-plugin-typescript/) - An ESLint-specific plugin which, when used in conjunction with `typescript-eslint-parser`, allows for TypeScript-specific linting rules to run.
 
-- `eslint-plugin-tslint` - An ESLint-specific plugin which runs an instance of TSLint within your ESLint setup to allow for users to more easily migrate from TSLint to ESLint.
+- [`eslint-plugin-tslint`](./packages/eslint-plugin-tslint) - An ESLint-specific plugin which runs an instance of TSLint within your ESLint setup to allow for users to more easily migrate from TSLint to ESLint.
 
 ## Supported TypeScript Version
 
