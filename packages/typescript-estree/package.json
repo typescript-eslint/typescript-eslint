@@ -13,7 +13,7 @@
   },
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {
-    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+    "url": "https://typescript-eslint.io/estree/report-issue"
   },
   "license": "BSD-2-Clause",
   "keywords": [

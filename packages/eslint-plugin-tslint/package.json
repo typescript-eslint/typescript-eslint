@@ -15,7 +15,7 @@
   },
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {
-    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+    "url": "https://typescript-eslint.io/plugin-tslint/report-issue"
   },
   "license": "MIT",
   "scripts": {

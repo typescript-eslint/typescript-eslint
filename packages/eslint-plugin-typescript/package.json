@@ -13,7 +13,7 @@
   },
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {
-    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+    "url": "https://typescript-eslint.io/eslint-plugin/report-issue"
   },
   "license": "MIT",
   "main": "lib/index.js",
