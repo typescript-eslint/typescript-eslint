@@ -1,0 +1,1 @@
+const noSemi = true

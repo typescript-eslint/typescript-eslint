@@ -1,5 +1,5 @@
 {
-  "name": "@typescript-eslint/parser",
+  "name": "typescript-eslint-parser",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "main": "dist/parser.js",
   "version": "21.0.2",
@@ -29,9 +29,7 @@
     "prebuild": "npm run clean",
     "build": "tsc",
     "clean": "rimraf dist/",
-    "test": "jest --coverage",
-    "integration-tests": "docker-compose -f tests/integration/docker-compose.yml up",
-    "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local"
+    "test": "jest --coverage"
   },
   "peerDependencies": {
     "eslint": ">=4.19.1",

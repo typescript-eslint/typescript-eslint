@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should produce the expected lint ouput 1`] = `
+Array [
+  Object {
+    "errorCount": 1,
+    "filePath": "/usr/linked/index.ts",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 7,
+        "endColumn": 13,
+        "endLine": 1,
+        "line": 1,
+        "message": "'noSemi' is assigned a value but never used.",
+        "nodeType": "Identifier",
+        "ruleId": "typescript/no-unused-vars",
+        "severity": 1,
+        "source": "const noSemi = true",
+      },
+      Object {
+        "column": 20,
+        "endColumn": 20,
+        "endLine": 1,
+        "line": 1,
+        "message": "Missing semicolon (tslint:semicolon)",
+        "nodeType": null,
+        "ruleId": "tslint/config",
+        "severity": 2,
+        "source": "const noSemi = true",
+      },
+    ],
+    "source": "const noSemi = true
+",
+    "warningCount": 1,
+  },
+]
+`;
