@@ -12,12 +12,11 @@ const ruleTester = new RuleTester({
     ecmaVersion: 6,
     sourceType: 'module'
   },
-  parser: 'typescript-eslint-parser'
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('strict', rule, {
   valid: [
-    // https://github.com/bradzacher/eslint-plugin-typescript/issues/255
     // https://github.com/typescript-eslint/typescript-eslint/issues/58
     `
 window.whatevs = {
@@ -29,7 +28,6 @@ window.whatevs = {
   ],
   invalid: [
     {
-      // https://github.com/bradzacher/eslint-plugin-typescript/issues/255
       // https://github.com/typescript-eslint/typescript-eslint/issues/58
       code: `
 window.whatevs = {

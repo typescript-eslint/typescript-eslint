@@ -20,9 +20,9 @@ const testPackageJSON = {
     /**
      * Use the local volumes for our own packages
      */
-    'eslint-plugin-typescript': 'file:/usr/eslint-plugin',
-    'eslint-plugin-tslint': 'file:/usr/eslint-plugin-tslint',
-    'typescript-estree': 'file:/usr/typescript-estree'
+    '@typescript-eslint/eslint-plugin': 'file:/usr/eslint-plugin',
+    '@typescript-eslint/eslint-plugin-tslint': 'file:/usr/eslint-plugin-tslint',
+    '@typescript-eslint/typescript-estree': 'file:/usr/typescript-estree'
   }
 };
 

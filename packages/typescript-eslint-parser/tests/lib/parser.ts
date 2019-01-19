@@ -1,4 +1,4 @@
-import * as typescriptESTree from 'typescript-estree';
+import * as typescriptESTree from '@typescript-eslint/typescript-estree';
 import { parse, parseForESLint, Syntax } from '../../src/parser';
 
 describe('parser', () => {

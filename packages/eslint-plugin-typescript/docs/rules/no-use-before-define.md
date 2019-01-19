@@ -88,7 +88,7 @@ let myVar: StringOrNumber;
   If this is `true`, the rule warns every reference to a variable before the variable declaration.
   Otherwise, the rule ignores a reference if the declaration is in an upper scope, while still reporting the reference if it's in the same scope as the declaration.
   Default is `true`.
-- `typedefs` (`boolean`, **added** in `eslint-plugin-typescript`) -
+- `typedefs` (`boolean`, **added** in `@typescript-eslint/eslint-plugin`) -
   The flag which shows whether or not this rule checks type declarations.
   If this is `true`, this rule warns every reference to a type before the type declaration.
   Otherwise, ignores those references.

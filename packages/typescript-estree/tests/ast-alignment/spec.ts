@@ -11,7 +11,7 @@ fixturesToTest.forEach(fixture => {
    * Parse with typescript-estree
    */
   const typeScriptESTreeResult = parse(source, {
-    parser: 'typescript-estree',
+    parser: '@typescript-eslint/typescript-estree',
     jsx: fixture.jsx
   });
 

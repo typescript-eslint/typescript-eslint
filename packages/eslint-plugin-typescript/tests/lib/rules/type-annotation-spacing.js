@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/type-annotation-spacing'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: 'typescript-eslint-parser'
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('type-annotation-spacing', rule, {
@@ -1034,7 +1034,7 @@ type Bar = Record<keyof Foo, string>
           }
         }
       ],
-      parser: 'typescript-eslint-parser'
+      parser: '@typescript-eslint/parser'
     },
     'let resolver: (() => PromiseLike<T>) | PromiseLike<T>;'
   ],
@@ -4219,7 +4219,7 @@ type Bar = Record<keyof Foo, string>
           }
         }
       ],
-      parser: 'typescript-eslint-parser'
+      parser: '@typescript-eslint/parser'
     }
   ],
   invalid: [

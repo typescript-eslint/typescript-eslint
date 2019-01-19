@@ -1,5 +1,5 @@
 import traverser from 'eslint/lib/util/traverser';
-import * as typescriptESTree from 'typescript-estree';
+import * as typescriptESTree from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';

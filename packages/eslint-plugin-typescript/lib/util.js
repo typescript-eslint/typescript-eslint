@@ -117,11 +117,11 @@ exports.getParserServices = context => {
     !context.parserServices.program ||
     !context.parserServices.esTreeNodeToTSNodeMap
   ) {
-    // TODO - the message will require revisiting once the typescript-eslint-parser/typescript-estree finalises
+    // TODO - the message will require revisiting once the @typescript-eslint/parser work finalises
     //        their work around exposing the parser. They may require that there be a project config field in
     //        the eslint config, in which case we should check and/or report that here appropriately.
     throw new Error(
-      'This rule requires you to use `eslint-plugin-typescript/parser`.'
+      'This rule requires you to use `@typescript-eslint/eslint-plugin/parser`.'
     );
   }
   return context.parserServices;

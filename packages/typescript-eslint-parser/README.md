@@ -5,7 +5,7 @@ An ESLint custom parser which leverages [TypeScript ESTree](https://github.com/t
 ## Installation:
 
 ```sh
-npm install --save-dev typescript-eslint-parser
+npm install --save-dev @typescript-eslint/parser
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ In your ESLint configuration file, set the `parser` property:
 
 ```json
 {
-  "parser": "typescript-eslint-parser"
+  "parser": "@typescript-eslint/parser"
 }
 ```
 
@@ -26,7 +26,7 @@ The core rules built into ESLint, such as `indent` have no knowledge of such con
 
 Instead, you also need to make use of one more plugins which will add or extend rules with TypeScript-specific features.
 
-By far the most common case will be installing the [eslint-plugin-typescript](https://github.com/nzakas/eslint-plugin-typescript) plugin, but there are also other relevant options available such a [eslint-plugin-tslint](https://github.com/JamesHenry/eslint-plugin-tslint).
+By far the most common case will be installing the [@typescript-eslint/eslint-plugin](https://github.com/nzakas/@typescript-eslint/eslint-plugin) plugin, but there are also other relevant options available such a [@typescript-eslint/eslint-plugin-tslint](https://github.com/JamesHenry/@typescript-eslint/eslint-plugin-tslint).
 
 ## Configuration
 
@@ -44,7 +44,7 @@ The following additional configuration options are available by specifying them 
 
 ```json
 {
-  "parser": "typescript-eslint-parser",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "jsx": true,
     "useJSXTextNode": true
@@ -68,7 +68,7 @@ Please check the current list of open and known issues and ensure the issue has 
 
 - ESLint Version
 - TypeScript version
-- The `typescript-eslint-parser` version
+- The `@typescript-eslint/parser` version
 - ESLint config or rules and plugins currently enabled
 
 ## Integration Tests
@@ -92,10 +92,6 @@ If you ever need to change what gets installed when the docker images are built 
 ```sh
 npm run kill-integration-test-containers
 ```
-
-## Contributing
-
-Issues and pull requests will be triaged and responded to as quickly as possible. We operate under the [ESLint Contributor Guidelines](http://eslint.org/docs/developer-guide/contributing), so please be sure to read them before contributing. If you're not sure where to dig in, check out the [issues](https://github.com/eslint/typescript-eslint-parser/issues).
 
 ## Build Commands
 

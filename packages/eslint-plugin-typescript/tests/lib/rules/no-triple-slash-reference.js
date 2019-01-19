@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/no-triple-slash-reference'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: 'typescript-eslint-parser'
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('no-triple-slash-reference', rule, {
@@ -47,7 +47,7 @@ let a
 /// <reference path="Animal" />
 let a
             `,
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       errors: [
         {
           messageId: 'tripleSlashReference',

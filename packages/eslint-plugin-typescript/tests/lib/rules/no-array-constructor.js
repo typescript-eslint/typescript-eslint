@@ -17,7 +17,7 @@ const rule = require('../../../lib/rules/no-array-constructor'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: 'typescript-eslint-parser'
+  parser: '@typescript-eslint/parser'
 });
 
 const message = 'The array literal notation [] is preferrable.';

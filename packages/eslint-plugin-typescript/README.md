@@ -1,12 +1,8 @@
-# eslint-plugin-typescript
+# @typescript-eslint/eslint-plugin
 
-[![NPM version](https://img.shields.io/npm/v/eslint-plugin-typescript.svg)](https://www.npmjs.com/package/eslint-plugin-typescript)
-[![NPM downloads](https://img.shields.io/npm/dm/eslint-plugin-typescript.svg)](https://www.npmjs.com/package/eslint-plugin-typescript)
-[![TravisCI](https://img.shields.io/travis/bradzacher/eslint-plugin-typescript.svg)](https://travis-ci.com/bradzacher/eslint-plugin-typescript)
-
-TypeScript support for ESLint. (This is still in the very early stages, so please be patient.)
-
-### The below readme is for the upcoming 1.0.0 release. [Please see this tag for the current NPM version (0.14.0)](https://github.com/bradzacher/eslint-plugin-typescript/tree/0.14.0)
+[![NPM version](https://img.shields.io/npm/v/@typescript-eslint/eslint-plugin.svg)](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+[![NPM downloads](https://img.shields.io/npm/dm/@typescript-eslint/eslint-plugin.svg)](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+[![TravisCI](https://img.shields.io/travis/@typescript-eslint/eslint-plugin.svg)](https://travis-ci.com/@typescript-eslint/eslint-plugin)
 
 ## Installation
 
@@ -22,33 +18,33 @@ Next, install `typescript` if you haven’t already:
 $ npm i typescript@~3.1.1 --save-dev
 ```
 
-Last, install `eslint-plugin-typescript`:
+Last, install `@typescript-eslint/eslint-plugin`:
 
 ```shellsession
-$ npm install eslint-plugin-typescript --save-dev
+$ npm install @typescript-eslint/eslint-plugin --save-dev
 ```
 
-**Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `eslint-plugin-typescript` globally.
+**Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `@typescript-eslint/eslint-plugin` globally.
 
 ## Usage
 
-Add `eslint-plugin-typescript/parser` to the `parser` field and `typescript` to the plugins section of your `.eslintrc` configuration file:
+Add `@typescript-eslint/eslint-plugin/parser` to the `parser` field and `typescript` to the plugins section of your `.eslintrc` configuration file:
 
 ```json
 {
-  "parser": "eslint-plugin-typescript/parser",
+  "parser": "@typescript-eslint/eslint-plugin/parser",
   "plugins": ["typescript"]
 }
 ```
 
-Note: The plugin provides its own version of the `typescript-eslint-parser` via `eslint-plugin-typescript/parser`.
+Note: The plugin provides its own version of the `@typescript-eslint/parser` via `@typescript-eslint/eslint-plugin/parser`.
 This helps us guarantee 100% compatibility between the plugin and the parser.
 
 Then configure the rules you want to use under the rules section.
 
 ```json
 {
-  "parser": "eslint-plugin-typescript/parser",
+  "parser": "@typescript-eslint/eslint-plugin/parser",
   "plugins": ["typescript"],
   "rules": {
     "typescript/rule-name": "error"

@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/no-angle-bracket-type-assertion'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: 'typescript-eslint-parser'
+  parser: '@typescript-eslint/parser'
 });
 
 ruleTester.run('no-angle-bracket-type-assertion', rule, {

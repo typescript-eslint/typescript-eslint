@@ -1,5 +1,5 @@
 {
-  "name": "typescript-eslint",
+  "name": "@typescript-eslint/typescript-eslint",
   "private": true,
   "workspaces": [
     "packages/*"

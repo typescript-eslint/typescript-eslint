@@ -1,5 +1,5 @@
 {
-    "parser": "eslint-plugin-typescript/parser",
+    "parser": "@typescript-eslint/eslint-plugin/parser",
     "parserOptions": {
         "sourceType": "module"
     },
