@@ -233,16 +233,6 @@ export function preprocessBabylonAST(ast: any): any {
         }
       },
       /**
-       * Babel: ClassDeclaration + abstract: true
-       * ts-estree: TSAbstractClassDeclaration
-       */
-      ClassDeclaration(node: any) {
-        if (node.abstract) {
-          node.type = 'TSAbstractClassDeclaration';
-          delete node.abstract;
-        }
-      },
-      /**
        * Babel: ClassProperty + abstract: true
        * ts-estree: TSAbstractClassProperty
        */

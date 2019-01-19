@@ -22,6 +22,11 @@ ruleTester.run('no-shadow', rule, {
     `
 type foo = any;
 function bar(foo: any) {}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/20
+    `
+export abstract class Foo {}
+export class FooBar extends Foo {}
     `
   ],
   invalid: []

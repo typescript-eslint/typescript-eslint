@@ -1377,15 +1377,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       if (node.modifiers && node.modifiers.length) {
         /**
-         * TypeScript class declarations can be defined as "abstract"
-         */
-        if (node.kind === SyntaxKind.ClassDeclaration) {
-          if (hasModifier(SyntaxKind.AbstractKeyword, node)) {
-            classNodeType = `TSAbstract${classNodeType}`;
-          }
-        }
-
-        /**
          * We need check for modifiers, and use the last one, as there
          * could be multiple before the open brace
          */
@@ -1441,6 +1432,13 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
 
       if (implementsClause) {
         result.implements = implementsClause.types.map(convertChild);
+      }
+
+      /**
+       * TypeScript class declarations can be defined as "abstract"
+       */
+      if (hasModifier(SyntaxKind.AbstractKeyword, node)) {
+        result.abstract = true;
       }
 
       if (hasModifier(SyntaxKind.DeclareKeyword, node)) {

@@ -36,15 +36,6 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
   TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
-  TSAbstractClassDeclaration: [
-    'decorators',
-    'id',
-    'typeParameters',
-    'superClass',
-    'superTypeParameters',
-    'implements',
-    'body'
-  ],
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
   TSAnyKeyword: [],

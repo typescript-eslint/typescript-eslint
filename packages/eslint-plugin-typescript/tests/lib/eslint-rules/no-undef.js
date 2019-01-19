@@ -61,6 +61,11 @@ interface Runnable {
 export type SomeThing = {
     id: string;
 }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/20
+    `
+export abstract class Foo {}
+export class FooBar extends Foo {}
     `
   ],
   invalid: []
