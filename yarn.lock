@@ -2361,10 +2361,10 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-docs@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-docs/-/eslint-docs-0.3.0.tgz#ac807ba84845235baa8683ef16f64c228d6eb352"
-  integrity sha512-IPMvDqhO//u14GGpwoZ63SBUT4iIaB5O5BS304gHAjNCpv26Dalv0s8PiNxJKz8qPWG5GD1vVJHt9Yq9wXSwJw==
+eslint-docs@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/eslint-docs/-/eslint-docs-0.3.1.tgz#72660f9829084956b13db3dcad48d1bb5101b5f0"
+  integrity sha512-PexZtKnkSTl5H2qwVrp1KZzhRUvqGP5Jxm2E7I9jpz0RwkGQ19MLJcZbpKb3Xa/z6PM0vIhUeaftwjKegnKBwg==
   dependencies:
     chalk "^2.4.1"
     cli-diff "^1.0.0"
