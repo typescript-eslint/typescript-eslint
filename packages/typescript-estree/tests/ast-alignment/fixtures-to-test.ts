@@ -352,9 +352,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'interface-with-extends-member-expression',
     /**
-     * Babel bug for parsing exported abstract interface
-     * https://github.com/babel/babel/issues/9304
-     * PR: https://github.com/babel/babel/pull/9336
+     * PR for parsing exported abstract interface has been merged into Babel: https://github.com/babel/babel/pull/9336
+     * TODO: remove me in next babel > 7.2.3
      */
     'abstract-interface',
     /**
