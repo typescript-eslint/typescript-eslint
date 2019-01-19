@@ -62,7 +62,7 @@
     "@types/node": "^10.12.2",
     "@types/semver": "^5.5.0",
     "cz-conventional-changelog": "2.1.0",
-    "eslint": "^4.19.1",
+    "eslint": "^5.12.1",
     "glob": "7.1.2",
     "husky": "0.14.3",
     "jest": "23.6.0",
@@ -72,6 +72,7 @@
     "prettier": "^1.14.3",
     "rimraf": "^2.6.3",
     "ts-jest": "^23.10.4",
+    "tslint": "^5.11.0",
     "typescript": "~3.2.1"
   }
 }

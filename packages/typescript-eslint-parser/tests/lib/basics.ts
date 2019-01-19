@@ -59,9 +59,7 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
         message: 'called on React.SFC',
         nodeType: 'TSTypeReference',
         ruleId: 'test',
-        severity: 2,
-        source:
-          'export const Price: React.SFC<PriceProps> = function Price(props) {}'
+        severity: 2
       },
       {
         column: 31,
@@ -71,9 +69,7 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
         message: 'called on PriceProps',
         nodeType: 'TSTypeReference',
         ruleId: 'test',
-        severity: 2,
-        source:
-          'export const Price: React.SFC<PriceProps> = function Price(props) {}'
+        severity: 2
       }
     ]);
   });

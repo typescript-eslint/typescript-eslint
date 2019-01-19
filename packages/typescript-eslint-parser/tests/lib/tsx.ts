@@ -43,8 +43,7 @@ describe('TSX', () => {
           line: 1,
           message: "Parsing error: '>' expected.",
           ruleId: null,
-          severity: 2,
-          source: 'const element = <T/>'
+          severity: 2
         }
       ]);
     });
@@ -76,8 +75,7 @@ describe('TSX', () => {
           line: 1,
           message: "Parsing error: '>' expected.",
           ruleId: null,
-          severity: 2,
-          source: 'const element = <T/>'
+          severity: 2
         }
       ]);
     });
@@ -99,8 +97,7 @@ describe('TSX', () => {
           line: 1,
           message: "Parsing error: '>' expected.",
           ruleId: null,
-          severity: 2,
-          source: 'const element = <T/>'
+          severity: 2
         }
       ]);
     });

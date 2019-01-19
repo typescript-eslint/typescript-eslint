@@ -10,19 +10,13 @@ const testPackageJSON = {
   devDependencies: {
     eslint: rootPackageJSON.devDependencies.eslint,
     typescript: rootPackageJSON.devDependencies.typescript,
-    tslint: '^5.11.0',
+    tslint: rootPackageJSON.devDependencies.tslint,
     /**
      * TEMP: Bump jest to ahead of our stable usage in the monorepo,
      * we need the bleeding edge snapshotResolver option
      */
     // jest: rootPackageJSON.devDependencies.jest,
-    jest: '24.0.0-alpha.12',
-    /**
-     * Use the local volumes for our own packages
-     */
-    '@typescript-eslint/eslint-plugin': 'file:/usr/eslint-plugin',
-    '@typescript-eslint/eslint-plugin-tslint': 'file:/usr/eslint-plugin-tslint',
-    '@typescript-eslint/typescript-estree': 'file:/usr/typescript-estree'
+    jest: '24.0.0-alpha.12'
   }
 };
 

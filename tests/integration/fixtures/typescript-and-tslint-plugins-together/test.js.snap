@@ -15,9 +15,8 @@ Array [
         "line": 1,
         "message": "'noSemi' is assigned a value but never used.",
         "nodeType": "Identifier",
-        "ruleId": "typescript/no-unused-vars",
+        "ruleId": "@typescript-eslint/no-unused-vars",
         "severity": 1,
-        "source": "const noSemi = true",
       },
       Object {
         "column": 20,
@@ -26,9 +25,8 @@ Array [
         "line": 1,
         "message": "Missing semicolon (tslint:semicolon)",
         "nodeType": null,
-        "ruleId": "tslint/config",
+        "ruleId": "@typescript-eslint/tslint/config",
         "severity": 2,
-        "source": "const noSemi = true",
       },
     ],
     "source": "const noSemi = true
