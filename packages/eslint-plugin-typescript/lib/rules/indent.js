@@ -29,7 +29,6 @@ const KNOWN_NODES = new Set([
   'TSNullKeyword',
 
   // ts specific nodes we want to support
-  'TSAbstractClassDeclaration',
   'TSAbstractClassProperty',
   'TSAbstractMethodDefinition',
   'TSArrayType',

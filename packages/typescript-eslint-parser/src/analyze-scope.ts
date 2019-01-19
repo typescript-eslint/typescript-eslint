@@ -202,7 +202,7 @@ class Referencer extends OriginalReferencer {
   /**
    * Override.
    * Visit decorators.
-   * @param {ClassDeclaration|ClassExpression|TSAbstractClassDeclaration} node The class node to visit.
+   * @param {ClassDeclaration|ClassExpression} node The class node to visit.
    * @returns {void}
    */
   visitClass(node: any) {
@@ -709,9 +709,6 @@ class Referencer extends OriginalReferencer {
     this.close(node);
   }
 
-  TSAbstractClassDeclaration(node: any) {
-    this.ClassDeclaration(node);
-  }
   TSAbstractClassProperty(node: any) {
     this.ClassProperty(node);
   }

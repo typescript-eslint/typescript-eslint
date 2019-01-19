@@ -22,7 +22,7 @@ function nonTsTestCase(example) {
 
 const individualNodeTests = [
   {
-    node: 'TSAbstractClassDeclaration',
+    node: 'ClassDeclaration',
     code: [
       `
 abstract class Foo {
@@ -157,7 +157,7 @@ interface Foo {
     ]
   },
   {
-    node: 'TSEmptyBodyDeclareFunction',
+    node: 'TSDeclareFunction',
     code: [
       `
 declare function foo() : {
