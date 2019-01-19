@@ -17,7 +17,7 @@ const rule = require('../../../lib/rules/member-delimiter-style'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: 'typescript-eslint-parser'
 });
 
 ruleTester.run('member-delimiter-style', rule, {

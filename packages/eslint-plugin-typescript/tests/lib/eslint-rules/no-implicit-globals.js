@@ -12,7 +12,7 @@ const ruleTester = new RuleTester({
     ecmaVersion: 6,
     sourceType: 'module'
   },
-  parser: '@typescript-eslint/parser'
+  parser: 'typescript-eslint-parser'
 });
 
 ruleTester.run('no-implicit-globals', rule, {

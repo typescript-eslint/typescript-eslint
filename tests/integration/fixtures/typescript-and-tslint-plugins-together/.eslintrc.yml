@@ -1,6 +1,6 @@
 root: true
 
-# Local version of @typescript-eslint/parser
+# Local version of typescript-eslint-parser
 parser: /usr/parser/parser.js
 
 plugins:

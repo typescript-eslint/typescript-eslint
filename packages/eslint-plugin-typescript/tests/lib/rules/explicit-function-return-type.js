@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/explicit-function-return-type'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: 'typescript-eslint-parser'
 });
 
 ruleTester.run('explicit-function-return-type', rule, {

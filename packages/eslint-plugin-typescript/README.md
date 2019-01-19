@@ -41,7 +41,7 @@ Add `eslint-plugin-typescript/parser` to the `parser` field and `typescript` to 
 }
 ```
 
-Note: The plugin provides its own version of the `@typescript-eslint/parser` via `eslint-plugin-typescript/parser`.
+Note: The plugin provides its own version of the `typescript-eslint-parser` via `eslint-plugin-typescript/parser`.
 This helps us guarantee 100% compatibility between the plugin and the parser.
 
 Then configure the rules you want to use under the rules section.

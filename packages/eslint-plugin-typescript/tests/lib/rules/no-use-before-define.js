@@ -18,7 +18,7 @@ const rule = require('../../../lib/rules/no-use-before-define'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: 'typescript-eslint-parser'
 });
 
 ruleTester.run('no-use-before-define', rule, {
@@ -220,7 +220,7 @@ export namespace Third {
 }
             `,
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      parser: '@typescript-eslint/parser'
+      parser: 'typescript-eslint-parser'
     }
   ],
   invalid: [

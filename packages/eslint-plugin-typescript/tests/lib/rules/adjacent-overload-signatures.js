@@ -16,7 +16,7 @@ const rule = require('../../../lib/rules/adjacent-overload-signatures'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: 'typescript-eslint-parser'
 });
 
 ruleTester.run('adjacent-overload-signatures', rule, {
