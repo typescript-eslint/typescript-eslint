@@ -18,7 +18,7 @@ const rule = require('../../../lib/rules/array-type'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new eslint.RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: 'typescript-eslint-parser'
 });
 
 ruleTester.run('array-type', rule, {
@@ -793,7 +793,7 @@ describe('array-type (nested)', () => {
           rules: {
             'array-type': [2, option]
           },
-          parser: '@typescript-eslint/parser'
+          parser: 'typescript-eslint-parser'
         },
         {
           fix: true

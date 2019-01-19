@@ -14,7 +14,7 @@ assignees: ''
 **What version of the following packages are you using?**
 
 - eslint-plugin-tslint: <!-- Please fill in -->
-- @typescript-eslint/parser: <!-- Please fill in -->
+- typescript-eslint-parser: <!-- Please fill in -->
 - TypeScript: <!-- Please fill in -->
 - ESLint: <!-- Please fill in -->
 
