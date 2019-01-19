@@ -20,7 +20,7 @@ This repo contains several packages which allow ESLint users to lint their TypeS
 
   - This package is also used to power the amazing opinionated code formatter [Prettier](https://prettier.io)'s own TypeScript use-case.
 
-- [`@typescript-eslint/parser`](./packages/typescript-eslint-parser/) - An ESLint-specific parser which leverages `typescript-estree` and is designed to be used as a replacement for ESLint's default parser, `espree`.
+- [`@typescript-eslint/parser`](./packages/parser/) - An ESLint-specific parser which leverages `typescript-estree` and is designed to be used as a replacement for ESLint's default parser, `espree`.
 
 - [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin/) - An ESLint-specific plugin which, when used in conjunction with `@typescript-eslint/parser`, allows for TypeScript-specific linting rules to run.
 
