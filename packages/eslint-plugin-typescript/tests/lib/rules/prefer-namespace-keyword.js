@@ -17,7 +17,7 @@ const rule = require('../../../lib/rules/prefer-namespace-keyword'),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: 'typescript-eslint-parser'
 });
 
 ruleTester.run('prefer-namespace-keyword', rule, {

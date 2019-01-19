@@ -27,12 +27,12 @@ describe('TSX', () => {
 
   describe("if the filename ends with '.tsx', enable jsx option automatically.", () => {
     const linter = new Linter();
-    linter.defineParser('@typescript-eslint/parser', parser);
+    linter.defineParser('typescript-eslint-parser', parser);
 
     it('filePath was not provided', () => {
       const code = 'const element = <T/>';
       const config = {
-        parser: '@typescript-eslint/parser'
+        parser: 'typescript-eslint-parser'
       };
       const messages = linter.verify(code, config);
 
@@ -52,7 +52,7 @@ describe('TSX', () => {
     it("filePath was not provided and 'jsx:true' option", () => {
       const code = 'const element = <T/>';
       const config = {
-        parser: '@typescript-eslint/parser',
+        parser: 'typescript-eslint-parser',
         parserOptions: {
           jsx: true
         }
@@ -65,7 +65,7 @@ describe('TSX', () => {
     it('test.ts', () => {
       const code = 'const element = <T/>';
       const config = {
-        parser: '@typescript-eslint/parser'
+        parser: 'typescript-eslint-parser'
       };
       const messages = linter.verify(code, config, { filename: 'test.ts' });
 
@@ -85,7 +85,7 @@ describe('TSX', () => {
     it("test.ts with 'jsx:true' option", () => {
       const code = 'const element = <T/>';
       const config = {
-        parser: '@typescript-eslint/parser',
+        parser: 'typescript-eslint-parser',
         parserOptions: {
           jsx: true
         }
@@ -108,7 +108,7 @@ describe('TSX', () => {
     it('test.tsx', () => {
       const code = 'const element = <T/>';
       const config = {
-        parser: '@typescript-eslint/parser'
+        parser: 'typescript-eslint-parser'
       };
       const messages = linter.verify(code, config, { filename: 'test.tsx' });
 
@@ -118,7 +118,7 @@ describe('TSX', () => {
     it("test.tsx with 'jsx:false' option", () => {
       const code = 'const element = <T/>';
       const config = {
-        parser: '@typescript-eslint/parser',
+        parser: 'typescript-eslint-parser',
         parserOptions: {
           jsx: false
         }

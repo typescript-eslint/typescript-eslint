@@ -1,0 +1,25 @@
+root: true
+
+# Local version of typescript-eslint-parser
+parser: /usr/parser/parser.js
+
+plugins:
+# Should resolve local version of @typescript-eslint/eslint-plugin
+- typescript
+# Should resolve local version of @typescript-eslint/eslint-plugin-tslint
+- tslint
+env:
+  es6: true
+  node: true
+extends:
+- plugin:typescript/recommended
+parserOptions:
+  sourceType: module
+  ecmaFeatures:
+    jsx: false
+  project: /usr/linked/tsconfig.json
+rules:
+  tslint/config:
+  - error
+  - rules:
+      semicolon: [true, 'always']

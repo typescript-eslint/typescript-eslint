@@ -98,11 +98,11 @@ export const rules = {
 
       /**
        * The user needs to have configured "project" in their parserOptions
-       * for @typescript-eslint/parser
+       * for typescript-eslint-parser
        */
       if (!parserServices || !parserServices.program) {
         throw new Error(
-          `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`
+          `You must provide a value for the "parserOptions.project" property for typescript-eslint-parser`
         );
       }
 

@@ -1,7 +1,0 @@
-root: true
-
-# typescript-eslint-parser
-parser: /usr/parser/parser.js
-
-rules:
-    no-redeclare: 2

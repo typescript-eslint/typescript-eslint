@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/eslint": "^4.16.3",
     "@types/lodash.memoize": "^4.1.4",
-    "@typescript-eslint/parser": "21.0.2",
+    "typescript-eslint-parser": "21.0.2",
     "tslint": "^5.11.0"
   }
 }

@@ -2,7 +2,7 @@
 **/dist
 **/coverage
 **/typescript-eslint-shared-fixtures
-**/tests/integration/**/*
+**/tests/integration/fixtures/**/*
 **/lib/configs/recommended.json
 **/.vscode
 **/.nyc_output
