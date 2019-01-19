@@ -6,6 +6,12 @@ node /usr/utils/generate-package-json.js
 # Install dependencies
 npm install
 
+# Use the local volumes for our own packages
+npm install $(npm pack /usr/typescript-estree | tail -1)
+npm install $(npm pack /usr/parser | tail -1)
+npm install $(npm pack /usr/eslint-plugin-tslint | tail -1)
+npm install $(npm pack /usr/eslint-plugin | tail -1)
+
 # Run the linting
 # (the "|| true" helps make sure that we run our tests on failed linting runs as well)
 npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.yml /usr/linked/**/*.ts || true

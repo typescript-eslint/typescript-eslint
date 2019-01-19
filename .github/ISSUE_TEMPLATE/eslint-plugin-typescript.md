@@ -1,6 +1,6 @@
 ---
-name: eslint-plugin-typescript
-about: Report an issue with the eslint-plugin-typescript package
+name: '@typescript-eslint/eslint-plugin'
+about: Report an issue with the '@typescript-eslint/eslint-plugin' package
 title: ''
 labels: 'package: eslint-plugin, triage'
 assignees: ''
@@ -38,8 +38,8 @@ Please try to avoid code that isn't directly related to the bug, as it makes it 
 
 **Versions**
 
-| package                    | version |
-| -------------------------- | ------- |
-| `eslint-plugin-typescript` | `X.Y.Z` |
-| `typescript-eslint-parser` | `X.Y.Z` |
-| `typescript`               | `X.Y.Z` |
+| package                            | version |
+| ---------------------------------- | ------- |
+| `@typescript-eslint/eslint-plugin` | `X.Y.Z` |
+| `@typescript-eslint/parser`        | `X.Y.Z` |
+| `typescript`                       | `X.Y.Z` |

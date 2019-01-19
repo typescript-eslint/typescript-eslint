@@ -1,7 +1,7 @@
 **/tests/fixtures/**/*
 **/dist
 **/coverage
-**/typescript-eslint-shared-fixtures
+**/shared-fixtures
 **/tests/integration/fixtures/**/*
 **/lib/configs/recommended.json
 **/.vscode

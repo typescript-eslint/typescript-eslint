@@ -2,7 +2,7 @@ import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
 
-import jsxKnownIssues from '../../../typescript-eslint-shared-fixtures/jsx-known-issues';
+import jsxKnownIssues from '../../../shared-fixtures/jsx-known-issues';
 
 interface Fixture {
   filename: string;
@@ -26,7 +26,7 @@ interface CreateFixturePatternConfig {
 const fixturesDirPath = path.join(__dirname, '../fixtures');
 const sharedFixturesDirPath = path.join(
   __dirname,
-  '../../../typescript-eslint-shared-fixtures/fixtures'
+  '../../../shared-fixtures/fixtures'
 );
 
 class FixturesTester {

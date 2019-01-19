@@ -1,6 +1,6 @@
 ---
-name: typescript-estree
-about: Report an issue with the `typescript-estree` package
+name: '@typescript-eslint/typescript-estree'
+about: Report an issue with the `@typescript-eslint/typescript-estree` package
 title: ''
 labels: 'package: typescript-estree, triage'
 assignees: ''
@@ -8,7 +8,7 @@ assignees: ''
 
 **What version of TypeScript are you using?**
 
-**What version of `typescript-estree` are you using?**
+**What version of `@typescript-eslint/typescript-estree` are you using?**
 
 **What code were you trying to parse?**
 

@@ -80,7 +80,7 @@ export function parse(text: string, opts: ASTComparisonParseOptions) {
 
   try {
     switch (opts.parser) {
-      case 'typescript-estree':
+      case '@typescript-eslint/typescript-estree':
         result.ast = parseUtils.normalizeNodeTypes(
           parseWithTypeScriptESTree(text, opts.jsx)
         );

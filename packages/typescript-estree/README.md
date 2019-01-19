@@ -20,13 +20,12 @@ This parser is somewhat generic and robust, and could be used to power any use-c
 In fact, it is already used within these hyper-popular open-source projects to power their TypeScript support:
 
 - [ESLint](https://eslint.org), the pluggable linting utility for JavaScript and JSX
-  - See [typescript-eslint-parser](https://github.com/eslint/typescript-eslint-parser) for more details
 - [Prettier](https://prettier.io), an opinionated code formatter
 
 ## Installation
 
 ```
-npm install --save typescript-estree
+npm install --save @typescript-eslint/typescript-estree
 ```
 
 ## API
@@ -75,7 +74,7 @@ Parses the given string of code with the options provided and returns an ESTree-
 Example usage:
 
 ```javascript
-const parser = require('typescript-estree');
+const parser = require('@typescript-eslint/typescript-estree');
 const code = `const hello: string = 'world';`;
 const ast = parser.parse(code, {
   range: true,
@@ -90,7 +89,7 @@ Exposes the current version of typescript-estree as specified in package.json.
 Example usage:
 
 ```javascript
-const parser = require('typescript-estree');
+const parser = require('@typescript-eslint/typescript-estree');
 const version = parser.version;
 ```
 
@@ -101,7 +100,7 @@ Exposes an object that contains the AST node types produced by the parser.
 Example usage:
 
 ```javascript
-const parser = require('typescript-estree');
+const parser = require('@typescript-eslint/typescript-estree');
 const astNodeTypes = parser.AST_NODE_TYPES;
 ```
 

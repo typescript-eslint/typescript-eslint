@@ -9,11 +9,11 @@ services:
       # but apply an empty volume for the package tests, we don't need those.
       - ../../package.json/:/usr/root-package.json
       - ./utils/:/usr/utils
-      - ../../packages/typescript-eslint-parser/dist/:/usr/parser
+      - ../../packages/parser/:/usr/parser
       - /usr/parser/tests
       - ../../packages/typescript-estree/:/usr/typescript-estree
       - /usr/typescript-estree/tests
-      - ../../packages/eslint-plugin-typescript/:/usr/eslint-plugin
+      - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
       - ../../packages/eslint-plugin-tslint/:/usr/eslint-plugin-tslint
       - /usr/eslint-plugin-tslint/tests

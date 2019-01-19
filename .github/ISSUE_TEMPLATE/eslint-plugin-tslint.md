@@ -1,8 +1,8 @@
 ---
-name: eslint-plugin-tslint
-about: Report an issue with the eslint-plugin-tslint package
+name: '@typescript-eslint/eslint-plugin-tslint'
+about: Report an issue with the '@typescript-eslint/eslint-plugin-tslint' package
 title: ''
-labels: 'package: eslint-plugin-tslint, triage'
+labels: 'package: @typescript-eslint/eslint-plugin-tslint, triage'
 assignees: ''
 ---
 
@@ -13,8 +13,8 @@ assignees: ''
 
 **What version of the following packages are you using?**
 
-- eslint-plugin-tslint: <!-- Please fill in -->
-- typescript-eslint-parser: <!-- Please fill in -->
+- @typescript-eslint/eslint-plugin-tslint: <!-- Please fill in -->
+- @typescript-eslint/parser: <!-- Please fill in -->
 - TypeScript: <!-- Please fill in -->
 - ESLint: <!-- Please fill in -->
 

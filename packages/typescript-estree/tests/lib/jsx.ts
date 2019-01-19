@@ -12,7 +12,7 @@ import {
   createSnapshotTestBlock,
   formatSnapshotName
 } from '../../tools/test-utils';
-import filesWithKnownIssues from '../../../typescript-eslint-shared-fixtures/jsx-known-issues';
+import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
 
 //------------------------------------------------------------------------------
 // Setup

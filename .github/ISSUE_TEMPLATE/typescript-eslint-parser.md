@@ -1,6 +1,6 @@
 ---
-name: 'typescript-eslint-parser'
-about: Report an issue with the typescript-eslint-parser package
+name: '@typescript-eslint/parser'
+about: Report an issue with the '@typescript-eslint/parser' package
 title: ''
 labels: 'package: parser, triage'
 assignees: ''
@@ -13,7 +13,7 @@ assignees: ''
 
 **What version of the following packages are you using?**
 
-- typescript-eslint-parser: <!-- Please fill in -->
+- @typescript-eslint/parser: <!-- Please fill in -->
 - TypeScript: <!-- Please fill in -->
 - ESLint: <!-- Please fill in -->
 
