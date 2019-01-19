@@ -1,12 +1,12 @@
 # Roadmap
 
-## TSLint rules
+✅ (27) = done  
+🌟 (79) = in ESLint core  
+🔌 (33) = in another plugin  
+🌓 (16) = implementations differ or ESLint version is missing functionality  
+🛑 (71) = unimplemented
 
-✅ = done  
-🌟 = in ESLint core  
-🔌 = in another plugin  
-🛑 = unimplemented  
-◐ = implementations differ or ESLint version is missing functionality
+## TSLint rules
 
 ### TypeScript-specific
 
@@ -72,7 +72,7 @@
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                |
 | [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                        |
 | [`no-string-throw`]                  | 🌟  | [`no-throw-literal`][no-throw-literal]                                |
-| [`no-submodule-imports`]             |  ◐  | [`import/no-internal-modules`] (slightly different)                   |
+| [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                   |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                    |
 | [`no-this-assignment`]               | ✅  | [`typescript/no-this-alias`]                                          |
 | [`no-unbound-method`]                | 🛑  | N/A                                                                   |
@@ -80,7 +80,7 @@
 | [`no-unsafe-any`]                    | 🛑  | N/A                                                                   |
 | [`no-unsafe-finally`]                | 🌟  | [`no-unsafe-finally`][no-unsafe-finally]                              |
 | [`no-unused-expression`]             | 🌟  | [`no-unused-expression`][no-unused-expressions]                       |
-| [`no-unused-variable`]               |  ◐  | [`no-unused-vars`][no-unused-vars] <sup>[2]</sup>                     |
+| [`no-unused-variable`]               | 🌓  | [`no-unused-vars`][no-unused-vars] <sup>[2]</sup>                     |
 | [`no-use-before-declare`]            | ✅  | [`typescript/no-use-before-define`]                                   |
 | [`no-var-keyword`]                   | 🌟  | [`no-var`][no-var]                                                    |
 | [`no-void-expression`]               | 🌟  | [`no-void`][no-void]                                                  |
@@ -104,7 +104,7 @@
 | TSLint rule                  |     | ESLint rule                                        |
 | ---------------------------- | :-: | -------------------------------------------------- |
 | [`cyclomatic-complexity`]    | 🌟  | [`complexity`][complexity]                         |
-| [`deprecation`]              |  ◐  | [`import/no-deprecated`] <sup>[1]</sup>            |
+| [`deprecation`]              | 🌓  | [`import/no-deprecated`] <sup>[1]</sup>            |
 | [`eofline`]                  | 🌟  | [`eol-last`][eol-last]                             |
 | [`indent`]                   | ✅  | [`typescript/indent`] or [Prettier]                |
 | [`linebreak-style`]          | 🌟  | [`linebreak-style`][linebreak-style] or [Prettier] |
@@ -115,10 +115,10 @@
 | [`no-duplicate-imports`]     | 🔌  | [`import/no-duplicates`]                           |
 | [`no-mergeable-namespace`]   | 🛑  | N/A                                                |
 | [`no-require-imports`]       | 🛑  | N/A                                                |
-| [`object-literal-sort-keys`] |  ◐  | [`sort-keys`][sort-keys] <sup>[2]</sup>            |
+| [`object-literal-sort-keys`] | 🌓  | [`sort-keys`][sort-keys] <sup>[2]</sup>            |
 | [`prefer-const`]             | 🌟  | [`prefer-const`][prefer-const]                     |
 | [`prefer-readonly`]          | 🛑  | N/A                                                |
-| [`trailing-comma`]           |  ◐  | [`comma-dangle`][comma-dangle] or [Prettier]       |
+| [`trailing-comma`]           | 🌓  | [`comma-dangle`][comma-dangle] or [Prettier]       |
 
 <sup>[1]</sup> Only warns when importing deprecated symbols  
 <sup>[2]</sup> Missing support for blank-line-delimited sections
@@ -142,7 +142,7 @@
 | [`import-spacing`]                  | 🔌  | Use [Prettier]                                                                      |
 | [`interface-name`]                  | ✅  | [`typescript/interface-name-prefix`]                                                |
 | [`interface-over-type-literal`]     | ✅  | [`typescript/prefer-interface`]                                                     |
-| [`jsdoc-format`]                    |  ◐  | [`valid-jsdoc`][valid-jsdoc] or [`eslint-plugin-jsdoc`][plugin:jsdoc]               |
+| [`jsdoc-format`]                    | 🌓  | [`valid-jsdoc`][valid-jsdoc] or [`eslint-plugin-jsdoc`][plugin:jsdoc]               |
 | [`match-default-export-name`]       | 🛑  | N/A                                                                                 |
 | [`newline-before-return`]           | 🌟  | [`padding-line-between-statements`][padding-line-between-statements] <sup>[1]</sup> |
 | [`newline-per-chained-call`]        | 🌟  | [`newline-per-chained-call`][newline-per-chained-call]                              |
@@ -202,7 +202,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 | tslint-microsoft-contrib rule |     | ESLint rule                                        |
 | ----------------------------- | :-: | -------------------------------------------------- |
-| `prefer-array-literal`        |  ◐  | [`typescript/no-array-constructor`] <sup>[1]</sup> |
+| `prefer-array-literal`        | 🌓  | [`typescript/no-array-constructor`] <sup>[1]</sup> |
 | `prefer-type-cast`            | 🛑  | N/A                                                |
 
 <sup>[1]</sup> ESLint rule is slightly less strict, allowing `new Array<Foo>()` and `Array(2)`.
@@ -211,17 +211,17 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 | tslint-microsoft-contrib rule         |     | ESLint rule                                                            |
 | ------------------------------------- | :-: | ---------------------------------------------------------------------- |
-| `export-name`                         | 🛑  | N/A ([relevant plugin](plugin:import))                                 |
+| `export-name`                         | 🛑  | N/A ([relevant plugin][plugin:import])                                 |
 | `function-name`                       | 🛑  | N/A                                                                    |
-| `import-name`                         | 🛑  | N/A ([relevant plugin](plugin:import))                                 |
+| `import-name`                         | 🛑  | N/A ([relevant plugin][plugin:import])                                 |
 | `function-name`                       | 🛑  | N/A                                                                    |
 | `informative-docs`                    | 🛑  | N/A                                                                    |
 | `insecure-random`                     | 🔌  | [custom implementation][insecure-random]                               |
 | `max-func-body-length`                | 🌟  | [`max-statements`][max-statements]                                     |
-| `no-banned-terms`                     | 🌟  | [`no-callee`][no-callee] & [`no-eval`][no-eval]                        |
+| `no-banned-terms`                     | 🌟  | [`no-caller`][no-caller] & [`no-eval`][no-eval]                        |
 | `no-constant-condition`               | 🌟  | [`no-constant-condition`][no-constant-condition]                       |
 | `no-control-regex`                    | 🌟  | [`no-control-regex`][no-control-regex]                                 |
-| `no-delete-expression`                |  ◐  | [`no-delete-var`][no-delete-var]                                       |
+| `no-delete-expression`                | 🌓  | [`no-delete-var`][no-delete-var]                                       |
 | `no-empty-line-after-opening-brace`   | 🌟  | [`padded-blocks`][padded-blocks] <sup>[1]</sup> or [Prettier]          |
 | `no-for-in`                           | 🌟  | [`no-restricted-syntax`][no-restricted-syntax] <sup>[2]</sup>          |
 | `no-function-expression`              | 🌟  | [`func-style`][func-style] <sup>[3]</sup>                              |
@@ -234,7 +234,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-suspicious-comment`               | 🌟  | [`no-warning-comments`][no-warning-comments] <sup>[4]</sup>            |
 | `no-typeof-undefined`                 | 🛑  | N/A (this actually has a valid use: checking if a variable is defined) |
 | `no-unexternalized-strings`           | 🛑  | N/A                                                                    |
-| `no-unnecessary-field-initialization` |  ◐  | [`no-undef-init`][no-undef-init] <sup>[5]</sup>                        |
+| `no-unnecessary-field-initialization` | 🌓  | [`no-undef-init`][no-undef-init] <sup>[5]</sup>                        |
 | `no-unnecessary-local-variable`       | 🛑  | N/A                                                                    |
 | `no-unnecessary-override`             | 🛑  | N/A                                                                    |
 | `no-unnecessary-semicolons`           | 🌟  | [`no-extra-semi`][no-extra-semi] or [Prettier]                         |
@@ -258,7 +258,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | tslint-microsoft-contrib rule              |     | ESLint rule                                        |
 | ------------------------------------------ | :-: | -------------------------------------------------- |
 | `no-disable-auto-sanitization`             | 🛑  | N/A                                                |
-| `no-document-domain`                       |  ◐  | Use [`no-restricted-syntax`][no-restricted-syntax] |
+| `no-document-domain`                       | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
 | `no-function-constructor-with-string-args` | 🌟  | [`no-new-func`][no-new-func]                       |
 | `no-http-string`                           | 🛑  | N/A                                                |
 | `no-inner-html`                            | 🛑  | N/A                                                |
@@ -277,23 +277,23 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | ----------------------------------- | :-: | -------------------------------------------------- |
 | `jquery-deferred-must-complete`     | 🛑  | N/A                                                |
 | `no-backbone-get-set-outside-model` | 🛑  | N/A                                                |
-| `no-cookies`                        |  ◐  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-document-write`                 |  ◐  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-exec-script`                    |  ◐  | Use [`no-restricted-syntax`][no-restricted-syntax] |
+| `no-cookies`                        | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
+| `no-document-write`                 | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
+| `no-exec-script`                    | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
 | `no-jquery-raw-elements`            | 🛑  | N/A                                                |
 | `no-unsupported-browser-code`       | 🔌  | [`eslint-plugin-compat`][plugin:compat]            |
 | `react-this-binding-issue`          | 🛑  |                                                    |
 | `react-tsx-curly-spacing`           | 🔌  | [`react/jsx-curly-spacing`]                        |
-| `react-unused-props-and-state`      |  ◐  | [`react/no-unused-state`]                          |
+| `react-unused-props-and-state`      | 🌓  | [`react/no-unused-state`]                          |
 
 ### React A11y
 
 | tslint-microsoft-contrib rule             |     | ESLint rule                                                |
 | ----------------------------------------- | :-: | ---------------------------------------------------------- |
-| `react-a11y-accessible-headings`          |  ◐  | [`jsx-a11y/heading-has-content`] <sup>[1]</sup>            |
+| `react-a11y-accessible-headings`          | 🌓  | [`jsx-a11y/heading-has-content`] <sup>[1]</sup>            |
 | `react-a11y-anchors`                      | 🔌  | [`jsx-a11y/anchor-is-valid`]                               |
 | `react-a11y-aria-unsupported-elements`    | 🔌  | [`jsx-a11y/aria-unsupported-elements`]                     |
-| `react-a11y-event-has-role`               |  ◐  | [`jsx-a11y/no-static-element-interactions`] <sup>[2]</sup> |
+| `react-a11y-event-has-role`               | 🌓  | [`jsx-a11y/no-static-element-interactions`] <sup>[2]</sup> |
 | `react-a11y-image-button-has-alt`         | 🔌  | [`jsx-a11y/alt-text`]                                      |
 | `react-a11y-img-has-alt`                  | 🔌  | [`jsx-a11y/alt-text`]                                      |
 | `react-a11y-input-elements`               | 🛑  | N/A                                                        |
@@ -553,6 +553,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-octal-escape]: https://eslint.org/docs/rules/no-octal-escape
 [no-extra-semi]: https://eslint.org/docs/rules/no-extra-semi
 [no-with]: https://eslint.org/docs/rules/no-with
+[no-warning-comments]: https://eslint.org/docs/rules/no-warning-comments
 
 <!-- eslint-plugin-typescript -->
 
