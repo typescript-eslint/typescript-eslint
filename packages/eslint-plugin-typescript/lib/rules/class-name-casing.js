@@ -54,10 +54,7 @@ module.exports = {
       switch (decl.type) {
         case 'ClassDeclaration':
         case 'ClassExpression':
-          friendlyName = 'Class';
-          break;
-        case 'TSAbstractClassDeclaration':
-          friendlyName = 'Abstract class';
+          friendlyName = decl.abstract ? 'Abstract class' : 'Class';
           break;
         case 'TSInterfaceDeclaration':
           friendlyName = 'Interface';
@@ -81,9 +78,7 @@ module.exports = {
     //----------------------------------------------------------------------
 
     return {
-      'ClassDeclaration, TSInterfaceDeclaration, TSAbstractClassDeclaration, ClassExpression'(
-        node
-      ) {
+      'ClassDeclaration, TSInterfaceDeclaration, ClassExpression'(node) {
         // class expressions (i.e. export default class {}) are OK
         if (node.id && !isPascalCase(node.id.name)) {
           report(node);

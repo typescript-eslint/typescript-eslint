@@ -709,6 +709,7 @@ Object {
   "body": Array [
     Object {
       "declaration": Object {
+        "abstract": true,
         "body": Object {
           "body": Array [
             Object {
@@ -822,7 +823,7 @@ Object {
           68,
         ],
         "superClass": null,
-        "type": "TSAbstractClassDeclaration",
+        "type": "ClassDeclaration",
       },
       "loc": Object {
         "end": Object {
@@ -1068,6 +1069,7 @@ Object {
   "body": Array [
     Object {
       "declaration": Object {
+        "abstract": true,
         "body": Object {
           "body": Array [
             Object {
@@ -1269,7 +1271,7 @@ Object {
           86,
         ],
         "superClass": null,
-        "type": "TSAbstractClassDeclaration",
+        "type": "ClassDeclaration",
       },
       "loc": Object {
         "end": Object {
@@ -1604,6 +1606,7 @@ exports[`typescript fixtures/basics/abstract-class-with-abstract-properties.src 
 Object {
   "body": Array [
     Object {
+      "abstract": true,
       "body": Object {
         "body": Array [
           Object {
@@ -1750,7 +1753,7 @@ Object {
         62,
       ],
       "superClass": null,
-      "type": "TSAbstractClassDeclaration",
+      "type": "ClassDeclaration",
     },
   ],
   "comments": Array [],
@@ -2013,6 +2016,7 @@ exports[`typescript fixtures/basics/abstract-class-with-abstract-readonly-proper
 Object {
   "body": Array [
     Object {
+      "abstract": true,
       "body": Object {
         "body": Array [
           Object {
@@ -2123,7 +2127,7 @@ Object {
         65,
       ],
       "superClass": null,
-      "type": "TSAbstractClassDeclaration",
+      "type": "ClassDeclaration",
     },
   ],
   "comments": Array [],
@@ -2369,6 +2373,7 @@ Object {
   "body": Array [
     Object {
       "declaration": Object {
+        "abstract": true,
         "body": Object {
           "body": Array [
             Object {
@@ -2571,7 +2576,7 @@ Object {
           78,
         ],
         "superClass": null,
-        "type": "TSAbstractClassDeclaration",
+        "type": "ClassDeclaration",
       },
       "loc": Object {
         "end": Object {
@@ -72794,6 +72799,7 @@ exports[`typescript fixtures/declare/abstract-class.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": true,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -72846,7 +72852,7 @@ Object {
         31,
       ],
       "superClass": null,
-      "type": "TSAbstractClassDeclaration",
+      "type": "ClassDeclaration",
     },
   ],
   "comments": Array [],
