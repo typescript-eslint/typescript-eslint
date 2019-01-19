@@ -282,7 +282,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       return [];
     }
     return parameters.map(param => {
-      const convertedParam = convertChild(param) as ESTreeNode;
+      const convertedParam = convertChild(param)!;
       if (!param.decorators || !param.decorators.length) {
         return convertedParam;
       }
@@ -1881,8 +1881,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.JsxFragment:
       Object.assign(result, {
         type: AST_NODE_TYPES.JSXFragment,
-        openingFragment: convertChild((node as ts.JsxFragment).openingFragment),
-        closingFragment: convertChild((node as ts.JsxFragment).closingFragment),
+        openingFragment: convertChild(node.openingFragment),
+        closingFragment: convertChild(node.closingFragment),
         children: node.children.map(convertChild)
       });
       break;
@@ -2248,9 +2248,12 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.IndexSignature: {
       Object.assign(result, {
         type: AST_NODE_TYPES.TSIndexSignature,
-        parameters: node.parameters.map(convertChild),
-        typeAnnotation: node.type ? convertTypeAnnotation(node.type) : null
+        parameters: node.parameters.map(convertChild)
       });
+
+      if (node.type) {
+        result.typeAnnotation = convertTypeAnnotation(node.type);
+      }
 
       if (hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
         result.readonly = true;

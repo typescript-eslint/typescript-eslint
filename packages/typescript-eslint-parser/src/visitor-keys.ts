@@ -76,7 +76,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   TSLiteralType: ['literal'],
   TSIntersectionType: ['types'],
   TSIndexedAccessType: ['indexType', 'objectType'],
-  TSIndexSignature: ['typeAnnotation', 'parameters'],
+  TSIndexSignature: ['parameters', 'typeAnnotation'],
   TSInterfaceBody: ['body'],
   TSInterfaceDeclaration: ['id', 'typeParameters', 'extends', 'body'],
   TSInterfaceHeritage: ['expression', 'typeParameters'],
