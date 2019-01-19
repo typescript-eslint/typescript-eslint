@@ -1672,6 +1672,14 @@ cli-cursor@^2.0.0, cli-cursor@^2.1.0:
   dependencies:
     restore-cursor "^2.0.0"
 
+cli-diff@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cli-diff/-/cli-diff-1.0.0.tgz#c56f1fa17849a629bf07154a2bd199aefe742964"
+  integrity sha512-XOVrll4VMhxBv26WqV6OH9cWqRxBXthh3uZ3dtg+CLqB8m0R6QJiSoDIXQNXDAeo/FAkQ+kF9Ph8NhQskU3LpQ==
+  dependencies:
+    chalk "^2.4.1"
+    diff "^3.5.0"
+
 cli-spinners@^1.1.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-1.3.1.tgz#002c1990912d0d59580c93bd36c056de99e4259a"
@@ -2353,14 +2361,15 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-docs@^0.2.6:
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/eslint-docs/-/eslint-docs-0.2.7.tgz#f208c3420fa2613f215a8daf5b9d75e9e7aa29ea"
-  integrity sha512-ylCFv96SW3aaWBrMFA7gai5tYntFXjy25CWNZWlAvamKCl7OYCTUfdUI40eAkO+3taxhGhTwCnIMHnwWwBxeYw==
+eslint-docs@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-docs/-/eslint-docs-0.3.0.tgz#ac807ba84845235baa8683ef16f64c228d6eb352"
+  integrity sha512-IPMvDqhO//u14GGpwoZ63SBUT4iIaB5O5BS304gHAjNCpv26Dalv0s8PiNxJKz8qPWG5GD1vVJHt9Yq9wXSwJw==
   dependencies:
     chalk "^2.4.1"
+    cli-diff "^1.0.0"
     detect-newline "^2.1.0"
-    diff "^3.5.0"
+    indent-string "^3.2.0"
     mz "^2.7.0"
     ora "^3.0.0"
     read-pkg-up "^4.0.0"
@@ -3398,7 +3407,7 @@ indent-string@^2.1.0:
   dependencies:
     repeating "^2.0.0"
 
-indent-string@^3.0.0:
+indent-string@^3.0.0, indent-string@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-3.2.0.tgz#4a5fd6d27cc332f37e5419a504dbb837105c9289"
   integrity sha1-Sl/W0nzDMvN+VBmlBNu4NxBckok=

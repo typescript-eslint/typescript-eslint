@@ -11,7 +11,10 @@
   "engines": {
     "node": ">=6"
   },
-  "repository": "typescript-eslint/typescript-eslint",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/typescript-eslint/typescript-eslint.git"
+  },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
@@ -29,10 +32,17 @@
   },
   "devDependencies": {
     "eslint": "^5.9.0",
-    "eslint-docs": "^0.2.6"
+    "eslint-docs": "^0.3.0"
   },
   "peerDependencies": {
     "eslint": ">=4.13.1 < 6",
     "typescript": "~3.2.1"
-  }
+  },
+  "homepage": "https://github.com/typescript-eslint/typescript-eslint#readme",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "tests"
+  },
+  "author": ""
 }
