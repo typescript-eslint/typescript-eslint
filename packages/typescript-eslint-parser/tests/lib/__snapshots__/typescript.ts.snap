@@ -110090,7 +110090,6 @@ Object {
               27,
             ],
             "type": "TSIndexSignature",
-            "typeAnnotation": null,
           },
         ],
         "range": Array [
