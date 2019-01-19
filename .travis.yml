@@ -29,3 +29,9 @@ after_success:
 branches:
   only:
     - master
+deploy:
+  on:
+    branch: master
+  provider: script
+  script: npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN && npx lerna publish --canary --force-publish --yes
+  skip_cleanup: true
