@@ -23,10 +23,10 @@ Configure in your eslint config file:
 ```js
 {
   "plugins": [
-    "tslint"
+    "@typescript-eslint/tslint"
   ],
   "rules": {
-    "tslint/config": ["warn", {
+    "@typescript-eslint/tslint/config": ["warn", {
       "lintFile": '', // path to tslint.json of your project
       "rules": {
         // tslint rules (will be used if `lintFile` is not specified)
@@ -41,7 +41,7 @@ Configure in your eslint config file:
 
 ## Rules
 
-Plugin contains only single rule `tslint/config`.
+Plugin contains only single rule `@typescript-eslint/tslint/config`.
 
 ## Examples
 
