@@ -525,6 +525,22 @@ import * as fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify({})
 server.get('/ping')
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/61
+    `declare function foo();`,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/61
+    `
+declare namespace Foo {
+    function bar(line: string, index: number | null, tabSize: number): number;
+    var baz: string;
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/61
+    `
+declare var Foo: {
+    new (value?: any): Object,
+    foo(): string
+}
     `
   ],
 
