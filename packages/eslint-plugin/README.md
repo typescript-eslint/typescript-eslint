@@ -10,45 +10,32 @@
 
 ## Installation
 
-You'll first need to install [ESLint](http://eslint.org):
-
-```sh
-npm i eslint --save-dev
-```
-
-Next, install `typescript` if you haven’t already:
-
-```sh
-npm i typescript@~3.1.1 --save-dev
-```
-
-Last, install `@typescript-eslint/eslint-plugin`:
+Make sure you have TypeScript and @typescript-eslint/parser installed, then install the plugin:
 
 ```sh
 npm i @typescript-eslint/eslint-plugin --save-dev
 ```
 
+It is important that you use the same version number for `@typescript-eslint/parser` and `@typescript-eslint/eslint-plugin`.
+
 **Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `@typescript-eslint/eslint-plugin` globally.
 
 ## Usage
 
-Add `@typescript-eslint/eslint-plugin/parser` to the `parser` field and `typescript` to the plugins section of your `.eslintrc` configuration file:
+Add `@typescript-eslint/parser` to the `parser` field and `@typescript-eslint` to the plugins section of your `.eslintrc` configuration file:
 
 ```json
 {
-  "parser": "@typescript-eslint/eslint-plugin/parser",
+  "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"]
 }
 ```
-
-Note: The plugin provides its own version of the `@typescript-eslint/parser` via `@typescript-eslint/eslint-plugin/parser`.
-This helps us guarantee 100% compatibility between the plugin and the parser.
 
 Then configure the rules you want to use under the rules section.
 
 ```json
 {
-  "parser": "@typescript-eslint/eslint-plugin/parser",
+  "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "rules": {
     "@typescript-eslint/rule-name": "error"
@@ -56,7 +43,7 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
-You can also enable all the recommended rules at once. Add `plugin:typescript/recommended` in extends:
+You can also enable all the recommended rules at once. Add `plugin:@typescript-eslint/recommended` in extends:
 
 ```json
 {
