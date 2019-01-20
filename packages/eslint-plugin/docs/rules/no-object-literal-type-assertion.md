@@ -22,7 +22,7 @@ const z = { ... } as unknown;
 
 ```json
 {
-  "typescript/no-object-literal-type-assertion": "error"
+  "@typescript-eslint/no-object-literal-type-assertion": "error"
 }
 ```
 
