@@ -1,0 +1,31 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+strategy:
+  matrix:
+    node_11_x:
+      node_version: 11.x
+    node_10_x:
+      node_version: 10.x
+    node_8_x:
+      node_version: 8.x
+    node_6_x:
+      node_version: 6.x
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: $(node_version)
+
+- script: |
+    # This also runs a build as part of the postinstall
+    # bootstrap
+    yarn --ignore-engines --frozen-lockfile
+  displayName: 'Install and bootstrap all packages'
