@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+  - master
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -21,12 +21,17 @@ strategy:
       node_version: 6.x
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: $(node_version)
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(node_version)
+      displayName: 'Install Node.js $(node_version)'
 
-- script: |
-    # This also runs a build as part of the postinstall
-    # bootstrap
-    yarn --ignore-engines --frozen-lockfile
-  displayName: 'Install and bootstrap all packages'
+  - script: |
+      # This also runs a build as part of the postinstall
+      # bootstrap
+      yarn --ignore-engines --frozen-lockfile
+    displayName: 'Install and bootstrap all packages'
+
+  - script: |
+      yarn test
+    displayName: 'Run unit tests'
