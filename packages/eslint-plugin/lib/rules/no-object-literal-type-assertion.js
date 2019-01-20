@@ -10,6 +10,12 @@ const util = require('../util');
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+  {
+    allowInCallExpression: false
+  }
+];
+
 module.exports = {
   meta: {
     type: 'problem',
@@ -25,9 +31,24 @@ module.exports = {
       unexpectedTypeAssertion:
         'Type assertion on object literals is forbidden, use a type annotation instead.'
     },
-    schema: []
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowInCallExpression: {
+            type: 'boolean'
+          }
+        }
+      }
+    ]
   },
   create(context) {
+    const { allowInCallExpression } = util.applyDefault(
+      defaultOptions,
+      context.options
+    )[0];
+
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
@@ -52,6 +73,14 @@ module.exports = {
 
     return {
       'TSTypeAssertion, TSAsExpression'(node) {
+        if (
+          allowInCallExpression &&
+          (node.parent.type === 'NewExpression' ||
+            node.parent.type === 'CallExpression')
+        ) {
+          return;
+        }
+
         if (
           checkType(node.typeAnnotation) &&
           node.expression.type === 'ObjectExpression'

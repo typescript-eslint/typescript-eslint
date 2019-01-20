@@ -39,7 +39,15 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
     `const foo = <any> {};`,
     // Allow cast to 'unknown'
     `const foo = {} as unknown;`,
-    `const foo = <unknown> {};`
+    `const foo = <unknown> {};`,
+    {
+      code: `print({ bar: 5 } as Foo)`,
+      options: [
+        {
+          allowInCallExpression: true
+        }
+      ]
+    }
   ],
   invalid: [
     {
@@ -69,6 +77,16 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
           column: 11
+        }
+      ]
+    },
+    {
+      code: `print({ bar: 5 } as Foo)`,
+      errors: [
+        {
+          messageId: 'unexpectedTypeAssertion',
+          line: 1,
+          column: 7
         }
       ]
     }

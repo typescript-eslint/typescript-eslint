@@ -20,9 +20,11 @@ const z = { ... } as unknown;
 
 ## Options
 
-```json
+```cjson
 {
-  "typescript/no-object-literal-type-assertion": "error"
+  "typescript/no-object-literal-type-assertion": ["error", {
+    allowInCallExpression: false // Allow type assertion in call and new expression
+  }]
 }
 ```
 
