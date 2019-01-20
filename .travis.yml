@@ -23,10 +23,16 @@ script:
   # - yarn workspace eslint-plugin docs:check
   - yarn build
   - yarn test
-  - yarn integration-tests
   - yarn global add codecov
 after_success:
   - codecov
 branches:
   only:
     - master
+
+jobs:
+  include:
+    - stage: Integration Tests
+      node_js: "11"
+      script:
+        - yarn integration-tests
