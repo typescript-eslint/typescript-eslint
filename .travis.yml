@@ -27,8 +27,6 @@ script:
   - yarn global add codecov
 after_success:
   - codecov
-  - npm install -g travis-deploy-once
-  - travis-deploy-once "npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN && npx lerna publish --canary --force-publish --yes"
 branches:
   only:
     - master
