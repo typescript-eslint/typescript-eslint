@@ -22,6 +22,10 @@ jobs:
         displayName: 'Check code formatting'
 
       - script: |
+          yarn lint
+        displayName: 'Check code formatting'
+
+      - script: |
           yarn test
         displayName: 'Run unit tests'
 
