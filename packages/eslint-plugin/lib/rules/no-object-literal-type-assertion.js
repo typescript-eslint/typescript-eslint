@@ -12,7 +12,7 @@ const util = require('../util');
 
 const defaultOptions = [
   {
-    allowInCallExpression: false
+    allowAsParameter: false
   }
 ];
 
@@ -36,7 +36,7 @@ module.exports = {
         type: 'object',
         additionalProperties: false,
         properties: {
-          allowInCallExpression: {
+          allowAsParameter: {
             type: 'boolean'
           }
         }
@@ -44,7 +44,7 @@ module.exports = {
     ]
   },
   create(context) {
-    const { allowInCallExpression } = util.applyDefault(
+    const { allowAsParameter } = util.applyDefault(
       defaultOptions,
       context.options
     )[0];
@@ -74,7 +74,7 @@ module.exports = {
     return {
       'TSTypeAssertion, TSAsExpression'(node) {
         if (
-          allowInCallExpression &&
+          allowAsParameter &&
           (node.parent.type === 'NewExpression' ||
             node.parent.type === 'CallExpression')
         ) {

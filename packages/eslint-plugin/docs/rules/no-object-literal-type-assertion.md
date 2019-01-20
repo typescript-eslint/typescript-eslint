@@ -23,7 +23,7 @@ const z = { ... } as unknown;
 ```cjson
 {
   "@typescript-eslint/no-object-literal-type-assertion": ["error", {
-    allowInCallExpression: false // Allow type assertion in call and new expression, default false
+    allowAsParameter: false // Allow type assertion in call and new expression, default false
   }]
 }
 ```

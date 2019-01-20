@@ -44,7 +44,7 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
       code: `print({ bar: 5 } as Foo)`,
       options: [
         {
-          allowInCallExpression: true
+          allowAsParameter: true
         }
       ]
     },
@@ -52,7 +52,7 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
       code: `new print({ bar: 5 } as Foo)`,
       options: [
         {
-          allowInCallExpression: true
+          allowAsParameter: true
         }
       ]
     }
