@@ -49,7 +49,7 @@ function generate() {
   const filePath = path.resolve(__dirname, '../lib/configs/recommended.json');
 
   const recommendedConfig = {
-    parser: '@typescript-eslint/eslint-plugin/parser',
+    parser: '@typescript-eslint/parser',
     parserOptions: {
       sourceType: 'module'
     },
