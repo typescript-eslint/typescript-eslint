@@ -32,7 +32,7 @@ By far the most common case will be installing the [@typescript-eslint/eslint-pl
 
 The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring#specifying-parser-options) in your ESLint configuration file.
 
-- **`jsx`** - default `false`. Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
+- **`ecmaFeatures.jsx`** - default `false`. Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
   - It's `false` on `*.ts` files regardless of this option.
   - It's `true` on `*.tsx` files regardless of this option.
@@ -46,7 +46,9 @@ The following additional configuration options are available by specifying them 
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "jsx": true,
+    "ecmaFeatures": {
+      "jsx": true
+    },
     "useJSXTextNode": true
   }
 }

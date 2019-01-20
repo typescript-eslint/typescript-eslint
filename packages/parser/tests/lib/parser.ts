@@ -1,5 +1,6 @@
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
 import { parse, parseForESLint, Syntax } from '../../src/parser';
+import * as scope from '../../src/analyze-scope';
 
 describe('parser', () => {
   it('parse() should return just the AST from parseForESLint()', () => {
@@ -15,10 +16,21 @@ describe('parser', () => {
   it('parseForESLint() should set the sourceType to script, if an invalid one is provided', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    const spyScope = jest.spyOn(scope, 'analyzeScope');
     parseForESLint(code, { sourceType: 'foo' as any });
     expect(spy).toHaveBeenCalledWith(code, {
-      sourceType: 'script',
+      comment: true,
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
+      errorOnUnknownASTType: false,
+      jsx: false,
+      loc: true,
+      range: true,
+      tokens: true,
       useJSXTextNode: true
+    });
+    expect(spyScope).toHaveBeenCalledWith(jasmine.any(Object), {
+      ecmaFeatures: {},
+      sourceType: 'script'
     });
   });
 
