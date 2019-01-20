@@ -2,8 +2,8 @@ trigger:
   - master
 
 jobs:
-- job: validate_commit_and_code
-  displayName: Validate commit and code
+- job: primary_code_validation_and_unit_tests
+  displayName: Primary code validation and unit tests
   pool:
     vmImage: 'Ubuntu-16.04'
   steps:
@@ -16,35 +16,39 @@ jobs:
       # This also runs a build as part of the postinstall
       # bootstrap
       yarn --ignore-engines --frozen-lockfile
+
+  - script: |
       yarn check-format
+    displayName: 'Check code formatting'
 
-# - job: run_unit_tests
-#   displayName: Run unit tests on multiple Node.js versions
-#   pool:
-#     vmImage: 'Ubuntu-16.04'
-#   strategy:
-#     maxParallel: 4
-#     matrix:
-#       node_11_x:
-#         node_version: 11.x
-#       node_10_x:
-#         node_version: 10.x
-#       node_8_x:
-#         node_version: 8.x
-#       node_6_x:
-#         node_version: 6.x
-#   steps:
-#     - task: NodeTool@0
-#       inputs:
-#         versionSpec: $(node_version)
-#         displayName: 'Install Node.js $(node_version)'
+  - script: |
+      yarn test
+    displayName: 'Run unit tests'
 
-#     - script: |
-#         # This also runs a build as part of the postinstall
-#         # bootstrap
-#         yarn --ignore-engines --frozen-lockfile
-#       displayName: 'Install and bootstrap all packages'
+- job: unit_tests_on_other_node_versions
+  displayName: Run unit tests on other Node.js versions
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  strategy:
+    maxParallel: 3
+    matrix:
+      node_10_x:
+        node_version: 10.x
+      node_8_x:
+        node_version: 8.x
+      node_6_x:
+        node_version: 6.x
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(node_version)
+    displayName: 'Install Node.js $(node_version)'
 
-#     - script: |
-#         yarn test
-#       displayName: 'Run unit tests'
+  - script: |
+      # This also runs a build as part of the postinstall
+      # bootstrap
+      yarn --ignore-engines --frozen-lockfile
+
+  - script: |
+      yarn test
+    displayName: 'Run unit tests'
