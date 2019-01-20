@@ -11,17 +11,15 @@ notifications:
 node_js:
   - '11'
   - '10'
-  - '9'
   - '8'
   - '6'
 install:
-  - yarn --ignore-engines
+  # This also runs a build as part of the postinstall
+  # bootstrap
+  - yarn --ignore-engines --frozen-lockfile
 script:
-  - commitlint-travis
-  - yarn check-format
   # TODO: Fix this check
   # - yarn workspace eslint-plugin docs:check
-  - yarn build
   - yarn test
   - yarn global add codecov
 after_success:
@@ -32,7 +30,9 @@ branches:
 
 jobs:
   include:
-    - stage: Integration Tests
+    - stage: Code and Commit Formatting and Integration Tests
       node_js: "11"
       script:
+        - commitlint-travis
+        - yarn check-format
         - yarn integration-tests
