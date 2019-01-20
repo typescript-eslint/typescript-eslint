@@ -2,18 +2,19 @@ import { rules } from '../src/index';
 import { RuleTester } from 'eslint';
 import { readFileSync } from 'fs';
 
-const ruleTester = new RuleTester();
-
-const parserOptions: any = {
-  ecmaVersion: 6,
-  sourceType: 'module',
-  ecmaFeatures: {},
-  /**
-   * Project is needed to generate the parserServices
-   * within @typescript-eslint/parser
-   */
-  project: './tests/tsconfig.json'
-};
+const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {},
+    /**
+     * Project is needed to generate the parserServices
+     * within @typescript-eslint/parser
+     */
+    project: './tests/tsconfig.json'
+  },
+  parser: '@typescript-eslint/parser'
+});
 
 /**
  * Inline rules should be supported
@@ -40,8 +41,6 @@ ruleTester.run('tslint/config', rules.config, {
   valid: [
     {
       code: 'var foo = true;',
-      parser: '@typescript-eslint/parser',
-      parserOptions,
       options: [tslintRulesConfig]
     },
     {
@@ -50,9 +49,7 @@ ruleTester.run('tslint/config', rules.config, {
         /\n/g,
         ' '
       ),
-      parser: '@typescript-eslint/parser',
       parserOptions: {
-        ...parserOptions,
         project: `${__dirname}/test-project/tsconfig.json`
       },
       options: [
@@ -63,8 +60,6 @@ ruleTester.run('tslint/config', rules.config, {
     },
     {
       code: 'throw "should be ok because rule is not loaded";',
-      parser: '@typescript-eslint/parser',
-      parserOptions,
       options: [tslintRulesConfig]
     }
   ],
@@ -72,8 +67,6 @@ ruleTester.run('tslint/config', rules.config, {
   invalid: [
     {
       options: [{ lintFile: './tests/test-project/tslint.json' }],
-      parser: '@typescript-eslint/parser',
-      parserOptions,
       code: 'throw "err" // no-string-throw',
       errors: [
         {
@@ -84,8 +77,6 @@ ruleTester.run('tslint/config', rules.config, {
     },
     {
       code: 'var foo = true // semicolon',
-      parser: '@typescript-eslint/parser',
-      parserOptions,
       options: [tslintRulesConfig],
       output: 'var foo = true // semicolon',
       errors: [
@@ -98,8 +89,6 @@ ruleTester.run('tslint/config', rules.config, {
     },
     {
       code: 'var foo = true // fail',
-      parser: '@typescript-eslint/parser',
-      parserOptions,
       options: [tslintRulesDirectoryConfig],
       output: 'var foo = true // fail',
       errors: [
@@ -116,9 +105,7 @@ ruleTester.run('tslint/config', rules.config, {
         /\n/g,
         ' '
       ),
-      parser: '@typescript-eslint/parser',
       parserOptions: {
-        ...parserOptions,
         project: `${__dirname}/test-project/tsconfig.json`
       },
       options: [

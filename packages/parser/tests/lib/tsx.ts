@@ -17,7 +17,9 @@ describe('TSX', () => {
     const code = fs.readFileSync(filename, 'utf8');
     const config = {
       useJSXTextNode: true,
-      jsx: true
+      ecmaFeatures: {
+        jsx: true
+      }
     };
     it(
       testUtils.formatSnapshotName(filename, FIXTURES_DIR, '.tsx'),
@@ -53,7 +55,9 @@ describe('TSX', () => {
       const config = {
         parser: '@typescript-eslint/parser',
         parserOptions: {
-          jsx: true
+          ecmaFeatures: {
+            jsx: true
+          }
         }
       };
       const messages = linter.verify(code, config);
@@ -85,7 +89,9 @@ describe('TSX', () => {
       const config = {
         parser: '@typescript-eslint/parser',
         parserOptions: {
-          jsx: true
+          ecmaFeatures: {
+            jsx: true
+          }
         }
       };
       const messages = linter.verify(code, config, { filename: 'test.ts' });
@@ -117,7 +123,9 @@ describe('TSX', () => {
       const config = {
         parser: '@typescript-eslint/parser',
         parserOptions: {
-          jsx: false
+          ecmaFeatures: {
+            jsx: false
+          }
         }
       };
       const messages = linter.verify(code, config, { filename: 'test.tsx' });

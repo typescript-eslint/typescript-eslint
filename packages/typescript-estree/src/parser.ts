@@ -350,10 +350,7 @@ function generateAST<T extends ParserOptions = ParserOptions>(
 // Public
 //------------------------------------------------------------------------------
 
-export { AST_NODE_TYPES } from './ast-node-types';
-export { version };
-
-const version = packageJSON.version;
+export const version: string = packageJSON.version;
 
 export function parse<T extends ParserOptions = ParserOptions>(
   code: string,
@@ -378,3 +375,6 @@ export function parseAndGenerateServices(code: string, options: ParserOptions) {
     }
   };
 }
+
+export { AST_NODE_TYPES } from './ast-node-types';
+export { ParserOptions };

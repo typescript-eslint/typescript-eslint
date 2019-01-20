@@ -15,8 +15,10 @@ describe('Comments', () => {
   testFiles.forEach(filename => {
     const code = fs.readFileSync(filename, 'utf8');
     const config: ParserOptions = {
-      jsx: true,
-      sourceType: 'module'
+      sourceType: 'module',
+      ecmaFeatures: {
+        jsx: true
+      }
     };
     it(
       testUtils.formatSnapshotName(filename, FIXTURES_DIR),

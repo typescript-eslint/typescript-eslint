@@ -101,7 +101,8 @@ module.exports = Object.assign({}, baseRule, {
       url: util.metaDocsUrl('indent')
     },
     fixable: 'whitespace',
-    schema: baseRule.meta.schema
+    schema: baseRule.meta.schema,
+    messages: baseRule.meta.messages
   },
 
   create(context) {

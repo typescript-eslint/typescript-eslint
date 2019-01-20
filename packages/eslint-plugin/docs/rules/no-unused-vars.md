@@ -110,11 +110,15 @@ By default this rule is enabled with `all` option for variables and `after-used`
 
 ```CJSON
 {
-    "rules": {
-        // note you must disable the base rule as it can report incorrect errors
-        "no-unused-vars": "off",
-        "typescript/no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
-    }
+  "rules": {
+    // note you must disable the base rule as it can report incorrect errors
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error", {
+      "vars": "all",
+      "args": "after-used",
+      "ignoreRestSiblings": false
+    }]
+  }
 }
 ```
 
