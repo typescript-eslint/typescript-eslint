@@ -12,8 +12,10 @@ jobs:
       versionSpec: 11
     displayName: 'Install Node.js 11'
 
-  - script: | 
-      commitlint-travis
+  - script: |
+      # This also runs a build as part of the postinstall
+      # bootstrap
+      yarn --ignore-engines --frozen-lockfile
       yarn check-format
 
 # - job: run_unit_tests
