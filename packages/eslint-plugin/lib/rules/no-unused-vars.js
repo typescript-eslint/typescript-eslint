@@ -21,7 +21,8 @@ module.exports = Object.assign({}, baseRule, {
       url: util.metaDocsUrl('no-unused-vars'),
       recommended: 'warn'
     },
-    schema: baseRule.meta.schema
+    schema: baseRule.meta.schema,
+    messages: baseRule.meta.messages
   },
 
   create(context) {
@@ -61,6 +62,9 @@ module.exports = Object.assign({}, baseRule, {
         context.markVariableAsUsed(node.name);
       },
       'TSEnumMember Identifier'(node) {
+        context.markVariableAsUsed(node.name);
+      },
+      '*[declare=true] Identifier'(node) {
         context.markVariableAsUsed(node.name);
       }
     });

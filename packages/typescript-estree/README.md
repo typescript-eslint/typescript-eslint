@@ -3,12 +3,11 @@
 <p align="center">A parser that converts TypeScript source code into an <a href="https://github.com/estree/estree">ESTree</a>-compatible form</p>
 
 <p align="center">
-    <a href="https://travis-ci.org/JamesHenry/typescript-estree"><img src="https://img.shields.io/travis/JamesHenry/typescript-estree.svg?style=flat-square" alt="Travis"/></a>
-    <a href="https://github.com/JamesHenry/typescript-estree/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
-    <a href="https://www.npmjs.com/package/typescript-estree"><img src="https://img.shields.io/npm/v/typescript-estree.svg?style=flat-square" alt="NPM Version" /></a>
-    <a href="https://www.npmjs.com/package/typescript-estree"><img src="https://img.shields.io/npm/dt/typescript-estree.svg?style=flat-square" alt="NPM Downloads" /></a>
-    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen friendly" /></a>
-    <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square" alt="semantic-release" /></a>
+    <a href="https://travis-ci.com/typescript-eslint/typescript-eslint"><img src="https://img.shields.io/travis/com/typescript-eslint/typescript-eslint.svg?style=flat-square" alt="Travis"/></a>
+    <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
+    <a href="https://www.npmjs.com/package/@typescript-eslint/typescript-estree"><img src="https://img.shields.io/npm/v/@typescript-eslint/typescript-estree.svg?style=flat-square" alt="NPM Version" /></a>
+    <a href="https://www.npmjs.com/package/@typescript-eslint/typescript-estree"><img src="https://img.shields.io/npm/dm/@typescript-eslint/typescript-estree.svg?style=flat-square" alt="NPM Downloads" /></a>
+    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square" alt="Commitizen friendly" /></a>
 </p>
 
 <br>
@@ -24,8 +23,8 @@ In fact, it is already used within these hyper-popular open-source projects to p
 
 ## Installation
 
-```
-npm install --save @typescript-eslint/typescript-estree
+```sh
+npm install @typescript-eslint/typescript-estree --save-dev
 ```
 
 ## API
@@ -34,46 +33,46 @@ npm install --save @typescript-eslint/typescript-estree
 
 Parses the given string of code with the options provided and returns an ESTree-compatible AST. The options object has the following properties:
 
-```javascript
+```js
 {
-    // attach range information to each node
-    range: false,
+  // attach range information to each node
+  range: false,
 
-    // attach line/column location information to each node
-    loc: false,
+  // attach line/column location information to each node
+  loc: false,
 
-    // create a top-level tokens array containing all tokens
-    tokens: false,
+  // create a top-level tokens array containing all tokens
+  tokens: false,
 
-    // create a top-level comments array containing all comments
-    comment: false,
+  // create a top-level comments array containing all comments
+  comment: false,
 
-    // enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
-    jsx: false,
+  // enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
+  jsx: false,
 
-    /*
-     * The JSX AST changed the node type for string literals
-     * inside a JSX Element from `Literal` to `JSXText`.
-     * When value is `true`, these nodes will be parsed as type `JSXText`.
-     * When value is `false`, these nodes will be parsed as type `Literal`.
-     */
-    useJSXTextNode: false,
+  /*
+   * The JSX AST changed the node type for string literals
+   * inside a JSX Element from `Literal` to `JSXText`.
+   * When value is `true`, these nodes will be parsed as type `JSXText`.
+   * When value is `false`, these nodes will be parsed as type `Literal`.
+   */
+  useJSXTextNode: false,
 
-    // Cause the parser to error if it encounters an unknown AST node type (useful for testing)
-    errorOnUnknownASTType: false,
+  // Cause the parser to error if it encounters an unknown AST node type (useful for testing)
+  errorOnUnknownASTType: false,
 
-    /*
-     * Allows overriding of function used for logging.
-     * When value is `false`, no logging will occur.
-     * When value is not provided, `console.log()` will be used.
-     */
-    loggerFn: undefined
+  /*
+   * Allows overriding of function used for logging.
+   * When value is `false`, no logging will occur.
+   * When value is not provided, `console.log()` will be used.
+   */
+  loggerFn: undefined
 }
 ```
 
 Example usage:
 
-```javascript
+```js
 const parser = require('@typescript-eslint/typescript-estree');
 const code = `const hello: string = 'world';`;
 const ast = parser.parse(code, {
@@ -88,7 +87,7 @@ Exposes the current version of typescript-estree as specified in package.json.
 
 Example usage:
 
-```javascript
+```js
 const parser = require('@typescript-eslint/typescript-estree');
 const version = parser.version;
 ```
@@ -99,7 +98,7 @@ Exposes an object that contains the AST node types produced by the parser.
 
 Example usage:
 
-```javascript
+```js
 const parser = require('@typescript-eslint/typescript-estree');
 const astNodeTypes = parser.AST_NODE_TYPES;
 ```

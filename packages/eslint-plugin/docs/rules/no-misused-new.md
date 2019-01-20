@@ -32,7 +32,7 @@ interface I {
 
 ```json
 {
-  "typescript/no-misused-new": "error"
+  "@typescript-eslint/no-misused-new": "error"
 }
 ```
 

@@ -30,7 +30,7 @@ For example, for 2-space indentation:
 {
     // note you must disable the base rule as it can report incorrect errors
     "indent": "off",
-    "typescript/indent": ["error", 2]
+    "@typescript-eslint/indent": ["error", 2]
 }
 ```
 
@@ -40,7 +40,7 @@ Or for tabbed indentation:
 {
     // note you must disable the base rule as it can report incorrect errors
     "indent": "off",
-    "typescript/indent": ["error", "tab"]
+    "@typescript-eslint/indent": ["error", "tab"]
 }
 ```
 
@@ -48,7 +48,7 @@ Examples of **incorrect** code for this rule with the default options:
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: "error"*/
+/*eslint @typescript-eslint/indent: "error"*/
 
 if (a) {
   b=c;
@@ -62,7 +62,7 @@ Examples of **correct** code for this rule with the default options:
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: "error"*/
+/*eslint @typescript-eslint/indent: "error"*/
 
 if (a) {
     b=c;
@@ -116,7 +116,7 @@ Examples of **incorrect** code for this rule with the `"tab"` option:
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", "tab"]*/
+/*eslint @typescript-eslint/indent: ["error", "tab"]*/
 
 if (a) {
      b=c;
@@ -130,7 +130,7 @@ Examples of **correct** code for this rule with the `"tab"` option:
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", "tab"]*/
+/*eslint @typescript-eslint/indent: ["error", "tab"]*/
 
 if (a) {
 /*tab*/b=c;
@@ -146,7 +146,7 @@ Examples of **incorrect** code for this rule with the `2, { "SwitchCase": 1 }` o
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "SwitchCase": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "SwitchCase": 1 }]*/
 
 switch(a){
 case "a":
@@ -160,7 +160,7 @@ Examples of **correct** code for this rule with the `2, { "SwitchCase": 1 }` opt
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "SwitchCase": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "SwitchCase": 1 }]*/
 
 switch(a){
   case "a":
@@ -176,7 +176,7 @@ Examples of **incorrect** code for this rule with the `2, { "VariableDeclarator"
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "VariableDeclarator": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "VariableDeclarator": 1 }]*/
 /*eslint-env es6*/
 
 var a,
@@ -194,7 +194,7 @@ Examples of **correct** code for this rule with the `2, { "VariableDeclarator": 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "VariableDeclarator": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "VariableDeclarator": 1 }]*/
 /*eslint-env es6*/
 
 var a,
@@ -212,7 +212,7 @@ Examples of **correct** code for this rule with the `2, { "VariableDeclarator": 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "VariableDeclarator": 2 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "VariableDeclarator": 2 }]*/
 /*eslint-env es6*/
 
 var a,
@@ -230,7 +230,7 @@ Examples of **correct** code for this rule with the `2, { "VariableDeclarator": 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "VariableDeclarator": { "var": 2, "let": 2, "const": 3 } }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "VariableDeclarator": { "var": 2, "let": 2, "const": 3 } }]*/
 /*eslint-env es6*/
 
 var a,
@@ -250,7 +250,7 @@ Examples of **incorrect** code for this rule with the options `2, { "outerIIFEBo
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "outerIIFEBody": 0 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "outerIIFEBody": 0 }]*/
 
 (function() {
 
@@ -270,7 +270,7 @@ Examples of **correct** code for this rule with the options `2, {"outerIIFEBody"
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "outerIIFEBody": 0 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "outerIIFEBody": 0 }]*/
 
 (function() {
 
@@ -292,7 +292,7 @@ Examples of **incorrect** code for this rule with the `2, { "MemberExpression": 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "MemberExpression": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "MemberExpression": 1 }]*/
 
 foo
 .bar
@@ -303,7 +303,7 @@ Examples of **correct** code for this rule with the `2, { "MemberExpression": 1 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "MemberExpression": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "MemberExpression": 1 }]*/
 
 foo
   .bar
@@ -316,7 +316,7 @@ Examples of **incorrect** code for this rule with the `2, { "FunctionDeclaration
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "FunctionDeclaration": {"body": 1, "parameters": 2} }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "FunctionDeclaration": {"body": 1, "parameters": 2} }]*/
 
 function foo(bar,
   baz,
@@ -329,7 +329,7 @@ Examples of **correct** code for this rule with the `2, { "FunctionDeclaration":
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "FunctionDeclaration": {"body": 1, "parameters": 2} }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "FunctionDeclaration": {"body": 1, "parameters": 2} }]*/
 
 function foo(bar,
     baz,
@@ -342,7 +342,7 @@ Examples of **incorrect** code for this rule with the `2, { "FunctionDeclaration
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"FunctionDeclaration": {"parameters": "first"}}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"FunctionDeclaration": {"parameters": "first"}}]*/
 
 function foo(bar, baz,
   qux, boop) {
@@ -354,7 +354,7 @@ Examples of **correct** code for this rule with the `2, { "FunctionDeclaration":
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"FunctionDeclaration": {"parameters": "first"}}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"FunctionDeclaration": {"parameters": "first"}}]*/
 
 function foo(bar, baz,
              qux, boop) {
@@ -368,7 +368,7 @@ Examples of **incorrect** code for this rule with the `2, { "FunctionExpression"
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "FunctionExpression": {"body": 1, "parameters": 2} }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "FunctionExpression": {"body": 1, "parameters": 2} }]*/
 
 var foo = function(bar,
   baz,
@@ -381,7 +381,7 @@ Examples of **correct** code for this rule with the `2, { "FunctionExpression": 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "FunctionExpression": {"body": 1, "parameters": 2} }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "FunctionExpression": {"body": 1, "parameters": 2} }]*/
 
 var foo = function(bar,
     baz,
@@ -394,7 +394,7 @@ Examples of **incorrect** code for this rule with the `2, { "FunctionExpression"
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"FunctionExpression": {"parameters": "first"}}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"FunctionExpression": {"parameters": "first"}}]*/
 
 var foo = function(bar, baz,
   qux, boop) {
@@ -406,7 +406,7 @@ Examples of **correct** code for this rule with the `2, { "FunctionExpression": 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"FunctionExpression": {"parameters": "first"}}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"FunctionExpression": {"parameters": "first"}}]*/
 
 var foo = function(bar, baz,
                    qux, boop) {
@@ -420,7 +420,7 @@ Examples of **incorrect** code for this rule with the `2, { "CallExpression": {"
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "CallExpression": {"arguments": 1} }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "CallExpression": {"arguments": 1} }]*/
 
 foo(bar,
     baz,
@@ -432,7 +432,7 @@ Examples of **correct** code for this rule with the `2, { "CallExpression": {"ar
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "CallExpression": {"arguments": 1} }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "CallExpression": {"arguments": 1} }]*/
 
 foo(bar,
   baz,
@@ -444,7 +444,7 @@ Examples of **incorrect** code for this rule with the `2, { "CallExpression": {"
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"CallExpression": {"arguments": "first"}}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"CallExpression": {"arguments": "first"}}]*/
 
 foo(bar, baz,
   baz, boop, beep);
@@ -454,7 +454,7 @@ Examples of **correct** code for this rule with the `2, { "CallExpression": {"ar
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"CallExpression": {"arguments": "first"}}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"CallExpression": {"arguments": "first"}}]*/
 
 foo(bar, baz,
     baz, boop, beep);
@@ -466,7 +466,7 @@ Examples of **incorrect** code for this rule with the `2, { "ArrayExpression": 1
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "ArrayExpression": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "ArrayExpression": 1 }]*/
 
 var foo = [
     bar,
@@ -479,7 +479,7 @@ Examples of **correct** code for this rule with the `2, { "ArrayExpression": 1 }
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "ArrayExpression": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "ArrayExpression": 1 }]*/
 
 var foo = [
   bar,
@@ -492,7 +492,7 @@ Examples of **incorrect** code for this rule with the `2, { "ArrayExpression": "
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"ArrayExpression": "first"}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"ArrayExpression": "first"}]*/
 
 var foo = [bar,
   baz,
@@ -504,7 +504,7 @@ Examples of **correct** code for this rule with the `2, { "ArrayExpression": "fi
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"ArrayExpression": "first"}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"ArrayExpression": "first"}]*/
 
 var foo = [bar,
            baz,
@@ -518,7 +518,7 @@ Examples of **incorrect** code for this rule with the `2, { "ObjectExpression": 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "ObjectExpression": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "ObjectExpression": 1 }]*/
 
 var foo = {
     bar: 1,
@@ -531,7 +531,7 @@ Examples of **correct** code for this rule with the `2, { "ObjectExpression": 1 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, { "ObjectExpression": 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 2, { "ObjectExpression": 1 }]*/
 
 var foo = {
   bar: 1,
@@ -544,7 +544,7 @@ Examples of **incorrect** code for this rule with the `2, { "ObjectExpression": 
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"ObjectExpression": "first"}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"ObjectExpression": "first"}]*/
 
 var foo = { bar: 1,
   baz: 2 };
@@ -554,7 +554,7 @@ Examples of **correct** code for this rule with the `2, { "ObjectExpression": "f
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 2, {"ObjectExpression": "first"}]*/
+/*eslint @typescript-eslint/indent: ["error", 2, {"ObjectExpression": "first"}]*/
 
 var foo = { bar: 1,
             baz: 2 };
@@ -566,7 +566,7 @@ Examples of **correct** code for this rule with the `4, { "ImportDeclaration": 1
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { ImportDeclaration: 1 }]*/
+/*eslint @typescript-eslint/indent: ["error", 4, { ImportDeclaration: 1 }]*/
 
 import { foo,
     bar,
@@ -584,7 +584,7 @@ Examples of **incorrect** code for this rule with the `4, { ImportDeclaration: "
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { ImportDeclaration: "first" }]*/
+/*eslint @typescript-eslint/indent: ["error", 4, { ImportDeclaration: "first" }]*/
 
 import { foo,
     bar,
@@ -596,7 +596,7 @@ Examples of **correct** code for this rule with the `4, { ImportDeclaration: "fi
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { ImportDeclaration: "first" }]*/
+/*eslint @typescript-eslint/indent: ["error", 4, { ImportDeclaration: "first" }]*/
 
 import { foo,
          bar,
@@ -610,7 +610,7 @@ Examples of **incorrect** code for this rule with the default `4, { "flatTernary
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { "flatTernaryExpressions": false }]*/
+/*eslint @typescript-eslint/indent: ["error", 4, { "flatTernaryExpressions": false }]*/
 
 var a =
     foo ? bar :
@@ -622,7 +622,7 @@ Examples of **correct** code for this rule with the default `4, { "flatTernaryEx
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { "flatTernaryExpressions": false }]*/
+/*eslint @typescript-eslint/indent: ["error", 4, { "flatTernaryExpressions": false }]*/
 
 var a =
     foo ? bar :
@@ -634,7 +634,7 @@ Examples of **incorrect** code for this rule with the `4, { "flatTernaryExpressi
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { "flatTernaryExpressions": true }]*/
+/*eslint @typescript-eslint/indent: ["error", 4, { "flatTernaryExpressions": true }]*/
 
 var a =
     foo ? bar :
@@ -646,7 +646,7 @@ Examples of **correct** code for this rule with the `4, { "flatTernaryExpression
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { "flatTernaryExpressions": true }]*/
+/*eslint @typescript-eslint/indent: ["error", 4, { "flatTernaryExpressions": true }]*/
 
 var a =
     foo ? bar :
@@ -662,7 +662,7 @@ Examples of **correct** code for this rule with the `4, { "ignoredNodes": ["Cond
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { "ignoredNodes": ["ConditionalExpression"] }]*/
+/*eslint @typescript-eslint/indent: ["error", 4, { "ignoredNodes": ["ConditionalExpression"] }]*/
 
 var a = foo
       ? bar
@@ -679,7 +679,7 @@ Examples of **correct** code for this rule with the `4, { "ignoredNodes": ["Call
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { "ignoredNodes": ["CallExpression > FunctionExpression.callee > BlockStatement.body"] }]*/
+/*eslint @typescript-eslint/indent: ["error", 4, { "ignoredNodes": ["CallExpression > FunctionExpression.callee > BlockStatement.body"] }]*/
 
 (function() {
 
@@ -695,7 +695,7 @@ Examples of additional **correct** code for this rule with the `4, { "ignoreComm
 
 <!-- prettier-ignore -->
 ```js
-/*eslint typescript/indent: ["error", 4, { "ignoreComments": true }] */
+/*eslint @typescript-eslint/indent: ["error", 4, { "ignoreComments": true }] */
 
 if (foo) {
     doSomething();

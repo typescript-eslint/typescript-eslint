@@ -28,7 +28,9 @@ describe('JSX', () => {
       const code = fs.readFileSync(filename, 'utf8');
       const config = {
         useJSXTextNode,
-        jsx: true
+        ecmaFeatures: {
+          jsx: true
+        }
       };
       it(
         testUtils.formatSnapshotName(filename, fixturesDir),

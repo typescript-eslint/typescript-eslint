@@ -1,27 +1,31 @@
-# @typescript-eslint/eslint-plugin
+<h1 align="center">ESLint Plugin TypeScript</h1>
 
-[![NPM version](https://img.shields.io/npm/v/@typescript-eslint/eslint-plugin.svg)](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-[![NPM downloads](https://img.shields.io/npm/dm/@typescript-eslint/eslint-plugin.svg)](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-[![TravisCI](https://img.shields.io/travis/@typescript-eslint/eslint-plugin.svg)](https://travis-ci.com/@typescript-eslint/eslint-plugin)
+<p align="center">
+    <a href="https://travis-ci.com/typescript-eslint/typescript-eslint"><img src="https://img.shields.io/travis/com/typescript-eslint/typescript-eslint.svg?style=flat-square" alt="Travis"/></a>
+    <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
+    <a href="https://www.npmjs.com/package/@typescript-eslint/eslint-plugin"><img src="https://img.shields.io/npm/v/@typescript-eslint/eslint-plugin.svg?style=flat-square" alt="NPM Version" /></a>
+    <a href="https://www.npmjs.com/package/@typescript-eslint/eslint-plugin"><img src="https://img.shields.io/npm/dm/@typescript-eslint/eslint-plugin.svg?style=flat-square" alt="NPM Downloads" /></a>
+    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square" alt="Commitizen friendly" /></a>
+</p>
 
 ## Installation
 
 You'll first need to install [ESLint](http://eslint.org):
 
-```shellsession
-$ npm i eslint --save-dev
+```sh
+npm i eslint --save-dev
 ```
 
 Next, install `typescript` if you haven’t already:
 
-```shellsession
-$ npm i typescript@~3.1.1 --save-dev
+```sh
+npm i typescript@~3.1.1 --save-dev
 ```
 
 Last, install `@typescript-eslint/eslint-plugin`:
 
-```shellsession
-$ npm install @typescript-eslint/eslint-plugin --save-dev
+```sh
+npm i @typescript-eslint/eslint-plugin --save-dev
 ```
 
 **Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `@typescript-eslint/eslint-plugin` globally.
@@ -33,7 +37,7 @@ Add `@typescript-eslint/eslint-plugin/parser` to the `parser` field and `typescr
 ```json
 {
   "parser": "@typescript-eslint/eslint-plugin/parser",
-  "plugins": ["typescript"]
+  "plugins": ["@typescript-eslint"]
 }
 ```
 
@@ -45,9 +49,9 @@ Then configure the rules you want to use under the rules section.
 ```json
 {
   "parser": "@typescript-eslint/eslint-plugin/parser",
-  "plugins": ["typescript"],
+  "plugins": ["@typescript-eslint"],
   "rules": {
-    "typescript/rule-name": "error"
+    "@typescript-eslint/rule-name": "error"
   }
 }
 ```
@@ -56,7 +60,7 @@ You can also enable all the recommended rules at once. Add `plugin:typescript/re
 
 ```json
 {
-  "extends": ["plugin:typescript/recommended"]
+  "extends": ["plugin:@typescript-eslint/recommended"]
 }
 ```
 
