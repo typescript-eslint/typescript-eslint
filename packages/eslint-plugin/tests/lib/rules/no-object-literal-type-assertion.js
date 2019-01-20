@@ -47,6 +47,14 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
           allowInCallExpression: true
         }
       ]
+    },
+    {
+      code: `new print({ bar: 5 } as Foo)`,
+      options: [
+        {
+          allowInCallExpression: true
+        }
+      ]
     }
   ],
   invalid: [
@@ -87,6 +95,16 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
           column: 7
+        }
+      ]
+    },
+    {
+      code: `new print({ bar: 5 } as Foo)`,
+      errors: [
+        {
+          messageId: 'unexpectedTypeAssertion',
+          line: 1,
+          column: 11
         }
       ]
     }
