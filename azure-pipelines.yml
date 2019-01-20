@@ -3,7 +3,7 @@ trigger:
 
 jobs:
 - job: primary_code_validation_and_unit_tests
-  displayName: Primary code validation and unit tests
+  displayName: $(node_version) - Primary code validation and unit tests
   pool:
     vmImage: 'Ubuntu-16.04'
   steps:
@@ -26,7 +26,7 @@ jobs:
     displayName: 'Run unit tests'
 
 - job: unit_tests_on_other_node_versions
-  displayName: Run unit tests on other Node.js versions
+  displayName: $(node_version) - Run unit tests on other Node.js versions
   pool:
     vmImage: 'Ubuntu-16.04'
   strategy:
