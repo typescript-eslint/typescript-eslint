@@ -9,6 +9,7 @@ trigger:
 pool:
   vmImage: 'Ubuntu-16.04'
 strategy:
+  maxParallel: 4
   matrix:
     node_11_x:
       node_version: 11.x
