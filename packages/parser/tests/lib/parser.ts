@@ -19,18 +19,60 @@ describe('parser', () => {
     const spyScope = jest.spyOn(scope, 'analyzeScope');
     parseForESLint(code, { sourceType: 'foo' as any });
     expect(spy).toHaveBeenCalledWith(code, {
-      comment: true,
-      errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      errorOnUnknownASTType: false,
+      ecmaFeatures: {},
       jsx: false,
-      loc: true,
-      range: true,
-      tokens: true,
+      sourceType: 'script',
       useJSXTextNode: true
     });
     expect(spyScope).toHaveBeenCalledWith(jasmine.any(Object), {
       ecmaFeatures: {},
       sourceType: 'script'
+    });
+  });
+
+  it('parseAndGenerateServices() should be called with options', () => {
+    const code = 'const valid = true;';
+    const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    parseForESLint(code, {
+      loc: false,
+      comment: false,
+      range: false,
+      tokens: false,
+      sourceType: 'module',
+      ecmaVersion: 10,
+      ecmaFeatures: {
+        globalReturn: false,
+        jsx: false
+      },
+      // ts-estree specific
+      filePath: 'test/foo',
+      project: 'tsconfig.json',
+      useJSXTextNode: false,
+      errorOnUnknownASTType: false,
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
+      tsconfigRootDir: '../../',
+      extraFileExtensions: ['foo']
+    });
+    expect(spy).toHaveBeenCalledWith(code, {
+      jsx: false,
+      loc: false,
+      comment: false,
+      range: false,
+      tokens: false,
+      sourceType: 'module',
+      ecmaVersion: 10,
+      ecmaFeatures: {
+        globalReturn: false,
+        jsx: false
+      },
+      // ts-estree specific
+      filePath: 'test/foo',
+      project: 'tsconfig.json',
+      useJSXTextNode: false,
+      errorOnUnknownASTType: false,
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
+      tsconfigRootDir: '../../',
+      extraFileExtensions: ['foo']
     });
   });
 

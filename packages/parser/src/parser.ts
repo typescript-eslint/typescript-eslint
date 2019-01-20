@@ -62,34 +62,13 @@ export function parseForESLint(
     options.ecmaFeatures = {};
   }
 
-  const parserOptions: ParserOptionsTsESTree = {
+  const parserOptions: ParserOptionsTsESTree = {};
+  Object.assign(parserOptions, options, {
     useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
-    range: validateBoolean(options.range, true), // TODO: this option is ignored by typescript-estree
-    loc: validateBoolean(options.loc, true), // TODO: this option is ignored by typescript-estree
-    tokens: validateBoolean(options.tokens, true),
-    jsx: validateBoolean(options.ecmaFeatures.jsx),
-    comment: validateBoolean(options.comment, true),
-    errorOnUnknownASTType: validateBoolean(options.errorOnUnknownASTType),
-    errorOnTypeScriptSyntacticAndSemanticIssues: validateBoolean(
-      options.errorOnTypeScriptSyntacticAndSemanticIssues
-    )
-  };
-
-  if (options.project) {
-    parserOptions.project = options.project;
-  }
-
-  if (typeof options.tsconfigRootDir === 'string') {
-    parserOptions.tsconfigRootDir = options.tsconfigRootDir;
-  }
-
-  if (options.extraFileExtensions) {
-    parserOptions.extraFileExtensions = options.extraFileExtensions;
-  }
+    jsx: validateBoolean(options.ecmaFeatures.jsx)
+  });
 
   if (typeof options.filePath === 'string') {
-    parserOptions.filePath = options.filePath;
-
     const tsx = options.filePath.endsWith('.tsx');
     if (tsx || options.filePath.endsWith('.ts')) {
       parserOptions.jsx = tsx;
