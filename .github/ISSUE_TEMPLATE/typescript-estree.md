@@ -6,10 +6,6 @@ labels: 'package: typescript-estree, triage'
 assignees: ''
 ---
 
-**What version of TypeScript are you using?**
-
-**What version of `@typescript-eslint/typescript-estree` are you using?**
-
 **What code were you trying to parse?**
 
 ```ts
@@ -19,3 +15,12 @@ assignees: ''
 **What did you expect to happen?**
 
 **What actually happened?**
+
+**Versions**
+
+| package                                | version |
+| -------------------------------------- | ------- |
+| `@typescript-eslint/typescript-estree` | `X.Y.Z` |
+| `TypeScript`                           | `X.Y.Z` |
+| `node`                                 | `X.Y.Z` |
+| `npm`                                  | `X.Y.Z` |

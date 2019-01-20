@@ -42,4 +42,7 @@ Please try to avoid code that isn't directly related to the bug, as it makes it 
 | ---------------------------------- | ------- |
 | `@typescript-eslint/eslint-plugin` | `X.Y.Z` |
 | `@typescript-eslint/parser`        | `X.Y.Z` |
-| `typescript`                       | `X.Y.Z` |
+| `TypeScript`                       | `X.Y.Z` |
+| `ESLint`                           | `X.Y.Z` |
+| `node`                             | `X.Y.Z` |
+| `npm`                              | `X.Y.Z` |
