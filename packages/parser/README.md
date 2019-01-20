@@ -1,11 +1,19 @@
-# TypeScript ESLint Parser
+<h1 align="center">TypeScript ESLint Parser</h1>
 
-An ESLint custom parser which leverages [TypeScript ESTree](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree) to allow for ESLint to lint TypeScript source code.
+<p align="center">An ESLint custom parser which leverages <a href="https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree">TypeScript ESTree</a> to allow for ESLint to lint TypeScript source code.</p>
+
+<p align="center">
+    <a href="https://travis-ci.com/typescript-eslint/typescript-eslint"><img src="https://img.shields.io/travis/com/typescript-eslint/typescript-eslint.svg?style=flat-square" alt="Travis"/></a>
+    <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
+    <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser.svg?style=flat-square" alt="NPM Version" /></a>
+    <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/dm/@typescript-eslint/parser.svg?style=flat-square" alt="NPM Downloads" /></a>
+    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square" alt="Commitizen friendly" /></a>
+</p>
 
 ## Installation:
 
 ```sh
-npm install --save-dev @typescript-eslint/parser
+npm install @typescript-eslint/parser --save-dev
 ```
 
 ## Usage

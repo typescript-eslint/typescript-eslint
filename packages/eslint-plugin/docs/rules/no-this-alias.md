@@ -41,7 +41,7 @@ You can pass an object option:
 
 ```json5
 {
-  'typescript/no-this-alias': [
+  '@typescript-eslint/no-this-alias': [
     'error',
     {
       allowDestructuring: true, // Allow `const { props, state } = this`; false by default

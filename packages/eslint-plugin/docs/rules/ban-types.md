@@ -32,7 +32,7 @@ class Foo<F = string> extends Bar<string> implements Baz<string> {
 
 ```CJSON
 {
-    "typescript/ban-types": ["error", {
+    "@typescript-eslint/ban-types": ["error", {
         "types": {
             // report usages of the type using the default error message
             "Foo": null,
@@ -54,7 +54,7 @@ class Foo<F = string> extends Bar<string> implements Baz<string> {
 
 ```json
 {
-  "typescript/ban-types": [
+  "@typescript-eslint/ban-types": [
     "error",
     {
       "types": {

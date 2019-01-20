@@ -1,41 +1,49 @@
-# ESLint Plugin TSLint
+<h1 align="center">ESLint Plugin TSLint</h1>
 
-[![Travis](https://img.shields.io/travis/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square)](https://travis-ci.org/@typescript-eslint/eslint-plugin-tslint)
-[![GitHub license](https://img.shields.io/npm/l/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square)](https://github.com/@typescript-eslint/eslint-plugin-tslint/blob/master/LICENSE)
-[![NPM Version](https://img.shields.io/npm/v/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin-tslint)
-[![NPM Downloads](https://img.shields.io/npm/dt/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin-tslint)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+<p align="center">ESLint plugin wraps a TSLint configuration and lints the whole source using TSLint.</p>
 
-ESLint plugin wraps a TSLint configuration and lints the whole source using TSLint.
+<p align="center">
+    <a href="https://travis-ci.com/typescript-eslint/typescript-eslint"><img src="https://img.shields.io/travis/com/typescript-eslint/typescript-eslint.svg?style=flat-square" alt="Travis"/></a>
+    <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
+    <a href="https://www.npmjs.com/package/@typescript-eslint/eslint-plugin-tslint"><img src="https://img.shields.io/npm/v/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square" alt="NPM Version" /></a>
+    <a href="https://www.npmjs.com/package/@typescript-eslint/eslint-plugin-tslint"><img src="https://img.shields.io/npm/dm/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square" alt="NPM Downloads" /></a>
+    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square" alt="Commitizen friendly" /></a>
+</p>
 
-## INSTALL
+## Installation
 
+```sh
+npm i @typescript-eslint/eslint-plugin-tslint --save-dev
 ```
-npm i -D @typescript-eslint/eslint-plugin-tslint
-```
 
-## USAGE
+## Usage
 
 Configure in your eslint config file:
 
-```
-"plugins": [
+```js
+{
+  "plugins": [
     "tslint"
-],
-"rules": {
+  ],
+  "rules": {
     "tslint/config": ["warn", {
-        lintFile: '/* path to tslint.json of your project */',
-        rules: { /* tslint rules (will be used if `lintFile` is not specified) */ },
-        rulesDirectory: [ /* array of paths to directories with rules, e.g. 'node_modules/tslint/lib/rules' (will be used if `lintFile` is not specified) */ ]
+      "lintFile": '', // path to tslint.json of your project
+      "rules": {
+        // tslint rules (will be used if `lintFile` is not specified)
+      },
+      "rulesDirectory": [
+        // array of paths to directories with rules, e.g. 'node_modules/tslint/lib/rules' (will be used if `lintFile` is not specified)
+      ]
     }],
+  }
 }
 ```
 
-## RULES
+## Rules
 
 Plugin contains only single rule `tslint/config`.
 
-## EXAMPLES
+## Examples
 
 - [unlight/node-package-starter/.eslintrc.js](https://github.com/unlight/node-package-starter/blob/master/.eslintrc.js)
 
