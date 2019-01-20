@@ -62,6 +62,9 @@ module.exports = Object.assign({}, baseRule, {
       },
       'TSEnumMember Identifier'(node) {
         context.markVariableAsUsed(node.name);
+      },
+      '*[declare=true] Identifier'(node) {
+        context.markVariableAsUsed(node.name);
       }
     });
   }
