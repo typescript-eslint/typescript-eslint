@@ -23,7 +23,7 @@ jobs:
 
       - script: |
           yarn lint
-        displayName: 'Check code formatting'
+        displayName: 'Run linting'
 
       - script: |
           yarn test
