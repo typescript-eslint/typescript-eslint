@@ -75,12 +75,12 @@ module.exports = Object.assign({}, baseRule, {
       },
       TSInterfaceHeritage(node) {
         if (node.expression) {
-          markHeritageAsUsed(node.expression)
+          markHeritageAsUsed(node.expression);
         }
       },
       TSClassImplements(node) {
         if (node.expression) {
-          markHeritageAsUsed(node.expression)
+          markHeritageAsUsed(node.expression);
         }
       },
       'TSParameterProperty Identifier'(node) {
