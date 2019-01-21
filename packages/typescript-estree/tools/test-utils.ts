@@ -36,6 +36,7 @@ export function parseCodeAndGenerateServices(
  * and which performs an assertion on the snapshot for the given code and config.
  * @param {string} code The source code to parse
  * @param {ParserOptions} config the parser configuration
+ * @param {boolean} generateServices Flag determining whether to generate ast maps and program or not
  * @returns {jest.ProvidesCallback} callback for Jest it() block
  */
 export function createSnapshotTestBlock(

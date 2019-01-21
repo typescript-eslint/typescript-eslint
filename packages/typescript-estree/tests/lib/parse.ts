@@ -6,6 +6,7 @@
  * MIT License
  */
 import * as parser from '../../src/parser';
+import * as astConverter from '../../src/ast-converter';
 import { ParserOptions } from '../../src/temp-types-based-on-js-source';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
@@ -16,8 +17,8 @@ import { createSnapshotTestBlock } from '../../tools/test-utils';
 describe('parse()', () => {
   describe('basic functionality', () => {
     it('should parse an empty string', () => {
-      expect((parser as any).parse('').body).toEqual([]);
-      expect(parser.parse('', {} as any).body).toEqual([]);
+      expect(parser.parse('').body).toEqual([]);
+      expect(parser.parse('', {}).body).toEqual([]);
     });
   });
 
@@ -33,7 +34,7 @@ describe('parse()', () => {
 
   describe('general', () => {
     const code = 'let foo = bar;';
-    const config = {
+    const config: ParserOptions = {
       comment: true,
       tokens: true,
       range: true,
@@ -42,7 +43,60 @@ describe('parse()', () => {
 
     it(
       'output tokens, comments, locs, and ranges when called with those options',
-      createSnapshotTestBlock(code, config as ParserOptions)
+      createSnapshotTestBlock(code, config)
     );
+  });
+
+  describe('non string code', () => {
+    const code = (12345 as any) as string;
+    const config: ParserOptions = {
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true
+    };
+
+    it(
+      'should correctly convert code to string',
+      createSnapshotTestBlock(code, config)
+    );
+  });
+
+  describe('non string code', () => {
+    it('output tokens, comments, locs, and ranges when called with those options', () => {
+      const spy = jest.spyOn(astConverter, 'default');
+
+      const loggerFn = jest.fn(() => true);
+
+      parser.parse('let foo = bar;', {
+        loggerFn,
+        comment: true,
+        tokens: true,
+        range: true,
+        loc: true
+      });
+
+      expect(spy).toHaveBeenCalledWith(
+        jasmine.any(Object),
+        {
+          code: 'let foo = bar;',
+          comment: true,
+          comments: [],
+          errorOnTypeScriptSyntacticAndSemanticIssues: false,
+          errorOnUnknownASTType: false,
+          extraFileExtensions: [],
+          jsx: false,
+          loc: true,
+          log: loggerFn,
+          projects: [],
+          range: true,
+          strict: false,
+          tokens: jasmine.any(Array),
+          tsconfigRootDir: jasmine.any(String),
+          useJSXTextNode: false
+        },
+        false
+      );
+    });
   });
 });
