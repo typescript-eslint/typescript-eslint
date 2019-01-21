@@ -1,15 +1,14 @@
-import traverser from 'eslint/lib/util/traverser';
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
   ParserOptions as ParserOptionsTsESTree
 } from '@typescript-eslint/typescript-estree';
+import traverser from 'eslint/lib/util/traverser';
+import { Program } from 'typescript';
+import packageJSON from '../package.json';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
-import { Program } from 'typescript';
-
-const packageJSON = require('../package.json');
 
 interface ParserServices {
   program: Program | undefined;

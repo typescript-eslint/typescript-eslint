@@ -1,5 +1,5 @@
-const fs = require('fs');
-const rootPackageJSON = require('/usr/root-package.json');
+import { writeFileSync } from 'fs';
+import { devDependencies } from '/usr/root-package.json';
 
 /**
  * Apply package versions based on what they are currently set to in the root package.json
@@ -8,9 +8,9 @@ const rootPackageJSON = require('/usr/root-package.json');
 const testPackageJSON = {
   private: true,
   devDependencies: {
-    eslint: rootPackageJSON.devDependencies.eslint,
-    typescript: rootPackageJSON.devDependencies.typescript,
-    tslint: rootPackageJSON.devDependencies.tslint,
+    eslint: devDependencies.eslint,
+    typescript: devDependencies.typescript,
+    tslint: devDependencies.tslint,
     /**
      * TEMP: Bump jest to ahead of our stable usage in the monorepo,
      * we need the bleeding edge snapshotResolver option
@@ -20,4 +20,4 @@ const testPackageJSON = {
   }
 };
 
-fs.writeFileSync('/usr/package.json', JSON.stringify(testPackageJSON, null, 2));
+writeFileSync('/usr/package.json', JSON.stringify(testPackageJSON, null, 2));

@@ -1,7 +1,7 @@
+import { ParserPlugin } from '@babel/parser';
 import codeFrame from 'babel-code-frame';
 import * as parser from '../../src/parser';
 import * as parseUtils from './utils';
-import { ParserPlugin } from '@babel/parser';
 
 function createError(message: string, line: number, column: number) {
   // Construct an error similar to the ones thrown by Babylon.
@@ -14,6 +14,7 @@ function createError(message: string, line: number, column: number) {
 }
 
 function parseWithBabelParser(text: string, jsx: boolean = true) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const babel = require('@babel/parser');
   const plugins: ParserPlugin[] = [
     'typescript',

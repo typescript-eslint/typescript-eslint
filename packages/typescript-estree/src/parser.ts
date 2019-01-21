@@ -5,25 +5,24 @@
  * @copyright jQuery Foundation and other contributors, https://jquery.org/
  * MIT License
  */
-import {
-  calculateProjectParserOptions,
-  createProgram
-} from './tsconfig-parser';
 import semver from 'semver';
 import ts from 'typescript';
+import packageJSON from '../package.json';
 import convert from './ast-converter';
 import { convertError } from './convert';
 import { Program } from './estree/spec';
 import { firstDefined } from './node-utils';
+import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 import {
   ESTreeComment,
   ESTreeToken,
   Extra,
   ParserOptions
 } from './temp-types-based-on-js-source';
-import { getFirstSemanticOrSyntacticError } from './semantic-errors';
-
-const packageJSON = require('../package.json');
+import {
+  calculateProjectParserOptions,
+  createProgram
+} from './tsconfig-parser';
 
 const SUPPORTED_TYPESCRIPT_VERSIONS = packageJSON.devDependencies.typescript;
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;

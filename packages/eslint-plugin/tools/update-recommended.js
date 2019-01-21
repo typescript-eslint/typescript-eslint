@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
-const requireIndex = require('requireindex');
+import { resolve } from 'path';
+import { writeFileSync } from 'fs';
+import requireIndex from 'requireindex';
 
 const bannedRecommendedRules = new Set([
   'camelcase',
@@ -19,7 +19,7 @@ const MAX_RULE_NAME_LENGTH = 32 + 'typescript/'.length;
  */
 function generate() {
   // replace this with Object.entries when node > 8
-  const allRules = requireIndex(path.resolve(__dirname, '../lib/rules'));
+  const allRules = requireIndex(resolve(__dirname, '../lib/rules'));
 
   const rules = Object.keys(allRules)
     .filter(key => !!allRules[key].meta.docs.recommended)
@@ -46,7 +46,7 @@ function generate() {
       return config;
     }, {});
 
-  const filePath = path.resolve(__dirname, '../lib/configs/recommended.json');
+  const filePath = resolve(__dirname, '../lib/configs/recommended.json');
 
   const recommendedConfig = {
     parser: '@typescript-eslint/parser',
@@ -57,7 +57,7 @@ function generate() {
     rules
   };
 
-  fs.writeFileSync(filePath, `${JSON.stringify(recommendedConfig, null, 4)}\n`);
+  writeFileSync(filePath, `${JSON.stringify(recommendedConfig, null, 4)}\n`);
 }
 
 generate();
