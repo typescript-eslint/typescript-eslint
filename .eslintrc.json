@@ -30,8 +30,8 @@
     {
       "files": [
         "packages/eslint-plugin-tslint/**/*.ts",
-        "packages/eslint-plugin-typescript/**/*.js",
-        "packages/typescript-eslint-parser/**/*.ts",
+        "packages/eslint-plugin/**/*.js",
+        "packages/parser/**/*.ts",
         "packages/typescript-estree/**/*.ts"
       ],
       "env": {
@@ -46,7 +46,7 @@
       }
     },
     {
-      "files": ["packages/eslint-plugin-typescript/**/*.js"],
+      "files": ["packages/eslint-plugin/**/*.js"],
       "rules": {
         "eslint-plugin/fixer-return": "error",
         "eslint-plugin/no-identical-tests": "error",
