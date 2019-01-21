@@ -11,7 +11,7 @@ import { convertTokens } from './node-utils';
 import ts from 'typescript';
 import { Extra } from './temp-types-based-on-js-source';
 
-export default function astConverter (
+export default function astConverter(
   ast: ts.SourceFile,
   extra: Extra,
   shouldProvideParserServices: boolean
@@ -59,4 +59,4 @@ export default function astConverter (
   }
 
   return { estree, astMaps };
-};
+}
