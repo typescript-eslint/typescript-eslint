@@ -180,7 +180,7 @@
 | [`whitespace`]                      | 🔌  | Use [Prettier]                                                                      |
 
 <sup>[1]</sup> Recommended config: `["error", { blankLine: "always", prev: "*", next: "return" }]`  
-<sup>[2]</sup> [`camelcase`][camelcase], [`no-underscore-dangle`][no-underscore-dangle], [`id-blacklist`][id-blacklist], and/or [`id-match`]
+<sup>[2]</sup> [`camelcase`][camelcase], [`no-underscore-dangle`][no-underscore-dangle], [`id-blacklist`][id-blacklist], and/or [`id-match`][id-match]
 
 ## tslint-microsoft-contrib rules
 
@@ -282,7 +282,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-exec-script`                    | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
 | `no-jquery-raw-elements`            | 🛑  | N/A                                                |
 | `no-unsupported-browser-code`       | 🔌  | [`eslint-plugin-compat`][plugin:compat]            |
-| `react-this-binding-issue`          | 🛑  |                                                    |
+| `react-this-binding-issue`          | 🛑  | N/A                                                |
 | `react-tsx-curly-spacing`           | 🔌  | [`react/jsx-curly-spacing`]                        |
 | `react-unused-props-and-state`      | 🌓  | [`react/no-unused-state`]                          |
 
