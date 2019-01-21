@@ -11,11 +11,11 @@ import { convertTokens } from './node-utils';
 import ts from 'typescript';
 import { Extra } from './temp-types-based-on-js-source';
 
-export default (
+export default function astConverter (
   ast: ts.SourceFile,
   extra: Extra,
   shouldProvideParserServices: boolean
-) => {
+) {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
    * source.
