@@ -3,7 +3,7 @@
 <p align="center">ESLint plugin wraps a TSLint configuration and lints the whole source using TSLint.</p>
 
 <p align="center">
-    <a href="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_build/latest?definitionId=1&branchName=master"><img src="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_apis/build/status/typescript-eslint.typescript-eslint?branchName=master" alt="Azure Pipelines"/></a>
+    <a href="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_build/latest?definitionId=1&branchName=master"><img src="https://img.shields.io/azure-devops/build/typescript-eslint/TypeScript%20ESLint/1.svg?label=%F0%9F%9A%80%20Azure%20Pipelines&style=flat-square" alt="Azure Pipelines"/></a>
     <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
     <a href="https://www.npmjs.com/package/@typescript-eslint/eslint-plugin-tslint"><img src="https://img.shields.io/npm/v/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square" alt="NPM Version" /></a>
     <a href="https://www.npmjs.com/package/@typescript-eslint/eslint-plugin-tslint"><img src="https://img.shields.io/npm/dm/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square" alt="NPM Downloads" /></a>
