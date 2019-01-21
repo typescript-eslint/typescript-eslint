@@ -147,14 +147,7 @@ tester.addFixturePatternConfig('javascript/simple-literals');
 
 tester.addFixturePatternConfig('javascript/directives');
 
-tester.addFixturePatternConfig('javascript/experimentalObjectRestSpread', {
-  ignore: [
-    /**
-     * Trailing comma is not permitted after a "RestElement" in Babel
-     */
-    'invalid-rest-trailing-comma'
-  ]
-});
+tester.addFixturePatternConfig('javascript/experimentalObjectRestSpread');
 
 tester.addFixturePatternConfig('javascript/arrowFunctions', {
   ignore: [
@@ -197,14 +190,7 @@ tester.addFixturePatternConfig('javascript/destructuring-and-arrowFunctions');
 tester.addFixturePatternConfig('javascript/destructuring-and-blockBindings');
 tester.addFixturePatternConfig('javascript/destructuring-and-defaultParams');
 tester.addFixturePatternConfig('javascript/destructuring-and-forOf');
-tester.addFixturePatternConfig('javascript/destructuring-and-spread', {
-  ignore: [
-    /**
-     * Trailing comma is not permitted after a "RestElement" in Babel
-     */
-    'invalid-not-final-array-empty'
-  ]
-});
+tester.addFixturePatternConfig('javascript/destructuring-and-spread');
 
 tester.addFixturePatternConfig('javascript/experimentalAsyncIteration');
 tester.addFixturePatternConfig('javascript/experimentalDynamicImport');
