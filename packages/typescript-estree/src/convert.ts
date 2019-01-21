@@ -1318,6 +1318,12 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           left: parameter,
           right: convertChild(node.initializer)
         });
+
+        if (node.modifiers) {
+          // AssignmentPattern should not contain modifiers in range
+          result.range[0] = parameter.range[0];
+          result.loc = getLocFor(result.range[0], result.range[1], ast);
+        }
       } else {
         parameter = result = convert({
           node: node.name,

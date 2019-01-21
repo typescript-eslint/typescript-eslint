@@ -161,7 +161,7 @@ export function hasModifier(
  * @param node TypeScript AST node
  * @returns returns last modifier if present or null
  */
-export function getLastModifier(node: ts.Node): ts.Node | null {
+export function getLastModifier(node: ts.Node): ts.Modifier | null {
   return (
     (!!node.modifiers &&
       !!node.modifiers.length &&
