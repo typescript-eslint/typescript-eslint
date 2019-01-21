@@ -25,7 +25,6 @@ jobs:
       #     yarn test
       #   displayName: 'Run unit tests'
 
-      - task: DockerCompose@0
       - script: |
           yarn integration-tests
         displayName: 'Run integrations tests'
