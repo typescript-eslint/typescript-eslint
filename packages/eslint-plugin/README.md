@@ -51,7 +51,7 @@ You can also enable all the recommended rules at once. Add `plugin:@typescript-e
 }
 ```
 
-💡 Using [Prettier](https://prettier.io)? Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable our file rules:
+💡 Using [Prettier](https://prettier.io)? Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable our code formatting related rules:
 
 ```json
 {
