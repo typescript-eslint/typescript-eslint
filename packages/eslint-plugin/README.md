@@ -51,6 +51,18 @@ You can also enable all the recommended rules at once. Add `plugin:@typescript-e
 }
 ```
 
+💡 Using [Prettier](https://prettier.io)? Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable our file rules:
+
+```json
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/typescript"
+  ]
+}
+```
+
 ## Supported Rules
 
 <!-- Please run `npm run docs` to update this section -->
