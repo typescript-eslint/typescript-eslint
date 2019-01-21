@@ -189,10 +189,10 @@ type AST<T extends ParserOptions> = Program &
 
 /**
  * Parses the given source code to produce a valid AST
- * @param {string} code    TypeScript code
- * @param {boolean} shouldGenerateServices Flag determining whether to generate ast maps and program or not
- * @param {ParserOptions} options configuration object for the parser
- * @returns {Object}         the AST
+ * @param code    TypeScript code
+ * @param shouldGenerateServices Flag determining whether to generate ast maps and program or not
+ * @param options configuration object for the parser
+ * @returns the AST
  */
 function generateAST<T extends ParserOptions = ParserOptions>(
   code: string,
@@ -200,18 +200,11 @@ function generateAST<T extends ParserOptions = ParserOptions>(
   shouldGenerateServices = false
 ): {
   estree: AST<T>;
-  program: typeof shouldGenerateServices extends true
-    ? ts.Program
-    : (ts.Program | undefined);
-  astMaps: typeof shouldGenerateServices extends true
-    ? {
-        esTreeNodeToTSNodeMap: WeakMap<object, any>;
-        tsNodeToESTreeNodeMap: WeakMap<object, any>;
-      }
-    : {
-        esTreeNodeToTSNodeMap?: WeakMap<object, any>;
-        tsNodeToESTreeNodeMap?: WeakMap<object, any>;
-      };
+  program: ts.Program | undefined;
+  astMaps: {
+    esTreeNodeToTSNodeMap?: WeakMap<object, any>;
+    tsNodeToESTreeNodeMap?: WeakMap<object, any>;
+  };
 } {
   const toString = String;
 
@@ -342,7 +335,10 @@ function generateAST<T extends ParserOptions = ParserOptions>(
     program: shouldProvideParserServices ? program : undefined,
     astMaps: shouldProvideParserServices
       ? astMaps!
-      : { esTreeNodeToTSNodeMap: undefined, tsNodeToESTreeNodeMap: undefined }
+      : {
+          esTreeNodeToTSNodeMap: undefined,
+          tsNodeToESTreeNodeMap: undefined
+        }
   };
 }
 
@@ -364,14 +360,25 @@ export function parse<T extends ParserOptions = ParserOptions>(
   return generateAST<T>(code, options).estree;
 }
 
-export function parseAndGenerateServices(code: string, options: ParserOptions) {
+export type ParserServices = {
+  program: ts.Program;
+  esTreeNodeToTSNodeMap: WeakMap<object, any>;
+  tsNodeToESTreeNodeMap: WeakMap<object, any>;
+};
+export function parseAndGenerateServices<T extends ParserOptions>(
+  code: string,
+  options: T
+): {
+  ast: AST<T>;
+  services: ParserServices;
+} {
   const result = generateAST(code, options, /*shouldGenerateServices*/ true);
   return {
     ast: result.estree,
     services: {
-      program: result.program,
-      esTreeNodeToTSNodeMap: result.astMaps.esTreeNodeToTSNodeMap,
-      tsNodeToESTreeNodeMap: result.astMaps.tsNodeToESTreeNodeMap
+      program: result.program!,
+      esTreeNodeToTSNodeMap: result.astMaps.esTreeNodeToTSNodeMap!,
+      tsNodeToESTreeNodeMap: result.astMaps.tsNodeToESTreeNodeMap!
     }
   };
 }

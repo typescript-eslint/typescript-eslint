@@ -16,12 +16,15 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
     "test": "jest --coverage",
-    "recommended:update": "node tools/update-recommended.js"
+    "recommended:update": "node tools/update-recommended.js",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "clean": "rimraf dist/"
   },
   "dependencies": {
     "@typescript-eslint/parser": "1.0.0",
