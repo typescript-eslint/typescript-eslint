@@ -236,7 +236,7 @@ export function preprocessBabylonAST(ast: any): any {
        * Babel: ClassProperty + abstract: true
        * ts-estree: TSAbstractClassProperty
        */
-      ClassProperty(node: any, parent: any) {
+      ClassProperty(node: any) {
         if (node.abstract) {
           node.type = 'TSAbstractClassProperty';
           delete node.abstract;
