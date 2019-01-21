@@ -3,7 +3,7 @@
 <p align="center">Monorepo for all the tooling which enables ESLint to support TypeScript</p>
 
 <p align="center">
-    <a href="https://travis-ci.com/typescript-eslint/typescript-eslint"><img src="https://img.shields.io/travis/com/typescript-eslint/typescript-eslint.svg?style=flat-square" alt="Travis"/></a>
+    <a href="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_build/latest?definitionId=1&branchName=master"><img src="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_apis/build/status/typescript-eslint.typescript-eslint?branchName=master" alt="Azure Pipelines"/></a>
     <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
     <a href="https://www.npmjs.com/package/@typescript-eslint/typescript-estree"><img src="https://img.shields.io/npm/dm/@typescript-eslint/typescript-estree.svg?style=flat-square" alt="NPM Downloads" /></a>
     <a href="https://codecov.io/gh/typescript-eslint/typescript-eslint"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/typescript-eslint/typescript-eslint.svg?style=flat-square"></a>
