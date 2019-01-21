@@ -1,0 +1,68 @@
+{
+  "root": true,
+  "plugins": ["eslint-plugin", "@typescript-eslint", "jest"],
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "no-mixed-operators": "error",
+    "no-console": "off",
+    "no-undef": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-object-literal-type-assertion": "off",
+    "@typescript-eslint/no-parameter-properties": "off"
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": false
+    }
+  },
+  "overrides": [
+    {
+      "files": [
+        "packages/eslint-plugin-tslint/**/*.ts",
+        "packages/eslint-plugin-typescript/**/*.js",
+        "packages/typescript-eslint-parser/**/*.ts",
+        "packages/typescript-estree/**/*.ts"
+      ],
+      "env": {
+        "jest/globals": true
+      },
+      "rules": {
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error"
+      }
+    },
+    {
+      "files": ["packages/eslint-plugin-typescript/**/*.js"],
+      "rules": {
+        "eslint-plugin/fixer-return": "error",
+        "eslint-plugin/no-identical-tests": "error",
+        "eslint-plugin/no-missing-placeholders": "error",
+        "eslint-plugin/no-unused-placeholders": "error",
+        "eslint-plugin/no-useless-token-range": "error",
+        "eslint-plugin/require-meta-fixable": "error",
+        "eslint-plugin/prefer-placeholders": "error",
+        "eslint-plugin/prefer-replace-text": "error",
+        "eslint-plugin/no-deprecated-report-api": "error",
+        "eslint-plugin/report-message-format": ["error", "^[A-Z'{].*[\\.}]$"],
+        "eslint-plugin/no-deprecated-context-methods": "error",
+        "eslint-plugin/prefer-output-null": "error",
+        "eslint-plugin/test-case-shorthand-strings": "error",
+        "eslint-plugin/require-meta-type": "error"
+      }
+    }
+  ]
+}

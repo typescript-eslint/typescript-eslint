@@ -1,0 +1,8 @@
+node_modules
+dist
+jest.config.js
+fixtures
+coverage
+
+packages/typescript-estree/src/estree
+packages/eslint-plugin-tslint/tests
