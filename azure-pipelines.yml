@@ -30,8 +30,7 @@ jobs:
         displayName: 'Run integrations tests'
 
       - script: |
-          yarn global add codecov
-          codecov
+          npx codecov
         displayName: 'Publish code coverage report'
 
   - job: unit_tests_on_other_node_versions
