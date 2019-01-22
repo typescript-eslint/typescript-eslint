@@ -1363,40 +1363,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.ClassDeclaration:
     case SyntaxKind.ClassExpression: {
       const heritageClauses = node.heritageClauses || [];
-
       let classNodeType = SyntaxKind[node.kind];
-      let lastClassToken: any = heritageClauses.length
-        ? heritageClauses[heritageClauses.length - 1]
-        : node.name;
 
       if (node.typeParameters && node.typeParameters.length) {
-        const lastTypeParameter =
-          node.typeParameters[node.typeParameters.length - 1];
-
-        if (!lastClassToken || lastTypeParameter.pos > lastClassToken.pos) {
-          lastClassToken = findNextToken(lastTypeParameter, ast, ast);
-        }
         result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
         );
       }
 
-      if (node.modifiers && node.modifiers.length) {
-        /**
-         * We need check for modifiers, and use the last one, as there
-         * could be multiple before the open brace
-         */
-        const lastModifier = node.modifiers![node.modifiers!.length - 1];
-
-        if (!lastClassToken || lastModifier.pos > lastClassToken.pos) {
-          lastClassToken = findNextToken(lastModifier, ast, ast);
-        }
-      } else if (!lastClassToken) {
-        // no name
-        lastClassToken = node.getFirstToken();
-      }
-
-      const openBrace = findNextToken(lastClassToken, ast, ast)!;
       const superClass = heritageClauses.find(
         clause => clause.token === SyntaxKind.ExtendsKeyword
       );
@@ -1421,14 +1395,18 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         clause => clause.token === SyntaxKind.ImplementsKeyword
       );
 
+      const classBodyRange = node.members
+        ? [node.members.pos - 1, node.end]
+        : [node.end, node.end];
+
       Object.assign(result, {
         type: classNodeType,
         id: convertChild(node.name),
         body: {
           type: AST_NODE_TYPES.ClassBody,
           body: [],
-          range: [openBrace.getStart(ast), node.end],
-          loc: getLocFor(openBrace.getStart(ast), node.end, ast)
+          range: classBodyRange,
+          loc: getLocFor(classBodyRange[0], classBodyRange[1], ast)
         },
         superClass:
           superClass && superClass.types[0]
