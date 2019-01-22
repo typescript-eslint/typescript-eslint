@@ -66626,7 +66626,7 @@ Object {
       "superTypeParameters": Object {
         "loc": Object {
           "end": Object {
-            "column": 61,
+            "column": 71,
             "line": 1,
           },
           "start": Object {
@@ -66673,7 +66673,7 @@ Object {
         ],
         "range": Array [
           47,
-          61,
+          71,
         ],
         "type": "TSTypeParameterInstantiation",
       },
@@ -66805,7 +66805,7 @@ Object {
       "superTypeParameters": Object {
         "loc": Object {
           "end": Object {
-            "column": 76,
+            "column": 86,
             "line": 2,
           },
           "start": Object {
@@ -66852,7 +66852,7 @@ Object {
         ],
         "range": Array [
           137,
-          151,
+          161,
         ],
         "type": "TSTypeParameterInstantiation",
       },
@@ -67005,7 +67005,7 @@ Object {
           "typeParameters": Object {
             "loc": Object {
               "end": Object {
-                "column": 66,
+                "column": 76,
                 "line": 3,
               },
               "start": Object {
@@ -67052,7 +67052,7 @@ Object {
             ],
             "range": Array [
               217,
-              231,
+              241,
             ],
             "type": "TSTypeParameterInstantiation",
           },
@@ -67203,7 +67203,7 @@ Object {
           "typeParameters": Object {
             "loc": Object {
               "end": Object {
-                "column": 80,
+                "column": 90,
                 "line": 4,
               },
               "start": Object {
@@ -67250,7 +67250,7 @@ Object {
             ],
             "range": Array [
               311,
-              325,
+              335,
             ],
             "type": "TSTypeParameterInstantiation",
           },
