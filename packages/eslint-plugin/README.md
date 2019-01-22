@@ -58,10 +58,12 @@ You can also enable all the recommended rules at once. Add `plugin:@typescript-e
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "prettier/typescript"
+    "prettier/@typescript-eslint"
   ]
 }
 ```
+
+*Note: Make sure you have `eslint-config-prettier@4.0.0` or newer.*
 
 ## Supported Rules
 
