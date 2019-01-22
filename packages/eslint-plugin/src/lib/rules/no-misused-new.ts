@@ -34,9 +34,9 @@ module.exports = {
   create(context: Rule.RuleContext) {
     /**
      * @param {ASTNode} node type to be inspected.
-     * @returns {string|null} name of simple type or null
+     * @returns name of simple type or null
      */
-    function getTypeReferenceName(node) {
+    function getTypeReferenceName(node): string | null {
       if (node) {
         switch (node.type) {
           case 'TSTypeAnnotation':
@@ -55,9 +55,8 @@ module.exports = {
     /**
      * @param {ASTNode} parent parent node.
      * @param {ASTNode} returnType type to be compared
-     * @returns {boolean} returns true if type is parent type
      */
-    function isMatchingParentType(parent, returnType) {
+    function isMatchingParentType(parent, returnType): boolean {
       if (parent && parent.id && parent.id.type === 'Identifier') {
         return getTypeReferenceName(returnType) === parent.id.name;
       }

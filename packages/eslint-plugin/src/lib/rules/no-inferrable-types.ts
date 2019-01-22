@@ -55,9 +55,8 @@ module.exports = {
      * Returns whether a node has an inferrable value or not
      * @param {ASTNode} node the node to check
      * @param {ASTNode} init the initializer
-     * @returns {boolean} whether the node has an inferrable type
      */
-    function isInferrable(node, init) {
+    function isInferrable(node, init): boolean {
       if (node.type !== 'TSTypeAnnotation' || !node.typeAnnotation) {
         return false;
       }
@@ -103,9 +102,8 @@ module.exports = {
      * @param {ASTNode} node the node being visited
      * @param {ASTNode} typeNode the type annotation node
      * @param {ASTNode} initNode the initializer node
-     * @returns {void}
      */
-    function reportInferrableType(node, typeNode, initNode) {
+    function reportInferrableType(node, typeNode, initNode): void {
       if (!typeNode || !initNode || !typeNode.typeAnnotation) {
         return;
       }
@@ -136,9 +134,8 @@ module.exports = {
     /**
      * Visits variables
      * @param {ASTNode} node the node to be visited
-     * @returns {void}
      */
-    function inferrableVariableVisitor(node) {
+    function inferrableVariableVisitor(node): void {
       if (!node.id) {
         return;
       }
@@ -148,9 +145,8 @@ module.exports = {
     /**
      * Visits parameters
      * @param {ASTNode} node the node to be visited
-     * @returns {void}
      */
-    function inferrableParameterVisitor(node) {
+    function inferrableParameterVisitor(node): void {
       if (ignoreParameters || !node.params) {
         return;
       }
@@ -167,9 +163,8 @@ module.exports = {
     /**
      * Visits properties
      * @param {ASTNode} node the node to be visited
-     * @returns {void}
      */
-    function inferrablePropertyVisitor(node) {
+    function inferrablePropertyVisitor(node): void {
       // We ignore `readonly` because of Microsoft/TypeScript#14416
       // Essentially a readonly property without a type
       // will result in its value being the type, leading to

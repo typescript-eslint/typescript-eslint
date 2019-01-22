@@ -35,9 +35,8 @@ module.exports = {
     /**
      * Check whatever node should be reported
      * @param {ASTNode} node the node to be evaluated.
-     * @returns {*} true or false
      */
-    function checkType(node) {
+    function checkType(node): boolean {
       if (node) {
         switch (node.type) {
           case 'TSAnyKeyword':

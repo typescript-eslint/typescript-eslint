@@ -5,6 +5,7 @@
 
 import { Rule } from 'eslint';
 import baseRule from 'eslint/lib/rules/no-unused-vars';
+import { Identifier } from 'estree';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -30,10 +31,9 @@ module.exports = Object.assign({}, baseRule, {
 
     /**
      * Mark this function parameter as used
-     * @param {Identifier} node The node currently being traversed
-     * @returns {void}
+     * @param node The node currently being traversed
      */
-    function markThisParameterAsUsed(node) {
+    function markThisParameterAsUsed(node: Identifier): void {
       if (node.name) {
         const variable = context
           .getScope()
@@ -48,9 +48,8 @@ module.exports = Object.assign({}, baseRule, {
     /**
      * Mark heritage clause as used
      * @param node The node currently being traversed
-     * @returns {void}
      */
-    function markHeritageAsUsed(node) {
+    function markHeritageAsUsed(node): void {
       switch (node.type) {
         case 'Identifier':
           context.markVariableAsUsed(node.name);

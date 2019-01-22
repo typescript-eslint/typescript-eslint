@@ -37,10 +37,8 @@ module.exports = {
     /**
      * Checks if property has an accessibility modifier.
      * @param {ASTNode} program The node representing a Program.
-     * @returns {void}
-     * @private
      */
-    function checkTripleSlashReference(program) {
+    function checkTripleSlashReference(program): void {
       const commentsBefore = sourceCode.getCommentsBefore(program);
 
       commentsBefore.forEach(comment => {

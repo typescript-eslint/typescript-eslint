@@ -13,7 +13,7 @@ import * as util from '../util';
 const defaultOptions = [
   {
     allowDestructuring: false,
-    allowedNames: []
+    allowedNames: [] as string[]
   }
 ];
 

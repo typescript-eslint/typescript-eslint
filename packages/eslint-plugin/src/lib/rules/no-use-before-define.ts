@@ -6,7 +6,7 @@
  * @author Jed Fox
  */
 
-import { Rule } from 'eslint';
+import { Rule, Scope } from 'eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -16,13 +16,19 @@ import * as util from '../util';
 const SENTINEL_TYPE = /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
 const FOR_IN_OF_TYPE = /^For(?:In|Of)Statement$/;
 
+type Options = {
+  functions?: boolean;
+  classes?: boolean;
+  variables?: boolean;
+  typedefs?: boolean;
+};
+
 /**
  * Parses a given value as options.
  *
  * @param {any} options - A value to parse.
- * @returns {Object} The parsed options.
  */
-function parseOptions(options) {
+function parseOptions(options: string | Options | null): Options {
   let functions = true;
   let classes = true;
   let variables = true;
@@ -41,31 +47,30 @@ function parseOptions(options) {
 }
 
 /**
- * @param {Scope} scope - a scope to check
- * @returns {boolean} `true` if the scope is toplevel
+ * Checks whether or not a given scope is a top level scope.
+ * @param scope - a scope to check
  */
-function isTopLevelScope(scope) {
+function isTopLevelScope(scope: Scope.Scope): boolean {
   return scope.type === 'module' || scope.type === 'global';
 }
 
 /**
  * Checks whether or not a given variable is a function declaration.
- *
- * @param {eslint-scope.Variable} variable - A variable to check.
- * @returns {boolean} `true` if the variable is a function declaration.
+ * @param variable - A variable to check.
  */
-function isFunction(variable) {
+function isFunction(variable: Scope.Variable): boolean {
   return variable.defs[0].type === 'FunctionName';
 }
 
 /**
  * Checks whether or not a given variable is a class declaration in an upper function scope.
- *
- * @param {eslint-scope.Variable} variable - A variable to check.
- * @param {eslint-scope.Reference} reference - A reference to check.
- * @returns {boolean} `true` if the variable is a class declaration.
+ * @param variable - A variable to check.
+ * @param reference - A reference to check.
  */
-function isOuterClass(variable, reference) {
+function isOuterClass(
+  variable: Scope.Variable,
+  reference: Scope.Reference
+): boolean {
   if (variable.defs[0].type !== 'ClassName') {
     return false;
   }
@@ -82,11 +87,13 @@ function isOuterClass(variable, reference) {
 
 /**
  * Checks whether or not a given variable is a variable declaration in an upper function scope.
- * @param {eslint-scope.Variable} variable - A variable to check.
- * @param {eslint-scope.Reference} reference - A reference to check.
- * @returns {boolean} `true` if the variable is a variable declaration.
+ * @param variable - A variable to check.
+ * @param reference - A reference to check.
  */
-function isOuterVariable(variable, reference) {
+function isOuterVariable(
+  variable: Scope.Variable,
+  reference: Scope.Reference
+): boolean {
   if (variable.defs[0].type !== 'Variable') {
     return false;
   }
@@ -103,13 +110,14 @@ function isOuterVariable(variable, reference) {
 
 /**
  * Checks whether or not a given variable is a type declaration.
- * @param {eslint-scope.Variable} variable - A type to check.
- * @returns {boolean} `true` if the variable is a type.
+ * @param variable - A type to check.
  */
-function isType(variable) {
-  return (
-    variable.defs[0].type === 'Variable' &&
-    variable.defs[0].parent.kind === 'type'
+function isType(variable: Scope.Variable): boolean {
+  const def = variable.defs[0];
+  return !!(
+    def.type === 'Variable' &&
+    def.parent &&
+    def.parent.kind === 'type'
   );
 }
 
@@ -117,10 +125,9 @@ function isType(variable) {
  * Checks whether or not a given location is inside of the range of a given node.
  *
  * @param {ASTNode} node - An node to check.
- * @param {number} location - A location to check.
- * @returns {boolean} `true` if the location is inside of the range of the node.
+ * @param location - A location to check.
  */
-function isInRange(node, location) {
+function isInRange(node, location: number): boolean {
   return node && node.range[0] <= location && location <= node.range[1];
 }
 
@@ -135,11 +142,13 @@ function isInRange(node, location) {
  *     for (var a in a) {}
  *     for (var a of a) {}
  *
- * @param {Variable} variable - A variable to check.
- * @param {Reference} reference - A reference to check.
- * @returns {boolean} `true` if the reference is inside of the initializers.
+ * @param variable - A variable to check.
+ * @param reference - A reference to check.
  */
-function isInInitializer(variable, reference) {
+function isInInitializer(
+  variable: Scope.Variable,
+  reference: Scope.Reference
+): boolean {
   if (variable.scope !== reference.from) {
     return false;
   }
@@ -223,22 +232,24 @@ module.exports = {
 
     /**
      * Determines whether a given use-before-define case should be reported according to the options.
-     * @param {eslint-scope.Variable} variable The variable that gets used before being defined
-     * @param {eslint-scope.Reference} reference The reference to the variable
-     * @returns {boolean} `true` if the usage should be reported
+     * @param variable The variable that gets used before being defined
+     * @param reference The reference to the variable
      */
-    function isForbidden(variable, reference) {
+    function isForbidden(
+      variable: Scope.Variable,
+      reference: Scope.Reference
+    ): boolean {
       if (isFunction(variable)) {
-        return options.functions;
+        return !!options.functions;
       }
       if (isOuterClass(variable, reference)) {
-        return options.classes;
+        return !!options.classes;
       }
       if (isType(variable) && !options.typedefs) {
         return false;
       }
       if (isOuterVariable(variable, reference)) {
-        return options.variables;
+        return !!options.variables;
       }
       return true;
     }
@@ -246,10 +257,8 @@ module.exports = {
     /**
      * Finds and validates all variables in a given scope.
      * @param {Scope} scope The scope object.
-     * @returns {void}
-     * @private
      */
-    function findVariablesInScope(scope) {
+    function findVariablesInScope(scope: Scope.Scope): void {
       scope.references.forEach(reference => {
         const variable = reference.resolved;
 
@@ -263,7 +272,7 @@ module.exports = {
           reference.init ||
           !variable ||
           variable.identifiers.length === 0 ||
-          (variable.identifiers[0].range[1] < reference.identifier.range[1] &&
+          (variable.identifiers[0].range![1] < reference.identifier.range![1] &&
             !isInInitializer(variable, reference)) ||
           !isForbidden(variable, reference)
         ) {

@@ -84,10 +84,8 @@ module.exports = {
      * Checks if there's proper spacing around type annotations (no space
      * before colon, one space after).
      * @param {ASTNode} typeAnnotation The TSTypeAnnotation node.
-     * @returns {void}
-     * @private
      */
-    function checkTypeAnnotationSpacing(typeAnnotation) {
+    function checkTypeAnnotationSpacing(typeAnnotation): void {
       const nextToken = typeAnnotation;
       const punctuatorTokenEnd = sourceCode.getTokenBefore(nextToken);
       let punctuatorTokenStart = punctuatorTokenEnd;

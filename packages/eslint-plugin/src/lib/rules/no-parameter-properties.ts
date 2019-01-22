@@ -62,10 +62,8 @@ module.exports = {
     /**
      * Gets the modifiers of `node`.
      * @param {ASTNode} node the node to be inspected.
-     * @returns {string} the modifiers of node
-     * @private
      */
-    function getModifiers(node) {
+    function getModifiers(node): string {
       const modifiers = [];
 
       modifiers.push(node.accessibility);
