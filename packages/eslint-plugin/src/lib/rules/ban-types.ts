@@ -10,11 +10,16 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-interface TypeErrorConfig {
-  message: string;
-  fixWith?: string;
+interface Options {
+  types: Record<
+    string,
+    {
+      message: string;
+      fixWith?: string;
+    }
+  >;
 }
-const defaultOptions = [
+const defaultOptions: Options[] = [
   {
     types: {
       String: {
@@ -37,7 +42,7 @@ const defaultOptions = [
         message: 'Use symbol instead',
         fixWith: 'symbol'
       }
-    } as Record<string, TypeErrorConfig>
+    }
   }
 ];
 

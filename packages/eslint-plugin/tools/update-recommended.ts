@@ -28,31 +28,28 @@ function generate(): void {
 
   const rules = Object.keys(allRules)
     .filter(key => !!allRules[key].meta.docs.recommended)
-    .reduce(
-      (config, key) => {
-        // having this here is just for output niceness (the keys will be ordered)
-        if (bannedRecommendedRules.has(key)) {
-          console.log(padEnd(key, MAX_RULE_NAME_LENGTH), '= off');
-          config[key] = 'off';
-        }
+    .reduce<Record<string, string>>((config, key) => {
+      // having this here is just for output niceness (the keys will be ordered)
+      if (bannedRecommendedRules.has(key)) {
+        console.log(padEnd(key, MAX_RULE_NAME_LENGTH), '= off');
+        config[key] = 'off';
+      }
 
-        const ruleName = `@typescript-eslint/${key}`;
-        const setting = allRules[key].meta.docs.recommended;
+      const ruleName = `@typescript-eslint/${key}`;
+      const setting = allRules[key].meta.docs.recommended;
 
-        if (!['error', 'warn'].includes(setting)) {
-          console.log(`ERR! Invalid level for rule ${key}: "${setting}"`);
-          // Don't want to throw an error since ^ explains what happened.
-          // eslint-disable-next-line no-process-exit
-          process.exit(1);
-        }
+      if (!['error', 'warn'].includes(setting)) {
+        console.log(`ERR! Invalid level for rule ${key}: "${setting}"`);
+        // Don't want to throw an error since ^ explains what happened.
+        // eslint-disable-next-line no-process-exit
+        process.exit(1);
+      }
 
-        console.log(padEnd(ruleName, MAX_RULE_NAME_LENGTH), '=', setting);
-        config[ruleName] = setting;
+      console.log(padEnd(ruleName, MAX_RULE_NAME_LENGTH), '=', setting);
+      config[ruleName] = setting;
 
-        return config;
-      },
-      {} as Record<string, string>
-    );
+      return config;
+    }, {});
 
   const filePath = path.resolve(__dirname, '../src/configs/recommended.json');
 

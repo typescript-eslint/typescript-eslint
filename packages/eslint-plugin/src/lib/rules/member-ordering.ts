@@ -10,7 +10,7 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const schemaOptions = ['field', 'method', 'constructor'].reduce(
+const schemaOptions = ['field', 'method', 'constructor'].reduce<string[]>(
   (options, type) => {
     options.push(type);
 
@@ -28,7 +28,7 @@ const schemaOptions = ['field', 'method', 'constructor'].reduce(
 
     return options;
   },
-  [] as string[]
+  []
 );
 
 type OrderConfig = string[] | 'never';

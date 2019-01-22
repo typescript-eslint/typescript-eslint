@@ -57,13 +57,13 @@ const rule: Rule.RuleModule = {
 
   create(context: Rule.RuleContext) {
     const config = util.applyDefault(defaultOptions, context.options)[0];
-    const conventions = (Object.keys(config) as Modifiers[]).reduce(
+    const conventions = (Object.keys(config) as Modifiers[]).reduce<Options<RegExp>>(
       (acc, accessibility) => {
         acc[accessibility] = new RegExp(config[accessibility]!);
 
         return acc;
       },
-      {} as Options<RegExp>
+      {}
     );
 
     //----------------------------------------------------------------------

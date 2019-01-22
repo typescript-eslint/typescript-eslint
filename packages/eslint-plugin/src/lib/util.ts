@@ -1,6 +1,7 @@
 import { Rule } from 'eslint';
 import { ParserServices } from '@typescript-eslint/typescript-estree';
 
+// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const version = require('../../package.json').version;
 
 export type ObjectLike<T = any> = Record<string, T>;
@@ -56,7 +57,7 @@ export function deepMerge<T extends ObjectLike = ObjectLike>(
   // get the unique set of keys across both objects
   const keys = new Set(Object.keys(first).concat(Object.keys(second)));
 
-  return Array.from(keys).reduce(
+  return Array.from(keys).reduce<T>(
     (acc, key) => {
       const firstHasKey = key in first;
       const secondHasKey = key in second;
@@ -84,7 +85,6 @@ export function deepMerge<T extends ObjectLike = ObjectLike>(
 /**
  * Pure function - doesn't mutate either parameter!
  * Uses the default options and overrides with the options provided by the user
- * @template TOptions
  * @param defaultOptions the defaults
  * @param userOptions the user opts
  * @returns the options with defaults
