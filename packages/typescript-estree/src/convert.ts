@@ -1395,9 +1395,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         clause => clause.token === SyntaxKind.ImplementsKeyword
       );
 
-      const classBodyRange = node.members
-        ? [node.members.pos - 1, node.end]
-        : [node.end, node.end];
+      const classBodyRange = [node.members.pos - 1, node.end];
 
       Object.assign(result, {
         type: classNodeType,
@@ -2313,45 +2311,22 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.InterfaceDeclaration: {
       const interfaceHeritageClauses = node.heritageClauses || [];
 
-      let interfaceLastClassToken = interfaceHeritageClauses.length
-        ? interfaceHeritageClauses[interfaceHeritageClauses.length - 1]
-        : node.name;
-
       if (node.typeParameters && node.typeParameters.length) {
-        const interfaceLastTypeParameter =
-          node.typeParameters[node.typeParameters.length - 1];
-
-        if (
-          !interfaceLastClassToken ||
-          interfaceLastTypeParameter.pos > interfaceLastClassToken.pos
-        ) {
-          interfaceLastClassToken = findNextToken(
-            interfaceLastTypeParameter,
-            ast,
-            ast
-          ) as any;
-        }
         result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
         );
       }
 
-      const interfaceOpenBrace = findNextToken(
-        interfaceLastClassToken,
-        ast,
-        ast
-      )!;
-
-      const interfaceBody = {
-        type: AST_NODE_TYPES.TSInterfaceBody,
-        body: node.members.map(member => convertChild(member)),
-        range: [interfaceOpenBrace.getStart(ast), node.end],
-        loc: getLocFor(interfaceOpenBrace.getStart(ast), node.end, ast)
-      };
+      const interfaceBodyRange = [node.members.pos - 1, node.end];
 
       Object.assign(result, {
         type: AST_NODE_TYPES.TSInterfaceDeclaration,
-        body: interfaceBody,
+        body: {
+          type: AST_NODE_TYPES.TSInterfaceBody,
+          body: node.members.map(member => convertChild(member)),
+          range: interfaceBodyRange,
+          loc: getLocFor(interfaceBodyRange[0], interfaceBodyRange[1], ast)
+        },
         id: convertChild(node.name)
       });
 
