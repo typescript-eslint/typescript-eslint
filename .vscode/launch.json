@@ -7,7 +7,7 @@
       {
           "type": "node",
           "request": "launch",
-          "name": "Mocha Current Plugin File",
+          "name": "Jest Test Current eslint-plugin Rule",
           "cwd": "${workspaceFolder}/packages/eslint-plugin/",
           "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
           "args": [
