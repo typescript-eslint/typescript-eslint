@@ -211,61 +211,37 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
   }
 
   /**
-   * Converts a ts.Node's typeArguments ts.NodeArray to a flow-like typeParameters node
+   * Converts a ts.Node's typeArguments to TSTypeParameterInstantiation node
    * @param {ts.NodeArray<any>} typeArguments ts.Node typeArguments
    * @returns {ESTreeNode} TypeParameterInstantiation node
    */
   function convertTypeArgumentsToTypeParameters(
     typeArguments: ts.NodeArray<any>
   ): ESTreeNode {
-    /**
-     * Even if typeArguments is an empty array, TypeScript sets a `pos` and `end`
-     * property on the array object so we can safely read the values here
-     */
-    const start = typeArguments.pos - 1;
-    let end = typeArguments.end + 1;
-    if (typeArguments && typeArguments.length) {
-      const firstTypeArgument = typeArguments[0];
-      const typeArgumentsParent = firstTypeArgument.parent;
-      /**
-       * In the case of the parent being a CallExpression or a TypeReference we have to use
-       * slightly different logic to calculate the correct end position
-       */
-      if (
-        typeArgumentsParent &&
-        (typeArgumentsParent.kind === SyntaxKind.CallExpression ||
-          typeArgumentsParent.kind === SyntaxKind.TypeReference)
-      ) {
-        const lastTypeArgument = typeArguments[typeArguments.length - 1];
-        const greaterThanToken = findNextToken(lastTypeArgument, ast, ast);
-        end = greaterThanToken!.end;
-      }
-    }
+    const greaterThanToken = findNextToken(typeArguments, ast, ast)!;
+
     return {
       type: AST_NODE_TYPES.TSTypeParameterInstantiation,
-      range: [start, end],
-      loc: getLocFor(start, end, ast),
+      range: [typeArguments.pos - 1, greaterThanToken.end],
+      loc: getLocFor(typeArguments.pos - 1, greaterThanToken.end, ast),
       params: typeArguments.map(typeArgument => convertChildType(typeArgument))
     };
   }
 
   /**
-   * Converts a ts.Node's typeParameters ts.ts.NodeArray to a flow-like TypeParameterDeclaration node
+   * Converts a ts.Node's typeParameters to TSTypeParameterDeclaration node
    * @param {ts.NodeArray} typeParameters ts.Node typeParameters
    * @returns {ESTreeNode} TypeParameterDeclaration node
    */
   function convertTSTypeParametersToTypeParametersDeclaration(
     typeParameters: ts.NodeArray<any>
   ): ESTreeNode {
-    const firstTypeParameter = typeParameters[0];
-    const lastTypeParameter = typeParameters[typeParameters.length - 1];
-
-    const greaterThanToken = findNextToken(lastTypeParameter, ast, ast);
+    const greaterThanToken = findNextToken(typeParameters, ast, ast)!;
 
     return {
       type: AST_NODE_TYPES.TSTypeParameterDeclaration,
-      range: [firstTypeParameter.pos - 1, greaterThanToken!.end],
-      loc: getLocFor(firstTypeParameter.pos - 1, greaterThanToken!.end, ast),
+      range: [typeParameters.pos - 1, greaterThanToken.end],
+      loc: getLocFor(typeParameters.pos - 1, greaterThanToken.end, ast),
       params: typeParameters.map(typeParameter =>
         convertChildType(typeParameter)
       )
