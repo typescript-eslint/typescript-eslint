@@ -21,7 +21,7 @@
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
     "test": "jest --coverage",
-    "recommended:update": "node tools/update-recommended.js",
+    "recommended:update": "ts-node tools/update-recommended.ts",
     "prebuild": "npm run clean",
     "build": "tsc",
     "clean": "rimraf dist/"
@@ -32,7 +32,8 @@
   },
   "devDependencies": {
     "eslint": "^5.9.0",
-    "eslint-docs": "^0.2.6"
+    "eslint-docs": "^0.2.6",
+    "ts-node": "^8.0.1"
   },
   "peerDependencies": {
     "eslint": ">=4.13.1 < 6",
