@@ -1363,40 +1363,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.ClassDeclaration:
     case SyntaxKind.ClassExpression: {
       const heritageClauses = node.heritageClauses || [];
-
       let classNodeType = SyntaxKind[node.kind];
-      let lastClassToken: any = heritageClauses.length
-        ? heritageClauses[heritageClauses.length - 1]
-        : node.name;
 
       if (node.typeParameters && node.typeParameters.length) {
-        const lastTypeParameter =
-          node.typeParameters[node.typeParameters.length - 1];
-
-        if (!lastClassToken || lastTypeParameter.pos > lastClassToken.pos) {
-          lastClassToken = findNextToken(lastTypeParameter, ast, ast);
-        }
         result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
         );
       }
 
-      if (node.modifiers && node.modifiers.length) {
-        /**
-         * We need check for modifiers, and use the last one, as there
-         * could be multiple before the open brace
-         */
-        const lastModifier = node.modifiers![node.modifiers!.length - 1];
-
-        if (!lastClassToken || lastModifier.pos > lastClassToken.pos) {
-          lastClassToken = findNextToken(lastModifier, ast, ast);
-        }
-      } else if (!lastClassToken) {
-        // no name
-        lastClassToken = node.getFirstToken();
-      }
-
-      const openBrace = findNextToken(lastClassToken, ast, ast)!;
       const superClass = heritageClauses.find(
         clause => clause.token === SyntaxKind.ExtendsKeyword
       );
@@ -1421,14 +1395,16 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         clause => clause.token === SyntaxKind.ImplementsKeyword
       );
 
+      const classBodyRange = [node.members.pos - 1, node.end];
+
       Object.assign(result, {
         type: classNodeType,
         id: convertChild(node.name),
         body: {
           type: AST_NODE_TYPES.ClassBody,
           body: [],
-          range: [openBrace.getStart(ast), node.end],
-          loc: getLocFor(openBrace.getStart(ast), node.end, ast)
+          range: classBodyRange,
+          loc: getLocFor(classBodyRange[0], classBodyRange[1], ast)
         },
         superClass:
           superClass && superClass.types[0]
@@ -2335,45 +2311,22 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.InterfaceDeclaration: {
       const interfaceHeritageClauses = node.heritageClauses || [];
 
-      let interfaceLastClassToken = interfaceHeritageClauses.length
-        ? interfaceHeritageClauses[interfaceHeritageClauses.length - 1]
-        : node.name;
-
       if (node.typeParameters && node.typeParameters.length) {
-        const interfaceLastTypeParameter =
-          node.typeParameters[node.typeParameters.length - 1];
-
-        if (
-          !interfaceLastClassToken ||
-          interfaceLastTypeParameter.pos > interfaceLastClassToken.pos
-        ) {
-          interfaceLastClassToken = findNextToken(
-            interfaceLastTypeParameter,
-            ast,
-            ast
-          ) as any;
-        }
         result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
         );
       }
 
-      const interfaceOpenBrace = findNextToken(
-        interfaceLastClassToken,
-        ast,
-        ast
-      )!;
-
-      const interfaceBody = {
-        type: AST_NODE_TYPES.TSInterfaceBody,
-        body: node.members.map(member => convertChild(member)),
-        range: [interfaceOpenBrace.getStart(ast), node.end],
-        loc: getLocFor(interfaceOpenBrace.getStart(ast), node.end, ast)
-      };
+      const interfaceBodyRange = [node.members.pos - 1, node.end];
 
       Object.assign(result, {
         type: AST_NODE_TYPES.TSInterfaceDeclaration,
-        body: interfaceBody,
+        body: {
+          type: AST_NODE_TYPES.TSInterfaceBody,
+          body: node.members.map(member => convertChild(member)),
+          range: interfaceBodyRange,
+          loc: getLocFor(interfaceBodyRange[0], interfaceBodyRange[1], ast)
+        },
         id: convertChild(node.name)
       });
 
