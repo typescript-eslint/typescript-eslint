@@ -328,6 +328,7 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'export-declare-const-named-enum',
     'interface-with-optional-properties',
+    'type-parameters-comments-heritage',
     /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
