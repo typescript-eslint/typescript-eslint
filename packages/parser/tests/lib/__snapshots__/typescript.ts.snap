@@ -95244,6 +95244,8 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/errorRecovery/interface-with-no-body.src 1`] = `"'{' expected."`;
+
 exports[`typescript fixtures/errorRecovery/object-assertion-not-allowed.src 1`] = `
 Object {
   "body": Array [
