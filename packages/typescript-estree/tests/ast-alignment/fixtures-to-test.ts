@@ -342,15 +342,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     'abstract-class-with-optional-method', // babel parse errors
     'declare-class-with-optional-method', // babel parse errors
     /**
-     * Was expected to be fixed by PR into Babel: https://github.com/babel/babel/pull/9284
-     * But not fixed in Babel 7.3
-     * TODO: Investigate differences
-     */
-    'class-with-private-parameter-properties',
-    'class-with-protected-parameter-properties',
-    'class-with-public-parameter-properties',
-    'class-with-readonly-parameter-properties',
-    /**
      * Was expected to be fixed by PR into Babel: https://github.com/babel/babel/pull/9302
      * But not fixed in Babel 7.3
      * TODO: Investigate differences
