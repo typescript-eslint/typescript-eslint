@@ -64,3 +64,20 @@ jobs:
       - script: |
           yarn test
         displayName: 'Run unit tests'
+
+  - job: publish_canary_version
+    displayName: Publish the latest code as a canary version
+    dependsOn:
+    - primary_code_validation_and_tests
+    - unit_tests_on_other_node_versions
+    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest'))
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: 11
+        displayName: 'Install Node.js 11'
+
+      - script: |
+          echo "canary"
