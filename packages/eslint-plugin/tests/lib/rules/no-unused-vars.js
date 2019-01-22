@@ -541,6 +541,22 @@ declare var Foo: {
     new (value?: any): Object,
     foo(): string
 }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/106
+    `
+declare class Foo {
+    constructor(value?: any): Object;
+    foo(): string;
+}
+    `,
+    `
+import foo from 'foo';
+export interface Bar extends foo.i18n {}
+    `,
+    `
+import foo from 'foo';
+import bar from 'foo';
+export interface Bar extends foo.i18n<bar> {}
     `
   ],
 
@@ -761,6 +777,62 @@ enum FormFieldIds {
           message: "'FormFieldIds' is defined but never used.",
           line: 2,
           column: 6
+        }
+      ]
+    },
+    {
+      code: `
+import test from 'test';
+import baz from 'baz';
+export interface Bar extends baz.test {}
+    `,
+      errors: [
+        {
+          message: "'test' is defined but never used.",
+          line: 2,
+          column: 8
+        }
+      ]
+    },
+    {
+      code: `
+import test from 'test';
+import baz from 'baz';
+export interface Bar extends baz().test {}
+    `,
+      errors: [
+        {
+          message: "'test' is defined but never used.",
+          line: 2,
+          column: 8
+        }
+      ]
+    },
+    {
+      code: `
+import test from 'test';
+import baz from 'baz';
+export class Bar implements baz.test {}
+    `,
+      errors: [
+        {
+          message: "'test' is defined but never used.",
+          line: 2,
+          column: 8
+        }
+      ]
+    },
+    {
+      code: `
+import test from 'test';
+import baz from 'baz';
+export class Bar implements baz().test {}
+    `,
+      errors: [
+        {
+          message: "'test' is defined but never used.",
+          line: 2,
+          column: 8
         }
       ]
     }

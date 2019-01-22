@@ -45,6 +45,25 @@ module.exports = Object.assign({}, baseRule, {
       }
     }
 
+    /**
+     * Mark heritage clause as used
+     * @param node The node currently being traversed
+     * @returns {void}
+     */
+    function markHeritageAsUsed(node) {
+      switch (node.type) {
+        case 'Identifier':
+          context.markVariableAsUsed(node.name);
+          break;
+        case 'MemberExpression':
+          markHeritageAsUsed(node.object);
+          break;
+        case 'CallExpression':
+          markHeritageAsUsed(node.callee);
+          break;
+      }
+    }
+
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
@@ -54,8 +73,15 @@ module.exports = Object.assign({}, baseRule, {
       'TSTypeReference Identifier'(node) {
         context.markVariableAsUsed(node.name);
       },
-      'TSClassImplements Identifier'(node) {
-        context.markVariableAsUsed(node.name);
+      TSInterfaceHeritage(node) {
+        if (node.expression) {
+          markHeritageAsUsed(node.expression);
+        }
+      },
+      TSClassImplements(node) {
+        if (node.expression) {
+          markHeritageAsUsed(node.expression);
+        }
       },
       'TSParameterProperty Identifier'(node) {
         // just assume parameter properties are used
@@ -66,6 +92,12 @@ module.exports = Object.assign({}, baseRule, {
       },
       '*[declare=true] Identifier'(node) {
         context.markVariableAsUsed(node.name);
+        const scope = context.getScope();
+        const { variableScope } = scope;
+        if (variableScope !== scope) {
+          const superVar = variableScope.set.get(node.name);
+          if (superVar) superVar.eslintUsed = true;
+        }
       }
     });
   }
