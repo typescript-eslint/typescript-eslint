@@ -694,8 +694,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       if (node.type) {
-        (result as any).id.typeAnnotation = convertTypeAnnotation(node.type);
-        fixTypeAnnotationParentLocation((result as any).id);
+        result.id!.typeAnnotation = convertTypeAnnotation(node.type);
+        fixTypeAnnotationParentLocation(result.id!);
       }
       break;
     }
@@ -1249,7 +1249,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         expressions: []
       });
 
-      node.templateSpans.forEach((templateSpan: any) => {
+      node.templateSpans.forEach(templateSpan => {
         (result as any).expressions.push(convertChild(templateSpan.expression));
         (result as any).quasis.push(convertChild(templateSpan.literal));
       });
@@ -1333,7 +1333,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       if (node.questionToken) {
-        (parameter as any).optional = true;
+        parameter.optional = true;
       }
 
       if (node.modifiers) {
