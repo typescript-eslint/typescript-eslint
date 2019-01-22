@@ -12,7 +12,7 @@ import * as util from '../util';
 //------------------------------------------------------------------------------
 
 type Delimiter = 'comma' | 'none' | 'semi';
-type BaseOptions = {
+interface BaseOptions {
   multiline: {
     delimiter: Delimiter;
     requireLast: boolean;
@@ -21,13 +21,13 @@ type BaseOptions = {
     delimiter: Delimiter;
     requireLast: boolean;
   };
-};
-type Options = BaseOptions & {
+}
+interface Options extends BaseOptions {
   overrides?: {
     typeLiteral?: BaseOptions;
     interface?: BaseOptions;
   };
-};
+}
 const defaultOptions: Options[] = [
   {
     multiline: {
@@ -65,7 +65,7 @@ const definition = {
   additionalProperties: false
 };
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -235,3 +235,4 @@ module.exports = {
     };
   }
 };
+export = rule;

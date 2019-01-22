@@ -32,13 +32,13 @@ const schemaOptions = ['field', 'method', 'constructor'].reduce(
 );
 
 type OrderConfig = string[] | 'never';
-type Options = {
+interface Options {
   default: OrderConfig;
   classes?: OrderConfig;
   classExpressions?: OrderConfig;
   interfaces?: OrderConfig;
   typeLiterals?: OrderConfig;
-};
+}
 
 const defaultOptions: Options[] = [
   {
@@ -82,7 +82,7 @@ const defaultOptions: Options[] = [
   }
 ];
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -390,3 +390,4 @@ module.exports = {
     };
   }
 };
+export = rule;

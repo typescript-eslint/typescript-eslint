@@ -11,15 +11,16 @@
 import requireIndex from 'requireindex';
 import path from 'path';
 
+import recommended from './configs/recommended.json';
+
 //------------------------------------------------------------------------------
 // Plugin Definition
 //------------------------------------------------------------------------------
 
 // import all rules in lib/rules
-export default {
-  rules: requireIndex(path.join(__dirname, 'rules')),
+export = {
+  rules: requireIndex(path.join(__dirname, 'lib/rules')),
   configs: {
-    // eslint-disable-next-line node/no-unpublished-require
-    recommended: require('./configs/recommended')
+    recommended
   }
 };

@@ -10,10 +10,10 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-type TypeErrorConfig = {
+interface TypeErrorConfig {
   message: string;
   fixWith?: string;
-};
+}
 const defaultOptions = [
   {
     types: {
@@ -41,7 +41,7 @@ const defaultOptions = [
   }
 ];
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -125,3 +125,4 @@ module.exports = {
     };
   }
 };
+export = rule;

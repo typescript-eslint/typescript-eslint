@@ -11,7 +11,7 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -35,3 +35,4 @@ module.exports = {
     };
   }
 };
+export = rule;

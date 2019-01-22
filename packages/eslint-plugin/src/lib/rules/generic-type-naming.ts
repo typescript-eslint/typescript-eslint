@@ -10,7 +10,7 @@ const defaultOptions = [
   '^T([A-Z0-9][a-zA-Z0-9]*){0,1}$'
 ];
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -51,3 +51,4 @@ module.exports = {
     };
   }
 };
+export = rule;

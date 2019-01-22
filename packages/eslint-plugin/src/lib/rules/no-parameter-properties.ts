@@ -16,7 +16,7 @@ const defaultOptions = [
   }
 ];
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -95,3 +95,4 @@ module.exports = {
     };
   }
 };
+export = rule;

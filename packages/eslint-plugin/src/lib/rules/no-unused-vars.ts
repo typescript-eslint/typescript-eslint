@@ -12,7 +12,7 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-module.exports = Object.assign({}, baseRule, {
+const rule: Rule.RuleModule = Object.assign({}, baseRule, {
   meta: {
     type: 'problem',
     docs: {
@@ -95,3 +95,4 @@ module.exports = Object.assign({}, baseRule, {
     });
   }
 });
+export = rule;

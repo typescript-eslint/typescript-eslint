@@ -3,7 +3,6 @@
  * @author Patricio Trevino
  */
 
-import * as ESTree from 'estree';
 import { Rule } from 'eslint';
 import baseRule from 'eslint/lib/rules/indent';
 import * as util from '../util';
@@ -91,7 +90,7 @@ const defaultOptions = [
   }
 ];
 
-module.exports = Object.assign({}, baseRule, {
+const rule: Rule.RuleModule = Object.assign({}, baseRule, {
   meta: {
     type: 'layout',
     docs: {
@@ -400,3 +399,4 @@ module.exports = Object.assign({}, baseRule, {
     });
   }
 });
+export = rule;

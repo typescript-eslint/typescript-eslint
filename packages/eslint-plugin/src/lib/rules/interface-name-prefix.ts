@@ -12,7 +12,7 @@ import * as util from '../util';
 
 const defaultOptions = ['never'];
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -73,3 +73,4 @@ module.exports = {
     };
   }
 };
+export = rule;

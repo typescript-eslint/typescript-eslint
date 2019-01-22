@@ -19,7 +19,7 @@ const defaultOptions = [
 ];
 
 /* eslint-disable eslint-plugin/require-meta-type */
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: Object.assign({}, baseRule.meta, {
     docs: {
       description: 'Enforce camelCase naming convention',
@@ -117,3 +117,4 @@ module.exports = {
     };
   }
 };
+export = rule;

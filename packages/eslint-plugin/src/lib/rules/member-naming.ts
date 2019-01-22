@@ -10,16 +10,16 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-type Options<T = string> = {
+interface Options<T = string> {
   private?: T;
   protected?: T;
   public?: T;
-};
+}
 type Modifiers = keyof Options;
 
 const defaultOptions: Options[] = [{}];
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -102,3 +102,4 @@ module.exports = {
     };
   }
 };
+export = rule;

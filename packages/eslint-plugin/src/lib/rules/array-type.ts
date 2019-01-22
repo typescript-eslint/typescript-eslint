@@ -77,7 +77,7 @@ function typeNeedsParentheses(node): boolean {
 
 const defaultOptions = ['array'];
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -241,3 +241,4 @@ module.exports = {
     };
   }
 };
+export = rule;

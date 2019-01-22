@@ -16,12 +16,12 @@ import * as util from '../util';
 const SENTINEL_TYPE = /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
 const FOR_IN_OF_TYPE = /^For(?:In|Of)Statement$/;
 
-type Options = {
+interface Options {
   functions?: boolean;
   classes?: boolean;
   variables?: boolean;
   typedefs?: boolean;
-};
+}
 
 /**
  * Parses a given value as options.
@@ -195,7 +195,7 @@ const defaultOptions = [
   }
 ];
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -297,3 +297,4 @@ module.exports = {
     };
   }
 };
+export = rule;

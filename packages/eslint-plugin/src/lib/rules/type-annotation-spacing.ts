@@ -26,7 +26,7 @@ const defaultOptions = [
   {}
 ];
 
-module.exports = {
+const rule: Rule.RuleModule = {
   meta: {
     type: 'layout',
     docs: {
@@ -187,3 +187,4 @@ module.exports = {
     };
   }
 };
+export = rule;

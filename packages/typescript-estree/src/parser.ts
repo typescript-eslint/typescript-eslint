@@ -360,11 +360,11 @@ export function parse<T extends ParserOptions = ParserOptions>(
   return generateAST<T>(code, options).estree;
 }
 
-export type ParserServices = {
+export interface ParserServices {
   program: ts.Program;
   esTreeNodeToTSNodeMap: WeakMap<object, any>;
   tsNodeToESTreeNodeMap: WeakMap<object, any>;
-};
+}
 export function parseAndGenerateServices<T extends ParserOptions>(
   code: string,
   options: T

@@ -38,7 +38,7 @@ export function isDefinitionFile(fileName: string) {
  * @param obj an object
  * @returns `true` if obj is an object
  */
-function isObjectNotArray<T extends object>(obj: T | Array<any>): obj is T {
+function isObjectNotArray<T extends object>(obj: T | any[]): obj is T {
   return typeof obj === 'object' && !Array.isArray(obj);
 }
 
