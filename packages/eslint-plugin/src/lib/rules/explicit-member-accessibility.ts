@@ -32,10 +32,8 @@ module.exports = {
     /**
      * Checks if a method declaration has an accessibility modifier.
      * @param {ASTNode} methodDefinition The node representing a MethodDefinition.
-     * @returns {void}
-     * @private
      */
-    function checkMethodAccessibilityModifier(methodDefinition) {
+    function checkMethodAccessibilityModifier(methodDefinition): void {
       if (
         !methodDefinition.accessibility &&
         util.isTypescript(context.getFilename())
@@ -54,10 +52,8 @@ module.exports = {
     /**
      * Checks if property has an accessibility modifier.
      * @param {ASTNode} classProperty The node representing a ClassProperty.
-     * @returns {void}
-     * @private
      */
-    function checkPropertyAccessibilityModifier(classProperty) {
+    function checkPropertyAccessibilityModifier(classProperty): void {
       if (
         !classProperty.accessibility &&
         util.isTypescript(context.getFilename())

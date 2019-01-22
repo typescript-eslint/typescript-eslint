@@ -43,25 +43,23 @@ module.exports = {
 
     /**
      * Checks if a string contains an underscore and isn't all upper-case
-     * @param {string} name The string to check.
-     * @returns {boolean} if the string is underscored
-     * @private
+     * @param  name The string to check.
      */
-    function isUnderscored(name) {
+    function isUnderscored(name: string): boolean {
       // if there's an underscore, it might be A_CONSTANT, which is okay
       return name.indexOf('_') > -1 && name !== name.toUpperCase();
     }
 
     /**
      * Checks if a string match the ignore list
-     * @param {string} name The string to check.
-     * @returns {boolean} if the string is ignored
+     * @param name The string to check.
+     * @returns if the string is ignored
      * @private
      */
-    function isAllowed(name) {
+    function isAllowed(name: string): boolean {
       return (
         allow.findIndex(
-          entry => name === entry || name.match(new RegExp(entry))
+          entry => name === entry || name.match(new RegExp(entry)) !== null
         ) !== -1
       );
     }
@@ -69,10 +67,10 @@ module.exports = {
     /**
      * Checks if the the node is a valid TypeScript property type.
      * @param {Node} node the node to be validated.
-     * @returns {boolean} true if the node is a TypeScript property type.
+     * @returns true if the node is a TypeScript property type.
      * @private
      */
-    function isTSPropertyType(node) {
+    function isTSPropertyType(node): boolean {
       if (!node.parent) return false;
       if (TS_PROPERTY_TYPES.includes(node.parent.type)) return true;
 
@@ -114,7 +112,7 @@ module.exports = {
 
         // Let the base rule deal with the rest
         // eslint-disable-next-line new-cap
-        rules.Identifier(node);
+        rules.Identifier!(node);
       }
     };
   }

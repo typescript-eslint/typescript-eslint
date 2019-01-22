@@ -33,20 +33,18 @@ module.exports = {
 
     /**
      * Determine if the identifier name is PascalCased
-     * @param   {string}  name The identifier name
-     * @returns {boolean}      Is the name PascalCased?
+     * @param name The identifier name
      */
-    function isPascalCase(name) {
+    function isPascalCase(name: string): boolean {
       return /^[A-Z][0-9A-Za-z]*$/.test(name);
     }
 
     /**
      * Report a class declaration as invalid
-     * @param   {Node} decl              The declaration
-     * @param   {Node} [id=classDecl.id] The name of the declaration
-     * @returns {undefined}
+     * @param {Node} decl The declaration
+     * @param {Node} [id=classDecl.id] The name of the declaration
      */
-    function report(decl, id) {
+    function report(decl, id): void {
       const resolvedId = id || decl.id;
 
       let friendlyName;

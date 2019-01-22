@@ -11,7 +11,24 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = [
+type Delimiter = 'comma' | 'none' | 'semi';
+type BaseOptions = {
+  multiline: {
+    delimiter: Delimiter;
+    requireLast: boolean;
+  };
+  singleline: {
+    delimiter: Delimiter;
+    requireLast: boolean;
+  };
+};
+type Options = BaseOptions & {
+  overrides?: {
+    typeLiteral?: BaseOptions;
+    interface?: BaseOptions;
+  };
+};
+const defaultOptions: Options[] = [
   {
     multiline: {
       delimiter: 'semi',
@@ -112,10 +129,9 @@ module.exports = {
     function checkLastToken(member, opts, isLast) {
       /**
        * Resolves the boolean value for the given setting enum value
-       * @param {"semi" | "comma" | "none"} type the option name
-       * @returns {boolean} the resolved value
+       * @param type the option name
        */
-      function getOption(type) {
+      function getOption(type: Delimiter): boolean {
         if (isLast && !opts.requireLast) {
           // only turn the option on if its expecting no delimiter for the last member
           return type === 'none';
@@ -194,10 +210,8 @@ module.exports = {
     /**
      * Check the member separator being used matches the delimiter.
      * @param {ASTNode} node the node to be evaluated.
-     * @returns {void}
-     * @private
      */
-    function checkMemberSeparatorStyle(node) {
+    function checkMemberSeparatorStyle(node): void {
       const isInterface = node.type === 'TSInterfaceBody';
       const isSingleLine = node.loc.start.line === node.loc.end.line;
 

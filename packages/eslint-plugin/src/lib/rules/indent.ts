@@ -3,6 +3,7 @@
  * @author Patricio Trevino
  */
 
+import * as ESTree from 'estree';
 import { Rule } from 'eslint';
 import baseRule from 'eslint/lib/rules/indent';
 import * as util from '../util';
@@ -101,14 +102,14 @@ module.exports = Object.assign({}, baseRule, {
       url: util.metaDocsUrl('indent')
     },
     fixable: 'whitespace',
-    schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages
+    schema: baseRule.meta!.schema,
+    messages: baseRule.meta!.messages
   },
 
   create(context: Rule.RuleContext) {
     // because we extend the base rule, have to update opts on the context
     // the context defines options as readonly though...
-    const contextWithDefaults = Object.create(context, {
+    const contextWithDefaults: Rule.RuleContext = Object.create(context, {
       options: {
         writable: false,
         configurable: false,
@@ -120,11 +121,11 @@ module.exports = Object.assign({}, baseRule, {
 
     /**
      * Converts from a TSPropertySignature to a Property
-     * @param {Object} node a TSPropertySignature node
-     * @param {string} [type] the type to give the new node
+     * @param {ASTNode} node a TSPropertySignature node
+     * @param [type] the type to give the new node
      * @returns {Object} a Property node
      */
-    function TSPropertySignatureToProperty(node, type = 'Property') {
+    function TSPropertySignatureToProperty(node, type: string = 'Property') {
       return {
         type,
         key: node.key,
@@ -200,7 +201,9 @@ module.exports = Object.assign({}, baseRule, {
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
           type: 'ObjectExpression',
-          properties: node.members.map(TSPropertySignatureToProperty),
+          properties: node.members.map(member =>
+            TSPropertySignatureToProperty(member)
+          ),
 
           // location data
           parent: node.parent,

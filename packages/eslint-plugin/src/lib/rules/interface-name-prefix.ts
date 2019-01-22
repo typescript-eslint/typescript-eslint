@@ -39,11 +39,9 @@ module.exports = {
 
     /**
      * Checks if a string is prefixed with "I".
-     * @param {string} name The string to check
-     * @returns {boolean} true if it is prefixed with "I"
-     * @private
+     * @param name The string to check
      */
-    function isPrefixedWithI(name) {
+    function isPrefixedWithI(name: string): boolean {
       if (typeof name !== 'string') {
         return false;
       }
@@ -51,35 +49,27 @@ module.exports = {
       return /^I[A-Z]/.test(name);
     }
 
-    /**
-     * Checks if interface is prefixed with "I".
-     * @param {ASTNode} interfaceNode The node representing an Interface.
-     * @returns {void}
-     * @private
-     */
-    function checkInterfacePrefix(interfaceNode) {
-      if (never) {
-        if (isPrefixedWithI(interfaceNode.id.name)) {
-          context.report({
-            node: interfaceNode.id,
-            message: 'Interface name must not be prefixed with "I".'
-          });
-        }
-      } else {
-        if (!isPrefixedWithI(interfaceNode.id.name)) {
-          context.report({
-            node: interfaceNode.id,
-            message: 'Interface name must be prefixed with "I".'
-          });
-        }
-      }
-    }
-
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
     return {
-      TSInterfaceDeclaration: checkInterfacePrefix
+      TSInterfaceDeclaration(node): void {
+        if (never) {
+          if (isPrefixedWithI(node.id.name)) {
+            context.report({
+              node: node.id,
+              message: 'Interface name must not be prefixed with "I".'
+            });
+          }
+        } else {
+          if (!isPrefixedWithI(node.id.name)) {
+            context.report({
+              node: node.id,
+              message: 'Interface name must be prefixed with "I".'
+            });
+          }
+        }
+      }
     };
   }
 };

@@ -3,7 +3,6 @@
  * @author Patricio Trevino
  */
 
-import { Node } from 'estree';
 import { Rule } from 'eslint';
 import * as util from '../util';
 
@@ -35,10 +34,9 @@ module.exports = {
     /**
      * Gets the name of the member being processed.
      * @param {ASTNode} member the member being processed.
-     * @returns {string|null} the name of the member or null if it's a member not relevant to the rule.
-     * @private
+     * @returns the name of the member or null if it's a member not relevant to the rule.
      */
-    function getMemberName(member: Node) {
+    function getMemberName(member): string | null {
       if (!member) return null;
 
       switch (member.type) {
@@ -77,22 +75,21 @@ module.exports = {
     /**
      * Check the body for overload methods.
      * @param {ASTNode} node the body to be inspected.
-     * @returns {void}
-     * @private
      */
-    function checkBodyForOverloadMethods(node) {
+    function checkBodyForOverloadMethods(node): void {
       const members = node.body || node.members;
 
       if (members) {
-        let name;
-        let index;
-        let lastName;
-        const seen = [];
+        let lastName: string;
+        const seen: string[] = [];
 
         members.forEach(member => {
-          name = getMemberName(member);
+          const name = getMemberName(member);
+          if (name === null) {
+            return;
+          }
 
-          index = seen.indexOf(name);
+          const index = seen.indexOf(name!);
           if (index > -1 && lastName !== name) {
             context.report({
               node: member,
@@ -101,7 +98,7 @@ module.exports = {
                 name
               }
             });
-          } else if (name && index === -1) {
+          } else if (index === -1) {
             seen.push(name);
           }
 

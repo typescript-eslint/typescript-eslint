@@ -10,6 +10,10 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
+type TypeErrorConfig = {
+  message: string;
+  fixWith?: string;
+};
 const defaultOptions = [
   {
     types: {
@@ -33,7 +37,7 @@ const defaultOptions = [
         message: 'Use symbol instead',
         fixWith: 'symbol'
       }
-    }
+    } as Record<string, TypeErrorConfig>
   }
 ];
 
@@ -92,7 +96,7 @@ module.exports = {
           if (node.name in banedTypes) {
             let customMessage = '';
             const bannedCfgValue = banedTypes[node.name];
-            let fixWith = null;
+            let fixWith: string | null = null;
 
             if (typeof bannedCfgValue === 'string') {
               customMessage += ` ${bannedCfgValue}`;

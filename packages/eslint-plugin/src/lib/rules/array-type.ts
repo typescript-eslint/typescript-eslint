@@ -10,9 +10,8 @@ import * as util from '../util';
 /**
  * Check whatever node can be considered as simple
  * @param {ASTNode} node the node to be evaluated.
- * @returns {*} true or false
  */
-function isSimpleType(node) {
+function isSimpleType(node): boolean {
   switch (node.type) {
     case 'Identifier':
     case 'TSAnyKeyword':
@@ -57,9 +56,8 @@ function isSimpleType(node) {
 /**
  * Check if node needs parentheses
  * @param {ASTNode} node the node to be evaluated.
- * @returns {*} true or false
  */
-function typeNeedsParentheses(node) {
+function typeNeedsParentheses(node): boolean {
   switch (node.type) {
     case 'TSTypeReference':
       return typeNeedsParentheses(node.typeName);
@@ -113,9 +111,8 @@ module.exports = {
     /**
      * Check if whitespace is needed before this node
      * @param {ASTNode} node the node to be evaluated.
-     * @returns {boolean} true of false
      */
-    function requireWhitespaceBefore(node) {
+    function requireWhitespaceBefore(node): boolean {
       const prevToken = sourceCode.getTokenBefore(node);
 
       if (node.range[0] - prevToken.range[1] > 0) {
@@ -127,9 +124,8 @@ module.exports = {
 
     /**
      * @param {ASTNode} node the node to be evaluated.
-     * @returns {string} Type used in message
      */
-    function getMessageType(node) {
+    function getMessageType(node): string {
       if (node) {
         if (node.type === 'TSParenthesizedType') {
           return getMessageType(node.typeAnnotation);

@@ -28,10 +28,19 @@ const schemaOptions = ['field', 'method', 'constructor'].reduce(
 
     return options;
   },
-  []
+  [] as string[]
 );
 
-const defaultOptions = [
+type OrderConfig = string[] | 'never';
+type Options = {
+  default: OrderConfig;
+  classes?: OrderConfig;
+  classExpressions?: OrderConfig;
+  interfaces?: OrderConfig;
+  typeLiterals?: OrderConfig;
+};
+
+const defaultOptions: Options[] = [
   {
     default: [
       'public-static-field',
@@ -173,10 +182,8 @@ module.exports = {
     /**
      * Determines if `node` should be processed as a method instead of a field.
      * @param {ASTNode} node the node to be inspected.
-     * @returns {boolean} `true` if node should be processed as a method; `false` for fields.
-     * @private
      */
-    function shouldBeProcessedAsMethod(node) {
+    function shouldBeProcessedAsMethod(node): boolean {
       // check for bound methods in ClassProperty nodes.
       return node.value && functionExpressions.indexOf(node.value.type) > -1;
     }
@@ -184,10 +191,8 @@ module.exports = {
     /**
      * Gets the node type.
      * @param {ASTNode} node the node to be evaluated.
-     * @returns {string|null} the type of the node.
-     * @private
      */
-    function getNodeType(node) {
+    function getNodeType(node): string | null {
       // TODO: add missing TSCallSignatureDeclaration
       switch (node.type) {
         case 'MethodDefinition':
@@ -207,10 +212,8 @@ module.exports = {
     /**
      * Gets the member name based on the member type.
      * @param {ASTNode} node the node to be evaluated.
-     * @returns {string|null} the name of the member.
-     * @private
      */
-    function getMemberName(node) {
+    function getMemberName(node): string | null {
       switch (node.type) {
         case 'ClassProperty':
         case 'MethodDefinition':
@@ -232,17 +235,15 @@ module.exports = {
      * - If there is no order for accessibility-scope-type, then strip out the accessibility.
      * - If there is no order for scope-type, then strip out the scope.
      * - If there is no order for type, then return -1
-     * @param {Array} names the valid names to be validated.
-     * @param {Array} order the current order to be validated.
-     * @returns {number} the rank of the method definition in the given order.
-     * @private
+     * @param names the valid names to be validated.
+     * @param order the current order to be validated.
      */
-    function getRankOrder(names, order) {
+    function getRankOrder(names: string[], order: string[]): number {
       let rank = -1;
       const stack = names.slice();
 
       while (stack.length > 0 && rank === -1) {
-        rank = order.indexOf(stack.shift());
+        rank = order.indexOf(stack.shift()!);
       }
 
       return rank;
@@ -251,13 +252,20 @@ module.exports = {
     /**
      * Gets the rank of the node given the order.
      * @param {ASTNode} node the node to be evaluated.
-     * @param {Array} order the current order to be validated.
-     * @param {boolean} supportsModifiers a flag indicating whether the type supports modifiers or not.
-     * @returns {number} the rank of the node.
-     * @private
+     * @param order the current order to be validated.
+     * @param supportsModifiers a flag indicating whether the type supports modifiers or not.
      */
-    function getRank(node, order, supportsModifiers) {
+    function getRank(
+      node,
+      order: string[],
+      supportsModifiers: boolean
+    ): number {
       const type = getNodeType(node);
+      if (type === null) {
+        // shouldn't happen but just in case, put it on the end
+        return Number.MAX_SAFE_INTEGER;
+      }
+
       const scope = node.static ? 'static' : 'instance';
       const accessibility = node.accessibility || 'public';
 
@@ -290,13 +298,16 @@ module.exports = {
      * and considering that a public-instance-method has already been declared, so ranks contains
      * public-instance-method, then the lowest possible rank for public-static-method is
      * public-instance-method.
-     * @param {Array} ranks the existing ranks in the object.
-     * @param {number} target the target rank.
-     * @param {Array} order the current order to be validated.
-     * @returns {string} the name of the lowest possible rank without dashes (-).
-     * @private
+     * @param ranks the existing ranks in the object.
+     * @param target the target rank.
+     * @param order the current order to be validated.
+     * @returns the name of the lowest possible rank without dashes (-).
      */
-    function getLowestRank(ranks, target, order) {
+    function getLowestRank(
+      ranks: number[],
+      target: number,
+      order: string[]
+    ): string {
       let lowest = ranks[ranks.length - 1];
 
       ranks.forEach(rank => {
@@ -310,15 +321,17 @@ module.exports = {
 
     /**
      * Validates each member rank.
-     * @param {Array} members the members to be validated.
-     * @param {(Array|string)} order the current order to be validated.
-     * @param {boolean} supportsModifiers a flag indicating whether the type supports modifiers or not.
-     * @returns {void}
-     * @private
+     * @param {Array<ASTNode>} members the members to be validated.
+     * @param order the current order to be validated.
+     * @param supportsModifiers a flag indicating whether the type supports modifiers or not.
      */
-    function validateMembers(members, order, supportsModifiers) {
+    function validateMembers(
+      members,
+      order: OrderConfig,
+      supportsModifiers: boolean
+    ): void {
       if (members && order !== 'never') {
-        const previousRanks = [];
+        const previousRanks: number[] = [];
 
         members.forEach(member => {
           const rank = getRank(member, order, supportsModifiers);

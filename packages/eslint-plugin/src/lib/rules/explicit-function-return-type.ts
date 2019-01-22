@@ -49,10 +49,8 @@ module.exports = {
     /**
      * Checks if the parent of a function expression is a constructor.
      * @param {ASTNode} parent The parent of a function expression node
-     * @returns {boolean} `true` if the parent is a constructor
-     * @private
      */
-    function isConstructor(parent) {
+    function isConstructor(parent): boolean {
       return (
         parent.type === 'MethodDefinition' && parent.kind === 'constructor'
       );
@@ -61,20 +59,16 @@ module.exports = {
     /**
      * Checks if the parent of a function expression is a setter.
      * @param {ASTNode} parent The parent of a function expression node
-     * @returns {boolean} `true` if the parent is a setter
-     * @private
      */
-    function isSetter(parent) {
+    function isSetter(parent): boolean {
       return parent.type === 'MethodDefinition' && parent.kind === 'set';
     }
 
     /**
      * Checks if a function declaration/expression has a return type.
      * @param {ASTNode} node The node representing a function.
-     * @returns {void}
-     * @private
      */
-    function checkFunctionReturnType(node) {
+    function checkFunctionReturnType(node): void {
       if (
         !node.returnType &&
         !isConstructor(node.parent) &&
@@ -91,10 +85,8 @@ module.exports = {
     /**
      * Checks if a function declaration/expression has a return type.
      * @param {ASTNode} node The node representing a function.
-     * @returns {void}
-     * @private
      */
-    function checkFunctionExpressionReturnType(node) {
+    function checkFunctionExpressionReturnType(node): void {
       if (
         options.allowExpressions &&
         node.parent.type !== 'VariableDeclarator' &&

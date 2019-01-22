@@ -10,7 +10,14 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = [{}];
+type Options<T = string> = {
+  private?: T;
+  protected?: T;
+  public?: T;
+};
+type Modifiers = keyof Options;
+
+const defaultOptions: Options[] = [{}];
 
 module.exports = {
   meta: {
@@ -50,11 +57,14 @@ module.exports = {
 
   create(context: Rule.RuleContext) {
     const config = util.applyDefault(defaultOptions, context.options)[0];
-    const conventions = Object.keys(config).reduce((acc, accessibility) => {
-      acc[accessibility] = new RegExp(config[accessibility]);
+    const conventions = (Object.keys(config) as Modifiers[]).reduce(
+      (acc, accessibility) => {
+        acc[accessibility] = new RegExp(config[accessibility]!);
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {} as Options<RegExp>
+    );
 
     //----------------------------------------------------------------------
     // Helpers
@@ -67,9 +77,9 @@ module.exports = {
      * @returns {void}
      * @private
      */
-    function validateName(node) {
+    function validateName(node): void {
       const name = node.key.name;
-      const accessibility = node.accessibility || 'public';
+      const accessibility: Modifiers = node.accessibility || 'public';
       const convention = conventions[accessibility];
 
       if (!convention || convention.test(name)) return;
