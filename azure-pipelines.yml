@@ -80,4 +80,10 @@ jobs:
         displayName: 'Install Node.js 11'
 
       - script: |
-          echo "canary"
+          # This also runs a build as part of the postinstall
+          # bootstrap
+          yarn --ignore-engines --frozen-lockfile
+
+      - script: |
+          npx lerna publish --canary --exact --force-publish --yes
+        displayName: 'Publish all packages to npm'
