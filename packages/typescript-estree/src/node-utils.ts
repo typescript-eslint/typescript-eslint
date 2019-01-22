@@ -359,13 +359,13 @@ export function getTSNodeAccessibility(
 /**
  * Finds the next token based on the previous one and its parent
  * Had to copy this from TS instead of using TS's version because theirs doesn't pass the ast to getChildren
- * @param {ts.Node} previousToken The previous TSToken
+ * @param {ts.TextRange} previousToken The previous TSToken
  * @param {ts.Node} parent The parent TSNode
  * @param {ts.SourceFile} ast The TS AST
  * @returns {ts.Node|undefined} the next TSToken
  */
 export function findNextToken(
-  previousToken: ts.Node,
+  previousToken: ts.TextRange,
   parent: ts.Node,
   ast: ts.SourceFile
 ): ts.Node | undefined {

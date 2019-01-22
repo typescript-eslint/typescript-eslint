@@ -30246,6 +30246,8 @@ Object {
 }
 `;
 
+exports[`javascript fixtures/classes/class-with-no-body.src 1`] = `"'{' expected."`;
+
 exports[`javascript fixtures/classes/derived-class-assign-to-var.src 1`] = `
 Object {
   "body": Array [
