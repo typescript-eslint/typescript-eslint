@@ -54,6 +54,7 @@ function whitelistSupportedDiagnostics(
 ): ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic> {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
+      case 1013: // ts 3.2 "A rest parameter or binding pattern may not have a trailing comma."
       case 1014: // ts 3.2 "A rest parameter must be last in a parameter list."
       case 1044: // ts 3.2 "'{0}' modifier cannot appear on a module or namespace element."
       case 1045: // ts 3.2 "A '{0}' modifier cannot be used with an interface declaration."
