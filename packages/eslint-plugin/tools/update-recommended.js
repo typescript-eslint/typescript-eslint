@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
-const requireIndex = require('requireindex');
+import path from 'path';
+import fs from 'fs';
+import requireIndex from 'requireindex';
 
 const bannedRecommendedRules = new Set([
   'camelcase',
@@ -19,7 +19,7 @@ const MAX_RULE_NAME_LENGTH = 32 + 'typescript/'.length;
  */
 function generate() {
   // replace this with Object.entries when node > 8
-  const allRules = requireIndex(path.resolve(__dirname, '../lib/rules'));
+  const allRules = requireIndex(path.resolve(__dirname, '../src/lib/rules'));
 
   const rules = Object.keys(allRules)
     .filter(key => !!allRules[key].meta.docs.recommended)
@@ -46,7 +46,7 @@ function generate() {
       return config;
     }, {});
 
-  const filePath = path.resolve(__dirname, '../lib/configs/recommended.json');
+  const filePath = path.resolve(__dirname, '../src/configs/recommended.json');
 
   const recommendedConfig = {
     parser: '@typescript-eslint/parser',

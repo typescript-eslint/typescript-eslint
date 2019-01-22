@@ -1,6 +1,5 @@
 **/*
-!lib/**/*
+!dist/**/*
 !docs/**/*
 !package.json
-!parser.js
 !README.md
