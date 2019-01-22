@@ -99,4 +99,41 @@ describe('parse()', () => {
       );
     });
   });
+
+  describe('line endings', () => {
+    const config: ParserOptions = {
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true
+    };
+
+    function validateLineEndings (code: string) {
+      const result = parser.parse(`\`${code}\``, config) as any;
+      expect(result.body[0].type).toBe(
+        parser.AST_NODE_TYPES.ExpressionStatement
+      );
+      expect(result.body[0].expression.type).toBe(
+        parser.AST_NODE_TYPES.TemplateLiteral
+      );
+      expect(result.body[0].expression.quasis[0].type).toBe(
+        parser.AST_NODE_TYPES.TemplateElement
+      );
+      const value = result.body[0].expression.quasis[0].value;
+      expect(value.raw).toBe(code);
+      expect(value.cooked).toBe(code);
+    }
+
+    it('should parse unix EOL correctly', () => {
+      validateLineEndings(`\n\n\n\n`);
+    });
+
+    it('should parse windows EOL correctly', () => {
+      validateLineEndings(`\r\n\r\n\r\n`);
+    });
+
+    it('should parse mac EOL correctly', () => {
+      validateLineEndings(`\r\r\r`);
+    });
+  });
 });
