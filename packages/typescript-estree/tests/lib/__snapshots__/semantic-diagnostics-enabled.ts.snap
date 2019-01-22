@@ -560,7 +560,14 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/invalid-not-final-array-empty.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/invalid-not-final-array-empty.src 1`] = `
+Object {
+  "column": 5,
+  "index": 5,
+  "lineNumber": 1,
+  "message": "A rest parameter or binding pattern may not have a trailing comma.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/multi-destructured.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -622,7 +629,14 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `
+Object {
+  "column": 16,
+  "index": 16,
+  "lineNumber": 1,
+  "message": "A rest parameter or binding pattern may not have a trailing comma.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/object-rest.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
