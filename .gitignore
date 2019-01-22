@@ -61,6 +61,5 @@ typings/
 .next
 
 .DS_Store
-.vscode
 .idea
 dist
