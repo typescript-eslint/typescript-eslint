@@ -105687,13 +105687,13 @@ Object {
             "line": 1,
           },
           "start": Object {
-            "column": 13,
+            "column": 7,
             "line": 1,
           },
         },
         "params": Array [],
         "range": Array [
-          13,
+          7,
           30,
         ],
         "type": "FunctionDeclaration",
@@ -106311,13 +106311,13 @@ Object {
             "line": 1,
           },
           "start": Object {
-            "column": 21,
+            "column": 15,
             "line": 1,
           },
         },
         "params": Array [],
         "range": Array [
-          21,
+          15,
           38,
         ],
         "type": "FunctionDeclaration",
