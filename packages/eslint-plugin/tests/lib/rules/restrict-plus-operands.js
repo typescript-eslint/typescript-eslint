@@ -22,7 +22,6 @@ const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    generateServices: true,
     tsconfigRootDir: rootPath,
     project: './tsconfig.json'
   }
