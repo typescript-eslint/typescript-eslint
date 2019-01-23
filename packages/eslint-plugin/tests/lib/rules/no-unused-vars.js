@@ -542,6 +542,13 @@ declare var Foo: {
     foo(): string
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/106
+    `
+declare class Foo {
+    constructor(value?: any): Object;
+    foo(): string;
+}
+    `,
     `
 import foo from 'foo';
 export interface Bar extends foo.i18n {}
