@@ -1,0 +1,18 @@
+{
+  "name": "@typescript-eslint/benchmark",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "benchmark": "node -r ts-node/register run.ts"
+  },
+  "devDependencies": {
+    "@types/benchmark": "^1.0.31",
+    "@types/eslint": "^4.16.5",
+    "@typescript-eslint/eslint-plugin": "1.1.0",
+    "@typescript-eslint/parser": "1.1.0",
+    "benchmark": "^2.1.4",
+    "eslint": "^5.12.1",
+    "ts-node": "^8.0.1",
+    "tslint": "^5.12.1"
+  }
+}

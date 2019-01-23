@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "declaration": true
+  },
+  "include": [
+    "src"
+  ]
+}
