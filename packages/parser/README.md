@@ -48,6 +48,12 @@ The following additional configuration options are available by specifying them 
 
 - **`useJSXTextNode`** - default `true`. Please set `false` if you use this parser on ESLint v4. If this is `false`, the parser creates the AST of JSX texts as the legacy style.
 
+- **`project`** - default `undefined`. This option allows you to provide a path to your project's `tsconfig.json`. **This setting is required if you want to use rules which require type information**. You may want to use this setting in tandem with the `tsconfigRootDir` option below.
+
+- **`tsconfigRootDir`** - default `undefined`. This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
+
+- **`extraFileExtensions`** - default `undefined`. This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation. E.g. a `.vue` file
+
 ### .eslintrc.json
 
 ```json
@@ -57,7 +63,10 @@ The following additional configuration options are available by specifying them 
     "ecmaFeatures": {
       "jsx": true
     },
-    "useJSXTextNode": true
+    "useJSXTextNode": true,
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "../../",
+    "extraFileExtensions": [".vue"]
   }
 }
 ```
