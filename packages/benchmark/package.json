@@ -3,8 +3,8 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
-    "benchmark": "node dist/run.js",
-    "benchmark-multi": "node dist/run-multi.js"
+    "benchmark": "node run.js",
+    "benchmark-multi": "node run-multi.js"
   },
   "devDependencies": {
     "@types/benchmark": "^1.0.31",
