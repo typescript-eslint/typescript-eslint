@@ -8,7 +8,6 @@ eslint x 2.44 ops/sec ±8.02% (11 runs sampled)
 Fastest is tslint, eslint
 ```
 
-
 ## Multi File: restrict-plus-operands
 
 ```
@@ -17,7 +16,6 @@ eslint x 0.82 ops/sec ±6.36% (7 runs sampled)
 Fastest is tslint
 ```
 
-
 ## Single File: no-empty-interface
 
 ```
@@ -25,7 +23,6 @@ tslint x 1,679 ops/sec ±0.68% (90 runs sampled)
 eslint x 389 ops/sec ±1.23% (89 runs sampled)
 Fastest is tslint
 ```
-
 
 ## Multi File: no-empty-interface
 

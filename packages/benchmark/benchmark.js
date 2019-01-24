@@ -83,7 +83,7 @@ async function runAllBenchmarks(scenarios) {
   }
   fs.writeFileSync(
     'README.md',
-    `# Benchmark TSLint - ESLint\n\n${messages.join('\n\n')}`
+    `# Benchmark TSLint - ESLint\n\n${messages.join('\n')}`
   );
 }
 
