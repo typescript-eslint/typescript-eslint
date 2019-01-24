@@ -40,7 +40,7 @@ function runESLint(directory, files, useServices) {
 function createBenchmark(name, directory, files, useServices) {
   return new Promise(resolve => {
     const suite = new Benchmark.Suite(name);
-    let message = '';
+    let message = '```\n';
     suite
       .add('tslint', function() {
         runTSLint(directory, files, useServices);
@@ -57,6 +57,7 @@ function createBenchmark(name, directory, files, useServices) {
         message += `Fastest is ${this.filter('fastest')
           .map(i => i.name)
           .join(', ')}\n`;
+        message += '```\n';
         resolve(message);
       })
       .run({
@@ -82,7 +83,7 @@ async function runAllBenchmarks(scenarios) {
   }
   fs.writeFileSync(
     'README.md',
-    `# Benchmark TSLint - ESLint\n\n${messages.join('\n-------\n\n')}`
+    `# Benchmark TSLint - ESLint\n\n${messages.join('\n\n')}`
   );
 }
 
