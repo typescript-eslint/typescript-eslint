@@ -1,1 +1,1 @@
-const test = 'a' + 1
+interface Foo {}
