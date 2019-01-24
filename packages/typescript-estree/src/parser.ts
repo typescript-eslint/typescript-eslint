@@ -206,10 +206,8 @@ function generateAST<T extends ParserOptions = ParserOptions>(
     tsNodeToESTreeNodeMap?: WeakMap<object, any>;
   };
 } {
-  const toString = String;
-
   if (typeof code !== 'string' && !((code as any) instanceof String)) {
-    code = toString(code);
+    code = String(code);
   }
 
   resetExtra();

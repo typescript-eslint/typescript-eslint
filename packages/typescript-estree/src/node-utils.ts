@@ -161,7 +161,7 @@ export function hasModifier(
  * @param node TypeScript AST node
  * @returns returns last modifier if present or null
  */
-export function getLastModifier(node: ts.Node): ts.Node | null {
+export function getLastModifier(node: ts.Node): ts.Modifier | null {
   return (
     (!!node.modifiers &&
       !!node.modifiers.length &&
@@ -359,13 +359,13 @@ export function getTSNodeAccessibility(
 /**
  * Finds the next token based on the previous one and its parent
  * Had to copy this from TS instead of using TS's version because theirs doesn't pass the ast to getChildren
- * @param {ts.Node} previousToken The previous TSToken
+ * @param {ts.TextRange} previousToken The previous TSToken
  * @param {ts.Node} parent The parent TSNode
  * @param {ts.SourceFile} ast The TS AST
  * @returns {ts.Node|undefined} the next TSToken
  */
 export function findNextToken(
-  previousToken: ts.Node,
+  previousToken: ts.TextRange,
   parent: ts.Node,
   ast: ts.SourceFile
 ): ts.Node | undefined {
@@ -485,12 +485,14 @@ export function fixExports(
 ): ESTreeNode {
   // check for exports
   if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
-    const exportKeyword = node.modifiers[0],
-      nextModifier = node.modifiers[1],
-      lastModifier = node.modifiers[node.modifiers.length - 1],
-      declarationIsDefault =
-        nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword,
-      varToken = findNextToken(lastModifier, ast, ast);
+    const exportKeyword = node.modifiers[0];
+    const nextModifier = node.modifiers[1];
+    const declarationIsDefault =
+      nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword;
+
+    const varToken = declarationIsDefault
+      ? findNextToken(nextModifier, ast, ast)
+      : findNextToken(exportKeyword, ast, ast);
 
     result.range[0] = varToken!.getStart(ast);
     result.loc = getLocFor(result.range[0], result.range[1], ast);

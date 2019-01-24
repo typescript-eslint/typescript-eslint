@@ -91,6 +91,12 @@ const rule: Rule.RuleModule = Object.assign({}, baseRule, {
       },
       '*[declare=true] Identifier'(node) {
         context.markVariableAsUsed(node.name);
+        const scope = context.getScope();
+        const { variableScope } = scope;
+        if (variableScope !== scope) {
+          const superVar = variableScope.set.get(node.name);
+          if (superVar) superVar.eslintUsed = true;
+        }
       }
     });
   }

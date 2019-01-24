@@ -10,6 +10,12 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const defaultOptions = [
+  {
+    allowAsParameter: false
+  }
+];
+
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
@@ -25,9 +31,24 @@ const rule: Rule.RuleModule = {
       unexpectedTypeAssertion:
         'Type assertion on object literals is forbidden, use a type annotation instead.'
     },
-    schema: []
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowAsParameter: {
+            type: 'boolean'
+          }
+        }
+      }
+    ]
   },
   create(context: Rule.RuleContext) {
+    const { allowAsParameter } = util.applyDefault(
+      defaultOptions,
+      context.options
+    )[0];
+
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
@@ -51,6 +72,14 @@ const rule: Rule.RuleModule = {
 
     return {
       'TSTypeAssertion, TSAsExpression'(node) {
+        if (
+          allowAsParameter &&
+          (node.parent.type === 'NewExpression' ||
+            node.parent.type === 'CallExpression')
+        ) {
+          return;
+        }
+
         if (
           checkType(node.typeAnnotation) &&
           node.expression.type === 'ObjectExpression'

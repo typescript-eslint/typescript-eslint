@@ -20,9 +20,11 @@ const z = { ... } as unknown;
 
 ## Options
 
-```json
+```cjson
 {
-  "@typescript-eslint/no-object-literal-type-assertion": "error"
+  "@typescript-eslint/no-object-literal-type-assertion": ["error", {
+    allowAsParameter: false // Allow type assertion in call and new expression, default false
+  }]
 }
 ```
 

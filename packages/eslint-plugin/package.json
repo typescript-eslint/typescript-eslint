@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -27,7 +27,7 @@
     "clean": "rimraf dist/"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "1.0.0",
+    "@typescript-eslint/parser": "1.1.0",
     "requireindex": "^1.2.0"
   },
   "devDependencies": {

@@ -58,6 +58,5 @@ jspm_packages/
 .next
 
 .DS_Store
-.vscode
 .idea
 dist

@@ -137,7 +137,7 @@ export function getParserServices(context: Rule.RuleContext): ParserServices {
     !context.parserServices.esTreeNodeToTSNodeMap
   ) {
     throw new Error(
-      'This rule requires you to use `@typescript-eslint/parser`.'
+      'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.'
     );
   }
   return context.parserServices;
