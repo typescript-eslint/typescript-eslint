@@ -485,12 +485,14 @@ export function fixExports(
 ): ESTreeNode {
   // check for exports
   if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
-    const exportKeyword = node.modifiers[0],
-      nextModifier = node.modifiers[1],
-      lastModifier = node.modifiers[node.modifiers.length - 1],
-      declarationIsDefault =
-        nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword,
-      varToken = findNextToken(lastModifier, ast, ast);
+    const exportKeyword = node.modifiers[0];
+    const nextModifier = node.modifiers[1];
+    const declarationIsDefault =
+      nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword;
+
+    const varToken = declarationIsDefault
+      ? findNextToken(nextModifier, ast, ast)
+      : findNextToken(exportKeyword, ast, ast);
 
     result.range[0] = varToken!.getStart(ast);
     result.loc = getLocFor(result.range[0], result.range[1], ast);

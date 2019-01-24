@@ -326,7 +326,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * there is difference in range between babel and ts-estree
      */
-    'export-declare-const-named-enum',
     'interface-with-optional-properties',
     /**
      * Babel parses it as TSQualifiedName
@@ -358,7 +357,13 @@ tester.addFixturePatternConfig('typescript/basics', {
      * Babel parses this incorrectly
      * https://github.com/babel/babel/issues/9324
      */
-    'type-assertion-arrow-function'
+    'type-assertion-arrow-function',
+    /**
+     * Babel does not include range of declare keyword into enum range
+     * https://github.com/babel/babel/issues/9399
+     */
+    'export-declare-const-named-enum',
+    'export-declare-named-enum'
   ],
   ignoreSourceType: [
     /**
