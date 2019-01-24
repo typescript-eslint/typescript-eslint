@@ -19,7 +19,7 @@ import recommended from './configs/recommended.json';
 
 // import all rules in lib/rules
 export = {
-  rules: requireIndex(path.join(__dirname, 'lib/rules')),
+  rules: requireIndex(path.join(__dirname, 'rules')),
   configs: {
     recommended
   }
