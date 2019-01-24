@@ -814,12 +814,12 @@ Object {
             "line": 3,
           },
           "start": Object {
-            "column": 16,
+            "column": 7,
             "line": 1,
           },
         },
         "range": Array [
-          16,
+          7,
           68,
         ],
         "superClass": null,
@@ -1262,12 +1262,12 @@ Object {
             "line": 3,
           },
           "start": Object {
-            "column": 16,
+            "column": 7,
             "line": 1,
           },
         },
         "range": Array [
-          16,
+          7,
           86,
         ],
         "superClass": null,
@@ -2567,12 +2567,12 @@ Object {
             "line": 3,
           },
           "start": Object {
-            "column": 16,
+            "column": 7,
             "line": 1,
           },
         },
         "range": Array [
-          16,
+          7,
           78,
         ],
         "superClass": null,
@@ -2955,12 +2955,12 @@ Object {
             "line": 2,
           },
           "start": Object {
-            "column": 16,
+            "column": 7,
             "line": 1,
           },
         },
         "range": Array [
-          16,
+          7,
           31,
         ],
         "type": "TSInterfaceDeclaration",
@@ -35463,7 +35463,7 @@ Object {
             "line": 4,
           },
           "start": Object {
-            "column": 21,
+            "column": 7,
             "line": 1,
           },
         },
@@ -35559,7 +35559,7 @@ Object {
           },
         ],
         "range": Array [
-          21,
+          7,
           54,
         ],
         "type": "TSEnumDeclaration",
@@ -35851,7 +35851,7 @@ Object {
             "line": 4,
           },
           "start": Object {
-            "column": 15,
+            "column": 7,
             "line": 1,
           },
         },
@@ -35947,7 +35947,7 @@ Object {
           },
         ],
         "range": Array [
-          15,
+          7,
           48,
         ],
         "type": "TSEnumDeclaration",
@@ -89438,7 +89438,7 @@ Object {
             "line": 1,
           },
           "start": Object {
-            "column": 63,
+            "column": 7,
             "line": 1,
           },
         },
@@ -89565,7 +89565,7 @@ Object {
           },
         ],
         "range": Array [
-          63,
+          7,
           72,
         ],
         "type": "TSEnumDeclaration",
