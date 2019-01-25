@@ -48344,7 +48344,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 13,
+                    "column": 14,
                     "line": 12,
                   },
                   "start": Object {
@@ -48356,7 +48356,7 @@ Object {
                 "optional": true,
                 "range": Array [
                   253,
-                  254,
+                  255,
                 ],
                 "type": "Identifier",
               },
@@ -48434,7 +48434,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 16,
+                    "column": 17,
                     "line": 13,
                   },
                   "start": Object {
@@ -48446,7 +48446,7 @@ Object {
                 "optional": true,
                 "range": Array [
                   281,
-                  282,
+                  283,
                 ],
                 "type": "Identifier",
               },
@@ -53414,7 +53414,7 @@ Object {
               Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 31,
+                    "column": 32,
                     "line": 4,
                   },
                   "start": Object {
@@ -53426,7 +53426,7 @@ Object {
                 "optional": true,
                 "range": Array [
                   73,
-                  76,
+                  77,
                 ],
                 "type": "Identifier",
               },
