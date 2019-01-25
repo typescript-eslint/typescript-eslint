@@ -253,7 +253,9 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
    * @param  {ts.Node[]} parameters An array of ts.Node params to be converted
    * @returns {ESTreeNode[]}       an array of converted ESTreeNode params
    */
-  function convertParameters(parameters: ts.NodeArray<ts.Node>): ESTreeNode[] {
+  function convertParameters(
+    parameters: ts.NodeArray<ts.ParameterDeclaration>
+  ): ESTreeNode[] {
     if (!parameters || !parameters.length) {
       return [];
     }
