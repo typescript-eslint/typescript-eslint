@@ -37,11 +37,7 @@ interface NodeBase {
   // source?: string | null;
 }
 
-interface NodeWithTypeAnnotation extends NodeBase {
-  typeAnnotation: TSTypeAnnotation;
-}
-
-// NOTE - got to VariableStatement - line 681
+// NOTE - got to line 860
 
 // ensure you sort the union members alphabetically...
 type ESTreeNode = null;
@@ -50,10 +46,27 @@ type BindingPattern = ArrayPattern | ObjectPattern;
 type BindingName = Identifier | BindingPattern;
 type Expression = null; // TODO - get lists from ts source and convert to estree nodes
 type ForInitialiser = Expression | VariableDeclaration;
+type ObjectLiteralElementLike =
+  | MethodDefinition
+  | Property
+  | RestElement
+  | SpreadElement
+  | TSAbstractMethodDefinition;
 type Parameter = AssignmentPattern | RestElement | TSParameterProperty;
+type PropertyName = Identifier | Literal;
 type Statement = null; // TODO - get lists from ts source and convert to estree nodes
 
 // ensure you sort the following interfaces alphabetically
+
+interface ArrayExpression extends NodeBase {
+  type: 'ArrayExpression';
+  elements: Expression[];
+}
+
+interface ArrayPattern extends NodeBase {
+  type: 'ArrayPattern';
+  elements: Expression[];
+}
 
 interface BlockStatement extends NodeBase {
   type: 'BlockStatement';
@@ -71,6 +84,20 @@ interface CatchClause extends NodeBase {
   body: BlockStatement;
 }
 
+interface ClassProperty extends NodeBase {
+  type: 'ClassProperty';
+  key: PropertyName;
+  value: Expression;
+  computed: boolean;
+  static: boolean;
+  readonly: boolean | undefined;
+  decorators?: Decorator[];
+  accessibility?: 'public' | 'protected' | 'private';
+  optional?: boolean;
+  definite?: boolean;
+  typeAnnotation?: TSTypeAnnotation;
+}
+
 interface ContinueStatement extends NodeBase {
   type: 'ContinueStatement';
   label: Identifier | null;
@@ -80,6 +107,24 @@ interface DoWhileStatement extends NodeBase {
   type: 'DoWhileStatement';
   test: Expression;
   body: Statement;
+}
+
+interface ExportDefaultDeclaration extends NodeBase {
+  type: 'ExportDefaultDeclaration';
+  declaration: Node;
+}
+
+interface ExportNamedDeclaration extends NodeBase {
+  type: 'ExportNamedDeclaration';
+  declaration: Node;
+  // we don't put anything in these?
+  specifiers: never[];
+  source: null;
+}
+
+interface ExpressionStatement extends NodeBase {
+  type: 'ExpressionStatement';
+  expression: Expression;
 }
 
 interface ForInStatement extends NodeBase {
@@ -117,22 +162,10 @@ interface FunctionDeclaration extends NodeBase {
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-interface TSDeclareFunction extends NodeBase {
-  type: 'TSDeclareFunction';
-  id: Identifier | null;
-  generator: boolean;
-  expression: false;
-  async: boolean;
-  params: Parameter;
-  body: BlockStatement | null | undefined;
-  returnType?: TSTypeAnnotation;
-  declare: true;
-  typeParameters?: TSTypeParameterDeclaration;
-}
-
-interface Identifier extends NodeWithTypeAnnotation {
+interface Identifier extends NodeBase {
   type: 'Identifier';
   name: string;
+  typeAnnotation?: TSTypeAnnotation;
 }
 
 interface IfStatement extends NodeBase {
@@ -148,10 +181,30 @@ interface LabeledStatement extends NodeBase {
   body: Statement;
 }
 
+interface ObjectExpression extends NodeBase {
+  type: 'ObjectExpression';
+  properties: ObjectLiteralElementLike[];
+}
+
+interface ObjectPattern extends NodeBase {
+  type: 'ObjectPattern';
+  properties: ObjectLiteralElementLike[];
+}
+
 interface Program extends NodeBase {
   type: 'Program';
   body: Statement[];
   sourceType: 'module' | 'script';
+}
+
+interface Property extends NodeBase {
+  type: 'Property';
+  key: PropertyName;
+  value: Expression | AssignmentPattern; // TODO
+  computed: boolean;
+  method: boolean;
+  shorthand: boolean;
+  kind: 'init';
 }
 
 interface ReturnStatement extends NodeBase {
@@ -181,6 +234,40 @@ interface TryStatement extends NodeBase {
   block: BlockStatement;
   handler: CatchClause | null;
   finalizer: BlockStatement;
+}
+
+interface TSAbstractClassProperty extends NodeBase {
+  type: 'TSAbstractClassProperty';
+  key: PropertyName;
+  value: Expression;
+  computed: boolean;
+  static: boolean;
+  readonly: boolean | undefined;
+  decorators?: Decorator[];
+  accessibility?: 'public' | 'protected' | 'private';
+  optional?: boolean;
+  definite?: boolean;
+  typeAnnotation?: TSTypeAnnotation;
+}
+
+interface TSDeclareFunction extends NodeBase {
+  type: 'TSDeclareFunction';
+  id: Identifier | null;
+  generator: boolean;
+  expression: false;
+  async: boolean;
+  params: Parameter;
+  body: BlockStatement | null | undefined;
+  returnType?: TSTypeAnnotation;
+  declare: true;
+  typeParameters?: TSTypeParameterDeclaration;
+}
+
+interface VariableDeclaration extends NodeBase {
+  type: 'VariableDeclaration';
+  declarations: VariableDeclarator[];
+  kind: 'let' | 'const' | 'var';
+  declare?: boolean;
 }
 
 interface VariableDeclarator extends NodeBase {
