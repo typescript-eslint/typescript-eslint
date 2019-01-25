@@ -53,6 +53,9 @@ function createBenchmark(name, directory, files, useServices) {
         console.log(String(event.target));
         message += String(event.target) + '\n';
       })
+      .on('error', function(e) {
+        console.log(e);
+      })
       .on('complete', function() {
         message += `Fastest is ${this.filter('fastest')
           .map(i => i.name)
@@ -82,7 +85,7 @@ async function runAllBenchmarks(scenarios) {
     messages.push(message);
   }
   fs.writeFileSync(
-    'README.md',
+    'RULES.md',
     `# Benchmark TSLint - ESLint\n\n${messages.join('\n')}`
   );
 }
