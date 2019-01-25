@@ -1315,6 +1315,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       if (node.questionToken) {
+        if (node.questionToken.end > parameter.range[1]) {
+          parameter.range[1] = node.questionToken.end;
+          parameter.loc = getLocFor(
+            parameter.range[0],
+            parameter.range[1],
+            ast
+          );
+        }
         parameter.optional = true;
       }
 

@@ -324,10 +324,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'interface-with-all-property-types', // babel parse errors
     /**
-     * there is difference in range between babel and ts-estree
-     */
-    'interface-with-optional-properties',
-    /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
      * TODO: report it to babel
