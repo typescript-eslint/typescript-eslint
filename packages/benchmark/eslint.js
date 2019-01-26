@@ -44,9 +44,14 @@ exports.runESLint = function(directory, files, useServices) {
   for (const file of files) {
     result = linter.verify(
       fs.readFileSync(path.join(__dirname, file), 'utf8'),
-      require(`./${directory}.eslintrc.json`),
+      JSON.parse(
+        fs.readFileSync(
+          path.join(__dirname, `./${directory}.eslintrc.json`),
+          'utf8'
+        )
+      ),
       file
-    )
+    );
   }
   if (result.length === 0) {
     throw new Error('something went wrong');
