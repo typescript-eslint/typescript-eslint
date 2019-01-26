@@ -27,5 +27,5 @@ exports.runTSLint = function(directory, files, useServices) {
   if (result.errorCount === 0) {
     throw new Error('something went wrong');
   }
-  return result.failures[0].failure
+  return result.failures[0].failure;
 };

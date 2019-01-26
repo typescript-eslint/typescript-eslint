@@ -9,13 +9,21 @@ function createBenchmark(name, directory, files, useServices) {
     let message = '```\n';
     suite
       .add('tslint', function() {
-        const result = require('./tslint').runTSLint(directory, files, useServices);
+        const result = require('./tslint').runTSLint(
+          directory,
+          files,
+          useServices
+        );
         if (typeof result !== 'string') {
           throw new Error('something went wrong');
         }
       })
       .add('eslint', function() {
-        const result = require('./eslint').runESLint(directory, files, useServices);
+        const result = require('./eslint').runESLint(
+          directory,
+          files,
+          useServices
+        );
         if (typeof result !== 'string') {
           throw new Error('something went wrong');
         }
