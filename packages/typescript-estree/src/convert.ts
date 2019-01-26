@@ -1631,20 +1631,19 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       if (isJSXToken(parent!)) {
         const jsxMemberExpression = {
           type: AST_NODE_TYPES.MemberExpression,
-          object: convertChild(node.expression),
-          property: convertChild(node.name)
+          object: convertChild(node.expression)!,
+          property: convertChild(node.name)!
         };
         const isNestedMemberExpression =
           node.expression.kind === SyntaxKind.PropertyAccessExpression;
         if (node.expression.kind === SyntaxKind.ThisKeyword) {
-          (jsxMemberExpression as any).object.name = 'this';
+          (jsxMemberExpression.object as any).name = 'this';
         }
 
-        (jsxMemberExpression as any).object.type = isNestedMemberExpression
+        jsxMemberExpression.object.type = isNestedMemberExpression
           ? AST_NODE_TYPES.MemberExpression
           : AST_NODE_TYPES.JSXIdentifier;
-        (jsxMemberExpression as any).property.type =
-          AST_NODE_TYPES.JSXIdentifier;
+        jsxMemberExpression.property.type = AST_NODE_TYPES.JSXIdentifier;
         Object.assign(result, jsxMemberExpression);
       } else {
         Object.assign(result, {

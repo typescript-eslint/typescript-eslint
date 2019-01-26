@@ -2,6 +2,7 @@
  * @fileoverview Definition of AST structure.
  * @author Armano <https://github.com/armano2>
  */
+/* eslint-disable @typescript-eslint/array-type */
 
 export interface Position {
   line: number;
