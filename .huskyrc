@@ -1,0 +1,8 @@
+{
+  "hooks": {
+    "pre-commit": [
+        "yarn test && lint-staged"
+    ],
+    "commitmsg": "commitlint -E GIT_PARAMS"
+  }
+}
