@@ -3,8 +3,8 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
-    "benchmark:rules": "node benchmark.js",
-    "benchmark:parsers": "node parsers.js"
+    "benchmark:rules": "node --allow-natives-syntax benchmark.js",
+    "benchmark:parsers": "node --allow-natives-syntax parsers.js"
   },
   "devDependencies": {
     "@types/benchmark": "^1.0.31",

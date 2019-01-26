@@ -1,52 +1,24 @@
 const Benchmark = require('benchmark');
-const tslint = require('tslint');
-const eslint = require('eslint');
-const path = require('path');
 const fs = require('fs');
-
-function runTSLint(directory, files, useServices) {
-  const program = useServices
-    ? tslint.Linter.createProgram(`${directory}/tsconfig.json`)
-    : undefined;
-  const linter = new tslint.Linter({ fix: false }, program);
-  const tslintConfig = tslint.Configuration.findConfiguration(
-    `${directory}/tslint.json`,
-    files[0]
-  ).results;
-  for (const file of files) {
-    linter.lint(
-      file,
-      fs.readFileSync(path.join(__dirname, file), 'utf8'),
-      tslintConfig
-    );
-  }
-  const result = linter.getResult();
-  if (result.errorCount === 0) {
-    throw new Error('something went wrong');
-  }
-}
-
-function runESLint(directory, files, useServices) {
-  const linter = new eslint.CLIEngine({
-    configFile: `${directory}/.eslintrc.json`,
-    extensions: ['.js', '.ts']
-  });
-  const result = linter.executeOnFiles(files);
-  if (result.errorCount === 0) {
-    throw new Error('something went wrong');
-  }
-}
 
 function createBenchmark(name, directory, files, useServices) {
   return new Promise(resolve => {
-    const suite = new Benchmark.Suite(name);
+    const suite = new Benchmark.Suite(name, {
+      async: true
+    });
     let message = '```\n';
     suite
       .add('tslint', function() {
-        runTSLint(directory, files, useServices);
+        const result = require('./tslint').runTSLint(directory, files, useServices);
+        if (typeof result !== 'string') {
+          throw new Error('something went wrong');
+        }
       })
       .add('eslint', function() {
-        runESLint(directory, files, useServices);
+        const result = require('./eslint').runESLint(directory, files, useServices);
+        if (typeof result !== 'string') {
+          throw new Error('something went wrong');
+        }
       })
       // add listeners
       .on('cycle', function(event) {
@@ -63,11 +35,7 @@ function createBenchmark(name, directory, files, useServices) {
         message += '```\n';
         resolve(message);
       })
-      .run({
-        // async: true,
-        minSamples: 1000,
-        initCount: 1000
-      });
+      .run();
   });
 }
 
