@@ -167,6 +167,15 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
     'error-strict-dup-params' // babel parse errors
   ]
 });
+tester.addFixturePatternConfig('javascript/function', {
+  ignore: [
+    /**
+     * Babel has invalid end range of multiline SequenceExpression
+     * TODO: report it to babel
+     */
+    'return-multiline-sequence'
+  ]
+});
 
 tester.addFixturePatternConfig('javascript/bigIntLiterals');
 tester.addFixturePatternConfig('javascript/binaryLiterals');
@@ -359,7 +368,12 @@ tester.addFixturePatternConfig('typescript/basics', {
      * https://github.com/babel/babel/issues/9399
      */
     'export-declare-const-named-enum',
-    'export-declare-named-enum'
+    'export-declare-named-enum',
+    /**
+     * Babel does not include optional keyword into range parameter in arrow function
+     * TODO: report it to babel
+     */
+    'arrow-function-with-optional-parameter'
   ],
   ignoreSourceType: [
     /**
