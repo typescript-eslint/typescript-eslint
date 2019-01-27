@@ -557,7 +557,20 @@ export interface Bar extends foo.i18n {}
 import foo from 'foo';
 import bar from 'foo';
 export interface Bar extends foo.i18n<bar> {}
-    `
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/141
+    {
+      filename: 'test.tsx',
+      code: `
+import { TypeA } from './interface';
+export const a = <GenericComponent<TypeA> />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        }
+      }
+    }
   ],
 
   invalid: [

@@ -3,7 +3,7 @@
 ## Single File
 
 ```
-ts-estree x 18,114 ops/sec ±14.31% (76 runs sampled)
-ts-parser x 8,969 ops/sec ±2.70% (81 runs sampled)
+ts-estree x 8,761 ops/sec ±6.78% (83 runs sampled)
+ts-parser x 4,158 ops/sec ±1.58% (87 runs sampled)
 Fastest is ts-estree
 ```

@@ -739,6 +739,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forOf/invalid-for-of-with-let-and-no-braces.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/function/return-multiline-sequence.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/function/return-sequence.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/generators/anonymous-generator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/generators/async-generator-function.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -1886,6 +1890,8 @@ Object {
   "message": "'abstract' modifier can only appear on a class, method, or property declaration.",
 }
 `;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/arrow-function-with-optional-parameter.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/arrow-function-with-type-parameters.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 

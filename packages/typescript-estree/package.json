@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "main": "dist/parser.js",
+  "types": "dist/parser.d.ts",
   "files": [
     "dist",
     "README.md",
