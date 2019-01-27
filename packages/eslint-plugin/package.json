@@ -32,7 +32,7 @@
     "eslint-docs": "^0.2.6"
   },
   "peerDependencies": {
-    "eslint": ">=4.13.1 < 6",
+    "eslint": ">=5 < 6",
     "typescript": "~3.2.1"
   }
 }

@@ -28,6 +28,7 @@
     "lodash.memoize": "^4.1.2"
   },
   "peerDependencies": {
+    "eslint": ">= 5 < 6",
     "tslint": "^5.0.0"
   },
   "devDependencies": {
