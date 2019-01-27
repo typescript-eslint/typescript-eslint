@@ -796,21 +796,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     }
 
     case SyntaxKind.ComputedPropertyName:
-      if (parent!.kind === SyntaxKind.ObjectLiteralExpression) {
-        // TODO: ComputedPropertyName has no name field
-        Object.assign(result, {
-          type: AST_NODE_TYPES.Property,
-          key: convertChild((node as any).name),
-          value: convertChild((node as any).name),
-          computed: false,
-          method: false,
-          shorthand: true,
-          kind: 'init'
-        });
-      } else {
-        return convertChild(node.expression);
-      }
-      break;
+      return convertChild(node.expression);
 
     case SyntaxKind.PropertyDeclaration: {
       const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
