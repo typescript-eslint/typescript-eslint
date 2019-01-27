@@ -239,13 +239,9 @@ class Referencer extends OriginalReferencer {
    * Override.
    */
   JSXOpeningElement(node: any) {
-    if (node.name) {
-      this.visit(node.name);
-    }
+    this.visit(node.name);
     this.visitTypeParameters(node);
-    if (node.attributes) {
-      this.visit(node.attributes);
-    }
+    this.visit(node.attributes);
   }
 
   /**
