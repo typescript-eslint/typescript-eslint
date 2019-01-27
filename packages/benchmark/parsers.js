@@ -1,14 +1,18 @@
 const Benchmark = require('benchmark');
 const fs = require('fs');
+const path = require('path');
 const tsEstree = require('@typescript-eslint/typescript-estree');
 const tsParser = require('@typescript-eslint/parser');
 
 function runTSESTree(directory, files) {
   for (const file of files) {
-    const result = tsEstree.parse(file, {
-      comment: true,
-      tokens: true
-    });
+    const result = tsEstree.parse(
+      fs.readFileSync(path.join(__dirname, file), 'utf8'),
+      {
+        comment: true,
+        tokens: true
+      }
+    );
     if (result.type !== 'Program') {
       throw new Error('something went wrong');
     }
@@ -17,10 +21,13 @@ function runTSESTree(directory, files) {
 
 function runTSParser(directory, files) {
   for (const file of files) {
-    const result = tsParser.parse(file, {
-      comment: true,
-      tokens: true
-    });
+    const result = tsParser.parse(
+      fs.readFileSync(path.join(__dirname, file), 'utf8'),
+      {
+        comment: true,
+        tokens: true
+      }
+    );
     if (result.type !== 'Program') {
       throw new Error('something went wrong');
     }
