@@ -1,6 +1,8 @@
 import eslintVisitorKeys from 'eslint-visitor-keys';
 
 export const visitorKeys = eslintVisitorKeys.unionWith({
+  // Additional estree nodes.
+  Import: [],
   // Additional Properties.
   ArrayPattern: ['elements', 'typeAnnotation'],
   ArrowFunctionExpression: ['typeParameters', 'params', 'returnType', 'body'],
@@ -30,6 +32,11 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   RestElement: ['argument', 'typeAnnotation'],
   NewExpression: ['callee', 'typeParameters', 'arguments'],
   CallExpression: ['callee', 'typeParameters', 'arguments'],
+  // JSX
+  JSXOpeningElement: ['name', 'typeParameters', 'attributes'],
+  JSXClosingFragment: [],
+  JSXOpeningFragment: [],
+  JSXSpreadChild: ['expression'],
 
   // Additional Nodes.
   BigIntLiteral: [],
