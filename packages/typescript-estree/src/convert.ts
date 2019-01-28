@@ -172,7 +172,7 @@ export class Converter {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
     }
 
-    return result as T & { range: [number, number]; loc: es.SourceLocation };
+    return result;
   }
 
   /**
@@ -246,7 +246,7 @@ export class Converter {
    * @returns TypeParameterInstantiation node
    */
   protected convertTypeArgumentsToTypeParameters(
-    typeArguments: ts.NodeArray<any>
+    typeArguments: ts.NodeArray<ts.TypeNode>
   ): es.TSTypeParameterInstantiation {
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
 
@@ -264,7 +264,7 @@ export class Converter {
    * @returns TypeParameterDeclaration node
    */
   protected convertTSTypeParametersToTypeParametersDeclaration(
-    typeParameters: ts.NodeArray<any>
+    typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>
   ): es.TSTypeParameterDeclaration {
     const greaterThanToken = findNextToken(typeParameters, this.ast, this.ast)!;
 
