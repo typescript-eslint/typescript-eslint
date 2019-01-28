@@ -616,7 +616,7 @@ export function convertToken(token: ts.Node, ast: ts.SourceFile): es.Token {
         : token.getStart(ast),
     end = token.getEnd(),
     value = ast.text.slice(start, end),
-    newToken: any = {
+    newToken: es.Token = {
       type: getTokenType(token),
       value,
       range: [start, end],

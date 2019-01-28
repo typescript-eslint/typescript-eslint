@@ -1,6 +1,6 @@
 import * as es from './ast-tree-nodes';
 
-export type ASTTreeNodes =
+export type ASTNode =
   | es.ArrayExpression
   | es.ArrayPattern
   | es.ArrowFunctionExpression

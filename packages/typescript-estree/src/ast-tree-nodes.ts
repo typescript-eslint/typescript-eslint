@@ -27,7 +27,6 @@ export interface BaseNode {
 }
 
 export interface Token extends BaseNode {
-  type: AST_NODE_TYPES;
   value: string;
   regex?: {
     pattern: string;

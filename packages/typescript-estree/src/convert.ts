@@ -31,7 +31,7 @@ import {
 } from './node-utils';
 import { AST_NODE_TYPES } from './ast-node-types';
 import { TSNode } from './ts-nodes';
-import { ASTTreeNodes } from './ast-nodes';
+import { ASTNode } from './ast-nodes';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -160,7 +160,7 @@ export class Converter {
     return this.converter(child, parent, true, false);
   }
 
-  protected createNode<T extends es.BaseNode = ASTTreeNodes>(
+  protected createNode<T extends es.BaseNode = ASTNode>(
     node: ts.Node,
     data: T
   ): T {
@@ -186,7 +186,6 @@ export class Converter {
     child: ts.TypeNode,
     parent: ts.Node
   ): es.TSTypeAnnotation {
-    const annotation = this.convertType(child);
     // in FunctionType and ConstructorType typeAnnotation has 2 characters `=>` and in other places is just colon
     const offset =
       parent.kind === SyntaxKind.FunctionType ||
@@ -200,7 +199,7 @@ export class Converter {
       type: AST_NODE_TYPES.TSTypeAnnotation,
       loc,
       range: [annotationStartCol, child.end],
-      typeAnnotation: annotation
+      typeAnnotation: this.convertType(child)
     };
   }
 
@@ -484,8 +483,7 @@ export class Converter {
     node: ts.TypeNode
   ): void {
     typeAnnotationParent.range![1] = node.getEnd();
-    typeAnnotationParent.loc = getLocFor(
-      typeAnnotationParent.range![0],
+    typeAnnotationParent.loc!.end = getLineAndCharacterFor(
       typeAnnotationParent.range![1],
       this.ast
     );
@@ -499,7 +497,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  protected convertNode(node: TSNode, parent: ts.Node): ASTTreeNodes | null {
+  protected convertNode(node: TSNode, parent: ts.Node): ASTNode | null {
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
         return this.createNode<es.Program>(node, {
@@ -1705,15 +1703,12 @@ export class Converter {
       }
 
       case SyntaxKind.MetaProperty: {
-        const newToken = convertToken(node.getFirstToken()!, this.ast);
         return this.createNode<es.MetaProperty>(node, {
           type: AST_NODE_TYPES.MetaProperty,
-          meta: {
+          meta: this.createNode<es.Identifier>(node.getFirstToken()!, {
             type: AST_NODE_TYPES.Identifier,
-            range: newToken.range,
-            loc: newToken.loc,
             name: getTextForTokenKind(node.keywordToken)!
-          },
+          }),
           property: this.convertChild(node.name)
         });
       }
@@ -1925,10 +1920,8 @@ export class Converter {
       }
 
       case SyntaxKind.JsxAttribute: {
-        const attributeName = convertToken(node.name, this.ast) as any;
+        const attributeName = this.convertChild(node.name);
         attributeName.type = AST_NODE_TYPES.JSXIdentifier;
-        attributeName.name = attributeName.value;
-        delete attributeName.value;
 
         return this.createNode<es.JSXAttribute>(node, {
           type: AST_NODE_TYPES.JSXAttribute,
