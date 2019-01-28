@@ -88,7 +88,12 @@ async function runAllBenchmarks(scenarios) {
 
 runAllBenchmarks([
   {
-    name: 'Single File',
+    name: 'Complex File',
+    directory: 'fixtures/complex/',
+    files: ['fixtures/complex/test.ts']
+  },
+  {
+    name: 'Simple File',
     directory: 'fixtures/restrict-plus-operands/',
     files: ['fixtures/restrict-plus-operands/test1.ts']
   }

@@ -1,9 +1,17 @@
 # Benchmark TSEstree - Parser
 
-## Single File
+## Complex File
 
 ```
-ts-estree x 8,761 ops/sec ±6.78% (83 runs sampled)
-ts-parser x 4,158 ops/sec ±1.58% (87 runs sampled)
+ts-estree x 232 ops/sec ±3.76% (84 runs sampled)
+ts-parser x 161 ops/sec ±0.83% (82 runs sampled)
+Fastest is ts-estree
+```
+
+## Simple File
+
+```
+ts-estree x 8,534 ops/sec ±2.25% (90 runs sampled)
+ts-parser x 3,941 ops/sec ±0.89% (89 runs sampled)
 Fastest is ts-estree
 ```
