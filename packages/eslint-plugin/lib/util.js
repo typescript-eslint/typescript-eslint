@@ -1,5 +1,9 @@
 'use strict';
 
+/** @typedef {import("eslint").Rule.RuleContext} RuleContext */
+/** @typedef {WeakMap<import("estree").Node, import("typescript").Node>} NodeMap */
+/** @typedef {import("typescript").Program} Program */
+
 const version = require('../package.json').version;
 
 exports.tslintRule = name => `\`${name}\` from TSLint`;
@@ -109,7 +113,7 @@ exports.upperCaseFirst = str => str[0].toUpperCase() + str.slice(1);
 /**
  * Try to retrieve typescript parser service from context
  * @param {RuleContext} context Rule context
- * @returns {{esTreeNodeToTSNodeMap}|{program}|Object|*} parserServices
+ * @returns {{program: Program, esTreeNodeToTSNodeMap: NodeMap}} parserServices
  */
 exports.getParserServices = context => {
   if (
