@@ -1,9 +1,5 @@
 'use strict';
 
-/** @typedef {import("eslint").Rule.RuleContext} RuleContext */
-/** @typedef {WeakMap<import("estree").Node, import("typescript").Node>} NodeMap */
-/** @typedef {import("typescript").Program} Program */
-
 const version = require('../package.json').version;
 
 exports.tslintRule = name => `\`${name}\` from TSLint`;
