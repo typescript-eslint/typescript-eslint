@@ -13,14 +13,9 @@ import semver from 'semver';
 import ts from 'typescript';
 import convert from './ast-converter';
 import { convertError } from './convert';
-import { Program } from './estree/spec';
 import { firstDefined } from './node-utils';
-import {
-  ESTreeComment,
-  ESTreeToken,
-  Extra,
-  ParserOptions
-} from './temp-types-based-on-js-source';
+import * as es from './ast-tree-nodes';
+import { Extra, ParserOptions } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 
 const packageJSON = require('../package.json');
@@ -182,10 +177,10 @@ function getProgramAndAST(
 // Parser
 //------------------------------------------------------------------------------
 
-type AST<T extends ParserOptions> = Program &
+type AST<T extends ParserOptions> = es.Program &
   (T['range'] extends true ? { range: [number, number] } : {}) &
-  (T['tokens'] extends true ? { tokens: ESTreeToken[] } : {}) &
-  (T['comment'] extends true ? { comments: ESTreeComment[] } : {});
+  (T['tokens'] extends true ? { tokens: es.Token[] } : {}) &
+  (T['comment'] extends true ? { comments: es.Comment[] } : {});
 
 /**
  * Parses the given source code to produce a valid AST
@@ -336,7 +331,7 @@ function generateAST<T extends ParserOptions = ParserOptions>(
   }
 
   return {
-    estree,
+    estree: estree as any,
     program: shouldProvideParserServices ? program : undefined,
     astMaps: shouldProvideParserServices
       ? astMaps!

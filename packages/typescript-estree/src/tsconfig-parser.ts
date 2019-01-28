@@ -2,7 +2,7 @@
 
 import path from 'path';
 import ts from 'typescript';
-import { Extra } from './temp-types-based-on-js-source';
+import { Extra } from './parser-options';
 
 //------------------------------------------------------------------------------
 // Environment calculation

@@ -7,31 +7,28 @@
 
 import ts from 'typescript';
 import { getLocFor, getNodeContainer } from './node-utils';
-import {
-  ESTreeComment,
-  LineAndColumnData
-} from './temp-types-based-on-js-source';
+import * as es from './ast-tree-nodes';
 
 /**
  * Converts a TypeScript comment to an Esprima comment.
- * @param {boolean} block True if it's a block comment, false if not.
- * @param {string} text The text of the comment.
- * @param {number} start The index at which the comment starts.
- * @param {number} end The index at which the comment ends.
- * @param {LineAndColumnData} startLoc The location at which the comment starts.
- * @param {LineAndColumnData} endLoc The location at which the comment ends.
- * @returns {Object} The comment object.
- * @private
+ * @param block True if it's a block comment, false if not.
+ * @param text The text of the comment.
+ * @param start The index at which the comment starts.
+ * @param end The index at which the comment ends.
+ * @param startLoc The location at which the comment starts.
+ * @param endLoc The location at which the comment ends.
+ * @returns The comment object.
+ * @internal
  */
 function convertTypeScriptCommentToEsprimaComment(
   block: boolean,
   text: string,
   start: number,
   end: number,
-  startLoc: LineAndColumnData,
-  endLoc: LineAndColumnData
-): ESTreeComment {
-  const comment: ESTreeComment = {
+  startLoc: es.Position,
+  endLoc: es.Position
+): es.Comment {
+  const comment: es.Comment = {
     type: block ? 'Block' : 'Line',
     value: text
   };
@@ -52,17 +49,17 @@ function convertTypeScriptCommentToEsprimaComment(
 
 /**
  * Convert comment from TypeScript Triva Scanner.
- * @param  {ts.Scanner} triviaScanner TS Scanner
- * @param  {ts.SourceFile} ast the AST object
- * @param  {string} code TypeScript code
- * @returns {ESTreeComment}     the converted ESTreeComment
+ * @param triviaScanner TS Scanner
+ * @param ast the AST object
+ * @param code TypeScript code
+ * @returns the converted Comment
  * @private
  */
 function getCommentFromTriviaScanner(
   triviaScanner: ts.Scanner,
   ast: ts.SourceFile,
   code: string
-): ESTreeComment {
+): es.Comment {
   const kind = triviaScanner.getToken();
   const isBlock = kind === ts.SyntaxKind.MultiLineCommentTrivia;
   const range = {
@@ -77,7 +74,7 @@ function getCommentFromTriviaScanner(
     : comment.replace(/^\/\//, '');
   const loc = getLocFor(range.pos, range.end, ast);
 
-  const esprimaComment = convertTypeScriptCommentToEsprimaComment(
+  return convertTypeScriptCommentToEsprimaComment(
     isBlock,
     text,
     range.pos,
@@ -85,22 +82,20 @@ function getCommentFromTriviaScanner(
     loc.start,
     loc.end
   );
-
-  return esprimaComment;
 }
 
 /**
  * Convert all comments for the given AST.
- * @param  {ts.SourceFile} ast the AST object
- * @param  {string} code the TypeScript code
- * @returns {ESTreeComment[]}     the converted ESTreeComment
+ * @param ast the AST object
+ * @param code the TypeScript code
+ * @returns the converted ESTreeComment
  * @private
  */
 export function convertComments(
   ast: ts.SourceFile,
   code: string
-): ESTreeComment[] {
-  const comments: ESTreeComment[] = [];
+): es.Comment[] {
+  const comments: es.Comment[] = [];
 
   /**
    * Create a TypeScript Scanner, with skipTrivia set to false so that

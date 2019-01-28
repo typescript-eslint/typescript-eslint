@@ -7,7 +7,7 @@
  */
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------

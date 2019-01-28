@@ -6,12 +6,7 @@
  */
 import ts from 'typescript';
 import unescape from 'lodash.unescape';
-import {
-  ESTreeNodeLoc,
-  ESTreeNode,
-  ESTreeToken,
-  LineAndColumnData
-} from './temp-types-based-on-js-source';
+import * as es from './ast-tree-nodes';
 import { AST_NODE_TYPES } from './ast-node-types';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -229,7 +224,7 @@ export function getBinaryExpressionType(
 export function getLineAndCharacterFor(
   pos: number,
   ast: ts.SourceFile
-): LineAndColumnData {
+): es.Position {
   const loc = ast.getLineAndCharacterOfPosition(pos);
   return {
     line: loc.line + 1,
@@ -243,13 +238,13 @@ export function getLineAndCharacterFor(
  * @param  {number} start start data
  * @param  {number} end   end data
  * @param  {ts.SourceFile} ast   the AST object
- * @returns {ESTreeNodeLoc}       the loc data
+ * @returns {es.SourceLocation}       the loc data
  */
 export function getLocFor(
   start: number,
   end: number,
   ast: ts.SourceFile
-): ESTreeNodeLoc {
+): es.SourceLocation {
   return {
     start: getLineAndCharacterFor(start, ast),
     end: getLineAndCharacterFor(end, ast)
@@ -294,8 +289,18 @@ export function canContainDirective(node: ts.Node): boolean {
 export function getLoc(
   nodeOrToken: ts.Node,
   ast: ts.SourceFile
-): ESTreeNodeLoc {
+): es.SourceLocation {
   return getLocFor(nodeOrToken.getStart(ast), nodeOrToken.end, ast);
+}
+
+/**
+ * Returns range for the given ts.Node
+ * @param node the ts.Node or ts.Token
+ * @param ast the AST object
+ * @returns the range data
+ */
+export function getRange(node: ts.Node, ast: ts.SourceFile): [number, number] {
+  return [node.getStart(ast), node.getEnd()];
 }
 
 /**
@@ -459,16 +464,16 @@ export function isOptional(node: {
 
 /**
  * Fixes the exports of the given ts.Node
- * @param  {ts.Node} node   the ts.Node
- * @param  {ESTreeNode} result result
- * @param  {ts.SourceFile} ast    the AST
- * @returns {ESTreeNode}        the ESTreeNode with fixed exports
+ * @param node   the ts.Node
+ * @param result result
+ * @param ast    the AST
+ * @returns the ESTreeNode with fixed exports
  */
-export function fixExports(
+export function fixExports<T extends es.BaseNode>(
   node: ts.Node,
-  result: ESTreeNode,
+  result: T,
   ast: ts.SourceFile
-): ESTreeNode {
+): es.ExportDefaultDeclaration | es.ExportNamedDeclaration | T {
   // check for exports
   if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
     const exportKeyword = node.modifiers[0];
@@ -480,26 +485,26 @@ export function fixExports(
       ? findNextToken(nextModifier, ast, ast)
       : findNextToken(exportKeyword, ast, ast);
 
-    result.range[0] = varToken!.getStart(ast);
-    result.loc = getLocFor(result.range[0], result.range[1], ast);
+    result.range![0] = varToken!.getStart(ast);
+    result.loc = getLocFor(result.range![0], result.range![1], ast);
 
-    const declarationType = declarationIsDefault
-      ? AST_NODE_TYPES.ExportDefaultDeclaration
-      : AST_NODE_TYPES.ExportNamedDeclaration;
-
-    const newResult: any = {
-      type: declarationType,
-      declaration: result,
-      range: [exportKeyword.getStart(ast), result.range[1]],
-      loc: getLocFor(exportKeyword.getStart(ast), result.range[1], ast)
-    };
-
-    if (!declarationIsDefault) {
-      newResult.specifiers = [];
-      newResult.source = null;
+    if (declarationIsDefault) {
+      return {
+        type: AST_NODE_TYPES.ExportDefaultDeclaration,
+        declaration: result as any,
+        range: [exportKeyword.getStart(ast), result.range![1]],
+        loc: getLocFor(exportKeyword.getStart(ast), result.range![1], ast)
+      };
+    } else {
+      return {
+        type: AST_NODE_TYPES.ExportNamedDeclaration,
+        declaration: result as any,
+        range: [exportKeyword.getStart(ast), result.range![1]],
+        loc: getLocFor(exportKeyword.getStart(ast), result.range![1], ast),
+        specifiers: [],
+        source: null
+      };
     }
-
-    return newResult;
   }
 
   return result;
@@ -614,11 +619,11 @@ export function getTokenType(token: any): string {
 
 /**
  * Extends and formats a given ts.Token, for a given AST
- * @param  {ts.Node} token the ts.Token
- * @param  {ts.SourceFile} ast   the AST object
- * @returns {ESTreeToken}       the converted ESTreeToken
+ * @param token the ts.Token
+ * @param ast   the AST object
+ * @returns the converted es.Token
  */
-export function convertToken(token: ts.Node, ast: ts.SourceFile): ESTreeToken {
+export function convertToken(token: ts.Node, ast: ts.SourceFile): es.Token {
   const start =
       token.kind === SyntaxKind.JsxText
         ? token.getFullStart()
@@ -644,11 +649,11 @@ export function convertToken(token: ts.Node, ast: ts.SourceFile): ESTreeToken {
 
 /**
  * Converts all tokens for the given AST
- * @param  {ts.SourceFile} ast the AST object
- * @returns {ESTreeToken[]}     the converted ESTreeTokens
+ * @param ast the AST object
+ * @returns the converted Tokens
  */
-export function convertTokens(ast: ts.SourceFile): ESTreeToken[] {
-  const result: ESTreeToken[] = [];
+export function convertTokens(ast: ts.SourceFile): es.Token[] {
+  const result: es.Token[] = [];
   /**
    * @param  {ts.Node} node the ts.Node
    * @returns {void}
