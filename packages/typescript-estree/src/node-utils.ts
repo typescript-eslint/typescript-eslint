@@ -280,20 +280,6 @@ export function canContainDirective(node: ts.Node): boolean {
 }
 
 /**
- * Returns line and column data for the given ts.Node or ts.Token,
- * for the given AST
- * @param  {ts.Node} nodeOrToken the ts.Node or ts.Token
- * @param  {ts.SourceFile} ast         the AST object
- * @returns {ESTreeLoc}             the loc data
- */
-export function getLoc(
-  nodeOrToken: ts.Node,
-  ast: ts.SourceFile
-): es.SourceLocation {
-  return getLocFor(nodeOrToken.getStart(ast), nodeOrToken.end, ast);
-}
-
-/**
  * Returns range for the given ts.Node
  * @param node the ts.Node or ts.Token
  * @param ast the AST object
