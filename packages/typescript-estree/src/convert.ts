@@ -41,15 +41,6 @@ interface ConverterOptions {
   shouldProvideParserServices: boolean;
 }
 
-interface ConvertConfig {
-  node: ts.Node;
-  parent?: ts.Node | null;
-  inTypeMode?: boolean;
-  allowPattern?: boolean;
-  ast: ts.SourceFile;
-  options: ConverterOptions;
-}
-
 /**
  * Extends and formats a given error object
  * @param  {Object} error the error object
@@ -2507,9 +2498,4 @@ export class Converter {
         return this.deeplyCopy(node);
     }
   }
-}
-
-export default function convert(config: ConvertConfig): es.Program | null {
-  const converter = new Converter(config.ast, config.options);
-  return converter.convertProgram();
 }
