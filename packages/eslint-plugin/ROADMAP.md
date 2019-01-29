@@ -1,10 +1,10 @@
 ﻿# Roadmap
 
-✅ (27) = done  
+✅ (28) = done  
 🌟 (79) = in ESLint core  
 🔌 (33) = in another plugin  
 🌓 (16) = implementations differ or ESLint version is missing functionality  
-🛑 (71) = unimplemented
+🛑 (70) = unimplemented
 
 ## TSLint rules
 
@@ -26,7 +26,7 @@
 | [`no-non-null-assertion`]         | ✅  | [`@typescript-eslint/no-non-null-assertion`]         |
 | [`no-parameter-reassignment`]     | ✅  | [`no-param-reassign`][no-param-reassign]             |
 | [`no-reference`]                  | ✅  | [`@typescript-eslint/no-triple-slash-reference`]     |
-| [`no-unnecessary-type-assertion`] | ✅  | [`typescript/no-unnecessary-type-assertion`]         |
+| [`no-unnecessary-type-assertion`] | ✅  | [`@typescript-eslint/no-unnecessary-type-assertion`] |
 | [`no-var-requires`]               | ✅  | [`@typescript-eslint/no-var-requires`]               |
 | [`only-arrow-functions`]          | 🔌  | [`prefer-arrow/prefer-arrow-functions`]              |
 | [`prefer-for-of`]                 | 🛑  | N/A                                                  |

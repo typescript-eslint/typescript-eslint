@@ -19,7 +19,7 @@ const util = require('../util');
  * Sometimes tuple types don't have ObjectFlags.Tuple set, like when they're being matched against an inferred type.
  * So, in addition, check if there are integer properties 0..n and no other numeric keys
  * @param {ts.ObjectType} type type
- * @returns {boolean} true iff type could be a tuple type
+ * @returns {boolean} true if type could be a tuple type
  */
 function couldBeTupleType(type) {
   const properties = type.getProperties();
@@ -57,13 +57,10 @@ function couldBeTupleType(type) {
  */
 function checkNonNullAssertion(node, context, checker) {
   /**
+   * Corresponding TSNode is guaranteed to be in map
    * @type {ts.NonNullExpression}
    */
   const originalNode = context.parserServices.esTreeNodeToTSNodeMap.get(node);
-
-  if (!originalNode) {
-    return;
-  }
   const type = checker.getTypeAtLocation(originalNode.expression);
 
   if (type === checker.getNonNullableType(type)) {
@@ -88,14 +85,10 @@ function checkNonNullAssertion(node, context, checker) {
  */
 function verifyCast(node, context, checker) {
   /**
+   * * Corresponding TSNode is guaranteed to be in map
    * @type {ts.AssertionExpression}
    */
   const originalNode = context.parserServices.esTreeNodeToTSNodeMap.get(node);
-
-  if (!originalNode) {
-    return;
-  }
-
   const options = context.options[0];
 
   if (
