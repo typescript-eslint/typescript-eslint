@@ -558,8 +558,8 @@ import foo from 'foo';
 import bar from 'foo';
 export interface Bar extends foo.i18n<bar> {}
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/141
     {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/141
       filename: 'test.tsx',
       code: `
 import { TypeA } from './interface';
@@ -570,6 +570,20 @@ export const a = <GenericComponent<TypeA> />;
           jsx: true
         }
       }
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/160
+      filename: 'test.tsx',
+      code: `
+const text = 'text';
+export function Foo() {
+  return (
+    <div>
+      <input type="search" size={30} placeholder={text} />
+    </div>
+  );
+}
+      `
     }
   ],
 
