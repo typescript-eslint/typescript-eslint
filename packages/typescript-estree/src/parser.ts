@@ -409,12 +409,14 @@ export function parseAndGenerateServices<
     ast: estree,
     services: {
       program: shouldProvideParserServices ? program : undefined,
-      esTreeNodeToTSNodeMap: shouldProvideParserServices
-        ? astMaps!.esTreeNodeToTSNodeMap
-        : undefined,
-      tsNodeToESTreeNodeMap: shouldProvideParserServices
-        ? astMaps!.tsNodeToESTreeNodeMap
-        : undefined
+      esTreeNodeToTSNodeMap:
+        shouldProvideParserServices && astMaps
+          ? astMaps.esTreeNodeToTSNodeMap
+          : undefined,
+      tsNodeToESTreeNodeMap:
+        shouldProvideParserServices && astMaps
+          ? astMaps.tsNodeToESTreeNodeMap
+          : undefined
     }
   };
 }
