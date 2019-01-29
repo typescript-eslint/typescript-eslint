@@ -27,9 +27,6 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
 });
 
-const message =
-  'This assertion is unnecessary since it does not change the type of the expression.';
-
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
     'const foo = 3 as number;',
@@ -60,7 +57,7 @@ const foo = 3;
 const bar = foo!;`,
       errors: [
         {
-          message,
+          messageId: 'unnecessaryAssertion',
           line: 3,
           column: 13
         }
@@ -71,7 +68,7 @@ const bar = foo!;`,
 const foo = (3 + 5) as number;`,
       errors: [
         {
-          message,
+          messageId: 'unnecessaryAssertion',
           line: 2,
           column: 13
         }
@@ -82,7 +79,7 @@ const foo = (3 + 5) as number;`,
 const foo = <number>(3 + 5);`,
       errors: [
         {
-          message,
+          messageId: 'unnecessaryAssertion',
           line: 2,
           column: 13
         }
@@ -94,7 +91,7 @@ type Foo = number;
 const foo = (3 + 5) as Foo;`,
       errors: [
         {
-          message,
+          messageId: 'unnecessaryAssertion',
           line: 3,
           column: 13
         }
@@ -106,7 +103,7 @@ type Foo = number;
 const foo = <Foo>(3 + 5);`,
       errors: [
         {
-          message,
+          messageId: 'unnecessaryAssertion',
           line: 3,
           column: 13
         }

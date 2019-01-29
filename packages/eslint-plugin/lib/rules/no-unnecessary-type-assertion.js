@@ -15,9 +15,6 @@ const util = require('../util');
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const FAILURE_STRING =
-  'This assertion is unnecessary since it does not change the type of the expression.';
-
 /**
  * Sometimes tuple types don't have ObjectFlags.Tuple set, like when they're being matched against an inferred type.
  * So, in addition, check if there are integer properties 0..n and no other numeric keys
@@ -72,7 +69,7 @@ function checkNonNullAssertion(node, context, checker) {
   if (type === checker.getNonNullableType(type)) {
     context.report({
       node,
-      message: FAILURE_STRING,
+      messageId: 'unnecessaryAssertion',
       fix(fixer) {
         return fixer.removeRange([
           originalNode.expression.end,
@@ -125,7 +122,7 @@ function verifyCast(node, context, checker) {
   if (uncastType === castType) {
     context.report({
       node,
-      message: FAILURE_STRING,
+      messageId: 'unnecessaryAssertion',
       fix(fixer) {
         return originalNode.kind === ts.SyntaxKind.TypeAssertionExpression
           ? fixer.removeRange([
@@ -150,6 +147,10 @@ module.exports = {
       url: util.metaDocsUrl('no-unnecessary-type-assertion')
     },
     fixable: 'code',
+    messages: {
+      unnecessaryAssertion:
+        'This assertion is unnecessary since it does not change the type of the expression.'
+    },
     schema: [
       {
         type: 'array',
