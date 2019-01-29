@@ -2,11 +2,10 @@ const Benchmark = require('benchmark');
 const fs = require('fs');
 
 function createBenchmark(name, directory, files, useServices) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const suite = new Benchmark.Suite(name, {
       async: true
     });
-    let message = '```\n';
     suite
       .add('tslint', function() {
         const result = require('./tslint').runTSLint(
@@ -31,39 +30,32 @@ function createBenchmark(name, directory, files, useServices) {
       // add listeners
       .on('cycle', function(event) {
         console.log(String(event.target));
-        message += String(event.target) + '\n';
       })
       .on('error', function(e) {
-        console.log(e);
+        reject(e);
       })
       .on('complete', function() {
-        message += `Fastest is ${this.filter('fastest')
-          .map(i => i.name)
-          .join(', ')}\n`;
-        message += '```\n';
-        resolve(message);
+        console.log(
+          `Fastest is ${this.filter('fastest')
+            .map(i => i.name)
+            .join(', ')}`
+        );
+        resolve();
       })
       .run();
   });
 }
 
 async function runAllBenchmarks(scenarios) {
-  const messages = [];
   for (const scenario of scenarios) {
-    console.log(`${scenario.name}`);
-    let message = `## ${scenario.name}\n\n`;
-    message += await createBenchmark(
+    console.log(scenario.name);
+    await createBenchmark(
       scenario.name,
       scenario.directory,
       scenario.files,
       scenario.useServices
     );
-    messages.push(message);
   }
-  fs.writeFileSync(
-    'RULES.md',
-    `# Benchmark TSLint - ESLint\n\n${messages.join('\n')}`
-  );
 }
 
 runAllBenchmarks([

@@ -9,9 +9,9 @@
   "devDependencies": {
     "@types/benchmark": "^1.0.31",
     "@types/eslint": "^4.16.5",
-    "@typescript-eslint/eslint-plugin": "1.1.0",
-    "@typescript-eslint/parser": "1.1.0",
-    "@typescript-eslint/typescript-estree": "1.1.0",
+    "@typescript-eslint/eslint-plugin": "1.1.1",
+    "@typescript-eslint/parser": "1.1.1",
+    "@typescript-eslint/typescript-estree": "1.1.1",
     "benchmark": "^2.1.4",
     "eslint": "^5.12.1",
     "tslint": "^5.12.1"
