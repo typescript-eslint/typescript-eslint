@@ -17,6 +17,7 @@ import {
   formatSnapshotName,
   parseCodeAndGenerateServices
 } from '../../tools/test-utils';
+import { parseAndGenerateServices } from '../../src/parser';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -56,6 +57,23 @@ describe('semanticInfo', () => {
         createOptions(filename),
         /*generateServices*/ true
       )
+    );
+  });
+
+  it(`should handle "project": "./tsconfig.json" and "project": ["./tsconfig.json"] the same`, () => {
+    const filename = testFiles[0];
+    const code = readFileSync(filename, 'utf8');
+    const options = createOptions(filename);
+    const optionsProjectString = {
+      ...options,
+      project: './tsconfig.json'
+    };
+    const optionsProjectArray = {
+      ...options,
+      project: ['./tsconfig.json']
+    };
+    expect(parseAndGenerateServices(code, optionsProjectString)).toEqual(
+      parseAndGenerateServices(code, optionsProjectArray)
     );
   });
 
