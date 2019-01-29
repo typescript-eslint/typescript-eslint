@@ -23,10 +23,10 @@ import {
   isComma,
   getBinaryExpressionType,
   isOptional,
-  findFirstMatchingToken,
   unescapeStringLiteralText,
   getDeclarationKind,
-  getLastModifier
+  getLastModifier,
+  getLineAndCharacterFor
 } from './node-utils';
 import { AST_NODE_TYPES } from './ast-node-types';
 import { ESTreeNode } from './temp-types-based-on-js-source';
@@ -796,21 +796,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     }
 
     case SyntaxKind.ComputedPropertyName:
-      if (parent!.kind === SyntaxKind.ObjectLiteralExpression) {
-        // TODO: ComputedPropertyName has no name field
-        Object.assign(result, {
-          type: AST_NODE_TYPES.Property,
-          key: convertChild((node as any).name),
-          value: convertChild((node as any).name),
-          computed: false,
-          method: false,
-          shorthand: true,
-          kind: 'init'
-        });
-      } else {
-        return convertChild(node.expression);
-      }
-      break;
+      return convertChild(node.expression);
 
     case SyntaxKind.PropertyDeclaration: {
       const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
@@ -858,38 +844,19 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.GetAccessor:
     case SyntaxKind.SetAccessor:
     case SyntaxKind.MethodDeclaration: {
-      const openingParen = findFirstMatchingToken(
-        node.name,
-        ast,
-        (token: any) => {
-          if (!token || !token.kind) {
-            return false;
-          }
-          return getTextForTokenKind(token.kind) === '(';
-        },
-        ast
-      );
-
-      const methodLoc = ast.getLineAndCharacterOfPosition(
-          (openingParen as any).getStart(ast)
-        ),
-        nodeIsMethod = node.kind === SyntaxKind.MethodDeclaration,
-        method: ESTreeNode = {
-          type: AST_NODE_TYPES.FunctionExpression,
-          id: null,
-          generator: !!node.asteriskToken,
-          expression: false, // ESTreeNode as ESTreeNode here
-          async: hasModifier(SyntaxKind.AsyncKeyword, node),
-          body: convertChild(node.body),
-          range: [node.parameters.pos - 1, result.range[1]],
-          loc: {
-            start: {
-              line: methodLoc.line + 1,
-              column: methodLoc.character
-            },
-            end: result.loc.end
-          }
-        } as any;
+      const method: ESTreeNode = {
+        type: AST_NODE_TYPES.FunctionExpression,
+        id: null,
+        generator: !!node.asteriskToken,
+        expression: false, // ESTreeNode as ESTreeNode here
+        async: hasModifier(SyntaxKind.AsyncKeyword, node),
+        body: convertChild(node.body),
+        range: [node.parameters.pos - 1, result.range[1]],
+        loc: {
+          start: getLineAndCharacterFor(node.parameters.pos - 1, ast),
+          end: result.loc.end
+        }
+      } as any;
 
       if (node.type) {
         (method as any).returnType = convertTypeAnnotation(node.type);
@@ -903,7 +870,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           key: convertChild(node.name),
           value: method,
           computed: isComputedProperty(node.name),
-          method: nodeIsMethod,
+          method: node.kind === SyntaxKind.MethodDeclaration,
           shorthand: false,
           kind: 'init'
         });
@@ -992,10 +959,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         constructorToken.end
       ];
 
-      const constructorLoc = ast.getLineAndCharacterOfPosition(
-        node.parameters.pos - 1
-      );
-
       const constructor: ESTreeNode = {
         type: AST_NODE_TYPES.FunctionExpression,
         id: null,
@@ -1006,10 +969,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         body: convertChild(node.body),
         range: [node.parameters.pos - 1, result.range[1]],
         loc: {
-          start: {
-            line: constructorLoc.line + 1,
-            column: constructorLoc.character
-          },
+          start: getLineAndCharacterFor(node.parameters.pos - 1, ast),
           end: result.loc.end
         }
       } as any;
@@ -1906,16 +1866,12 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
 
     case SyntaxKind.JsxExpression: {
-      const eloc = ast.getLineAndCharacterOfPosition(result.range[0] + 1);
       const expression = node.expression
         ? convertChild(node.expression)
         : {
             type: AST_NODE_TYPES.JSXEmptyExpression,
             loc: {
-              start: {
-                line: eloc.line + 1,
-                column: eloc.character
-              },
+              start: getLineAndCharacterFor(result.range[0] + 1, ast),
               end: {
                 line: result.loc.end.line,
                 column: result.loc.end.column - 1

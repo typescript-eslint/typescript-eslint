@@ -9,7 +9,8 @@ import unescape from 'lodash.unescape';
 import {
   ESTreeNodeLoc,
   ESTreeNode,
-  ESTreeToken
+  ESTreeToken,
+  LineAndColumnData
 } from './temp-types-based-on-js-source';
 import { AST_NODE_TYPES } from './ast-node-types';
 
@@ -220,6 +221,23 @@ export function getBinaryExpressionType(
 }
 
 /**
+ * Returns line and column data for the given positions,
+ * @param pos position to check
+ * @param ast the AST object
+ * @returns line and column
+ */
+export function getLineAndCharacterFor(
+  pos: number,
+  ast: ts.SourceFile
+): LineAndColumnData {
+  const loc = ast.getLineAndCharacterOfPosition(pos);
+  return {
+    line: loc.line + 1,
+    column: loc.character
+  };
+}
+
+/**
  * Returns line and column data for the given start and end positions,
  * for the given AST
  * @param  {number} start start data
@@ -232,18 +250,9 @@ export function getLocFor(
   end: number,
   ast: ts.SourceFile
 ): ESTreeNodeLoc {
-  const startLoc = ast.getLineAndCharacterOfPosition(start),
-    endLoc = ast.getLineAndCharacterOfPosition(end);
-
   return {
-    start: {
-      line: startLoc.line + 1,
-      column: startLoc.character
-    },
-    end: {
-      line: endLoc.line + 1,
-      column: endLoc.character
-    }
+    start: getLineAndCharacterFor(start, ast),
+    end: getLineAndCharacterFor(end, ast)
   };
 }
 
@@ -387,29 +396,6 @@ export function findNextToken(
         : undefined;
     });
   }
-}
-
-/**
- * Find the first matching token based on the given predicate function.
- * @param {ts.Node} previousToken The previous ts.Token
- * @param {ts.Node} parent The parent ts.Node
- * @param {Function} predicate The predicate function to apply to each checked token
- * @param {ts.SourceFile} ast The TS AST
- * @returns {ts.Node|undefined} a matching ts.Token
- */
-export function findFirstMatchingToken(
-  previousToken: ts.Node | undefined,
-  parent: ts.Node,
-  predicate: (node: ts.Node) => boolean,
-  ast: ts.SourceFile
-): ts.Node | undefined {
-  while (previousToken) {
-    if (predicate(previousToken)) {
-      return previousToken;
-    }
-    previousToken = findNextToken(previousToken, parent, ast);
-  }
-  return undefined;
 }
 
 /**
