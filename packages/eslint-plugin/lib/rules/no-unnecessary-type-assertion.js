@@ -96,11 +96,12 @@ function verifyCast(node, context, checker) {
     return;
   }
 
-  const typesToIgnore = context.options[0];
+  const options = context.options[0];
 
   if (
-    typesToIgnore &&
-    typesToIgnore.indexOf(originalNode.type.getText()) !== -1
+    options &&
+    options.typesToIgnore &&
+    options.typesToIgnore.indexOf(originalNode.type.getText()) !== -1
   ) {
     return;
   }
@@ -153,9 +154,14 @@ module.exports = {
     },
     schema: [
       {
-        type: 'array',
-        items: {
-          type: 'string'
+        type: 'object',
+        properties: {
+          typesToIgnore: {
+            type: 'array',
+            items: {
+              type: 'string'
+            }
+          }
         }
       }
     ],

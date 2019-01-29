@@ -39,9 +39,9 @@ const foo = 3 as number;
 
 ### Options
 
-This rule optionally takes a list of type names to ignore.
+This rule optionally takes an object with a single property `typesToIgnore`, which can be set to a list of type names to ignore.
 
-For example, with `typescript/no-unnecessary-type-assertion: ["error", ["Foo"]]`, the following is **correct** code":
+For example, with `typescript/no-unnecessary-type-assertion: ["error", { typesToIgnore: ['Foo'] }]`, the following is **correct** code":
 
 ```ts
 type Foo = 3;

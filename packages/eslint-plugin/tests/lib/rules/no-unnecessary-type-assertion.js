@@ -40,13 +40,13 @@ const foo = ([3, "hi", "bye"]) as Tuple;`,
       code: `
 type Foo = number;
 const foo = (3 + 5) as Foo;`,
-      options: [['Foo']]
+      options: [{ typesToIgnore: ['Foo'] }]
     },
     {
       code: `
 type Foo = number;
 const foo = <Foo>(3 + 5);`,
-      options: [['Foo']]
+      options: [{ typesToIgnore: ['Foo'] }]
     }
   ],
 
