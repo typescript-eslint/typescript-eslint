@@ -36,6 +36,15 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     `
 type Tuple = [3, "hi", "bye"];
 const foo = ([3, "hi", "bye"]) as Tuple;`,
+    `
+type PossibleTuple = {};
+const foo = ({}) as PossibleTuple;`,
+    `
+type PossibleTuple = { hello: "hello" };
+const foo = ({ hello: "hello" }) as PossibleTuple;`,
+    `
+type PossibleTuple = { 0: "hello", 5: "hello" };
+const foo = ({ 0: "hello", 5: "hello" }) as PossibleTuple;`,
     {
       code: `
 type Foo = number;
