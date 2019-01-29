@@ -36,6 +36,9 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     'const foo = <number> 3;',
     'const foo = <3>3;',
     'const foo = 3 as 3;',
+    `
+type Tuple = [3, "hi", "bye"];
+const foo = ([3, "hi", "bye"]) as Tuple;`,
     {
       code: `
 type Foo = number;
@@ -100,12 +103,12 @@ const foo = (3 + 5) as Foo;`,
     {
       code: `
 type Foo = number;
-const foo= <Foo>(3 + 5);`,
+const foo = <Foo>(3 + 5);`,
       errors: [
         {
           message,
           line: 3,
-          column: 12
+          column: 13
         }
       ]
     }
