@@ -57,8 +57,13 @@ describe('parse()', () => {
     };
 
     it(
-      'should correctly convert code to string',
+      'should correctly convert code to a string for parse()',
       createSnapshotTestBlock(code, config)
+    );
+
+    it(
+      'should correctly convert code to a string for parseAndGenerateServices()',
+      createSnapshotTestBlock(code, config, true)
     );
   });
 

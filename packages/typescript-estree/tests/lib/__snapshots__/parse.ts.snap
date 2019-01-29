@@ -189,7 +189,87 @@ Object {
 }
 `;
 
-exports[`parse() non string code should correctly convert code to string 1`] = `
+exports[`parse() non string code should correctly convert code to a string for parse() 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "raw": "12345",
+        "type": "Literal",
+        "value": 12345,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 5,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    5,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "Numeric",
+      "value": "12345",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`parse() non string code should correctly convert code to a string for parseAndGenerateServices() 1`] = `
 Object {
   "body": Array [
     Object {
