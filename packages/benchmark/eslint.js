@@ -5,7 +5,7 @@ const fs = require('fs');
 // exports.runESLint = function(directory, files, useServices) {
 //   const linter = new eslint.CLIEngine({
 //     files: files,
-//     configFile: `${directory}.eslintrc.json`,
+//     configFile: `${directory}.eslintrc.js`,
 //     extensions: ['.js', '.ts']
 //   });
 //   const results = [];
@@ -44,12 +44,7 @@ exports.runESLint = function(directory, files, useServices) {
   for (const file of files) {
     result = linter.verify(
       fs.readFileSync(path.join(__dirname, file), 'utf8'),
-      JSON.parse(
-        fs.readFileSync(
-          path.join(__dirname, `./${directory}.eslintrc.json`),
-          'utf8'
-        )
-      ),
+      require(path.join(__dirname, `./${directory}.eslintrc.js`)),
       file
     );
   }
