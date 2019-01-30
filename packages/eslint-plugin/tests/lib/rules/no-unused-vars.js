@@ -542,6 +542,13 @@ declare var Foo: {
     foo(): string
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/106
+    `
+declare class Foo {
+    constructor(value?: any): Object;
+    foo(): string;
+}
+    `,
     `
 import foo from 'foo';
 export interface Bar extends foo.i18n {}
@@ -550,7 +557,34 @@ export interface Bar extends foo.i18n {}
 import foo from 'foo';
 import bar from 'foo';
 export interface Bar extends foo.i18n<bar> {}
-    `
+    `,
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/141
+      filename: 'test.tsx',
+      code: `
+import { TypeA } from './interface';
+export const a = <GenericComponent<TypeA> />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        }
+      }
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/160
+      filename: 'test.tsx',
+      code: `
+const text = 'text';
+export function Foo() {
+  return (
+    <div>
+      <input type="search" size={30} placeholder={text} />
+    </div>
+  );
+}
+      `
+    }
   ],
 
   invalid: [

@@ -159,7 +159,9 @@ describe('TypeScript scope analysis', () => {
           range: true,
           tokens: true,
           sourceType: 'module',
-          ecmaFeatures: {}
+          ecmaFeatures: {
+            jsx: path.extname(filePath) === '.tsx'
+          }
         });
         const { globalScope } = scopeManager;
 
@@ -191,7 +193,9 @@ describe('TypeScript scope analysis', () => {
           range: true,
           tokens: true,
           sourceType: 'script',
-          ecmaFeatures: {}
+          ecmaFeatures: {
+            jsx: path.extname(filePath) === '.tsx'
+          }
         });
         const { globalScope } = scopeManager;
 

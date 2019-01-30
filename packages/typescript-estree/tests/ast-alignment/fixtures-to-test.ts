@@ -147,14 +147,7 @@ tester.addFixturePatternConfig('javascript/simple-literals');
 
 tester.addFixturePatternConfig('javascript/directives');
 
-tester.addFixturePatternConfig('javascript/experimentalObjectRestSpread', {
-  ignore: [
-    /**
-     * Trailing comma is not permitted after a "RestElement" in Babel
-     */
-    'invalid-rest-trailing-comma'
-  ]
-});
+tester.addFixturePatternConfig('javascript/experimentalObjectRestSpread');
 
 tester.addFixturePatternConfig('javascript/arrowFunctions', {
   ignore: [
@@ -172,6 +165,15 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
      */
     'error-dup-params', // babel parse errors
     'error-strict-dup-params' // babel parse errors
+  ]
+});
+tester.addFixturePatternConfig('javascript/function', {
+  ignore: [
+    /**
+     * Babel has invalid end range of multiline SequenceExpression
+     * TODO: report it to babel
+     */
+    'return-multiline-sequence'
   ]
 });
 
@@ -331,31 +333,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'interface-with-all-property-types', // babel parse errors
     /**
-     * PR for generic ArrowFunctionExpression ranges has been merged into Babel: https://github.com/babel/babel/pull/9295
-     * TODO: remove me in next babel > 7.2.3
-     */
-    'arrow-function-with-type-parameters',
-    /**
-     * PR for this type predicate ranges has been merged into Babel: https://github.com/babel/babel/pull/9339
-     * TODO: remove me in next babel > 7.2.3
-     */
-    'type-guard-in-method',
-    /**
-     * there is difference in range between babel and ts-estree
-     */
-    'export-declare-const-named-enum',
-    'interface-with-optional-properties',
-    /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
      * TODO: report it to babel
      */
     'interface-with-extends-member-expression',
-    /**
-     * PR for parsing exported abstract interface has been merged into Babel: https://github.com/babel/babel/pull/9336
-     * TODO: remove me in next babel > 7.2.3
-     */
-    'abstract-interface',
     /**
      * Babel bug for optional or abstract methods
      * https://github.com/babel/babel/issues/9305
@@ -364,24 +346,12 @@ tester.addFixturePatternConfig('typescript/basics', {
     'abstract-class-with-optional-method', // babel parse errors
     'declare-class-with-optional-method', // babel parse errors
     /**
-     * PR for parameter property ranges has been merged into Babel: https://github.com/babel/babel/pull/9284
-     * TODO: remove me in next babel > 7.2.3
-     */
-    'class-with-private-parameter-properties',
-    'class-with-protected-parameter-properties',
-    'class-with-public-parameter-properties',
-    'class-with-readonly-parameter-properties',
-    /**
-     * PR for type import has been merged into Babel: https://github.com/babel/babel/pull/9302
-     * TODO: remove me in next babel > 7.2.3
+     * Was expected to be fixed by PR into Babel: https://github.com/babel/babel/pull/9302
+     * But not fixed in Babel 7.3
+     * TODO: Investigate differences
      */
     'import-type',
     'import-type-with-type-parameters-in-type-reference',
-    /**
-     * PR for BigInt support has been merged into Babel: https://github.com/babel/babel/pull/9230
-     * TODO: remove me in next babel > 7.2.3
-     */
-    'typed-keyword-bigint',
     /**
      * Not yet supported in Babel https://github.com/babel/babel/issues/9228
      * Directive field is not added to module and namespace
@@ -389,21 +359,21 @@ tester.addFixturePatternConfig('typescript/basics', {
     'directive-in-module',
     'directive-in-namespace',
     /**
-     * PR for type assertions ranges has been merged into Babel: https://github.com/babel/babel/pull/9284
-     * TODO: remove me in next babel > 7.2.3
-     */
-    'type-assertion',
-    /**
      * Babel parses this incorrectly
      * https://github.com/babel/babel/issues/9324
      */
     'type-assertion-arrow-function',
     /**
-     * PR for type parsing declare and abstract classes has been merged into Babel: https://github.com/babel/babel/pull/9328
-     * TODO: remove me in next babel > 7.2.3
+     * PR for range of declare keyword has been merged into Babel: https://github.com/babel/babel/pull/9406
+     * TODO: remove me in next babel > 7.3.1
      */
-    'class-multi-line-keyword-declare',
-    'class-multi-line-keyword-abstract'
+    'export-declare-const-named-enum',
+    'export-declare-named-enum',
+    /**
+     * Babel does not include optional keyword into range parameter in arrow function
+     * TODO: report it to babel
+     */
+    'arrow-function-with-optional-parameter'
   ],
   ignoreSourceType: [
     /**
@@ -443,27 +413,12 @@ tester.addFixturePatternConfig('typescript/expressions', {
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
-  fileType: 'ts',
-  ignore: [
-    /**
-     * PR with errors in empty extends and implements has been merged into Babel: https://github.com/babel/babel/pull/9292
-     * TODO: remove me in next babel > 7.2.3
-     */
-    'interface-empty-extends',
-    'class-extends-empty-implements'
-  ]
+  fileType: 'ts'
 });
 
 tester.addFixturePatternConfig('typescript/types', {
   fileType: 'ts',
   ignore: [
-    /**
-     * PR for type Identifier in TSIndexSignature ranges has been merged into Babel: https://github.com/babel/babel/pull/9335
-     * TODO: remove me in next babel > 7.2.3
-     */
-    'index-signature',
-    'index-signature-readonly',
-    'index-signature-without-type',
     /**
      * AST difference
      */
@@ -477,13 +432,8 @@ tester.addFixturePatternConfig('typescript/declare', {
 
 tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
   fileType: 'ts',
-  ignore: [
-    /**
-     * Minor AST difference
-     */
-    'nested-internal-module'
-  ],
   ignoreSourceType: [
+    'nested-internal-module',
     'module-with-default-exports',
     'ambient-module-declaration-with-import',
     'declare-namespace-with-exported-function'

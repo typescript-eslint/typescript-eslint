@@ -349,6 +349,15 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/class-with-constructor-with-space.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/class-with-no-body.src 1`] = `
+Object {
+  "column": 0,
+  "index": 10,
+  "lineNumber": 2,
+  "message": "'{' expected.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/derived-class-assign-to-var.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/derived-class-expression.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -560,7 +569,14 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/invalid-not-final-array-empty.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/invalid-not-final-array-empty.src 1`] = `
+Object {
+  "column": 5,
+  "index": 5,
+  "lineNumber": 1,
+  "message": "A rest parameter or binding pattern may not have a trailing comma.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/multi-destructured.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -622,7 +638,14 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `
+Object {
+  "column": 16,
+  "index": 16,
+  "lineNumber": 1,
+  "message": "A rest parameter or binding pattern may not have a trailing comma.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/object-rest.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -716,6 +739,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forOf/invalid-for-of-with-let-and-no-braces.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/function/return-multiline-sequence.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/function/return-sequence.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/generators/anonymous-generator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/generators/async-generator-function.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -767,7 +794,13 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/error-strict.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/export-async-named-function.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/export-const.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/export-default-array.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/export-default-async-named-function.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/export-default-class.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -800,6 +833,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/export-from-specifiers.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/export-function.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/export-let.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/export-named-as-default.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1856,6 +1891,8 @@ Object {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/arrow-function-with-optional-parameter.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/arrow-function-with-type-parameters.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/async-function-expression.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -2105,6 +2142,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/type-guard-in-method.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/type-parameters-comments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/type-parameters-comments-heritage.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/type-reference-comments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -2448,6 +2487,15 @@ Object {
   "index": 32,
   "lineNumber": 2,
   "message": "An interface property cannot have an initializer.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-with-no-body.src 1`] = `
+Object {
+  "column": 0,
+  "index": 14,
+  "lineNumber": 2,
+  "message": "'{' expected.",
 }
 `;
 

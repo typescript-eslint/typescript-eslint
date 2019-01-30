@@ -9,7 +9,8 @@ import unescape from 'lodash.unescape';
 import {
   ESTreeNodeLoc,
   ESTreeNode,
-  ESTreeToken
+  ESTreeToken,
+  LineAndColumnData
 } from './temp-types-based-on-js-source';
 import { AST_NODE_TYPES } from './ast-node-types';
 
@@ -161,7 +162,7 @@ export function hasModifier(
  * @param node TypeScript AST node
  * @returns returns last modifier if present or null
  */
-export function getLastModifier(node: ts.Node): ts.Node | null {
+export function getLastModifier(node: ts.Node): ts.Modifier | null {
   return (
     (!!node.modifiers &&
       !!node.modifiers.length &&
@@ -220,6 +221,23 @@ export function getBinaryExpressionType(
 }
 
 /**
+ * Returns line and column data for the given positions,
+ * @param pos position to check
+ * @param ast the AST object
+ * @returns line and column
+ */
+export function getLineAndCharacterFor(
+  pos: number,
+  ast: ts.SourceFile
+): LineAndColumnData {
+  const loc = ast.getLineAndCharacterOfPosition(pos);
+  return {
+    line: loc.line + 1,
+    column: loc.character
+  };
+}
+
+/**
  * Returns line and column data for the given start and end positions,
  * for the given AST
  * @param  {number} start start data
@@ -232,18 +250,9 @@ export function getLocFor(
   end: number,
   ast: ts.SourceFile
 ): ESTreeNodeLoc {
-  const startLoc = ast.getLineAndCharacterOfPosition(start),
-    endLoc = ast.getLineAndCharacterOfPosition(end);
-
   return {
-    start: {
-      line: startLoc.line + 1,
-      column: startLoc.character
-    },
-    end: {
-      line: endLoc.line + 1,
-      column: endLoc.character
-    }
+    start: getLineAndCharacterFor(start, ast),
+    end: getLineAndCharacterFor(end, ast)
   };
 }
 
@@ -359,13 +368,13 @@ export function getTSNodeAccessibility(
 /**
  * Finds the next token based on the previous one and its parent
  * Had to copy this from TS instead of using TS's version because theirs doesn't pass the ast to getChildren
- * @param {ts.Node} previousToken The previous TSToken
+ * @param {ts.TextRange} previousToken The previous TSToken
  * @param {ts.Node} parent The parent TSNode
  * @param {ts.SourceFile} ast The TS AST
  * @returns {ts.Node|undefined} the next TSToken
  */
 export function findNextToken(
-  previousToken: ts.Node,
+  previousToken: ts.TextRange,
   parent: ts.Node,
   ast: ts.SourceFile
 ): ts.Node | undefined {
@@ -387,29 +396,6 @@ export function findNextToken(
         : undefined;
     });
   }
-}
-
-/**
- * Find the first matching token based on the given predicate function.
- * @param {ts.Node} previousToken The previous ts.Token
- * @param {ts.Node} parent The parent ts.Node
- * @param {Function} predicate The predicate function to apply to each checked token
- * @param {ts.SourceFile} ast The TS AST
- * @returns {ts.Node|undefined} a matching ts.Token
- */
-export function findFirstMatchingToken(
-  previousToken: ts.Node | undefined,
-  parent: ts.Node,
-  predicate: (node: ts.Node) => boolean,
-  ast: ts.SourceFile
-): ts.Node | undefined {
-  while (previousToken) {
-    if (predicate(previousToken)) {
-      return previousToken;
-    }
-    previousToken = findNextToken(previousToken, parent, ast);
-  }
-  return undefined;
 }
 
 /**
@@ -485,12 +471,14 @@ export function fixExports(
 ): ESTreeNode {
   // check for exports
   if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
-    const exportKeyword = node.modifiers[0],
-      nextModifier = node.modifiers[1],
-      lastModifier = node.modifiers[node.modifiers.length - 1],
-      declarationIsDefault =
-        nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword,
-      varToken = findNextToken(lastModifier, ast, ast);
+    const exportKeyword = node.modifiers[0];
+    const nextModifier = node.modifiers[1];
+    const declarationIsDefault =
+      nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword;
+
+    const varToken = declarationIsDefault
+      ? findNextToken(nextModifier, ast, ast)
+      : findNextToken(exportKeyword, ast, ast);
 
     result.range[0] = varToken!.getStart(ast);
     result.loc = getLocFor(result.range[0], result.range[1], ast);

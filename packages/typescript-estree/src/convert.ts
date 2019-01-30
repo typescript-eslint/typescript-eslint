@@ -23,10 +23,10 @@ import {
   isComma,
   getBinaryExpressionType,
   isOptional,
-  findFirstMatchingToken,
   unescapeStringLiteralText,
   getDeclarationKind,
-  getLastModifier
+  getLastModifier,
+  getLineAndCharacterFor
 } from './node-utils';
 import { AST_NODE_TYPES } from './ast-node-types';
 import { ESTreeNode } from './temp-types-based-on-js-source';
@@ -211,61 +211,37 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
   }
 
   /**
-   * Converts a ts.Node's typeArguments ts.NodeArray to a flow-like typeParameters node
+   * Converts a ts.Node's typeArguments to TSTypeParameterInstantiation node
    * @param {ts.NodeArray<any>} typeArguments ts.Node typeArguments
    * @returns {ESTreeNode} TypeParameterInstantiation node
    */
   function convertTypeArgumentsToTypeParameters(
     typeArguments: ts.NodeArray<any>
   ): ESTreeNode {
-    /**
-     * Even if typeArguments is an empty array, TypeScript sets a `pos` and `end`
-     * property on the array object so we can safely read the values here
-     */
-    const start = typeArguments.pos - 1;
-    let end = typeArguments.end + 1;
-    if (typeArguments && typeArguments.length) {
-      const firstTypeArgument = typeArguments[0];
-      const typeArgumentsParent = firstTypeArgument.parent;
-      /**
-       * In the case of the parent being a CallExpression or a TypeReference we have to use
-       * slightly different logic to calculate the correct end position
-       */
-      if (
-        typeArgumentsParent &&
-        (typeArgumentsParent.kind === SyntaxKind.CallExpression ||
-          typeArgumentsParent.kind === SyntaxKind.TypeReference)
-      ) {
-        const lastTypeArgument = typeArguments[typeArguments.length - 1];
-        const greaterThanToken = findNextToken(lastTypeArgument, ast, ast);
-        end = greaterThanToken!.end;
-      }
-    }
+    const greaterThanToken = findNextToken(typeArguments, ast, ast)!;
+
     return {
       type: AST_NODE_TYPES.TSTypeParameterInstantiation,
-      range: [start, end],
-      loc: getLocFor(start, end, ast),
+      range: [typeArguments.pos - 1, greaterThanToken.end],
+      loc: getLocFor(typeArguments.pos - 1, greaterThanToken.end, ast),
       params: typeArguments.map(typeArgument => convertChildType(typeArgument))
     };
   }
 
   /**
-   * Converts a ts.Node's typeParameters ts.ts.NodeArray to a flow-like TypeParameterDeclaration node
+   * Converts a ts.Node's typeParameters to TSTypeParameterDeclaration node
    * @param {ts.NodeArray} typeParameters ts.Node typeParameters
    * @returns {ESTreeNode} TypeParameterDeclaration node
    */
   function convertTSTypeParametersToTypeParametersDeclaration(
     typeParameters: ts.NodeArray<any>
   ): ESTreeNode {
-    const firstTypeParameter = typeParameters[0];
-    const lastTypeParameter = typeParameters[typeParameters.length - 1];
-
-    const greaterThanToken = findNextToken(lastTypeParameter, ast, ast);
+    const greaterThanToken = findNextToken(typeParameters, ast, ast)!;
 
     return {
       type: AST_NODE_TYPES.TSTypeParameterDeclaration,
-      range: [firstTypeParameter.pos - 1, greaterThanToken!.end],
-      loc: getLocFor(firstTypeParameter.pos - 1, greaterThanToken!.end, ast),
+      range: [typeParameters.pos - 1, greaterThanToken.end],
+      loc: getLocFor(typeParameters.pos - 1, greaterThanToken.end, ast),
       params: typeParameters.map(typeParameter =>
         convertChildType(typeParameter)
       )
@@ -694,8 +670,8 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       if (node.type) {
-        (result as any).id.typeAnnotation = convertTypeAnnotation(node.type);
-        fixTypeAnnotationParentLocation((result as any).id);
+        result.id!.typeAnnotation = convertTypeAnnotation(node.type);
+        fixTypeAnnotationParentLocation(result.id!);
       }
       break;
     }
@@ -820,21 +796,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     }
 
     case SyntaxKind.ComputedPropertyName:
-      if (parent!.kind === SyntaxKind.ObjectLiteralExpression) {
-        // TODO: ComputedPropertyName has no name field
-        Object.assign(result, {
-          type: AST_NODE_TYPES.Property,
-          key: convertChild((node as any).name),
-          value: convertChild((node as any).name),
-          computed: false,
-          method: false,
-          shorthand: true,
-          kind: 'init'
-        });
-      } else {
-        return convertChild(node.expression);
-      }
-      break;
+      return convertChild(node.expression);
 
     case SyntaxKind.PropertyDeclaration: {
       const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
@@ -882,38 +844,19 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.GetAccessor:
     case SyntaxKind.SetAccessor:
     case SyntaxKind.MethodDeclaration: {
-      const openingParen = findFirstMatchingToken(
-        node.name,
-        ast,
-        (token: any) => {
-          if (!token || !token.kind) {
-            return false;
-          }
-          return getTextForTokenKind(token.kind) === '(';
-        },
-        ast
-      );
-
-      const methodLoc = ast.getLineAndCharacterOfPosition(
-          (openingParen as any).getStart(ast)
-        ),
-        nodeIsMethod = node.kind === SyntaxKind.MethodDeclaration,
-        method: ESTreeNode = {
-          type: AST_NODE_TYPES.FunctionExpression,
-          id: null,
-          generator: !!node.asteriskToken,
-          expression: false, // ESTreeNode as ESTreeNode here
-          async: hasModifier(SyntaxKind.AsyncKeyword, node),
-          body: convertChild(node.body),
-          range: [node.parameters.pos - 1, result.range[1]],
-          loc: {
-            start: {
-              line: methodLoc.line + 1,
-              column: methodLoc.character
-            },
-            end: result.loc.end
-          }
-        } as any;
+      const method: ESTreeNode = {
+        type: AST_NODE_TYPES.FunctionExpression,
+        id: null,
+        generator: !!node.asteriskToken,
+        expression: false, // ESTreeNode as ESTreeNode here
+        async: hasModifier(SyntaxKind.AsyncKeyword, node),
+        body: convertChild(node.body),
+        range: [node.parameters.pos - 1, result.range[1]],
+        loc: {
+          start: getLineAndCharacterFor(node.parameters.pos - 1, ast),
+          end: result.loc.end
+        }
+      } as any;
 
       if (node.type) {
         (method as any).returnType = convertTypeAnnotation(node.type);
@@ -927,7 +870,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           key: convertChild(node.name),
           value: method,
           computed: isComputedProperty(node.name),
-          method: nodeIsMethod,
+          method: node.kind === SyntaxKind.MethodDeclaration,
           shorthand: false,
           kind: 'init'
         });
@@ -1016,10 +959,6 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         constructorToken.end
       ];
 
-      const constructorLoc = ast.getLineAndCharacterOfPosition(
-        node.parameters.pos - 1
-      );
-
       const constructor: ESTreeNode = {
         type: AST_NODE_TYPES.FunctionExpression,
         id: null,
@@ -1030,10 +969,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         body: convertChild(node.body),
         range: [node.parameters.pos - 1, result.range[1]],
         loc: {
-          start: {
-            line: constructorLoc.line + 1,
-            column: constructorLoc.character
-          },
+          start: getLineAndCharacterFor(node.parameters.pos - 1, ast),
           end: result.loc.end
         }
       } as any;
@@ -1249,7 +1185,7 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         expressions: []
       });
 
-      node.templateSpans.forEach((templateSpan: any) => {
+      node.templateSpans.forEach(templateSpan => {
         (result as any).expressions.push(convertChild(templateSpan.expression));
         (result as any).quasis.push(convertChild(templateSpan.literal));
       });
@@ -1318,6 +1254,12 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
           left: parameter,
           right: convertChild(node.initializer)
         });
+
+        if (node.modifiers) {
+          // AssignmentPattern should not contain modifiers in range
+          result.range[0] = parameter.range[0];
+          result.loc = getLocFor(result.range[0], result.range[1], ast);
+        }
       } else {
         parameter = result = convert({
           node: node.name,
@@ -1333,7 +1275,15 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       }
 
       if (node.questionToken) {
-        (parameter as any).optional = true;
+        if (node.questionToken.end > parameter.range[1]) {
+          parameter.range[1] = node.questionToken.end;
+          parameter.loc = getLocFor(
+            parameter.range[0],
+            parameter.range[1],
+            ast
+          );
+        }
+        parameter.optional = true;
       }
 
       if (node.modifiers) {
@@ -1357,40 +1307,14 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.ClassDeclaration:
     case SyntaxKind.ClassExpression: {
       const heritageClauses = node.heritageClauses || [];
-
       let classNodeType = SyntaxKind[node.kind];
-      let lastClassToken: any = heritageClauses.length
-        ? heritageClauses[heritageClauses.length - 1]
-        : node.name;
 
       if (node.typeParameters && node.typeParameters.length) {
-        const lastTypeParameter =
-          node.typeParameters[node.typeParameters.length - 1];
-
-        if (!lastClassToken || lastTypeParameter.pos > lastClassToken.pos) {
-          lastClassToken = findNextToken(lastTypeParameter, ast, ast);
-        }
         result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
         );
       }
 
-      if (node.modifiers && node.modifiers.length) {
-        /**
-         * We need check for modifiers, and use the last one, as there
-         * could be multiple before the open brace
-         */
-        const lastModifier = node.modifiers![node.modifiers!.length - 1];
-
-        if (!lastClassToken || lastModifier.pos > lastClassToken.pos) {
-          lastClassToken = findNextToken(lastModifier, ast, ast);
-        }
-      } else if (!lastClassToken) {
-        // no name
-        lastClassToken = node.getFirstToken();
-      }
-
-      const openBrace = findNextToken(lastClassToken, ast, ast)!;
       const superClass = heritageClauses.find(
         clause => clause.token === SyntaxKind.ExtendsKeyword
       );
@@ -1415,14 +1339,16 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
         clause => clause.token === SyntaxKind.ImplementsKeyword
       );
 
+      const classBodyRange = [node.members.pos - 1, node.end];
+
       Object.assign(result, {
         type: classNodeType,
         id: convertChild(node.name),
         body: {
           type: AST_NODE_TYPES.ClassBody,
           body: [],
-          range: [openBrace.getStart(ast), node.end],
-          loc: getLocFor(openBrace.getStart(ast), node.end, ast)
+          range: classBodyRange,
+          loc: getLocFor(classBodyRange[0], classBodyRange[1], ast)
         },
         superClass:
           superClass && superClass.types[0]
@@ -1940,16 +1866,12 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
       break;
 
     case SyntaxKind.JsxExpression: {
-      const eloc = ast.getLineAndCharacterOfPosition(result.range[0] + 1);
       const expression = node.expression
         ? convertChild(node.expression)
         : {
             type: AST_NODE_TYPES.JSXEmptyExpression,
             loc: {
-              start: {
-                line: eloc.line + 1,
-                column: eloc.character
-              },
+              start: getLineAndCharacterFor(result.range[0] + 1, ast),
               end: {
                 line: result.loc.end.line,
                 column: result.loc.end.column - 1
@@ -2329,45 +2251,22 @@ export default function convert(config: ConvertConfig): ESTreeNode | null {
     case SyntaxKind.InterfaceDeclaration: {
       const interfaceHeritageClauses = node.heritageClauses || [];
 
-      let interfaceLastClassToken = interfaceHeritageClauses.length
-        ? interfaceHeritageClauses[interfaceHeritageClauses.length - 1]
-        : node.name;
-
       if (node.typeParameters && node.typeParameters.length) {
-        const interfaceLastTypeParameter =
-          node.typeParameters[node.typeParameters.length - 1];
-
-        if (
-          !interfaceLastClassToken ||
-          interfaceLastTypeParameter.pos > interfaceLastClassToken.pos
-        ) {
-          interfaceLastClassToken = findNextToken(
-            interfaceLastTypeParameter,
-            ast,
-            ast
-          ) as any;
-        }
         result.typeParameters = convertTSTypeParametersToTypeParametersDeclaration(
           node.typeParameters
         );
       }
 
-      const interfaceOpenBrace = findNextToken(
-        interfaceLastClassToken,
-        ast,
-        ast
-      )!;
-
-      const interfaceBody = {
-        type: AST_NODE_TYPES.TSInterfaceBody,
-        body: node.members.map(member => convertChild(member)),
-        range: [interfaceOpenBrace.getStart(ast), node.end],
-        loc: getLocFor(interfaceOpenBrace.getStart(ast), node.end, ast)
-      };
+      const interfaceBodyRange = [node.members.pos - 1, node.end];
 
       Object.assign(result, {
         type: AST_NODE_TYPES.TSInterfaceDeclaration,
-        body: interfaceBody,
+        body: {
+          type: AST_NODE_TYPES.TSInterfaceBody,
+          body: node.members.map(member => convertChild(member)),
+          range: interfaceBodyRange,
+          loc: getLocFor(interfaceBodyRange[0], interfaceBodyRange[1], ast)
+        },
         id: convertChild(node.name)
       });
 
