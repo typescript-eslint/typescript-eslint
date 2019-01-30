@@ -68,6 +68,22 @@ If you want to use rules which require type information, you will need to specif
 
 See [@typescript-eslint/parser's README.md](../parser/README.md) for more information on the available "parserOptions".
 
+## Usage with Prettier
+
+Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable our code formatting related rules:
+
+```json
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ]
+}
+```
+
+**Note: Make sure you have `eslint-config-prettier@4.0.0` or newer.**
+
 ## Supported Rules
 
 <!-- Please run `npm run docs` to update this section -->
