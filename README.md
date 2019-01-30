@@ -26,6 +26,20 @@ This repo contains several packages which allow ESLint users to lint their TypeS
 
 - [`@typescript-eslint/eslint-plugin-tslint`](./packages/eslint-plugin-tslint) - An ESLint-specific plugin which runs an instance of TSLint within your ESLint setup to allow for users to more easily migrate from TSLint to ESLint.
 
+## Package Versions
+
+All of the packages are published with the same version number to make it easier to coordinate both releases and installations.
+
+Additionally, we also publish a canary release on every successful merge to master, so you never need to wait for a new stable version to make use of any updates.
+
+The `latest` (stable) version is:
+
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/latest.svg?style=flat-square" alt="NPM Version" /></a>
+
+The `canary` (latest master) version is:
+
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square" alt="NPM Version" /></a>
+
 ## Supported TypeScript Version
 
 We will always endeavor to support the latest stable version of TypeScript.
