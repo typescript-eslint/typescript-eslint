@@ -1,5 +1,4 @@
 const Benchmark = require('benchmark');
-const fs = require('fs');
 
 function createBenchmark(name, directory, files, useServices) {
   return new Promise((resolve, reject) => {
@@ -8,7 +7,7 @@ function createBenchmark(name, directory, files, useServices) {
     });
     suite
       .add('tslint', function() {
-        const result = require('./tslint').runTSLint(
+        const result = require('./tslint-runner').runTSLint(
           directory,
           files,
           useServices
@@ -18,7 +17,7 @@ function createBenchmark(name, directory, files, useServices) {
         }
       })
       .add('eslint', function() {
-        const result = require('./eslint').runESLint(
+        const result = require('./eslint-runner').runESLint(
           directory,
           files,
           useServices

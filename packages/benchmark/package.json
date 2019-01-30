@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "benchmark:rules": "node --allow-natives-syntax benchmark.js",
-    "benchmark:parsers": "node --allow-natives-syntax parsers.js"
+    "benchmark:parsers": "node --allow-natives-syntax parsers.js",
+    "benchmark:e2e": "node --allow-natives-syntax e2e.js",
+    "eslint": "eslint --ext .ts fixtures/restrict-plus-operands",
+    "tslint": "tslint -p fixtures/restrict-plus-operands/tsconfig.json \"fixtures/restrict-plus-operands/*.ts\""
   },
   "devDependencies": {
     "@types/benchmark": "^1.0.31",
