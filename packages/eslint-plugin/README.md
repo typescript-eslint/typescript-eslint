@@ -82,7 +82,7 @@ Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-pre
 }
 ```
 
-*Note: Make sure you have `eslint-config-prettier@4.0.0` or newer.*
+**Note: Make sure you have `eslint-config-prettier@4.0.0` or newer.**
 
 ## Supported Rules
 
