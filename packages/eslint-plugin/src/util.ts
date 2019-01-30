@@ -1,5 +1,6 @@
-import { Rule } from 'eslint';
-import { ParserServices } from '@typescript-eslint/typescript-estree';
+import { ParserServices } from '@typescript-eslint/parser';
+
+import { RuleContext } from './RuleModule';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const version = require('../package.json').version;
@@ -118,8 +119,6 @@ export function applyDefault<T extends any[]>(
 
 /**
  * Upper cases the first character or the string
- * @param str a string
- * @returns upper case first
  */
 export function upperCaseFirst(str: string) {
   return str[0].toUpperCase() + str.slice(1);
@@ -127,10 +126,10 @@ export function upperCaseFirst(str: string) {
 
 /**
  * Try to retrieve typescript parser service from context
- * @param {RuleContext} context Rule context
- * @returns {{esTreeNodeToTSNodeMap}|{program}|Object|*} parserServices
  */
-export function getParserServices(context: Rule.RuleContext): ParserServices {
+export function getParserServices<T extends any[]>(
+  context: RuleContext<T>
+): ParserServices {
   if (
     !context.parserServices ||
     !context.parserServices.program ||

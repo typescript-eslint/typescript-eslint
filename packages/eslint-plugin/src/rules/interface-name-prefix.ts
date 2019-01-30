@@ -3,7 +3,7 @@
  * @author Danny Fritz
  */
 
-import { Rule } from 'eslint';
+import RuleModule from '../RuleModule';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ import * as util from '../util';
 
 const defaultOptions = ['never'];
 
-const rule: Rule.RuleModule = {
+const rule: RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {

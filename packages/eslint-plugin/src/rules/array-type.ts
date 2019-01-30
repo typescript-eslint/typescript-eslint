@@ -4,7 +4,7 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import { Rule } from 'eslint';
+import RuleModule from '../RuleModule';
 import * as util from '../util';
 
 /**
@@ -77,7 +77,7 @@ function typeNeedsParentheses(node): boolean {
 
 const defaultOptions = ['array'];
 
-const rule: Rule.RuleModule = {
+const rule: RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {

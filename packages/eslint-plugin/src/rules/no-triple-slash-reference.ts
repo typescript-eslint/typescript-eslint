@@ -3,14 +3,14 @@
  * @author Danny Fritz
  */
 
-import { Rule } from 'eslint';
+import RuleModule from '../RuleModule';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+const rule: RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {

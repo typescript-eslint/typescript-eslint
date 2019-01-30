@@ -3,7 +3,7 @@
  * @author Patricio Trevino
  */
 
-import { Rule } from 'eslint';
+import RuleModule from '../RuleModule';
 import baseRule from 'eslint/lib/rules/camelcase';
 import * as util from '../util';
 
@@ -19,7 +19,7 @@ const defaultOptions = [
 ];
 
 /* eslint-disable eslint-plugin/require-meta-type */
-const rule: Rule.RuleModule = {
+const rule: RuleModule = {
   meta: Object.assign({}, baseRule.meta, {
     docs: {
       description: 'Enforce camelCase naming convention',

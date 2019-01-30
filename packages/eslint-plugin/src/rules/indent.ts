@@ -3,7 +3,7 @@
  * @author Patricio Trevino
  */
 
-import { Rule } from 'eslint';
+import RuleModule from '../RuleModule';
 import baseRule from 'eslint/lib/rules/indent';
 import * as util from '../util';
 

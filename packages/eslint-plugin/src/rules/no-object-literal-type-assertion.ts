@@ -3,7 +3,7 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import { Rule } from 'eslint';
+import RuleModule from '../RuleModule';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ const defaultOptions = [
   }
 ];
 
-const rule: Rule.RuleModule = {
+const rule: RuleModule = {
   meta: {
     type: 'problem',
     docs: {

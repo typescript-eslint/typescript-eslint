@@ -2,7 +2,7 @@
  * @fileoverview Enforces naming of generic type variables.
  */
 
-import { Rule } from 'eslint';
+import RuleModule from '../RuleModule';
 import * as util from '../util';
 
 const defaultOptions = [
@@ -10,7 +10,7 @@ const defaultOptions = [
   '^T([A-Z0-9][a-zA-Z0-9]*){0,1}$'
 ];
 
-const rule: Rule.RuleModule = {
+const rule: RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {

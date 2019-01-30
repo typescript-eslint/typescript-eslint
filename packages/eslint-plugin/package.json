@@ -33,7 +33,8 @@
   "devDependencies": {
     "eslint": "^5.9.0",
     "eslint-docs": "^0.2.6",
-    "ts-node": "^8.0.1"
+    "ts-node": "^8.0.1",
+    "@typescript-eslint/typescript-estree": "1.1.0"
   },
   "peerDependencies": {
     "eslint": ">=4.13.1 < 6",

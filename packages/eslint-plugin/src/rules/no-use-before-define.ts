@@ -195,7 +195,7 @@ const defaultOptions = [
   }
 ];
 
-const rule: Rule.RuleModule = {
+const rule: RuleModule = {
   meta: {
     type: 'problem',
     docs: {

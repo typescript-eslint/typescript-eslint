@@ -2,6 +2,7 @@
 
 // module augmentation is weird
 import { RuleTester, Scope } from 'eslint';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 declare module 'eslint' {
   namespace Scope {
     interface Variable {

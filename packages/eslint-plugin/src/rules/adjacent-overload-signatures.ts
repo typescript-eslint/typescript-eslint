@@ -3,19 +3,22 @@
  * @author Patricio Trevino
  */
 
-import { Rule } from 'eslint';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
+import RuleModule from '../RuleModule';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+type Member = TSESTree.ClassElement | TSESTree.Statement | TSESTree.TypeElement;
+
+const rule: RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Require that member overloads be consecutive',
-      category: 'TypeScript',
+      category: 'Best Practices',
       extraDescription: [util.tslintRule('adjacent-overload-signatures')],
       url: util.metaDocsUrl('adjacent-overload-signatures'),
       recommended: 'error'
@@ -26,36 +29,44 @@ const rule: Rule.RuleModule = {
     }
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
 
     /**
      * Gets the name of the member being processed.
-     * @param {ASTNode} member the member being processed.
+     * @param member the member being processed.
      * @returns the name of the member or null if it's a member not relevant to the rule.
      */
-    function getMemberName(member): string | null {
-      if (!member) return null;
+    function getMemberName(member: TSESTree.Node): string | null {
+      if (!member) {
+        return null;
+      }
 
       switch (member.type) {
         case 'ExportDefaultDeclaration':
         case 'ExportNamedDeclaration': {
           // export statements (e.g. export { a };)
           // have no declarations, so ignore them
-          return member.declaration ? getMemberName(member.declaration) : null;
+          if (!member.declaration) {
+            return null;
+          }
+
+          return getMemberName(member.declaration);
         }
         case 'TSDeclareFunction':
-        case 'FunctionDeclaration':
-        case 'TSNamespaceFunctionDeclaration': {
+        case 'FunctionDeclaration': {
           return member.id && member.id.name;
         }
         case 'TSMethodSignature': {
-          return (
-            (member.key && (member.key.name || member.key.value)) ||
-            (member.name && (member.name.name || member.name.value))
-          );
+          if (member.key.type === 'Identifier') {
+            return member.key.name;
+          } else if (member.key.type === 'Literal') {
+            return member.key.value;
+          }
+
+          return null;
         }
         case 'TSCallSignatureDeclaration': {
           return 'call';
@@ -64,20 +75,54 @@ const rule: Rule.RuleModule = {
           return 'new';
         }
         case 'MethodDefinition': {
-          return member.key.name || member.key.value;
-        }
-        default: {
+          if (member.key.type === 'Identifier') {
+            return member.key.name;
+          } else if (member.key.type === 'Literal') {
+            return member.key.value;
+          }
+
           return null;
         }
       }
+
+      return null;
+    }
+
+    function getMembers(
+      node:
+        | TSESTree.ClassBody
+        | TSESTree.Program
+        | TSESTree.TSModuleBlock
+        | TSESTree.TSTypeLiteral
+        | TSESTree.TSInterfaceBody
+    ): Member[] {
+      switch (node.type) {
+        case 'ClassBody':
+        case 'Program':
+        case 'TSModuleBlock':
+        case 'TSInterfaceBody':
+          return node.body;
+
+        case 'TSTypeLiteral':
+          return node.members;
+      }
+
+      return [];
     }
 
     /**
      * Check the body for overload methods.
      * @param {ASTNode} node the body to be inspected.
      */
-    function checkBodyForOverloadMethods(node): void {
-      const members = node.body || node.members;
+    function checkBodyForOverloadMethods(
+      node:
+        | TSESTree.ClassBody
+        | TSESTree.Program
+        | TSESTree.TSModuleBlock
+        | TSESTree.TSTypeLiteral
+        | TSESTree.TSInterfaceBody
+    ): void {
+      const members = getMembers(node);
 
       if (members) {
         let lastName: string | null;
@@ -112,11 +157,11 @@ const rule: Rule.RuleModule = {
     // Public
     //----------------------------------------------------------------------
     return {
+      ClassBody: checkBodyForOverloadMethods,
+      Program: checkBodyForOverloadMethods,
       TSModuleBlock: checkBodyForOverloadMethods,
       TSTypeLiteral: checkBodyForOverloadMethods,
-      TSInterfaceBody: checkBodyForOverloadMethods,
-      ClassBody: checkBodyForOverloadMethods,
-      Program: checkBodyForOverloadMethods
+      TSInterfaceBody: checkBodyForOverloadMethods
     };
   }
 };

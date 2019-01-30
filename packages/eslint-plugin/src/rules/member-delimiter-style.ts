@@ -4,7 +4,7 @@
  * @author Brad Zacher
  */
 
-import { Rule } from 'eslint';
+import RuleModule from '../RuleModule';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ const definition = {
   additionalProperties: false
 };
 
-const rule: Rule.RuleModule = {
+const rule: RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
