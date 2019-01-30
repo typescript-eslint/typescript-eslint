@@ -5,7 +5,7 @@ const fs = require('fs');
 // exports.runESLint = function(directory, files, useServices) {
 //   const linter = new eslint.CLIEngine({
 //     files: files,
-//     configFile: `${directory}.eslintrc.json`,
+//     configFile: `${directory}.eslintrc.js`,
 //     extensions: ['.js', '.ts']
 //   });
 //   const results = [];
@@ -41,19 +41,10 @@ exports.runESLint = function(directory, files, useServices) {
     require('@typescript-eslint/eslint-plugin/lib/rules/restrict-plus-operands')
   );
   let result;
-  const config = JSON.parse(
-    fs.readFileSync(
-      path.join(__dirname, `./${directory}.eslintrc.json`),
-      'utf8'
-    )
-  );
-  if (useServices) {
-    config.parserOptions.tsconfigRootDir = path.join(__dirname, directory);
-  }
   for (const file of files) {
     result = linter.verify(
       fs.readFileSync(path.join(__dirname, file), 'utf8'),
-      config,
+      require(path.join(__dirname, `./${directory}.eslintrc.js`)),
       file
     );
   }
