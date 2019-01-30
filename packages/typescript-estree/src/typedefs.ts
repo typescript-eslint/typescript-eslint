@@ -37,23 +37,182 @@ interface NodeBase {
   // source?: string | null;
 }
 
+export type Node =
+  | ArrayExpression
+  | ArrayPattern
+  | ArrowFunctionExpression
+  | AssignmentExpression
+  | AssignmentPattern
+  | AwaitExpression
+  | BigIntLiteral
+  | BinaryExpression
+  | BlockStatement
+  | BreakStatement
+  | CallExpression
+  | CatchClause
+  | ClassBody
+  | ClassDeclaration
+  | ClassExpression
+  | ClassProperty
+  | ConditionalExpression
+  | ContinueStatement
+  | DebuggerStatement
+  | Decorator
+  | DoWhileStatement
+  | EmptyStatement
+  | ExportAllDeclaration
+  | ExportDefaultDeclaration
+  | ExportNamedDeclaration
+  | ExportSpecifier
+  | ExpressionStatement
+  | ForInStatement
+  | ForOfStatement
+  | ForStatement
+  | FunctionDeclaration
+  | FunctionExpression
+  | Identifier
+  | IfStatement
+  | Import
+  | ImportDeclaration
+  | ImportDefaultSpecifier
+  | ImportNamespaceSpecifier
+  | ImportSpecifier
+  | JSXAttribute
+  | JSXClosingElement
+  | JSXClosingFragment
+  | JSXElement
+  | JSXEmptyExpression
+  | JSXExpressionContainer
+  | JSXFragment
+  | JSXIdentifier
+  | JSXOpeningElement
+  | JSXOpeningFragment
+  | JSXSpreadAttribute
+  | JSXSpreadChild
+  | JSXText
+  | LabeledStatement
+  | Literal
+  | LogicalExpression
+  | MemberExpression
+  | MetaProperty
+  | MethodDefinition
+  | NewExpression
+  | ObjectExpression
+  | ObjectPattern
+  | Program
+  | Property
+  | RestElement
+  | ReturnStatement
+  | SequenceExpression
+  | SpreadElement
+  | Super
+  | SwitchCase
+  | SwitchStatement
+  | TaggedTemplateExpression
+  | TemplateElement
+  | TemplateLiteral
+  | ThisExpression
+  | ThrowStatement
+  | TryStatement
+  | TSAbstractClassProperty
+  | TSAbstractKeyword
+  | TSAbstractMethodDefinition
+  | TSAnyKeyword
+  | TSArrayType
+  | TSAsExpression
+  | TSAsyncKeyword
+  | TSBigIntKeyword
+  | TSBooleanKeyword
+  | TSCallSignatureDeclaration
+  | TSClassImplements
+  | TSConditionalType
+  | TSConstKeyword
+  | TSConstructorType
+  | TSConstructSignatureDeclaration
+  | TSDeclareFunction
+  | TSDeclareKeyword
+  | TSDefaultKeyword
+  | TSEnumDeclaration
+  | TSEnumMember
+  | TSExportAssignment
+  | TSExportKeyword
+  | TSExternalModuleReference
+  | TSFunctionType
+  | TSImportEqualsDeclaration
+  | TSImportType
+  | TSIndexedAccessType
+  | TSIndexSignature
+  | TSInferType
+  | TSInterfaceDeclaration
+  | TSInterfaceBody
+  | TSInterfaceHeritage
+  | TSIntersectionType
+  | TSLiteralType
+  | TSMappedType
+  | TSMethodSignature
+  | TSModuleBlock
+  | TSModuleDeclaration
+  | TSNamespaceExportDeclaration
+  | TSNeverKeyword
+  | TSNonNullExpression
+  | TSNullKeyword
+  | TSNumberKeyword
+  | TSObjectKeyword
+  | TSOptionalType
+  | TSParameterProperty
+  | TSParenthesizedType
+  | TSPropertySignature
+  | TSPublicKeyword
+  | TSPrivateKeyword
+  | TSProtectedKeyword
+  | TSQualifiedName
+  | TSReadonlyKeyword
+  | TSRestType
+  | TSStaticKeyword
+  | TSStringKeyword
+  | TSSymbolKeyword
+  | TSThisType
+  | TSTupleType
+  | TSTypeAliasDeclaration
+  | TSTypeAnnotation
+  | TSTypeAssertion
+  | TSTypeLiteral
+  | TSTypeOperator
+  | TSTypeParameter
+  | TSTypeParameterDeclaration
+  | TSTypeParameterInstantiation
+  | TSTypePredicate
+  | TSTypeQuery
+  | TSTypeReference
+  | TSUndefinedKeyword
+  | TSUnionType
+  | TSUnknownKeyword
+  | TSVoidKeyword
+  | UpdateExpression
+  | UnaryExpression
+  | VariableDeclaration
+  | VariableDeclarator
+  | WhileStatement
+  | WithStatement
+  | YieldExpression;
+
 //////////
 // Reusable Unions
 //  These are based off of types used in the Typescript AST definitions
 //  **Ensure you sort the union members alphabetically**
 //////////
 
-type Accessibility = 'public' | 'protected' | 'private';
-type BindingPattern = ArrayPattern | ObjectPattern;
-type BindingName = BindingPattern | Identifier;
-type ClassElement =
+export type Accessibility = 'public' | 'protected' | 'private';
+export type BindingPattern = ArrayPattern | ObjectPattern;
+export type BindingName = BindingPattern | Identifier;
+export type ClassElement =
   | ClassProperty
   | FunctionExpression
   | MethodDefinition
   | TSAbstractClassProperty
   | TSAbstractMethodDefinition
   | TSIndexSignature;
-type DeclarationStatement =
+export type DeclarationStatement =
   | ClassDeclaration
   | ClassExpression
   | ExportAllDeclaration
@@ -66,8 +225,18 @@ type DeclarationStatement =
   | TSNamespaceExportDeclaration
   | TSTypeAliasDeclaration
   | TSEnumDeclaration;
-type EntityName = Identifier | TSQualifiedName;
-type Expression =
+export type EntityName = Identifier | TSQualifiedName;
+export type ExportDeclaration =
+  | ClassDeclaration
+  | ClassExpression
+  | FunctionDeclaration
+  | TSDeclareFunction
+  | TSEnumDeclaration
+  | TSInterfaceDeclaration
+  | TSModuleDeclaration
+  | TSTypeAliasDeclaration
+  | VariableDeclarator;
+export type Expression =
   | ArrowFunctionExpression
   | AssignmentExpression
   | BinaryExpression
@@ -85,25 +254,30 @@ type Expression =
   | TSAsExpression
   | TSUnaryExpression
   | YieldExpression;
-type ExpressionWithTypeArguments = TSClassImplements | TSInterfaceHeritage;
-type ForInitialiser = Expression | VariableDeclaration;
-type ImportClause =
+export type ExpressionWithTypeArguments =
+  | TSClassImplements
+  | TSInterfaceHeritage;
+export type ForInitialiser = Expression | VariableDeclaration;
+export type ImportClause =
   | ImportDefaultSpecifier
   | ImportNamespaceSpecifier
   | ImportSpecifier;
-type IterationStatement =
+export type IterationStatement =
   | DoWhileStatement
   | ForInStatement
   | ForOfStatement
   | ForStatement
   | WhileStatement;
-type JSXChild = JSXElement | JSXExpression | JSXFragment | JSXText;
-type JSXExpression =
+export type JSXChild = JSXElement | JSXExpression | JSXFragment | JSXText;
+export type JSXExpression =
   | JSXEmptyExpression
   | JSXSpreadChild
   | JSXExpressionContainer;
-type JSXTagNameExpression = Identifier | MemberExpression | ThisExpression;
-type LeftHandSideExpression =
+export type JSXTagNameExpression =
+  | Identifier
+  | MemberExpression
+  | ThisExpression;
+export type LeftHandSideExpression =
   | CallExpression
   | ClassExpression
   | ClassDeclaration
@@ -113,8 +287,8 @@ type LeftHandSideExpression =
   | PrimaryExpression
   | TaggedTemplateExpression
   | TSNonNullExpression;
-type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
-type Modifier =
+export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
+export type Modifier =
   | TSAbstractKeyword
   | TSAsyncKeyword
   | TSConstKeyword
@@ -126,14 +300,14 @@ type Modifier =
   | TSProtectedKeyword
   | TSReadonlyKeyword
   | TSStaticKeyword;
-type ObjectLiteralElementLike =
+export type ObjectLiteralElementLike =
   | MethodDefinition
   | Property
   | RestElement
   | SpreadElement
   | TSAbstractMethodDefinition;
-type Parameter = AssignmentPattern | RestElement | TSParameterProperty;
-type PrimaryExpression =
+export type Parameter = AssignmentPattern | RestElement | TSParameterProperty;
+export type PrimaryExpression =
   | ArrayExpression
   | ArrayPattern
   | ClassExpression
@@ -152,8 +326,8 @@ type PrimaryExpression =
   | TemplateLiteral
   | ThisExpression
   | TSNullKeyword;
-type PropertyName = Identifier | Literal;
-type Statement =
+export type PropertyName = Identifier | Literal;
+export type Statement =
   | BlockStatement
   | BreakStatement
   | ContinueStatement
@@ -172,13 +346,13 @@ type Statement =
   | TryStatement
   | VariableDeclaration
   | WithStatement;
-type TypeElement =
+export type TypeElement =
   | TSCallSignatureDeclaration
   | TSConstructSignatureDeclaration
   | TSIndexSignature
   | TSMethodSignature
   | TSPropertySignature;
-type TypeNode =
+export type TypeNode =
   | ThisExpression
   | TSAnyKeyword
   | TSArrayType
@@ -215,7 +389,7 @@ type TypeNode =
   | TSUnionType
   | TSUnknownKeyword
   | TSVoidKeyword;
-type TSUnaryExpression =
+export type TSUnaryExpression =
   | AwaitExpression
   | LeftHandSideExpression
   | TSTypeAssertion
@@ -438,12 +612,12 @@ export interface ExportAllDeclaration extends NodeBase {
 
 export interface ExportDefaultDeclaration extends NodeBase {
   type: 'ExportDefaultDeclaration';
-  declaration: Expression;
+  declaration: ExportDeclaration;
 }
 
 export interface ExportNamedDeclaration extends NodeBase {
   type: 'ExportNamedDeclaration';
-  declaration: Expression | null;
+  declaration: ExportDeclaration | null;
   specifiers: ExportSpecifier[];
   source: Expression | null;
 }

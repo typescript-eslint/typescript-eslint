@@ -22,6 +22,7 @@ import {
   ParserOptions
 } from './temp-types-based-on-js-source';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
+import * as TSESTree from './typedefs';
 
 const packageJSON = require('../package.json');
 
@@ -383,3 +384,4 @@ export function parseAndGenerateServices<T extends ParserOptions>(
 
 export { AST_NODE_TYPES } from './ast-node-types';
 export { ParserOptions };
+export { TSESTree };
