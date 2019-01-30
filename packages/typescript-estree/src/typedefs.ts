@@ -37,14 +37,10 @@ interface NodeBase {
   // source?: string | null;
 }
 
-//////////////// NOTE - got to line 1838 ////////////////////
-
-// ensure you sort the union members alphabetically...
-export type Node = null; // TODO
-
 //////////
 // Reusable Unions
 //  These are based off of types used in the Typescript AST definitions
+//  **Ensure you sort the union members alphabetically**
 //////////
 
 type Accessibility = 'public' | 'protected' | 'private';
@@ -57,14 +53,50 @@ type ClassElement =
   | TSAbstractClassProperty
   | TSAbstractMethodDefinition
   | TSIndexSignature;
+type DeclarationStatement =
+  | ClassDeclaration
+  | ClassExpression
+  | ExportAllDeclaration
+  | ExportNamedDeclaration
+  | FunctionDeclaration
+  | TSDeclareFunction
+  | TSImportEqualsDeclaration
+  | TSInterfaceDeclaration
+  | TSModuleDeclaration
+  | TSNamespaceExportDeclaration
+  | TSTypeAliasDeclaration
+  | TSEnumDeclaration;
 type EntityName = Identifier | TSQualifiedName;
-type Expression = null; // TODO - get lists from ts source and convert to estree nodes
+type Expression =
+  | ArrowFunctionExpression
+  | AssignmentExpression
+  | BinaryExpression
+  | ConditionalExpression
+  | JSXClosingElement
+  | JSXClosingFragment
+  | JSXExpressionContainer
+  | JSXOpeningElement
+  | JSXOpeningFragment
+  | JSXSpreadChild
+  | LogicalExpression
+  | RestElement
+  | SequenceExpression
+  | SpreadElement
+  | TSAsExpression
+  | TSUnaryExpression
+  | YieldExpression;
 type ExpressionWithTypeArguments = TSClassImplements | TSInterfaceHeritage;
 type ForInitialiser = Expression | VariableDeclaration;
 type ImportClause =
   | ImportDefaultSpecifier
   | ImportNamespaceSpecifier
   | ImportSpecifier;
+type IterationStatement =
+  | DoWhileStatement
+  | ForInStatement
+  | ForOfStatement
+  | ForStatement
+  | WhileStatement;
 type JSXChild = JSXElement | JSXExpression | JSXFragment | JSXText;
 type JSXExpression =
   | JSXEmptyExpression
@@ -72,23 +104,15 @@ type JSXExpression =
   | JSXExpressionContainer;
 type JSXTagNameExpression = Identifier | MemberExpression | ThisExpression;
 type LeftHandSideExpression =
-  | ArrayExpression
-  | ArrayPattern
   | CallExpression
   | ClassExpression
   | ClassDeclaration
-  | Expression
   | FunctionExpression
-  | Import
   | LiteralExpression
   | MemberExpression
-  | ObjectExpression
-  | ObjectPattern
-  | Super
+  | PrimaryExpression
   | TaggedTemplateExpression
-  | ThisExpression
-  | TSNonNullExpression
-  | TSNullKeyword;
+  | TSNonNullExpression;
 type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
 type Modifier =
   | TSAbstractKeyword
@@ -109,8 +133,45 @@ type ObjectLiteralElementLike =
   | SpreadElement
   | TSAbstractMethodDefinition;
 type Parameter = AssignmentPattern | RestElement | TSParameterProperty;
+type PrimaryExpression =
+  | ArrayExpression
+  | ArrayPattern
+  | ClassExpression
+  | FunctionExpression
+  | Identifier
+  | Import
+  | JSXElement
+  | JSXFragment
+  | JSXOpeningElement
+  | Literal
+  | LiteralExpression
+  | MetaProperty
+  | ObjectExpression
+  | ObjectPattern
+  | Super
+  | TemplateLiteral
+  | ThisExpression
+  | TSNullKeyword;
 type PropertyName = Identifier | Literal;
-type Statement = null; // TODO - get lists from ts source and convert to estree nodes
+type Statement =
+  | BlockStatement
+  | BreakStatement
+  | ContinueStatement
+  | DebuggerStatement
+  | DeclarationStatement
+  | EmptyStatement
+  | ExpressionStatement
+  | IfStatement
+  | IterationStatement
+  | ImportDeclaration
+  | LabeledStatement
+  | TSModuleBlock
+  | ReturnStatement
+  | SwitchStatement
+  | ThrowStatement
+  | TryStatement
+  | VariableDeclaration
+  | WithStatement;
 type TypeElement =
   | TSCallSignatureDeclaration
   | TSConstructSignatureDeclaration
@@ -163,6 +224,7 @@ type TSUnaryExpression =
 
 ///////////////
 // Base, common types
+//  **Ensure you sort the interfaces alphabetically**
 ///////////////
 
 interface BinaryExpressionBase extends NodeBase {
@@ -246,6 +308,7 @@ interface UnaryExpressionBase extends NodeBase {
 
 ///////////////
 // Typescript ESTree Nodes
+//  **Ensure you sort the interfaces alphabetically**
 ///////////////
 
 export interface ArrayExpression extends NodeBase {
