@@ -11,6 +11,12 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
+type RuleNode =
+  | TSESTree.ClassBody
+  | TSESTree.Program
+  | TSESTree.TSModuleBlock
+  | TSESTree.TSTypeLiteral
+  | TSESTree.TSInterfaceBody;
 type Member = TSESTree.ClassElement | TSESTree.Statement | TSESTree.TypeElement;
 
 const rule: RuleModule = {
@@ -88,14 +94,7 @@ const rule: RuleModule = {
       return null;
     }
 
-    function getMembers(
-      node:
-        | TSESTree.ClassBody
-        | TSESTree.Program
-        | TSESTree.TSModuleBlock
-        | TSESTree.TSTypeLiteral
-        | TSESTree.TSInterfaceBody
-    ): Member[] {
+    function getMembers(node: RuleNode): Member[] {
       switch (node.type) {
         case 'ClassBody':
         case 'Program':
@@ -114,14 +113,7 @@ const rule: RuleModule = {
      * Check the body for overload methods.
      * @param {ASTNode} node the body to be inspected.
      */
-    function checkBodyForOverloadMethods(
-      node:
-        | TSESTree.ClassBody
-        | TSESTree.Program
-        | TSESTree.TSModuleBlock
-        | TSESTree.TSTypeLiteral
-        | TSESTree.TSInterfaceBody
-    ): void {
+    function checkBodyForOverloadMethods(node: RuleNode): void {
       const members = getMembers(node);
 
       if (members) {
