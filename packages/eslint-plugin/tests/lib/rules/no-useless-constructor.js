@@ -40,7 +40,7 @@ ruleTester.run('no-useless-constructor', rule, {
     'class Foo { constructor(); }',
     'abstract class Foo { constructor(); }',
     'abstract class Foo { abstract constructor(); }',
-    // https://github.com/typescript-eslint/typescript-eslint/issues/
+    // https://github.com/typescript-eslint/typescript-eslint/issues/48
     'class Foo { constructor(private name: string) {} }',
     'class Foo { constructor(public name: string) {} }',
     'class Foo { constructor(protected name: string) {} }'
