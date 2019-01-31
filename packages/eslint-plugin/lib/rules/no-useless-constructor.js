@@ -34,8 +34,7 @@ module.exports = Object.assign({}, baseRule, {
         if (
           !node.value ||
           node.value.type !== 'FunctionExpression' ||
-          node.accessibility === 'private' ||
-          node.accessibility === 'protected'
+          node.accessibility
         ) {
           return;
         }

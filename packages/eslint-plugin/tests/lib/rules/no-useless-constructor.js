@@ -45,8 +45,13 @@ ruleTester.run('no-useless-constructor', rule, {
     'class Foo { constructor(public name: string) {} }',
     'class Foo { constructor(protected name: string) {} }',
     // https://github.com/typescript-eslint/typescript-eslint/pull/167#discussion_r252638401
+    'class Foo { public constructor() {} }',
     'class Foo { private constructor() {} }',
-    'class Foo { protected constructor() {} }'
+    'class Foo { protected constructor() {} }',
+    'class A extends B { public constructor() {} }',
+    'class A extends B { protected constructor(foo, bar) { super(bar); } }',
+    'class A extends B { private constructor(foo, bar) { super(bar); } }',
+    'class A extends B { public constructor(foo){ super(foo); }'
   ],
   invalid: [
     {
@@ -85,17 +90,6 @@ ruleTester.run('no-useless-constructor', rule, {
     {
       code:
         'class A extends B { constructor(a, b, ...c) { super(a, b, ...c); } }',
-      errors: [error]
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/pull/167#discussion_r252638401
-    {
-      code:
-        'class A extends B { public constructor() {} }',
-      errors: [error]
-    },
-    {
-      code:
-        'class A extends B { public constructor(foo){ super(foo); }',
       errors: [error]
     }
   ]
