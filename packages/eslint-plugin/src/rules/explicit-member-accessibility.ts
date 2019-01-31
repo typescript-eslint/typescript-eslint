@@ -3,7 +3,7 @@
  * @author Danny Fritz
  */
 
-import RuleModule from '../RuleModule';
+import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------

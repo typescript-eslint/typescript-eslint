@@ -3,7 +3,7 @@
  * @author James Henry
  */
 
-import RuleModule from '../RuleModule';
+import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/no-unused-vars';
 import { Identifier } from 'estree';
 import * as util from '../util';

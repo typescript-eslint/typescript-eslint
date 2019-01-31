@@ -19,8 +19,7 @@ declare module 'eslint' {
   interface RuleTester {
     run<T extends any[] = never[]>(
       name: string,
-      // have to keep the base eslint def for our base eslint-rule test cases
-      rule: RuleModule<T> | Rule.RuleModule,
+      rule: RuleModule<T>,
       tests: RuleTesterRunTests
     ): void;
   }

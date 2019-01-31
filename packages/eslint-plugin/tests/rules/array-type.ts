@@ -784,7 +784,7 @@ describe('array-type (nested)', () => {
     function testOutput(option: string, code: string, output: string): void {
       const linter = new Linter();
 
-      linter.defineRule('array-type', Object.assign({}, rule));
+      linter.defineRule('array-type', Object.assign({}, rule) as any);
       const result = linter.verifyAndFix(
         code,
         {
@@ -809,23 +809,23 @@ describe('array-type (nested)', () => {
     testOutput(
       'array',
       `
-                class Foo<T = Array<Array<Bar>>> extends Bar<T, Array<T>> implements Baz<Array<T>> {
-                    private s: Array<T>
+class Foo<T = Array<Array<Bar>>> extends Bar<T, Array<T>> implements Baz<Array<T>> {
+    private s: Array<T>
 
-                    constructor (p: Array<T>) {
-                        return new Array()
-                    }
-                }
-            `,
+    constructor (p: Array<T>) {
+        return new Array()
+    }
+}
+      `,
       `
-                class Foo<T = Bar[][]> extends Bar<T, T[]> implements Baz<T[]> {
-                    private s: T[]
+class Foo<T = Bar[][]> extends Bar<T, T[]> implements Baz<T[]> {
+    private s: T[]
 
-                    constructor (p: T[]) {
-                        return new Array()
-                    }
-                }
-            `
+    constructor (p: T[]) {
+        return new Array()
+    }
+}
+      `
     );
     testOutput(
       'array-simple',

@@ -4,7 +4,7 @@
  */
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule, { ReportFixFunction } from '../RuleModule';
+import RuleModule, { ReportFixFunction } from 'ts-eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -22,7 +22,8 @@ interface Options {
       }
   >;
 }
-const defaultOptions: Options[] = [
+
+const defaultOptions: [Options] = [
   {
     types: {
       String: {

@@ -4,7 +4,7 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import RuleModule from '../RuleModule';
+import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------

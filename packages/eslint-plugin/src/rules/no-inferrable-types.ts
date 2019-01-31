@@ -3,7 +3,7 @@
  * @author James Garbutt <https://github.com/43081j>
  */
 
-import RuleModule from '../RuleModule';
+import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
