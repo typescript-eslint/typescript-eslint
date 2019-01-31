@@ -1,4 +1,4 @@
-interface LineAndColumnData {
+export interface LineAndColumnData {
   /**
    * Line number (1-indexed)
    */
@@ -934,7 +934,7 @@ export interface TSAnyKeyword extends NodeBase {
 }
 
 export interface TSArrayType extends NodeBase {
-  type: 'TSTSArrayType';
+  type: 'TSArrayType';
   elementType: TypeNode;
 }
 
@@ -1307,7 +1307,7 @@ export interface TSTypeQuery extends NodeBase {
 export interface TSTypeReference extends NodeBase {
   type: 'TSTypeReference';
   typeName: EntityName;
-  typeParameters: TSTypeParameterInstantiation;
+  typeParameters: TSTypeParameterInstantiation | undefined;
 }
 
 export interface TSUndefinedKeyword extends NodeBase {
