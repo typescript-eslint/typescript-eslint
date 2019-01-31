@@ -4,14 +4,15 @@
  * @author Armano <https://github.com/armano2>
  */
 
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from '../RuleModule';
 import * as util from '../util';
 
 /**
  * Check whatever node can be considered as simple
- * @param {ASTNode} node the node to be evaluated.
+ * @param node the node to be evaluated.
  */
-function isSimpleType(node): boolean {
+function isSimpleType(node: TSESTree.Node): boolean {
   switch (node.type) {
     case 'Identifier':
     case 'TSAnyKeyword':
@@ -55,9 +56,9 @@ function isSimpleType(node): boolean {
 
 /**
  * Check if node needs parentheses
- * @param {ASTNode} node the node to be evaluated.
+ * @param node the node to be evaluated.
  */
-function typeNeedsParentheses(node): boolean {
+function typeNeedsParentheses(node: TSESTree.Node): boolean {
   switch (node.type) {
     case 'TSTypeReference':
       return typeNeedsParentheses(node.typeName);
@@ -83,7 +84,7 @@ const rule: RuleModule = {
     docs: {
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
       extraDescription: [util.tslintRule('array-type')],
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('array-type'),
       recommended: 'error'
     },
@@ -104,16 +105,19 @@ const rule: RuleModule = {
       }
     ]
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     const option = util.applyDefault(defaultOptions, context.options)[0];
     const sourceCode = context.getSourceCode();
 
     /**
      * Check if whitespace is needed before this node
-     * @param {ASTNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
-    function requireWhitespaceBefore(node): boolean {
+    function requireWhitespaceBefore(node: TSESTree.Node): boolean {
       const prevToken = sourceCode.getTokenBefore(node);
+      if (!prevToken) {
+        return false;
+      }
 
       if (node.range[0] - prevToken.range[1] > 0) {
         return false;
@@ -123,9 +127,9 @@ const rule: RuleModule = {
     }
 
     /**
-     * @param {ASTNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
-    function getMessageType(node): string {
+    function getMessageType(node: TSESTree.Node): string {
       if (node) {
         if (node.type === 'TSParenthesizedType') {
           return getMessageType(node.typeAnnotation);
@@ -142,7 +146,7 @@ const rule: RuleModule = {
     //----------------------------------------------------------------------
 
     return {
-      TSArrayType(node) {
+      TSArrayType(node: TSESTree.TSArrayType) {
         if (
           option === 'array' ||
           (option === 'array-simple' && isSimpleType(node.elementType))
@@ -168,19 +172,21 @@ const rule: RuleModule = {
             ];
 
             if (node.elementType.type === 'TSParenthesizedType') {
-              toFix.push(
-                fixer.remove(sourceCode.getFirstToken(node.elementType))
-              );
-              toFix.push(
-                fixer.remove(sourceCode.getLastToken(node.elementType))
-              );
+              const first = sourceCode.getFirstToken(node.elementType);
+              const last = sourceCode.getLastToken(node.elementType);
+              if (!first || !last) {
+                return null;
+              }
+
+              toFix.push(fixer.remove(first));
+              toFix.push(fixer.remove(last));
             }
 
             return toFix;
           }
         });
       },
-      TSTypeReference(node) {
+      TSTypeReference(node: TSESTree.TSTypeReference) {
         if (
           option === 'generic' ||
           node.typeName.type !== 'Identifier' ||
