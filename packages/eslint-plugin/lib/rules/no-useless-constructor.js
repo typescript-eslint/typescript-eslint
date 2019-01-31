@@ -31,7 +31,12 @@ module.exports = Object.assign({}, baseRule, {
     //----------------------------------------------------------------------
     return {
       MethodDefinition(node) {
-        if (!node.value || node.value.type !== 'FunctionExpression') {
+        if (
+          !node.value ||
+          node.value.type !== 'FunctionExpression' ||
+          node.accessibility === 'private' ||
+          node.accessibility === 'protected'
+        ) {
           return;
         }
         if (
