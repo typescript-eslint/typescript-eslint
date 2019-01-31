@@ -1,6 +1,7 @@
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { ParserServices } from '@typescript-eslint/parser';
-import { AST, Linter, Rule, Scope, SourceCode } from 'eslint';
+import { AST, Linter, Rule, Scope } from 'eslint';
+import { Comment as ESTreeComment } from 'estree';
 import { JSONSchema4 } from 'json-schema';
 
 /*
@@ -9,6 +10,193 @@ Redefine these types for these reasons:
 2) We have to replace definitions with our definitions which use our typescript-estree types.
 3) We can better document the fields so it's easier for new contributers to understand.
 */
+
+//#region SourceCode
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+namespace SourceCode {
+  export interface Config {
+    text: string;
+    ast: AST.Program;
+    parserServices?: ParserServices;
+    scopeManager?: Scope.ScopeManager;
+    visitorKeys?: VisitorKeys;
+  }
+
+  export interface VisitorKeys {
+    [nodeType: string]: string[];
+  }
+
+  export type FilterPredicate = (
+    tokenOrComment: AST.Token | ESTreeComment
+  ) => boolean;
+
+  export type CursorWithSkipOptions =
+    | number
+    | FilterPredicate
+    | {
+        includeComments?: boolean;
+        filter?: FilterPredicate;
+        skip?: number;
+      };
+
+  export type CursorWithCountOptions =
+    | number
+    | FilterPredicate
+    | {
+        includeComments?: boolean;
+        filter?: FilterPredicate;
+        count?: number;
+      };
+}
+
+// eslint-disable-next-line no-redeclare
+declare class SourceCode {
+  text: string;
+  ast: AST.Program;
+  lines: string[];
+  hasBOM: boolean;
+  parserServices: ParserServices;
+  scopeManager: Scope.ScopeManager;
+  visitorKeys: SourceCode.VisitorKeys;
+
+  constructor(text: string, ast: AST.Program);
+  // eslint-disable-next-line no-dupe-class-members
+  constructor(config: SourceCode.Config);
+
+  static splitLines(text: string): string[];
+
+  getText(
+    node?: TSESTree.Node,
+    beforeCount?: number,
+    afterCount?: number
+  ): string;
+
+  getLines(): string[];
+
+  getAllComments(): ESTreeComment[];
+
+  getComments(
+    node: TSESTree.Node
+  ): { leading: ESTreeComment[]; trailing: ESTreeComment[] };
+
+  getJSDocComment(node: TSESTree.Node): AST.Token | null;
+
+  getNodeByRangeIndex(index: number): TSESTree.Node | null;
+
+  isSpaceBetweenTokens(first: AST.Token, second: AST.Token): boolean;
+
+  getLocFromIndex(index: number): TSESTree.LineAndColumnData;
+
+  getIndexFromLoc(location: TSESTree.LineAndColumnData): number;
+
+  // Inherited methods from TokenStore
+  // ---------------------------------
+
+  getTokenByRangeStart(
+    offset: number,
+    options?: { includeComments?: boolean }
+  ): AST.Token | null;
+
+  getFirstToken(
+    node: TSESTree.Node,
+    options?: SourceCode.CursorWithSkipOptions
+  ): AST.Token | null;
+
+  getFirstTokens(
+    node: TSESTree.Node,
+    options?: SourceCode.CursorWithCountOptions
+  ): AST.Token[];
+
+  getLastToken(
+    node: TSESTree.Node,
+    options?: SourceCode.CursorWithSkipOptions
+  ): AST.Token | null;
+
+  getLastTokens(
+    node: TSESTree.Node,
+    options?: SourceCode.CursorWithCountOptions
+  ): AST.Token[];
+
+  getTokenBefore(
+    node: TSESTree.Node | AST.Token | ESTreeComment,
+    options?: SourceCode.CursorWithSkipOptions
+  ): AST.Token | null;
+
+  getTokensBefore(
+    node: TSESTree.Node | AST.Token | ESTreeComment,
+    options?: SourceCode.CursorWithCountOptions
+  ): AST.Token[];
+
+  getTokenAfter(
+    node: TSESTree.Node | AST.Token | ESTreeComment,
+    options?: SourceCode.CursorWithSkipOptions
+  ): AST.Token | null;
+
+  getTokensAfter(
+    node: TSESTree.Node | AST.Token | ESTreeComment,
+    options?: SourceCode.CursorWithCountOptions
+  ): AST.Token[];
+
+  getFirstTokenBetween(
+    left: TSESTree.Node | AST.Token | ESTreeComment,
+    right: TSESTree.Node | AST.Token | ESTreeComment,
+    options?: SourceCode.CursorWithSkipOptions
+  ): AST.Token | null;
+
+  getFirstTokensBetween(
+    left: TSESTree.Node | AST.Token | ESTreeComment,
+    right: TSESTree.Node | AST.Token | ESTreeComment,
+    options?: SourceCode.CursorWithCountOptions
+  ): AST.Token[];
+
+  getLastTokenBetween(
+    left: TSESTree.Node | AST.Token | ESTreeComment,
+    right: TSESTree.Node | AST.Token | ESTreeComment,
+    options?: SourceCode.CursorWithSkipOptions
+  ): AST.Token | null;
+
+  getLastTokensBetween(
+    left: TSESTree.Node | AST.Token | ESTreeComment,
+    right: TSESTree.Node | AST.Token | ESTreeComment,
+    options?: SourceCode.CursorWithCountOptions
+  ): AST.Token[];
+
+  getTokensBetween(
+    left: TSESTree.Node | AST.Token | ESTreeComment,
+    right: TSESTree.Node | AST.Token | ESTreeComment,
+    padding?:
+      | number
+      | SourceCode.FilterPredicate
+      | SourceCode.CursorWithCountOptions
+  ): AST.Token[];
+
+  getTokens(
+    node: TSESTree.Node,
+    beforeCount?: number,
+    afterCount?: number
+  ): AST.Token[];
+  // eslint-disable-next-line no-dupe-class-members
+  getTokens(
+    node: TSESTree.Node,
+    options: SourceCode.FilterPredicate | SourceCode.CursorWithCountOptions
+  ): AST.Token[];
+
+  commentsExistBetween(
+    left: TSESTree.Node | AST.Token,
+    right: TSESTree.Node | AST.Token
+  ): boolean;
+
+  getCommentsBefore(nodeOrToken: TSESTree.Node | AST.Token): ESTreeComment[];
+
+  getCommentsAfter(nodeOrToken: TSESTree.Node | AST.Token): ESTreeComment[];
+
+  getCommentsInside(node: TSESTree.Node): ESTreeComment[];
+}
+
+//#endregion SourceCode
+
+//#region Rule
 
 interface RuleMetaData {
   /**
@@ -109,7 +297,7 @@ interface ReportDescriptor {
   /**
    * The fixer function.
    */
-  fix?(fixer: RuleFixer): null | Rule.Fix | IterableIterator<Rule.Fix>;
+  fix?(fixer: RuleFixer): null | Rule.Fix | Rule.Fix[];
   /**
    * The messageId which is being reported.
    */
@@ -120,7 +308,7 @@ interface ReportDescriptor {
   node: TSESTree.Node;
 }
 
-export interface RuleContext<TOpts extends any[]> {
+interface RuleContext<TOpts extends any[]> {
   /**
    * The rule ID.
    */
@@ -203,4 +391,7 @@ interface RuleModule<TOpts extends any[] = never[]> {
   create(context: RuleContext<TOpts>): RuleListener;
 }
 
+//#endregion Rule
+
+export { RuleContext };
 export default RuleModule;
