@@ -67,6 +67,7 @@ function typeNeedsParentheses(node) {
     case 'TSFunctionType':
     case 'TSIntersectionType':
     case 'TSTypeOperator':
+    case 'TSInferType':
       return true;
     default:
       return false;
