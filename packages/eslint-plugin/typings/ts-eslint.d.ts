@@ -295,7 +295,7 @@ declare module 'ts-eslint' {
     /**
      * The parameters for the message string associated with `messageId`.
      */
-    data?: Record<string, string>;
+    data?: Record<string, any>;
     /**
      * The fixer function.
      */
@@ -310,7 +310,7 @@ declare module 'ts-eslint' {
     node: TSESTree.Node;
   }
 
-  interface RuleContext<TOptions extends any[], TMessageIds extends string> {
+  interface RuleContext<TMessageIds extends string, TOptions extends any[]> {
     /**
      * The rule ID.
      */
@@ -385,8 +385,8 @@ declare module 'ts-eslint' {
   type RuleListener = Record<string, (node: never) => void>;
 
   interface RuleModule<
-    TOptions extends any[] = never[],
-    TMessageIds extends string = never,
+    TMessageIds extends string,
+    TOptions extends any[],
     // for extending base rules
     TRuleListener extends RuleListener = RuleListener
   > {
@@ -399,7 +399,7 @@ declare module 'ts-eslint' {
      * Function which returns an object with methods that ESLint calls to “visit”
      * nodes while traversing the abstract syntax tree.
      */
-    create(context: RuleContext<TOptions, TMessageIds>): TRuleListener;
+    create(context: RuleContext<TMessageIds, TOptions>): TRuleListener;
   }
 
   //#endregion Rule

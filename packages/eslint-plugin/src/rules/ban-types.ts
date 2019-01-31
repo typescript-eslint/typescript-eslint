@@ -11,19 +11,21 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-interface Options {
-  types: Record<
-    string,
-    | string
-    | null
-    | {
-        message: string;
-        fixWith?: string;
-      }
-  >;
-}
+type Options = [
+  {
+    types: Record<
+      string,
+      | string
+      | null
+      | {
+          message: string;
+          fixWith?: string;
+        }
+    >;
+  }
+];
 
-const defaultOptions: [Options] = [
+const defaultOptions: Options = [
   {
     types: {
       String: {
@@ -50,7 +52,7 @@ const defaultOptions: [Options] = [
   }
 ];
 
-const rule: RuleModule<[Options]> = {
+const rule: RuleModule<'bannedTypeMessage', Options> = {
   meta: {
     type: 'suggestion',
     docs: {

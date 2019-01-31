@@ -19,7 +19,7 @@ type RuleNode =
   | TSESTree.TSInterfaceBody;
 type Member = TSESTree.ClassElement | TSESTree.Statement | TSESTree.TypeElement;
 
-const rule: RuleModule = {
+const rule: RuleModule<'adjacentSignature', []> = {
   meta: {
     type: 'suggestion',
     docs: {

@@ -1271,7 +1271,7 @@ export interface TSTypeAssertion extends NodeBase {
 
 export interface TSTypeLiteral extends NodeBase {
   type: 'TSTypeLiteral';
-  members: TypeElement;
+  members: TypeElement[];
 }
 
 export interface TSTypeOperator extends NodeBase {

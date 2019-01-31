@@ -76,9 +76,17 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = ['array'];
+type Options = ['array' | 'generic' | 'array-simple'];
 
-const rule: RuleModule = {
+const defaultOptions: Options = ['array'];
+
+const rule: RuleModule<
+  | 'errorStringGeneric'
+  | 'errorStringGenericSimple'
+  | 'errorStringArray'
+  | 'errorStringArraySimple',
+  Options
+> = {
   meta: {
     type: 'suggestion',
     docs: {

@@ -18,7 +18,8 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
 });
 
-const options = [
+// TODO - figure out a better way to type this that doesn't break the generics
+const options: any = [
   {
     types: {
       String: {
