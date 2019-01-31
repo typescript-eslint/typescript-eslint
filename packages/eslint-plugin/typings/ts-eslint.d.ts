@@ -201,7 +201,7 @@ declare module 'ts-eslint' {
 
   //#region Rule
 
-  interface RuleMetaData {
+  interface RuleMetaData<TMessageIds extends string> {
     /**
      * True if the rule is deprecated, false otherwise
      */
@@ -242,9 +242,7 @@ declare module 'ts-eslint' {
      * The key is the messageId, and the string is the parameterised error string.
      * See: https://eslint.org/docs/developer-guide/working-with-rules#messageids
      */
-    messages: {
-      [messageId: string]: string;
-    };
+    messages: Record<TMessageIds, string>;
     /**
      * The type of rule.
      * - `"problem"` means the rule is identifying code that either will cause an error or may cause a confusing behavior. Developers should consider this a high priority to resolve.
@@ -260,12 +258,6 @@ declare module 'ts-eslint' {
      * The options schema. Supply an empty array if there are no options.
      */
     schema: JSONSchema4 | JSONSchema4[];
-  }
-
-  interface RuleListener {
-    // This isn't the correct signature, but it makes it easier to do custom unions within reusable listneers
-    // never will break someone's code unless they specifically type the function argument
-    [key: string]: (node: never) => void;
   }
 
   interface RuleFix {
@@ -299,11 +291,11 @@ declare module 'ts-eslint' {
 
   type ReportFixFunction = (fixer: RuleFixer) => null | RuleFix | RuleFix[];
 
-  interface ReportDescriptor {
+  interface ReportDescriptor<TMessageIds extends string> {
     /**
      * The parameters for the message string associated with `messageId`.
      */
-    data?: { [key: string]: string };
+    data?: Record<string, string>;
     /**
      * The fixer function.
      */
@@ -311,14 +303,14 @@ declare module 'ts-eslint' {
     /**
      * The messageId which is being reported.
      */
-    messageId: string;
+    messageId: TMessageIds;
     /**
      * The Node which the report is being attached to
      */
     node: TSESTree.Node;
   }
 
-  interface RuleContext<TOpts extends any[]> {
+  interface RuleContext<TOptions extends any[], TMessageIds extends string> {
     /**
      * The rule ID.
      */
@@ -327,7 +319,7 @@ declare module 'ts-eslint' {
      * An array of the configured options for this rule.
      * This array does not include the rule severity.
      */
-    options: TOpts;
+    options: TOptions;
     /**
      * The shared settings from configuration.
      * We do not have any shared settings in this plugin.
@@ -385,20 +377,29 @@ declare module 'ts-eslint' {
     /**
      * Reports a problem in the code.
      */
-    report(descriptor: ReportDescriptor): void;
+    report(descriptor: ReportDescriptor<TMessageIds>): void;
   }
 
-  interface RuleModule<TOpts extends any[] = never[]> {
+  // This isn't the correct signature, but it makes it easier to do custom unions within reusable listneers
+  // never will break someone's code unless they specifically type the function argument
+  type RuleListener = Record<string, (node: never) => void>;
+
+  interface RuleModule<
+    TOptions extends any[] = never[],
+    TMessageIds extends string = never,
+    // for extending base rules
+    TRuleListener extends RuleListener = RuleListener
+  > {
     /**
      * Metadata about the rule
      */
-    meta: RuleMetaData;
+    meta: RuleMetaData<TMessageIds>;
 
     /**
      * Function which returns an object with methods that ESLint calls to “visit”
      * nodes while traversing the abstract syntax tree.
      */
-    create(context: RuleContext<TOpts>): RuleListener;
+    create(context: RuleContext<TOptions, TMessageIds>): TRuleListener;
   }
 
   //#endregion Rule

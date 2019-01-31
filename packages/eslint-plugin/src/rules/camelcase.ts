@@ -3,14 +3,21 @@
  * @author Patricio Trevino
  */
 
-import RuleModule from '../RuleModule';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
+import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/camelcase';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
-const defaultOptions = [
+interface Options {
+  ignoreDestructuring: boolean;
+  properties: 'always' | 'never';
+  allow: string[];
+}
+
+const defaultOptions: [Options] = [
   {
     allow: ['^UNSAFE_'],
     ignoreDestructuring: false,
@@ -18,15 +25,18 @@ const defaultOptions = [
   }
 ];
 
-/* eslint-disable eslint-plugin/require-meta-type */
-const rule: RuleModule = {
-  meta: Object.assign({}, baseRule.meta, {
+const rule: RuleModule<[Options], 'notCamelCase'> = {
+  meta: {
+    type: 'suggestion',
     docs: {
       description: 'Enforce camelCase naming convention',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('ban-types'),
       recommended: 'error'
-    }
-  }),
+    },
+    schema: baseRule.meta.schema!,
+    messages: baseRule.meta.messages as Record<'notCamelCase', string>
+  },
 
   create(context) {
     const rules = baseRule.create(context);
@@ -66,17 +76,21 @@ const rule: RuleModule = {
 
     /**
      * Checks if the the node is a valid TypeScript property type.
-     * @param {Node} node the node to be validated.
+     * @param node the node to be validated.
      * @returns true if the node is a TypeScript property type.
      * @private
      */
-    function isTSPropertyType(node): boolean {
-      if (!node.parent) return false;
-      if (TS_PROPERTY_TYPES.includes(node.parent.type)) return true;
+    function isTSPropertyType(node: TSESTree.Node): boolean {
+      if (!node.parent) {
+        return false;
+      }
+      if (TS_PROPERTY_TYPES.includes(node.parent.type)) {
+        return true;
+      }
 
       if (node.parent.type === 'AssignmentPattern') {
         return (
-          node.parent.parent &&
+          node.parent.parent !== undefined &&
           TS_PROPERTY_TYPES.includes(node.parent.parent.type)
         );
       }
@@ -85,7 +99,7 @@ const rule: RuleModule = {
     }
 
     return {
-      Identifier(node) {
+      Identifier(node: TSESTree.Identifier) {
         /*
          * Leading and trailing underscores are commonly used to flag
          * private/protected identifiers, strip them
@@ -111,8 +125,7 @@ const rule: RuleModule = {
         }
 
         // Let the base rule deal with the rest
-        // eslint-disable-next-line new-cap
-        rules.Identifier!(node);
+        rules.Identifier(node);
       }
     };
   }
