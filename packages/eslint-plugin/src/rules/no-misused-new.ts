@@ -31,7 +31,7 @@ const rule: RuleModule = {
   // Public
   //----------------------------------------------------------------------
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     /**
      * @param {ASTNode} node type to be inspected.
      * @returns name of simple type or null

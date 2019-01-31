@@ -55,7 +55,7 @@ const rule: RuleModule = {
     ]
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const config = util.applyDefault(defaultOptions, context.options)[0];
     const conventions = (Object.keys(config) as Modifiers[]).reduce<Options<RegExp>>(
       (acc, accessibility) => {

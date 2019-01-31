@@ -27,7 +27,7 @@ const rule: RuleModule = {
   // Public
   //----------------------------------------------------------------------
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       TSInterfaceDeclaration(node) {
         if (node.body.body.length !== 0) {

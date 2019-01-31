@@ -26,7 +26,7 @@ const rule: RuleModule = {
     }
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const referenceRegExp = /^\/\s*<reference\s*path=/;
     const sourceCode = context.getSourceCode();
 

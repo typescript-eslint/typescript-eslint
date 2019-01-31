@@ -87,7 +87,7 @@ const rule: RuleModule = {
     ]
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const banedTypes = util.applyDefault(defaultOptions, context.options)[0]
       .types;
 

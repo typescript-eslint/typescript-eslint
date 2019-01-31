@@ -53,7 +53,7 @@ const rule: RuleModule = {
     }
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const {
       allowConstructorOnly,
       allowEmpty,

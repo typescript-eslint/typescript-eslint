@@ -48,7 +48,7 @@ const rule: RuleModule = {
     ]
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const { allowDeclarations, allowDefinitionFiles } = util.applyDefault(
       defaultOptions,
       context.options

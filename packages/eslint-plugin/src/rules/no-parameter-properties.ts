@@ -52,7 +52,7 @@ const rule: RuleModule = {
     ]
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const { allows } = util.applyDefault(defaultOptions, context.options)[0];
 
     //----------------------------------------------------------------------

@@ -24,7 +24,7 @@ const rule: RuleModule = {
     schema: []
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     // variables should be defined here
 
     //----------------------------------------------------------------------

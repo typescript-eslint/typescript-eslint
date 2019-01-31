@@ -45,7 +45,7 @@ const rule: RuleModule = {
     ]
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const { ignoreParameters, ignoreProperties } = util.applyDefault(
       defaultOptions,
       context.options

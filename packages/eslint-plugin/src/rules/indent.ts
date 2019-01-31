@@ -105,7 +105,7 @@ const rule: Rule.RuleModule = Object.assign({}, baseRule, {
     messages: baseRule.meta!.messages
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     // because we extend the base rule, have to update opts on the context
     // the context defines options as readonly though...
     const contextWithDefaults: Rule.RuleContext = Object.create(context, {

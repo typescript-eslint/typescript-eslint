@@ -24,7 +24,7 @@ const rule: RuleModule = {
     schema: []
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     /**
      * Disallow construction of dense arrays using the Array constructor
      * @param {ASTNode} node node to evaluate

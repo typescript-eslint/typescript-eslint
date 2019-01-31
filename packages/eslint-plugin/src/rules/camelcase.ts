@@ -28,7 +28,7 @@ const rule: RuleModule = {
     }
   }),
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const rules = baseRule.create(context);
     const TS_PROPERTY_TYPES = [
       'TSPropertySignature',

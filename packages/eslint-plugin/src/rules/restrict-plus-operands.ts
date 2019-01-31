@@ -31,7 +31,7 @@ const rule: RuleModule = {
     schema: []
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const service = util.getParserServices(context);
 
     const typeChecker = service.program.getTypeChecker();

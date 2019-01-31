@@ -24,7 +24,7 @@ const rule: RuleModule = {
     schema: []
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       TSAnyKeyword(node) {
         context.report({

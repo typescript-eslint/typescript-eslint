@@ -26,7 +26,7 @@ const rule: Rule.RuleModule = Object.assign({}, baseRule, {
     messages: baseRule.meta.messages
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const rules = baseRule.create(context);
 
     /**

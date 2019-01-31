@@ -39,7 +39,7 @@ const rule: RuleModule = {
     ]
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const options = util.applyDefault(defaultOptions, context.options)[0];
 
     //----------------------------------------------------------------------

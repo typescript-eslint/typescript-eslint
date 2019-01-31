@@ -26,7 +26,7 @@ const rule: RuleModule = {
     schema: []
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const sourceCode = context.getSourceCode();
 
     //----------------------------------------------------------------------

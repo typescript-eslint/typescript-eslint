@@ -29,7 +29,7 @@ const rule: RuleModule = {
     recommended: 'error'
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const rule = util.applyDefault(defaultOptions, context.options)[0];
     const regex = new RegExp(rule);
 

@@ -29,7 +29,7 @@ const rule: RuleModule = {
     ]
   },
 
-  create(context: Rule.RuleContext) {
+  create(context) {
     const option = util.applyDefault(defaultOptions, context.options)[0];
     const never = option !== 'always';
 
