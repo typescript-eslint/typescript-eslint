@@ -61,6 +61,14 @@ class A extends B {
     doSomething();
   }
 }
+
+class A extends B {
+  constructor(protected name: string) {}
+}
+
+class A extends B {
+  protected constructor() {}
+}
 ```
 
 ## When Not To Use It
