@@ -1,6 +1,6 @@
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { ParserServices } from '@typescript-eslint/parser';
-import { AST, Linter, Rule, Scope } from 'eslint';
+import { AST, Linter, Scope } from 'eslint';
 import { Comment as ESTreeComment } from 'estree';
 import { JSONSchema4 } from 'json-schema';
 
@@ -265,29 +265,36 @@ interface RuleListener {
   [key: string]: (node: never) => void;
 }
 
+interface RuleFix {
+  range: AST.Range;
+  text: string;
+}
+
 interface RuleFixer {
   insertTextAfter(
     nodeOrToken: TSESTree.Node | AST.Token,
     text: string
-  ): Rule.Fix;
+  ): RuleFix;
 
-  insertTextAfterRange(range: AST.Range, text: string): Rule.Fix;
+  insertTextAfterRange(range: AST.Range, text: string): RuleFix;
 
   insertTextBefore(
     nodeOrToken: TSESTree.Node | AST.Token,
     text: string
-  ): Rule.Fix;
+  ): RuleFix;
 
-  insertTextBeforeRange(range: AST.Range, text: string): Rule.Fix;
+  insertTextBeforeRange(range: AST.Range, text: string): RuleFix;
 
-  remove(nodeOrToken: TSESTree.Node | AST.Token): Rule.Fix;
+  remove(nodeOrToken: TSESTree.Node | AST.Token): RuleFix;
 
-  removeRange(range: AST.Range): Rule.Fix;
+  removeRange(range: AST.Range): RuleFix;
 
-  replaceText(nodeOrToken: TSESTree.Node | AST.Token, text: string): Rule.Fix;
+  replaceText(nodeOrToken: TSESTree.Node | AST.Token, text: string): RuleFix;
 
-  replaceTextRange(range: AST.Range, text: string): Rule.Fix;
+  replaceTextRange(range: AST.Range, text: string): RuleFix;
 }
+
+type ReportFixFunction = (fixer: RuleFixer) => null | RuleFix | RuleFix[];
 
 interface ReportDescriptor {
   /**
@@ -297,7 +304,7 @@ interface ReportDescriptor {
   /**
    * The fixer function.
    */
-  fix?(fixer: RuleFixer): null | Rule.Fix | Rule.Fix[];
+  fix?: ReportFixFunction | null;
   /**
    * The messageId which is being reported.
    */
@@ -393,5 +400,5 @@ interface RuleModule<TOpts extends any[] = never[]> {
 
 //#endregion Rule
 
-export { RuleContext };
+export { RuleContext, ReportFixFunction };
 export default RuleModule;

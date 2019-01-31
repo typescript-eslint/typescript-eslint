@@ -130,24 +130,22 @@ ruleTester.run('ban-types', rule, {
     },
     {
       code: `
-            class Foo<F = String> extends Bar<String> implements Baz<Object> {
-                constructor (foo: String | Object) {
-                }
+class Foo<F = String> extends Bar<String> implements Baz<Object> {
+  constructor (foo: String | Object) {}
 
-                exit () : Array<String> {
-                    const foo: String = 1 as String
-                }
-            }
+  exit() : Array<String> {
+    const foo: String = 1 as String
+  }
+}
             `,
       output: `
-            class Foo<F = string> extends Bar<string> implements Baz<Object> {
-                constructor (foo: string | Object) {
-                }
+class Foo<F = string> extends Bar<string> implements Baz<Object> {
+  constructor (foo: string | Object) {}
 
-                exit () : Array<string> {
-                    const foo: string = 1 as string
-                }
-            }
+  exit() : Array<string> {
+    const foo: string = 1 as string
+  }
+}
             `,
       errors: [
         {
@@ -157,7 +155,7 @@ ruleTester.run('ban-types', rule, {
             customMessage: ' Use string instead.'
           },
           line: 2,
-          column: 27
+          column: 15
         },
         {
           messageId: 'bannedTypeMessage',
@@ -166,24 +164,6 @@ ruleTester.run('ban-types', rule, {
             customMessage: ' Use string instead.'
           },
           line: 2,
-          column: 47
-        },
-        {
-          messageId: 'bannedTypeMessage',
-          data: {
-            name: 'Object',
-            customMessage: " Use '{}' instead."
-          },
-          line: 2,
-          column: 70
-        },
-        {
-          messageId: 'bannedTypeMessage',
-          data: {
-            name: 'String',
-            customMessage: ' Use string instead.'
-          },
-          line: 3,
           column: 35
         },
         {
@@ -192,14 +172,41 @@ ruleTester.run('ban-types', rule, {
             name: 'Object',
             customMessage: " Use '{}' instead."
           },
+          line: 2,
+          column: 58
+        },
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'String',
+            customMessage: ' Use string instead.'
+          },
           line: 3,
-          column: 44
+          column: 21
+        },
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'Object',
+            customMessage: " Use '{}' instead."
+          },
+          line: 3,
+          column: 30
         },
         {
           messageId: 'bannedTypeMessage',
           data: { name: 'Array', customMessage: '' },
-          line: 6,
-          column: 27
+          line: 5,
+          column: 12
+        },
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'String',
+            customMessage: ' Use string instead.'
+          },
+          line: 5,
+          column: 18
         },
         {
           messageId: 'bannedTypeMessage',
@@ -208,7 +215,7 @@ ruleTester.run('ban-types', rule, {
             customMessage: ' Use string instead.'
           },
           line: 6,
-          column: 33
+          column: 16
         },
         {
           messageId: 'bannedTypeMessage',
@@ -216,17 +223,8 @@ ruleTester.run('ban-types', rule, {
             name: 'String',
             customMessage: ' Use string instead.'
           },
-          line: 7,
-          column: 32
-        },
-        {
-          messageId: 'bannedTypeMessage',
-          data: {
-            name: 'String',
-            customMessage: ' Use string instead.'
-          },
-          line: 7,
-          column: 46
+          line: 6,
+          column: 30
         }
       ],
       options

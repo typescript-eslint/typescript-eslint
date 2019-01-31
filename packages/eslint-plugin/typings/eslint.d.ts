@@ -3,6 +3,7 @@
 // module augmentation is weird
 import { RuleTester, Scope } from 'eslint';
 import { TSESTree } from '@typescript-eslint/typescript-estree';
+import RuleModule from '../src/RuleModule';
 declare module 'eslint' {
   namespace Scope {
     interface Variable {
@@ -16,6 +17,11 @@ declare module 'eslint' {
     invalid: RuleTester.InvalidTestCase[];
   }
   interface RuleTester {
-    run(name: string, rule: Rule.RuleModule, tests: RuleTesterRunTests): void;
+    run<T extends any[] = never[]>(
+      name: string,
+      // have to keep the base eslint def for our base eslint-rule test cases
+      rule: RuleModule<T> | Rule.RuleModule,
+      tests: RuleTesterRunTests
+    ): void;
   }
 }

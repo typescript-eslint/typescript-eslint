@@ -3,7 +3,8 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import RuleModule from '../RuleModule';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
+import RuleModule, { ReportFixFunction } from '../RuleModule';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -13,10 +14,12 @@ import * as util from '../util';
 interface Options {
   types: Record<
     string,
-    {
-      message: string;
-      fixWith?: string;
-    }
+    | string
+    | null
+    | {
+        message: string;
+        fixWith?: string;
+      }
   >;
 }
 const defaultOptions: Options[] = [
@@ -46,13 +49,13 @@ const defaultOptions: Options[] = [
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<[Options]> = {
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Enforces that types will not to be used',
       extraDescription: [util.tslintRule('ban-types')],
-      category: 'TypeScript',
+      category: 'Best Practices',
       url: util.metaDocsUrl('ban-types'),
       recommended: 'error'
     },
@@ -96,12 +99,13 @@ const rule: RuleModule = {
     //----------------------------------------------------------------------
 
     return {
-      'TSTypeReference Identifier'(node) {
+      'TSTypeReference Identifier'(node: TSESTree.Identifier) {
         if (node.parent && node.parent.type !== 'TSQualifiedName') {
           if (node.name in banedTypes) {
             let customMessage = '';
             const bannedCfgValue = banedTypes[node.name];
-            let fixWith: string | null = null;
+
+            let fix: ReportFixFunction | null = null;
 
             if (typeof bannedCfgValue === 'string') {
               customMessage += ` ${bannedCfgValue}`;
@@ -110,7 +114,8 @@ const rule: RuleModule = {
                 customMessage += ` ${bannedCfgValue.message}`;
               }
               if (bannedCfgValue.fixWith) {
-                fixWith = bannedCfgValue.fixWith;
+                const fixWith = bannedCfgValue.fixWith;
+                fix = fixer => fixer.replaceText(node, fixWith);
               }
             }
 
@@ -121,8 +126,7 @@ const rule: RuleModule = {
                 name: node.name,
                 customMessage
               },
-              fix:
-                fixWith !== null && (fixer => fixer.replaceText(node, fixWith))
+              fix
             });
           }
         }
