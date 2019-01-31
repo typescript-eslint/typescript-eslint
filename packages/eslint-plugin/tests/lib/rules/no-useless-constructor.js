@@ -36,22 +36,22 @@ ruleTester.run('no-useless-constructor', rule, {
     'class A extends B { constructor() { foo; } }',
     'class A extends B { constructor(foo, bar) { super(bar); } }',
     // https://github.com/typescript-eslint/typescript-eslint/issues/15
-    'declare class Foo { constructor(); }',
-    'class Foo { constructor(); }',
-    'abstract class Foo { constructor(); }',
-    'abstract class Foo { abstract constructor(); }',
+    'declare class A { constructor(); }',
+    'class A { constructor(); }',
+    'abstract class A { constructor(); }',
+    'abstract class A { abstract constructor(); }',
     // https://github.com/typescript-eslint/typescript-eslint/issues/48
-    'class Foo { constructor(private name: string) {} }',
-    'class Foo { constructor(public name: string) {} }',
-    'class Foo { constructor(protected name: string) {} }',
+    'class A { constructor(private name: string) {} }',
+    'class A { constructor(public name: string) {} }',
+    'class A { constructor(protected name: string) {} }',
     // https://github.com/typescript-eslint/typescript-eslint/pull/167#discussion_r252638401
-    'class Foo { public constructor() {} }',
-    'class Foo { private constructor() {} }',
-    'class Foo { protected constructor() {} }',
+    'class A { private constructor() {} }',
+    'class A { protected constructor() {} }',
     'class A extends B { public constructor() {} }',
     'class A extends B { protected constructor(foo, bar) { super(bar); } }',
     'class A extends B { private constructor(foo, bar) { super(bar); } }',
-    'class A extends B { public constructor(foo){ super(foo); } }'
+    'class A extends B { public constructor(foo){ super(foo); } }',
+    'class A extends B { public constructor(foo){} }'
   ],
   invalid: [
     {
@@ -90,6 +90,10 @@ ruleTester.run('no-useless-constructor', rule, {
     {
       code:
         'class A extends B { constructor(a, b, ...c) { super(a, b, ...c); } }',
+      errors: [error]
+    },
+    {
+      code: 'class A { public constructor() {} }',
       errors: [error]
     }
   ]

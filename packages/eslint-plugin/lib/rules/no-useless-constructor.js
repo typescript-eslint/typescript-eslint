@@ -11,6 +11,41 @@ const util = require('../util');
 // Rule Definition
 //------------------------------------------------------------------------------
 
+/**
+ * Check if method with accessibility is not useless
+ * @param {MethodDefinition} node
+ * @returns {boolean}
+ */
+function checkAccessibility(node) {
+  switch (node.accessibility) {
+    case 'protected':
+    case 'private':
+      return false;
+    case 'public':
+      if (
+        node.parent.type === 'ClassBody' &&
+        node.parent.parent &&
+        node.parent.parent.superClass
+      ) {
+        return false;
+      }
+      break;
+  }
+  return true;
+}
+
+/**
+ * Check if method is not unless due to typescript parameter properties
+ * @param {MethodDefinition} node
+ * @returns {boolean}
+ */
+function checkParams(node) {
+  return (
+    !node.value.params ||
+    !node.value.params.some(param => param.type === 'TSParameterProperty')
+  );
+}
+
 module.exports = Object.assign({}, baseRule, {
   meta: {
     type: 'problem',
@@ -32,19 +67,13 @@ module.exports = Object.assign({}, baseRule, {
     return {
       MethodDefinition(node) {
         if (
-          !node.value ||
-          node.value.type !== 'FunctionExpression' ||
-          node.accessibility
+          node.value &&
+          node.value.type === 'FunctionExpression' &&
+          checkAccessibility(node) &&
+          checkParams(node)
         ) {
-          return;
+          rules.MethodDefinition(node);
         }
-        if (
-          node.value.params &&
-          node.value.params.some(param => param.type === 'TSParameterProperty')
-        ) {
-          return;
-        }
-        rules.MethodDefinition(node);
       }
     };
   }
