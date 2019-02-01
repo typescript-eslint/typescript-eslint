@@ -86,7 +86,7 @@ Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-pre
 
 ## Usage with Airbnb
 
-Airbnb has two configs, a base one [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb) and one that includes rules for React [`eslint-config-airbnb-base`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base).
+Airbnb has two configs, a base one [`eslint-config-airbnb-base`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base) and one that includes rules for React [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb).
 
 First you'll need to install the config acrording to the instructions in one of the links above. `npx install-peerdeps --dev eslint-config-airbnb` or `npx install-peerdeps --dev eslint-config-airbnb-base` should work if you are using **npm 5+**.
 
