@@ -3,24 +3,29 @@
  * @author Danny Fritz
  */
 
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
+type Options = ['never' | 'always'];
 
-const defaultOptions = ['never'];
+const defaultOptions: Options = ['never'];
 
-const rule: RuleModule = {
+const rule: RuleModule<'noPrefix', Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Require that interface names be prefixed with `I`',
       extraDescription: [util.tslintRule('interface-name')],
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('interface-name-prefix'),
       recommended: 'error'
+    },
+    messages: {
+      noPrefix: 'Interface name must not be prefixed with "I".'
     },
     schema: [
       {
@@ -53,19 +58,19 @@ const rule: RuleModule = {
     // Public
     //----------------------------------------------------------------------
     return {
-      TSInterfaceDeclaration(node): void {
+      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration): void {
         if (never) {
           if (isPrefixedWithI(node.id.name)) {
             context.report({
               node: node.id,
-              message: 'Interface name must not be prefixed with "I".'
+              messageId: 'noPrefix'
             });
           }
         } else {
           if (!isPrefixedWithI(node.id.name)) {
             context.report({
               node: node.id,
-              message: 'Interface name must be prefixed with "I".'
+              messageId: 'noPrefix'
             });
           }
         }
