@@ -1,4 +1,4 @@
-import { Token, Comment } from './ast-tree-nodes';
+import { Token, Comment } from './typedefs';
 
 export interface Extra {
   errorOnUnknownASTType: boolean;

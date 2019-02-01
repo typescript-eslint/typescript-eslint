@@ -14,7 +14,7 @@ import ts from 'typescript';
 import convert from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
-import * as es from './ast-tree-nodes';
+import * as es from './typedefs';
 import { Extra, ParserOptions } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 

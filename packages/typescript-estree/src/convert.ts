@@ -6,7 +6,7 @@
  * MIT License
  */
 import ts from 'typescript';
-import * as es from './ast-tree-nodes';
+import * as es from './typedefs';
 import {
   canContainDirective,
   convertToken,
@@ -31,7 +31,6 @@ import {
 } from './node-utils';
 import { AST_NODE_TYPES } from './ast-node-types';
 import { TSNode } from './ts-nodes';
-import { ASTNode } from './ast-nodes';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -160,11 +159,11 @@ export class Converter {
     return this.converter(child, parent, true, false);
   }
 
-  protected createNode<T extends es.BaseNode = ASTNode>(
+  protected createNode<T extends es.BaseNode = es.BaseNode>(
     node: ts.Node,
-    data: T
+    data: es.OptionalRangeAndLoc<T>
   ): T {
-    const result: T = data;
+    const result = data;
     if (!result.range) {
       result.range = getRange(node, this.ast);
     }
@@ -172,7 +171,7 @@ export class Converter {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
     }
 
-    return result;
+    return result as T;
   }
 
   /**
@@ -497,7 +496,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  protected convertNode(node: TSNode, parent: ts.Node): ASTNode | null {
+  protected convertNode(node: TSNode, parent: ts.Node): es.Node | null {
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
         return this.createNode<es.Program>(node, {
@@ -667,7 +666,7 @@ export class Converter {
       case SyntaxKind.FunctionDeclaration: {
         const isDeclare = hasModifier(SyntaxKind.DeclareKeyword, node);
 
-        const result = this.createNode<es.FunctionDeclarationLike>(node, {
+        const result = this.createNode<es.FunctionDeclarationBase>(node, {
           type:
             isDeclare || !node.body
               ? AST_NODE_TYPES.TSDeclareFunction
@@ -678,7 +677,7 @@ export class Converter {
           async: hasModifier(SyntaxKind.AsyncKeyword, node),
           params: this.convertParameters(node.parameters),
           body: this.convertChild(node.body) || undefined
-        });
+        }) as es.TSDeclareFunction | es.FunctionDeclaration;
 
         // Process returnType
         if (node.type) {
@@ -838,7 +837,9 @@ export class Converter {
 
       case SyntaxKind.PropertyDeclaration: {
         const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
-        const result = this.createNode<es.ClassPropertyLikeNode>(node, {
+        const result = this.createNode<
+          es.TSAbstractClassProperty | es.ClassProperty
+        >(node, {
           type: isAbstract
             ? AST_NODE_TYPES.TSAbstractClassProperty
             : AST_NODE_TYPES.ClassProperty,
@@ -897,7 +898,10 @@ export class Converter {
           );
         }
 
-        let result: es.Property | es.MethodDefinition;
+        let result:
+          | es.Property
+          | es.TSAbstractMethodDefinition
+          | es.MethodDefinition;
 
         if (parent!.kind === SyntaxKind.ObjectLiteralExpression) {
           (method as any).params = node.parameters.map(el =>
@@ -931,14 +935,14 @@ export class Converter {
             ? AST_NODE_TYPES.TSAbstractMethodDefinition
             : AST_NODE_TYPES.MethodDefinition;
 
-          result = this.createNode<es.MethodDefinition>(node, {
+          result = this.createNode<es.MethodDefinitionBase>(node, {
             type: methodDefinitionType,
             key: this.convertChild(node.name),
             value: method,
             computed: isComputedProperty(node.name),
             static: hasModifier(SyntaxKind.StaticKeyword, node),
             kind: 'method'
-          });
+          }) as es.TSAbstractMethodDefinition | es.MethodDefinition;
 
           if (node.decorators) {
             result.decorators = node.decorators.map(el =>
@@ -1024,7 +1028,7 @@ export class Converter {
         });
 
         const isStatic = hasModifier(SyntaxKind.StaticKeyword, node);
-        const result = this.createNode<es.MethodDefinition>(node, {
+        const result = this.createNode<es.MethodDefinitionBase>(node, {
           type: hasModifier(SyntaxKind.AbstractKeyword, node)
             ? AST_NODE_TYPES.TSAbstractMethodDefinition
             : AST_NODE_TYPES.MethodDefinition,
@@ -1033,7 +1037,7 @@ export class Converter {
           computed: false,
           static: isStatic,
           kind: isStatic ? 'method' : 'constructor'
-        });
+        }) as es.TSAbstractMethodDefinition | es.MethodDefinition;
 
         const accessibility = getTSNodeAccessibility(node);
         if (accessibility) {
@@ -1340,7 +1344,7 @@ export class Converter {
           clause => clause.token === SyntaxKind.ImplementsKeyword
         );
 
-        const result = this.createNode<es.ClassLikeNode>(node, {
+        const result = this.createNode<es.ClassDeclarationBase>(node, {
           type: classNodeType,
           id: this.convertChild(node.name),
           body: this.createNode<es.ClassBody>(node, {
@@ -1352,7 +1356,7 @@ export class Converter {
             superClass && superClass.types[0]
               ? this.convertChild(superClass.types[0].expression)
               : null
-        });
+        }) as es.ClassDeclaration | es.ClassExpression;
 
         if (superClass) {
           if (superClass.types.length > 1) {
@@ -1627,11 +1631,14 @@ export class Converter {
 
       case SyntaxKind.PropertyAccessExpression:
         if (isJSXToken(parent!)) {
-          const jsxMemberExpression: es.MemberExpression = {
-            type: AST_NODE_TYPES.MemberExpression,
-            object: this.convertChild(node.expression),
-            property: this.convertChild(node.name)
-          };
+          const jsxMemberExpression = this.createNode<es.MemberExpression>(
+            node,
+            {
+              type: AST_NODE_TYPES.MemberExpression,
+              object: this.convertChild(node.expression),
+              property: this.convertChild(node.name)
+            }
+          );
           const isNestedMemberExpression =
             node.expression.kind === SyntaxKind.PropertyAccessExpression;
           if (node.expression.kind === SyntaxKind.ThisKeyword) {
@@ -1643,10 +1650,7 @@ export class Converter {
             : AST_NODE_TYPES.JSXIdentifier;
           (jsxMemberExpression as any).property.type =
             AST_NODE_TYPES.JSXIdentifier;
-          return this.createNode<es.MemberExpression>(
-            node,
-            jsxMemberExpression
-          );
+          return jsxMemberExpression;
         } else {
           return this.createNode<es.MemberExpression>(node, {
             type: AST_NODE_TYPES.MemberExpression,
@@ -2227,10 +2231,14 @@ export class Converter {
             type = AST_NODE_TYPES.TSConstructorType;
             break;
         }
-        const result = this.createNode<es.TSFunctionDeclarationLike>(node, {
+        const result = this.createNode<es.FunctionSignatureBase>(node, {
           type: type,
           params: this.convertParameters(node.parameters)
-        });
+        }) as
+          | es.TSConstructSignatureDeclaration
+          | es.TSCallSignatureDeclaration
+          | es.TSFunctionType
+          | es.TSConstructorType;
 
         if (node.type) {
           result.returnType = this.convertTypeAnnotation(node.type, node);
@@ -2246,16 +2254,13 @@ export class Converter {
       }
 
       case SyntaxKind.ExpressionWithTypeArguments: {
-        const result = this.createNode<es.TSExpressionWithTypeArgumentsLike>(
-          node,
-          {
-            type:
-              parent && parent.kind === SyntaxKind.InterfaceDeclaration
-                ? AST_NODE_TYPES.TSInterfaceHeritage
-                : AST_NODE_TYPES.TSClassImplements,
-            expression: this.convertChild(node.expression)
-          }
-        );
+        const result = this.createNode<es.TSHeritageBase>(node, {
+          type:
+            parent && parent.kind === SyntaxKind.InterfaceDeclaration
+              ? AST_NODE_TYPES.TSInterfaceHeritage
+              : AST_NODE_TYPES.TSClassImplements,
+          expression: this.convertChild(node.expression)
+        }) as es.TSInterfaceHeritage | es.TSClassImplements;
 
         if (node.typeArguments && node.typeArguments.length) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(

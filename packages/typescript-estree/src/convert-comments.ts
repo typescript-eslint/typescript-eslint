@@ -7,7 +7,7 @@
 
 import ts from 'typescript';
 import { getLocFor, getNodeContainer } from './node-utils';
-import * as es from './ast-tree-nodes';
+import * as es from './typedefs';
 
 /**
  * Converts a TypeScript comment to an Esprima comment.
@@ -28,7 +28,7 @@ function convertTypeScriptCommentToEsprimaComment(
   startLoc: es.Position,
   endLoc: es.Position
 ): es.Comment {
-  const comment: es.Comment = {
+  const comment: es.OptionalRangeAndLoc<es.Comment> = {
     type: block ? 'Block' : 'Line',
     value: text
   };
@@ -44,7 +44,7 @@ function convertTypeScriptCommentToEsprimaComment(
     };
   }
 
-  return comment;
+  return comment as es.Comment;
 }
 
 /**

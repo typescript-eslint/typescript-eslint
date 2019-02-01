@@ -6,7 +6,7 @@
  */
 import ts from 'typescript';
 import unescape from 'lodash.unescape';
-import * as es from './ast-tree-nodes';
+import * as es from './typedefs';
 import { AST_NODE_TYPES } from './ast-node-types';
 
 const SyntaxKind = ts.SyntaxKind;
