@@ -66,7 +66,11 @@ class Test {
             `,
       errors: [
         {
-          message: 'Missing accessibility modifier on class property x.',
+          messageId: 'missingAccessibility',
+          data: {
+            type: 'class property',
+            name: 'x'
+          },
           line: 3,
           column: 3
         }
@@ -84,7 +88,11 @@ class Test {
             `,
       errors: [
         {
-          message: 'Missing accessibility modifier on method definition getX.',
+          messageId: 'missingAccessibility',
+          data: {
+            type: 'method definition',
+            name: 'getX'
+          },
           line: 4,
           column: 3
         }
@@ -102,12 +110,20 @@ class Test {
             `,
       errors: [
         {
-          message: 'Missing accessibility modifier on class property x.',
+          messageId: 'missingAccessibility',
+          data: {
+            type: 'class property',
+            name: 'x'
+          },
           line: 3,
           column: 3
         },
         {
-          message: 'Missing accessibility modifier on method definition getX.',
+          messageId: 'missingAccessibility',
+          data: {
+            type: 'method definition',
+            name: 'getX'
+          },
           line: 4,
           column: 3
         }

@@ -3,23 +3,29 @@
  * @author Danny Fritz
  */
 
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { getNameFromPropertyName } from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule = {
+const rule: RuleModule<'missingAccessibility', []> = {
   meta: {
     type: 'problem',
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
       extraDescription: [util.tslintRule('member-access')],
-      category: 'TypeScript',
+      category: 'Best Practices',
       url: util.metaDocsUrl('explicit-member-accessibility'),
       recommended: 'error'
+    },
+    messages: {
+      missingAccessibility:
+        'Missing accessibility modifier on {{type}} {{name}}.'
     },
     schema: []
   },
@@ -31,19 +37,21 @@ const rule: RuleModule = {
 
     /**
      * Checks if a method declaration has an accessibility modifier.
-     * @param {ASTNode} methodDefinition The node representing a MethodDefinition.
+     * @param methodDefinition The node representing a MethodDefinition.
      */
-    function checkMethodAccessibilityModifier(methodDefinition): void {
+    function checkMethodAccessibilityModifier(
+      methodDefinition: TSESTree.MethodDefinition
+    ): void {
       if (
         !methodDefinition.accessibility &&
         util.isTypescript(context.getFilename())
       ) {
         context.report({
           node: methodDefinition,
-          message:
-            'Missing accessibility modifier on method definition {{name}}.',
+          messageId: 'missingAccessibility',
           data: {
-            name: methodDefinition.key.name
+            type: 'method definition',
+            name: getNameFromPropertyName(methodDefinition.key)
           }
         });
       }
@@ -51,18 +59,21 @@ const rule: RuleModule = {
 
     /**
      * Checks if property has an accessibility modifier.
-     * @param {ASTNode} classProperty The node representing a ClassProperty.
+     * @param classProperty The node representing a ClassProperty.
      */
-    function checkPropertyAccessibilityModifier(classProperty): void {
+    function checkPropertyAccessibilityModifier(
+      classProperty: TSESTree.ClassProperty
+    ): void {
       if (
         !classProperty.accessibility &&
         util.isTypescript(context.getFilename())
       ) {
         context.report({
           node: classProperty,
-          message: 'Missing accessibility modifier on class property {{name}}.',
+          messageId: 'missingAccessibility',
           data: {
-            name: classProperty.key.name
+            type: 'class property',
+            name: getNameFromPropertyName(classProperty.key)
           }
         });
       }
