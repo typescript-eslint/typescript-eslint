@@ -127,3 +127,28 @@ exports.getParserServices = context => {
   }
   return context.parserServices;
 };
+
+/**
+ * @template T
+ * @callback Equal
+ * @param {T} a
+ * @param {T} b
+ * @returns {boolean}
+ */
+
+/**
+ * @template T
+ * @param {Array<T> | undefined} a
+ * @param {Array<T> | undefined} b
+ * @param {Equal<T>} eq
+ * @returns {boolean}
+ */
+exports.arraysAreEqual = (a, b, eq) => {
+  return (
+    a === b ||
+    (a !== undefined &&
+      b !== undefined &&
+      a.length === b.length &&
+      a.every((x, idx) => eq(x, b[idx])))
+  );
+}
