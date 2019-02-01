@@ -68,7 +68,10 @@ module.exports = {
 
         if (node.body.length === 0) {
           if (allowEmpty) return;
-          context.report({ node: id, messageId: 'empty' });
+          context.report({
+            node: id || node.parent,
+            messageId: 'empty'
+          });
           return;
         }
 
@@ -97,14 +100,17 @@ module.exports = {
         if (onlyConstructor) {
           if (!allowConstructorOnly) {
             context.report({
-              node: id,
+              node: id || node.parent,
               messageId: 'onlyConstructor'
             });
           }
           return;
         }
         if (onlyStatic && !allowStaticOnly) {
-          context.report({ node: id, messageId: 'onlyStatic' });
+          context.report({
+            node: id || node.parent,
+            messageId: 'onlyStatic'
+          });
         }
       }
     };
