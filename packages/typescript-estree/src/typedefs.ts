@@ -424,13 +424,13 @@ export type TSUnaryExpression =
 //  **Ensure you sort the interfaces alphabetically**
 ///////////////
 
-export interface BinaryExpressionBase extends BaseNode {
+interface BinaryExpressionBase extends BaseNode {
   operator: string;
   left: Expression;
   right: Expression;
 }
 
-export interface ClassDeclarationBase extends BaseNode {
+interface ClassDeclarationBase extends BaseNode {
   typeParameters?: TSTypeParameterDeclaration;
   superTypeParameters?: TSTypeParameterInstantiation;
   id?: Identifier;
@@ -442,7 +442,7 @@ export interface ClassDeclarationBase extends BaseNode {
   decorators?: Decorator[];
 }
 
-export interface ClassPropertyBase extends BaseNode {
+interface ClassPropertyBase extends BaseNode {
   key: PropertyName;
   value: Expression;
   computed: boolean;
@@ -455,7 +455,7 @@ export interface ClassPropertyBase extends BaseNode {
   typeAnnotation?: TSTypeAnnotation;
 }
 
-export interface FunctionDeclarationBase extends BaseNode {
+interface FunctionDeclarationBase extends BaseNode {
   id: Identifier | null;
   generator: boolean;
   expression: boolean;
@@ -467,13 +467,13 @@ export interface FunctionDeclarationBase extends BaseNode {
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-export interface FunctionSignatureBase extends BaseNode {
+interface FunctionSignatureBase extends BaseNode {
   params: Parameter[];
   returnType?: TSTypeAnnotation;
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-export interface LiteralBase extends BaseNode {
+interface LiteralBase extends BaseNode {
   raw: string;
   value: boolean | number | RegExp | string | null;
   regex?: {
@@ -482,7 +482,7 @@ export interface LiteralBase extends BaseNode {
   };
 }
 
-export interface MethodDefinitionBase extends BaseNode {
+interface MethodDefinitionBase extends BaseNode {
   key: PropertyName;
   value: FunctionExpression;
   computed: boolean;
@@ -493,12 +493,12 @@ export interface MethodDefinitionBase extends BaseNode {
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-export interface TSHeritageBase extends BaseNode {
+interface TSHeritageBase extends BaseNode {
   expression: Expression;
   typeParameters?: TSTypeParameterInstantiation;
 }
 
-export interface UnaryExpressionBase extends BaseNode {
+interface UnaryExpressionBase extends BaseNode {
   operator: string;
   prefix: boolean;
   argument: LeftHandSideExpression | Literal | UnaryExpression;
@@ -1022,17 +1022,8 @@ export interface TSConstructSignatureDeclaration extends FunctionSignatureBase {
   type: AST_NODE_TYPES.TSConstructSignatureDeclaration;
 }
 
-export interface TSDeclareFunction extends BaseNode {
+export interface TSDeclareFunction extends FunctionDeclarationBase {
   type: AST_NODE_TYPES.TSDeclareFunction;
-  id: Identifier | null;
-  generator: boolean;
-  expression: boolean;
-  async: boolean;
-  params: Parameter[];
-  body?: BlockStatement | null;
-  returnType?: TSTypeAnnotation;
-  declare: boolean;
-  typeParameters?: TSTypeParameterDeclaration;
 }
 
 export interface TSDeclareKeyword extends BaseNode {
