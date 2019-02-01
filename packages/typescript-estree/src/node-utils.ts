@@ -97,8 +97,8 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
 
 /**
  * Returns true if the given ts.Token is the assignment operator
- * @param  {ts.Token}  operator the operator token
- * @returns {boolean}          is assignment
+ * @param operator the operator token
+ * @returns is assignment
  */
 export function isAssignmentOperator(
   operator: ts.Token<ts.AssignmentOperator>
@@ -108,8 +108,8 @@ export function isAssignmentOperator(
 
 /**
  * Returns true if the given ts.Token is a logical operator
- * @param  {ts.Token}  operator the operator token
- * @returns {boolean}          is a logical operator
+ * @param operator the operator token
+ * @returns is a logical operator
  */
 export function isLogicalOperator(
   operator: ts.Token<ts.LogicalOperator>
@@ -119,8 +119,8 @@ export function isLogicalOperator(
 
 /**
  * Returns the string form of the given TSToken SyntaxKind
- * @param  {number}  kind the token's SyntaxKind
- * @returns {string}          the token applicable token as a string
+ * @param kind the token's SyntaxKind
+ * @returns the token applicable token as a string
  */
 export function getTextForTokenKind(kind: ts.SyntaxKind): string | undefined {
   return TOKEN_TO_TEXT[kind];
@@ -128,8 +128,8 @@ export function getTextForTokenKind(kind: ts.SyntaxKind): string | undefined {
 
 /**
  * Returns true if the given ts.Node is a valid ESTree class member
- * @param  {ts.Node}  node TypeScript AST node
- * @returns {boolean}      is valid ESTree class member
+ * @param node TypeScript AST node
+ * @returns is valid ESTree class member
  */
 export function isESTreeClassMember(node: ts.Node): boolean {
   return node.kind !== SyntaxKind.SemicolonClassElement;
@@ -137,9 +137,9 @@ export function isESTreeClassMember(node: ts.Node): boolean {
 
 /**
  * Checks if a ts.Node has a modifier
- * @param {ts.KeywordSyntaxKind} modifierKind TypeScript SyntaxKind modifier
- * @param {ts.Node} node TypeScript AST node
- * @returns {boolean} has the modifier specified
+ * @param modifierKind TypeScript SyntaxKind modifier
+ * @param node TypeScript AST node
+ * @returns has the modifier specified
  */
 export function hasModifier(
   modifierKind: ts.KeywordSyntaxKind,
@@ -168,8 +168,8 @@ export function getLastModifier(node: ts.Node): ts.Modifier | null {
 
 /**
  * Returns true if the given ts.Token is a comma
- * @param  {ts.Node}  token the TypeScript token
- * @returns {boolean}       is comma
+ * @param token the TypeScript token
+ * @returns is comma
  */
 export function isComma(token: ts.Node): boolean {
   return token.kind === SyntaxKind.CommaToken;
@@ -177,8 +177,8 @@ export function isComma(token: ts.Node): boolean {
 
 /**
  * Returns true if the given ts.Node is a comment
- * @param {ts.Node} node the TypeScript node
- * @returns {boolean} is comment
+ * @param node the TypeScript node
+ * @returns is comment
  */
 export function isComment(node: ts.Node): boolean {
   return (
@@ -189,8 +189,8 @@ export function isComment(node: ts.Node): boolean {
 
 /**
  * Returns true if the given ts.Node is a JSDoc comment
- * @param {ts.Node} node the TypeScript node
- * @returns {boolean} is JSDoc comment
+ * @param node the TypeScript node
+ * @returns is JSDoc comment
  */
 export function isJSDocComment(node: ts.Node): boolean {
   return node.kind === SyntaxKind.JSDocComment;
@@ -198,8 +198,8 @@ export function isJSDocComment(node: ts.Node): boolean {
 
 /**
  * Returns the binary expression type of the given ts.Token
- * @param  {ts.Token} operator the operator token
- * @returns {string}          the binary expression type
+ * @param operator the operator token
+ * @returns the binary expression type
  */
 export function getBinaryExpressionType(
   operator: ts.Token<any>
@@ -235,10 +235,10 @@ export function getLineAndCharacterFor(
 /**
  * Returns line and column data for the given start and end positions,
  * for the given AST
- * @param  {number} start start data
- * @param  {number} end   end data
- * @param  {ts.SourceFile} ast   the AST object
- * @returns {es.SourceLocation}       the loc data
+ * @param start start data
+ * @param end   end data
+ * @param ast   the AST object
+ * @returns the loc data
  */
 export function getLocFor(
   start: number,
@@ -253,8 +253,8 @@ export function getLocFor(
 
 /**
  * Check whatever node can contain directive
- * @param {ts.Node} node
- * @returns {boolean} returns true if node can contain directive
+ * @param node
+ * @returns returns true if node can contain directive
  */
 export function canContainDirective(node: ts.Node): boolean {
   switch (node.kind) {
@@ -291,8 +291,8 @@ export function getRange(node: ts.Node, ast: ts.SourceFile): [number, number] {
 
 /**
  * Returns true if a given ts.Node is a token
- * @param  {ts.Node} node the ts.Node
- * @returns {boolean}     is a token
+ * @param node the ts.Node
+ * @returns is a token
  */
 export function isToken(node: ts.Node): boolean {
   return (
@@ -302,8 +302,8 @@ export function isToken(node: ts.Node): boolean {
 
 /**
  * Returns true if a given ts.Node is a JSX token
- * @param  {ts.Node} node ts.Node to be checked
- * @returns {boolean}       is a JSX token
+ * @param node ts.Node to be checked
+ * @returns is a JSX token
  */
 export function isJSXToken(node: ts.Node): boolean {
   return (
@@ -313,8 +313,8 @@ export function isJSXToken(node: ts.Node): boolean {
 
 /**
  * Returns the declaration kind of the given ts.Node
- * @param  {ts.VariableDeclarationList}  node TypeScript AST node
- * @returns {string}     declaration kind
+ * @param node TypeScript AST node
+ * @returns declaration kind
  */
 export function getDeclarationKind(
   node: ts.VariableDeclarationList
@@ -330,8 +330,8 @@ export function getDeclarationKind(
 
 /**
  * Gets a ts.Node's accessibility level
- * @param {ts.Node} node The ts.Node
- * @returns {string | null} accessibility "public", "protected", "private", or null
+ * @param node The ts.Node
+ * @returns accessibility "public", "protected", "private", or null
  */
 export function getTSNodeAccessibility(
   node: ts.Node
@@ -359,10 +359,10 @@ export function getTSNodeAccessibility(
 /**
  * Finds the next token based on the previous one and its parent
  * Had to copy this from TS instead of using TS's version because theirs doesn't pass the ast to getChildren
- * @param {ts.TextRange} previousToken The previous TSToken
- * @param {ts.Node} parent The parent TSNode
- * @param {ts.SourceFile} ast The TS AST
- * @returns {ts.Node|undefined} the next TSToken
+ * @param previousToken The previous TSToken
+ * @param parent The parent TSNode
+ * @param ast The TS AST
+ * @returns the next TSToken
  */
 export function findNextToken(
   previousToken: ts.TextRange,
@@ -391,9 +391,9 @@ export function findNextToken(
 
 /**
  * Find the first matching ancestor based on the given predicate function.
- * @param {ts.Node} node The current ts.Node
- * @param {Function} predicate The predicate function to apply to each checked ancestor
- * @returns {ts.Node|undefined} a matching parent ts.Node
+ * @param node The current ts.Node
+ * @param predicate The predicate function to apply to each checked ancestor
+ * @returns a matching parent ts.Node
  */
 export function findFirstMatchingAncestor(
   node: ts.Node,
@@ -410,8 +410,8 @@ export function findFirstMatchingAncestor(
 
 /**
  * Returns true if a given ts.Node has a JSX token within its hierarchy
- * @param  {ts.Node} node ts.Node to be checked
- * @returns {boolean}       has JSX ancestor
+ * @param node ts.Node to be checked
+ * @returns has JSX ancestor
  */
 export function hasJSXAncestor(node: ts.Node): boolean {
   return !!findFirstMatchingAncestor(node, isJSXToken);
@@ -419,8 +419,8 @@ export function hasJSXAncestor(node: ts.Node): boolean {
 
 /**
  * Unescape the text content of string literals, e.g. &amp; -> &
- * @param {string} text The escaped string literal text.
- * @returns {string} The unescaped string literal text.
+ * @param text The escaped string literal text.
+ * @returns The unescaped string literal text.
  */
 export function unescapeStringLiteralText(text: string): string {
   return unescape(text);
@@ -428,8 +428,8 @@ export function unescapeStringLiteralText(text: string): string {
 
 /**
  * Returns true if a given ts.Node is a computed property
- * @param  {ts.Node} node ts.Node to be checked
- * @returns {boolean}       is Computed Property
+ * @param node ts.Node to be checked
+ * @returns is Computed Property
  */
 export function isComputedProperty(node: ts.Node): boolean {
   return node.kind === SyntaxKind.ComputedPropertyName;
@@ -437,8 +437,8 @@ export function isComputedProperty(node: ts.Node): boolean {
 
 /**
  * Returns true if a given ts.Node is optional (has QuestionToken)
- * @param  {ts.Node} node ts.Node to be checked
- * @returns {boolean}       is Optional
+ * @param node ts.Node to be checked
+ * @returns is Optional
  */
 export function isOptional(node: {
   questionToken?: ts.QuestionToken;
@@ -498,8 +498,8 @@ export function fixExports<T extends es.BaseNode>(
 
 /**
  * Returns the type of a given ts.Token
- * @param  {ts.Token} token the ts.Token
- * @returns {string}       the token type
+ * @param token the ts.Token
+ * @returns the token type
  */
 export function getTokenType(token: any): string {
   // Need two checks for keywords since some are also identifiers
@@ -641,8 +641,7 @@ export function convertToken(token: ts.Node, ast: ts.SourceFile): es.Token {
 export function convertTokens(ast: ts.SourceFile): es.Token[] {
   const result: es.Token[] = [];
   /**
-   * @param  {ts.Node} node the ts.Node
-   * @returns {void}
+   * @param node the ts.Node
    */
   function walk(node: ts.Node): void {
     // TypeScript generates tokens for types in JSDoc blocks. Comment tokens
@@ -667,10 +666,10 @@ export function convertTokens(ast: ts.SourceFile): es.Token[] {
 
 /**
  * Get container token node between range
- * @param {ts.SourceFile} ast the AST object
- * @param {number} start The index at which the comment starts.
- * @param {number} end The index at which the comment ends.
- * @returns {ts.Node}       typescript container token
+ * @param ast the AST object
+ * @param start The index at which the comment starts.
+ * @param end The index at which the comment ends.
+ * @returns typescript container token
  * @private
  */
 export function getNodeContainer(
@@ -681,8 +680,7 @@ export function getNodeContainer(
   let container: ts.Node | null = null;
 
   /**
-   * @param  {ts.Node} node the ts.Node
-   * @returns {void}
+   * @param node the ts.Node
    */
   function walk(node: ts.Node): void {
     const nodeStart = node.pos;
@@ -702,10 +700,10 @@ export function getNodeContainer(
 }
 
 /**
- * @param {ts.SourceFile} ast     the AST object
- * @param {number} start      the index at which the error starts
- * @param {string} message the error message
- * @returns {Object}       converted error object
+ * @param ast     the AST object
+ * @param start      the index at which the error starts
+ * @param message the error message
+ * @returns converted error object
  */
 export function createError(
   ast: ts.SourceFile,
@@ -722,8 +720,8 @@ export function createError(
 }
 
 /**
- * @param {ts.Node} n the TSNode
- * @param {ts.SourceFile} ast the TS AST
+ * @param n the TSNode
+ * @param ast the TS AST
  */
 export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
   // If we have a token or node that has a non-zero width, it must have tokens.
@@ -737,9 +735,8 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
  * Like `forEach`, but suitable for use with numbers and strings (which may be falsy).
  * @template T
  * @template U
- * @param {ReadonlyArray<T>|undefined} array
- * @param {(element: T, index: number) => (U|undefined)} callback
- * @returns {U|undefined}
+ * @param array
+ * @param callback
  */
 export function firstDefined<T, U>(
   array: ReadonlyArray<T> | undefined,

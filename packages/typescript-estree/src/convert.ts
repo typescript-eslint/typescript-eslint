@@ -43,8 +43,8 @@ interface ConverterOptions {
 
 /**
  * Extends and formats a given error object
- * @param  {Object} error the error object
- * @returns {Object}       converted error object
+ * @param error the error object
+ * @returns converted error object
  */
 export function convertError(error: any) {
   return createError(

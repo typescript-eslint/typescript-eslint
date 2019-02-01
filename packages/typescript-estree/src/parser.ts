@@ -44,7 +44,6 @@ function getFileName({ jsx }: { jsx?: boolean }) {
 
 /**
  * Resets the extra config object
- * @returns {void}
  */
 function resetExtra(): void {
   extra = {
@@ -67,9 +66,9 @@ function resetExtra(): void {
 }
 
 /**
- * @param {string} code The code of the file being linted
- * @param {Object} options The config object
- * @returns {{ast: ts.SourceFile, program: ts.Program} | undefined} If found, returns the source file corresponding to the code and the containing program
+ * @param code The code of the file being linted
+ * @param options The config object
+ * @returns If found, returns the source file corresponding to the code and the containing program
  */
 function getASTFromProject(code: string, options: ParserOptions) {
   return firstDefined(
@@ -88,9 +87,9 @@ function getASTFromProject(code: string, options: ParserOptions) {
 }
 
 /**
- * @param {string} code The code of the file being linted
- * @param {Object} options The config object
- * @returns {{ast: ts.SourceFile, program: ts.Program} | undefined} If found, returns the source file corresponding to the code and the containing program
+ * @param code The code of the file being linted
+ * @param options The config object
+ * @returns If found, returns the source file corresponding to the code and the containing program
  */
 function getASTAndDefaultProject(code: string, options: ParserOptions) {
   const fileName = options.filePath || getFileName(options);
@@ -100,8 +99,8 @@ function getASTAndDefaultProject(code: string, options: ParserOptions) {
 }
 
 /**
- * @param {string} code The code of the file being linted
- * @returns {{ast: ts.SourceFile, program: ts.Program}} Returns a new source file and program corresponding to the linted code
+ * @param code The code of the file being linted
+ * @returns Returns a new source file and program corresponding to the linted code
  */
 function createNewProgram(code: string) {
   const FILENAME = getFileName(extra);
@@ -157,10 +156,10 @@ function createNewProgram(code: string) {
 }
 
 /**
- * @param {string} code The code of the file being linted
- * @param {Object} options The config object
- * @param {boolean} shouldProvideParserServices True iff the program should be attempted to be calculated from provided tsconfig files
- * @returns {{ast: ts.SourceFile, program: ts.Program}} Returns a source file and program corresponding to the linted code
+ * @param code The code of the file being linted
+ * @param options The config object
+ * @param shouldProvideParserServices True iff the program should be attempted to be calculated from provided tsconfig files
+ * @returns Returns a source file and program corresponding to the linted code
  */
 function getProgramAndAST(
   code: string,
