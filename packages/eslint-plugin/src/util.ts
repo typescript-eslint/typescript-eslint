@@ -1,6 +1,5 @@
 import { ParserServices } from '@typescript-eslint/parser';
-
-import { RuleContext } from './RuleModule';
+import { RuleContext } from 'ts-eslint';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const version = require('../package.json').version;
@@ -127,9 +126,10 @@ export function upperCaseFirst(str: string) {
 /**
  * Try to retrieve typescript parser service from context
  */
-export function getParserServices<T extends any[]>(
-  context: RuleContext<T>
-): ParserServices {
+export function getParserServices<
+  TMessageIds extends string,
+  TOptions extends any[]
+>(context: RuleContext<TMessageIds, TOptions>): ParserServices {
   if (
     !context.parserServices ||
     !context.parserServices.program ||

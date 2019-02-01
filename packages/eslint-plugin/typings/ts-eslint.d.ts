@@ -11,7 +11,6 @@ declare module 'ts-eslint' {
   import { TSESTree } from '@typescript-eslint/typescript-estree';
   import { ParserServices } from '@typescript-eslint/parser';
   import { AST, Linter, Scope } from 'eslint';
-  import { Comment as ESTreeComment } from 'estree';
   import { JSONSchema4 } from 'json-schema';
 
   //#region SourceCode
@@ -31,7 +30,7 @@ declare module 'ts-eslint' {
     }
 
     export type FilterPredicate = (
-      tokenOrComment: AST.Token | ESTreeComment
+      tokenOrComment: AST.Token | TSESTree.Comment
     ) => boolean;
 
     export type CursorWithSkipOptions =
@@ -77,11 +76,11 @@ declare module 'ts-eslint' {
 
     getLines(): string[];
 
-    getAllComments(): ESTreeComment[];
+    getAllComments(): TSESTree.Comment[];
 
     getComments(
       node: TSESTree.Node
-    ): { leading: ESTreeComment[]; trailing: ESTreeComment[] };
+    ): { leading: TSESTree.Comment[]; trailing: TSESTree.Comment[] };
 
     getJSDocComment(node: TSESTree.Node): AST.Token | null;
 
@@ -122,52 +121,52 @@ declare module 'ts-eslint' {
     ): AST.Token[];
 
     getTokenBefore(
-      node: TSESTree.Node | AST.Token | ESTreeComment,
+      node: TSESTree.Node | AST.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithSkipOptions
     ): AST.Token | null;
 
     getTokensBefore(
-      node: TSESTree.Node | AST.Token | ESTreeComment,
+      node: TSESTree.Node | AST.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithCountOptions
     ): AST.Token[];
 
     getTokenAfter(
-      node: TSESTree.Node | AST.Token | ESTreeComment,
+      node: TSESTree.Node | AST.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithSkipOptions
     ): AST.Token | null;
 
     getTokensAfter(
-      node: TSESTree.Node | AST.Token | ESTreeComment,
+      node: TSESTree.Node | AST.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithCountOptions
     ): AST.Token[];
 
     getFirstTokenBetween(
-      left: TSESTree.Node | AST.Token | ESTreeComment,
-      right: TSESTree.Node | AST.Token | ESTreeComment,
+      left: TSESTree.Node | AST.Token | TSESTree.Comment,
+      right: TSESTree.Node | AST.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithSkipOptions
     ): AST.Token | null;
 
     getFirstTokensBetween(
-      left: TSESTree.Node | AST.Token | ESTreeComment,
-      right: TSESTree.Node | AST.Token | ESTreeComment,
+      left: TSESTree.Node | AST.Token | TSESTree.Comment,
+      right: TSESTree.Node | AST.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithCountOptions
     ): AST.Token[];
 
     getLastTokenBetween(
-      left: TSESTree.Node | AST.Token | ESTreeComment,
-      right: TSESTree.Node | AST.Token | ESTreeComment,
+      left: TSESTree.Node | AST.Token | TSESTree.Comment,
+      right: TSESTree.Node | AST.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithSkipOptions
     ): AST.Token | null;
 
     getLastTokensBetween(
-      left: TSESTree.Node | AST.Token | ESTreeComment,
-      right: TSESTree.Node | AST.Token | ESTreeComment,
+      left: TSESTree.Node | AST.Token | TSESTree.Comment,
+      right: TSESTree.Node | AST.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithCountOptions
     ): AST.Token[];
 
     getTokensBetween(
-      left: TSESTree.Node | AST.Token | ESTreeComment,
-      right: TSESTree.Node | AST.Token | ESTreeComment,
+      left: TSESTree.Node | AST.Token | TSESTree.Comment,
+      right: TSESTree.Node | AST.Token | TSESTree.Comment,
       padding?:
         | number
         | SourceCode.FilterPredicate
@@ -190,11 +189,15 @@ declare module 'ts-eslint' {
       right: TSESTree.Node | AST.Token
     ): boolean;
 
-    getCommentsBefore(nodeOrToken: TSESTree.Node | AST.Token): ESTreeComment[];
+    getCommentsBefore(
+      nodeOrToken: TSESTree.Node | AST.Token
+    ): TSESTree.Comment[];
 
-    getCommentsAfter(nodeOrToken: TSESTree.Node | AST.Token): ESTreeComment[];
+    getCommentsAfter(
+      nodeOrToken: TSESTree.Node | AST.Token
+    ): TSESTree.Comment[];
 
-    getCommentsInside(node: TSESTree.Node): ESTreeComment[];
+    getCommentsInside(node: TSESTree.Node): TSESTree.Comment[];
   }
 
   //#endregion SourceCode

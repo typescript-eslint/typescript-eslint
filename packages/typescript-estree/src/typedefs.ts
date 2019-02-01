@@ -575,6 +575,11 @@ export interface ClassProperty extends ClassPropertyBase {
   type: 'ClassProperty';
 }
 
+export interface Comment extends NodeBase {
+  type: 'Line' | 'Block';
+  value: string;
+}
+
 export interface ConditionalExpression extends NodeBase {
   type: 'ConditionalExpression';
   test: Expression;
