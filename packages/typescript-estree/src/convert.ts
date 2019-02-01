@@ -225,14 +225,14 @@ export class Converter {
               ts.isExpressionStatement(statement) &&
               ts.isStringLiteral(statement.expression)
             ) {
-              const raw = child.expression.raw!;
+              const raw = child.expression.raw;
               child.directive = raw.slice(1, -1);
-              return child!; // child can be null but it's filtered below
+              return child; // child can be null but it's filtered below
             } else {
               allowDirectives = false;
             }
           }
-          return child!; // child can be null but it's filtered below
+          return child; // child can be null but it's filtered below
         })
         // filter out unknown nodes for now
         .filter(statement => statement)
@@ -289,7 +289,7 @@ export class Converter {
       return [];
     }
     return parameters.map(param => {
-      const convertedParam = this.convertChild(param)!;
+      const convertedParam = this.convertChild(param);
       if (!param.decorators || !param.decorators.length) {
         return convertedParam;
       }
@@ -481,9 +481,9 @@ export class Converter {
     typeAnnotationParent: es.BaseNode,
     node: ts.TypeNode
   ): void {
-    typeAnnotationParent.range![1] = node.getEnd();
-    typeAnnotationParent.loc!.end = getLineAndCharacterFor(
-      typeAnnotationParent.range![1],
+    typeAnnotationParent.range[1] = node.getEnd();
+    typeAnnotationParent.loc.end = getLineAndCharacterFor(
+      typeAnnotationParent.range[1],
       this.ast
     );
   }
@@ -894,10 +894,7 @@ export class Converter {
         });
 
         if (node.type) {
-          (method as any).returnType = this.convertTypeAnnotation(
-            node.type,
-            node
-          );
+          method.returnType = this.convertTypeAnnotation(node.type, node);
         }
 
         let result:
@@ -905,10 +902,8 @@ export class Converter {
           | es.TSAbstractMethodDefinition
           | es.MethodDefinition;
 
-        if (parent!.kind === SyntaxKind.ObjectLiteralExpression) {
-          (method as any).params = node.parameters.map(el =>
-            this.convertChild(el)
-          );
+        if (parent.kind === SyntaxKind.ObjectLiteralExpression) {
+          method.params = node.parameters.map(el => this.convertChild(el));
 
           result = this.createNode<es.Property>(node, {
             type: AST_NODE_TYPES.Property,
@@ -1100,7 +1095,7 @@ export class Converter {
         });
 
       case SyntaxKind.BindingElement: {
-        if (parent!.kind === SyntaxKind.ArrayBindingPattern) {
+        if (parent.kind === SyntaxKind.ArrayBindingPattern) {
           const arrayItem = this.convertChild(node.name, parent);
 
           if (node.initializer) {
@@ -1117,7 +1112,7 @@ export class Converter {
           } else {
             return arrayItem;
           }
-        } else if (parent!.kind === SyntaxKind.ObjectBindingPattern) {
+        } else if (parent.kind === SyntaxKind.ObjectBindingPattern) {
           let result: es.RestElement | es.Property;
           if (node.dotDotDotToken) {
             result = this.createNode<es.RestElement>(node, {
@@ -1279,7 +1274,7 @@ export class Converter {
             argument: this.convertChild(node.name)
           });
         } else if (node.initializer) {
-          parameter = this.convertChild(node.name)!;
+          parameter = this.convertChild(node.name);
           result = this.createNode<es.AssignmentPattern>(node, {
             type: AST_NODE_TYPES.AssignmentPattern,
             left: parameter,
@@ -1288,15 +1283,11 @@ export class Converter {
 
           if (node.modifiers) {
             // AssignmentPattern should not contain modifiers in range
-            result.range![0] = parameter.range[0];
-            result.loc = getLocFor(
-              result.range![0],
-              result.range![1],
-              this.ast
-            );
+            result.range[0] = parameter.range[0];
+            result.loc = getLocFor(result.range[0], result.range[1], this.ast);
           }
         } else {
-          parameter = result = this.convertChild(node.name, parent)!;
+          parameter = result = this.convertChild(node.name, parent);
         }
 
         if (node.type) {
@@ -1435,18 +1426,18 @@ export class Converter {
 
         if (node.importClause) {
           if (node.importClause.name) {
-            result.specifiers!.push(this.convertChild(node.importClause));
+            result.specifiers.push(this.convertChild(node.importClause));
           }
 
           if (node.importClause.namedBindings) {
             switch (node.importClause.namedBindings.kind) {
               case SyntaxKind.NamespaceImport:
-                result.specifiers!.push(
+                result.specifiers.push(
                   this.convertChild(node.importClause.namedBindings)
                 );
                 break;
               case SyntaxKind.NamedImports:
-                result.specifiers = result.specifiers!.concat(
+                result.specifiers = result.specifiers.concat(
                   node.importClause.namedBindings.elements.map(el =>
                     this.convertChild(el)
                   )
@@ -1581,12 +1572,12 @@ export class Converter {
             expressions: []
           });
 
-          const left = this.convertChild(node.left)!,
-            right = this.convertChild(node.right)!;
+          const left = this.convertChild(node.left),
+            right = this.convertChild(node.right);
 
           if (left.type === AST_NODE_TYPES.SequenceExpression) {
             result.expressions = result.expressions.concat(
-              (left as any).expressions
+              left.expressions
             );
           } else {
             result.expressions.push(left);
@@ -1594,7 +1585,7 @@ export class Converter {
 
           if (right.type === AST_NODE_TYPES.SequenceExpression) {
             result.expressions = result.expressions.concat(
-              (right as any).expressions
+              right.expressions
             );
           } else {
             result.expressions.push(right);
@@ -1638,7 +1629,7 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAccessExpression:
-        if (isJSXToken(parent!)) {
+        if (isJSXToken(parent)) {
           const jsxMemberExpression = this.createNode<es.MemberExpression>(
             node,
             {
@@ -1647,13 +1638,14 @@ export class Converter {
               property: this.convertChild(node.name)
             }
           );
+          // TODO: refactor this
           const isNestedMemberExpression =
             node.expression.kind === SyntaxKind.PropertyAccessExpression;
           if (node.expression.kind === SyntaxKind.ThisKeyword) {
-            (jsxMemberExpression as any).object.name = 'this';
+            (jsxMemberExpression.object as any).name = 'this';
           }
 
-          (jsxMemberExpression as any).object.type = isNestedMemberExpression
+          (jsxMemberExpression.object as any).type = isNestedMemberExpression
             ? AST_NODE_TYPES.MemberExpression
             : AST_NODE_TYPES.JSXIdentifier;
           (jsxMemberExpression as any).property.type =
@@ -1740,7 +1732,7 @@ export class Converter {
           raw: '',
           value: ''
         });
-        result.raw = this.ast.text.slice(result.range![0], result.range![1]);
+        result.raw = this.ast.text.slice(result.range[0], result.range[1]);
         if ((parent as any).name && (parent as any).name === node) {
           result.value = node.text;
         } else {
@@ -1763,7 +1755,7 @@ export class Converter {
           raw: '',
           value: ''
         });
-        result.raw = this.ast.text.slice(result.range![0], result.range![1]);
+        result.raw = this.ast.text.slice(result.range[0], result.range[1]);
         result.value = result.raw.slice(0, -1); // remove suffix `n`
         return result;
       }
@@ -2351,8 +2343,9 @@ export class Converter {
         /**
          * Specific fix for type-guard location data
          */
-        result.typeAnnotation!.loc = result.typeAnnotation!.typeAnnotation!.loc;
-        result.typeAnnotation!.range = result.typeAnnotation!.typeAnnotation!.range;
+        result.typeAnnotation.loc = result.typeAnnotation.typeAnnotation.loc;
+        result.typeAnnotation.range =
+          result.typeAnnotation.typeAnnotation.range;
         return result;
       }
 
