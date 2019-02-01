@@ -11,6 +11,7 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 type Options = ['never' | 'always'];
+type MessageIds = 'noPrefix';
 
 const defaultOptions: Options = ['never'];
 
@@ -78,4 +79,5 @@ const rule: RuleModule<'noPrefix', Options> = {
     };
   }
 };
-export = rule;
+export default rule;
+export { Options, MessageIds };

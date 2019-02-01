@@ -11,6 +11,9 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
+type Options = [];
+type MessageIds = 'adjacentSignature';
+
 type RuleNode =
   | TSESTree.ClassBody
   | TSESTree.Program
@@ -19,7 +22,7 @@ type RuleNode =
   | TSESTree.TSInterfaceBody;
 type Member = TSESTree.ClassElement | TSESTree.Statement | TSESTree.TypeElement;
 
-const rule: RuleModule<'adjacentSignature', []> = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -157,4 +160,5 @@ const rule: RuleModule<'adjacentSignature', []> = {
     };
   }
 };
-export = rule;
+export default rule;
+export { Options, MessageIds };

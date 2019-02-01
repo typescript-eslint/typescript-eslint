@@ -77,16 +77,15 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
 //------------------------------------------------------------------------------
 
 type Options = ['array' | 'generic' | 'array-simple'];
-
-const defaultOptions: Options = ['array'];
-
-const rule: RuleModule<
+type MessageIds =
   | 'errorStringGeneric'
   | 'errorStringGenericSimple'
   | 'errorStringArray'
-  | 'errorStringArraySimple',
-  Options
-> = {
+  | 'errorStringArraySimple';
+
+const defaultOptions: Options = ['array'];
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -255,4 +254,5 @@ const rule: RuleModule<
     };
   }
 };
-export = rule;
+export default rule;
+export { Options, MessageIds };

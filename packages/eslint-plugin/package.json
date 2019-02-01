@@ -30,7 +30,7 @@
     "test": "jest --coverage",
     "recommended:update": "ts-node tools/update-recommended.ts",
     "prebuild": "npm run clean",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/"
   },
   "dependencies": {
@@ -38,13 +38,12 @@
     "requireindex": "^1.2.0"
   },
   "devDependencies": {
-    "eslint": "^5.12.1",
     "eslint-docs": "^0.2.6",
     "ts-node": "^8.0.1",
     "@typescript-eslint/typescript-estree": "1.1.0"
   },
   "peerDependencies": {
     "eslint": ">=4.13.1 < 6",
-    "typescript": "~3.2.1"
+    "typescript": "*"
   }
 }

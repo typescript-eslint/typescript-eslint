@@ -12,7 +12,10 @@ import { TSESTree } from '@typescript-eslint/typescript-estree';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule<'notPascalCased', []> = {
+type Options = [];
+type MessageIds = 'notPascalCased';
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -102,4 +105,5 @@ const rule: RuleModule<'notPascalCased', []> = {
     };
   }
 };
-export = rule;
+export default rule;
+export { Options, MessageIds };

@@ -101,4 +101,4 @@ const rule: Rule.RuleModule = Object.assign({}, baseRule, {
     });
   }
 });
-export = rule;
+export default rule;

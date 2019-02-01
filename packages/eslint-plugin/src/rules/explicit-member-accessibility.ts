@@ -88,4 +88,4 @@ const rule: RuleModule<'missingAccessibility', []> = {
     };
   }
 };
-export = rule;
+export default rule;

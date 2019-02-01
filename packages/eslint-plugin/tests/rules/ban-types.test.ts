@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule from '../../src/rules/ban-types';
+import rule, { Options } from '../../src/rules/ban-types';
 import RuleTester from '../RuleTester';
 
 //------------------------------------------------------------------------------
@@ -18,8 +18,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
 });
 
-// TODO - figure out a better way to type this that doesn't break the generics
-const options: any = [
+const options: Options = [
   {
     types: {
       String: {

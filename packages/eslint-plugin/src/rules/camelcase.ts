@@ -131,4 +131,5 @@ const rule: RuleModule<MessageIds, Options> = {
     };
   }
 };
-export = rule;
+export default rule;
+export { Options, MessageIds };

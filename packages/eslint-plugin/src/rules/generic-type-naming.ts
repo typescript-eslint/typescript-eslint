@@ -6,14 +6,15 @@ import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
-type Options = [string];
+type Options = [string?];
+type MessageIds = 'paramNotMatchRule';
 
 const defaultOptions: Options = [
   // Matches: T , TA , TAbc , TA1Bca , T1 , T2
   '^T([A-Z0-9][a-zA-Z0-9]*){0,1}$'
 ];
 
-const rule: RuleModule<'paramNotMatchRule', Options> = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -33,7 +34,7 @@ const rule: RuleModule<'paramNotMatchRule', Options> = {
   },
 
   create(context) {
-    const rule = util.applyDefault(defaultOptions, context.options)[0];
+    const rule = util.applyDefault(defaultOptions, context.options)[0]!;
     const regex = new RegExp(rule);
 
     return {
@@ -54,4 +55,5 @@ const rule: RuleModule<'paramNotMatchRule', Options> = {
     };
   }
 };
-export = rule;
+export default rule;
+export { Options, MessageIds };

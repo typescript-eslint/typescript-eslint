@@ -24,6 +24,7 @@ type Options = [
     >;
   }
 ];
+type MessageIds = 'bannedTypeMessage';
 
 const defaultOptions: Options = [
   {
@@ -52,7 +53,7 @@ const defaultOptions: Options = [
   }
 ];
 
-const rule: RuleModule<'bannedTypeMessage', Options> = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -137,4 +138,5 @@ const rule: RuleModule<'bannedTypeMessage', Options> = {
     };
   }
 };
-export = rule;
+export default rule;
+export { Options, MessageIds };

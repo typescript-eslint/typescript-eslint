@@ -15,6 +15,7 @@ type Options = [
     allowExpressions?: boolean;
   }
 ];
+type MessageIds = 'missingReturnType';
 
 const defaultOptions: Options = [
   {
@@ -22,7 +23,7 @@ const defaultOptions: Options = [
   }
 ];
 
-const rule: RuleModule<'missingReturnType', Options> = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {
@@ -129,4 +130,5 @@ const rule: RuleModule<'missingReturnType', Options> = {
     };
   }
 };
-export = rule;
+export default rule;
+export { Options, MessageIds };

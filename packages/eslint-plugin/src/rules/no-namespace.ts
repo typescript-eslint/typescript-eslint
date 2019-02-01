@@ -76,4 +76,4 @@ const rule: RuleModule = {
     };
   }
 };
-export = rule;
+export default rule;
