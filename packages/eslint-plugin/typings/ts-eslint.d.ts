@@ -308,9 +308,13 @@ declare module 'ts-eslint' {
      */
     messageId: TMessageIds;
     /**
-     * The Node which the report is being attached to
+     * The Node or AST Token which the report is being attached to
      */
-    node: TSESTree.Node;
+    node: TSESTree.Node | AST.Token;
+    /**
+     * An override of the location of the report
+     */
+    loc?: TSESTree.NodeLocation;
   }
 
   interface RuleContext<TMessageIds extends string, TOptions extends any[]> {

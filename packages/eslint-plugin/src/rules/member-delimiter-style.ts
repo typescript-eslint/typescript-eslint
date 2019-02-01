@@ -4,6 +4,7 @@
  * @author Brad Zacher
  */
 
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -12,23 +13,28 @@ import * as util from '../util';
 //------------------------------------------------------------------------------
 
 type Delimiter = 'comma' | 'none' | 'semi';
-interface BaseOptions {
-  multiline: {
-    delimiter: Delimiter;
-    requireLast: boolean;
-  };
-  singleline: {
-    delimiter: Delimiter;
-    requireLast: boolean;
-  };
+interface TypeOptions {
+  delimiter?: Delimiter;
+  requireLast?: boolean;
 }
-interface Options extends BaseOptions {
+interface BaseOptions {
+  multiline?: TypeOptions;
+  singleline?: TypeOptions;
+}
+interface Config extends BaseOptions {
   overrides?: {
     typeLiteral?: BaseOptions;
     interface?: BaseOptions;
   };
 }
-const defaultOptions: Options[] = [
+type Options = [Config];
+type MessageIds =
+  | 'unexpectedComma'
+  | 'unexpectedSemi'
+  | 'expectedComma'
+  | 'expectedSemi';
+
+const defaultOptions: Options = [
   {
     multiline: {
       delimiter: 'semi',
@@ -65,13 +71,13 @@ const definition = {
   additionalProperties: false
 };
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Require a specific member delimiter style for interfaces and type literals',
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('member-delimiter-style'),
       recommended: 'error'
     },
@@ -107,8 +113,11 @@ const rule: RuleModule = {
     // use the base options as the defaults for the cases
     const baseOptions = options;
     const overrides = baseOptions.overrides || {};
-    const interfaceOptions = util.deepMerge(baseOptions, overrides.interface);
-    const typeLiteralOptions = util.deepMerge(
+    const interfaceOptions: BaseOptions = util.deepMerge(
+      baseOptions,
+      overrides.interface
+    );
+    const typeLiteralOptions: BaseOptions = util.deepMerge(
       baseOptions,
       overrides.typeLiteral
     );
@@ -119,14 +128,16 @@ const rule: RuleModule = {
 
     /**
      * Check the last token in the given member.
-     * @param {ASTNode} member the member to be evaluated.
-     * @param {Object} opts the options to be validated.
-     * @param {boolean} isLast a flag indicating `member` is the last in the
+     * @param member the member to be evaluated.
+     * @param opts the options to be validated.
+     * @param isLast a flag indicating `member` is the last in the
      *                         interface or type literal.
-     * @returns {void}
-     * @private
      */
-    function checkLastToken(member, opts, isLast) {
+    function checkLastToken(
+      member: TSESTree.TypeElement,
+      opts: TypeOptions,
+      isLast: boolean
+    ): void {
       /**
        * Resolves the boolean value for the given setting enum value
        * @param type the option name
@@ -139,11 +150,14 @@ const rule: RuleModule = {
         return opts.delimiter === type;
       }
 
-      let messageId;
+      let messageId: MessageIds | null = null;
       let missingDelimiter = false;
       const lastToken = sourceCode.getLastToken(member, {
         includeComments: false
       });
+      if (!lastToken) {
+        return;
+      }
 
       const optsSemi = getOption('semi');
       const optsComma = getOption('comma');
@@ -211,17 +225,20 @@ const rule: RuleModule = {
      * Check the member separator being used matches the delimiter.
      * @param {ASTNode} node the node to be evaluated.
      */
-    function checkMemberSeparatorStyle(node): void {
-      const isInterface = node.type === 'TSInterfaceBody';
+    function checkMemberSeparatorStyle(
+      node: TSESTree.TSInterfaceBody | TSESTree.TSTypeLiteral
+    ): void {
       const isSingleLine = node.loc.start.line === node.loc.end.line;
 
-      const members = isInterface ? node.body : node.members;
+      const members =
+        node.type === 'TSInterfaceBody' ? node.body : node.members;
 
-      const typeOpts = isInterface ? interfaceOptions : typeLiteralOptions;
+      const typeOpts =
+        node.type === 'TSInterfaceBody' ? interfaceOptions : typeLiteralOptions;
       const opts = isSingleLine ? typeOpts.singleline : typeOpts.multiline;
 
       members.forEach((member, index) => {
-        checkLastToken(member, opts, index === members.length - 1);
+        checkLastToken(member, opts || {}, index === members.length - 1);
       });
     }
 
@@ -235,4 +252,5 @@ const rule: RuleModule = {
     };
   }
 };
-export = rule;
+export default rule;
+export { Options, MessageIds };

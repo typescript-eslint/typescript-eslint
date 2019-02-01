@@ -8,21 +8,22 @@ export interface LineAndColumnData {
    */
   column: number;
 }
+export interface NodeLocation {
+  /**
+   * The position of the first character of the parsed source region
+   */
+  start: LineAndColumnData;
+  /**
+   * The position of the first character after the parsed source region
+   */
+  end: LineAndColumnData;
+}
 
 interface NodeBase {
   /**
    * The source location information of the node.
    */
-  loc: {
-    /**
-     * The position of the first character of the parsed source region
-     */
-    start: LineAndColumnData;
-    /**
-     * The position of the first character after the parsed source region
-     */
-    end: LineAndColumnData;
-  };
+  loc: NodeLocation;
   /**
    * An array of two numbers.
    * Both numbers are a 0-based index which is the position in the array of source code characters.
