@@ -12,7 +12,7 @@
           "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
           "args": [
               "--colors",
-              "${workspaceFolder}/packages/eslint-plugin/tests/rules/${fileBasename}"
+              "${workspaceFolder}/packages/eslint-plugin/tests/rules/${fileBasenameNoExtension}"
           ],
           "console": "integratedTerminal",
           "internalConsoleOptions": "neverOpen"

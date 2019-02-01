@@ -90,12 +90,12 @@ export function deepMerge<T extends ObjectLike = ObjectLike>(
  * @param userOptions the user opts
  * @returns the options with defaults
  */
-export function applyDefault<T extends any[]>(
-  defaultOptions: T,
-  userOptions: T | null
-): T {
+export function applyDefault<TUser extends any[], TDefault extends TUser>(
+  defaultOptions: TDefault,
+  userOptions: TUser | null
+): TDefault {
   // clone defaults
-  const options: T = JSON.parse(JSON.stringify(defaultOptions));
+  const options: TDefault = JSON.parse(JSON.stringify(defaultOptions));
 
   // eslint-disable-next-line eqeqeq
   if (userOptions == null) {

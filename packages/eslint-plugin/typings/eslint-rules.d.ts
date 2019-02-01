@@ -13,9 +13,9 @@ declare module 'eslint/lib/rules/camelcase' {
     'notCamelCase',
     [
       {
-        ignoreDestructuring: boolean;
-        properties: 'always' | 'never';
-        allow: string[];
+        ignoreDestructuring?: boolean;
+        properties?: 'always' | 'never';
+        allow?: string[];
       }
     ],
     {

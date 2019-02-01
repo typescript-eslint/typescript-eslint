@@ -11,15 +11,13 @@ import * as util from '../util';
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
-type Options = [
-  {
-    ignoreDestructuring: boolean;
-    properties: 'always' | 'never';
-    allow: string[];
-  }
-];
+interface Options {
+  ignoreDestructuring?: boolean;
+  properties?: 'always' | 'never';
+  allow?: string[];
+}
 
-const defaultOptions: Options = [
+const defaultOptions: [Required<Options>] = [
   {
     allow: ['^UNSAFE_'],
     ignoreDestructuring: false,
@@ -27,7 +25,7 @@ const defaultOptions: Options = [
   }
 ];
 
-const rule: RuleModule<'notCamelCase', Options> = {
+const rule: RuleModule<'notCamelCase', [Options]> = {
   meta: {
     type: 'suggestion',
     docs: {
