@@ -12,6 +12,7 @@
           "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
           "args": [
               "--colors",
+              "--runInBand",
               "${workspaceFolder}/packages/eslint-plugin/tests/rules/${fileBasenameNoExtension}"
           ],
           "console": "integratedTerminal",

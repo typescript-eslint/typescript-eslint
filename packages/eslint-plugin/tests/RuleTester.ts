@@ -27,10 +27,7 @@ interface TestCaseError<TMessageIds extends string> {
   // endColumn?: number;
 }
 
-interface RuleTesterRunTests<
-  TMessageIds extends string,
-  TOptions extends any[]
-> {
+interface RunTests<TMessageIds extends string, TOptions extends any[]> {
   // RuleTester.run also accepts strings for valid cases
   valid: (ValidTestCase<TOptions> | string)[];
   invalid: InvalidTestCase<TMessageIds, TOptions>[];
@@ -40,7 +37,7 @@ declare class RuleTesterTyped {
   run<TMessageIds extends string, TOptions extends any[]>(
     name: string,
     rule: RuleModule<TMessageIds, TOptions>,
-    tests: RuleTesterRunTests<TMessageIds, TOptions>
+    tests: RunTests<TMessageIds, TOptions>
   ): void;
 }
 
@@ -48,3 +45,4 @@ const RuleTesterRetyped = (RuleTester as any) as {
   new (config?: any): RuleTesterTyped;
 };
 export default RuleTesterRetyped;
+export { RunTests, TestCaseError };

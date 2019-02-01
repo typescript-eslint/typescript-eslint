@@ -7,17 +7,18 @@ import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/camelcase';
 import * as util from '../util';
+import {
+  InferOptionsTypeFromRule,
+  InferMessageIdsTypeFromRule
+} from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
-interface Options {
-  ignoreDestructuring?: boolean;
-  properties?: 'always' | 'never';
-  allow?: string[];
-}
+type Options = InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const defaultOptions: [Required<Options>] = [
+const defaultOptions: Options = [
   {
     allow: ['^UNSAFE_'],
     ignoreDestructuring: false,
@@ -25,7 +26,7 @@ const defaultOptions: [Required<Options>] = [
   }
 ];
 
-const rule: RuleModule<'notCamelCase', [Options]> = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -49,7 +50,7 @@ const rule: RuleModule<'notCamelCase', [Options]> = {
 
     const options = util.applyDefault(defaultOptions, context.options)[0];
     const properties = options.properties;
-    const allow = options.allow;
+    const allow = options.allow!;
 
     /**
      * Checks if a string contains an underscore and isn't all upper-case

@@ -3,6 +3,7 @@
  */
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
+import RuleModule from 'ts-eslint';
 
 export function getNameFromPropertyName(
   propertyName: TSESTree.PropertyName
@@ -12,3 +13,17 @@ export function getNameFromPropertyName(
   }
   return propertyName.value;
 }
+
+export type InferOptionsTypeFromRule<T> = T extends RuleModule<
+  any,
+  infer TOptions
+>
+  ? TOptions
+  : unknown;
+
+export type InferMessageIdsTypeFromRule<T> = T extends RuleModule<
+  infer TMessageIds,
+  any
+>
+  ? TMessageIds
+  : unknown;

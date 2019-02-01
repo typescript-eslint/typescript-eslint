@@ -277,10 +277,7 @@ export type JSXExpression =
   | JSXEmptyExpression
   | JSXSpreadChild
   | JSXExpressionContainer;
-export type JSXTagNameExpression =
-  | Identifier
-  | MemberExpression
-  | ThisExpression;
+export type JSXTagNameExpression = JSXIdentifier | JSXMemberExpression;
 export type LeftHandSideExpression =
   | CallExpression
   | ClassExpression
@@ -412,12 +409,12 @@ interface BinaryExpressionBase extends NodeBase {
 }
 
 interface ClassDeclarationBase extends NodeBase {
-  typeParameters: TSTypeParameterDeclaration;
-  superTypeParameters: TSTypeParameterInstantiation;
-  id: Identifier | undefined;
+  typeParameters?: TSTypeParameterDeclaration;
+  superTypeParameters?: TSTypeParameterInstantiation;
+  id?: Identifier;
   body: ClassBody;
-  superClass: LeftHandSideExpression | undefined;
-  implements: ExpressionWithTypeArguments[];
+  superClass?: LeftHandSideExpression;
+  implements?: ExpressionWithTypeArguments[];
   abstract?: boolean;
   declare?: boolean;
   decorators?: Decorator[];
@@ -428,7 +425,7 @@ interface ClassPropertyBase extends NodeBase {
   value: Expression;
   computed: boolean;
   static: boolean;
-  readonly: boolean | undefined;
+  readonly?: boolean;
   decorators?: Decorator[];
   accessibility?: Accessibility;
   optional?: boolean;
@@ -442,7 +439,7 @@ interface FunctionDeclarationBase extends NodeBase {
   expression: boolean;
   async: boolean;
   params: Parameter[];
-  body: BlockStatement | null | undefined;
+  body?: BlockStatement | null;
   returnType?: TSTypeAnnotation;
   typeParameters?: TSTypeParameterDeclaration;
 }
@@ -751,9 +748,14 @@ export interface JSXIdentifier extends NodeBase {
   name: string;
 }
 
+export interface JSXMemberExpression extends NodeBase {
+  type: 'JSXMemberExpression';
+  name: string;
+}
+
 export interface JSXOpeningElement extends NodeBase {
   type: 'JSXOpeningElement';
-  typeParameters: TSTypeParameterInstantiation | undefined;
+  typeParameters?: TSTypeParameterInstantiation;
   selfClosing: boolean;
   name: JSXTagNameExpression;
   attributes: JSXAttribute[];
@@ -994,8 +996,8 @@ export interface TSDeclareFunction extends NodeBase {
   generator: boolean;
   expression: boolean;
   async: boolean;
-  params: Parameter;
-  body: BlockStatement | null | undefined;
+  params: Parameter[];
+  body?: BlockStatement | null;
   returnType?: TSTypeAnnotation;
   declare: boolean;
   typeParameters?: TSTypeParameterDeclaration;
@@ -1066,7 +1068,7 @@ export interface TSIndexedAccessType extends NodeBase {
 
 export interface TSIndexSignature extends NodeBase {
   type: 'TSIndexSignature';
-  parameters: Parameter;
+  parameters: Parameter[];
   typeAnnotation?: TSTypeAnnotation;
   readonly?: boolean;
   accessibility?: Accessibility;
@@ -1177,10 +1179,10 @@ export interface TSOptionalType extends NodeBase {
 
 export interface TSParameterProperty extends NodeBase {
   type: 'TSParameterProperty';
-  accessibility: Accessibility | undefined;
-  readonly: boolean | undefined;
-  static: boolean | undefined;
-  export: boolean | undefined;
+  accessibility?: Accessibility;
+  readonly?: boolean;
+  static?: boolean;
+  export?: boolean;
   parameter: AssignmentPattern | BindingName | RestElement;
 }
 
@@ -1191,14 +1193,14 @@ export interface TSParenthesizedType extends NodeBase {
 
 export interface TSPropertySignature extends NodeBase {
   type: 'TSPropertySignature';
-  optional: boolean | undefined;
+  optional?: boolean;
   computed: boolean;
   key: PropertyName;
-  typeAnnotation: TSTypeAnnotation | undefined;
-  initializer: Expression | undefined;
-  readonly: boolean | undefined;
-  static: boolean | undefined;
-  export: boolean | undefined;
+  typeAnnotation?: TSTypeAnnotation;
+  initializer?: Expression;
+  readonly?: boolean;
+  static?: boolean;
+  export?: boolean;
   accessability?: Accessibility;
 }
 
@@ -1283,8 +1285,8 @@ export interface TSTypeOperator extends NodeBase {
 export interface TSTypeParameter extends NodeBase {
   type: 'TSTypeParameter';
   name: Identifier;
-  constraint: TypeNode | undefined;
-  default: TypeNode | undefined;
+  constraint?: TypeNode;
+  default?: TypeNode;
 }
 
 export interface TSTypeParameterDeclaration extends NodeBase {
@@ -1311,7 +1313,7 @@ export interface TSTypeQuery extends NodeBase {
 export interface TSTypeReference extends NodeBase {
   type: 'TSTypeReference';
   typeName: EntityName;
-  typeParameters: TSTypeParameterInstantiation | undefined;
+  typeParameters?: TSTypeParameterInstantiation;
 }
 
 export interface TSUndefinedKeyword extends NodeBase {

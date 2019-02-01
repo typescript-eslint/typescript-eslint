@@ -9,7 +9,14 @@
 //------------------------------------------------------------------------------
 
 import rule from '../../src/rules/indent';
-import { RuleTester, RuleTesterRunTests } from 'eslint';
+import RuleTester, { RunTests, TestCaseError } from '../RuleTester';
+import {
+  InferOptionsTypeFromRule,
+  InferMessageIdsTypeFromRule
+} from '../../src/tsestree-utils';
+
+type Options = InferOptionsTypeFromRule<typeof rule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 
 /**
  * Marks a test case as a plain javascript case which should be indented the same
@@ -611,7 +618,7 @@ type Foo = string | {
             `
     ]
   }
-].reduce<RuleTesterRunTests>(
+].reduce<RunTests<MessageIds, Options>>(
   (acc, testCase) => {
     const indent = '    ';
 
@@ -633,7 +640,7 @@ type Foo = string | {
         output: code,
         errors: code
           .split('\n')
-          .map<RuleTester.TestCaseError | null>((line, lineNum) => {
+          .map<TestCaseError<MessageIds> | null>((line, lineNum) => {
             const indentCount = line.split(indent).length - 1;
             const spaceCount = indentCount * indent.length;
 
@@ -642,12 +649,16 @@ type Foo = string | {
             }
 
             return {
-              message: `Expected indentation of ${spaceCount} spaces but found 0.`,
+              messageId: 'wrongIndentation',
+              data: {
+                expected: `${spaceCount} spaces`,
+                actual: 0
+              },
               line: lineNum + 1,
               column: 1
             };
           })
-          .filter((error): error is RuleTester.TestCaseError => error !== null)
+          .filter((error): error is TestCaseError<MessageIds> => error !== null)
       });
     });
 
@@ -757,12 +768,20 @@ type Foo = {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         }
@@ -799,52 +818,92 @@ interface Foo {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 6,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 7,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 8,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 9,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 10,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 11,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 12,
           column: 1
         }
@@ -869,22 +928,38 @@ interface Foo {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 6,
           column: 1
         }
@@ -905,12 +980,20 @@ interface Foo extends Bar {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         }
@@ -935,17 +1018,29 @@ class Foo
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         }
@@ -968,17 +1063,29 @@ interface Foo
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         }
@@ -999,12 +1106,20 @@ const foo : Foo<{
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         }
@@ -1031,22 +1146,38 @@ type T = {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 6,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 7,
           column: 1
         }
@@ -1077,32 +1208,56 @@ type T =
             `,
       errors: [
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 6,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 4.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 4
+          },
           line: 8,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 4.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 4
+          },
           line: 9,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 10,
           column: 1
         }
@@ -1117,7 +1272,11 @@ import Dialogs = require("widgets/Dialogs");
             `,
       errors: [
         {
-          message: `Expected indentation of 0 spaces but found 4.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '0 spaces',
+            actual: 4
+          },
           line: 2,
           column: 1
         }
@@ -1158,62 +1317,110 @@ class Foo {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 6,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 7,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 8,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 9,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 10,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 11,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 12,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 13,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 14,
           column: 1
         }
@@ -1230,12 +1437,20 @@ class Foo {}
             `,
       errors: [
         {
-          message: `Expected indentation of 0 spaces but found 4.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '0 spaces',
+            actual: 4
+          },
           line: 2,
           column: 1
         },
         {
-          message: `Expected indentation of 0 spaces but found 4.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '0 spaces',
+            actual: 4
+          },
           line: 3,
           column: 1
         }
@@ -1258,17 +1473,29 @@ enum Foo {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         }
@@ -1291,17 +1518,29 @@ const enum Foo {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         }
@@ -1316,7 +1555,11 @@ export = Foo;
             `,
       errors: [
         {
-          message: `Expected indentation of 0 spaces but found 4.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '0 spaces',
+            actual: 4
+          },
           line: 2,
           column: 1
         }
@@ -1331,7 +1574,11 @@ declare function h(x: number): number;
             `,
       errors: [
         {
-          message: `Expected indentation of 0 spaces but found 4.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '0 spaces',
+            actual: 4
+          },
           line: 2,
           column: 1
         }
@@ -1350,7 +1597,11 @@ declare function h(
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         }
@@ -1373,17 +1624,29 @@ namespace Validation {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         }
@@ -1406,17 +1669,29 @@ declare module "Validation" {
             `,
       errors: [
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 3,
           column: 1
         },
         {
-          message: `Expected indentation of 8 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '8 spaces',
+            actual: 0
+          },
           line: 4,
           column: 1
         },
         {
-          message: `Expected indentation of 4 spaces but found 0.`,
+          messageId: 'wrongIndentation' as 'wrongIndentation',
+          data: {
+            expected: '4 spaces',
+            actual: 0
+          },
           line: 5,
           column: 1
         }
