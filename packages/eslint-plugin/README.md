@@ -129,5 +129,6 @@ Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-pre
 | [`@typescript-eslint/prefer-namespace-keyword`](./docs/rules/prefer-namespace-keyword.md)                 | Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules. (`no-internal-module` from TSLint) | :heavy_check_mark: | :wrench: |
 | [`@typescript-eslint/restrict-plus-operands`](./docs/rules/restrict-plus-operands.md)                     | When adding two variables, operands must both be of type number or of type string. (`restrict-plus-operands` from TSLint)                           |                    |          |
 | [`@typescript-eslint/type-annotation-spacing`](./docs/rules/type-annotation-spacing.md)                   | Require consistent spacing around type annotations (`typedef-whitespace` from TSLint)                                                               | :heavy_check_mark: | :wrench: |
+| [`@typescript-eslint/unified-signatures`](./docs/rules/unified-signatures.md)                             | Warns for any two overloads that could be unified into one. (`unified-signatures` from TSLint)     |    |   |
 
 <!-- end rule list -->
