@@ -5,7 +5,7 @@ const version = require('../package.json').version;
 exports.tslintRule = name => `\`${name}\` from TSLint`;
 
 exports.metaDocsUrl = name =>
-  `https://github.com/typescript-eslint/typescript-eslint/blob/${version}/packages/eslint-plugin/docs/rules/${name}.md`;
+  `https://github.com/typescript-eslint/typescript-eslint/blob/v${version}/packages/eslint-plugin/docs/rules/${name}.md`;
 
 /**
  * Check if the context file name is *.ts or *.tsx
