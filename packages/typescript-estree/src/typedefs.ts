@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from './ast-node-types';
 
-export interface Position {
+export interface LineAndColumnData {
   /**
    * Line number (1-indexed)
    */
@@ -14,11 +14,11 @@ export interface SourceLocation {
   /**
    * The position of the first character of the parsed source region
    */
-  start: Position;
+  start: LineAndColumnData;
   /**
    * The position of the first character after the parsed source region
    */
-  end: Position;
+  end: LineAndColumnData;
 }
 
 export interface BaseNode {

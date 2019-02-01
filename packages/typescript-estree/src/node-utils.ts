@@ -224,7 +224,7 @@ export function getBinaryExpressionType(
 export function getLineAndCharacterFor(
   pos: number,
   ast: ts.SourceFile
-): es.Position {
+): es.LineAndColumnData {
   const loc = ast.getLineAndCharacterOfPosition(pos);
   return {
     line: loc.line + 1,

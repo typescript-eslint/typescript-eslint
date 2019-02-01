@@ -25,8 +25,8 @@ function convertTypeScriptCommentToEsprimaComment(
   text: string,
   start: number,
   end: number,
-  startLoc: es.Position,
-  endLoc: es.Position
+  startLoc: es.LineAndColumnData,
+  endLoc: es.LineAndColumnData
 ): es.Comment {
   const comment: es.OptionalRangeAndLoc<es.Comment> = {
     type: block ? 'Block' : 'Line',
