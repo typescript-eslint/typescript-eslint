@@ -21,23 +21,23 @@ ruleTester.run('arrow-parens', rule, {
     'const foo = function <T>(t: T) {};',
     {
       code: 'const foo = t => {};',
-      options: ["as-needed"]
+      options: ['as-needed']
     },
     {
       code: 'const foo = <T>(t) => {};',
-      options: ["as-needed"]
+      options: ['as-needed']
     },
     {
       code: 'const foo = (t: T) => {};',
-      options: ["as-needed"]
+      options: ['as-needed']
     },
     {
       code: 'const foo = <T>(t: T) => {};',
-      options: ["as-needed"]
+      options: ['as-needed']
     },
     {
       code: 'const foo = <T>(t: T) => ({});',
-      options: ["as-needed", { requireForBlockBody: true }]
+      options: ['as-needed', { requireForBlockBody: true }]
     }
   ],
   invalid: []
