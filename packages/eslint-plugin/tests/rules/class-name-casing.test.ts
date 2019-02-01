@@ -40,7 +40,11 @@ ruleTester.run('class-name-casing', rule, {
       code: 'class invalidClassName {}',
       errors: [
         {
-          message: "Class 'invalidClassName' must be PascalCased.",
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Class',
+            name: 'invalidClassName'
+          },
           line: 1,
           column: 7
         }
@@ -50,7 +54,11 @@ ruleTester.run('class-name-casing', rule, {
       code: 'class Another_Invalid_Class_Name {}',
       errors: [
         {
-          message: "Class 'Another_Invalid_Class_Name' must be PascalCased.",
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Class',
+            name: 'Another_Invalid_Class_Name'
+          },
           line: 1,
           column: 7
         }
@@ -60,7 +68,11 @@ ruleTester.run('class-name-casing', rule, {
       code: 'var foo = class {};',
       errors: [
         {
-          message: "Class 'foo' must be PascalCased.",
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Class',
+            name: 'foo'
+          },
           line: 1,
           column: 5
         }
@@ -70,7 +82,11 @@ ruleTester.run('class-name-casing', rule, {
       code: 'const foo = class {};',
       errors: [
         {
-          message: "Class 'foo' must be PascalCased.",
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Class',
+            name: 'foo'
+          },
           line: 1,
           column: 7
         }
@@ -80,7 +96,11 @@ ruleTester.run('class-name-casing', rule, {
       code: 'var bar = class invalidName {}',
       errors: [
         {
-          message: "Class 'invalidName' must be PascalCased.",
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Class',
+            name: 'invalidName'
+          },
           line: 1,
           column: 17
         }
@@ -90,7 +110,11 @@ ruleTester.run('class-name-casing', rule, {
       code: 'interface someInterface {}',
       errors: [
         {
-          message: "Interface 'someInterface' must be PascalCased.",
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Interface',
+            name: 'someInterface'
+          },
           line: 1,
           column: 11
         }
@@ -100,7 +124,11 @@ ruleTester.run('class-name-casing', rule, {
       code: 'abstract class invalidClassName {}',
       errors: [
         {
-          message: "Abstract class 'invalidClassName' must be PascalCased.",
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Abstract class',
+            name: 'invalidClassName'
+          },
           line: 1,
           column: 16
         }
@@ -110,7 +138,11 @@ ruleTester.run('class-name-casing', rule, {
       code: 'declare class invalidClassName {}',
       errors: [
         {
-          message: "Class 'invalidClassName' must be PascalCased.",
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Class',
+            name: 'invalidClassName'
+          },
           line: 1,
           column: 15
         }

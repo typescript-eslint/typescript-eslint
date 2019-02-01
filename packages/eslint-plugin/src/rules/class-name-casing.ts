@@ -6,12 +6,13 @@
 
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule = {
+const rule: RuleModule<'notPascalCased', []> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -20,6 +21,9 @@ const rule: RuleModule = {
       category: 'Best Practices',
       url: util.metaDocsUrl('class-name-casing'),
       recommended: 'error'
+    },
+    messages: {
+      notPascalCased: "{{friendlyName}} '{{name}}' must be PascalCased."
     },
     schema: []
   },
@@ -41,12 +45,10 @@ const rule: RuleModule = {
 
     /**
      * Report a class declaration as invalid
-     * @param {Node} decl The declaration
-     * @param {Node} [id=classDecl.id] The name of the declaration
+     * @param decl The declaration
+     * @param id The name of the declaration
      */
-    function report(decl, id): void {
-      const resolvedId = id || decl.id;
-
+    function report(decl: TSESTree.Node, id: TSESTree.Identifier): void {
       let friendlyName;
 
       switch (decl.type) {
@@ -62,11 +64,11 @@ const rule: RuleModule = {
       }
 
       context.report({
-        node: resolvedId,
-        message: "{{friendlyName}} '{{name}}' must be PascalCased.",
+        node: id,
+        messageId: 'notPascalCased',
         data: {
           friendlyName,
-          name: resolvedId.name
+          name: id.name
         }
       });
     }
@@ -76,17 +78,25 @@ const rule: RuleModule = {
     //----------------------------------------------------------------------
 
     return {
-      'ClassDeclaration, TSInterfaceDeclaration, ClassExpression'(node) {
+      'ClassDeclaration, TSInterfaceDeclaration, ClassExpression'(
+        node:
+          | TSESTree.ClassDeclaration
+          | TSESTree.TSInterfaceDeclaration
+          | TSESTree.ClassExpression
+      ) {
         // class expressions (i.e. export default class {}) are OK
         if (node.id && !isPascalCase(node.id.name)) {
-          report(node);
+          report(node, node.id);
         }
       },
-      "VariableDeclarator[init.type='ClassExpression']"(node) {
-        const id = node.id;
+      "VariableDeclarator[init.type='ClassExpression']"(
+        node: TSESTree.VariableDeclarator
+      ) {
+        const id = node.id as TSESTree.Identifier;
+        const nodeInit = node.init as TSESTree.ClassExpression;
 
-        if (id && !node.init.id && !isPascalCase(id.name)) {
-          report(node.init, id);
+        if (id && !nodeInit.id && !isPascalCase(id.name)) {
+          report(nodeInit, id);
         }
       }
     };
