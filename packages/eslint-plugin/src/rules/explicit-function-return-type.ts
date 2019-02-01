@@ -5,26 +5,35 @@
 
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
+type Options = [
+  {
+    allowExpressions?: boolean;
+  }
+];
 
-const defaultOptions = [
+const defaultOptions: Options = [
   {
     allowExpressions: true
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<'missingReturnType', Options> = {
   meta: {
     type: 'problem',
     docs: {
       description:
         'Require explicit return types on functions and class methods',
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('explicit-function-return-type'),
       recommended: 'warn'
+    },
+    messages: {
+      missingReturnType: 'Missing return type on function.'
     },
     schema: [
       {
@@ -48,9 +57,9 @@ const rule: RuleModule = {
 
     /**
      * Checks if the parent of a function expression is a constructor.
-     * @param {ASTNode} parent The parent of a function expression node
+     * @param parent The parent of a function expression node
      */
-    function isConstructor(parent): boolean {
+    function isConstructor(parent: TSESTree.Node): boolean {
       return (
         parent.type === 'MethodDefinition' && parent.kind === 'constructor'
       );
@@ -58,26 +67,32 @@ const rule: RuleModule = {
 
     /**
      * Checks if the parent of a function expression is a setter.
-     * @param {ASTNode} parent The parent of a function expression node
+     * @param parent The parent of a function expression node
      */
-    function isSetter(parent): boolean {
+    function isSetter(parent: TSESTree.Node): boolean {
       return parent.type === 'MethodDefinition' && parent.kind === 'set';
     }
 
     /**
      * Checks if a function declaration/expression has a return type.
-     * @param {ASTNode} node The node representing a function.
+     * @param node The node representing a function.
      */
-    function checkFunctionReturnType(node): void {
+    function checkFunctionReturnType(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression
+    ): void {
       if (
         !node.returnType &&
+        node.parent &&
         !isConstructor(node.parent) &&
         !isSetter(node.parent) &&
         util.isTypescript(context.getFilename())
       ) {
         context.report({
           node,
-          message: `Missing return type on function.`
+          messageId: 'missingReturnType'
         });
       }
     }
@@ -86,9 +101,15 @@ const rule: RuleModule = {
      * Checks if a function declaration/expression has a return type.
      * @param {ASTNode} node The node representing a function.
      */
-    function checkFunctionExpressionReturnType(node): void {
+    function checkFunctionExpressionReturnType(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression
+    ): void {
       if (
         options.allowExpressions &&
+        node.parent &&
         node.parent.type !== 'VariableDeclarator' &&
         node.parent.type !== 'MethodDefinition'
       ) {
@@ -102,9 +123,9 @@ const rule: RuleModule = {
     // Public
     //----------------------------------------------------------------------
     return {
+      ArrowFunctionExpression: checkFunctionExpressionReturnType,
       FunctionDeclaration: checkFunctionReturnType,
-      FunctionExpression: checkFunctionExpressionReturnType,
-      ArrowFunctionExpression: checkFunctionExpressionReturnType
+      FunctionExpression: checkFunctionExpressionReturnType
     };
   }
 };

@@ -116,7 +116,7 @@ function test() {
             `,
       errors: [
         {
-          message: 'Missing return type on function.',
+          messageId: 'missingReturnType',
           line: 2,
           column: 1
         }
@@ -131,7 +131,7 @@ var fn = function() {
             `,
       errors: [
         {
-          message: 'Missing return type on function.',
+          messageId: 'missingReturnType',
           line: 2,
           column: 10
         }
@@ -144,7 +144,7 @@ var arrowFn = () => 'test';
             `,
       errors: [
         {
-          message: 'Missing return type on function.',
+          messageId: 'missingReturnType',
           line: 2,
           column: 15
         }
@@ -166,12 +166,12 @@ class Test {
             `,
       errors: [
         {
-          message: 'Missing return type on function.',
+          messageId: 'missingReturnType',
           line: 4,
           column: 11
         },
         {
-          message: 'Missing return type on function.',
+          messageId: 'missingReturnType',
           line: 8,
           column: 9
         }
@@ -183,7 +183,7 @@ class Test {
       options: [{ allowExpressions: true }],
       errors: [
         {
-          message: 'Missing return type on function.',
+          messageId: 'missingReturnType',
           line: 1,
           column: 13
         }
@@ -195,7 +195,7 @@ class Test {
       options: [{ allowExpressions: true }],
       errors: [
         {
-          message: 'Missing return type on function.',
+          messageId: 'missingReturnType',
           line: 1,
           column: 13
         }
