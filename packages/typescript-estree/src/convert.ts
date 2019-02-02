@@ -1576,17 +1576,13 @@ export class Converter {
             right = this.convertChild(node.right);
 
           if (left.type === AST_NODE_TYPES.SequenceExpression) {
-            result.expressions = result.expressions.concat(
-              left.expressions
-            );
+            result.expressions = result.expressions.concat(left.expressions);
           } else {
             result.expressions.push(left);
           }
 
           if (right.type === AST_NODE_TYPES.SequenceExpression) {
-            result.expressions = result.expressions.concat(
-              right.expressions
-            );
+            result.expressions = result.expressions.concat(right.expressions);
           } else {
             result.expressions.push(right);
           }
