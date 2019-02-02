@@ -920,7 +920,7 @@ export class Converter {
           /**
            * Unlike in object literal methods, class method params can have decorators
            */
-          (method as any).params = this.convertParameters(node.parameters);
+          method.params = this.convertParameters(node.parameters);
 
           /**
            * TypeScript class methods can be defined as "abstract"
@@ -1589,38 +1589,29 @@ export class Converter {
           return result;
         } else {
           const type = getBinaryExpressionType(node.operatorToken);
-          switch (type) {
-            case AST_NODE_TYPES.AssignmentExpression:
-              if (this.allowPattern) {
-                return this.createNode<es.AssignmentPattern>(node, {
-                  type: AST_NODE_TYPES.AssignmentPattern,
-                  left: this.convertPattern(node.left, node),
-                  right: this.convertChild(node.right)
-                });
-              } else {
-                return this.createNode<es.AssignmentExpression>(node, {
-                  type: AST_NODE_TYPES.AssignmentExpression,
-                  operator: getTextForTokenKind(node.operatorToken.kind) as any,
-                  left: this.convertPattern(node.left, node),
-                  right: this.convertChild(node.right)
-                });
-              }
-            case AST_NODE_TYPES.LogicalExpression:
-              return this.createNode<es.LogicalExpression>(node, {
-                type: AST_NODE_TYPES.LogicalExpression,
-                operator: getTextForTokenKind(node.operatorToken.kind) as any,
-                left: this.convertChild(node.left, node),
-                right: this.convertChild(node.right)
-              });
-            default:
-            case AST_NODE_TYPES.BinaryExpression:
-              return this.createNode<es.BinaryExpression>(node, {
-                type: AST_NODE_TYPES.BinaryExpression,
-                operator: getTextForTokenKind(node.operatorToken.kind) as any,
-                left: this.convertChild(node.left, node),
-                right: this.convertChild(node.right)
-              });
+          if (
+            this.allowPattern &&
+            type === AST_NODE_TYPES.AssignmentExpression
+          ) {
+            return this.createNode<es.AssignmentPattern>(node, {
+              type: AST_NODE_TYPES.AssignmentPattern,
+              left: this.convertPattern(node.left, node),
+              right: this.convertChild(node.right)
+            });
           }
+          return this.createNode<
+            es.AssignmentExpression | es.LogicalExpression | es.BinaryExpression
+          >(node, {
+            type: type,
+            operator: getTextForTokenKind(node.operatorToken.kind)!,
+            left: this.converter(
+              node.left,
+              node,
+              this.inTypeMode,
+              type === AST_NODE_TYPES.AssignmentExpression
+            ),
+            right: this.convertChild(node.right)
+          });
         }
       }
 
