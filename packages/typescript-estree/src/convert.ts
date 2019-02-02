@@ -386,31 +386,39 @@ export class Converter {
 
       // Convert TSNode left and right objects into ESTreeNode object
       // and property objects
-      tagNameToken.object = this.convertChild(
+      const object = this.convertChild(
         (node as any).tagName.expression,
         node
       );
-      tagNameToken.property = this.convertChild(
+      const property = this.convertChild(
         (node as any).tagName.name,
         node
       );
 
       // Assign the appropriate types
-      tagNameToken.object.type = isNestedMemberExpression
+      object.type = isNestedMemberExpression
         ? AST_NODE_TYPES.JSXMemberExpression
         : AST_NODE_TYPES.JSXIdentifier;
-      tagNameToken.property.type = AST_NODE_TYPES.JSXIdentifier;
+      property.type = AST_NODE_TYPES.JSXIdentifier;
       if ((tagName as any).expression.kind === SyntaxKind.ThisKeyword) {
-        tagNameToken.object.name = 'this';
+        object.name = 'this';
       }
+
+      return this.createNode<es.JSXMemberExpression>(tagName, {
+        type: AST_NODE_TYPES.JSXMemberExpression,
+        range: tagNameToken.range,
+        loc: tagNameToken.loc,
+        object: object,
+        property: property
+      });
     } else {
-      tagNameToken.type = AST_NODE_TYPES.JSXIdentifier;
-      tagNameToken.name = tagNameToken.value;
+      return this.createNode<es.JSXIdentifier>(tagName, {
+        type: AST_NODE_TYPES.JSXIdentifier,
+        range: tagNameToken.range,
+        loc: tagNameToken.loc,
+        name: tagNameToken.value
+      });
     }
-
-    delete tagNameToken.value;
-
-    return tagNameToken as any;
   }
 
   /**

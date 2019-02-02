@@ -501,7 +501,7 @@ export function fixExports<T extends es.BaseNode>(
  * @param token the ts.Token
  * @returns the token type
  */
-export function getTokenType(token: any): string {
+export function getTokenType(token: any): es.TokenType {
   // Need two checks for keywords since some are also identifiers
   if (token.originalKeywordKind) {
     switch (token.originalKeywordKind) {

@@ -38,21 +38,45 @@ export interface BaseNode {
   parent?: Node;
 
   // every node *will* have a type, but let the nodes define their own exact string
-  type: string;
+  // type: string;
 
   // we don't ever set this from within ts-estree
   // source?: string | null;
 }
 
+/*
+ * Token and Comment are pseudo-nodes to represent pieces of source code
+ *
+ * NOTE:
+ * They are not included in the `Node` union below on purpose because they
+ * are not ever included as part of the standard AST tree.
+ */
+
+export type TokenType =
+  | 'Boolean'
+  | 'Identifier'
+  | 'JSXIdentifier'
+  | 'JSXMemberExpression'
+  | 'JSXText'
+  | 'Keyword'
+  | 'Null'
+  | 'Numeric'
+  | 'Punctuator'
+  | 'RegularExpression'
+  | 'String'
+  | 'Template';
+
 export interface Token extends BaseNode {
+  type: TokenType;
   value: string;
   regex?: {
     pattern: string;
     flags: string;
   };
-  object?: any;
-  property?: any;
-  name?: any;
+}
+export interface Comment extends BaseNode {
+  type: 'Line' | 'Block';
+  value: string;
 }
 
 export type OptionalRangeAndLoc<T> = Pick<
@@ -63,6 +87,8 @@ export type OptionalRangeAndLoc<T> = Pick<
   loc?: SourceLocation;
 };
 
+// Every single valid AST Node
+// Please keep it sorted alphabetically.
 export type Node =
   | ArrayExpression
   | ArrayPattern
@@ -152,12 +178,10 @@ export type Node =
   | TSCallSignatureDeclaration
   | TSClassImplements
   | TSConditionalType
-  // | TSConstKeyword
   | TSConstructorType
   | TSConstructSignatureDeclaration
   | TSDeclareFunction
   | TSDeclareKeyword
-  // | TSDefaultKeyword
   | TSEnumDeclaration
   | TSEnumMember
   | TSExportAssignment
@@ -314,9 +338,7 @@ export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
 export type Modifier =
   | TSAbstractKeyword
   | TSAsyncKeyword
-  // | TSConstKeyword
   | TSDeclareKeyword
-  // | TSDefaultKeyword
   | TSExportKeyword
   | TSPublicKeyword
   | TSPrivateKeyword
@@ -460,11 +482,11 @@ interface FunctionDeclarationBase extends BaseNode {
   generator: boolean;
   expression: boolean;
   async: boolean;
-  declare?: boolean;
   params: Parameter[];
   body?: BlockStatement | null;
   returnType?: TSTypeAnnotation;
   typeParameters?: TSTypeParameterDeclaration;
+  declare?: boolean;
 }
 
 interface FunctionSignatureBase extends BaseNode {
@@ -596,11 +618,6 @@ export interface ClassExpression extends ClassDeclarationBase {
 
 export interface ClassProperty extends ClassPropertyBase {
   type: AST_NODE_TYPES.ClassProperty;
-}
-
-export interface Comment extends BaseNode {
-  type: 'Line' | 'Block';
-  value: string;
 }
 
 export interface ConditionalExpression extends BaseNode {
@@ -778,7 +795,8 @@ export interface JSXIdentifier extends BaseNode {
 
 export interface JSXMemberExpression extends BaseNode {
   type: AST_NODE_TYPES.JSXMemberExpression;
-  name: string;
+  object: JSXTagNameExpression;
+  property: JSXTagNameExpression;
 }
 
 export interface JSXOpeningElement extends BaseNode {
@@ -863,19 +881,19 @@ export interface Program extends BaseNode {
   type: AST_NODE_TYPES.Program;
   body: Statement[];
   sourceType: 'module' | 'script';
-  tokens?: Token[];
   comments?: Comment[];
+  tokens?: Token[];
 }
 
 export interface Property extends BaseNode {
   type: AST_NODE_TYPES.Property;
   key: PropertyName;
-  value: Expression | AssignmentPattern | BindingName; // TODO
-  typeParameters?: TSTypeParameterDeclaration;
+  value: Expression | AssignmentPattern | BindingName;
   computed: boolean;
   method: boolean;
   shorthand: boolean;
   kind: 'init';
+  typeParameters?: TSTypeParameterDeclaration;
 }
 
 export interface RestElement extends BaseNode {
@@ -1010,10 +1028,6 @@ export interface TSConditionalType extends BaseNode {
   falseType: TypeNode;
 }
 
-// export interface TSConstKeyword extends BaseNode {
-//   type: AST_NODE_TYPES.TSConstKeyword;
-// }
-
 export interface TSConstructorType extends FunctionSignatureBase {
   type: AST_NODE_TYPES.TSConstructorType;
 }
@@ -1029,10 +1043,6 @@ export interface TSDeclareFunction extends FunctionDeclarationBase {
 export interface TSDeclareKeyword extends BaseNode {
   type: AST_NODE_TYPES.TSDeclareKeyword;
 }
-
-// export interface TSDefaultKeyword extends BaseNode {
-//   type: AST_NODE_TYPES.TSDefaultKeyword;
-// }
 
 export interface TSEnumDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSEnumDeclaration;
