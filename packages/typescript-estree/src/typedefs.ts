@@ -44,6 +44,41 @@ interface BaseNode {
   // source?: string | null;
 }
 
+/*
+ * Token and Comment are pseudo-nodes to represent pieces of source code
+ *
+ * NOTE:
+ * They are not included in the `Node` union below on purpose because they
+ * are not ever included as part of the standard AST tree.
+ */
+
+export interface Token extends BaseNode {
+  type:
+    | 'Boolean'
+    | 'Identifier'
+    | 'JSXIdentifier'
+    | 'JSXMemberExpression'
+    | 'JSXText'
+    | 'Keyword'
+    | 'Null'
+    | 'Numeric'
+    | 'Punctuator'
+    | 'RegularExpression'
+    | 'String'
+    | 'Template';
+  value: string;
+  regex?: {
+    pattern: string;
+    flags: string;
+  };
+}
+export interface Comment extends BaseNode {
+  type: 'Line' | 'Block';
+  value: string;
+}
+
+// Every single valid AST Node
+// Please keep it sorted alphabetically.
 export type Node =
   | ArrayExpression
   | ArrayPattern
@@ -445,6 +480,7 @@ interface FunctionDeclarationBase extends BaseNode {
   body?: BlockStatement | null;
   returnType?: TSTypeAnnotation;
   typeParameters?: TSTypeParameterDeclaration;
+  declare?: boolean;
 }
 
 interface FunctionSignatureBase extends BaseNode {
@@ -454,8 +490,8 @@ interface FunctionSignatureBase extends BaseNode {
 }
 
 interface LiteralBase extends BaseNode {
-  raw: boolean | number | RegExp | string | null;
-  value: string;
+  raw: string;
+  value: boolean | number | RegExp | string | null;
   regex?: {
     pattern: string;
     flags: string;
@@ -475,7 +511,7 @@ interface MethodDefinitionBase extends BaseNode {
 
 interface TSHeritageBase extends BaseNode {
   expression: Expression;
-  typeParameters?: TSTypeParameterDeclaration;
+  typeParameters?: TSTypeParameterInstantiation;
 }
 
 interface UnaryExpressionBase extends BaseNode {
@@ -509,8 +545,8 @@ export interface ArrowFunctionExpression extends BaseNode {
   body: Expression | BlockStatement;
   async: boolean;
   expression: boolean;
-  returnType: TSTypeAnnotation;
-  typeParameters: TSTypeParameterDeclaration;
+  returnType?: TSTypeAnnotation;
+  typeParameters?: TSTypeParameterDeclaration;
 }
 
 export interface AssignmentExpression extends BinaryExpressionBase {
@@ -576,11 +612,6 @@ export interface ClassExpression extends ClassDeclarationBase {
 
 export interface ClassProperty extends ClassPropertyBase {
   type: AST_NODE_TYPES.ClassProperty;
-}
-
-export interface Comment extends BaseNode {
-  type: 'Line' | 'Block';
-  value: string;
 }
 
 export interface ConditionalExpression extends BaseNode {
@@ -843,16 +874,19 @@ export interface Program extends BaseNode {
   type: AST_NODE_TYPES.Program;
   body: Statement[];
   sourcetype: 'module' | 'script';
+  comments?: Comment[];
+  tokens?: Token[];
 }
 
 export interface Property extends BaseNode {
   type: AST_NODE_TYPES.Property;
   key: PropertyName;
-  value: Expression | AssignmentPattern | BindingName; // TODO
+  value: Expression | AssignmentPattern | BindingName;
   computed: boolean;
   method: boolean;
   shorthand: boolean;
   kind: 'init';
+  typeParameters?: TSTypeParameterDeclaration;
 }
 
 export interface RestElement extends BaseNode {
@@ -860,6 +894,7 @@ export interface RestElement extends BaseNode {
   argument: BindingName | Expression | PropertyName;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  value?: AssignmentPattern;
 }
 
 export interface ReturnStatement extends BaseNode {
@@ -895,7 +930,7 @@ export interface SwitchStatement extends BaseNode {
 
 export interface TaggedTemplateExpression extends BaseNode {
   type: AST_NODE_TYPES.TaggedTemplateExpression;
-  typeParameters: TSTypeParameterInstantiation;
+  typeParameters?: TSTypeParameterInstantiation;
   tag: LeftHandSideExpression;
   quasi: TemplateLiteral;
 }
@@ -998,17 +1033,8 @@ export interface TSConstructSignatureDeclaration extends FunctionSignatureBase {
   type: AST_NODE_TYPES.TSConstructSignatureDeclaration;
 }
 
-export interface TSDeclareFunction extends BaseNode {
+export interface TSDeclareFunction extends FunctionDeclarationBase {
   type: AST_NODE_TYPES.TSDeclareFunction;
-  id: Identifier | null;
-  generator: boolean;
-  expression: boolean;
-  async: boolean;
-  params: Parameter[];
-  body?: BlockStatement | null;
-  returnType?: TSTypeAnnotation;
-  declare: boolean;
-  typeParameters?: TSTypeParameterDeclaration;
 }
 
 export interface TSDeclareKeyword extends BaseNode {
@@ -1134,7 +1160,7 @@ export interface TSMethodSignature extends BaseNode {
   key: PropertyName;
   params: Parameter[];
   optional?: boolean;
-  returnType?: TypeNode;
+  returnType?: TSTypeAnnotation;
   readonly?: boolean;
   typeParameters?: TSTypeParameterDeclaration;
   accessibility?: Accessibility;
@@ -1152,6 +1178,8 @@ export interface TSModuleDeclaration extends BaseNode {
   id: Identifier | Literal;
   body?: TSModuleBlock | Identifier;
   global?: boolean;
+  declare?: boolean;
+  modifiers?: Modifier[];
 }
 
 export interface TSNamespaceExportDeclaration extends BaseNode {
@@ -1209,7 +1237,7 @@ export interface TSPropertySignature extends BaseNode {
   readonly?: boolean;
   static?: boolean;
   export?: boolean;
-  accessability?: Accessibility;
+  accessibility?: Accessibility;
 }
 
 export interface TSPublicKeyword extends BaseNode {
@@ -1310,7 +1338,7 @@ export interface TSTypeParameterInstantiation extends BaseNode {
 export interface TSTypePredicate extends BaseNode {
   type: AST_NODE_TYPES.TSTypePredicate;
   parameterName: Identifier | TSThisType;
-  typeAnnotation: TypeNode;
+  typeAnnotation: TSTypeAnnotation;
 }
 
 export interface TSTypeQuery extends BaseNode {

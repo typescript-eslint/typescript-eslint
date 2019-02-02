@@ -314,7 +314,7 @@ declare module 'ts-eslint' {
     /**
      * An override of the location of the report
      */
-    loc?: TSESTree.NodeLocation;
+    loc?: TSESTree.SourceLocation;
   }
 
   interface RuleContext<TMessageIds extends string, TOptions extends any[]> {
