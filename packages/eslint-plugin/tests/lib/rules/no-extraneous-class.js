@@ -70,7 +70,9 @@ export class Bar {
 }
 `.trim(),
       options: [{ allowStaticOnly: true }]
-    }
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/170
+    'export default class { hello() { return "I am foo!"; } }'
   ],
 
   invalid: [
@@ -117,9 +119,13 @@ export class AClass {
         }
     }
 }
-
 `.trim(),
       errors: [onlyStatic, empty]
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/170
+      code: 'export default class { static hello() {} }',
+      errors: [{ messageId: 'onlyStatic', type: 'ClassDeclaration' }]
     }
   ]
 });
