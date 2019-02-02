@@ -382,8 +382,7 @@ export class Converter {
 
     if (tagName.kind === SyntaxKind.PropertyAccessExpression) {
       const isNestedMemberExpression =
-        tagName.expression.kind ===
-        SyntaxKind.PropertyAccessExpression;
+        tagName.expression.kind === SyntaxKind.PropertyAccessExpression;
 
       // Convert TSNode left and right objects into ESTreeNode object
       // and property objects
