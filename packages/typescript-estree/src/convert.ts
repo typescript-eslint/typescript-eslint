@@ -370,30 +370,25 @@ export class Converter {
   /**
    * Converts a TypeScript JSX node.tagName into an ESTree node.name
    * @param tagName the tagName object from a JSX ts.Node
-   * @param node
+   * @param parent
    * @returns the converted ESTree name object
    */
   protected convertTypeScriptJSXTagNameToESTreeName(
     tagName: ts.JsxTagNameExpression,
-    node: ts.Node
+    parent: ts.Node
   ): es.JSXMemberExpression | es.JSXIdentifier {
+    // TODO: remove convertToken call
     const tagNameToken = convertToken(tagName, this.ast);
 
-    if (tagNameToken.type === AST_NODE_TYPES.JSXMemberExpression) {
+    if (tagName.kind === SyntaxKind.PropertyAccessExpression) {
       const isNestedMemberExpression =
-        (node as any).tagName.expression.kind ===
+        tagName.expression.kind ===
         SyntaxKind.PropertyAccessExpression;
 
       // Convert TSNode left and right objects into ESTreeNode object
       // and property objects
-      const object = this.convertChild(
-        (node as any).tagName.expression,
-        node
-      );
-      const property = this.convertChild(
-        (node as any).tagName.name,
-        node
-      );
+      const object = this.convertChild(tagName.expression, parent);
+      const property = this.convertChild(tagName.name, parent);
 
       // Assign the appropriate types
       object.type = isNestedMemberExpression

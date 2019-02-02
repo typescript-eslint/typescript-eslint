@@ -796,7 +796,7 @@ export interface JSXIdentifier extends BaseNode {
 export interface JSXMemberExpression extends BaseNode {
   type: AST_NODE_TYPES.JSXMemberExpression;
   object: JSXTagNameExpression;
-  property: JSXTagNameExpression;
+  property: JSXIdentifier;
 }
 
 export interface JSXOpeningElement extends BaseNode {
