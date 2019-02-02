@@ -1,3 +1,5 @@
+import { AST_NODE_TYPES } from './ast-node-types';
+
 export interface LineAndColumnData {
   /**
    * Line number (1-indexed)
@@ -8,7 +10,7 @@ export interface LineAndColumnData {
    */
   column: number;
 }
-export interface NodeLocation {
+export interface SourceLocation {
   /**
    * The position of the first character of the parsed source region
    */
@@ -19,11 +21,11 @@ export interface NodeLocation {
   end: LineAndColumnData;
 }
 
-interface NodeBase {
+interface BaseNode {
   /**
    * The source location information of the node.
    */
-  loc: NodeLocation;
+  loc: SourceLocation;
   /**
    * An array of two numbers.
    * Both numbers are a 0-based index which is the position in the array of source code characters.
@@ -403,13 +405,13 @@ export type TSUnaryExpression =
 //  **Ensure you sort the interfaces alphabetically**
 ///////////////
 
-interface BinaryExpressionBase extends NodeBase {
+interface BinaryExpressionBase extends BaseNode {
   operator: string;
   left: Expression;
   right: Expression;
 }
 
-interface ClassDeclarationBase extends NodeBase {
+interface ClassDeclarationBase extends BaseNode {
   typeParameters?: TSTypeParameterDeclaration;
   superTypeParameters?: TSTypeParameterInstantiation;
   id?: Identifier;
@@ -421,7 +423,7 @@ interface ClassDeclarationBase extends NodeBase {
   decorators?: Decorator[];
 }
 
-interface ClassPropertyBase extends NodeBase {
+interface ClassPropertyBase extends BaseNode {
   key: PropertyName;
   value: Expression;
   computed: boolean;
@@ -434,7 +436,7 @@ interface ClassPropertyBase extends NodeBase {
   typeAnnotation?: TSTypeAnnotation;
 }
 
-interface FunctionDeclarationBase extends NodeBase {
+interface FunctionDeclarationBase extends BaseNode {
   id: Identifier | null;
   generator: boolean;
   expression: boolean;
@@ -445,13 +447,13 @@ interface FunctionDeclarationBase extends NodeBase {
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-interface FunctionSignatureBase extends NodeBase {
+interface FunctionSignatureBase extends BaseNode {
   params: Parameter[];
   returnType?: TSTypeAnnotation;
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-interface LiteralBase extends NodeBase {
+interface LiteralBase extends BaseNode {
   raw: boolean | number | RegExp | string | null;
   value: string;
   regex?: {
@@ -460,7 +462,7 @@ interface LiteralBase extends NodeBase {
   };
 }
 
-interface MethodDefinitionBase extends NodeBase {
+interface MethodDefinitionBase extends BaseNode {
   key: PropertyName;
   value: FunctionExpression;
   computed: boolean;
@@ -471,12 +473,12 @@ interface MethodDefinitionBase extends NodeBase {
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-interface TSHeritageBase extends NodeBase {
+interface TSHeritageBase extends BaseNode {
   expression: Expression;
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-interface UnaryExpressionBase extends NodeBase {
+interface UnaryExpressionBase extends BaseNode {
   operator: string;
   prefix: boolean;
   argument: LeftHandSideExpression | Literal | UnaryExpression;
@@ -487,20 +489,20 @@ interface UnaryExpressionBase extends NodeBase {
 //  **Ensure you sort the interfaces alphabetically**
 ///////////////
 
-export interface ArrayExpression extends NodeBase {
-  type: 'ArrayExpression';
+export interface ArrayExpression extends BaseNode {
+  type: AST_NODE_TYPES.ArrayExpression;
   elements: Expression[];
 }
 
-export interface ArrayPattern extends NodeBase {
-  type: 'ArrayPattern';
+export interface ArrayPattern extends BaseNode {
+  type: AST_NODE_TYPES.ArrayPattern;
   elements: Expression[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
 }
 
-export interface ArrowFunctionExpression extends NodeBase {
-  type: 'ArrowFunctionExpression';
+export interface ArrowFunctionExpression extends BaseNode {
+  type: AST_NODE_TYPES.ArrowFunctionExpression;
   generator: boolean;
   id: null;
   params: Parameter[];
@@ -512,151 +514,151 @@ export interface ArrowFunctionExpression extends NodeBase {
 }
 
 export interface AssignmentExpression extends BinaryExpressionBase {
-  type: 'AssignmentExpression';
+  type: AST_NODE_TYPES.AssignmentExpression;
 }
 
-export interface AssignmentPattern extends NodeBase {
-  type: 'AssignmentPattern';
+export interface AssignmentPattern extends BaseNode {
+  type: AST_NODE_TYPES.AssignmentPattern;
   left: BindingName;
   right?: Expression;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
 }
 
-export interface AwaitExpression extends NodeBase {
-  type: 'AwaitExpression';
+export interface AwaitExpression extends BaseNode {
+  type: AST_NODE_TYPES.AwaitExpression;
   argument: TSUnaryExpression;
 }
 
 export interface BigIntLiteral extends LiteralBase {
-  type: 'BigIntLiteral';
+  type: AST_NODE_TYPES.BigIntLiteral;
 }
 
 export interface BinaryExpression extends BinaryExpressionBase {
-  type: 'BinaryExpression';
+  type: AST_NODE_TYPES.BinaryExpression;
 }
 
-export interface BlockStatement extends NodeBase {
-  type: 'BlockStatement';
+export interface BlockStatement extends BaseNode {
+  type: AST_NODE_TYPES.BlockStatement;
   body: Statement[];
 }
 
-export interface BreakStatement extends NodeBase {
-  type: 'BreakStatement';
+export interface BreakStatement extends BaseNode {
+  type: AST_NODE_TYPES.BreakStatement;
   label: Identifier | null;
 }
 
-export interface CallExpression extends NodeBase {
-  type: 'CallExpression';
+export interface CallExpression extends BaseNode {
+  type: AST_NODE_TYPES.CallExpression;
   callee: LeftHandSideExpression;
   arguments: Expression[];
   typeParameters?: TSTypeParameterInstantiation;
 }
 
-export interface CatchClause extends NodeBase {
-  type: 'CatchClause';
+export interface CatchClause extends BaseNode {
+  type: AST_NODE_TYPES.CatchClause;
   param: BindingName | null;
   body: BlockStatement;
 }
 
-export interface ClassBody extends NodeBase {
-  type: 'ClassBody';
+export interface ClassBody extends BaseNode {
+  type: AST_NODE_TYPES.ClassBody;
   body: ClassElement[];
 }
 
 export interface ClassDeclaration extends ClassDeclarationBase {
-  type: 'ClassDeclaration';
+  type: AST_NODE_TYPES.ClassDeclaration;
 }
 
 export interface ClassExpression extends ClassDeclarationBase {
-  type: 'ClassExpression';
+  type: AST_NODE_TYPES.ClassExpression;
 }
 
 export interface ClassProperty extends ClassPropertyBase {
-  type: 'ClassProperty';
+  type: AST_NODE_TYPES.ClassProperty;
 }
 
-export interface Comment extends NodeBase {
+export interface Comment extends BaseNode {
   type: 'Line' | 'Block';
   value: string;
 }
 
-export interface ConditionalExpression extends NodeBase {
-  type: 'ConditionalExpression';
+export interface ConditionalExpression extends BaseNode {
+  type: AST_NODE_TYPES.ConditionalExpression;
   test: Expression;
   consequent: Expression;
   alternate: Expression;
 }
 
-export interface ContinueStatement extends NodeBase {
-  type: 'ContinueStatement';
+export interface ContinueStatement extends BaseNode {
+  type: AST_NODE_TYPES.ContinueStatement;
   label: Identifier | null;
 }
 
-export interface DebuggerStatement extends NodeBase {
-  type: 'DebuggerStatement';
+export interface DebuggerStatement extends BaseNode {
+  type: AST_NODE_TYPES.DebuggerStatement;
 }
 
-export interface Decorator extends NodeBase {
-  type: 'Decorator';
+export interface Decorator extends BaseNode {
+  type: AST_NODE_TYPES.Decorator;
   expression: LeftHandSideExpression;
 }
 
-export interface DoWhileStatement extends NodeBase {
-  type: 'DoWhileStatement';
+export interface DoWhileStatement extends BaseNode {
+  type: AST_NODE_TYPES.DoWhileStatement;
   test: Expression;
   body: Statement;
 }
 
-export interface EmptyStatement extends NodeBase {
-  type: 'EmptyStatement';
+export interface EmptyStatement extends BaseNode {
+  type: AST_NODE_TYPES.EmptyStatement;
 }
 
-export interface ExportAllDeclaration extends NodeBase {
-  type: 'ExportAllDeclaration';
+export interface ExportAllDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.ExportAllDeclaration;
   source: Expression | null;
 }
 
-export interface ExportDefaultDeclaration extends NodeBase {
-  type: 'ExportDefaultDeclaration';
+export interface ExportDefaultDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.ExportDefaultDeclaration;
   declaration: ExportDeclaration;
 }
 
-export interface ExportNamedDeclaration extends NodeBase {
-  type: 'ExportNamedDeclaration';
+export interface ExportNamedDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.ExportNamedDeclaration;
   declaration: ExportDeclaration | null;
   specifiers: ExportSpecifier[];
   source: Expression | null;
 }
 
-export interface ExportSpecifier extends NodeBase {
-  type: 'ExportSpecifier';
+export interface ExportSpecifier extends BaseNode {
+  type: AST_NODE_TYPES.ExportSpecifier;
   local: Identifier;
   exported: Identifier;
 }
 
-export interface ExpressionStatement extends NodeBase {
-  type: 'ExpressionStatement';
+export interface ExpressionStatement extends BaseNode {
+  type: AST_NODE_TYPES.ExpressionStatement;
   expression: Expression;
 }
 
-export interface ForInStatement extends NodeBase {
-  type: 'ForInStatement';
+export interface ForInStatement extends BaseNode {
+  type: AST_NODE_TYPES.ForInStatement;
   left: ForInitialiser;
   right: Expression;
   body: Statement;
 }
 
-export interface ForOfStatement extends NodeBase {
-  type: 'ForOfStatement';
+export interface ForOfStatement extends BaseNode {
+  type: AST_NODE_TYPES.ForOfStatement;
   left: ForInitialiser;
   right: Expression;
   body: Statement;
   await: boolean;
 }
 
-export interface ForStatement extends NodeBase {
-  type: 'ForStatement';
+export interface ForStatement extends BaseNode {
+  type: AST_NODE_TYPES.ForStatement;
   init: Expression | ForInitialiser | null;
   test: Expression | null;
   update: Expression | null;
@@ -664,187 +666,187 @@ export interface ForStatement extends NodeBase {
 }
 
 export interface FunctionDeclaration extends FunctionDeclarationBase {
-  type: 'FunctionDeclaration';
+  type: AST_NODE_TYPES.FunctionDeclaration;
 }
 
 export interface FunctionExpression extends FunctionDeclarationBase {
-  type: 'FunctionExpression';
+  type: AST_NODE_TYPES.FunctionExpression;
 }
 
-export interface Identifier extends NodeBase {
-  type: 'Identifier';
+export interface Identifier extends BaseNode {
+  type: AST_NODE_TYPES.Identifier;
   name: string;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
 }
 
-export interface IfStatement extends NodeBase {
-  type: 'IfStatement';
+export interface IfStatement extends BaseNode {
+  type: AST_NODE_TYPES.IfStatement;
   test: Expression;
   consequent: Statement;
   alternate: Statement | null;
 }
 
-export interface Import extends NodeBase {
-  type: 'Import';
+export interface Import extends BaseNode {
+  type: AST_NODE_TYPES.Import;
 }
 
-export interface ImportDeclaration extends NodeBase {
-  type: 'ImportDeclaration';
+export interface ImportDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.ImportDeclaration;
   source: Expression;
   specifiers: ImportClause[];
 }
 
-export interface ImportDefaultSpecifier extends NodeBase {
-  type: 'ImportDefaultSpecifier';
+export interface ImportDefaultSpecifier extends BaseNode {
+  type: AST_NODE_TYPES.ImportDefaultSpecifier;
   local: Identifier;
 }
 
-export interface ImportNamespaceSpecifier extends NodeBase {
-  type: 'ImportNamespaceSpecifier';
+export interface ImportNamespaceSpecifier extends BaseNode {
+  type: AST_NODE_TYPES.ImportNamespaceSpecifier;
   local: Identifier;
 }
 
-export interface ImportSpecifier extends NodeBase {
-  type: 'ImportSpecifier';
+export interface ImportSpecifier extends BaseNode {
+  type: AST_NODE_TYPES.ImportSpecifier;
   local: Identifier;
   imported: Identifier;
 }
 
-export interface JSXAttribute extends NodeBase {
-  type: 'JSXAttribute';
+export interface JSXAttribute extends BaseNode {
+  type: AST_NODE_TYPES.JSXAttribute;
   name: JSXIdentifier;
   value: Literal | JSXExpression | null;
 }
 
-export interface JSXClosingElement extends NodeBase {
-  type: 'JSXClosingElement';
+export interface JSXClosingElement extends BaseNode {
+  type: AST_NODE_TYPES.JSXClosingElement;
   name: JSXTagNameExpression;
 }
 
-export interface JSXClosingFragment extends NodeBase {
-  type: 'JSXClosingFragment';
+export interface JSXClosingFragment extends BaseNode {
+  type: AST_NODE_TYPES.JSXClosingFragment;
 }
 
-export interface JSXElement extends NodeBase {
-  type: 'JSXElement';
+export interface JSXElement extends BaseNode {
+  type: AST_NODE_TYPES.JSXElement;
   openingElement: JSXOpeningElement;
   closingElement: JSXClosingElement | null;
   children: JSXChild[];
 }
 
-export interface JSXEmptyExpression extends NodeBase {
-  type: 'JSXEmptyExpression';
+export interface JSXEmptyExpression extends BaseNode {
+  type: AST_NODE_TYPES.JSXEmptyExpression;
 }
 
-export interface JSXExpressionContainer extends NodeBase {
-  type: 'JSXExpressionContainer';
+export interface JSXExpressionContainer extends BaseNode {
+  type: AST_NODE_TYPES.JSXExpressionContainer;
   expression: Expression | JSXEmptyExpression;
 }
 
-export interface JSXFragment extends NodeBase {
-  type: 'JSXFragment';
+export interface JSXFragment extends BaseNode {
+  type: AST_NODE_TYPES.JSXFragment;
   openingFragment: JSXOpeningFragment;
   closingFragment: JSXClosingFragment;
   children: JSXChild[];
 }
 
-export interface JSXIdentifier extends NodeBase {
-  type: 'JSXIdentifier';
+export interface JSXIdentifier extends BaseNode {
+  type: AST_NODE_TYPES.JSXIdentifier;
   name: string;
 }
 
-export interface JSXMemberExpression extends NodeBase {
-  type: 'JSXMemberExpression';
+export interface JSXMemberExpression extends BaseNode {
+  type: AST_NODE_TYPES.JSXMemberExpression;
   name: string;
 }
 
-export interface JSXOpeningElement extends NodeBase {
-  type: 'JSXOpeningElement';
+export interface JSXOpeningElement extends BaseNode {
+  type: AST_NODE_TYPES.JSXOpeningElement;
   typeParameters?: TSTypeParameterInstantiation;
   selfClosing: boolean;
   name: JSXTagNameExpression;
   attributes: JSXAttribute[];
 }
 
-export interface JSXOpeningFragment extends NodeBase {
-  type: 'JSXOpeningFragment';
+export interface JSXOpeningFragment extends BaseNode {
+  type: AST_NODE_TYPES.JSXOpeningFragment;
 }
 
-export interface JSXSpreadAttribute extends NodeBase {
-  type: 'JSXSpreadAttribute';
+export interface JSXSpreadAttribute extends BaseNode {
+  type: AST_NODE_TYPES.JSXSpreadAttribute;
   argument: Expression;
 }
 
-export interface JSXSpreadChild extends NodeBase {
-  type: 'JSXSpreadChild';
+export interface JSXSpreadChild extends BaseNode {
+  type: AST_NODE_TYPES.JSXSpreadChild;
   expression: Expression | JSXEmptyExpression;
 }
 
-export interface JSXText extends NodeBase {
-  type: 'JSXText';
+export interface JSXText extends BaseNode {
+  type: AST_NODE_TYPES.JSXText;
   value: string;
   raw: string;
 }
 
-export interface LabeledStatement extends NodeBase {
-  type: 'LabeledStatement';
+export interface LabeledStatement extends BaseNode {
+  type: AST_NODE_TYPES.LabeledStatement;
   label: Identifier;
   body: Statement;
 }
 
 export interface Literal extends LiteralBase {
-  type: 'Literal';
+  type: AST_NODE_TYPES.Literal;
 }
 
 export interface LogicalExpression extends BinaryExpressionBase {
-  type: 'LogicalExpression';
+  type: AST_NODE_TYPES.LogicalExpression;
 }
 
-export interface MemberExpression extends NodeBase {
-  type: 'MemberExpression';
+export interface MemberExpression extends BaseNode {
+  type: AST_NODE_TYPES.MemberExpression;
   object: LeftHandSideExpression;
   property: Expression | Identifier;
   computed?: boolean;
 }
 
-export interface MetaProperty extends NodeBase {
-  type: 'MetaProperty';
+export interface MetaProperty extends BaseNode {
+  type: AST_NODE_TYPES.MetaProperty;
   meta: Identifier;
   property: Identifier;
 }
 
 export interface MethodDefinition extends MethodDefinitionBase {
-  type: 'MethodDefinition';
+  type: AST_NODE_TYPES.MethodDefinition;
 }
 
-export interface NewExpression extends NodeBase {
-  type: 'NewExpression';
+export interface NewExpression extends BaseNode {
+  type: AST_NODE_TYPES.NewExpression;
   callee: LeftHandSideExpression;
   arguments: Expression[];
   typeParameters?: TSTypeParameterInstantiation;
 }
 
-export interface ObjectExpression extends NodeBase {
-  type: 'ObjectExpression';
+export interface ObjectExpression extends BaseNode {
+  type: AST_NODE_TYPES.ObjectExpression;
   properties: ObjectLiteralElementLike[];
 }
 
-export interface ObjectPattern extends NodeBase {
-  type: 'ObjectPattern';
+export interface ObjectPattern extends BaseNode {
+  type: AST_NODE_TYPES.ObjectPattern;
   properties: ObjectLiteralElementLike[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
 }
 
-export interface Program extends NodeBase {
-  type: 'Program';
+export interface Program extends BaseNode {
+  type: AST_NODE_TYPES.Program;
   body: Statement[];
-  sourceType: 'module' | 'script';
+  sourcetype: 'module' | 'script';
 }
 
-export interface Property extends NodeBase {
-  type: 'Property';
+export interface Property extends BaseNode {
+  type: AST_NODE_TYPES.Property;
   key: PropertyName;
   value: Expression | AssignmentPattern | BindingName; // TODO
   computed: boolean;
@@ -853,53 +855,53 @@ export interface Property extends NodeBase {
   kind: 'init';
 }
 
-export interface RestElement extends NodeBase {
-  type: 'RestElement';
+export interface RestElement extends BaseNode {
+  type: AST_NODE_TYPES.RestElement;
   argument: BindingName | Expression | PropertyName;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
 }
 
-export interface ReturnStatement extends NodeBase {
-  type: 'ReturnStatement';
+export interface ReturnStatement extends BaseNode {
+  type: AST_NODE_TYPES.ReturnStatement;
   argument: Expression | null;
 }
 
-export interface SequenceExpression extends NodeBase {
-  type: 'SequenceExpression';
+export interface SequenceExpression extends BaseNode {
+  type: AST_NODE_TYPES.SequenceExpression;
   expressions: Expression[];
 }
 
-export interface SpreadElement extends NodeBase {
-  type: 'SpreadElement';
+export interface SpreadElement extends BaseNode {
+  type: AST_NODE_TYPES.SpreadElement;
   argument: BindingName | Expression | PropertyName;
 }
 
-export interface Super extends NodeBase {
-  type: 'Super';
+export interface Super extends BaseNode {
+  type: AST_NODE_TYPES.Super;
 }
 
-export interface SwitchCase extends NodeBase {
-  type: 'SwitchCase';
+export interface SwitchCase extends BaseNode {
+  type: AST_NODE_TYPES.SwitchCase;
   test: Expression;
   consequent: Statement[];
 }
 
-export interface SwitchStatement extends NodeBase {
-  type: 'SwitchStatement';
+export interface SwitchStatement extends BaseNode {
+  type: AST_NODE_TYPES.SwitchStatement;
   discriminant: Expression;
   cases: SwitchCase[];
 }
 
-export interface TaggedTemplateExpression extends NodeBase {
-  type: 'TaggedTemplateExpression';
+export interface TaggedTemplateExpression extends BaseNode {
+  type: AST_NODE_TYPES.TaggedTemplateExpression;
   typeParameters: TSTypeParameterInstantiation;
   tag: LeftHandSideExpression;
   quasi: TemplateLiteral;
 }
 
-export interface TemplateElement extends NodeBase {
-  type: 'TemplateElement';
+export interface TemplateElement extends BaseNode {
+  type: AST_NODE_TYPES.TemplateElement;
   value: {
     raw: string;
     cooked: string;
@@ -907,97 +909,97 @@ export interface TemplateElement extends NodeBase {
   tail: boolean;
 }
 
-export interface TemplateLiteral extends NodeBase {
-  type: 'TemplateLiteral';
+export interface TemplateLiteral extends BaseNode {
+  type: AST_NODE_TYPES.TemplateLiteral;
   quasis: TemplateElement[];
   expressions: Expression[];
 }
 
-export interface ThisExpression extends NodeBase {
-  type: 'ThisExpression';
+export interface ThisExpression extends BaseNode {
+  type: AST_NODE_TYPES.ThisExpression;
 }
 
-export interface ThrowStatement extends NodeBase {
-  type: 'ThrowStatement';
+export interface ThrowStatement extends BaseNode {
+  type: AST_NODE_TYPES.ThrowStatement;
   argument: Statement | null;
 }
 
-export interface TryStatement extends NodeBase {
-  type: 'TryStatement';
+export interface TryStatement extends BaseNode {
+  type: AST_NODE_TYPES.TryStatement;
   block: BlockStatement;
   handler: CatchClause | null;
   finalizer: BlockStatement;
 }
 
 export interface TSAbstractClassProperty extends ClassPropertyBase {
-  type: 'TSAbstractClassProperty';
+  type: AST_NODE_TYPES.TSAbstractClassProperty;
 }
 
-export interface TSAbstractKeyword extends NodeBase {
-  type: 'TSAbstractKeyword';
+export interface TSAbstractKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSAbstractKeyword;
 }
 
 export interface TSAbstractMethodDefinition extends MethodDefinitionBase {
-  type: 'TSAbstractMethodDefinition';
+  type: AST_NODE_TYPES.TSAbstractMethodDefinition;
 }
 
-export interface TSAnyKeyword extends NodeBase {
-  type: 'TSAnyKeyword';
+export interface TSAnyKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSAnyKeyword;
 }
 
-export interface TSArrayType extends NodeBase {
-  type: 'TSArrayType';
+export interface TSArrayType extends BaseNode {
+  type: AST_NODE_TYPES.TSArrayType;
   elementType: TypeNode;
 }
 
-export interface TSAsExpression extends NodeBase {
-  type: 'TSAsExpression';
+export interface TSAsExpression extends BaseNode {
+  type: AST_NODE_TYPES.TSAsExpression;
   expression: Expression;
   typeAnnotation: TypeNode;
 }
 
-export interface TSAsyncKeyword extends NodeBase {
-  type: 'TSAsyncKeyword';
+export interface TSAsyncKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSAsyncKeyword;
 }
 
-export interface TSBigIntKeyword extends NodeBase {
-  type: 'TSBigIntKeyword';
+export interface TSBigIntKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSBigIntKeyword;
 }
 
-export interface TSBooleanKeyword extends NodeBase {
-  type: 'TSBooleanKeyword';
+export interface TSBooleanKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSBooleanKeyword;
 }
 
 export interface TSCallSignatureDeclaration extends FunctionSignatureBase {
-  type: 'TSCallSignatureDeclaration';
+  type: AST_NODE_TYPES.TSCallSignatureDeclaration;
 }
 
 export interface TSClassImplements extends TSHeritageBase {
-  type: 'TSClassImplements';
+  type: AST_NODE_TYPES.TSClassImplements;
 }
 
-export interface TSConditionalType extends NodeBase {
-  type: 'TSConditionalType';
+export interface TSConditionalType extends BaseNode {
+  type: AST_NODE_TYPES.TSConditionalType;
   checkType: TypeNode;
   extendsType: TypeNode;
   trueType: TypeNode;
   falseType: TypeNode;
 }
 
-export interface TSConstKeyword extends NodeBase {
-  type: 'TSConstKeyword';
+export interface TSConstKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSConstKeyword;
 }
 
 export interface TSConstructorType extends FunctionSignatureBase {
-  type: 'TSConstructorType';
+  type: AST_NODE_TYPES.TSConstructorType;
 }
 
 export interface TSConstructSignatureDeclaration extends FunctionSignatureBase {
-  type: 'TSConstructSignatureDeclaration';
+  type: AST_NODE_TYPES.TSConstructSignatureDeclaration;
 }
 
-export interface TSDeclareFunction extends NodeBase {
-  type: 'TSDeclareFunction';
+export interface TSDeclareFunction extends BaseNode {
+  type: AST_NODE_TYPES.TSDeclareFunction;
   id: Identifier | null;
   generator: boolean;
   expression: boolean;
@@ -1009,16 +1011,16 @@ export interface TSDeclareFunction extends NodeBase {
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-export interface TSDeclareKeyword extends NodeBase {
-  type: 'TSDeclareKeyword';
+export interface TSDeclareKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSDeclareKeyword;
 }
 
-export interface TSDefaultKeyword extends NodeBase {
-  type: 'TSDefaultKeyword';
+export interface TSDefaultKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSDefaultKeyword;
 }
 
-export interface TSEnumDeclaration extends NodeBase {
-  type: 'TSEnumDeclaration';
+export interface TSEnumDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.TSEnumDeclaration;
   id: Identifier;
   members: TSEnumMember[];
   const?: boolean;
@@ -1027,53 +1029,53 @@ export interface TSEnumDeclaration extends NodeBase {
   decorators?: Decorator[];
 }
 
-export interface TSEnumMember extends NodeBase {
-  type: 'TSEnumMember';
+export interface TSEnumMember extends BaseNode {
+  type: AST_NODE_TYPES.TSEnumMember;
   id: PropertyName;
   initializer?: Expression;
 }
 
-export interface TSExportAssignment extends NodeBase {
-  type: 'TSExportAssignment';
+export interface TSExportAssignment extends BaseNode {
+  type: AST_NODE_TYPES.TSExportAssignment;
   expression: Expression;
 }
 
-export interface TSExportKeyword extends NodeBase {
-  type: 'TSExportKeyword';
+export interface TSExportKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSExportKeyword;
 }
 
-export interface TSExternalModuleReference extends NodeBase {
-  type: 'TSExternalModuleReference';
+export interface TSExternalModuleReference extends BaseNode {
+  type: AST_NODE_TYPES.TSExternalModuleReference;
   expression: Expression;
 }
 
 export interface TSFunctionType extends FunctionSignatureBase {
-  type: 'TSFunctionType';
+  type: AST_NODE_TYPES.TSFunctionType;
 }
 
-export interface TSImportEqualsDeclaration extends NodeBase {
-  type: 'TSImportEqualsDeclaration';
+export interface TSImportEqualsDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.TSImportEqualsDeclaration;
   id: Identifier;
   moduleReference: EntityName | TSExternalModuleReference;
   isExport: boolean;
 }
 
-export interface TSImportType extends NodeBase {
-  type: 'TSImportType';
+export interface TSImportType extends BaseNode {
+  type: AST_NODE_TYPES.TSImportType;
   isTypeOf: boolean;
   parameter: TypeNode;
   qualifier: EntityName | null;
   typeParameters: TSTypeParameterInstantiation | null;
 }
 
-export interface TSIndexedAccessType extends NodeBase {
-  type: 'TSIndexedAccessType';
+export interface TSIndexedAccessType extends BaseNode {
+  type: AST_NODE_TYPES.TSIndexedAccessType;
   objectType: TypeNode;
   indexType: TypeNode;
 }
 
-export interface TSIndexSignature extends NodeBase {
-  type: 'TSIndexSignature';
+export interface TSIndexSignature extends BaseNode {
+  type: AST_NODE_TYPES.TSIndexSignature;
   parameters: Parameter[];
   typeAnnotation?: TSTypeAnnotation;
   readonly?: boolean;
@@ -1082,13 +1084,13 @@ export interface TSIndexSignature extends NodeBase {
   static?: boolean;
 }
 
-export interface TSInferType extends NodeBase {
-  type: 'TSInferType';
+export interface TSInferType extends BaseNode {
+  type: AST_NODE_TYPES.TSInferType;
   typeParameter: TSTypeParameterDeclaration;
 }
 
-export interface TSInterfaceDeclaration extends NodeBase {
-  type: 'TSInterfaceDeclaration';
+export interface TSInterfaceDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.TSInterfaceDeclaration;
   body: TSInterfaceBody;
   id: Identifier;
   typeParameters?: TSTypeParameterDeclaration;
@@ -1099,35 +1101,35 @@ export interface TSInterfaceDeclaration extends NodeBase {
   declare?: boolean;
 }
 
-export interface TSInterfaceBody extends NodeBase {
-  type: 'TSInterfaceBody';
+export interface TSInterfaceBody extends BaseNode {
+  type: AST_NODE_TYPES.TSInterfaceBody;
   body: TypeElement[];
 }
 
 export interface TSInterfaceHeritage extends TSHeritageBase {
-  type: 'TSInterfaceHeritage';
+  type: AST_NODE_TYPES.TSInterfaceHeritage;
 }
 
-export interface TSIntersectionType extends NodeBase {
-  type: 'TSIntersectionType';
+export interface TSIntersectionType extends BaseNode {
+  type: AST_NODE_TYPES.TSIntersectionType;
   types: TypeNode[];
 }
 
-export interface TSLiteralType extends NodeBase {
-  type: 'TSLiteralType';
+export interface TSLiteralType extends BaseNode {
+  type: AST_NODE_TYPES.TSLiteralType;
   literal: LiteralExpression | UnaryExpression | UpdateExpression;
 }
 
-export interface TSMappedType extends NodeBase {
-  type: 'TSMappedType';
+export interface TSMappedType extends BaseNode {
+  type: AST_NODE_TYPES.TSMappedType;
   typeParameter: TSTypeParameterDeclaration;
   readonly?: boolean | '-' | '+';
   optional?: boolean | '-' | '+';
   typeAnnotation?: TypeNode;
 }
 
-export interface TSMethodSignature extends NodeBase {
-  type: 'TSMethodSignature';
+export interface TSMethodSignature extends BaseNode {
+  type: AST_NODE_TYPES.TSMethodSignature;
   computed: boolean;
   key: PropertyName;
   params: Parameter[];
@@ -1140,51 +1142,51 @@ export interface TSMethodSignature extends NodeBase {
   static?: boolean;
 }
 
-export interface TSModuleBlock extends NodeBase {
-  type: 'TSModuleBlock';
+export interface TSModuleBlock extends BaseNode {
+  type: AST_NODE_TYPES.TSModuleBlock;
   body: Statement[];
 }
 
-export interface TSModuleDeclaration extends NodeBase {
-  type: 'TSModuleDeclaration';
+export interface TSModuleDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.TSModuleDeclaration;
   id: Identifier | Literal;
   body?: TSModuleBlock | Identifier;
   global?: boolean;
 }
 
-export interface TSNamespaceExportDeclaration extends NodeBase {
-  type: 'TSNamespaceExportDeclaration';
+export interface TSNamespaceExportDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.TSNamespaceExportDeclaration;
   id: Identifier;
 }
 
-export interface TSNeverKeyword extends NodeBase {
-  type: 'TSNeverKeyword';
+export interface TSNeverKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSNeverKeyword;
 }
 
-export interface TSNonNullExpression extends NodeBase {
-  type: 'TSNonNullExpression';
+export interface TSNonNullExpression extends BaseNode {
+  type: AST_NODE_TYPES.TSNonNullExpression;
   expression: Expression;
 }
 
-export interface TSNullKeyword extends NodeBase {
-  type: 'TSNullKeyword';
+export interface TSNullKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSNullKeyword;
 }
 
-export interface TSNumberKeyword extends NodeBase {
-  type: 'TSNumberKeyword';
+export interface TSNumberKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSNumberKeyword;
 }
 
-export interface TSObjectKeyword extends NodeBase {
-  type: 'TSObjectKeyword';
+export interface TSObjectKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSObjectKeyword;
 }
 
-export interface TSOptionalType extends NodeBase {
-  type: 'TSOptionalType';
+export interface TSOptionalType extends BaseNode {
+  type: AST_NODE_TYPES.TSOptionalType;
   typeAnnotation: TypeNode;
 }
 
-export interface TSParameterProperty extends NodeBase {
-  type: 'TSParameterProperty';
+export interface TSParameterProperty extends BaseNode {
+  type: AST_NODE_TYPES.TSParameterProperty;
   accessibility?: Accessibility;
   readonly?: boolean;
   static?: boolean;
@@ -1192,13 +1194,13 @@ export interface TSParameterProperty extends NodeBase {
   parameter: AssignmentPattern | BindingName | RestElement;
 }
 
-export interface TSParenthesizedType extends NodeBase {
-  type: 'TSParenthesizedType';
+export interface TSParenthesizedType extends BaseNode {
+  type: AST_NODE_TYPES.TSParenthesizedType;
   typeAnnotation: TypeNode;
 }
 
-export interface TSPropertySignature extends NodeBase {
-  type: 'TSPropertySignature';
+export interface TSPropertySignature extends BaseNode {
+  type: AST_NODE_TYPES.TSPropertySignature;
   optional?: boolean;
   computed: boolean;
   key: PropertyName;
@@ -1210,171 +1212,171 @@ export interface TSPropertySignature extends NodeBase {
   accessability?: Accessibility;
 }
 
-export interface TSPublicKeyword extends NodeBase {
-  type: 'TSPublicKeyword';
+export interface TSPublicKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSPublicKeyword;
 }
 
-export interface TSPrivateKeyword extends NodeBase {
-  type: 'TSPrivateKeyword';
+export interface TSPrivateKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSPrivateKeyword;
 }
 
-export interface TSProtectedKeyword extends NodeBase {
-  type: 'TSProtectedKeyword';
+export interface TSProtectedKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSProtectedKeyword;
 }
 
-export interface TSQualifiedName extends NodeBase {
-  type: 'TSQualifiedName';
+export interface TSQualifiedName extends BaseNode {
+  type: AST_NODE_TYPES.TSQualifiedName;
   left: EntityName;
   right: Identifier;
 }
 
-export interface TSReadonlyKeyword extends NodeBase {
-  type: 'TSReadonlyKeyword';
+export interface TSReadonlyKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSReadonlyKeyword;
 }
 
-export interface TSRestType extends NodeBase {
-  type: 'TSRestType';
+export interface TSRestType extends BaseNode {
+  type: AST_NODE_TYPES.TSRestType;
   typeAnnotation: TypeNode;
 }
 
-export interface TSStaticKeyword extends NodeBase {
-  type: 'TSStaticKeyword';
+export interface TSStaticKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSStaticKeyword;
 }
 
-export interface TSStringKeyword extends NodeBase {
-  type: 'TSStringKeyword';
+export interface TSStringKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSStringKeyword;
 }
 
-export interface TSSymbolKeyword extends NodeBase {
-  type: 'TSSymbolKeyword';
+export interface TSSymbolKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSSymbolKeyword;
 }
 
-export interface TSThisType extends NodeBase {
-  type: 'TSThisType';
+export interface TSThisType extends BaseNode {
+  type: AST_NODE_TYPES.TSThisType;
 }
 
-export interface TSTupleType extends NodeBase {
-  type: 'TSTupleType';
+export interface TSTupleType extends BaseNode {
+  type: AST_NODE_TYPES.TSTupleType;
   elementTypes: TypeNode[];
 }
 
-export interface TSTypeAliasDeclaration extends NodeBase {
-  type: 'TSTypeAliasDeclaration';
+export interface TSTypeAliasDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeAliasDeclaration;
   id: Identifier;
   typeAnnotation: TypeNode;
   declare?: boolean;
   typeParameters?: TSTypeParameterDeclaration;
 }
 
-export interface TSTypeAnnotation extends NodeBase {
-  type: 'TSTypeAnnotation';
+export interface TSTypeAnnotation extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeAnnotation;
   typeAnnotation: TypeNode;
 }
 
-export interface TSTypeAssertion extends NodeBase {
-  type: 'TSTypeAssertion';
+export interface TSTypeAssertion extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeAssertion;
   typeAnnotation: TypeNode;
   expression: UnaryExpression;
 }
 
-export interface TSTypeLiteral extends NodeBase {
-  type: 'TSTypeLiteral';
+export interface TSTypeLiteral extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeLiteral;
   members: TypeElement[];
 }
 
-export interface TSTypeOperator extends NodeBase {
-  type: 'TSTypeOperator';
+export interface TSTypeOperator extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeOperator;
   operator: 'keyof' | 'unique';
   typeAnnotation?: TSTypeAnnotation;
 }
 
-export interface TSTypeParameter extends NodeBase {
-  type: 'TSTypeParameter';
+export interface TSTypeParameter extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeParameter;
   name: Identifier;
   constraint?: TypeNode;
   default?: TypeNode;
 }
 
-export interface TSTypeParameterDeclaration extends NodeBase {
-  type: 'TSTypeParameterDeclaration';
+export interface TSTypeParameterDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeParameterDeclaration;
   params: TSTypeParameter[];
 }
 
-export interface TSTypeParameterInstantiation extends NodeBase {
-  type: 'TSTypeParameterInstantiation';
+export interface TSTypeParameterInstantiation extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeParameterInstantiation;
   params: TypeNode[];
 }
 
-export interface TSTypePredicate extends NodeBase {
-  type: 'TSTypePredicate';
+export interface TSTypePredicate extends BaseNode {
+  type: AST_NODE_TYPES.TSTypePredicate;
   parameterName: Identifier | TSThisType;
   typeAnnotation: TypeNode;
 }
 
-export interface TSTypeQuery extends NodeBase {
-  type: 'TSTypeQuery';
+export interface TSTypeQuery extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeQuery;
   exprName: EntityName;
 }
 
-export interface TSTypeReference extends NodeBase {
-  type: 'TSTypeReference';
+export interface TSTypeReference extends BaseNode {
+  type: AST_NODE_TYPES.TSTypeReference;
   typeName: EntityName;
   typeParameters?: TSTypeParameterInstantiation;
 }
 
-export interface TSUndefinedKeyword extends NodeBase {
-  type: 'TSUndefinedKeyword';
+export interface TSUndefinedKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSUndefinedKeyword;
 }
 
-export interface TSUnionType extends NodeBase {
-  type: 'TSUnionType';
+export interface TSUnionType extends BaseNode {
+  type: AST_NODE_TYPES.TSUnionType;
   types: TypeNode[];
 }
 
-export interface TSUnknownKeyword extends NodeBase {
-  type: 'TSUnknownKeyword';
+export interface TSUnknownKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSUnknownKeyword;
 }
 
-export interface TSVoidKeyword extends NodeBase {
-  type: 'TSVoidKeyword';
+export interface TSVoidKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSVoidKeyword;
 }
 
 export interface UpdateExpression extends UnaryExpressionBase {
-  type: 'UpdateExpression';
+  type: AST_NODE_TYPES.UpdateExpression;
 }
 
 export interface UnaryExpression extends UnaryExpressionBase {
-  type: 'UnaryExpression';
+  type: AST_NODE_TYPES.UnaryExpression;
 }
 
-export interface VariableDeclaration extends NodeBase {
-  type: 'VariableDeclaration';
+export interface VariableDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.VariableDeclaration;
   declarations: VariableDeclarator[];
   kind: 'let' | 'const' | 'var';
   declare?: boolean;
 }
 
-export interface VariableDeclarator extends NodeBase {
-  type: 'VariableDeclarator';
+export interface VariableDeclarator extends BaseNode {
+  type: AST_NODE_TYPES.VariableDeclarator;
   id: BindingName;
   init: Expression | null;
   definite?: boolean;
 }
 
-export interface WhileStatement extends NodeBase {
-  type: 'WhileStatement';
+export interface WhileStatement extends BaseNode {
+  type: AST_NODE_TYPES.WhileStatement;
   test: Expression;
   body: Statement;
 }
 
-export interface WithStatement extends NodeBase {
-  type: 'WithStatement';
+export interface WithStatement extends BaseNode {
+  type: AST_NODE_TYPES.WithStatement;
   object: Expression;
   body: Statement;
 }
 
-export interface YieldExpression extends NodeBase {
-  type: 'YieldExpression';
+export interface YieldExpression extends BaseNode {
+  type: AST_NODE_TYPES.YieldExpression;
   delegate: boolean;
   argument?: Expression;
 }
