@@ -12,6 +12,7 @@ Examples of **incorrect** code for this rule:
 function f(x: number): void;
 function f(x: string): void;
 ```
+
 ```ts
 f(): void;
 f(...x: number[]): void;
@@ -22,10 +23,11 @@ Examples of **correct** code for this rule:
 ```ts
 function f(x: number | string): void;
 ```
+
 ```ts
 function f(x?: ...number[]): void;
 ```
 
 ## Related to
 
- - TSLint: ['unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)
+- TSLint: ['unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)

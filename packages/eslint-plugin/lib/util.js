@@ -151,4 +151,4 @@ exports.arraysAreEqual = (a, b, eq) => {
       a.length === b.length &&
       a.every((x, idx) => eq(x, b[idx])))
   );
-}
+};
