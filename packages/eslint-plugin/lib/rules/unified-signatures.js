@@ -26,7 +26,6 @@ module.exports = {
             extraDescription: [util.tslintRule('unified-signatures')],
             url: util.metaDocsUrl(" unified-signature")
         },
-        fixable: "code",
         type: "suggestion"
     },
 

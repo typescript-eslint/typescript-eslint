@@ -20,7 +20,7 @@ f(...x: number[]): void;
 Examples of **correct** code for this rule:
 
 ```ts
-function f(x: number | stting): void;
+function f(x: number | string): void;
 ```
 ```ts
 function f(x?: ...number[]): void;
