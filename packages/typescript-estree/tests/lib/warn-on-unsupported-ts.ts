@@ -11,6 +11,7 @@ describe('Warn on unsupported TypeScript version', () => {
 
   it('should warn the user if they are using an unsupported TypeScript version', () => {
     (semver.satisfies as jest.Mock).mockReturnValue(false);
+    // eslint-disable-next-line jest/prefer-spy-on
     console.log = jest.fn();
     parser.parse('');
     expect(console.log).toHaveBeenCalledWith(
