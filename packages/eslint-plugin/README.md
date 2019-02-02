@@ -98,7 +98,7 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 }
 ```
 
-**Note: You can use Airbnb's rules along side Prettier, see [Usage with Prettier](#usage-with-prettier)**
+**Note: You can use Airbnb's rules alongside Prettier, see [Usage with Prettier](#usage-with-prettier)**
 
 ## Supported Rules
 
