@@ -8,7 +8,7 @@ const ts = require('typescript');
  * @param {Set<string>} allowedNames Symbol names checking on the type.
  * @returns {boolean} Whether the type is, extends, or contains any of the allowed names.
  */
-exports.containsTypeByName = (type, allowedNames) => {
+function containsTypeByName(type, allowedNames) {
   if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
     return true;
   }
@@ -33,4 +33,6 @@ exports.containsTypeByName = (type, allowedNames) => {
     typeof bases !== 'undefined' &&
     bases.some(t => containsTypeByName(t, allowedNames))
   );
-};
+}
+
+exports.containsTypeByName = containsTypeByName;
