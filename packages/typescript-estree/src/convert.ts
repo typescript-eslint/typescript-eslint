@@ -371,7 +371,7 @@ export class Converter {
    * @param parent
    * @returns the converted ESTree name object
    */
-  protected convertJSXTagName(
+  private convertJSXTagName(
     node: ts.JsxTagNameExpression,
     parent: ts.Node
   ): es.JSXMemberExpression | es.JSXIdentifier {
