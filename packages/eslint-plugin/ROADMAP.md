@@ -1,10 +1,10 @@
 ﻿# Roadmap
 
-✅ (28) = done<br>
+✅ (29) = done<br>
 🌟 (79) = in ESLint core<br>
 🔌 (33) = in another plugin<br>
 🌓 (16) = implementations differ or ESLint version is missing functionality<br>
-🛑 (70) = unimplemented
+🛑 (69) = unimplemented
 
 ## TSLint rules
 
@@ -75,7 +75,7 @@
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                   |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                    |
 | [`no-this-assignment`]               | ✅  | [`@typescript-eslint/no-this-alias`]                                  |
-| [`no-unbound-method`]                | 🛑  | N/A                                                                   |
+| [`no-unbound-method`]                | ✅  | [`@typescript-eslint/no-unbound-method`]                              |
 | [`no-unnecessary-class`]             | ✅  | [`@typescript-eslint/no-extraneous-class`]                            |
 | [`no-unsafe-any`]                    | 🛑  | N/A                                                                   |
 | [`no-unsafe-finally`]                | 🌟  | [`no-unsafe-finally`][no-unsafe-finally]                              |
