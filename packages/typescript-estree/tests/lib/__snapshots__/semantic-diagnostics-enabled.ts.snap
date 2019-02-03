@@ -1798,6 +1798,15 @@ Object {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/tag-names-with-multi-dots-multi.src 1`] = `
+Object {
+  "column": 7,
+  "index": 21,
+  "lineNumber": 2,
+  "message": "'>' expected.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/test-content.src 1`] = `
 Object {
   "column": 5,
