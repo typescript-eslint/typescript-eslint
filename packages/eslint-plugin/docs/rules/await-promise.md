@@ -64,7 +64,7 @@ class Thenable {
 await new Thenable();
 ```
 
-Examples of **incorrect** code for this rule with `{ allowedPromiseNames: ["Thenable"] }`:
+Examples of **correct** code for this rule with `{ allowedPromiseNames: ["Thenable"] }`:
 
 ```ts
 class OtherClass {
