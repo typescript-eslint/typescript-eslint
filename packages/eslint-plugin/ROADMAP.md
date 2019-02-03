@@ -4,7 +4,7 @@
 🌟 (79) = in ESLint core<br>
 🔌 (33) = in another plugin<br>
 🌓 (16) = implementations differ or ESLint version is missing functionality<br>
-🛑 (69) = unimplemented
+🛑 (68) = unimplemented
 
 ## TSLint rules
 
@@ -214,7 +214,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `export-name`                         | 🛑  | N/A ([relevant plugin][plugin:import])                                 |
 | `function-name`                       | 🛑  | N/A                                                                    |
 | `import-name`                         | 🛑  | N/A ([relevant plugin][plugin:import])                                 |
-| `function-name`                       | 🛑  | N/A                                                                    |
 | `informative-docs`                    | 🛑  | N/A                                                                    |
 | `insecure-random`                     | 🔌  | [custom implementation][insecure-random]                               |
 | `max-func-body-length`                | 🌟  | [`max-statements`][max-statements]                                     |
