@@ -1,6 +1,6 @@
 ﻿# Roadmap
 
-✅ (29) = done<br>
+✅ (30) = done<br>
 🌟 (79) = in ESLint core<br>
 🔌 (33) = in another plugin<br>
 🌓 (16) = implementations differ or ESLint version is missing functionality<br>
