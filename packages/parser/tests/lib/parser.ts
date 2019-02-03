@@ -24,7 +24,7 @@ describe('parser', () => {
       sourceType: 'script',
       useJSXTextNode: true
     });
-    expect(spyScope).toHaveBeenCalledWith(jasmine.any(Object), {
+    expect(spyScope).toHaveBeenCalledWith(expect.any(Object), {
       ecmaFeatures: {},
       sourceType: 'script'
     });
