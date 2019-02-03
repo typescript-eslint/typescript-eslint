@@ -284,7 +284,12 @@ tester.addFixturePatternConfig('javascript/unicodeCodePointEscapes');
 /* ================================================== */
 
 tester.addFixturePatternConfig('jsx', {
-  ignore: jsxFilesWithKnownIssues
+  ignore: jsxFilesWithKnownIssues.concat([
+    /**
+     * ts-estree: nested jsx tag names are not correctly converted
+     */
+    'tag-names-with-multi-dots-multi'
+  ])
 });
 tester.addFixturePatternConfig('jsx-useJSXTextNode');
 
