@@ -245,19 +245,11 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `use-named-parameter`                 | 🛑  | N/A                                                                    |
 | `use-simple-attributes`               | 🛑  | N/A                                                                    |
 
-<<<<<<< HEAD
-<sup>[1]</sup> Enforces blank lines both at the beginning and end of a block
-<sup>[2]</sup> Recommended config: `["error", "ForInStatement"]`
-<sup>[3]</sup> Recommended config: `["error", "declaration", { "allowArrowFunctions": true }]`
-<sup>[4]</sup> Recommended config: `["error", { "terms": ["BUG", "HACK", "FIXME", "LATER", "LATER2", "TODO"], "location": "anywhere" }]`
-=======
 <sup>[1]</sup> Enforces blank lines both at the beginning and end of a block<br>
 <sup>[2]</sup> Recommended config: `["error", "ForInStatement"]`<br>
 <sup>[3]</sup> Recommended config: `["error", "declaration", { "allowArrowFunctions": true }]`<br>
 <sup>[4]</sup> Recommended config: `["error", { "terms": ["BUG", "HACK", "FIXME", "LATER", "LATER2", "TODO"], "location": "anywhere" }]`<br>
-
-> > > > > > > master
-> > > > > > > <sup>[5]</sup> Does not check class fields.
+<sup>[5]</sup> Does not check class fields.
 
 [insecure-random]: https://github.com/desktop/desktop/blob/master/eslint-rules/insecure-random.js
 
@@ -318,13 +310,8 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `react-a11y-titles`                       | 🛑  | N/A                                                        |
 | `react-anchor-blank-noopener`             | 🛑  | N/A                                                        |
 
-<<<<<<< HEAD
-<sup>[1]</sup> TSLint rule is more strict
-=======
 <sup>[1]</sup> TSLint rule is more strict<br>
-
-> > > > > > > master
-> > > > > > > <sup>[2]</sup> ESLint rule only reports for click handlers
+<sup>[2]</sup> ESLint rule only reports for click handlers
 
 [prettier]: https://prettier.io
 
