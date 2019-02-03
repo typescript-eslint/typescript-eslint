@@ -2,7 +2,7 @@
 
 import path from 'path';
 import ts from 'typescript';
-import { Extra } from './temp-types-based-on-js-source';
+import { Extra } from './parser-options';
 
 //------------------------------------------------------------------------------
 // Environment calculation
@@ -10,7 +10,6 @@ import { Extra } from './temp-types-based-on-js-source';
 
 /**
  * Default compiler options for program generation from single root file
- * @type {ts.CompilerOptions}
  */
 const defaultCompilerOptions: ts.CompilerOptions = {
   allowNonTsExtensions: true,
@@ -19,7 +18,6 @@ const defaultCompilerOptions: ts.CompilerOptions = {
 
 /**
  * Maps tsconfig paths to their corresponding file contents and resulting watches
- * @type {Map<string, ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>>}
  */
 const knownWatchProgramMap = new Map<
   string,
@@ -29,13 +27,11 @@ const knownWatchProgramMap = new Map<
 /**
  * Maps file paths to their set of corresponding watch callbacks
  * There may be more than one per file if a file is shared between projects
- * @type {Map<string, ts.FileWatcherCallback>}
  */
 const watchCallbackTrackingMap = new Map<string, ts.FileWatcherCallback>();
 
 /**
  * Holds information about the file currently being linted
- * @type {{code: string, filePath: string}}
  */
 const currentLintOperationState = {
   code: '',
@@ -44,8 +40,7 @@ const currentLintOperationState = {
 
 /**
  * Appropriately report issues found when reading a config file
- * @param {ts.Diagnostic} diagnostic The diagnostic raised when creating a program
- * @returns {void}
+ * @param diagnostic The diagnostic raised when creating a program
  */
 function diagnosticReporter(diagnostic: ts.Diagnostic): void {
   throw new Error(
@@ -57,11 +52,11 @@ const noopFileWatcher = { close: () => {} };
 
 /**
  * Calculate project environments using options provided by consumer and paths from config
- * @param {string} code The code being linted
- * @param {string} filePath The path of the file being parsed
- * @param {string} extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param {string[]} extra.project Provided tsconfig paths
- * @returns {ts.Program[]} The programs corresponding to the supplied tsconfig paths
+ * @param code The code being linted
+ * @param filePath The path of the file being parsed
+ * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
+ * @param extra.project Provided tsconfig paths
+ * @returns The programs corresponding to the supplied tsconfig paths
  */
 export function calculateProjectParserOptions(
   code: string,
@@ -187,9 +182,9 @@ export function calculateProjectParserOptions(
  * Create program from single root file. Requires a single tsconfig to be specified.
  * @param code The code being linted
  * @param filePath The file being linted
- * @param {string} extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param {string[]} extra.project Provided tsconfig paths
- * @returns {ts.Program} The program containing just the file being linted and associated library files
+ * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
+ * @param extra.project Provided tsconfig paths
+ * @returns The program containing just the file being linted and associated library files
  */
 export function createProgram(code: string, filePath: string, extra: Extra) {
   if (!extra.projects || extra.projects.length !== 1) {
