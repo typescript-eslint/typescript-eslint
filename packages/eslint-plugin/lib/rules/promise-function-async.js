@@ -5,6 +5,7 @@
 'use strict';
 
 const util = require('../util');
+const types = require('../utils/types');
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -89,7 +90,7 @@ module.exports = {
         .getCallSignatures();
       const returnType = checker.getReturnTypeOfSignature(callSignature);
 
-      if (!util.containsTypeByName(returnType, allAllowedPromiseNames)) {
+      if (!types.containsTypeByName(returnType, allAllowedPromiseNames)) {
         return;
       }
 
