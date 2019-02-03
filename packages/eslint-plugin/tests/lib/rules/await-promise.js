@@ -26,10 +26,6 @@ const ruleTester = new RuleTester({
   parserOptions,
   parser: '@typescript-eslint/parser'
 });
-const messages = {
-  await: 'Invalid `await` of a non-Promise value.',
-  forOf: 'Invalid `for-await-of` of a non-AsyncIterable value.'
-};
 
 ruleTester.run('await-promise', rule, {
   valid: [
@@ -122,22 +118,22 @@ async function test() {
       errors: [
         {
           line: 3,
-          message: messages.await,
+          messageId: 'await',
           type: 'AwaitExpression'
         },
         {
           line: 4,
-          message: messages.await,
+          messageId: 'await',
           type: 'AwaitExpression'
         },
         {
           line: 6,
-          message: messages.await,
+          messageId: 'await',
           type: 'AwaitExpression'
         },
         {
           line: 9,
-          message: messages.await,
+          messageId: 'await',
           type: 'AwaitExpression'
         }
       ]
@@ -153,13 +149,45 @@ function test() {
       errors: [
         {
           line: 5,
-          message: messages.await,
+          messageId: 'await',
           type: 'AwaitExpression'
         }
       ],
       options: [
         {
           allowedPromiseNames: ['AllowedCustomClass']
+        }
+      ]
+    },
+    {
+      code: `
+async function incorrect(foo: Array<Promise<string>>) {
+  for await (const element of foo) {}
+}
+
+async function incorrect2(foo: IterableIterator<Promise<string>>) {
+  for await (const element of foo) {}
+}
+
+async function incorrect5(foo: Iterable<string>) {
+  for await (const element of foo) {}
+}
+`,
+      errors: [
+        {
+          line: 3,
+          messageId: 'forOf',
+          type: 'ForOfStatement'
+        },
+        {
+          line: 7,
+          messageId: 'forOf',
+          type: 'ForOfStatement'
+        },
+        {
+          line: 11,
+          messageId: 'forOf',
+          type: 'ForOfStatement'
         }
       ]
     }

@@ -557,35 +557,36 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 <!-- @typescript-eslint/eslint-plugin -->
 
-[`@typescript-eslint/adjacent-overload-signatures`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/adjacent-overload-signatures.md
-[`@typescript-eslint/await-promise`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/await-promise.md
-[`@typescript-eslint/ban-types`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/ban-types.md
-[`@typescript-eslint/explicit-member-accessibility`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/explicit-member-accessibility.md
-[`@typescript-eslint/member-ordering`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/member-ordering.md
-[`@typescript-eslint/no-explicit-any`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-explicit-any.md
-[`@typescript-eslint/no-empty-interface`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-empty-interface.md
-[`@typescript-eslint/no-inferrable-types`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-inferrable-types.md
-[`@typescript-eslint/prefer-namespace-keyword`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/prefer-namespace-keyword.md
-[`@typescript-eslint/no-namespace`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-namespace.md
-[`@typescript-eslint/no-non-null-assertion`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-non-null-assertion.md
-[`@typescript-eslint/no-triple-slash-reference`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-triple-slash-reference.md
-[`@typescript-eslint/no-var-requires`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-var-requires.md
-[`@typescript-eslint/type-annotation-spacing`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/type-annotation-spacing.md
-[`@typescript-eslint/no-misused-new`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-misused-new.md
-[`@typescript-eslint/no-object-literal-type-assertion`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-object-literal-type-assertion.md
-[`@typescript-eslint/no-this-alias`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-this-alias.md
-[`@typescript-eslint/no-extraneous-class`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-extraneous-class.md
-[`@typescript-eslint/no-unused-vars`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-unused-vars.md
-[`@typescript-eslint/no-use-before-define`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-use-before-define.md
-[`@typescript-eslint/indent`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/indent.md
-[`@typescript-eslint/array-type`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/array-type.md
-[`@typescript-eslint/class-name-casing`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/class-name-casing.md
-[`@typescript-eslint/interface-name-prefix`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/interface-name-prefix.md
-[`@typescript-eslint/no-angle-bracket-type-assertion`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-angle-bracket-type-assertion.md
-[`@typescript-eslint/no-parameter-properties`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-parameter-properties.md
-[`@typescript-eslint/member-delimiter-style`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/member-delimiter-style.md
-[`@typescript-eslint/prefer-interface`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/prefer-interface.md
-[`@typescript-eslint/no-array-constructor`]: https://github.com/bradzacher/@typescript-eslint/eslint-plugin/blob/master/docs/rules/no-array-constructor.md
+[`@typescript-eslint/adjacent-overload-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/adjacent-overload-signatures.md
+[`@typescript-eslint/await-promise`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/await-promise.md
+[`@typescript-eslint/ban-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-types.md
+[`@typescript-eslint/explicit-member-accessibility`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
+[`@typescript-eslint/member-ordering`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-ordering.md
+[`@typescript-eslint/no-explicit-any`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-explicit-any.md
+[`@typescript-eslint/no-empty-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-empty-interface.md
+[`@typescript-eslint/no-inferrable-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-inferrable-types.md
+[`@typescript-eslint/prefer-namespace-keyword`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-namespace-keyword.md
+[`@typescript-eslint/no-namespace`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-namespace.md
+[`@typescript-eslint/no-non-null-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-non-null-assertion.md
+[`@typescript-eslint/no-triple-slash-reference`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-triple-slash-reference.md
+[`@typescript-eslint/no-unnecessary-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-type-assertion.md
+[`@typescript-eslint/no-var-requires`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-var-requires.md
+[`@typescript-eslint/type-annotation-spacing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/type-annotation-spacing.md
+[`@typescript-eslint/no-misused-new`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-misused-new.md
+[`@typescript-eslint/no-object-literal-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-object-literal-type-assertion.md
+[`@typescript-eslint/no-this-alias`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-this-alias.md
+[`@typescript-eslint/no-extraneous-class`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extraneous-class.md
+[`@typescript-eslint/no-unused-vars`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unused-vars.md
+[`@typescript-eslint/no-use-before-define`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md
+[`@typescript-eslint/indent`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
+[`@typescript-eslint/array-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/array-type.md
+[`@typescript-eslint/class-name-casing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/class-name-casing.md
+[`@typescript-eslint/interface-name-prefix`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/interface-name-prefix.md
+[`@typescript-eslint/no-angle-bracket-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-angle-bracket-type-assertion.md
+[`@typescript-eslint/no-parameter-properties`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-parameter-properties.md
+[`@typescript-eslint/member-delimiter-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-delimiter-style.md
+[`@typescript-eslint/prefer-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-interface.md
+[`@typescript-eslint/no-array-constructor`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-array-constructor.md
 
 <!-- eslint-plugin-import -->
 

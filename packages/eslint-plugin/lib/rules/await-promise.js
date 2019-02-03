@@ -3,9 +3,8 @@
  * @author Josh Goldberg
  */
 'use strict';
-const tsutils = require('tsutils');
-const ts = require('typescript');
 const util = require('../util');
+const types = require('../utils/types');
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -71,7 +70,7 @@ module.exports = {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const type = checker.getTypeAtLocation(originalNode.expression);
 
-      if (!containsType(type, allowedSymbolNames)) {
+      if (!types.containsTypeByName(type, allowedSymbolNames)) {
         context.report({
           messageId,
           node
@@ -91,34 +90,3 @@ module.exports = {
     };
   }
 };
-
-/**
- * @param {string} type Type being awaited upon.
- * @param {Set<string>} allowedNames Symbol names being checked for.
- */
-function containsType(type, allowedNames) {
-  if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
-    return true;
-  }
-
-  if (tsutils.isTypeReference(type)) {
-    type = type.target;
-  }
-
-  if (
-    typeof type.symbol !== 'undefined' &&
-    allowedNames.has(type.symbol.name)
-  ) {
-    return true;
-  }
-
-  if (tsutils.isUnionOrIntersectionType(type)) {
-    return type.types.some(t => containsType(t, allowedNames));
-  }
-
-  const bases = type.getBaseTypes();
-  return (
-    typeof bases !== 'undefined' &&
-    bases.some(t => containsType(t, allowedNames))
-  );
-}
