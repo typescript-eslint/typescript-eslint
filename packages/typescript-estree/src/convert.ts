@@ -54,13 +54,13 @@ export function convertError(error: any) {
 }
 
 export class Converter {
-  protected ast: ts.SourceFile;
-  protected options: ConverterOptions;
-  public esTreeNodeToTSNodeMap = new WeakMap();
-  public tsNodeToESTreeNodeMap = new WeakMap();
+  private readonly ast: ts.SourceFile;
+  private options: ConverterOptions;
+  private esTreeNodeToTSNodeMap = new WeakMap();
+  private tsNodeToESTreeNodeMap = new WeakMap();
 
-  protected allowPattern: boolean = false;
-  protected inTypeMode: boolean = false;
+  private allowPattern: boolean = false;
+  private inTypeMode: boolean = false;
 
   /**
    * Converts a TypeScript node into an ESTree node
@@ -73,14 +73,14 @@ export class Converter {
     this.options = options;
   }
 
-  public getASTMaps() {
+  getASTMaps() {
     return {
       esTreeNodeToTSNodeMap: this.esTreeNodeToTSNodeMap,
       tsNodeToESTreeNodeMap: this.tsNodeToESTreeNodeMap
     };
   }
 
-  public convertProgram(): es.Program {
+  convertProgram(): es.Program {
     return this.converter(this.ast) as es.Program;
   }
 
@@ -92,7 +92,7 @@ export class Converter {
    * @param allowPattern flag to determine if patterns are allowed
    * @returns the converted ESTree node
    */
-  protected converter(
+  private converter(
     node?: ts.Node,
     parent?: ts.Node,
     inTypeMode?: boolean,
@@ -135,7 +135,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  protected convertPattern(child?: ts.Node, parent?: ts.Node): any | null {
+  private convertPattern(child?: ts.Node, parent?: ts.Node): any | null {
     return this.converter(child, parent, this.inTypeMode, true);
   }
 
@@ -145,7 +145,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  protected convertChild(child?: ts.Node, parent?: ts.Node): any | null {
+  private convertChild(child?: ts.Node, parent?: ts.Node): any | null {
     return this.converter(child, parent, this.inTypeMode, false);
   }
 
@@ -155,11 +155,11 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  protected convertType(child?: ts.Node, parent?: ts.Node): any | null {
+  private convertType(child?: ts.Node, parent?: ts.Node): any | null {
     return this.converter(child, parent, true, false);
   }
 
-  protected createNode<T extends es.BaseNode = es.BaseNode>(
+  private createNode<T extends es.BaseNode = es.BaseNode>(
     node: ts.Node,
     data: es.OptionalRangeAndLoc<T>
   ): T {
@@ -181,7 +181,7 @@ export class Converter {
    * @param parent parentNode
    * @returns The type annotation node.
    */
-  protected convertTypeAnnotation(
+  private convertTypeAnnotation(
     child: ts.TypeNode,
     parent: ts.Node
   ): es.TSTypeAnnotation {
@@ -208,7 +208,7 @@ export class Converter {
    * @param parent parentNode
    * @returns Array of body statements
    */
-  protected convertBodyExpressions(
+  private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
     parent: ts.Node
   ): any[] {
@@ -244,7 +244,7 @@ export class Converter {
    * @param typeArguments ts.Node typeArguments
    * @returns TypeParameterInstantiation node
    */
-  protected convertTypeArgumentsToTypeParameters(
+  private convertTypeArgumentsToTypeParameters(
     typeArguments: ts.NodeArray<ts.TypeNode>
   ): es.TSTypeParameterInstantiation {
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
@@ -262,7 +262,7 @@ export class Converter {
    * @param typeParameters ts.Node typeParameters
    * @returns TypeParameterDeclaration node
    */
-  protected convertTSTypeParametersToTypeParametersDeclaration(
+  private convertTSTypeParametersToTypeParametersDeclaration(
     typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>
   ): es.TSTypeParameterDeclaration {
     const greaterThanToken = findNextToken(typeParameters, this.ast, this.ast)!;
@@ -282,7 +282,7 @@ export class Converter {
    * @param parameters An array of ts.Node params to be converted
    * @returns an array of converted ESTreeNode params
    */
-  protected convertParameters(
+  private convertParameters(
     parameters: ts.NodeArray<ts.ParameterDeclaration>
   ): (es.TSParameterProperty | es.RestElement | es.AssignmentPattern)[] {
     if (!parameters || !parameters.length) {
@@ -304,7 +304,7 @@ export class Converter {
    * ESTree mostly as-is. The only difference is the addition of a type
    * property instead of a kind property. Recursively copies all children.
    */
-  protected deeplyCopy(node: ts.Node): any {
+  private deeplyCopy(node: ts.Node): any {
     const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
     /**
      * If the "errorOnUnknownASTType" option is set to true, throw an error,
@@ -373,7 +373,7 @@ export class Converter {
    * @param parent
    * @returns the converted ESTree name object
    */
-  protected convertTypeScriptJSXTagNameToESTreeName(
+  private convertTypeScriptJSXTagNameToESTreeName(
     tagName: ts.JsxTagNameExpression,
     parent: ts.Node
   ): es.JSXMemberExpression | es.JSXIdentifier {
@@ -420,10 +420,9 @@ export class Converter {
    * @param result
    * @param modifiers original ts.Nodes from the node.modifiers array
    * @returns the current result object will be mutated
-   * @deprecated
-   * TODO: remove this
+   * @deprecated This method adds not standardized `modifiers` property in nodes
    */
-  protected applyModifiersToResult(
+  private applyModifiersToResult(
     result: es.TSEnumDeclaration | es.TSModuleDeclaration,
     modifiers?: ts.ModifiersArray
   ): void {
@@ -479,7 +478,7 @@ export class Converter {
    * @param typeAnnotationParent The node that will have its location data mutated
    * @param node
    */
-  protected fixTypeAnnotationParentLocation(
+  private fixTypeAnnotationParentLocation(
     typeAnnotationParent: es.BaseNode,
     node: ts.TypeNode
   ): void {
@@ -498,7 +497,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  protected convertNode(node: TSNode, parent: ts.Node): es.Node | null {
+  private convertNode(node: TSNode, parent: ts.Node): es.Node | null {
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
         return this.createNode<es.Program>(node, {
@@ -1999,7 +1998,6 @@ export class Converter {
       case SyntaxKind.UnknownKeyword:
       case SyntaxKind.VoidKeyword:
       case SyntaxKind.UndefinedKeyword: {
-        // TODO:
         return this.createNode<any>(node, {
           type: AST_NODE_TYPES[`TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES]
         });
