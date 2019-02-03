@@ -16,7 +16,7 @@ await createValue();
 
 ```ts
 // An array of Promises is not the same as an AsyncIterable
-async function incorrect(arrayOfPromises: Array<Promise<string>) {
+async function incorrect(arrayOfPromises: Array<Promise<string>>) {
     for await (const element of arrayOfPromises) {}
 }
 ```
