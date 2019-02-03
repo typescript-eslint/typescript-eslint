@@ -1,10 +1,10 @@
 ﻿# Roadmap
 
-✅ (29) = done<br>
+✅ (30) = done<br>
 🌟 (79) = in ESLint core<br>
 🔌 (33) = in another plugin<br>
 🌓 (16) = implementations differ or ESLint version is missing functionality<br>
-🛑 (68) = unimplemented
+🛑 (67) = unimplemented
 
 ## TSLint rules
 
@@ -114,7 +114,7 @@
 | [`no-default-export`]        | 🔌  | [`import/no-default-export`]                       |
 | [`no-duplicate-imports`]     | 🔌  | [`import/no-duplicates`]                           |
 | [`no-mergeable-namespace`]   | 🛑  | N/A                                                |
-| [`no-require-imports`]       | 🛑  | N/A                                                |
+| [`no-require-imports`]       | ✅  | [`@typescript-eslint/no-require-imports`]          |
 | [`object-literal-sort-keys`] | 🌓  | [`sort-keys`][sort-keys] <sup>[2]</sup>            |
 | [`prefer-const`]             | 🌟  | [`prefer-const`][prefer-const]                     |
 | [`prefer-readonly`]          | 🛑  | N/A                                                |
@@ -578,6 +578,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-use-before-define`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md
 [`@typescript-eslint/restrict-plus-operands`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/restrict-plus-operands.md
 [`@typescript-eslint/indent`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
+[`@typescript-eslint/no-require-imports`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-require-imports.md
 [`@typescript-eslint/array-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/array-type.md
 [`@typescript-eslint/class-name-casing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/class-name-casing.md
 [`@typescript-eslint/interface-name-prefix`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/interface-name-prefix.md
