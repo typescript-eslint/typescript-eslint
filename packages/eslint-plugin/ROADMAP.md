@@ -1,10 +1,10 @@
 ﻿# Roadmap
 
-✅ (28) = done<br>
+✅ (29) = done<br>
 🌟 (79) = in ESLint core<br>
 🔌 (33) = in another plugin<br>
 🌓 (16) = implementations differ or ESLint version is missing functionality<br>
-🛑 (70) = unimplemented
+🛑 (68) = unimplemented
 
 ## TSLint rules
 
@@ -87,7 +87,7 @@
 | [`prefer-conditional-expression`]    | 🛑  | N/A                                                                   |
 | [`prefer-object-spread`]             | 🌟  | [`prefer-object-spread`][prefer-object-spread]                        |
 | [`radix`]                            | 🌟  | [`radix`][radix]                                                      |
-| [`restrict-plus-operands`]           | 🛑  | N/A                                                                   |
+| [`restrict-plus-operands`]           | ✅  | [`@typescript-eslint/restrict-plus-operands`]                         |
 | [`strict-boolean-expressions`]       | 🛑  | N/A                                                                   |
 | [`strict-type-predicates`]           | 🛑  | N/A                                                                   |
 | [`switch-default`]                   | 🌟  | [`default-case`][default-case]                                        |
@@ -214,7 +214,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `export-name`                         | 🛑  | N/A ([relevant plugin][plugin:import])                                 |
 | `function-name`                       | 🛑  | N/A                                                                    |
 | `import-name`                         | 🛑  | N/A ([relevant plugin][plugin:import])                                 |
-| `function-name`                       | 🛑  | N/A                                                                    |
 | `informative-docs`                    | 🛑  | N/A                                                                    |
 | `insecure-random`                     | 🔌  | [custom implementation][insecure-random]                               |
 | `max-func-body-length`                | 🌟  | [`max-statements`][max-statements]                                     |
@@ -577,6 +576,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-extraneous-class`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extraneous-class.md
 [`@typescript-eslint/no-unused-vars`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unused-vars.md
 [`@typescript-eslint/no-use-before-define`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md
+[`@typescript-eslint/restrict-plus-operands`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/restrict-plus-operands.md
 [`@typescript-eslint/indent`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
 [`@typescript-eslint/array-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/array-type.md
 [`@typescript-eslint/class-name-casing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/class-name-casing.md
