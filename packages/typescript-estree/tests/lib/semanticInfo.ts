@@ -179,7 +179,7 @@ describe('semanticInfo', () => {
     badConfig.project = './tsconfigs.json';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+tsconfigs\.json' not found/);
+    ).toThrow(/File .+tsconfigs\.json' not found/);
   });
 
   it('fail to read project file', () => {
@@ -188,7 +188,7 @@ describe('semanticInfo', () => {
     badConfig.project = '.';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+semanticInfo' not found/);
+    ).toThrow(/File .+semanticInfo' not found/);
   });
 
   it('malformed project file', () => {
