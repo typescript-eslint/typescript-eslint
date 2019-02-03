@@ -1,5 +1,8 @@
 'use strict';
 
+const tsutils = require('tsutils');
+const ts = require('typescript');
+
 const version = require('../package.json').version;
 
 exports.tslintRule = name => `\`${name}\` from TSLint`;
@@ -126,4 +129,35 @@ exports.getParserServices = context => {
     );
   }
   return context.parserServices;
+};
+
+/**
+ * @param {string} type Type to check the name of.
+ * @param {Set<string>} allowedNames Symbol names being checked for.
+ */
+exports.containsTypeByName = (type, allowedNames) => {
+  if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+    return true;
+  }
+
+  if (tsutils.isTypeReference(type)) {
+    type = type.target;
+  }
+
+  if (
+    typeof type.symbol !== 'undefined' &&
+    allowedNames.has(type.symbol.name)
+  ) {
+    return true;
+  }
+
+  if (tsutils.isUnionOrIntersectionType(type)) {
+    return type.types.some(t => containsType(t, allowedNames));
+  }
+
+  const bases = type.getBaseTypes();
+  return (
+    typeof bases !== 'undefined' &&
+    bases.some(t => containsType(t, allowedNames))
+  );
 };

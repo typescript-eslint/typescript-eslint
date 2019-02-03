@@ -1,9 +1,9 @@
 ﻿# Roadmap
 
-✅ (28) = done  
-🌟 (79) = in ESLint core  
-🔌 (33) = in another plugin  
-🌓 (16) = implementations differ or ESLint version is missing functionality  
+✅ (28) = done
+🌟 (79) = in ESLint core
+🔌 (33) = in another plugin
+🌓 (16) = implementations differ or ESLint version is missing functionality
 🛑 (70) = unimplemented
 
 ## TSLint rules
@@ -30,7 +30,7 @@
 | [`no-var-requires`]               | ✅  | [`@typescript-eslint/no-var-requires`]               |
 | [`only-arrow-functions`]          | 🔌  | [`prefer-arrow/prefer-arrow-functions`]              |
 | [`prefer-for-of`]                 | 🛑  | N/A                                                  |
-| [`promise-function-async`]        | 🛑  | N/A ([relevant plugin][plugin:promise])              |
+| [`promise-function-async`]        | ✅  | [`@typescript-eslint/promise-function-async`]        |
 | [`typedef`]                       | 🛑  | N/A                                                  |
 | [`typedef-whitespace`]            | ✅  | [`@typescript-eslint/type-annotation-spacing`]       |
 | [`unified-signatures`]            | 🛑  | N/A                                                  |
@@ -96,7 +96,7 @@
 | [`use-default-type-parameter`]       | 🛑  | N/A                                                                   |
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                              |
 
-<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)  
+<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)
 <sup>[2]</sup> Missing private class member support. [`@typescript-eslint/no-unused-vars`] adds support for some TS-specific features.
 
 ### Maintainability
@@ -120,7 +120,7 @@
 | [`prefer-readonly`]          | 🛑  | N/A                                                |
 | [`trailing-comma`]           | 🌓  | [`comma-dangle`][comma-dangle] or [Prettier]       |
 
-<sup>[1]</sup> Only warns when importing deprecated symbols  
+<sup>[1]</sup> Only warns when importing deprecated symbols
 <sup>[2]</sup> Missing support for blank-line-delimited sections
 
 ### Style
@@ -179,7 +179,7 @@
 | [`variable-name`]                   | 🌟  | <sup>[2]</sup>                                                                      |
 | [`whitespace`]                      | 🔌  | Use [Prettier]                                                                      |
 
-<sup>[1]</sup> Recommended config: `["error", { blankLine: "always", prev: "*", next: "return" }]`  
+<sup>[1]</sup> Recommended config: `["error", { blankLine: "always", prev: "*", next: "return" }]`
 <sup>[2]</sup> [`camelcase`][camelcase], [`no-underscore-dangle`][no-underscore-dangle], [`id-blacklist`][id-blacklist], and/or [`id-match`][id-match]
 
 ## tslint-microsoft-contrib rules
@@ -245,10 +245,10 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `use-named-parameter`                 | 🛑  | N/A                                                                    |
 | `use-simple-attributes`               | 🛑  | N/A                                                                    |
 
-<sup>[1]</sup> Enforces blank lines both at the beginning and end of a block  
-<sup>[2]</sup> Recommended config: `["error", "ForInStatement"]`  
-<sup>[3]</sup> Recommended config: `["error", "declaration", { "allowArrowFunctions": true }]`  
-<sup>[4]</sup> Recommended config: `["error", { "terms": ["BUG", "HACK", "FIXME", "LATER", "LATER2", "TODO"], "location": "anywhere" }]`  
+<sup>[1]</sup> Enforces blank lines both at the beginning and end of a block
+<sup>[2]</sup> Recommended config: `["error", "ForInStatement"]`
+<sup>[3]</sup> Recommended config: `["error", "declaration", { "allowArrowFunctions": true }]`
+<sup>[4]</sup> Recommended config: `["error", { "terms": ["BUG", "HACK", "FIXME", "LATER", "LATER2", "TODO"], "location": "anywhere" }]`
 <sup>[5]</sup> Does not check class fields.
 
 [insecure-random]: https://github.com/desktop/desktop/blob/master/eslint-rules/insecure-random.js
@@ -310,7 +310,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `react-a11y-titles`                       | 🛑  | N/A                                                        |
 | `react-anchor-blank-noopener`             | 🛑  | N/A                                                        |
 
-<sup>[1]</sup> TSLint rule is more strict  
+<sup>[1]</sup> TSLint rule is more strict
 <sup>[2]</sup> ESLint rule only reports for click handlers
 
 [prettier]: https://prettier.io
