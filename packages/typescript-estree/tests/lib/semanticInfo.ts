@@ -11,7 +11,7 @@ import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
 import ts from 'typescript';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
@@ -179,7 +179,7 @@ describe('semanticInfo', () => {
     badConfig.project = './tsconfigs.json';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+tsconfigs\.json' not found/);
+    ).toThrow(/File .+tsconfigs\.json' not found/);
   });
 
   it('fail to read project file', () => {
@@ -188,7 +188,7 @@ describe('semanticInfo', () => {
     badConfig.project = '.';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+semanticInfo' not found/);
+    ).toThrow(/File .+semanticInfo' not found/);
   });
 
   it('malformed project file', () => {

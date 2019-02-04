@@ -7,7 +7,7 @@
  */
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ describe('parse()', () => {
       });
 
       expect(spy).toHaveBeenCalledWith(
-        jasmine.any(Object),
+        expect.any(Object),
         {
           code: 'let foo = bar;',
           comment: true,
@@ -96,8 +96,8 @@ describe('parse()', () => {
           projects: [],
           range: true,
           strict: false,
-          tokens: jasmine.any(Array),
-          tsconfigRootDir: jasmine.any(String),
+          tokens: expect.any(Array),
+          tsconfigRootDir: expect.any(String),
           useJSXTextNode: false
         },
         false

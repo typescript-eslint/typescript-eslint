@@ -7,7 +7,7 @@
  */
 import { readFileSync } from 'fs';
 import glob from 'glob';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName
