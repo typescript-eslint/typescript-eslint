@@ -1,10 +1,15 @@
 ﻿# Roadmap
 
-✅ (28) = done
-🌟 (79) = in ESLint core
-🔌 (33) = in another plugin
-🌓 (16) = implementations differ or ESLint version is missing functionality
-🛑 (71) = unimplemented
+<!--
+  When updating these totals, please make sure to subtract 1 from the total
+  count retrived via Ctrl/Cmd+F since this key shouldn’t count in the results.
+-->
+
+✅ (30) = done<br>
+🌟 (79) = in ESLint core<br>
+🔌 (33) = in another plugin<br>
+🌓 (16) = implementations differ or ESLint version is missing functionality<br>
+🛑 (68) = unimplemented<br>
 
 ## TSLint rules
 
