@@ -29,7 +29,7 @@ describe('TSX', () => {
 
   describe("if the filename ends with '.tsx', enable jsx option automatically.", () => {
     const linter = new Linter();
-    linter.defineParser('@typescript-eslint/parser', parser as any);
+    linter.defineParser('@typescript-eslint/parser', parser);
 
     it('filePath was not provided', () => {
       const code = 'const element = <T/>';

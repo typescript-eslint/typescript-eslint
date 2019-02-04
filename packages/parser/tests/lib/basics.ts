@@ -32,7 +32,7 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
       }
     };
 
-    linter.defineParser('@typescript-eslint/parser', parser as any);
+    linter.defineParser('@typescript-eslint/parser', parser);
     linter.defineRule('test', {
       create(context: any) {
         return {

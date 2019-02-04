@@ -13,7 +13,7 @@ import { visitorKeys } from './visitor-keys';
 const packageJSON = require('../package.json');
 
 interface ParseForESLintResult {
-  ast: es.Program;
+  ast: any;
   services: ParserServices;
   visitorKeys: typeof visitorKeys;
   scopeManager: ReturnType<typeof analyzeScope>;
