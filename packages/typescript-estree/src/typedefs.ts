@@ -160,6 +160,7 @@ export type Node =
   | TSConstructSignatureDeclaration
   | TSDeclareFunction
   | TSDeclareKeyword
+  | TSEmptyBodyFunctionExpression
   | TSEnumDeclaration
   | TSEnumMember
   | TSExportAssignment
@@ -239,6 +240,7 @@ export type ClassElement =
   | MethodDefinition
   | TSAbstractClassProperty
   | TSAbstractMethodDefinition
+  | TSEmptyBodyFunctionExpression
   | TSIndexSignature;
 export type DeclarationStatement =
   | ClassDeclaration
@@ -484,7 +486,7 @@ interface LiteralBase extends BaseNode {
 
 interface MethodDefinitionBase extends BaseNode {
   key: PropertyName;
-  value: FunctionExpression;
+  value: FunctionExpression | TSEmptyBodyFunctionExpression;
   computed: boolean;
   static: boolean;
   kind: 'method' | 'get' | 'set' | 'constructor';
@@ -1020,6 +1022,11 @@ export interface TSDeclareFunction extends FunctionDeclarationBase {
 
 export interface TSDeclareKeyword extends BaseNode {
   type: AST_NODE_TYPES.TSDeclareKeyword;
+}
+
+export interface TSEmptyBodyFunctionExpression extends FunctionDeclarationBase {
+  type: AST_NODE_TYPES.TSEmptyBodyFunctionExpression;
+  body: null;
 }
 
 export interface TSEnumDeclaration extends BaseNode {

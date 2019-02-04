@@ -110,6 +110,7 @@ export enum AST_NODE_TYPES {
   TSConstructSignatureDeclaration = 'TSConstructSignatureDeclaration',
   TSDeclareKeyword = 'TSDeclareKeyword',
   TSDeclareFunction = 'TSDeclareFunction',
+  TSEmptyBodyFunctionExpression = 'TSEmptyBodyFunctionExpression',
   TSEnumDeclaration = 'TSEnumDeclaration',
   TSEnumMember = 'TSEnumMember',
   TSExportAssignment = 'TSExportAssignment',

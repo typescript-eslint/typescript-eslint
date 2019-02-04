@@ -3,6 +3,7 @@
  * @author Armano <https://github.com/armano2>
  */
 
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -10,13 +11,16 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule = {
+type Options = [];
+type MessageIds = 'errorMessageInterface' | 'errorMessageClass';
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {
       description: 'Enforce valid definition of `new` and `constructor`.',
       extraDescription: [util.tslintRule('no-misused-new')],
-      category: 'TypeScript',
+      category: 'Best Practices',
       url: util.metaDocsUrl('no-misused-new'),
       recommended: 'error'
     },
@@ -36,7 +40,13 @@ const rule: RuleModule = {
      * @param {ASTNode} node type to be inspected.
      * @returns name of simple type or null
      */
-    function getTypeReferenceName(node): string | null {
+    function getTypeReferenceName(
+      node:
+        | TSESTree.TSTypeAnnotation
+        | TSESTree.TypeNode
+        | TSESTree.EntityName
+        | undefined
+    ): string | null {
       if (node) {
         switch (node.type) {
           case 'TSTypeAnnotation':
@@ -56,16 +66,31 @@ const rule: RuleModule = {
      * @param {ASTNode} parent parent node.
      * @param {ASTNode} returnType type to be compared
      */
-    function isMatchingParentType(parent, returnType): boolean {
-      if (parent && parent.id && parent.id.type === 'Identifier') {
+    function isMatchingParentType(
+      parent: undefined | TSESTree.Node,
+      returnType: TSESTree.TSTypeAnnotation | undefined
+    ): boolean {
+      if (
+        parent &&
+        'id' in parent &&
+        parent.id &&
+        parent.id.type === 'Identifier'
+      ) {
         return getTypeReferenceName(returnType) === parent.id.name;
       }
       return false;
     }
 
     return {
-      'TSInterfaceBody > TSConstructSignatureDeclaration'(node) {
-        if (isMatchingParentType(node.parent.parent, node.returnType)) {
+      'TSInterfaceBody > TSConstructSignatureDeclaration'(
+        node: TSESTree.TSConstructSignatureDeclaration
+      ) {
+        if (
+          isMatchingParentType(
+            node.parent!.parent as TSESTree.TSInterfaceDeclaration,
+            node.returnType
+          )
+        ) {
           // constructor
           context.report({
             node,
@@ -73,19 +98,22 @@ const rule: RuleModule = {
           });
         }
       },
-      "TSMethodSignature[key.name='constructor']"(node) {
+      "TSMethodSignature[key.name='constructor']"(
+        node: TSESTree.TSMethodSignature
+      ) {
         context.report({
           node,
           messageId: 'errorMessageInterface'
         });
       },
-      "ClassBody > MethodDefinition[key.name='new']"(node) {
-        if (
-          node.value &&
-          (node.value.type === 'TSEmptyBodyFunctionExpression' ||
-            (node.value.type === 'TSDeclareFunction' && !node.value.body))
-        ) {
-          if (isMatchingParentType(node.parent.parent, node.value.returnType)) {
+      "ClassBody > MethodDefinition[key.name='new']"(
+        node: TSESTree.MethodDefinition
+      ) {
+        if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
+          if (
+            node.parent &&
+            isMatchingParentType(node.parent.parent, node.value.returnType)
+          ) {
             context.report({
               node,
               messageId: 'errorMessageClass'

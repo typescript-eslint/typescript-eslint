@@ -3,9 +3,9 @@
  * @author James Garbutt <https://github.com/43081j>
  */
 
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
