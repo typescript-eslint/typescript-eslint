@@ -1244,8 +1244,11 @@ interface Foo {
             `,
       errors: [
         {
-          message:
-            'Member new should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'new',
+            rank: 'method'
+          },
           line: 16,
           column: 5
         }
@@ -1273,38 +1276,65 @@ interface Foo {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 10,
           column: 5
         },
         {
-          message: 'Member H should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'field'
+          },
           line: 11,
           column: 5
         },
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 12,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 13,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 14,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 15,
           column: 5
         },
         {
-          message:
-            'Member new should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'new',
+            rank: 'field'
+          },
           line: 16,
           column: 5
         }
@@ -1332,38 +1362,65 @@ interface Foo {
       options: [{ interfaces: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 10,
           column: 5
         },
         {
-          message: 'Member H should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'field'
+          },
           line: 11,
           column: 5
         },
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 12,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 13,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 14,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 15,
           column: 5
         },
         {
-          message:
-            'Member new should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'new',
+            rank: 'field'
+          },
           line: 16,
           column: 5
         }
@@ -1396,38 +1453,65 @@ interface Foo {
       ],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 10,
           column: 5
         },
         {
-          message: 'Member H should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'field'
+          },
           line: 11,
           column: 5
         },
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 12,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 13,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 14,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 15,
           column: 5
         },
         {
-          message:
-            'Member new should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'new',
+            rank: 'field'
+          },
           line: 16,
           column: 5
         }
@@ -1459,27 +1543,47 @@ interface Foo {
       ],
       errors: [
         {
-          message: 'Member B should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'B',
+            rank: 'method'
+          },
           line: 7,
           column: 5
         },
         {
-          message: 'Member C should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'method'
+          },
           line: 9,
           column: 5
         },
         {
-          message: 'Member D should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'D',
+            rank: 'method'
+          },
           line: 11,
           column: 5
         },
         {
-          message: 'Member E should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'E',
+            rank: 'method'
+          },
           line: 13,
           column: 5
         },
         {
-          message: 'Member F should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'F',
+            rank: 'method'
+          },
           line: 15,
           column: 5
         }
@@ -1506,8 +1610,11 @@ type Foo = {
             `,
       errors: [
         {
-          message:
-            'Member new should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'new',
+            rank: 'method'
+          },
           line: 16,
           column: 5
         }
@@ -1535,38 +1642,65 @@ type Foo = {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 10,
           column: 5
         },
         {
-          message: 'Member H should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'field'
+          },
           line: 11,
           column: 5
         },
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 12,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 13,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 14,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 15,
           column: 5
         },
         {
-          message:
-            'Member new should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'new',
+            rank: 'field'
+          },
           line: 16,
           column: 5
         }
@@ -1594,38 +1728,65 @@ type Foo = {
       options: [{ typeLiterals: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 10,
           column: 5
         },
         {
-          message: 'Member H should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'field'
+          },
           line: 11,
           column: 5
         },
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 12,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 13,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 14,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 15,
           column: 5
         },
         {
-          message:
-            'Member new should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'new',
+            rank: 'field'
+          },
           line: 16,
           column: 5
         }
@@ -1658,38 +1819,65 @@ type Foo = {
       ],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 10,
           column: 5
         },
         {
-          message: 'Member H should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'field'
+          },
           line: 11,
           column: 5
         },
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 12,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 13,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 14,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 15,
           column: 5
         },
         {
-          message:
-            'Member new should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'new',
+            rank: 'field'
+          },
           line: 16,
           column: 5
         }
@@ -1721,27 +1909,47 @@ type Foo = {
       ],
       errors: [
         {
-          message: 'Member B should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'B',
+            rank: 'method'
+          },
           line: 7,
           column: 5
         },
         {
-          message: 'Member C should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'method'
+          },
           line: 9,
           column: 5
         },
         {
-          message: 'Member D should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'D',
+            rank: 'method'
+          },
           line: 11,
           column: 5
         },
         {
-          message: 'Member E should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'E',
+            rank: 'method'
+          },
           line: 13,
           column: 5
         },
         {
-          message: 'Member F should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'F',
+            rank: 'method'
+          },
           line: 15,
           column: 5
         }
@@ -1767,20 +1975,29 @@ class Foo {
             `,
       errors: [
         {
-          message:
-            'Member G should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'public instance method'
+          },
           line: 13,
           column: 5
         },
         {
-          message:
-            'Member H should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'public instance method'
+          },
           line: 14,
           column: 5
         },
         {
-          message:
-            'Member I should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'public instance method'
+          },
           line: 15,
           column: 5
         }
@@ -1807,38 +2024,56 @@ class Foo {
       options: [{ default: ['field', 'constructor', 'method'] }],
       errors: [
         {
-          message:
-            'Member A should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'constructor'
+          },
           line: 4,
           column: 5
         },
         {
-          message:
-            'Member B should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'B',
+            rank: 'constructor'
+          },
           line: 5,
           column: 5
         },
         {
-          message:
-            'Member C should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'constructor'
+          },
           line: 6,
           column: 5
         },
         {
-          message:
-            'Member D should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'D',
+            rank: 'constructor'
+          },
           line: 7,
           column: 5
         },
         {
-          message:
-            'Member E should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'E',
+            rank: 'constructor'
+          },
           line: 8,
           column: 5
         },
         {
-          message:
-            'Member F should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'F',
+            rank: 'constructor'
+          },
           line: 9,
           column: 5
         }
@@ -1865,7 +2100,11 @@ class Foo {
       options: [{ default: ['field', 'method'] }],
       errors: [
         {
-          message: 'Member A should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'method'
+          },
           line: 10,
           column: 5
         }
@@ -1892,7 +2131,11 @@ class Foo {
       options: [{ default: ['method', 'field'] }],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 9,
           column: 5
         }
@@ -1919,28 +2162,47 @@ class Foo {
       options: [{ classes: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 6,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 7,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 8,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 9,
           column: 5
         },
         {
-          message:
-            'Member constructor should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'constructor',
+            rank: 'field'
+          },
           line: 11,
           column: 5
         }
@@ -1972,38 +2234,65 @@ class Foo {
       ],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 4,
           column: 5
         },
         {
-          message: 'Member H should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'field'
+          },
           line: 5,
           column: 5
         },
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 6,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 7,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 8,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 9,
           column: 5
         },
         {
-          message:
-            'Member constructor should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'constructor',
+            rank: 'field'
+          },
           line: 10,
           column: 5
         }
@@ -2042,14 +2331,20 @@ class Foo {
       ],
       errors: [
         {
-          message:
-            'Member A should be declared before all private field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'private field'
+          },
           line: 12,
           column: 5
         },
         {
-          message:
-            'Member F should be declared before all protected field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'F',
+            rank: 'protected field'
+          },
           line: 15,
           column: 5
         }
@@ -2089,14 +2384,20 @@ class Foo {
       ],
       errors: [
         {
-          message:
-            'Member H should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'public instance method'
+          },
           line: 6,
           column: 5
         },
         {
-          message:
-            'Member constructor should be declared before all public field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'constructor',
+            rank: 'public field'
+          },
           line: 10,
           column: 5
         }
@@ -2133,8 +2434,11 @@ class Foo {
       ],
       errors: [
         {
-          message:
-            'Member constructor should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'constructor',
+            rank: 'method'
+          },
           line: 8,
           column: 5
         }
@@ -2173,14 +2477,20 @@ class Foo {
       ],
       errors: [
         {
-          message:
-            'Member G should be declared before all private static method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'private static method'
+          },
           line: 5,
           column: 5
         },
         {
-          message:
-            'Member H should be declared before all private static method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'private static method'
+          },
           line: 6,
           column: 5
         }
@@ -2211,8 +2521,11 @@ class Foo {
       ],
       errors: [
         {
-          message:
-            'Member L should be declared before all protected static field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'protected static field'
+          },
           line: 10,
           column: 5
         }
@@ -2244,8 +2557,11 @@ class Foo {
       ],
       errors: [
         {
-          message:
-            'Member J should be declared before all protected static field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'protected static field'
+          },
           line: 8,
           column: 5
         }
@@ -2271,20 +2587,29 @@ const foo = class Foo {
             `,
       errors: [
         {
-          message:
-            'Member G should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'public instance method'
+          },
           line: 13,
           column: 5
         },
         {
-          message:
-            'Member H should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'public instance method'
+          },
           line: 14,
           column: 5
         },
         {
-          message:
-            'Member I should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'public instance method'
+          },
           line: 15,
           column: 5
         }
@@ -2311,38 +2636,56 @@ const foo = class {
       options: [{ default: ['field', 'constructor', 'method'] }],
       errors: [
         {
-          message:
-            'Member A should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'constructor'
+          },
           line: 4,
           column: 5
         },
         {
-          message:
-            'Member B should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'B',
+            rank: 'constructor'
+          },
           line: 5,
           column: 5
         },
         {
-          message:
-            'Member C should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'constructor'
+          },
           line: 6,
           column: 5
         },
         {
-          message:
-            'Member D should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'D',
+            rank: 'constructor'
+          },
           line: 7,
           column: 5
         },
         {
-          message:
-            'Member E should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'E',
+            rank: 'constructor'
+          },
           line: 8,
           column: 5
         },
         {
-          message:
-            'Member F should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'F',
+            rank: 'constructor'
+          },
           line: 9,
           column: 5
         }
@@ -2369,7 +2712,11 @@ const foo = class {
       options: [{ default: ['field', 'method'] }],
       errors: [
         {
-          message: 'Member A should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'method'
+          },
           line: 10,
           column: 5
         }
@@ -2396,7 +2743,11 @@ const foo = class {
       options: [{ default: ['method', 'field'] }],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 9,
           column: 5
         }
@@ -2423,28 +2774,47 @@ const foo = class {
       options: [{ classExpressions: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 6,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 7,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 8,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 9,
           column: 5
         },
         {
-          message:
-            'Member constructor should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'constructor',
+            rank: 'field'
+          },
           line: 11,
           column: 5
         }
@@ -2476,38 +2846,65 @@ const foo = class {
       ],
       errors: [
         {
-          message: 'Member G should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'field'
+          },
           line: 4,
           column: 5
         },
         {
-          message: 'Member H should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'field'
+          },
           line: 5,
           column: 5
         },
         {
-          message: 'Member I should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'field'
+          },
           line: 6,
           column: 5
         },
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 7,
           column: 5
         },
         {
-          message: 'Member K should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'field'
+          },
           line: 8,
           column: 5
         },
         {
-          message: 'Member L should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'field'
+          },
           line: 9,
           column: 5
         },
         {
-          message:
-            'Member constructor should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'constructor',
+            rank: 'field'
+          },
           line: 10,
           column: 5
         }
@@ -2546,14 +2943,20 @@ const foo = class {
       ],
       errors: [
         {
-          message:
-            'Member A should be declared before all private field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'private field'
+          },
           line: 12,
           column: 5
         },
         {
-          message:
-            'Member F should be declared before all protected field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'F',
+            rank: 'protected field'
+          },
           line: 15,
           column: 5
         }
@@ -2593,14 +2996,20 @@ const foo = class {
       ],
       errors: [
         {
-          message:
-            'Member H should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'public instance method'
+          },
           line: 6,
           column: 5
         },
         {
-          message:
-            'Member constructor should be declared before all public field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'constructor',
+            rank: 'public field'
+          },
           line: 10,
           column: 5
         }
@@ -2637,8 +3046,11 @@ const foo = class {
       ],
       errors: [
         {
-          message:
-            'Member constructor should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'constructor',
+            rank: 'method'
+          },
           line: 8,
           column: 5
         }
@@ -2677,14 +3089,20 @@ const foo = class {
       ],
       errors: [
         {
-          message:
-            'Member G should be declared before all private static method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'private static method'
+          },
           line: 5,
           column: 5
         },
         {
-          message:
-            'Member H should be declared before all private static method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'private static method'
+          },
           line: 6,
           column: 5
         }
@@ -2719,8 +3137,11 @@ const foo = class {
       ],
       errors: [
         {
-          message:
-            'Member L should be declared before all protected static field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'protected static field'
+          },
           line: 10,
           column: 5
         }
@@ -2752,8 +3173,11 @@ const foo = class {
       ],
       errors: [
         {
-          message:
-            'Member J should be declared before all protected static field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'protected static field'
+          },
           line: 8,
           column: 5
         }
@@ -2771,14 +3195,20 @@ class Foo {
             `,
       errors: [
         {
-          message:
-            'Member A should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'public instance method'
+          },
           line: 4,
           column: 5
         },
         {
-          message:
-            'Member constructor should be declared before all public instance method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'constructor',
+            rank: 'public instance method'
+          },
           line: 5,
           column: 5
         }
@@ -2796,8 +3226,11 @@ class Foo {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          message:
-            'Member K should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'constructor'
+          },
           line: 5,
           column: 5
         }
@@ -2816,8 +3249,11 @@ class Foo {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          message:
-            'Member K should be declared before all constructor definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'constructor'
+          },
           line: 5,
           column: 5
         }
@@ -2833,7 +3269,11 @@ interface Foo {
             `,
       errors: [
         {
-          message: 'Member A should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'method'
+          },
           line: 5,
           column: 5
         }
@@ -2849,7 +3289,11 @@ type Foo = {
             `,
       errors: [
         {
-          message: 'Member A should be declared before all method definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'method'
+          },
           line: 5,
           column: 5
         }
@@ -2866,7 +3310,11 @@ type Foo = {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          message: 'Member J should be declared before all field definitions.',
+          messageId: 'incorrectOrder' as 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'field'
+          },
           line: 5,
           column: 5
         }

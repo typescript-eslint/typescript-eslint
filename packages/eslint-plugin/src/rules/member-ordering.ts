@@ -3,12 +3,26 @@
  * @author Patricio Trevino
  */
 
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { getNameFromPropertyName } from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
+
+export type MessageIds = 'incorrectOrder';
+type OrderConfig = string[] | 'never';
+export type Options = [
+  {
+    default?: OrderConfig;
+    classes?: OrderConfig;
+    classExpressions?: OrderConfig;
+    interfaces?: OrderConfig;
+    typeLiterals?: OrderConfig;
+  }
+];
 
 const schemaOptions = ['field', 'method', 'constructor'].reduce<string[]>(
   (options, type) => {
@@ -31,16 +45,7 @@ const schemaOptions = ['field', 'method', 'constructor'].reduce<string[]>(
   []
 );
 
-type OrderConfig = string[] | 'never';
-interface Options {
-  default: OrderConfig;
-  classes?: OrderConfig;
-  classExpressions?: OrderConfig;
-  interfaces?: OrderConfig;
-  typeLiterals?: OrderConfig;
-}
-
-const defaultOptions: Options[] = [
+const defaultOptions: Options = [
   {
     default: [
       'public-static-field',
@@ -82,15 +87,19 @@ const defaultOptions: Options[] = [
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
       extraDescription: [util.tslintRule('member-ordering')],
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('member-ordering'),
       recommended: false
+    },
+    messages: {
+      incorrectOrder:
+        'Member {{name}} should be declared before all {{rank}} definitions.'
     },
     schema: [
       {
@@ -180,30 +189,26 @@ const rule: RuleModule = {
     //----------------------------------------------------------------------
 
     /**
-     * Determines if `node` should be processed as a method instead of a field.
-     * @param {ASTNode} node the node to be inspected.
-     */
-    function shouldBeProcessedAsMethod(node): boolean {
-      // check for bound methods in ClassProperty nodes.
-      return node.value && functionExpressions.indexOf(node.value.type) > -1;
-    }
-
-    /**
      * Gets the node type.
-     * @param {ASTNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
-    function getNodeType(node): string | null {
+    function getNodeType(
+      node: TSESTree.ClassElement | TSESTree.TypeElement
+    ): string | null {
       // TODO: add missing TSCallSignatureDeclaration
       switch (node.type) {
-        case 'MethodDefinition':
+        case AST_NODE_TYPES.MethodDefinition:
           return node.kind;
-        case 'TSMethodSignature':
+        case AST_NODE_TYPES.TSMethodSignature:
           return 'method';
-        case 'TSConstructSignatureDeclaration':
+        case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'constructor';
-        case 'ClassProperty':
-        case 'TSPropertySignature':
-          return shouldBeProcessedAsMethod(node) ? 'method' : 'field';
+        case AST_NODE_TYPES.ClassProperty:
+          return node.value && functionExpressions.indexOf(node.value.type) > -1
+            ? 'method'
+            : 'field';
+        case AST_NODE_TYPES.TSPropertySignature:
+          return 'field';
         default:
           return null;
       }
@@ -211,17 +216,21 @@ const rule: RuleModule = {
 
     /**
      * Gets the member name based on the member type.
-     * @param {ASTNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
-    function getMemberName(node): string | null {
+    function getMemberName(
+      node: TSESTree.ClassElement | TSESTree.TypeElement
+    ): string | null {
       switch (node.type) {
-        case 'ClassProperty':
-        case 'MethodDefinition':
-          return node.kind === 'constructor' ? 'constructor' : node.key.name;
-        case 'TSPropertySignature':
-        case 'TSMethodSignature':
-          return node.key.name;
-        case 'TSConstructSignatureDeclaration':
+        case AST_NODE_TYPES.TSPropertySignature:
+        case AST_NODE_TYPES.TSMethodSignature:
+        case AST_NODE_TYPES.ClassProperty:
+          return getNameFromPropertyName(node.key);
+        case AST_NODE_TYPES.MethodDefinition:
+          return node.kind === 'constructor'
+            ? 'constructor'
+            : getNameFromPropertyName(node.key);
+        case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
         default:
           return null;
@@ -251,12 +260,12 @@ const rule: RuleModule = {
 
     /**
      * Gets the rank of the node given the order.
-     * @param {ASTNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      * @param order the current order to be validated.
      * @param supportsModifiers a flag indicating whether the type supports modifiers or not.
      */
     function getRank(
-      node,
+      node: TSESTree.ClassElement | TSESTree.TypeElement,
       order: string[],
       supportsModifiers: boolean
     ): number {
@@ -266,8 +275,11 @@ const rule: RuleModule = {
         return Number.MAX_SAFE_INTEGER;
       }
 
-      const scope = node.static ? 'static' : 'instance';
-      const accessibility = node.accessibility || 'public';
+      const scope = 'static' in node && node.static ? 'static' : 'instance';
+      const accessibility =
+        'accessibility' in node && node.accessibility
+          ? node.accessibility
+          : 'public';
 
       const names = [];
 
@@ -321,12 +333,12 @@ const rule: RuleModule = {
 
     /**
      * Validates each member rank.
-     * @param {Array<ASTNode>} members the members to be validated.
+     * @param members the members to be validated.
      * @param order the current order to be validated.
      * @param supportsModifiers a flag indicating whether the type supports modifiers or not.
      */
     function validateMembers(
-      members,
+      members: (TSESTree.ClassElement | TSESTree.TypeElement)[],
       order: OrderConfig,
       supportsModifiers: boolean
     ): void {
@@ -340,8 +352,7 @@ const rule: RuleModule = {
             if (rank < previousRanks[previousRanks.length - 1]) {
               context.report({
                 node: member,
-                message:
-                  'Member {{name}} should be declared before all {{rank}} definitions.',
+                messageId: 'incorrectOrder',
                 data: {
                   name: getMemberName(member),
                   rank: getLowestRank(previousRanks, rank, order)
@@ -359,31 +370,31 @@ const rule: RuleModule = {
     // Public
     //----------------------------------------------------------------------
     return {
-      ClassDeclaration(node) {
+      ClassDeclaration(node: TSESTree.ClassDeclaration) {
         validateMembers(
           node.body.body,
-          options.classes || options.default,
+          options.classes || options.default!,
           true
         );
       },
-      ClassExpression(node) {
+      ClassExpression(node: TSESTree.ClassExpression) {
         validateMembers(
           node.body.body,
-          options.classExpressions || options.default,
+          options.classExpressions || options.default!,
           true
         );
       },
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
         validateMembers(
           node.body.body,
-          options.interfaces || options.default,
+          options.interfaces || options.default!,
           false
         );
       },
-      TSTypeLiteral(node) {
+      TSTypeLiteral(node: TSESTree.TSTypeLiteral) {
         validateMembers(
           node.members,
-          options.typeLiterals || options.default,
+          options.typeLiterals || options.default!,
           false
         );
       }
