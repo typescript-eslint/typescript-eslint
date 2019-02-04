@@ -3,31 +3,39 @@
  * @author Ian MacLeod
  */
 
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { getNameFromPropertyName } from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-interface Options<T = string> {
+interface Config<T = string> {
   private?: T;
   protected?: T;
   public?: T;
 }
-type Modifiers = keyof Options;
+type Modifiers = keyof Config;
+type Options = [Config];
+type MessageIds = 'incorrectName';
 
-const defaultOptions: Options[] = [{}];
+const defaultOptions: Options = [{}];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Enforces naming conventions for class members by visibility.',
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('member-naming'),
       recommended: false
+    },
+    messages: {
+      incorrectName:
+        '{{accessibility}} property {{name}} should match {{convention}}.'
     },
     schema: [
       {
@@ -57,14 +65,13 @@ const rule: RuleModule = {
 
   create(context) {
     const config = util.applyDefault(defaultOptions, context.options)[0];
-    const conventions = (Object.keys(config) as Modifiers[]).reduce<Options<RegExp>>(
-      (acc, accessibility) => {
-        acc[accessibility] = new RegExp(config[accessibility]!);
+    const conventions = (Object.keys(config) as Modifiers[]).reduce<
+      Config<RegExp>
+    >((acc, accessibility) => {
+      acc[accessibility] = new RegExp(config[accessibility]!);
 
-        return acc;
-      },
-      {}
-    );
+      return acc;
+    }, {});
 
     //----------------------------------------------------------------------
     // Helpers
@@ -77,8 +84,10 @@ const rule: RuleModule = {
      * @returns {void}
      * @private
      */
-    function validateName(node): void {
-      const name = node.key.name;
+    function validateName(
+      node: TSESTree.MethodDefinition | TSESTree.ClassProperty
+    ): void {
+      const name = getNameFromPropertyName(node.key);
       const accessibility: Modifiers = node.accessibility || 'public';
       const convention = conventions[accessibility];
 
@@ -86,8 +95,7 @@ const rule: RuleModule = {
 
       context.report({
         node: node.key,
-        message:
-          '{{accessibility}} property {{name}} should match {{convention}}.',
+        messageId: 'incorrectName',
         data: { accessibility, name, convention }
       });
     }

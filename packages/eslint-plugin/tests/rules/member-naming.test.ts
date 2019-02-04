@@ -98,7 +98,12 @@ class Class {
       options: [{ public: '^_' }],
       errors: [
         {
-          message: 'public property fooBar should match /^_/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'public',
+            convention: '/^_/',
+            name: 'fooBar'
+          },
           line: 1,
           column: 15
         }
@@ -109,7 +114,12 @@ class Class {
       options: [{ public: '^_' }],
       errors: [
         {
-          message: 'public property fooBar should match /^_/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'public',
+            convention: '/^_/',
+            name: 'fooBar'
+          },
           line: 1,
           column: 22
         }
@@ -120,7 +130,12 @@ class Class {
       options: [{ protected: '^_' }],
       errors: [
         {
-          message: 'protected property fooBar should match /^_/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'protected',
+            convention: '/^_/',
+            name: 'fooBar'
+          },
           line: 1,
           column: 25
         }
@@ -131,7 +146,12 @@ class Class {
       options: [{ private: '^_' }],
       errors: [
         {
-          message: 'private property fooBar should match /^_/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'private',
+            convention: '/^_/',
+            name: 'fooBar'
+          },
           line: 1,
           column: 23
         }
@@ -155,22 +175,42 @@ class Class {
       ],
       errors: [
         {
-          message: 'public property one should match /^pub[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'public',
+            convention: '/^pub[A-Z]/',
+            name: 'one'
+          },
           line: 3,
           column: 5
         },
         {
-          message: 'public property two should match /^pub[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'public',
+            convention: '/^pub[A-Z]/',
+            name: 'two'
+          },
           line: 4,
           column: 12
         },
         {
-          message: 'protected property three should match /^prot[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'protected',
+            convention: '/^prot[A-Z]/',
+            name: 'three'
+          },
           line: 5,
           column: 15
         },
         {
-          message: 'private property four should match /^priv[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'private',
+            convention: '/^priv[A-Z]/',
+            name: 'four'
+          },
           line: 6,
           column: 13
         }
@@ -194,22 +234,42 @@ class Class {
       ],
       errors: [
         {
-          message: 'public property one should match /^pub[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'public',
+            convention: '/^pub[A-Z]/',
+            name: 'one'
+          },
           line: 3,
           column: 5
         },
         {
-          message: 'public property two should match /^pub[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'public',
+            convention: '/^pub[A-Z]/',
+            name: 'two'
+          },
           line: 4,
           column: 12
         },
         {
-          message: 'protected property three should match /^prot[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'protected',
+            convention: '/^prot[A-Z]/',
+            name: 'three'
+          },
           line: 5,
           column: 15
         },
         {
-          message: 'private property four should match /^priv[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'private',
+            convention: '/^priv[A-Z]/',
+            name: 'four'
+          },
           line: 6,
           column: 13
         }
@@ -233,22 +293,42 @@ class Class {
       ],
       errors: [
         {
-          message: 'public property one should match /^pub[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'public',
+            convention: '/^pub[A-Z]/',
+            name: 'one'
+          },
           line: 3,
           column: 5
         },
         {
-          message: 'public property two should match /^pub[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'public',
+            convention: '/^pub[A-Z]/',
+            name: 'two'
+          },
           line: 4,
           column: 12
         },
         {
-          message: 'protected property three should match /^prot[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'protected',
+            convention: '/^prot[A-Z]/',
+            name: 'three'
+          },
           line: 5,
           column: 15
         },
         {
-          message: 'private property four should match /^priv[A-Z]/.',
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'private',
+            convention: '/^priv[A-Z]/',
+            name: 'four'
+          },
           line: 6,
           column: 13
         }
