@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from './ast-node-types';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ast-node-types';
 
 export interface LineAndColumnData {
   /**
@@ -53,19 +53,7 @@ interface BaseNode {
  */
 
 export interface Token extends BaseNode {
-  type:
-    | 'Boolean'
-    | 'Identifier'
-    | 'JSXIdentifier'
-    | 'JSXMemberExpression'
-    | 'JSXText'
-    | 'Keyword'
-    | 'Null'
-    | 'Numeric'
-    | 'Punctuator'
-    | 'RegularExpression'
-    | 'String'
-    | 'Template';
+  type: AST_TOKEN_TYPES;
   value: string;
   regex?: {
     pattern: string;
@@ -168,12 +156,10 @@ export type Node =
   | TSCallSignatureDeclaration
   | TSClassImplements
   | TSConditionalType
-  | TSConstKeyword
   | TSConstructorType
   | TSConstructSignatureDeclaration
   | TSDeclareFunction
   | TSDeclareKeyword
-  | TSDefaultKeyword
   | TSEnumDeclaration
   | TSEnumMember
   | TSExportAssignment
@@ -330,9 +316,7 @@ export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
 export type Modifier =
   | TSAbstractKeyword
   | TSAsyncKeyword
-  | TSConstKeyword
   | TSDeclareKeyword
-  | TSDefaultKeyword
   | TSExportKeyword
   | TSPublicKeyword
   | TSPrivateKeyword
@@ -789,7 +773,8 @@ export interface JSXIdentifier extends BaseNode {
 
 export interface JSXMemberExpression extends BaseNode {
   type: AST_NODE_TYPES.JSXMemberExpression;
-  name: string;
+  object: JSXTagNameExpression;
+  property: JSXIdentifier;
 }
 
 export interface JSXOpeningElement extends BaseNode {
@@ -873,7 +858,7 @@ export interface ObjectPattern extends BaseNode {
 export interface Program extends BaseNode {
   type: AST_NODE_TYPES.Program;
   body: Statement[];
-  sourcetype: 'module' | 'script';
+  sourceType: 'module' | 'script';
   comments?: Comment[];
   tokens?: Token[];
 }
@@ -1021,10 +1006,6 @@ export interface TSConditionalType extends BaseNode {
   falseType: TypeNode;
 }
 
-export interface TSConstKeyword extends BaseNode {
-  type: AST_NODE_TYPES.TSConstKeyword;
-}
-
 export interface TSConstructorType extends FunctionSignatureBase {
   type: AST_NODE_TYPES.TSConstructorType;
 }
@@ -1039,10 +1020,6 @@ export interface TSDeclareFunction extends FunctionDeclarationBase {
 
 export interface TSDeclareKeyword extends BaseNode {
   type: AST_NODE_TYPES.TSDeclareKeyword;
-}
-
-export interface TSDefaultKeyword extends BaseNode {
-  type: AST_NODE_TYPES.TSDefaultKeyword;
 }
 
 export interface TSEnumDeclaration extends BaseNode {

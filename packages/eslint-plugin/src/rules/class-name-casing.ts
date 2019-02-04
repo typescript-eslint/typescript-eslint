@@ -6,7 +6,7 @@
 
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -95,11 +95,24 @@ const rule: RuleModule<MessageIds, Options> = {
       "VariableDeclarator[init.type='ClassExpression']"(
         node: TSESTree.VariableDeclarator
       ) {
-        const id = node.id as TSESTree.Identifier;
-        const nodeInit = node.init as TSESTree.ClassExpression;
+        if (
+          node.id.type === AST_NODE_TYPES.ArrayPattern ||
+          node.id.type === AST_NODE_TYPES.ObjectPattern
+        ) {
+          // TODO - handle the BindingPattern case maybe?
+          /*
+          // this example makes me barf, but it's valid code
+          var { bar } = class {
+            static bar() { return 2 }
+          }
+          */
+        } else {
+          const id = node.id;
+          const nodeInit = node.init as TSESTree.ClassExpression;
 
-        if (id && !nodeInit.id && !isPascalCase(id.name)) {
-          report(nodeInit, id);
+          if (id && !nodeInit.id && !isPascalCase(id.name)) {
+            report(nodeInit, id);
+          }
         }
       }
     };
