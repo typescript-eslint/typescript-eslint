@@ -26,13 +26,29 @@ This repo contains several packages which allow ESLint users to lint their TypeS
 
 - [`@typescript-eslint/eslint-plugin-tslint`](./packages/eslint-plugin-tslint) - An ESLint-specific plugin which runs an instance of TSLint within your ESLint setup to allow for users to more easily migrate from TSLint to ESLint.
 
+## Package Versions
+
+All of the packages are published with the same version number to make it easier to coordinate both releases and installations.
+
+Additionally, we also publish a canary release on every successful merge to master, so you never need to wait for a new stable version to make use of any updates.
+
+The `latest` (stable) version is:
+
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/latest.svg?style=flat-square" alt="NPM Version" /></a>
+
+The `canary` (latest master) version is:
+
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square" alt="NPM Version" /></a>
+
 ## Supported TypeScript Version
 
-We will always endeavor to support the latest stable version of TypeScript.
+We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
 
-The version of TypeScript currently supported by this parser is `~3.2.1`. This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.4.0`.**
 
-If you use a non-supported version of TypeScript, the parser will log a warning to the console.
+This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+
+If you use a non-supported version of TypeScript, the parser will log a warning to the console. If you want to disable this warning, you can configure this in your `parserOptions`. See: [`@typescript-eslint/parser`](./packages/parser/) and [`@typescript-eslint/typescript-estree`](./packages/typescript-estree/).
 
 **Please ensure that you are using a supported version before submitting any issues/bug reports.**
 

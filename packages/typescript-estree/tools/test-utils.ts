@@ -6,7 +6,7 @@
  * MIT License
  */
 import * as parser from '../src/parser';
-import { ParserOptions } from '../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../src/parser-options';
 
 /**
  * Returns a raw copy of the given AST

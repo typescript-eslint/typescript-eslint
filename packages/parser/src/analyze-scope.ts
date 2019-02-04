@@ -241,7 +241,7 @@ class Referencer extends OriginalReferencer {
   JSXOpeningElement(node: any) {
     this.visit(node.name);
     this.visitTypeParameters(node);
-    this.visit(node.attributes);
+    node.attributes.forEach(this.visit, this);
   }
 
   /**

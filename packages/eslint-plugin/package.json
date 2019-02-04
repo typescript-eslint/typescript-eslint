@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -24,8 +24,9 @@
     "recommended:update": "node tools/update-recommended.js"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "1.1.0",
-    "requireindex": "^1.2.0"
+    "@typescript-eslint/parser": "1.2.0",
+    "requireindex": "^1.2.0",
+    "tsutils": "^3.7.0"
   },
   "devDependencies": {
     "eslint": "^5.9.0",
@@ -33,6 +34,6 @@
   },
   "peerDependencies": {
     "eslint": "^5.0.0",
-    "typescript": "~3.2.1"
+    "typescript": "*"
   }
 }

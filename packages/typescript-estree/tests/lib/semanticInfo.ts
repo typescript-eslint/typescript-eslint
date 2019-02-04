@@ -11,12 +11,13 @@ import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
 import ts from 'typescript';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
   parseCodeAndGenerateServices
 } from '../../tools/test-utils';
+import { parseAndGenerateServices } from '../../src/parser';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -56,6 +57,23 @@ describe('semanticInfo', () => {
         createOptions(filename),
         /*generateServices*/ true
       )
+    );
+  });
+
+  it(`should handle "project": "./tsconfig.json" and "project": ["./tsconfig.json"] the same`, () => {
+    const filename = testFiles[0];
+    const code = readFileSync(filename, 'utf8');
+    const options = createOptions(filename);
+    const optionsProjectString = {
+      ...options,
+      project: './tsconfig.json'
+    };
+    const optionsProjectArray = {
+      ...options,
+      project: ['./tsconfig.json']
+    };
+    expect(parseAndGenerateServices(code, optionsProjectString)).toEqual(
+      parseAndGenerateServices(code, optionsProjectArray)
     );
   });
 
@@ -161,7 +179,7 @@ describe('semanticInfo', () => {
     badConfig.project = './tsconfigs.json';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+tsconfigs\.json' not found/);
+    ).toThrow(/File .+tsconfigs\.json' not found/);
   });
 
   it('fail to read project file', () => {
@@ -170,7 +188,7 @@ describe('semanticInfo', () => {
     badConfig.project = '.';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+semanticInfo' not found/);
+    ).toThrow(/File .+semanticInfo' not found/);
   });
 
   it('malformed project file', () => {
