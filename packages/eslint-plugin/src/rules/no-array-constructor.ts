@@ -6,12 +6,15 @@
 
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
+export type Options = [];
+export type MessageIds = 'useLiteral';
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -21,17 +24,20 @@ const rule: RuleModule = {
       recommended: 'error'
     },
     fixable: 'code',
+    messages: {
+      useLiteral: 'The array literal notation [] is preferrable.'
+    },
     schema: []
   },
 
   create(context) {
     /**
      * Disallow construction of dense arrays using the Array constructor
-     * @param {ASTNode} node node to evaluate
-     * @returns {void}
-     * @private
+     * @param node node to evaluate
      */
-    function check(node) {
+    function check(
+      node: TSESTree.CallExpression | TSESTree.NewExpression
+    ): void {
       if (
         node.arguments.length !== 1 &&
         node.callee.type === 'Identifier' &&
@@ -40,7 +46,7 @@ const rule: RuleModule = {
       ) {
         context.report({
           node,
-          message: 'The array literal notation [] is preferrable.',
+          messageId: 'useLiteral',
           fix(fixer) {
             if (node.arguments.length === 0) {
               return fixer.replaceText(node, '[]');

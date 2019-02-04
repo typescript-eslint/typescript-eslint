@@ -19,7 +19,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
 });
 
-const message = 'The array literal notation [] is preferrable.';
+const messageId = 'useLiteral' as 'useLiteral';
 
 ruleTester.run('no-array-constructor', rule, {
   valid: [
@@ -43,37 +43,37 @@ ruleTester.run('no-array-constructor', rule, {
     {
       code: 'new Array()',
       output: '[]',
-      errors: [{ message, type: 'NewExpression' }]
+      errors: [{ messageId }]
     },
     {
       code: 'Array()',
       output: '[]',
-      errors: [{ message, type: 'CallExpression' }]
+      errors: [{ messageId }]
     },
     {
       code: 'new Array',
       output: '[]',
-      errors: [{ message, type: 'NewExpression' }]
+      errors: [{ messageId }]
     },
     {
       code: 'new Array(x, y)',
       output: '[x, y]',
-      errors: [{ message, type: 'NewExpression' }]
+      errors: [{ messageId }]
     },
     {
       code: 'Array(x, y)',
       output: '[x, y]',
-      errors: [{ message, type: 'CallExpression' }]
+      errors: [{ messageId }]
     },
     {
       code: 'new Array(0, 1, 2)',
       output: '[0, 1, 2]',
-      errors: [{ message, type: 'NewExpression' }]
+      errors: [{ messageId }]
     },
     {
       code: 'Array(0, 1, 2)',
       output: '[0, 1, 2]',
-      errors: [{ message, type: 'CallExpression' }]
+      errors: [{ messageId }]
     },
     {
       code: `new Array(
@@ -86,7 +86,7 @@ ruleTester.run('no-array-constructor', rule, {
                 1,
                 2
             ]`,
-      errors: [{ message, type: 'NewExpression' }]
+      errors: [{ messageId }]
     }
   ]
 });
