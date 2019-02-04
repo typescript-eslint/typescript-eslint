@@ -9,7 +9,6 @@ import ts from 'typescript';
 import * as es from './typedefs';
 import {
   canContainDirective,
-  convertToken,
   createError,
   findNextToken,
   fixExports,
@@ -25,7 +24,6 @@ import {
   isComma,
   isComputedProperty,
   isESTreeClassMember,
-  isJSXToken,
   isOptional,
   unescapeStringLiteralText
 } from './node-utils';
@@ -369,50 +367,47 @@ export class Converter {
 
   /**
    * Converts a TypeScript JSX node.tagName into an ESTree node.name
-   * @param tagName the tagName object from a JSX ts.Node
+   * @param node the tagName object from a JSX ts.Node
    * @param parent
    * @returns the converted ESTree name object
    */
-  private convertTypeScriptJSXTagNameToESTreeName(
-    tagName: ts.JsxTagNameExpression,
+  private convertJSXTagName(
+    node: ts.JsxTagNameExpression,
     parent: ts.Node
   ): es.JSXMemberExpression | es.JSXIdentifier {
-    // TODO: remove convertToken call
-    const tagNameToken = convertToken(tagName, this.ast);
-
-    if (tagName.kind === SyntaxKind.PropertyAccessExpression) {
-      const isNestedMemberExpression =
-        tagName.expression.kind === SyntaxKind.PropertyAccessExpression;
-
-      // Convert TSNode left and right objects into ESTreeNode object
-      // and property objects
-      const object = this.convertChild(tagName.expression, parent);
-      const property = this.convertChild(tagName.name, parent);
-
-      // Assign the appropriate types
-      object.type = isNestedMemberExpression
-        ? AST_NODE_TYPES.JSXMemberExpression
-        : AST_NODE_TYPES.JSXIdentifier;
-      property.type = AST_NODE_TYPES.JSXIdentifier;
-      if ((tagName as any).expression.kind === SyntaxKind.ThisKeyword) {
-        object.name = 'this';
-      }
-
-      return this.createNode<es.JSXMemberExpression>(tagName, {
-        type: AST_NODE_TYPES.JSXMemberExpression,
-        range: tagNameToken.range,
-        loc: tagNameToken.loc,
-        object: object,
-        property: property
-      });
-    } else {
-      return this.createNode<es.JSXIdentifier>(tagName, {
-        type: AST_NODE_TYPES.JSXIdentifier,
-        range: tagNameToken.range,
-        loc: tagNameToken.loc,
-        name: tagNameToken.value
-      });
+    let result: es.JSXMemberExpression | es.JSXIdentifier;
+    switch (node.kind) {
+      case SyntaxKind.PropertyAccessExpression:
+        result = this.createNode<es.JSXMemberExpression>(node, {
+          type: AST_NODE_TYPES.JSXMemberExpression,
+          object: this.convertJSXTagName(node.expression, parent),
+          property: this.convertJSXTagName(
+            node.name,
+            parent
+          ) as es.JSXIdentifier
+        });
+        break;
+      case SyntaxKind.ThisKeyword:
+        result = this.createNode<es.JSXIdentifier>(node, {
+          type: AST_NODE_TYPES.JSXIdentifier,
+          name: 'this'
+        });
+        break;
+      case SyntaxKind.Identifier:
+      default:
+        result = this.createNode<es.JSXIdentifier>(node, {
+          type: AST_NODE_TYPES.JSXIdentifier,
+          name: node.text
+        });
+        break;
     }
+
+    if (result && this.options.shouldProvideParserServices) {
+      this.tsNodeToESTreeNodeMap.set(node, result);
+      this.esTreeNodeToTSNodeMap.set(result, node);
+    }
+
+    return result;
   }
 
   /**
@@ -1617,36 +1612,12 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAccessExpression:
-        if (isJSXToken(parent)) {
-          const jsxMemberExpression = this.createNode<es.MemberExpression>(
-            node,
-            {
-              type: AST_NODE_TYPES.MemberExpression,
-              object: this.convertChild(node.expression),
-              property: this.convertChild(node.name)
-            }
-          );
-          // TODO: refactor this
-          const isNestedMemberExpression =
-            node.expression.kind === SyntaxKind.PropertyAccessExpression;
-          if (node.expression.kind === SyntaxKind.ThisKeyword) {
-            (jsxMemberExpression.object as any).name = 'this';
-          }
-
-          (jsxMemberExpression.object as any).type = isNestedMemberExpression
-            ? AST_NODE_TYPES.MemberExpression
-            : AST_NODE_TYPES.JSXIdentifier;
-          (jsxMemberExpression as any).property.type =
-            AST_NODE_TYPES.JSXIdentifier;
-          return jsxMemberExpression;
-        } else {
-          return this.createNode<es.MemberExpression>(node, {
-            type: AST_NODE_TYPES.MemberExpression,
-            object: this.convertChild(node.expression),
-            property: this.convertChild(node.name),
-            computed: false
-          });
-        }
+        return this.createNode<es.MemberExpression>(node, {
+          type: AST_NODE_TYPES.MemberExpression,
+          object: this.convertChild(node.expression),
+          property: this.convertChild(node.name),
+          computed: false
+        });
 
       case SyntaxKind.ElementAccessExpression:
         return this.createNode<es.MemberExpression>(node, {
@@ -1844,10 +1815,7 @@ export class Converter {
               ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
               : undefined,
             selfClosing: true,
-            name: this.convertTypeScriptJSXTagNameToESTreeName(
-              node.tagName,
-              node
-            ),
+            name: this.convertJSXTagName(node.tagName, node),
             attributes: node.attributes.properties.map(el =>
               this.convertChild(el)
             ),
@@ -1865,10 +1833,7 @@ export class Converter {
             ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
             : undefined,
           selfClosing: false,
-          name: this.convertTypeScriptJSXTagNameToESTreeName(
-            node.tagName,
-            node
-          ),
+          name: this.convertJSXTagName(node.tagName, node),
           attributes: node.attributes.properties.map(el =>
             this.convertChild(el)
           )
@@ -1877,7 +1842,7 @@ export class Converter {
       case SyntaxKind.JsxClosingElement:
         return this.createNode<es.JSXClosingElement>(node, {
           type: AST_NODE_TYPES.JSXClosingElement,
-          name: this.convertTypeScriptJSXTagNameToESTreeName(node.tagName, node)
+          name: this.convertJSXTagName(node.tagName, node)
         });
 
       case SyntaxKind.JsxOpeningFragment:

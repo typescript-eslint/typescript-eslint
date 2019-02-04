@@ -70,6 +70,18 @@ export function parseForESLint(
     }
   }
 
+  /**
+   * Allow the user to suppress the warning from typescript-estree if they are using an unsupported
+   * version of TypeScript
+   */
+  const warnOnUnsupportedTypeScriptVersion = validateBoolean(
+    options.warnOnUnsupportedTypeScriptVersion,
+    true
+  );
+  if (!warnOnUnsupportedTypeScriptVersion) {
+    parserOptions.loggerFn = false;
+  }
+
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
 
