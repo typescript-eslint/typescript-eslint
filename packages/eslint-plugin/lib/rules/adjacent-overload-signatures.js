@@ -84,27 +84,29 @@ module.exports = {
 
       if (members) {
         let name;
+        let nameWithStatic;
         let index;
         let lastName;
         const seen = [];
 
         members.forEach(member => {
           name = getMemberName(member);
+          nameWithStatic = (member.static ? 'static ' : '') + name;
 
-          index = seen.indexOf(name);
-          if (index > -1 && lastName !== name) {
+          index = seen.indexOf(nameWithStatic);
+          if (index > -1 && lastName !== nameWithStatic) {
             context.report({
               node: member,
               messageId: 'adjacentSignature',
               data: {
-                name
+                name: nameWithStatic
               }
             });
           } else if (name && index === -1) {
-            seen.push(name);
+            seen.push(nameWithStatic);
           }
 
-          lastName = name;
+          lastName = nameWithStatic;
         });
       }
     }
