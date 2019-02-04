@@ -10,8 +10,8 @@ declare module 'eslint-scope/lib/options' {
   }
 
   export abstract class Visitor {
-    visitChildren<T extends es.BaseNode>(node?: T): void;
-    visit<T extends es.BaseNode>(node?: T): void;
+    visitChildren<T extends es.BaseNode | undefined | null>(node?: T): void;
+    visit<T extends es.BaseNode | undefined | null>(node?: T): void;
   }
 }
 

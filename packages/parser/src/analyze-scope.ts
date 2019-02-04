@@ -194,12 +194,10 @@ class Referencer extends OriginalReferencer {
     this.visit(returnType);
 
     // Process the body.
-    if (body) {
-      if (body.type === 'BlockStatement') {
-        this.visitChildren(body);
-      } else {
-        this.visit(body);
-      }
+    if (body && body.type === 'BlockStatement') {
+      this.visitChildren(body);
+    } else {
+      this.visit(body);
     }
 
     // Close the function scope.
