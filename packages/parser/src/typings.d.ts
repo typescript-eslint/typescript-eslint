@@ -2,6 +2,7 @@
 // Project: http://github.com/eslint/eslint-scope
 // Definitions by: Armano <https://github.com/armano2>
 declare module 'eslint-scope/lib/options' {
+  import { es } from '@typescript-eslint/typescript-estree';
   export type PatternVisitorCallback = (pattern: any, info: any) => void;
 
   export interface PatternVisitorOptions {
@@ -9,76 +10,73 @@ declare module 'eslint-scope/lib/options' {
   }
 
   export abstract class Visitor {
-    visitChildren(node: Node): void;
-    visit(node: Node): void;
+    visitChildren<T extends es.BaseNode>(node?: T): void;
+    visit<T extends es.BaseNode>(node?: T): void;
   }
 }
 
 declare module 'eslint-scope/lib/variable' {
-  import * as eslint from 'eslint';
-  import { Identifier } from 'estree';
+  import { es } from '@typescript-eslint/typescript-estree';
   import Reference from 'eslint-scope/lib/reference';
+  import { Definition } from 'eslint-scope/lib/definition';
 
-  class Variable implements eslint.Scope.Variable {
+  export default class Variable {
     name: string;
-    identifiers: Identifier[];
+    identifiers: es.Identifier[];
     references: Reference[];
-    defs: eslint.Scope.Definition[];
+    defs: Definition[];
   }
-  export default Variable;
 }
 
 declare module 'eslint-scope/lib/definition' {
-  import { Identifier, Node } from 'estree';
+  import { es } from '@typescript-eslint/typescript-estree';
 
-  class Definition {
+  export class Definition {
     type: string;
-    name: Identifier;
-    node: Node;
-    parent?: Node | null;
+    name: es.BindingName;
+    node: es.Node;
+    parent?: es.Node | null;
     index?: number | null;
     kind?: string | null;
 
     constructor(
       type: string,
-      name: Identifier,
-      node: Node,
-      parent?: Node | null,
+      name: es.BindingName | es.PropertyName,
+      node: es.Node,
+      parent?: es.Node | null,
       index?: number | null,
       kind?: string | null
     );
   }
 
-  class ParameterDefinition extends Definition {
+  export class ParameterDefinition extends Definition {
     rest?: boolean;
 
     constructor(
-      name: Identifier,
-      node: Node,
+      name: es.BindingName | es.PropertyName,
+      node: es.Node,
       index?: number | null,
       rest?: boolean
     );
   }
-
-  export { ParameterDefinition, Definition };
 }
 
 declare module 'eslint-scope/lib/pattern-visitor' {
   import ScopeManager from 'eslint-scope/lib/scope-manager';
-  import { Node } from 'estree';
+  import { es } from '@typescript-eslint/typescript-estree';
   import {
     PatternVisitorCallback,
     PatternVisitorOptions,
     Visitor
   } from 'eslint-scope/lib/options';
 
-  class PatternVisitor extends Visitor {
+  export default class PatternVisitor extends Visitor {
     protected options: any;
     protected scopeManager: ScopeManager;
-    protected parent?: Node;
-    public rightHandNodes: Node[];
+    protected parent?: es.Node;
+    public rightHandNodes: es.Node[];
 
-    static isPattern(node: Node): boolean;
+    static isPattern(node: es.Node): boolean;
 
     constructor(
       options: PatternVisitorOptions,
@@ -86,41 +84,39 @@ declare module 'eslint-scope/lib/pattern-visitor' {
       callback: PatternVisitorCallback
     );
 
-    Identifier(pattern: Node): void;
-    Property(property: Node): void;
-    ArrayPattern(pattern: Node): void;
-    AssignmentPattern(pattern: Node): void;
-    RestElement(pattern: Node): void;
-    MemberExpression(node: Node): void;
-    SpreadElement(node: Node): void;
-    ArrayExpression(node: Node): void;
-    AssignmentExpression(node: Node): void;
-    CallExpression(node: Node): void;
+    Identifier(pattern: es.Node): void;
+    Property(property: es.Node): void;
+    ArrayPattern(pattern: es.Node): void;
+    AssignmentPattern(pattern: es.Node): void;
+    RestElement(pattern: es.Node): void;
+    MemberExpression(node: es.Node): void;
+    SpreadElement(node: es.Node): void;
+    ArrayExpression(node: es.Node): void;
+    AssignmentExpression(node: es.Node): void;
+    CallExpression(node: es.Node): void;
   }
-
-  export default PatternVisitor;
 }
 
 declare module 'eslint-scope/lib/referencer' {
   import { Scope } from 'eslint-scope/lib/scope';
   import ScopeManager from 'eslint-scope/lib/scope-manager';
-  import { Node } from 'estree';
+  import { es } from '@typescript-eslint/typescript-estree';
   import {
     PatternVisitorCallback,
     PatternVisitorOptions,
     Visitor
   } from 'eslint-scope/lib/options';
 
-  class Referencer extends Visitor {
+  export default class Referencer extends Visitor {
     protected isInnerMethodDefinition: boolean;
     protected options: any;
     protected scopeManager: ScopeManager;
-    protected parent?: Node;
+    protected parent?: es.Node;
 
     constructor(options: any, scopeManager: ScopeManager);
 
     currentScope(): Scope;
-    close(node: Node): void;
+    close(node: es.Node): void;
     pushInnerMethodDefinition(isInnerMethodDefinition: boolean): boolean;
     popInnerMethodDefinition(isInnerMethodDefinition: boolean): void;
 
@@ -131,66 +127,63 @@ declare module 'eslint-scope/lib/referencer' {
       init: boolean
     ): void;
     visitPattern(
-      node: Node,
+      node: es.Node,
       options: PatternVisitorOptions,
       callback: PatternVisitorCallback
     ): void;
-    visitFunction(node: Node): void;
-    visitClass(node: Node): void;
-    visitProperty(node: Node): void;
-    visitForIn(node: Node): void;
+    visitFunction(node: es.Node): void;
+    visitClass(node: es.Node): void;
+    visitProperty(node: es.Node): void;
+    visitForIn(node: es.Node): void;
     visitVariableDeclaration(
       variableTargetScope: any,
       type: any,
-      node: Node,
+      node: es.Node,
       index: any
     ): void;
 
-    AssignmentExpression(node: Node): void;
-    CatchClause(node: Node): void;
-    Program(node: Node): void;
-    Identifier(node: Node): void;
-    UpdateExpression(node: Node): void;
-    MemberExpression(node: Node): void;
-    Property(node: Node): void;
-    MethodDefinition(node: Node): void;
+    AssignmentExpression(node: es.Node): void;
+    CatchClause(node: es.Node): void;
+    Program(node: es.Node): void;
+    Identifier(node: es.Node): void;
+    UpdateExpression(node: es.Node): void;
+    MemberExpression(node: es.Node): void;
+    Property(node: es.Node): void;
+    MethodDefinition(node: es.Node): void;
     BreakStatement(): void;
     ContinueStatement(): void;
-    LabeledStatement(node: Node): void;
-    ForStatement(node: Node): void;
-    ClassExpression(node: Node): void;
-    ClassDeclaration(node: Node): void;
-    CallExpression(node: Node): void;
-    BlockStatement(node: Node): void;
+    LabeledStatement(node: es.Node): void;
+    ForStatement(node: es.Node): void;
+    ClassExpression(node: es.Node): void;
+    ClassDeclaration(node: es.Node): void;
+    CallExpression(node: es.Node): void;
+    BlockStatement(node: es.Node): void;
     ThisExpression(): void;
-    WithStatement(node: Node): void;
-    VariableDeclaration(node: Node): void;
-    SwitchStatement(node: Node): void;
-    FunctionDeclaration(node: Node): void;
-    FunctionExpression(node: Node): void;
-    ForOfStatement(node: Node): void;
-    ForInStatement(node: Node): void;
-    ArrowFunctionExpression(node: Node): void;
-    ImportDeclaration(node: Node): void;
-    visitExportDeclaration(node: Node): void;
-    ExportDeclaration(node: Node): void;
-    ExportNamedDeclaration(node: Node): void;
-    ExportSpecifier(node: Node): void;
+    WithStatement(node: es.Node): void;
+    VariableDeclaration(node: es.Node): void;
+    SwitchStatement(node: es.Node): void;
+    FunctionDeclaration(node: es.Node): void;
+    FunctionExpression(node: es.Node): void;
+    ForOfStatement(node: es.Node): void;
+    ForInStatement(node: es.Node): void;
+    ArrowFunctionExpression(node: es.Node): void;
+    ImportDeclaration(node: es.Node): void;
+    visitExportDeclaration(node: es.Node): void;
+    ExportDeclaration(node: es.Node): void;
+    ExportNamedDeclaration(node: es.Node): void;
+    ExportSpecifier(node: es.Node): void;
     MetaProperty(): void;
   }
-
-  export default Referencer;
 }
 
 declare module 'eslint-scope/lib/scope' {
-  import * as eslint from 'eslint';
-  import { Node } from 'estree';
+  import { es } from '@typescript-eslint/typescript-estree';
   import Reference from 'eslint-scope/lib/reference';
   import Variable from 'eslint-scope/lib/variable';
   import ScopeManager from 'eslint-scope/lib/scope-manager';
   import { Definition } from 'eslint-scope/lib/definition';
 
-  type ScopeType =
+  export type ScopeType =
     | 'block'
     | 'catch'
     | 'class'
@@ -203,13 +196,13 @@ declare module 'eslint-scope/lib/scope' {
     | 'with'
     | 'TDZ';
 
-  class Scope implements eslint.Scope.Scope {
+  export class Scope {
     type: ScopeType;
     isStrict: boolean;
     upper: Scope | null;
     childScopes: Scope[];
     variableScope: Scope;
-    block: Node;
+    block: es.Node;
     variables: Variable[];
     set: Map<string, Variable>;
     references: Reference[];
@@ -221,7 +214,7 @@ declare module 'eslint-scope/lib/scope' {
       scopeManager: ScopeManager,
       type: ScopeType,
       upperScope: Scope | null,
-      block: Node | null,
+      block: es.Node | null,
       isMethodDefinition: boolean
     );
 
@@ -234,7 +227,7 @@ declare module 'eslint-scope/lib/scope' {
     __isValidResolution(ref: any, variable: any): boolean;
     __resolve(ref: any): boolean;
     __delegateToUpperScope(ref: any): void;
-    __addDeclaredVariablesOfNode(variable: any, node: Node): void;
+    __addDeclaredVariablesOfNode(variable: any, node: es.Node): void;
     __defineGeneric(
       name: any,
       set: any,
@@ -243,12 +236,12 @@ declare module 'eslint-scope/lib/scope' {
       def: Definition
     ): void;
 
-    __define(node: Node, def: Definition): void;
+    __define(node: es.Node, def: Definition): void;
 
     __referencing(
-      node: Node,
+      node: es.Node,
       assign: number,
-      writeExpr: Node,
+      writeExpr: es.Node,
       maybeImplicitGlobal: any,
       partial: any,
       init: any
@@ -263,7 +256,7 @@ declare module 'eslint-scope/lib/scope' {
      * @param {Espree.Identifier} ident - identifier to be resolved.
      * @returns {Reference} reference
      */
-    resolve(ident: Node): Reference;
+    resolve(ident: es.Node): Reference;
 
     /**
      * returns this scope is static
@@ -289,109 +282,94 @@ declare module 'eslint-scope/lib/scope' {
     isUsedName(name: any): boolean;
   }
 
-  class GlobalScope extends Scope {
-    constructor(scopeManager: ScopeManager, block: Node | null);
+  export class GlobalScope extends Scope {
+    constructor(scopeManager: ScopeManager, block: es.Node | null);
   }
 
-  class ModuleScope extends Scope {
+  export class ModuleScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: Node | null
+      block: es.Node | null
     );
   }
 
-  class FunctionExpressionNameScope extends Scope {
+  export class FunctionExpressionNameScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: Node | null
+      block: es.Node | null
     );
   }
 
-  class CatchScope extends Scope {
+  export class CatchScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: Node | null
+      block: es.Node | null
     );
   }
 
-  class WithScope extends Scope {
+  export class WithScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: Node | null
+      block: es.Node | null
     );
   }
 
-  class BlockScope extends Scope {
+  export class BlockScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: Node | null
+      block: es.Node | null
     );
   }
 
-  class SwitchScope extends Scope {
+  export class SwitchScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: Node | null
+      block: es.Node | null
     );
   }
 
-  class FunctionScope extends Scope {
+  export class FunctionScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: Node | null,
+      block: es.Node | null,
       isMethodDefinition: boolean
     );
   }
 
-  class ForScope extends Scope {
+  export class ForScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: Node | null
+      block: es.Node | null
     );
   }
 
-  class ClassScope extends Scope {
+  export class ClassScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: Node | null
+      block: es.Node | null
     );
   }
-
-  export {
-    Scope,
-    GlobalScope,
-    ModuleScope,
-    FunctionExpressionNameScope,
-    CatchScope,
-    WithScope,
-    BlockScope,
-    SwitchScope,
-    FunctionScope,
-    ForScope,
-    ClassScope
-  };
 }
 
 declare module 'eslint-scope/lib/reference' {
-  import * as eslint from 'eslint';
-  import { Identifier, Node } from 'estree';
+  import { es } from '@typescript-eslint/typescript-estree';
   import { Scope } from 'eslint-scope/lib/scope';
   import Variable from 'eslint-scope/lib/variable';
 
-  class Reference implements eslint.Scope.Reference {
-    identifier: Identifier;
+  export default class Reference {
+    identifier: es.Identifier;
     from: Scope;
     resolved: Variable | null;
-    writeExpr: Node | null;
+    writeExpr: es.Node | null;
     init: boolean;
 
     isWrite(): boolean;
@@ -404,15 +382,14 @@ declare module 'eslint-scope/lib/reference' {
     static WRITE: 0x2;
     static RW: 0x3;
   }
-  export default Reference;
 }
 
 declare module 'eslint-scope/lib/scope-manager' {
-  import * as eslint from 'eslint';
+  import { es } from '@typescript-eslint/typescript-estree';
   import { Scope } from 'eslint-scope/lib/scope';
   import Variable from 'eslint-scope/lib/variable';
 
-  interface ScopeManagerOptions {
+  export interface ScopeManagerOptions {
     directive?: boolean;
     optimistic?: boolean;
     ignoreEval?: boolean;
@@ -422,7 +399,7 @@ declare module 'eslint-scope/lib/scope-manager' {
     ecmaVersion?: number;
   }
 
-  class ScopeManager implements eslint.Scope.ScopeManager {
+  export default class ScopeManager {
     __options: ScopeManagerOptions;
     __currentScope: Scope;
     scopes: Scope[];
@@ -439,29 +416,28 @@ declare module 'eslint-scope/lib/scope-manager' {
     isStrictModeSupported(): boolean;
 
     // Returns appropriate scope for this node.
-    __get(node: Node): Scope;
-    getDeclaredVariables(node: {}): Variable[];
-    acquire(node: {}, inner?: boolean): Scope | null;
-    acquireAll(node: Node): Scope | null;
-    release(node: Node, inner?: boolean): Scope | null;
+    __get(node: es.Node): Scope;
+    getDeclaredVariables(node: es.Node): Variable[];
+    acquire(node: es.Node, inner?: boolean): Scope | null;
+    acquireAll(node: es.Node): Scope | null;
+    release(node: es.Node, inner?: boolean): Scope | null;
     attach(): void;
     detach(): void;
 
     __nestScope(scope: Scope): Scope;
-    __nestGlobalScope(node: Node): Scope;
-    __nestBlockScope(node: Node): Scope;
-    __nestFunctionScope(node: Node, isMethodDefinition: boolean): Scope;
-    __nestForScope(node: Node): Scope;
-    __nestCatchScope(node: Node): Scope;
-    __nestWithScope(node: Node): Scope;
-    __nestClassScope(node: Node): Scope;
-    __nestSwitchScope(node: Node): Scope;
-    __nestModuleScope(node: Node): Scope;
-    __nestFunctionExpressionNameScope(node: Node): Scope;
+    __nestGlobalScope(node: es.Node): Scope;
+    __nestBlockScope(node: es.Node): Scope;
+    __nestFunctionScope(node: es.Node, isMethodDefinition: boolean): Scope;
+    __nestForScope(node: es.Node): Scope;
+    __nestCatchScope(node: es.Node): Scope;
+    __nestWithScope(node: es.Node): Scope;
+    __nestClassScope(node: es.Node): Scope;
+    __nestSwitchScope(node: es.Node): Scope;
+    __nestModuleScope(node: es.Node): Scope;
+    __nestFunctionExpressionNameScope(node: es.Node): Scope;
 
     __isES6(): boolean;
   }
-  export default ScopeManager;
 }
 
 declare module 'eslint-scope' {

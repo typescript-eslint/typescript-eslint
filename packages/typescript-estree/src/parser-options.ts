@@ -1,4 +1,6 @@
-import { Token, Comment } from './typedefs';
+import { Program } from 'typescript';
+import { Token, Comment, Node } from './typedefs';
+import { TSNode } from "./ts-nodes";
 
 export interface Extra {
   errorOnUnknownASTType: boolean;
@@ -32,4 +34,10 @@ export interface ParserOptions {
   filePath?: string;
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
+}
+
+export interface ParserServices {
+  program?: Program;
+  esTreeNodeToTSNodeMap?: WeakMap<Node, TSNode>;
+  tsNodeToESTreeNodeMap?: WeakMap<TSNode, Node>;
 }

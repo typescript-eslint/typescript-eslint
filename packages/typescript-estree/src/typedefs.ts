@@ -715,6 +715,7 @@ export interface Identifier extends BaseNode {
   name: string;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface IfStatement extends BaseNode {
@@ -1175,7 +1176,7 @@ export interface TSModuleBlock extends BaseNode {
 export interface TSModuleDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSModuleDeclaration;
   id: Identifier | Literal;
-  body?: TSModuleBlock | Identifier;
+  body?: TSModuleBlock | TSModuleDeclaration;
   global?: boolean;
   declare?: boolean;
   modifiers?: Modifier[];

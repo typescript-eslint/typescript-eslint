@@ -15,7 +15,7 @@ import convert from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
 import * as es from './typedefs';
-import { Extra, ParserOptions } from './parser-options';
+import { Extra, ParserOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 
 const packageJSON = require('../package.json');
@@ -276,11 +276,7 @@ type AST<T extends ParserOptions> = es.Program &
 
 interface ParseAndGenerateServicesResult<T extends ParserOptions> {
   ast: AST<T>;
-  services: {
-    program: ts.Program | undefined;
-    esTreeNodeToTSNodeMap: WeakMap<object, any> | undefined;
-    tsNodeToESTreeNodeMap: WeakMap<object, any> | undefined;
-  };
+  services: ParserServices;
 }
 
 //------------------------------------------------------------------------------
@@ -417,3 +413,5 @@ export function parseAndGenerateServices<
 
 export { AST_NODE_TYPES } from './ast-node-types';
 export { ParserOptions };
+export { ParserServices };
+export { es };

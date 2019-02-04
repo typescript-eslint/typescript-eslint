@@ -2,20 +2,14 @@ import traverser from 'eslint/lib/util/traverser';
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
-  ParserOptions as ParserOptionsTsESTree
+  ParserOptions as ParserOptionsTsESTree,
+  ParserServices
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
-import { Program } from 'typescript';
 
 const packageJSON = require('../package.json');
-
-interface ParserServices {
-  program: Program | undefined;
-  esTreeNodeToTSNodeMap: WeakMap<object, any> | undefined;
-  tsNodeToESTreeNodeMap: WeakMap<object, any> | undefined;
-}
 
 interface ParseForESLintResult {
   ast: any;
