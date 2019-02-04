@@ -11,15 +11,21 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule = {
+type Options = [];
+type MessageIds = 'unexpectedAny';
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow usage of the `any` type',
       extraDescription: [util.tslintRule('no-any')],
-      category: 'TypeScript',
+      category: 'Best Practices',
       url: util.metaDocsUrl('no-explicit-any'),
       recommended: 'warn'
+    },
+    messages: {
+      unexpectedAny: 'Unexpected any. Specify a different type.'
     },
     schema: []
   },
@@ -29,7 +35,7 @@ const rule: RuleModule = {
       TSAnyKeyword(node) {
         context.report({
           node,
-          message: 'Unexpected any. Specify a different type.'
+          messageId: 'unexpectedAny'
         });
       }
     };

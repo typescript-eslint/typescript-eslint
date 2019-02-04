@@ -148,7 +148,7 @@ type obj = {
       code: 'const number: any = 1',
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 15
         }
@@ -158,7 +158,7 @@ type obj = {
       code: 'function generic(): any {}',
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 21
         }
@@ -168,7 +168,7 @@ type obj = {
       code: 'function generic(): Array<any> {}',
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 27
         }
@@ -178,7 +178,7 @@ type obj = {
       code: 'function generic(): any[] {}',
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 21
         }
@@ -188,7 +188,7 @@ type obj = {
       code: 'function generic(param: Array<any>): number {}',
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 31
         }
@@ -198,7 +198,7 @@ type obj = {
       code: 'function generic(param: any[]): number {}',
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 25
         }
@@ -208,12 +208,12 @@ type obj = {
       code: 'function generic(param: Array<any>): Array<any> {}',
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 31
         },
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 44
         }
@@ -223,7 +223,7 @@ type obj = {
       code: 'function generic(): Array<Array<any>> {}',
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 33
         }
@@ -233,7 +233,7 @@ type obj = {
       code: 'function generic(): Array<any[]> {}',
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 27
         }
@@ -247,7 +247,7 @@ class Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 30
         }
@@ -261,7 +261,7 @@ class Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 14
         }
@@ -275,7 +275,7 @@ class Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 20
         }
@@ -289,7 +289,7 @@ class Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 14
         }
@@ -303,7 +303,7 @@ class Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 26
         }
@@ -317,7 +317,7 @@ class Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 20
         }
@@ -331,7 +331,7 @@ interface Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 14
         }
@@ -345,7 +345,7 @@ interface Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 20
         }
@@ -359,7 +359,7 @@ interface Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 14
         }
@@ -373,7 +373,7 @@ interface Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 26
         }
@@ -387,7 +387,7 @@ interface Greeter {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 20
         }
@@ -401,7 +401,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 14
         }
@@ -415,7 +415,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 20
         }
@@ -429,7 +429,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 14
         }
@@ -443,7 +443,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 26
         }
@@ -457,7 +457,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 20
         }
@@ -471,7 +471,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 23
         }
@@ -485,7 +485,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 29
         }
@@ -499,7 +499,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 23
         }
@@ -513,7 +513,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 35
         }
@@ -527,7 +527,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 29
         }
@@ -541,7 +541,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 23
         }
@@ -555,7 +555,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 29
         }
@@ -569,7 +569,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 23
         }
@@ -583,7 +583,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 35
         }
@@ -597,7 +597,7 @@ type obj = {
             `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 29
         }
@@ -607,12 +607,12 @@ type obj = {
       code: `class Foo<t = any> extends Bar<any> {}`,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 15
         },
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 32
         }
@@ -622,12 +622,12 @@ type obj = {
       code: `abstract class Foo<t = any> extends Bar<any> {}`,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 24
         },
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 41
         }
@@ -637,17 +637,17 @@ type obj = {
       code: `abstract class Foo<t = any> implements Bar<any>, Baz<any> {}`,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 24
         },
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 44
         },
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 54
         }
@@ -657,7 +657,7 @@ type obj = {
       code: `new Foo<any>()`,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 9
         }
@@ -667,7 +667,7 @@ type obj = {
       code: `Foo<any>()`,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 1,
           column: 5
         }
@@ -681,12 +681,12 @@ type obj = {
       `,
       errors: [
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 2,
           column: 41
         },
         {
-          message: 'Unexpected any. Specify a different type.',
+          messageId: 'unexpectedAny',
           line: 3,
           column: 41
         }
