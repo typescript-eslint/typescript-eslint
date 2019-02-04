@@ -72,14 +72,18 @@ const bar = <Foo>new Generic<int>();
             `,
       errors: [
         {
-          message:
-            "Prefer 'as Foo' instead of '<Foo>' when doing type assertions.",
+          messageId: 'preferAs',
+          data: {
+            cast: 'Foo'
+          },
           line: 9,
           column: 13
         },
         {
-          message:
-            "Prefer 'as Foo' instead of '<Foo>' when doing type assertions.",
+          messageId: 'preferAs',
+          data: {
+            cast: 'Foo'
+          },
           line: 10,
           column: 13
         }
@@ -89,8 +93,10 @@ const bar = <Foo>new Generic<int>();
       code: 'const a : number = <number>5',
       errors: [
         {
-          message:
-            "Prefer 'as number' instead of '<number>' when doing type assertions.",
+          messageId: 'preferAs',
+          data: {
+            cast: 'number'
+          },
           line: 1,
           column: 20
         }
@@ -103,8 +109,10 @@ const b : number = <number>a;
             `,
       errors: [
         {
-          message:
-            "Prefer 'as number' instead of '<number>' when doing type assertions.",
+          messageId: 'preferAs',
+          data: {
+            cast: 'number'
+          },
           line: 3,
           column: 20
         }
@@ -114,8 +122,10 @@ const b : number = <number>a;
       code: 'const a : Array<number> = <Array<number>>[1];',
       errors: [
         {
-          message:
-            "Prefer 'as Array<number>' instead of '<Array<number>>' when doing type assertions.",
+          messageId: 'preferAs',
+          data: {
+            cast: 'Array<number>'
+          },
           line: 1,
           column: 27
         }
@@ -131,7 +141,10 @@ const a : A = <A>b;
             `,
       errors: [
         {
-          message: "Prefer 'as A' instead of '<A>' when doing type assertions.",
+          messageId: 'preferAs',
+          data: {
+            cast: 'A'
+          },
           line: 6,
           column: 15
         }
@@ -151,7 +164,10 @@ const a: A = <A>b;
             `,
       errors: [
         {
-          message: "Prefer 'as A' instead of '<A>' when doing type assertions.",
+          messageId: 'preferAs',
+          data: {
+            cast: 'A'
+          },
           line: 10,
           column: 14
         }

@@ -6,6 +6,7 @@
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { getNameFromPropertyName } from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -65,33 +66,16 @@ const rule: RuleModule<MessageIds, Options> = {
           return getMemberName(member.declaration);
         }
         case 'TSDeclareFunction':
-        case 'FunctionDeclaration': {
+        case 'FunctionDeclaration':
           return member.id && member.id.name;
-        }
-        case 'TSMethodSignature': {
-          if (member.key.type === 'Identifier') {
-            return member.key.name;
-          } else if (member.key.type === 'Literal') {
-            return member.key.value;
-          }
-
-          return null;
-        }
-        case 'TSCallSignatureDeclaration': {
+        case 'TSMethodSignature':
+          return getNameFromPropertyName(member.key);
+        case 'TSCallSignatureDeclaration':
           return 'call';
-        }
-        case 'TSConstructSignatureDeclaration': {
+        case 'TSConstructSignatureDeclaration':
           return 'new';
-        }
-        case 'MethodDefinition': {
-          if (member.key.type === 'Identifier') {
-            return member.key.name;
-          } else if (member.key.type === 'Literal') {
-            return member.key.value;
-          }
-
-          return null;
-        }
+        case 'MethodDefinition':
+          return getNameFromPropertyName(member.key);
       }
 
       return null;
