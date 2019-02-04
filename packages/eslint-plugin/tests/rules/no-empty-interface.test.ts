@@ -43,7 +43,7 @@ interface Baz extends Foo, Bar {}
       code: 'interface Foo {}',
       errors: [
         {
-          message: 'An empty interface is equivalent to `{}`.',
+          messageId: 'noEmpty',
           line: 1,
           column: 11
         }
@@ -53,7 +53,7 @@ interface Baz extends Foo, Bar {}
       code: 'interface Foo extends {}',
       errors: [
         {
-          message: 'An empty interface is equivalent to `{}`.',
+          messageId: 'noEmpty',
           line: 1,
           column: 11
         }
@@ -69,8 +69,7 @@ interface Bar extends Foo {}
             `,
       errors: [
         {
-          message:
-            'An interface declaring no members is equivalent to its supertype.',
+          messageId: 'noEmptyWithSuper',
           line: 6,
           column: 11
         }
