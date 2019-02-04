@@ -3,7 +3,7 @@ import memoize from 'lodash.memoize';
 import { Configuration, RuleSeverity } from 'tslint';
 import { Program } from 'typescript';
 import { CustomLinter } from './custom-linter';
-import { ParserServices } from "@typescript-eslint/typescript-estree";
+import { ParserServices } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Plugin Definition
