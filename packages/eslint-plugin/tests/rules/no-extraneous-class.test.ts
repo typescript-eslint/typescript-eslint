@@ -11,9 +11,15 @@
 import rule from '../../src/rules/no-extraneous-class';
 import RuleTester from '../RuleTester';
 
-const empty = { messageId: 'empty', type: 'Identifier' };
-const onlyStatic = { messageId: 'onlyStatic', type: 'Identifier' };
-const onlyConstructor = { messageId: 'onlyConstructor', type: 'Identifier' };
+const empty = {
+  messageId: 'empty' as 'empty'
+};
+const onlyStatic = {
+  messageId: 'onlyStatic' as 'onlyStatic'
+};
+const onlyConstructor = {
+  messageId: 'onlyConstructor' as 'onlyConstructor'
+};
 
 //------------------------------------------------------------------------------
 // Tests

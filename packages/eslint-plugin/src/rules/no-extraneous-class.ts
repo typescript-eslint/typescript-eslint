@@ -3,6 +3,7 @@
  * @author Jed Fox
  */
 
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -10,7 +11,16 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = [
+type Options = [
+  {
+    allowConstructorOnly?: boolean;
+    allowEmpty?: boolean;
+    allowStaticOnly?: boolean;
+  }
+];
+type MessageIds = 'empty' | 'onlyStatic' | 'onlyConstructor';
+
+const defaultOptions: Options = [
   {
     allowConstructorOnly: false,
     allowEmpty: false,
@@ -18,7 +28,7 @@ const defaultOptions = [
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -28,7 +38,6 @@ const rule: RuleModule = {
       url: util.metaDocsUrl('no-extraneous-class'),
       recommended: false
     },
-    fixable: null,
     schema: [
       {
         type: 'object',
@@ -61,14 +70,26 @@ const rule: RuleModule = {
     } = util.applyDefault(defaultOptions, context.options)[0];
 
     return {
-      ClassBody(node) {
-        const { id, superClass } = node.parent;
+      ClassBody(node: TSESTree.ClassBody) {
+        const parent = node.parent as
+          | TSESTree.ClassDeclaration
+          | TSESTree.ClassExpression
+          | undefined;
 
-        if (superClass) return;
+        if (!parent || parent.superClass) {
+          return;
+        }
 
         if (node.body.length === 0) {
-          if (allowEmpty) return;
-          context.report({ node: id, messageId: 'empty' });
+          if (allowEmpty) {
+            return;
+          }
+
+          context.report({
+            node,
+            messageId: 'empty'
+          });
+
           return;
         }
 
@@ -76,7 +97,7 @@ const rule: RuleModule = {
         let onlyConstructor = true;
 
         for (const prop of node.body) {
-          if (prop.kind === 'constructor') {
+          if ('kind' in prop && prop.kind === 'constructor') {
             if (
               prop.value.params.some(
                 param => param.type === 'TSParameterProperty'
@@ -87,7 +108,7 @@ const rule: RuleModule = {
             }
           } else {
             onlyConstructor = false;
-            if (!prop.static) {
+            if ('static' in prop && !prop.static) {
               onlyStatic = false;
             }
           }
@@ -97,14 +118,17 @@ const rule: RuleModule = {
         if (onlyConstructor) {
           if (!allowConstructorOnly) {
             context.report({
-              node: id,
+              node,
               messageId: 'onlyConstructor'
             });
           }
           return;
         }
         if (onlyStatic && !allowStaticOnly) {
-          context.report({ node: id, messageId: 'onlyStatic' });
+          context.report({
+            node,
+            messageId: 'onlyStatic'
+          });
         }
       }
     };
