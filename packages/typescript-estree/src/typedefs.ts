@@ -541,6 +541,7 @@ export interface ArrayPattern extends BaseNode {
   elements: Expression[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface ArrowFunctionExpression extends BaseNode {
@@ -876,6 +877,7 @@ export interface ObjectPattern extends BaseNode {
   properties: ObjectLiteralElementLike[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface Program extends BaseNode {
@@ -903,6 +905,7 @@ export interface RestElement extends BaseNode {
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   value?: AssignmentPattern;
+  decorators?: Decorator[];
 }
 
 export interface ReturnStatement extends BaseNode {

@@ -63,9 +63,8 @@ class PatternVisitor extends OriginalPatternVisitor {
 
   ArrayPattern(node: es.ArrayPattern): void {
     node.elements.forEach(this.visit, this);
-    // TODO: there is no decorators in definition of ArrayPattern
-    if ((node as any).decorators) {
-      this.rightHandNodes.push(...(node as any).decorators);
+    if (node.decorators) {
+      this.rightHandNodes.push(...node.decorators);
     }
     if (node.typeAnnotation) {
       this.rightHandNodes.push(node.typeAnnotation);
@@ -74,9 +73,8 @@ class PatternVisitor extends OriginalPatternVisitor {
 
   ObjectPattern(node: es.ObjectPattern): void {
     node.properties.forEach(this.visit, this);
-    // TODO: there is no decorators in definition of ObjectPattern
-    if ((node as any).decorators) {
-      this.rightHandNodes.push(...(node as any).decorators);
+    if (node.decorators) {
+      this.rightHandNodes.push(...node.decorators);
     }
     if (node.typeAnnotation) {
       this.rightHandNodes.push(node.typeAnnotation);
@@ -85,6 +83,9 @@ class PatternVisitor extends OriginalPatternVisitor {
 
   RestElement(node: es.RestElement): void {
     super.RestElement(node);
+    if (node.decorators) {
+      this.rightHandNodes.push(...node.decorators);
+    }
     if (node.typeAnnotation) {
       this.rightHandNodes.push(node.typeAnnotation);
     }
@@ -306,9 +307,8 @@ class Referencer extends OriginalReferencer {
   NewExpression(node: es.NewExpression): void {
     this.visitTypeParameters(node);
     this.visit(node.callee);
-    if (node.arguments) {
-      node.arguments.forEach(this.visit, this);
-    }
+
+    node.arguments.forEach(this.visit, this);
   }
 
   /**
@@ -320,9 +320,8 @@ class Referencer extends OriginalReferencer {
     this.visitTypeParameters(node);
 
     this.visit(node.callee);
-    if (node.arguments) {
-      node.arguments.forEach(this.visit, this);
-    }
+
+    node.arguments.forEach(this.visit, this);
   }
 
   /**

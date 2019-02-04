@@ -3,7 +3,8 @@ import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
   ParserOptions as ParserOptionsTsESTree,
-  ParserServices
+  ParserServices,
+  es
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
@@ -12,7 +13,7 @@ import { visitorKeys } from './visitor-keys';
 const packageJSON = require('../package.json');
 
 interface ParseForESLintResult {
-  ast: any;
+  ast: es.Program;
   services: ParserServices;
   visitorKeys: typeof visitorKeys;
   scopeManager: ReturnType<typeof analyzeScope>;
