@@ -893,7 +893,6 @@ export interface Property extends BaseNode {
   method: boolean;
   shorthand: boolean;
   kind: 'init';
-  typeParameters?: TSTypeParameterDeclaration;
 }
 
 export interface RestElement extends BaseNode {
