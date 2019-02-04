@@ -63,8 +63,10 @@ ruleTester.run('no-inferrable-types', rule, {
       output: 'const a = 5',
       errors: [
         {
-          message:
-            'Type number trivially inferred from a number literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'number'
+          },
           line: 1,
           column: 7
         }
@@ -75,8 +77,10 @@ ruleTester.run('no-inferrable-types', rule, {
       output: 'const a = Infinity',
       errors: [
         {
-          message:
-            'Type number trivially inferred from a number literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'number'
+          },
           line: 1,
           column: 7
         }
@@ -87,8 +91,10 @@ ruleTester.run('no-inferrable-types', rule, {
       output: 'const a = true',
       errors: [
         {
-          message:
-            'Type boolean trivially inferred from a boolean literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'boolean'
+          },
           line: 1,
           column: 7
         }
@@ -99,8 +105,10 @@ ruleTester.run('no-inferrable-types', rule, {
       output: "const a = 'foo'",
       errors: [
         {
-          message:
-            'Type string trivially inferred from a string literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'string'
+          },
           line: 1,
           column: 7
         }
@@ -118,20 +126,26 @@ ruleTester.run('no-inferrable-types', rule, {
       ],
       errors: [
         {
-          message:
-            'Type number trivially inferred from a number literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'number'
+          },
           line: 1,
           column: 13
         },
         {
-          message:
-            'Type boolean trivially inferred from a boolean literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'boolean'
+          },
           line: 1,
           column: 28
         },
         {
-          message:
-            'Type string trivially inferred from a string literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'string'
+          },
           line: 1,
           column: 47
         }
@@ -149,20 +163,26 @@ ruleTester.run('no-inferrable-types', rule, {
       ],
       errors: [
         {
-          message:
-            'Type number trivially inferred from a number literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'number'
+          },
           line: 1,
           column: 13
         },
         {
-          message:
-            'Type boolean trivially inferred from a boolean literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'boolean'
+          },
           line: 1,
           column: 28
         },
         {
-          message:
-            'Type string trivially inferred from a string literal, remove type annotation.',
+          messageId: 'noInferrableType',
+          data: {
+            type: 'string'
+          },
           line: 1,
           column: 47
         }

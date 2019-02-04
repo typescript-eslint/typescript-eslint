@@ -5,30 +5,43 @@
 
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = [
+type Options = [
+  {
+    ignoreParameters?: boolean;
+    ignoreProperties?: boolean;
+  }
+];
+type MessageIds = 'noInferrableType';
+
+const defaultOptions: Options = [
   {
     ignoreParameters: true,
     ignoreProperties: true
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.',
       extraDescription: [util.tslintRule('no-inferrable-types')],
-      category: 'TypeScript',
+      category: 'Best Practices',
       url: util.metaDocsUrl('no-inferrable-types'),
       recommended: 'error'
     },
     fixable: 'code',
+    messages: {
+      noInferrableType:
+        'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.'
+    },
     schema: [
       {
         type: 'object',
@@ -53,11 +66,17 @@ const rule: RuleModule = {
 
     /**
      * Returns whether a node has an inferrable value or not
-     * @param {ASTNode} node the node to check
-     * @param {ASTNode} init the initializer
+     * @param node the node to check
+     * @param init the initializer
      */
-    function isInferrable(node, init): boolean {
-      if (node.type !== 'TSTypeAnnotation' || !node.typeAnnotation) {
+    function isInferrable(
+      node: TSESTree.TSTypeAnnotation,
+      init: TSESTree.Expression
+    ): boolean {
+      if (
+        node.type !== AST_NODE_TYPES.TSTypeAnnotation ||
+        !node.typeAnnotation
+      ) {
         return false;
       }
 
@@ -67,31 +86,32 @@ const rule: RuleModule = {
 
       const annotation = node.typeAnnotation;
 
-      if (annotation.type === 'TSStringKeyword') {
-        return (
-          (init.type === 'Literal' && typeof init.value === 'string') ||
-          (init.type === 'TemplateElement' &&
-            (!init.expressions || init.expressions.length === 0))
-        );
+      if (annotation.type === AST_NODE_TYPES.TSStringKeyword) {
+        if (init.type === AST_NODE_TYPES.Literal) {
+          return typeof init.value === 'string';
+        }
+        return false;
       }
 
-      if (annotation.type === 'TSBooleanKeyword') {
-        return init.type === 'Literal';
+      if (annotation.type === AST_NODE_TYPES.TSBooleanKeyword) {
+        return init.type === AST_NODE_TYPES.Literal;
       }
 
-      if (annotation.type === 'TSNumberKeyword') {
+      if (annotation.type === AST_NODE_TYPES.TSNumberKeyword) {
         // Infinity is special
         if (
-          (init.type === 'UnaryExpression' &&
+          (init.type === AST_NODE_TYPES.UnaryExpression &&
             init.operator === '-' &&
-            init.argument.type === 'Identifier' &&
+            init.argument.type === AST_NODE_TYPES.Identifier &&
             init.argument.name === 'Infinity') ||
-          (init.type === 'Identifier' && init.name === 'Infinity')
+          (init.type === AST_NODE_TYPES.Identifier && init.name === 'Infinity')
         ) {
           return true;
         }
 
-        return init.type === 'Literal' && typeof init.value === 'number';
+        return (
+          init.type === AST_NODE_TYPES.Literal && typeof init.value === 'number'
+        );
       }
 
       return false;
@@ -99,11 +119,18 @@ const rule: RuleModule = {
 
     /**
      * Reports an inferrable type declaration, if any
-     * @param {ASTNode} node the node being visited
-     * @param {ASTNode} typeNode the type annotation node
-     * @param {ASTNode} initNode the initializer node
+     * @param node the node being visited
+     * @param typeNode the type annotation node
+     * @param initNode the initializer node
      */
-    function reportInferrableType(node, typeNode, initNode): void {
+    function reportInferrableType(
+      node:
+        | TSESTree.VariableDeclarator
+        | TSESTree.Parameter
+        | TSESTree.ClassProperty,
+      typeNode: TSESTree.TSTypeAnnotation | undefined,
+      initNode: TSESTree.Expression | null | undefined
+    ): void {
       if (!typeNode || !initNode || !typeNode.typeAnnotation) {
         return;
       }
@@ -112,18 +139,25 @@ const rule: RuleModule = {
         return;
       }
 
-      const typeMap = {
-        TSBooleanKeyword: 'boolean',
-        TSNumberKeyword: 'number',
-        TSStringKeyword: 'string'
-      };
-
-      const type = typeMap[typeNode.typeAnnotation.type];
+      let type = null;
+      if (typeNode.typeAnnotation.type === AST_NODE_TYPES.TSBooleanKeyword) {
+        type = 'boolean';
+      } else if (
+        typeNode.typeAnnotation.type === AST_NODE_TYPES.TSNumberKeyword
+      ) {
+        type = 'number';
+      } else if (
+        typeNode.typeAnnotation.type === AST_NODE_TYPES.TSStringKeyword
+      ) {
+        type = 'string';
+      } else {
+        // shouldn't happen...
+        return;
+      }
 
       context.report({
         node,
-        message:
-          'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.',
+        messageId: 'noInferrableType',
         data: {
           type
         },
@@ -131,40 +165,35 @@ const rule: RuleModule = {
       });
     }
 
-    /**
-     * Visits variables
-     * @param {ASTNode} node the node to be visited
-     */
-    function inferrableVariableVisitor(node): void {
+    function inferrableVariableVisitor(
+      node: TSESTree.VariableDeclarator
+    ): void {
       if (!node.id) {
         return;
       }
       reportInferrableType(node, node.id.typeAnnotation, node.init);
     }
 
-    /**
-     * Visits parameters
-     * @param {ASTNode} node the node to be visited
-     */
-    function inferrableParameterVisitor(node): void {
+    function inferrableParameterVisitor(
+      node:
+        | TSESTree.FunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.ArrowFunctionExpression
+    ): void {
       if (ignoreParameters || !node.params) {
         return;
       }
-      node.params
-        .filter(
-          param =>
-            param.type === 'AssignmentPattern' && param.left && param.right
-        )
-        .forEach(param => {
-          reportInferrableType(param, param.left.typeAnnotation, param.right);
-        });
+      (node.params.filter(
+        param =>
+          param.type === AST_NODE_TYPES.AssignmentPattern &&
+          param.left &&
+          param.right
+      ) as TSESTree.AssignmentPattern[]).forEach(param => {
+        reportInferrableType(param, param.left.typeAnnotation, param.right);
+      });
     }
 
-    /**
-     * Visits properties
-     * @param {ASTNode} node the node to be visited
-     */
-    function inferrablePropertyVisitor(node): void {
+    function inferrablePropertyVisitor(node: TSESTree.ClassProperty): void {
       // We ignore `readonly` because of Microsoft/TypeScript#14416
       // Essentially a readonly property without a type
       // will result in its value being the type, leading to
