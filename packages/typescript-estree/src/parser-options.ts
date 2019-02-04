@@ -1,6 +1,6 @@
 import { Program } from 'typescript';
 import { Token, Comment, Node } from './typedefs';
-import { TSNode } from "./ts-nodes";
+import { TSNode } from './ts-nodes';
 
 export interface Extra {
   errorOnUnknownASTType: boolean;
