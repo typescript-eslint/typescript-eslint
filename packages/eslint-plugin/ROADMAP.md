@@ -64,8 +64,7 @@
 | [`no-empty`]                         | 🌟  | [`no-empty`][no-empty]                                                |
 | [`no-eval`]                          | 🌟  | [`no-eval`][no-eval]                                                  |
 | [`no-floating-promises`]             | 🛑  | N/A ([relevant plugin][plugin:promise])                               |
-| [`no-for-in-array`]                  | ✅  | [`typescript/no-for-in-array`]                                        |
-| [`no-for-in-array`]                  | 🛑  | N/A                                                                   |
+| [`no-for-in-array`]                  | ✅  | [`@typescript-eslint/no-for-in-array`]                                |
 | [`no-implicit-dependencies`]         | 🔌  | [`import/no-extraneous-dependencies`]                                 |
 | [`no-inferred-empty-object-type`]    | 🛑  | N/A                                                                   |
 | [`no-invalid-template-strings`]      | 🌟  | [`no-template-curly-in-string`][no-template-curly-in-string]          |
@@ -592,6 +591,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/member-delimiter-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-delimiter-style.md
 [`@typescript-eslint/prefer-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-interface.md
 [`@typescript-eslint/no-array-constructor`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-array-constructor.md
+[`@typescript-eslint/no-for-in-array`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-for-in-array.md
 
 <!-- eslint-plugin-import -->
 

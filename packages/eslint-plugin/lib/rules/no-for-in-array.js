@@ -23,6 +23,10 @@ module.exports = {
       url: util.metaDocsUrl('no-for-in-array')
     },
     fixable: null,
+    messages: {
+      forInViolation:
+        'For-in loops over arrays are forbidden. Use for-of or array.forEach instead.'
+    },
     schema: [],
     type: 'problem'
   },
@@ -34,10 +38,6 @@ module.exports = {
         const checker = parserServices.program.getTypeChecker();
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
-        if (!originalNode) {
-          return;
-        }
-
         const type = checker.getTypeAtLocation(originalNode.expression);
 
         if (
@@ -47,8 +47,7 @@ module.exports = {
         ) {
           context.report({
             node,
-            message:
-              'For-in loops over arrays are forbidden. Use for-of or array.forEach instead.'
+            messageId: 'forInViolation'
           });
         }
       }

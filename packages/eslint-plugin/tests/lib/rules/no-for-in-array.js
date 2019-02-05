@@ -16,10 +16,6 @@ const rule = require('../../../lib/rules/no-for-in-array'),
 // Tests
 //------------------------------------------------------------------------------
 
-// RuleTester.it = function(text, method) {
-//     return method.call({ break: true });
-// };
-
 const rootDir = path.join(process.cwd(), 'tests/fixtures/');
 const parserOptions = {
   ecmaVersion: 2015,
@@ -30,8 +26,6 @@ const ruleTester = new RuleTester({
   parserOptions,
   parser: '@typescript-eslint/parser'
 });
-const message =
-  'For-in loops over arrays are forbidden. Use for-of or array.forEach instead.';
 
 ruleTester.run('no-for-in-array', rule, {
   valid: [
@@ -53,7 +47,7 @@ for (const x in [3, 4, 5]) {
 }`,
       errors: [
         {
-          message,
+          messageId: 'forInViolation',
           type: 'ForInStatement'
         }
       ]
@@ -66,7 +60,7 @@ for (const x in z) {
 }`,
       errors: [
         {
-          message,
+          messageId: 'forInViolation',
           type: 'ForInStatement'
         }
       ]
