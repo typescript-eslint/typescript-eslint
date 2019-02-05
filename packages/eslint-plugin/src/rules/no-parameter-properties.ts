@@ -104,6 +104,14 @@ const rule: RuleModule<MessageIds, Options> = {
         const modifiers = getModifiers(node);
 
         if (allows.indexOf(modifiers) === -1) {
+          // HAS to be an identifier or assignment or TSC will throw
+          if (
+            node.parameter.type !== AST_NODE_TYPES.Identifier &&
+            node.parameter.type !== AST_NODE_TYPES.AssignmentPattern
+          ) {
+            return;
+          }
+
           const name =
             node.parameter.type === AST_NODE_TYPES.Identifier
               ? node.parameter.name
