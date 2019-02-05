@@ -2305,6 +2305,15 @@ Object {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-function.src 1`] = `
+Object {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "Decorators are not valid here.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-interface-declaration.src 1`] = `
 Object {
   "column": 0,

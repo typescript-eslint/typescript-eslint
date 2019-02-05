@@ -282,18 +282,19 @@ export class Converter {
    */
   private convertParameters(
     parameters: ts.NodeArray<ts.ParameterDeclaration>
-  ): (es.TSParameterProperty | es.RestElement | es.AssignmentPattern)[] {
+  ): es.Parameter[] {
     if (!parameters || !parameters.length) {
       return [];
     }
     return parameters.map(param => {
-      const convertedParam = this.convertChild(param);
-      if (!param.decorators || !param.decorators.length) {
-        return convertedParam;
+      const convertedParam = this.convertChild(param) as es.Parameter;
+
+      if (param.decorators && param.decorators.length) {
+        convertedParam.decorators = param.decorators.map(el =>
+          this.convertChild(el)
+        );
       }
-      return Object.assign(convertedParam, {
-        decorators: param.decorators.map(el => this.convertChild(el))
-      });
+      return convertedParam;
     });
   }
 
@@ -468,20 +469,22 @@ export class Converter {
   }
 
   /**
-   * Uses the current TSNode's end location for its `type` to adjust the location data of the given
-   * ESTreeNode, which should be the parent of the final typeAnnotation node
-   * @param typeAnnotationParent The node that will have its location data mutated
-   * @param node
+   * Uses the provided range location to adjust the location data of the given Node
+   * @param result The node that will have its location data mutated
+   * @param childRange The child node range used to expand location
    */
-  private fixTypeAnnotationParentLocation(
-    typeAnnotationParent: es.BaseNode,
-    node: ts.TypeNode
+  private fixParentLocation(
+    result: es.BaseNode,
+    childRange: [number, number]
   ): void {
-    typeAnnotationParent.range[1] = node.getEnd();
-    typeAnnotationParent.loc.end = getLineAndCharacterFor(
-      typeAnnotationParent.range[1],
-      this.ast
-    );
+    if (childRange[0] < result.range[0]) {
+      result.range[0] = childRange[0];
+      result.loc.start = getLineAndCharacterFor(result.range[0], this.ast);
+    }
+    if (childRange[1] > result.range[1]) {
+      result.range[1] = childRange[1];
+      result.loc.end = getLineAndCharacterFor(result.range[1], this.ast);
+    }
   }
 
   /**
@@ -713,7 +716,7 @@ export class Converter {
             node.type,
             node
           );
-          this.fixTypeAnnotationParentLocation(result.id, node.type);
+          this.fixParentLocation(result.id, result.id.typeAnnotation.range);
         }
         return result;
       }
@@ -893,6 +896,14 @@ export class Converter {
           method.returnType = this.convertTypeAnnotation(node.type, node);
         }
 
+        // Process typeParameters
+        if (node.typeParameters && node.typeParameters.length) {
+          method.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
+            node.typeParameters
+          );
+          this.fixParentLocation(method, method.typeParameters.range);
+        }
+
         let result:
           | es.Property
           | es.TSAbstractMethodDefinition
@@ -970,19 +981,6 @@ export class Converter {
         ) {
           result.kind = 'constructor';
         }
-
-        // Process typeParameters
-        if (node.typeParameters && node.typeParameters.length) {
-          if (result.type !== AST_NODE_TYPES.Property) {
-            method.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters
-            );
-          } else {
-            result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters
-            );
-          }
-        }
         return result;
       }
 
@@ -1009,6 +1007,7 @@ export class Converter {
           constructor.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
+          this.fixParentLocation(constructor, constructor.typeParameters.range);
         }
 
         // Process returnType
@@ -1291,7 +1290,7 @@ export class Converter {
             node.type,
             node
           );
-          this.fixTypeAnnotationParentLocation(parameter, node.type);
+          this.fixParentLocation(parameter, parameter.typeAnnotation.range);
         }
 
         if (node.questionToken) {

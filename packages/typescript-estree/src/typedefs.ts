@@ -351,7 +351,13 @@ export type ObjectLiteralElementLike =
   | RestElement
   | SpreadElement
   | TSAbstractMethodDefinition;
-export type Parameter = AssignmentPattern | RestElement | TSParameterProperty;
+export type Parameter =
+  | AssignmentPattern
+  | RestElement
+  | ArrayPattern
+  | ObjectPattern
+  | Identifier
+  | TSParameterProperty;
 export type PrimaryExpression =
   | ArrayExpression
   | ArrayPattern
@@ -566,6 +572,7 @@ export interface AssignmentPattern extends BaseNode {
   right?: Expression;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface AwaitExpression extends BaseNode {
@@ -896,7 +903,6 @@ export interface Property extends BaseNode {
   method: boolean;
   shorthand: boolean;
   kind: 'init';
-  typeParameters?: TSTypeParameterDeclaration;
 }
 
 export interface RestElement extends BaseNode {
@@ -1223,6 +1229,7 @@ export interface TSParameterProperty extends BaseNode {
   static?: boolean;
   export?: boolean;
   parameter: AssignmentPattern | BindingName | RestElement;
+  decorators?: Decorator[];
 }
 
 export interface TSParenthesizedType extends BaseNode {

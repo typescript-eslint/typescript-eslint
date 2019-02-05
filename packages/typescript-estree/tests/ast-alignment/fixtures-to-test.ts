@@ -400,6 +400,7 @@ tester.addFixturePatternConfig('typescript/decorators/parameter-decorators', {
   ignore: [
     /**
      * babel does not support decorators on array and rest parameters
+     * TODO: report this to babel
      */
     'parameter-array-pattern-decorator',
     'parameter-rest-element-decorator'

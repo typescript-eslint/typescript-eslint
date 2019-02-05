@@ -11023,13 +11023,13 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 16,
+                  "column": 13,
                   "line": 2,
                 },
               },
               "params": Array [],
               "range": Array [
-                26,
+                23,
                 32,
               ],
               "type": "FunctionExpression",
@@ -11156,13 +11156,13 @@ Object {
                   "line": 4,
                 },
                 "start": Object {
-                  "column": 20,
+                  "column": 17,
                   "line": 4,
                 },
               },
               "params": Array [],
               "range": Array [
-                54,
+                51,
                 60,
               ],
               "type": "FunctionExpression",
@@ -13801,13 +13801,13 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 11,
+                  "column": 8,
                   "line": 2,
                 },
               },
               "params": Array [],
               "range": Array [
-                23,
+                20,
                 28,
               ],
               "type": "FunctionExpression",
@@ -14229,13 +14229,13 @@ Object {
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 17,
+                  "column": 8,
                   "line": 2,
                 },
               },
               "params": Array [],
               "range": Array [
-                29,
+                20,
                 34,
               ],
               "type": "FunctionExpression",
@@ -16076,13 +16076,13 @@ Object {
                   "line": 3,
                 },
                 "start": Object {
-                  "column": 8,
+                  "column": 5,
                   "line": 3,
                 },
               },
               "params": Array [],
               "range": Array [
-                38,
+                35,
                 44,
               ],
               "type": "FunctionExpression",
@@ -28309,13 +28309,13 @@ Object {
                   "line": 3,
                 },
                 "start": Object {
-                  "column": 18,
+                  "column": 15,
                   "line": 2,
                 },
               },
               "params": Array [],
               "range": Array [
-                28,
+                25,
                 44,
               ],
               "returnType": Object {
@@ -28476,13 +28476,13 @@ Object {
                   "line": 6,
                 },
                 "start": Object {
-                  "column": 20,
+                  "column": 17,
                   "line": 5,
                 },
               },
               "params": Array [],
               "range": Array [
-                66,
+                63,
                 82,
               ],
               "returnType": Object {
@@ -58224,60 +58224,6 @@ Object {
                 ],
                 "shorthand": false,
                 "type": "Property",
-                "typeParameters": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 18,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 15,
-                      "line": 2,
-                    },
-                  },
-                  "params": Array [
-                    Object {
-                      "loc": Object {
-                        "end": Object {
-                          "column": 17,
-                          "line": 2,
-                        },
-                        "start": Object {
-                          "column": 16,
-                          "line": 2,
-                        },
-                      },
-                      "name": Object {
-                        "loc": Object {
-                          "end": Object {
-                            "column": 17,
-                            "line": 2,
-                          },
-                          "start": Object {
-                            "column": 16,
-                            "line": 2,
-                          },
-                        },
-                        "name": "T",
-                        "range": Array [
-                          30,
-                          31,
-                        ],
-                        "type": "Identifier",
-                      },
-                      "range": Array [
-                        30,
-                        31,
-                      ],
-                      "type": "TSTypeParameter",
-                    },
-                  ],
-                  "range": Array [
-                    29,
-                    32,
-                  ],
-                  "type": "TSTypeParameterDeclaration",
-                },
                 "value": Object {
                   "async": false,
                   "body": Object {
@@ -58344,13 +58290,13 @@ Object {
                       "line": 4,
                     },
                     "start": Object {
-                      "column": 18,
+                      "column": 15,
                       "line": 2,
                     },
                   },
                   "params": Array [],
                   "range": Array [
-                    32,
+                    29,
                     61,
                   ],
                   "returnType": Object {
@@ -58388,6 +58334,60 @@ Object {
                     },
                   },
                   "type": "FunctionExpression",
+                  "typeParameters": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 18,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 15,
+                        "line": 2,
+                      },
+                    },
+                    "params": Array [
+                      Object {
+                        "loc": Object {
+                          "end": Object {
+                            "column": 17,
+                            "line": 2,
+                          },
+                          "start": Object {
+                            "column": 16,
+                            "line": 2,
+                          },
+                        },
+                        "name": Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 17,
+                              "line": 2,
+                            },
+                            "start": Object {
+                              "column": 16,
+                              "line": 2,
+                            },
+                          },
+                          "name": "T",
+                          "range": Array [
+                            30,
+                            31,
+                          ],
+                          "type": "Identifier",
+                        },
+                        "range": Array [
+                          30,
+                          31,
+                        ],
+                        "type": "TSTypeParameter",
+                      },
+                    ],
+                    "range": Array [
+                      29,
+                      32,
+                    ],
+                    "type": "TSTypeParameterDeclaration",
+                  },
                 },
               },
               Object {
@@ -58428,60 +58428,6 @@ Object {
                 ],
                 "shorthand": false,
                 "type": "Property",
-                "typeParameters": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 8,
-                      "line": 5,
-                    },
-                    "start": Object {
-                      "column": 5,
-                      "line": 5,
-                    },
-                  },
-                  "params": Array [
-                    Object {
-                      "loc": Object {
-                        "end": Object {
-                          "column": 7,
-                          "line": 5,
-                        },
-                        "start": Object {
-                          "column": 6,
-                          "line": 5,
-                        },
-                      },
-                      "name": Object {
-                        "loc": Object {
-                          "end": Object {
-                            "column": 7,
-                            "line": 5,
-                          },
-                          "start": Object {
-                            "column": 6,
-                            "line": 5,
-                          },
-                        },
-                        "name": "T",
-                        "range": Array [
-                          69,
-                          70,
-                        ],
-                        "type": "Identifier",
-                      },
-                      "range": Array [
-                        69,
-                        70,
-                      ],
-                      "type": "TSTypeParameter",
-                    },
-                  ],
-                  "range": Array [
-                    68,
-                    71,
-                  ],
-                  "type": "TSTypeParameterDeclaration",
-                },
                 "value": Object {
                   "async": false,
                   "body": Object {
@@ -58548,13 +58494,13 @@ Object {
                       "line": 7,
                     },
                     "start": Object {
-                      "column": 8,
+                      "column": 5,
                       "line": 5,
                     },
                   },
                   "params": Array [],
                   "range": Array [
-                    71,
+                    68,
                     100,
                   ],
                   "returnType": Object {
@@ -58592,6 +58538,60 @@ Object {
                     },
                   },
                   "type": "FunctionExpression",
+                  "typeParameters": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 8,
+                        "line": 5,
+                      },
+                      "start": Object {
+                        "column": 5,
+                        "line": 5,
+                      },
+                    },
+                    "params": Array [
+                      Object {
+                        "loc": Object {
+                          "end": Object {
+                            "column": 7,
+                            "line": 5,
+                          },
+                          "start": Object {
+                            "column": 6,
+                            "line": 5,
+                          },
+                        },
+                        "name": Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 7,
+                              "line": 5,
+                            },
+                            "start": Object {
+                              "column": 6,
+                              "line": 5,
+                            },
+                          },
+                          "name": "T",
+                          "range": Array [
+                            69,
+                            70,
+                          ],
+                          "type": "Identifier",
+                        },
+                        "range": Array [
+                          69,
+                          70,
+                        ],
+                        "type": "TSTypeParameter",
+                      },
+                    ],
+                    "range": Array [
+                      68,
+                      71,
+                    ],
+                    "type": "TSTypeParameterDeclaration",
+                  },
                 },
               },
               Object {
@@ -90525,6 +90525,232 @@ Object {
       "range": Array [
         13,
         14,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`typescript fixtures/errorRecovery/decorator-on-function.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          17,
+          19,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 2,
+          },
+        },
+        "name": "b",
+        "range": Array [
+          14,
+          15,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [],
+      "range": Array [
+        0,
+        19,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    20,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        1,
+      ],
+      "type": "Punctuator",
+      "value": "@",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        1,
+        4,
+      ],
+      "type": "Identifier",
+      "value": "dec",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        5,
+        13,
+      ],
+      "type": "Keyword",
+      "value": "function",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        14,
+        15,
+      ],
+      "type": "Identifier",
+      "value": "b",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        15,
+        16,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        16,
+        17,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        17,
+        18,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        18,
+        19,
       ],
       "type": "Punctuator",
       "value": "}",
