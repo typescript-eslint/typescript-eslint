@@ -3,15 +3,40 @@
  * @author Patricio Trevino
  */
 
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import RuleModule, { ReportDescriptor } from 'ts-eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = [
+type Options = [
+  {
+    allowAliases?:
+      | 'always'
+      | 'never'
+      | 'in-unions'
+      | 'in-intersections'
+      | 'in-unions-and-intersections';
+    allowCallbacks?: 'always' | 'never';
+    allowLiterals?:
+      | 'always'
+      | 'never'
+      | 'in-unions'
+      | 'in-intersections'
+      | 'in-unions-and-intersections';
+    allowMappedTypes?:
+      | 'always'
+      | 'never'
+      | 'in-unions'
+      | 'in-intersections'
+      | 'in-unions-and-intersections';
+  }
+];
+type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
+
+const defaultOptions: Options = [
   {
     allowAliases: 'never',
     allowCallbacks: 'never',
@@ -20,13 +45,13 @@ const defaultOptions = [
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow the use of type aliases',
       extraDescription: [util.tslintRule('interface-over-type-literal')],
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('no-type-alias'),
       recommended: false
     },
@@ -94,22 +119,17 @@ const rule: RuleModule = {
       'in-intersections',
       'in-unions-and-intersections'
     ];
-    const aliasTypes = [
-      'TSLastTypeNode',
-      'TSArrayType',
-      'TSTypeReference',
-      'TSLiteralType'
-    ];
+    const aliasTypes = ['TSArrayType', 'TSTypeReference', 'TSLiteralType'];
 
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
 
+    type CompositionType = TSESTree.TSUnionType | TSESTree.TSIntersectionType;
     /**
      * Determines if the given node is a union or an intersection.
-     * @param {TSNode} node the node to be evaluated.
      */
-    function isComposition(node): boolean {
+    function isComposition(node: TSESTree.TypeNode): node is CompositionType {
       return (
         node &&
         (node.type === AST_NODE_TYPES.TSUnionType ||
@@ -140,9 +160,11 @@ const rule: RuleModule = {
 
     /**
      * Determines if the given node is an alias type (keywords, arrays, type references and constants).
-     * @param {TSNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
-    function isAlias(node): boolean {
+    function isAlias(
+      node: TSESTree.Node
+    ): boolean /* not worth enumerating the ~25 individual types here */ {
       return (
         node &&
         (/Keyword$/.test(node.type) || aliasTypes.indexOf(node.type) > -1)
@@ -151,42 +173,42 @@ const rule: RuleModule = {
 
     /**
      * Determines if the given node is a callback type.
-     * @param {TSNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
-    function isCallback(node): boolean {
+    function isCallback(node: TSESTree.Node): node is TSESTree.TSFunctionType {
       return node && node.type === AST_NODE_TYPES.TSFunctionType;
     }
 
     /**
      * Determines if the given node is a literal type (objects).
-     * @param {TSNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
-    function isLiteral(node): boolean {
+    function isLiteral(node: TSESTree.Node): node is TSESTree.TSTypeLiteral {
       return node && node.type === AST_NODE_TYPES.TSTypeLiteral;
     }
 
     /**
      * Determines if the given node is a mapped type.
-     * @param {TSNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
-    function isMappedType(node): boolean {
+    function isMappedType(node: TSESTree.Node): node is TSESTree.TSMappedType {
       return node && node.type === AST_NODE_TYPES.TSMappedType;
     }
 
     /**
      * Gets the message to be displayed based on the node type and whether the node is a top level declaration.
-     * @param {ASTNode} node the location
+     * @param node the location
      * @param compositionType the type of composition this alias is part of (undefined if not
      *                                  part of a composition)
      * @param isRoot a flag indicating we are dealing with the top level declaration.
      * @param type the kind of type alias being validated.
      */
     function getMessage(
-      node,
+      node: TSESTree.Node,
       compositionType: string | undefined,
       isRoot: boolean,
       type?: string
-    ): Rule.ReportDescriptor {
+    ): ReportDescriptor<MessageIds> {
       if (isRoot) {
         return {
           node,
@@ -212,26 +234,17 @@ const rule: RuleModule = {
 
     /**
      * Validates the node looking for aliases, callbacks and literals.
-     * @param {TSNode} node the node to be validated.
+     * @param node the node to be validated.
      * @param isTopLevel a flag indicating this is the top level node.
      * @param compositionType the type of composition this alias is part of (undefined if not
      *                                  part of a composition)
      */
     function validateTypeAliases(
-      node,
+      node: TSESTree.Node,
       isTopLevel: boolean,
       compositionType?: string
     ): void {
-      if (isAlias(node)) {
-        if (
-          allowAliases === 'never' ||
-          !isSupportedComposition(isTopLevel, compositionType, allowAliases)
-        ) {
-          context.report(
-            getMessage(node, compositionType, isTopLevel, 'aliases')
-          );
-        }
-      } else if (isCallback(node)) {
+      if (isCallback(node)) {
         if (allowCallbacks === 'never') {
           context.report(
             getMessage(node, compositionType, isTopLevel, 'callbacks')
@@ -240,7 +253,7 @@ const rule: RuleModule = {
       } else if (isLiteral(node)) {
         if (
           allowLiterals === 'never' ||
-          !isSupportedComposition(isTopLevel, compositionType, allowLiterals)
+          !isSupportedComposition(isTopLevel, compositionType, allowLiterals!)
         ) {
           context.report(
             getMessage(node, compositionType, isTopLevel, 'literals')
@@ -249,10 +262,23 @@ const rule: RuleModule = {
       } else if (isMappedType(node)) {
         if (
           allowMappedTypes === 'never' ||
-          !isSupportedComposition(isTopLevel, compositionType, allowMappedTypes)
+          !isSupportedComposition(
+            isTopLevel,
+            compositionType,
+            allowMappedTypes!
+          )
         ) {
           context.report(
             getMessage(node, compositionType, isTopLevel, 'mapped types')
+          );
+        }
+      } else if (isAlias(node)) {
+        if (
+          allowAliases === 'never' ||
+          !isSupportedComposition(isTopLevel, compositionType, allowAliases!)
+        ) {
+          context.report(
+            getMessage(node, compositionType, isTopLevel, 'aliases')
           );
         }
       } else {
@@ -262,11 +288,8 @@ const rule: RuleModule = {
 
     /**
      * Validates compositions (unions and/or intersections).
-     * @param {TSNode} node the node to be validated.
-     * @returns {void}
-     * @private
      */
-    function validateCompositions(node) {
+    function validateCompositions(node: CompositionType): void {
       node.types.forEach(type => {
         if (isComposition(type)) {
           validateCompositions(type);
@@ -276,26 +299,16 @@ const rule: RuleModule = {
       });
     }
 
-    /**
-     * Validates the node looking for compositions, aliases, callbacks and literals.
-     * @param {TSNode} node the node to be validated.
-     * @param isTopLevel a flag indicating this is the top level node.
-     * @private
-     */
-    function validateNode(node): void {
-      if (isComposition(node)) {
-        validateCompositions(node);
-      } else {
-        validateTypeAliases(node, true);
-      }
-    }
-
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
     return {
-      TSTypeAliasDeclaration(node) {
-        validateNode(node.typeAnnotation);
+      TSTypeAliasDeclaration(node: TSESTree.TSTypeAliasDeclaration) {
+        if (isComposition(node.typeAnnotation)) {
+          validateCompositions(node.typeAnnotation);
+        } else {
+          validateTypeAliases(node.typeAnnotation, true);
+        }
       }
     };
   }

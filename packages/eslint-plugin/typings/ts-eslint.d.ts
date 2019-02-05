@@ -411,6 +411,6 @@ declare module 'ts-eslint' {
 
   //#endregion Rule
 
-  export { RuleContext, ReportFixFunction };
+  export { RuleContext, ReportFixFunction, ReportDescriptor };
   export default RuleModule;
 }
