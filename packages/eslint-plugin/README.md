@@ -68,6 +68,38 @@ If you want to use rules which require type information, you will need to specif
 
 See [@typescript-eslint/parser's README.md](../parser/README.md) for more information on the available "parserOptions".
 
+## Usage with Prettier
+
+Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable our code formatting related rules:
+
+```json
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ]
+}
+```
+
+**Note: Make sure you have `eslint-config-prettier@4.0.0` or newer.**
+
+## Usage with Airbnb
+
+Airbnb has two configs, a base one [`eslint-config-airbnb-base`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base) and one that includes rules for React [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb).
+
+First you'll need to install the config according to the instructions in one of the links above. `npx install-peerdeps --dev eslint-config-airbnb` or `npx install-peerdeps --dev eslint-config-airbnb-base` should work if you are using **npm 5+**.
+
+Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.eslintrc`. You might also want to turn on `plugin:@typescript-eslint/recommended` as well to enable all of the recommended rules.
+
+```json
+{
+  "extends": ["airbnb-base", "plugin:@typescript-eslint/recommended"]
+}
+```
+
+**Note: You can use Airbnb's rules alongside Prettier, see [Usage with Prettier](#usage-with-prettier)**
+
 ## Supported Rules
 
 <!-- Please run `npm run docs` to update this section -->
@@ -105,8 +137,10 @@ See [@typescript-eslint/parser's README.md](../parser/README.md) for more inform
 | [`@typescript-eslint/no-this-alias`](./docs/rules/no-this-alias.md)                                       | Disallow aliasing `this` (`no-this-assignment` from TSLint)                                                                                         |                    |          |
 | [`@typescript-eslint/no-triple-slash-reference`](./docs/rules/no-triple-slash-reference.md)               | Disallow `/// <reference path="" />` comments (`no-reference` from TSLint)                                                                          | :heavy_check_mark: |          |
 | [`@typescript-eslint/no-type-alias`](./docs/rules/no-type-alias.md)                                       | Disallow the use of type aliases (`interface-over-type-literal` from TSLint)                                                                        |                    |          |
+| [`@typescript-eslint/no-unnecessary-type-assertion`](./docs/rules/no-unnecessary-type-assertion.md)       | Warns if a type assertion does not change the type of an expression (`no-unnecessary-type-assertion` from TSLint)                                   |                    | :wrench: |
 | [`@typescript-eslint/no-unused-vars`](./docs/rules/no-unused-vars.md)                                     | Disallow unused variables (`no-unused-variable` from TSLint)                                                                                        | :heavy_check_mark: |          |
 | [`@typescript-eslint/no-use-before-define`](./docs/rules/no-use-before-define.md)                         | Disallow the use of variables before they are defined                                                                                               | :heavy_check_mark: |          |
+| [`@typescript-eslint/no-useless-constructor`](./docs/rules/no-useless-constructor.md)                     | Disallow unnecessary constructors                                                                                                                   |                    |          |
 | [`@typescript-eslint/no-var-requires`](./docs/rules/no-var-requires.md)                                   | Disallows the use of require statements except in import statements (`no-var-requires` from TSLint)                                                 | :heavy_check_mark: |          |
 | [`@typescript-eslint/prefer-interface`](./docs/rules/prefer-interface.md)                                 | Prefer an interface declaration over a type literal (type T = { ... }) (`interface-over-type-literal` from TSLint)                                  | :heavy_check_mark: | :wrench: |
 | [`@typescript-eslint/prefer-namespace-keyword`](./docs/rules/prefer-namespace-keyword.md)                 | Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules. (`no-internal-module` from TSLint) | :heavy_check_mark: | :wrench: |

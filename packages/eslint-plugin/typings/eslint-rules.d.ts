@@ -122,3 +122,17 @@ declare module 'eslint/lib/rules/indent' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/no-useless-constructor' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    never,
+    [],
+    {
+      MethodDefinition(node: TSESTree.MethodDefinition): void;
+    }
+  >;
+  export = rule;
+}

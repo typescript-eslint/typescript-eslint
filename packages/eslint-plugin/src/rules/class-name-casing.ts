@@ -55,11 +55,11 @@ const rule: RuleModule<MessageIds, Options> = {
       let friendlyName;
 
       switch (decl.type) {
-        case 'ClassDeclaration':
-        case 'ClassExpression':
+        case AST_NODE_TYPES.ClassDeclaration:
+        case AST_NODE_TYPES.ClassExpression:
           friendlyName = decl.abstract ? 'Abstract class' : 'Class';
           break;
-        case 'TSInterfaceDeclaration':
+        case AST_NODE_TYPES.TSInterfaceDeclaration:
           friendlyName = 'Interface';
           break;
         default:

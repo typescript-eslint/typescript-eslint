@@ -3,7 +3,7 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule, { ReportFixFunction } from 'ts-eslint';
 import * as util from '../util';
 
@@ -104,7 +104,10 @@ const rule: RuleModule<MessageIds, Options> = {
 
     return {
       'TSTypeReference Identifier'(node: TSESTree.Identifier) {
-        if (node.parent && node.parent.type !== 'TSQualifiedName') {
+        if (
+          node.parent &&
+          node.parent.type !== AST_NODE_TYPES.TSQualifiedName
+        ) {
           if (node.name in banedTypes) {
             let customMessage = '';
             const bannedCfgValue = banedTypes[node.name];

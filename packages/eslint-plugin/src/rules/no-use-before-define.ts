@@ -6,6 +6,7 @@
  * @author Jed Fox
  */
 
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { Rule, Scope } from 'eslint';
 import * as util from '../util';
 
@@ -59,7 +60,7 @@ function isTopLevelScope(scope: Scope.Scope): boolean {
  * @param variable - A variable to check.
  */
 function isFunction(variable: Scope.Variable): boolean {
-  return variable.defs[0].type === 'FunctionName';
+  return variable.defs[0].type === AST_NODE_TYPES.FunctionName;
 }
 
 /**
@@ -71,7 +72,7 @@ function isOuterClass(
   variable: Scope.Variable,
   reference: Scope.Reference
 ): boolean {
-  if (variable.defs[0].type !== 'ClassName') {
+  if (variable.defs[0].type !== AST_NODE_TYPES.ClassName) {
     return false;
   }
 
@@ -94,7 +95,7 @@ function isOuterVariable(
   variable: Scope.Variable,
   reference: Scope.Reference
 ): boolean {
-  if (variable.defs[0].type !== 'Variable') {
+  if (variable.defs[0].type !== AST_NODE_TYPES.Variable) {
     return false;
   }
 
@@ -115,7 +116,7 @@ function isOuterVariable(
 function isType(variable: Scope.Variable): boolean {
   const def = variable.defs[0];
   return !!(
-    def.type === 'Variable' &&
+    def.type === AST_NODE_TYPES.Variable &&
     def.parent &&
     def.parent.kind === 'type'
   );
@@ -157,7 +158,7 @@ function isInInitializer(
   const location = reference.identifier.range[1];
 
   while (node) {
-    if (node.type === 'VariableDeclarator') {
+    if (node.type === AST_NODE_TYPES.VariableDeclarator) {
       if (isInRange(node.init, location)) {
         return true;
       }
@@ -168,7 +169,7 @@ function isInInitializer(
         return true;
       }
       break;
-    } else if (node.type === 'AssignmentPattern') {
+    } else if (node.type === AST_NODE_TYPES.AssignmentPattern) {
       if (isInRange(node.right, location)) {
         return true;
       }

@@ -3,6 +3,7 @@
  * @author Jed Fox
  */
 
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -62,13 +63,17 @@ const rule: RuleModule = {
       "VariableDeclarator[init.type='ThisExpression']"(node) {
         const { id } = node;
 
-        if (allowDestructuring && id.type !== 'Identifier') return;
+        if (allowDestructuring && id.type !== AST_NODE_TYPES.Identifier) {
+          return;
+        }
 
         if (!allowedNames.includes(id.name)) {
           context.report({
             node: id,
             messageId:
-              id.type === 'Identifier' ? 'thisAssignment' : 'thisDestructure'
+              id.type === AST_NODE_TYPES.Identifier
+                ? 'thisAssignment'
+                : 'thisDestructure'
           });
         }
       }

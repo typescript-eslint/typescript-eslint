@@ -4,6 +4,7 @@
  * @author Armano <https://github.com/armano2>
  */
 
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -35,7 +36,7 @@ const rule: RuleModule = {
     return {
       TSModuleDeclaration(node) {
         // Do nothing if the name is a string.
-        if (!node.id || node.id.type === 'Literal') {
+        if (!node.id || node.id.type === AST_NODE_TYPES.Literal) {
           return;
         }
         // Get tokens of the declaration header.
@@ -43,7 +44,7 @@ const rule: RuleModule = {
 
         if (
           moduleType &&
-          moduleType.type === 'Identifier' &&
+          moduleType.type === AST_NODE_TYPES.Identifier &&
           moduleType.value === 'module'
         ) {
           context.report({

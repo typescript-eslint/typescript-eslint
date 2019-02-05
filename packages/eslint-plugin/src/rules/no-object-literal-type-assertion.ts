@@ -3,6 +3,7 @@
  * @author Armano <https://github.com/armano2>
  */
 
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -60,8 +61,8 @@ const rule: RuleModule = {
     function checkType(node): boolean {
       if (node) {
         switch (node.type) {
-          case 'TSAnyKeyword':
-          case 'TSUnknownKeyword':
+          case AST_NODE_TYPES.TSAnyKeyword:
+          case AST_NODE_TYPES.TSUnknownKeyword:
             return false;
           default:
             break;
@@ -74,15 +75,15 @@ const rule: RuleModule = {
       'TSTypeAssertion, TSAsExpression'(node) {
         if (
           allowAsParameter &&
-          (node.parent.type === 'NewExpression' ||
-            node.parent.type === 'CallExpression')
+          (node.parent.type === AST_NODE_TYPES.NewExpression ||
+            node.parent.type === AST_NODE_TYPES.CallExpression)
         ) {
           return;
         }
 
         if (
           checkType(node.typeAnnotation) &&
-          node.expression.type === 'ObjectExpression'
+          node.expression.type === AST_NODE_TYPES.ObjectExpression
         ) {
           context.report({
             node,

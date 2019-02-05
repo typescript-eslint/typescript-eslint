@@ -3,6 +3,7 @@
  * @author Macklin Underdown
  */
 
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -32,7 +33,7 @@ const rule: RuleModule = {
       CallExpression(node) {
         if (
           node.callee.name === 'require' &&
-          node.parent.type === 'VariableDeclarator'
+          node.parent.type === AST_NODE_TYPES.VariableDeclarator
         ) {
           context.report({
             node,

@@ -21,7 +21,7 @@ export interface SourceLocation {
   end: LineAndColumnData;
 }
 
-interface BaseNode {
+export interface BaseNode {
   /**
    * The source location information of the node.
    */
@@ -64,6 +64,14 @@ export interface Comment extends BaseNode {
   type: 'Line' | 'Block';
   value: string;
 }
+
+export type OptionalRangeAndLoc<T> = Pick<
+  T,
+  Exclude<keyof T, 'range' | 'loc'>
+> & {
+  range?: [number, number];
+  loc?: SourceLocation;
+};
 
 // Every single valid AST Node
 // Please keep it sorted alphabetically.
@@ -331,7 +339,13 @@ export type ObjectLiteralElementLike =
   | RestElement
   | SpreadElement
   | TSAbstractMethodDefinition;
-export type Parameter = AssignmentPattern | RestElement | TSParameterProperty;
+export type Parameter =
+  | AssignmentPattern
+  | RestElement
+  | ArrayPattern
+  | ObjectPattern
+  | Identifier
+  | TSParameterProperty;
 export type PrimaryExpression =
   | ArrayExpression
   | ArrayPattern
@@ -521,6 +535,7 @@ export interface ArrayPattern extends BaseNode {
   elements: Expression[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface ArrowFunctionExpression extends BaseNode {
@@ -545,6 +560,7 @@ export interface AssignmentPattern extends BaseNode {
   right?: Expression;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface AwaitExpression extends BaseNode {
@@ -695,6 +711,7 @@ export interface Identifier extends BaseNode {
   name: string;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface IfStatement extends BaseNode {
@@ -855,6 +872,7 @@ export interface ObjectPattern extends BaseNode {
   properties: ObjectLiteralElementLike[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface Program extends BaseNode {
@@ -873,7 +891,6 @@ export interface Property extends BaseNode {
   method: boolean;
   shorthand: boolean;
   kind: 'init';
-  typeParameters?: TSTypeParameterDeclaration;
 }
 
 export interface RestElement extends BaseNode {
@@ -882,6 +899,7 @@ export interface RestElement extends BaseNode {
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   value?: AssignmentPattern;
+  decorators?: Decorator[];
 }
 
 export interface ReturnStatement extends BaseNode {
@@ -1204,6 +1222,7 @@ export interface TSParameterProperty extends BaseNode {
   static?: boolean;
   export?: boolean;
   parameter: AssignmentPattern | BindingName | RestElement;
+  decorators?: Decorator[];
 }
 
 export interface TSParenthesizedType extends BaseNode {

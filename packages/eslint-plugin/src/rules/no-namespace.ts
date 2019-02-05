@@ -3,6 +3,7 @@
  * @author Patricio Trevino
  */
 
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -61,7 +62,8 @@ const rule: RuleModule = {
     return {
       "TSModuleDeclaration[global!=true][id.type='Identifier']"(node) {
         if (
-          (node.parent && node.parent.type === 'TSModuleDeclaration') ||
+          (node.parent &&
+            node.parent.type === AST_NODE_TYPES.TSModuleDeclaration) ||
           (allowDefinitionFiles && util.isDefinitionFile(filename)) ||
           (allowDeclarations && node.declare === true)
         ) {

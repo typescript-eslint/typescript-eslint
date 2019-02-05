@@ -3,6 +3,7 @@
  * @author Patricio Trevino
  */
 
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -111,7 +112,8 @@ const rule: RuleModule = {
     function isComposition(node): boolean {
       return (
         node &&
-        (node.type === 'TSUnionType' || node.type === 'TSIntersectionType')
+        (node.type === AST_NODE_TYPES.TSUnionType ||
+          node.type === AST_NODE_TYPES.TSIntersectionType)
       );
     }
 
@@ -129,9 +131,9 @@ const rule: RuleModule = {
       return (
         compositions.indexOf(allowed) === -1 ||
         (!isTopLevel &&
-          ((compositionType === 'TSUnionType' &&
+          ((compositionType === AST_NODE_TYPES.TSUnionType &&
             unions.indexOf(allowed) > -1) ||
-            (compositionType === 'TSIntersectionType' &&
+            (compositionType === AST_NODE_TYPES.TSIntersectionType &&
               intersections.indexOf(allowed) > -1)))
       );
     }
@@ -152,7 +154,7 @@ const rule: RuleModule = {
      * @param {TSNode} node the node to be evaluated.
      */
     function isCallback(node): boolean {
-      return node && node.type === 'TSFunctionType';
+      return node && node.type === AST_NODE_TYPES.TSFunctionType;
     }
 
     /**
@@ -160,7 +162,7 @@ const rule: RuleModule = {
      * @param {TSNode} node the node to be evaluated.
      */
     function isLiteral(node): boolean {
-      return node && node.type === 'TSTypeLiteral';
+      return node && node.type === AST_NODE_TYPES.TSTypeLiteral;
     }
 
     /**
@@ -168,7 +170,7 @@ const rule: RuleModule = {
      * @param {TSNode} node the node to be evaluated.
      */
     function isMappedType(node): boolean {
-      return node && node.type === 'TSMappedType';
+      return node && node.type === AST_NODE_TYPES.TSMappedType;
     }
 
     /**
@@ -200,7 +202,9 @@ const rule: RuleModule = {
         messageId: 'noCompositionAlias',
         data: {
           compositionType:
-            compositionType === 'TSUnionType' ? 'union' : 'intersection',
+            compositionType === AST_NODE_TYPES.TSUnionType
+              ? 'union'
+              : 'intersection',
           typeName: util.upperCaseFirst(type!)
         }
       };

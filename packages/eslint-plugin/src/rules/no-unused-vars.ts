@@ -3,16 +3,16 @@
  * @author James Henry
  */
 
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/no-unused-vars';
-import { Identifier } from 'estree';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = Object.assign({}, baseRule, {
+const rule: RuleModule = Object.assign({}, baseRule, {
   meta: {
     type: 'problem',
     docs: {
@@ -33,7 +33,7 @@ const rule: Rule.RuleModule = Object.assign({}, baseRule, {
      * Mark this function parameter as used
      * @param node The node currently being traversed
      */
-    function markThisParameterAsUsed(node: Identifier): void {
+    function markThisParameterAsUsed(node: TSESTree.Identifier): void {
       if (node.name) {
         const variable = context
           .getScope()
@@ -51,13 +51,13 @@ const rule: Rule.RuleModule = Object.assign({}, baseRule, {
      */
     function markHeritageAsUsed(node): void {
       switch (node.type) {
-        case 'Identifier':
+        case AST_NODE_TYPES.Identifier:
           context.markVariableAsUsed(node.name);
           break;
-        case 'MemberExpression':
+        case AST_NODE_TYPES.MemberExpression:
           markHeritageAsUsed(node.object);
           break;
-        case 'CallExpression':
+        case AST_NODE_TYPES.CallExpression:
           markHeritageAsUsed(node.callee);
           break;
       }

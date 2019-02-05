@@ -3,7 +3,7 @@
  * @author Patricio Trevino
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 import { getNameFromPropertyName } from '../tsestree-utils';
@@ -55,8 +55,8 @@ const rule: RuleModule<MessageIds, Options> = {
       }
 
       switch (member.type) {
-        case 'ExportDefaultDeclaration':
-        case 'ExportNamedDeclaration': {
+        case AST_NODE_TYPES.ExportDefaultDeclaration:
+        case AST_NODE_TYPES.ExportNamedDeclaration: {
           // export statements (e.g. export { a };)
           // have no declarations, so ignore them
           if (!member.declaration) {
@@ -65,16 +65,16 @@ const rule: RuleModule<MessageIds, Options> = {
 
           return getMemberName(member.declaration);
         }
-        case 'TSDeclareFunction':
-        case 'FunctionDeclaration':
+        case AST_NODE_TYPES.TSDeclareFunction:
+        case AST_NODE_TYPES.FunctionDeclaration:
           return member.id && member.id.name;
-        case 'TSMethodSignature':
+        case AST_NODE_TYPES.TSMethodSignature:
           return getNameFromPropertyName(member.key);
-        case 'TSCallSignatureDeclaration':
+        case AST_NODE_TYPES.TSCallSignatureDeclaration:
           return 'call';
-        case 'TSConstructSignatureDeclaration':
+        case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
-        case 'MethodDefinition':
+        case AST_NODE_TYPES.MethodDefinition:
           return getNameFromPropertyName(member.key);
       }
 
@@ -83,13 +83,13 @@ const rule: RuleModule<MessageIds, Options> = {
 
     function getMembers(node: RuleNode): Member[] {
       switch (node.type) {
-        case 'ClassBody':
-        case 'Program':
-        case 'TSModuleBlock':
-        case 'TSInterfaceBody':
+        case AST_NODE_TYPES.ClassBody:
+        case AST_NODE_TYPES.Program:
+        case AST_NODE_TYPES.TSModuleBlock:
+        case AST_NODE_TYPES.TSInterfaceBody:
           return node.body;
 
-        case 'TSTypeLiteral':
+        case AST_NODE_TYPES.TSTypeLiteral:
           return node.members;
       }
 

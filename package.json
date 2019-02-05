@@ -21,21 +21,13 @@
     "test": "lerna run test --parallel",
     "build": "lerna run build",
     "clean": "lerna clean && lerna run clean",
-    "precommit": "yarn test && lint-staged",
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "cz": "git-cz",
-    "commitmsg": "commitlint -E GIT_PARAMS",
     "check-format": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
     "integration-tests": "docker-compose -f tests/integration/docker-compose.yml up",
     "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local"
-  },
-  "lint-staged": {
-    "*.{ts,js,json,md}": [
-      "prettier --write",
-      "git add"
-    ]
   },
   "config": {
     "commitizen": {
@@ -66,17 +58,17 @@
     "cz-conventional-changelog": "2.1.0",
     "eslint": "^5.12.1",
     "eslint-plugin-eslint-plugin": "^2.0.1",
-    "eslint-plugin-jest": "^22.1.3",
+    "eslint-plugin-jest": "^22.2.2",
     "glob": "7.1.2",
-    "husky": "0.14.3",
+    "husky": "^1.3.1",
     "jest": "23.6.0",
     "lerna": "^3.10.5",
-    "lint-staged": "7.3.0",
+    "lint-staged": "8.1.0",
     "lodash.isplainobject": "4.0.6",
     "prettier": "^1.14.3",
     "rimraf": "^2.6.3",
     "ts-jest": "^23.10.4",
     "tslint": "^5.11.0",
-    "typescript": "~3.2.1"
+    "typescript": ">=3.2.1 <3.4.0"
   }
 }

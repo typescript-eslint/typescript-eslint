@@ -3,7 +3,7 @@
  * @author Scott O'Hara
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -62,7 +62,8 @@ const rule: RuleModule<MessageIds, Options> = {
      */
     function isConstructor(parent: TSESTree.Node): boolean {
       return (
-        parent.type === 'MethodDefinition' && parent.kind === 'constructor'
+        parent.type === AST_NODE_TYPES.MethodDefinition &&
+        parent.kind === 'constructor'
       );
     }
 
@@ -71,7 +72,9 @@ const rule: RuleModule<MessageIds, Options> = {
      * @param parent The parent of a function expression node
      */
     function isSetter(parent: TSESTree.Node): boolean {
-      return parent.type === 'MethodDefinition' && parent.kind === 'set';
+      return (
+        parent.type === AST_NODE_TYPES.MethodDefinition && parent.kind === 'set'
+      );
     }
 
     /**
@@ -111,8 +114,8 @@ const rule: RuleModule<MessageIds, Options> = {
       if (
         options.allowExpressions &&
         node.parent &&
-        node.parent.type !== 'VariableDeclarator' &&
-        node.parent.type !== 'MethodDefinition'
+        node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
+        node.parent.type !== AST_NODE_TYPES.MethodDefinition
       ) {
         return;
       }

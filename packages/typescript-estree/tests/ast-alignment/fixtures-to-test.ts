@@ -167,6 +167,15 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
     'error-strict-dup-params' // babel parse errors
   ]
 });
+tester.addFixturePatternConfig('javascript/function', {
+  ignore: [
+    /**
+     * Babel has invalid end range of multiline SequenceExpression
+     * TODO: report it to babel
+     */
+    'return-multiline-sequence'
+  ]
+});
 
 tester.addFixturePatternConfig('javascript/bigIntLiterals');
 tester.addFixturePatternConfig('javascript/binaryLiterals');
@@ -324,10 +333,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'interface-with-all-property-types', // babel parse errors
     /**
-     * there is difference in range between babel and ts-estree
-     */
-    'interface-with-optional-properties',
-    /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
      * TODO: report it to babel
@@ -359,11 +364,16 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'type-assertion-arrow-function',
     /**
-     * Babel does not include range of declare keyword into enum range
-     * https://github.com/babel/babel/issues/9399
+     * PR for range of declare keyword has been merged into Babel: https://github.com/babel/babel/pull/9406
+     * TODO: remove me in next babel > 7.3.1
      */
     'export-declare-const-named-enum',
-    'export-declare-named-enum'
+    'export-declare-named-enum',
+    /**
+     * Babel does not include optional keyword into range parameter in arrow function
+     * TODO: report it to babel
+     */
+    'arrow-function-with-optional-parameter'
   ],
   ignoreSourceType: [
     /**
@@ -386,7 +396,15 @@ tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
   fileType: 'ts'
 });
 tester.addFixturePatternConfig('typescript/decorators/parameter-decorators', {
-  fileType: 'ts'
+  fileType: 'ts',
+  ignore: [
+    /**
+     * babel does not support decorators on array and rest parameters
+     * TODO: report this to babel
+     */
+    'parameter-array-pattern-decorator',
+    'parameter-rest-element-decorator'
+  ]
 });
 tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
   fileType: 'ts'
@@ -422,13 +440,8 @@ tester.addFixturePatternConfig('typescript/declare', {
 
 tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
   fileType: 'ts',
-  ignore: [
-    /**
-     * Minor AST difference
-     */
-    'nested-internal-module'
-  ],
   ignoreSourceType: [
+    'nested-internal-module',
     'module-with-default-exports',
     'ambient-module-declaration-with-import',
     'declare-namespace-with-exported-function'

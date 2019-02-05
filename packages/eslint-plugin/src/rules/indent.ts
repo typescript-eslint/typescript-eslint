@@ -6,7 +6,7 @@
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import baseRule from 'eslint/lib/rules/indent';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
@@ -140,7 +140,9 @@ const rule: RuleModule<MessageIds, Options> = {
         | TSESTree.TSPropertySignature
         | TSESTree.TSEnumMember
         | TSESTree.TypeElement,
-      type: 'ClassProperty' | 'Property' = 'Property'
+      type:
+        | AST_NODE_TYPES.ClassProperty
+        | AST_NODE_TYPES.Property = AST_NODE_TYPES.Property
     ): TSESTree.Node | null {
       const base = {
         // indent doesn't actually use these
@@ -159,7 +161,7 @@ const rule: RuleModule<MessageIds, Options> = {
         range: node.range,
         loc: node.loc
       };
-      if (type === 'Property') {
+      if (type === AST_NODE_TYPES.Property) {
         return {
           type,
           ...base
@@ -186,7 +188,7 @@ const rule: RuleModule<MessageIds, Options> = {
       TSAsExpression(node: TSESTree.TSAsExpression) {
         // transform it to a BinaryExpression
         return rules['BinaryExpression, LogicalExpression']({
-          type: 'BinaryExpression',
+          type: AST_NODE_TYPES.BinaryExpression,
           operator: 'as',
           left: node.expression,
           // the first typeAnnotation includes the as token
@@ -202,9 +204,9 @@ const rule: RuleModule<MessageIds, Options> = {
       TSConditionalType(node: TSESTree.TSConditionalType) {
         // transform it to a ConditionalExpression
         return rules.ConditionalExpression({
-          type: 'ConditionalExpression',
+          type: AST_NODE_TYPES.ConditionalExpression,
           test: {
-            type: 'BinaryExpression' as 'BinaryExpression',
+            type: AST_NODE_TYPES.BinaryExpression,
             operator: 'extends',
             left: node.checkType as any,
             right: node.extendsType as any,
@@ -231,7 +233,7 @@ const rule: RuleModule<MessageIds, Options> = {
       ) {
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
-          type: 'ObjectExpression',
+          type: AST_NODE_TYPES.ObjectExpression,
           properties: (node.members as (
             | TSESTree.TSEnumMember
             | TSESTree.TypeElement)[]).map(
@@ -251,11 +253,11 @@ const rule: RuleModule<MessageIds, Options> = {
         const { id, moduleReference } = node;
 
         return rules.VariableDeclaration({
-          type: 'VariableDeclaration',
+          type: AST_NODE_TYPES.VariableDeclaration,
           kind: 'const' as 'const',
           declarations: [
             {
-              type: 'VariableDeclarator' as 'VariableDeclarator',
+              type: AST_NODE_TYPES.VariableDeclarator,
               range: [id.range[0], moduleReference.range[1]] as Range,
               loc: {
                 start: id.loc.start,
@@ -263,9 +265,9 @@ const rule: RuleModule<MessageIds, Options> = {
               },
               id: id,
               init: {
-                type: 'CallExpression' as 'CallExpression',
+                type: AST_NODE_TYPES.CallExpression,
                 callee: {
-                  type: 'Identifier' as 'Identifier',
+                  type: AST_NODE_TYPES.Identifier,
                   name: 'require',
                   range: [
                     moduleReference.range[0],
@@ -301,7 +303,7 @@ const rule: RuleModule<MessageIds, Options> = {
       TSIndexedAccessType(node: TSESTree.TSIndexedAccessType) {
         // convert to a MemberExpression
         return rules['MemberExpression, JSXMemberExpression, MetaProperty']({
-          type: 'MemberExpression',
+          type: AST_NODE_TYPES.MemberExpression,
           object: node.objectType as any,
           property: node.indexType as any,
 
@@ -315,12 +317,12 @@ const rule: RuleModule<MessageIds, Options> = {
       TSInterfaceBody(node: TSESTree.TSInterfaceBody) {
         // transform it to an ClassBody
         return rules['BlockStatement, ClassBody']({
-          type: 'ClassBody',
+          type: AST_NODE_TYPES.ClassBody,
           body: node.body.map(
             p =>
               TSPropertySignatureToProperty(
                 p,
-                'ClassProperty'
+                AST_NODE_TYPES.ClassProperty
               ) as TSESTree.ClassProperty
           ),
 
@@ -338,7 +340,7 @@ const rule: RuleModule<MessageIds, Options> = {
         return rules[
           'ClassDeclaration[superClass], ClassExpression[superClass]'
         ]({
-          type: 'ClassDeclaration',
+          type: AST_NODE_TYPES.ClassDeclaration,
           body: node.body as any,
           id: undefined,
           // TODO: This is invalid, there can be more than one extends in interface
@@ -359,10 +361,10 @@ const rule: RuleModule<MessageIds, Options> = {
 
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
-          type: 'ObjectExpression',
+          type: AST_NODE_TYPES.ObjectExpression,
           properties: [
             {
-              type: 'Property' as 'Property',
+              type: AST_NODE_TYPES.Property,
               key: node.typeParameter as any,
               value: node.typeAnnotation as any,
 
@@ -396,7 +398,7 @@ const rule: RuleModule<MessageIds, Options> = {
       TSModuleBlock(node: TSESTree.TSModuleBlock) {
         // transform it to a BlockStatement
         return rules['BlockStatement, ClassBody']({
-          type: 'BlockStatement',
+          type: AST_NODE_TYPES.BlockStatement,
           body: node.body,
 
           // location data
@@ -408,7 +410,7 @@ const rule: RuleModule<MessageIds, Options> = {
 
       TSQualifiedName(node: TSESTree.TSQualifiedName) {
         return rules['MemberExpression, JSXMemberExpression, MetaProperty']({
-          type: 'MemberExpression',
+          type: AST_NODE_TYPES.MemberExpression,
           object: node.left as any,
           property: node.right as any,
 
@@ -422,7 +424,7 @@ const rule: RuleModule<MessageIds, Options> = {
       TSTupleType(node: TSESTree.TSTupleType) {
         // transform it to an ArrayExpression
         return rules['ArrayExpression, ArrayPattern']({
-          type: 'ArrayExpression',
+          type: AST_NODE_TYPES.ArrayExpression,
           elements: node.elementTypes as any,
 
           // location data
@@ -438,7 +440,7 @@ const rule: RuleModule<MessageIds, Options> = {
         // JSX is about the closest we can get because the angle brackets
         // it's not perfect but it works!
         return rules.JSXOpeningElement({
-          type: 'JSXOpeningElement',
+          type: AST_NODE_TYPES.JSXOpeningElement,
           selfClosing: false,
           name: name as any,
           attributes: attributes as any,

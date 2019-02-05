@@ -4,7 +4,7 @@
  * @author Brad Zacher
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -130,8 +130,7 @@ const rule: RuleModule<MessageIds, Options> = {
      * Check the last token in the given member.
      * @param member the member to be evaluated.
      * @param opts the options to be validated.
-     * @param isLast a flag indicating `member` is the last in the
-     *                         interface or type literal.
+     * @param isLast a flag indicating `member` is the last in the interface or type literal.
      */
     function checkLastToken(
       member: TSESTree.TypeElement,
@@ -231,10 +230,12 @@ const rule: RuleModule<MessageIds, Options> = {
       const isSingleLine = node.loc.start.line === node.loc.end.line;
 
       const members =
-        node.type === 'TSInterfaceBody' ? node.body : node.members;
+        node.type === AST_NODE_TYPES.TSInterfaceBody ? node.body : node.members;
 
       const typeOpts =
-        node.type === 'TSInterfaceBody' ? interfaceOptions : typeLiteralOptions;
+        node.type === AST_NODE_TYPES.TSInterfaceBody
+          ? interfaceOptions
+          : typeLiteralOptions;
       const opts = isSingleLine ? typeOpts.singleline : typeOpts.multiline;
 
       members.forEach((member, index) => {

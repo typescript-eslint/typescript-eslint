@@ -42,3 +42,4 @@ const rule: RuleModule<MessageIds, Options> = {
   }
 };
 export default rule;
+export { Options, MessageIds };

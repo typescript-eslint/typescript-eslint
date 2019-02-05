@@ -3,6 +3,7 @@
  * @author Armano <https://github.com/armano2>
  */
 
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -54,7 +55,7 @@ const rule: RuleModule = {
 
             if (
               afterToken &&
-              afterToken.type === 'Punctuator' &&
+              afterToken.type === AST_NODE_TYPES.Punctuator &&
               afterToken.value === ';'
             ) {
               fixes.push(fixer.remove(afterToken));

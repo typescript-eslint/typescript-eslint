@@ -12,9 +12,9 @@ import { getNameFromPropertyName } from '../tsestree-utils';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-export type MessageIds = 'incorrectOrder';
+type MessageIds = 'incorrectOrder';
 type OrderConfig = string[] | 'never';
-export type Options = [
+type Options = [
   {
     default?: OrderConfig;
     classes?: OrderConfig;
@@ -402,3 +402,4 @@ const rule: RuleModule<MessageIds, Options> = {
   }
 };
 export default rule;
+export { Options, MessageIds };

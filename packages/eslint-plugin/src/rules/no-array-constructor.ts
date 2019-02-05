@@ -6,13 +6,13 @@
 
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
-export type Options = [];
-export type MessageIds = 'useLiteral';
+type Options = [];
+type MessageIds = 'useLiteral';
 
 const rule: RuleModule<MessageIds, Options> = {
   meta: {
@@ -40,7 +40,7 @@ const rule: RuleModule<MessageIds, Options> = {
     ): void {
       if (
         node.arguments.length !== 1 &&
-        node.callee.type === 'Identifier' &&
+        node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
         !node.typeParameters
       ) {
@@ -70,3 +70,4 @@ const rule: RuleModule<MessageIds, Options> = {
   }
 };
 export default rule;
+export { Options, MessageIds };

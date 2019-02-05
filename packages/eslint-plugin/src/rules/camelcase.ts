@@ -3,7 +3,7 @@
  * @author Patricio Trevino
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/camelcase';
 import * as util from '../util';
@@ -89,7 +89,7 @@ const rule: RuleModule<MessageIds, Options> = {
         return true;
       }
 
-      if (node.parent.type === 'AssignmentPattern') {
+      if (node.parent.type === AST_NODE_TYPES.AssignmentPattern) {
         return (
           node.parent.parent !== undefined &&
           TS_PROPERTY_TYPES.includes(node.parent.parent.type)

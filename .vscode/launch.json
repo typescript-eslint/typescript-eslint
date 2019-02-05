@@ -13,7 +13,7 @@
           "args": [
               "--colors",
               "--runInBand",
-              "${workspaceFolder}/packages/eslint-plugin/tests/rules/${fileBasenameNoExtension}"
+              "tests/rules/${fileBasenameNoExtension}"
           ],
           "console": "integratedTerminal",
           "internalConsoleOptions": "neverOpen"

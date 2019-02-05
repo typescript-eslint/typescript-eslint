@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "main": "dist/parser.js",
   "files": [
@@ -9,7 +9,7 @@
     "LICENSE"
   ],
   "engines": {
-    "node": ">=6.14.0"
+    "node": "^6.14.0 || ^8.10.0 || >=9.10.0"
   },
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {
@@ -32,11 +32,11 @@
     "test": "jest --coverage"
   },
   "peerDependencies": {
-    "eslint": ">=4.19.1",
+    "eslint": "^5.0.0",
     "typescript": "*"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "1.1.0",
+    "@typescript-eslint/typescript-estree": "1.2.0",
     "eslint-scope": "^4.0.0",
     "eslint-visitor-keys": "^1.0.0"
   },
@@ -44,6 +44,6 @@
     "@types/eslint": "^4.16.5",
     "@types/eslint-visitor-keys": "^1.0.0",
     "@types/estree": "^0.0.39",
-    "@typescript-eslint/shared-fixtures": "1.1.0"
+    "@typescript-eslint/shared-fixtures": "1.2.0"
   }
 }

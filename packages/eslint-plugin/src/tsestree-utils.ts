@@ -14,12 +14,18 @@ export function getNameFromPropertyName(
   return `${propertyName.value}`;
 }
 
+type InferOptionsTypeFromRuleNever<T> = T extends RuleModule<
+  never,
+  infer TOptions
+>
+  ? TOptions
+  : unknown;
 export type InferOptionsTypeFromRule<T> = T extends RuleModule<
   any,
   infer TOptions
 >
   ? TOptions
-  : unknown;
+  : InferOptionsTypeFromRuleNever<T>;
 
 export type InferMessageIdsTypeFromRule<T> = T extends RuleModule<
   infer TMessageIds,

@@ -3,7 +3,7 @@
  * @author Jed Fox
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -69,6 +69,17 @@ const rule: RuleModule<MessageIds, Options> = {
       allowStaticOnly
     } = util.applyDefault(defaultOptions, context.options)[0];
 
+    function getReportNode(node: TSESTree.ClassBody): TSESTree.Node {
+      if (!node.parent) {
+        return node;
+      }
+      if ('id' in node.parent && node.parent.id) {
+        return node.parent.id;
+      }
+
+      return node.parent;
+    }
+
     return {
       ClassBody(node: TSESTree.ClassBody) {
         const parent = node.parent as
@@ -80,13 +91,15 @@ const rule: RuleModule<MessageIds, Options> = {
           return;
         }
 
+        const reportNode = getReportNode(node);
+
         if (node.body.length === 0) {
           if (allowEmpty) {
             return;
           }
 
           context.report({
-            node,
+            node: reportNode,
             messageId: 'empty'
           });
 
@@ -100,7 +113,7 @@ const rule: RuleModule<MessageIds, Options> = {
           if ('kind' in prop && prop.kind === 'constructor') {
             if (
               prop.value.params.some(
-                param => param.type === 'TSParameterProperty'
+                param => param.type === AST_NODE_TYPES.TSParameterProperty
               )
             ) {
               onlyConstructor = false;
@@ -118,7 +131,7 @@ const rule: RuleModule<MessageIds, Options> = {
         if (onlyConstructor) {
           if (!allowConstructorOnly) {
             context.report({
-              node,
+              node: reportNode,
               messageId: 'onlyConstructor'
             });
           }
@@ -126,7 +139,7 @@ const rule: RuleModule<MessageIds, Options> = {
         }
         if (onlyStatic && !allowStaticOnly) {
           context.report({
-            node,
+            node: reportNode,
             messageId: 'onlyStatic'
           });
         }
@@ -135,3 +148,4 @@ const rule: RuleModule<MessageIds, Options> = {
   }
 };
 export default rule;
+export { Options, MessageIds };

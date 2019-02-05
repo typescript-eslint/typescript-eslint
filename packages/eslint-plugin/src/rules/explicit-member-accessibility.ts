@@ -12,7 +12,10 @@ import { getNameFromPropertyName } from '../tsestree-utils';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule<'missingAccessibility', []> = {
+type Options = [];
+type MessageIds = 'missingAccessibility';
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {
@@ -89,3 +92,4 @@ const rule: RuleModule<'missingAccessibility', []> = {
   }
 };
 export default rule;
+export { Options, MessageIds };

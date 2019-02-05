@@ -49,11 +49,11 @@ const rule: RuleModule<MessageIds, Options> = {
     ): string | null {
       if (node) {
         switch (node.type) {
-          case 'TSTypeAnnotation':
+          case AST_NODE_TYPES.TSTypeAnnotation:
             return getTypeReferenceName(node.typeAnnotation);
-          case 'TSTypeReference':
+          case AST_NODE_TYPES.TSTypeReference:
             return getTypeReferenceName(node.typeName);
-          case 'Identifier':
+          case AST_NODE_TYPES.Identifier:
             return node.name;
           default:
             break;
@@ -74,7 +74,7 @@ const rule: RuleModule<MessageIds, Options> = {
         parent &&
         'id' in parent &&
         parent.id &&
-        parent.id.type === 'Identifier'
+        parent.id.type === AST_NODE_TYPES.Identifier
       ) {
         return getTypeReferenceName(returnType) === parent.id.name;
       }
