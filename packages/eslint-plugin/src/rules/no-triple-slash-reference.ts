@@ -5,18 +5,22 @@
 
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule = {
+type Options = [];
+type MessageIds = 'tripleSlashReference';
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow `/// <reference path="" />` comments',
       extraDescription: [util.tslintRule('no-reference')],
-      category: 'TypeScript',
+      category: 'Best Practices',
       url: util.metaDocsUrl('no-triple-slash-reference'),
       recommended: 'error'
     },
@@ -34,31 +38,25 @@ const rule: RuleModule = {
     // Helpers
     //----------------------------------------------------------------------
 
-    /**
-     * Checks if property has an accessibility modifier.
-     * @param {ASTNode} program The node representing a Program.
-     */
-    function checkTripleSlashReference(program): void {
-      const commentsBefore = sourceCode.getCommentsBefore(program);
-
-      commentsBefore.forEach(comment => {
-        if (comment.type !== 'Line') {
-          return;
-        }
-        if (referenceRegExp.test(comment.value)) {
-          context.report({
-            node: comment,
-            messageId: 'tripleSlashReference'
-          });
-        }
-      });
-    }
-
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
     return {
-      Program: checkTripleSlashReference
+      Program(program: TSESTree.Program): void {
+        const commentsBefore = sourceCode.getCommentsBefore(program);
+
+        commentsBefore.forEach(comment => {
+          if (comment.type !== 'Line') {
+            return;
+          }
+          if (referenceRegExp.test(comment.value)) {
+            context.report({
+              node: comment,
+              messageId: 'tripleSlashReference'
+            });
+          }
+        });
+      }
     };
   }
 };

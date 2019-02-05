@@ -310,7 +310,7 @@ declare module 'ts-eslint' {
     /**
      * The Node or AST Token which the report is being attached to
      */
-    node: TSESTree.Node | AST.Token;
+    node: TSESTree.Node | TSESTree.Comment | AST.Token;
     /**
      * An override of the location of the report
      */
