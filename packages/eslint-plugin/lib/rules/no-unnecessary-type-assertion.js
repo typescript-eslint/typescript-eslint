@@ -91,6 +91,11 @@ function verifyCast(node, context, checker) {
   const originalNode = context.parserServices.esTreeNodeToTSNodeMap.get(node);
   const options = context.options[0];
 
+  if (!originalNode || !originalNode.type) {
+    // Nodes without type
+    return;
+  }
+
   if (
     options &&
     options.typesToIgnore &&
