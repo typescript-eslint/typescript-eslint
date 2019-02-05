@@ -23,6 +23,13 @@ const ruleTester = new RuleTester({
 // Tests
 //------------------------------------------------------------------------------
 
+// the base rule doesn't have messageIds
+function error(
+  messages: { message: string; line: number; column: number }[]
+): any[] {
+  return messages;
+}
+
 ruleTester.run('no-unused-vars', rule, {
   valid: [
     `
@@ -592,13 +599,13 @@ export function Foo() {
 import { ClassDecoratorFactory } from 'decorators';
 export class Foo {}
             `,
-      errors: [
+      errors: error([
         {
           message: "'ClassDecoratorFactory' is defined but never used.",
           line: 2,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -606,13 +613,13 @@ import { Foo, Bar } from 'foo';
 function baz<Foo>() {}
 baz<Bar>()
             `,
-      errors: [
+      errors: error([
         {
           message: "'Foo' is defined but never used.",
           line: 2,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -620,13 +627,13 @@ import { Nullable } from 'nullable';
 const a: string = 'hello';
 console.log(a);
             `,
-      errors: [
+      errors: error([
         {
           message: "'Nullable' is defined but never used.",
           line: 2,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -635,13 +642,13 @@ import { SomeOther } from 'other';
 const a: Nullable<string> = 'hello';
 console.log(a);
             `,
-      errors: [
+      errors: error([
         {
           message: "'SomeOther' is defined but never used.",
           line: 3,
           column: 10
         }
-      ]
+      ])
     },
 
     {
@@ -653,13 +660,13 @@ class A {
 }
 new A();
             `,
-      errors: [
+      errors: error([
         {
           message: "'Another' is defined but never used.",
           line: 3,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -670,13 +677,13 @@ class A {
 }
 new A();
             `,
-      errors: [
+      errors: error([
         {
           message: "'Another' is defined but never used.",
           line: 3,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -687,13 +694,13 @@ class A {
 }
 new A();
             `,
-      errors: [
+      errors: error([
         {
           message: "'Another' is defined but never used.",
           line: 3,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -703,13 +710,13 @@ interface A {
     do(a: Nullable);
 }
             `,
-      errors: [
+      errors: error([
         {
           message: "'Another' is defined but never used.",
           line: 3,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -719,13 +726,13 @@ interface A {
     other: Nullable;
 }
             `,
-      errors: [
+      errors: error([
         {
           message: "'Another' is defined but never used.",
           line: 3,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -733,13 +740,13 @@ import { Nullable } from 'nullable';
 function foo(a: string) { console.log(a); }
 foo();
             `,
-      errors: [
+      errors: error([
         {
           message: "'Nullable' is defined but never used.",
           line: 2,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -747,13 +754,13 @@ import { Nullable } from 'nullable';
 function foo(): string | null { return null; }
 foo();
             `,
-      errors: [
+      errors: error([
         {
           message: "'Nullable' is defined but never used.",
           line: 2,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -765,13 +772,13 @@ class A extends Nullable {
 }
 new A();
             `,
-      errors: [
+      errors: error([
         {
           message: "'SomeOther' is defined but never used.",
           line: 3,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -783,13 +790,13 @@ abstract class A extends Nullable {
 }
 new A();
             `,
-      errors: [
+      errors: error([
         {
           message: "'SomeOther' is defined but never used.",
           line: 3,
           column: 10
         }
-      ]
+      ])
     },
     {
       code: `
@@ -798,13 +805,13 @@ enum FormFieldIds {
     EMAIL = 'email',
 }
             `,
-      errors: [
+      errors: error([
         {
           message: "'FormFieldIds' is defined but never used.",
           line: 2,
           column: 6
         }
-      ]
+      ])
     },
     {
       code: `
@@ -812,13 +819,13 @@ import test from 'test';
 import baz from 'baz';
 export interface Bar extends baz.test {}
     `,
-      errors: [
+      errors: error([
         {
           message: "'test' is defined but never used.",
           line: 2,
           column: 8
         }
-      ]
+      ])
     },
     {
       code: `
@@ -826,13 +833,13 @@ import test from 'test';
 import baz from 'baz';
 export interface Bar extends baz().test {}
     `,
-      errors: [
+      errors: error([
         {
           message: "'test' is defined but never used.",
           line: 2,
           column: 8
         }
-      ]
+      ])
     },
     {
       code: `
@@ -840,13 +847,13 @@ import test from 'test';
 import baz from 'baz';
 export class Bar implements baz.test {}
     `,
-      errors: [
+      errors: error([
         {
           message: "'test' is defined but never used.",
           line: 2,
           column: 8
         }
-      ]
+      ])
     },
     {
       code: `
@@ -854,13 +861,13 @@ import test from 'test';
 import baz from 'baz';
 export class Bar implements baz().test {}
     `,
-      errors: [
+      errors: error([
         {
           message: "'test' is defined but never used.",
           line: 2,
           column: 8
         }
-      ]
+      ])
     }
   ]
 });

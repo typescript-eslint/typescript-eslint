@@ -7,12 +7,19 @@ import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/no-unused-vars';
 import * as util from '../util';
+import {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule
+} from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule = Object.assign({}, baseRule, {
+type Options = InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {
@@ -49,7 +56,7 @@ const rule: RuleModule = Object.assign({}, baseRule, {
      * Mark heritage clause as used
      * @param node The node currently being traversed
      */
-    function markHeritageAsUsed(node): void {
+    function markHeritageAsUsed(node: TSESTree.Expression): void {
       switch (node.type) {
         case AST_NODE_TYPES.Identifier:
           context.markVariableAsUsed(node.name);
@@ -69,27 +76,27 @@ const rule: RuleModule = Object.assign({}, baseRule, {
     return Object.assign({}, rules, {
       "FunctionDeclaration Identifier[name='this']": markThisParameterAsUsed,
       "FunctionExpression Identifier[name='this']": markThisParameterAsUsed,
-      'TSTypeReference Identifier'(node) {
+      'TSTypeReference Identifier'(node: TSESTree.Identifier) {
         context.markVariableAsUsed(node.name);
       },
-      TSInterfaceHeritage(node) {
+      TSInterfaceHeritage(node: TSESTree.TSInterfaceHeritage) {
         if (node.expression) {
           markHeritageAsUsed(node.expression);
         }
       },
-      TSClassImplements(node) {
+      TSClassImplements(node: TSESTree.TSClassImplements) {
         if (node.expression) {
           markHeritageAsUsed(node.expression);
         }
       },
-      'TSParameterProperty Identifier'(node) {
+      'TSParameterProperty Identifier'(node: TSESTree.Identifier) {
         // just assume parameter properties are used
         context.markVariableAsUsed(node.name);
       },
-      'TSEnumMember Identifier'(node) {
+      'TSEnumMember Identifier'(node: TSESTree.Identifier) {
         context.markVariableAsUsed(node.name);
       },
-      '*[declare=true] Identifier'(node) {
+      '*[declare=true] Identifier'(node: TSESTree.Identifier) {
         context.markVariableAsUsed(node.name);
         const scope = context.getScope();
         const { variableScope } = scope;
@@ -100,5 +107,6 @@ const rule: RuleModule = Object.assign({}, baseRule, {
       }
     });
   }
-});
+};
 export default rule;
+export { Options, MessageIds };
