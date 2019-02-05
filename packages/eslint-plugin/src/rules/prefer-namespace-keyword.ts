@@ -4,7 +4,7 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -12,18 +12,25 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule = {
+type Options = [];
+type MessageIds = 'useNamespace';
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules.',
       extraDescription: [util.tslintRule('no-internal-module')],
-      category: 'TypeScript',
+      category: 'Best Practices',
       url: util.metaDocsUrl('prefer-namespace-keyword'),
       recommended: 'error'
     },
     fixable: 'code',
+    messages: {
+      useNamespace:
+        "Use 'namespace' instead of 'module' to declare custom TypeScript modules."
+    },
     schema: []
   },
 
@@ -34,7 +41,7 @@ const rule: RuleModule = {
     // Public
     //----------------------------------------------------------------------
     return {
-      TSModuleDeclaration(node) {
+      TSModuleDeclaration(node: TSESTree.TSModuleDeclaration) {
         // Do nothing if the name is a string.
         if (!node.id || node.id.type === AST_NODE_TYPES.Literal) {
           return;
@@ -49,8 +56,7 @@ const rule: RuleModule = {
         ) {
           context.report({
             node,
-            message:
-              "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
+            messageId: 'useNamespace',
             fix(fixer) {
               return fixer.replaceText(moduleType, 'namespace');
             }

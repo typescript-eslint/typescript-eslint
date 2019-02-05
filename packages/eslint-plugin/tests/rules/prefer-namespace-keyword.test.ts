@@ -33,8 +33,7 @@ ruleTester.run('prefer-namespace-keyword', rule, {
       output: 'namespace foo { }',
       errors: [
         {
-          message:
-            "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
+          messageId: 'useNamespace',
           line: 1,
           column: 1
         }
@@ -45,8 +44,7 @@ ruleTester.run('prefer-namespace-keyword', rule, {
       output: 'declare namespace foo { }',
       errors: [
         {
-          message:
-            "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
+          messageId: 'useNamespace',
           line: 1,
           column: 1
         }
@@ -65,14 +63,12 @@ declare namespace foo {
             `,
       errors: [
         {
-          message:
-            "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
+          messageId: 'useNamespace',
           line: 2,
           column: 1
         },
         {
-          message:
-            "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
+          messageId: 'useNamespace',
           line: 3,
           column: 5
         }
