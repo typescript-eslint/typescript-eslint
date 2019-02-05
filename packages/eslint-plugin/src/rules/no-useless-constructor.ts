@@ -31,7 +31,8 @@ function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
         node.parent &&
         node.parent.type === AST_NODE_TYPES.ClassBody &&
         node.parent.parent &&
-        'superClass' in node.parent.parent
+        'superClass' in node.parent.parent &&
+        node.parent.parent.superClass
       ) {
         return false;
       }

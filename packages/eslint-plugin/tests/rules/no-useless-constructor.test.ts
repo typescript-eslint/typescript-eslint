@@ -4,7 +4,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule from '../../src/rules/no-type-alias';
+import rule from '../../src/rules/no-useless-constructor';
 import RuleTester from '../RuleTester';
 
 const ruleTester = new RuleTester({
