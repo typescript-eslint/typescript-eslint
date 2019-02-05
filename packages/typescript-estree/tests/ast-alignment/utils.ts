@@ -251,6 +251,21 @@ export function preprocessBabylonAST(ast: any): any {
         ) {
           node.type = 'TSClassImplements';
         }
+      },
+      // https://github.com/prettier/prettier/issues/5817
+      FunctionExpression(node: any, parent: any) {
+        if (parent.typeParameters && parent.type === 'Property') {
+          node.typeParameters = parent.typeParameters;
+          delete parent.typeParameters;
+        }
+
+        /**
+         * babel issue: ranges of typeParameters are not included in FunctionExpression range
+         */
+        if (node.typeParameters) {
+          node.range[0] = node.typeParameters.range[0];
+          node.loc.start = Object.assign({}, node.typeParameters.loc.start);
+        }
       }
     }
   );

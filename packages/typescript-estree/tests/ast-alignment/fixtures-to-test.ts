@@ -284,12 +284,7 @@ tester.addFixturePatternConfig('javascript/unicodeCodePointEscapes');
 /* ================================================== */
 
 tester.addFixturePatternConfig('jsx', {
-  ignore: jsxFilesWithKnownIssues.concat([
-    /**
-     * ts-estree: nested jsx tag names are not correctly converted
-     */
-    'tag-names-with-multi-dots-multi'
-  ])
+  ignore: jsxFilesWithKnownIssues
 });
 tester.addFixturePatternConfig('jsx-useJSXTextNode');
 
@@ -401,7 +396,15 @@ tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
   fileType: 'ts'
 });
 tester.addFixturePatternConfig('typescript/decorators/parameter-decorators', {
-  fileType: 'ts'
+  fileType: 'ts',
+  ignore: [
+    /**
+     * babel does not support decorators on array and rest parameters
+     * TODO: report this to babel
+     */
+    'parameter-array-pattern-decorator',
+    'parameter-rest-element-decorator'
+  ]
 });
 tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
   fileType: 'ts'

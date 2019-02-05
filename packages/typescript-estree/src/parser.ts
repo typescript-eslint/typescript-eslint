@@ -18,9 +18,11 @@ import * as es from './typedefs';
 import { Extra, ParserOptions } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 
-const packageJSON = require('../package.json');
-
-const SUPPORTED_TYPESCRIPT_VERSIONS = packageJSON.devDependencies.typescript;
+/**
+ * This needs to be kept in sync with the top-level README.md in the
+ * typescript-eslint monorepo
+ */
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.2.1 <3.4.0';
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
@@ -287,7 +289,7 @@ interface ParseAndGenerateServicesResult<T extends ParserOptions> {
 // Public
 //------------------------------------------------------------------------------
 
-export const version: string = packageJSON.version;
+export const version: string = require('../package.json').version;
 
 export function parse<T extends ParserOptions = ParserOptions>(
   code: string,
