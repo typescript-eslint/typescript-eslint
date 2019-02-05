@@ -3,7 +3,7 @@
  * @author Jed Fox
  */
 
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -11,14 +11,22 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = [
+type Options = [
+  {
+    allowDestructuring?: boolean;
+    allowedNames?: string[];
+  }
+];
+type MessageIds = 'thisAssignment' | 'thisDestructure';
+
+const defaultOptions: Options = [
   {
     allowDestructuring: false,
     allowedNames: [] as string[]
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -28,7 +36,6 @@ const rule: RuleModule = {
       url: util.metaDocsUrl('no-this-alias'),
       recommended: false
     },
-    fixable: null,
     schema: [
       {
         type: 'object',
@@ -60,14 +67,20 @@ const rule: RuleModule = {
     )[0];
 
     return {
-      "VariableDeclarator[init.type='ThisExpression']"(node) {
+      "VariableDeclarator[init.type='ThisExpression']"(
+        node: TSESTree.VariableDeclarator
+      ) {
         const { id } = node;
 
         if (allowDestructuring && id.type !== AST_NODE_TYPES.Identifier) {
           return;
         }
 
-        if (!allowedNames.includes(id.name)) {
+        const hasAllowedName =
+          id.type === AST_NODE_TYPES.Identifier
+            ? allowedNames!.includes(id.name)
+            : false;
+        if (!hasAllowedName) {
           context.report({
             node: id,
             messageId:
@@ -81,3 +94,4 @@ const rule: RuleModule = {
   }
 };
 export default rule;
+export { Options, MessageIds };

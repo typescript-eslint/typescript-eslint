@@ -11,13 +11,16 @@
 import rule from '../../src/rules/no-this-alias';
 import RuleTester from '../RuleTester';
 
-const idError = { messageId: 'thisAssignment', type: 'Identifier' };
+const idError = {
+  messageId: 'thisAssignment' as 'thisAssignment',
+  type: 'Identifier'
+};
 const destructureError = {
-  messageId: 'thisDestructure',
+  messageId: 'thisDestructure' as 'thisDestructure',
   type: 'ObjectPattern'
 };
 const arrayDestructureError = {
-  messageId: 'thisDestructure',
+  messageId: 'thisDestructure' as 'thisDestructure',
   type: 'ArrayPattern'
 };
 
