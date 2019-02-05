@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { RuleTester, Linter } from 'eslint';
 import RuleModule from 'ts-eslint';
 
@@ -20,7 +21,7 @@ interface InvalidTestCase<TMessageIds extends string, TOptions extends any[]>
 interface TestCaseError<TMessageIds extends string> {
   messageId: TMessageIds;
   data?: Record<string, any>;
-  // type?: string;
+  type?: AST_NODE_TYPES;
   line?: number;
   column?: number;
   // endLine?: number;

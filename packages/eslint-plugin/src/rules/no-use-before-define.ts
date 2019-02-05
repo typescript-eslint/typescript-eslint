@@ -1,13 +1,11 @@
 /**
  * @fileoverview Rule to flag use of variables before they are defined
- * @copyright ESLint
- * @see https://github.com/eslint/eslint/blob/a113cd3/lib/rules/no-use-before-define.js
  * @author Ilya Volodin
  * @author Jed Fox
  */
 
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import { Rule, Scope } from 'eslint';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import RuleModule, { Scope } from 'ts-eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -15,21 +13,11 @@ import * as util from '../util';
 //------------------------------------------------------------------------------
 
 const SENTINEL_TYPE = /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
-const FOR_IN_OF_TYPE = /^For(?:In|Of)Statement$/;
-
-interface Options {
-  functions?: boolean;
-  classes?: boolean;
-  variables?: boolean;
-  typedefs?: boolean;
-}
 
 /**
  * Parses a given value as options.
- *
- * @param {any} options - A value to parse.
  */
-function parseOptions(options: string | Options | null): Options {
+function parseOptions(options: string | Config | null): Required<Config> {
   let functions = true;
   let classes = true;
   let variables = true;
@@ -49,7 +37,6 @@ function parseOptions(options: string | Options | null): Options {
 
 /**
  * Checks whether or not a given scope is a top level scope.
- * @param scope - a scope to check
  */
 function isTopLevelScope(scope: Scope.Scope): boolean {
   return scope.type === 'module' || scope.type === 'global';
@@ -57,22 +44,19 @@ function isTopLevelScope(scope: Scope.Scope): boolean {
 
 /**
  * Checks whether or not a given variable is a function declaration.
- * @param variable - A variable to check.
  */
 function isFunction(variable: Scope.Variable): boolean {
-  return variable.defs[0].type === AST_NODE_TYPES.FunctionName;
+  return variable.defs[0].type === 'FunctionName';
 }
 
 /**
  * Checks whether or not a given variable is a class declaration in an upper function scope.
- * @param variable - A variable to check.
- * @param reference - A reference to check.
  */
 function isOuterClass(
   variable: Scope.Variable,
   reference: Scope.Reference
 ): boolean {
-  if (variable.defs[0].type !== AST_NODE_TYPES.ClassName) {
+  if (variable.defs[0].type !== 'ClassName') {
     return false;
   }
 
@@ -88,14 +72,12 @@ function isOuterClass(
 
 /**
  * Checks whether or not a given variable is a variable declaration in an upper function scope.
- * @param variable - A variable to check.
- * @param reference - A reference to check.
  */
 function isOuterVariable(
   variable: Scope.Variable,
   reference: Scope.Reference
 ): boolean {
-  if (variable.defs[0].type !== AST_NODE_TYPES.Variable) {
+  if (variable.defs[0].type !== 'Variable') {
     return false;
   }
 
@@ -110,41 +92,24 @@ function isOuterVariable(
 }
 
 /**
- * Checks whether or not a given variable is a type declaration.
- * @param variable - A type to check.
- */
-function isType(variable: Scope.Variable): boolean {
-  const def = variable.defs[0];
-  return !!(
-    def.type === AST_NODE_TYPES.Variable &&
-    def.parent &&
-    def.parent.kind === 'type'
-  );
-}
-
-/**
  * Checks whether or not a given location is inside of the range of a given node.
- *
- * @param {ASTNode} node - An node to check.
- * @param location - A location to check.
  */
-function isInRange(node, location: number): boolean {
-  return node && node.range[0] <= location && location <= node.range[1];
+function isInRange(
+  node: TSESTree.Expression | null | undefined,
+  location: number
+): boolean {
+  return !!node && node.range[0] <= location && location <= node.range[1];
 }
 
 /**
  * Checks whether or not a given reference is inside of the initializers of a given variable.
  *
- * This returns `true` in the following cases:
- *
- *     var a = a
- *     var [a = a] = list
- *     var {a = a} = obj
- *     for (var a in a) {}
- *     for (var a of a) {}
- *
- * @param variable - A variable to check.
- * @param reference - A reference to check.
+ * @returns `true` in the following cases:
+ * - var a = a
+ * - var [a = a] = list
+ * - var {a = a} = obj
+ * - for (var a in a) {}
+ * - for (var a of a) {}
  */
 function isInInitializer(
   variable: Scope.Variable,
@@ -163,7 +128,10 @@ function isInInitializer(
         return true;
       }
       if (
-        FOR_IN_OF_TYPE.test(node.parent.parent.type) &&
+        node.parent &&
+        node.parent.parent &&
+        (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
+          node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
         isInRange(node.parent.parent.right, location)
       ) {
         return true;
@@ -187,7 +155,16 @@ function isInInitializer(
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = [
+interface Config {
+  functions?: boolean;
+  classes?: boolean;
+  variables?: boolean;
+  typedefs?: boolean;
+}
+type Options = [Config];
+type MessageIds = 'noUseBeforeDefine';
+
+const defaultOptions: Options = [
   {
     functions: true,
     classes: true,
@@ -196,7 +173,7 @@ const defaultOptions = [
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {
@@ -204,6 +181,9 @@ const rule: RuleModule = {
       category: 'Variables',
       url: util.metaDocsUrl('no-use-before-define'),
       recommended: 'error'
+    },
+    messages: {
+      noUseBeforeDefine: "'{{name}}' was used before it was defined."
     },
     schema: [
       {
@@ -246,9 +226,6 @@ const rule: RuleModule = {
       if (isOuterClass(variable, reference)) {
         return !!options.classes;
       }
-      if (isType(variable) && !options.typedefs) {
-        return false;
-      }
       if (isOuterVariable(variable, reference)) {
         return !!options.variables;
       }
@@ -257,7 +234,6 @@ const rule: RuleModule = {
 
     /**
      * Finds and validates all variables in a given scope.
-     * @param {Scope} scope The scope object.
      */
     function findVariablesInScope(scope: Scope.Scope): void {
       scope.references.forEach(reference => {
@@ -283,7 +259,7 @@ const rule: RuleModule = {
         // Reports.
         context.report({
           node: reference.identifier,
-          message: "'{{name}}' was used before it was defined.",
+          messageId: 'noUseBeforeDefine',
           data: reference.identifier
         });
       });
@@ -299,3 +275,4 @@ const rule: RuleModule = {
   }
 };
 export default rule;
+export { Options, MessageIds };

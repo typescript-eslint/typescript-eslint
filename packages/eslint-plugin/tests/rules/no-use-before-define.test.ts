@@ -8,8 +8,9 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule from '../../src/rules/no-use-before-define';
+import rule, { Options } from '../../src/rules/no-use-before-define';
 import RuleTester from '../RuleTester';
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -19,8 +20,16 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
 });
 
+const parserOptions = { ecmaVersion: 6 as 6 };
+
 ruleTester.run('no-use-before-define', rule, {
   valid: [
+    'type foo = 1; const x: foo = 1;',
+    'type foo = 1; type bar = foo;',
+    `
+interface Foo {}
+const x: Foo = {};
+    `,
     'var a=10; alert(a);',
     'function b(a) { alert(a); }',
     'Object.hasOwnProperty.call(a);',
@@ -32,11 +41,11 @@ ruleTester.run('no-use-before-define', rule, {
 a();
 function a() { alert(arguments); }
             `,
-      options: ['nofunc']
+      options: ['nofunc'] as Options
     },
     {
       code: '(() => { var a = 42; alert(a); })();',
-      parserOptions: { ecmaVersion: 6 }
+      parserOptions
     },
     `
 a();
@@ -49,11 +58,11 @@ try {
 class A {}
 new A();
             `,
-      parserOptions: { ecmaVersion: 6 }
+      parserOptions
     },
     'var a = 0, b = a;',
-    { code: 'var {a = 0, b = a} = {};', parserOptions: { ecmaVersion: 6 } },
-    { code: 'var [a = 0, b = a] = {};', parserOptions: { ecmaVersion: 6 } },
+    { code: 'var {a = 0, b = a} = {};', parserOptions },
+    { code: 'var [a = 0, b = a] = {};', parserOptions },
     `
 function foo() {
     foo();
@@ -73,7 +82,7 @@ for (a in a) {}
 var a;
 for (a of a) {}
             `,
-      parserOptions: { ecmaVersion: 6 }
+      parserOptions
     },
 
     // Block-level bindings
@@ -85,7 +94,7 @@ a();
     function a() {}
 }
             `,
-      parserOptions: { ecmaVersion: 6 }
+      parserOptions
     },
     {
       code: `
@@ -95,8 +104,8 @@ a();
     function a() {}
 }
             `,
-      options: ['nofunc'],
-      parserOptions: { ecmaVersion: 6 }
+      options: ['nofunc'] as Options,
+      parserOptions
     },
     {
       code: `
@@ -109,7 +118,7 @@ switch (foo) {
     }
 }
             `,
-      parserOptions: { ecmaVersion: 6 }
+      parserOptions
     },
     {
       code: `
@@ -118,7 +127,7 @@ a();
     let a = function () {};
 }
             `,
-      parserOptions: { ecmaVersion: 6 }
+      parserOptions
     },
 
     // object style options
@@ -140,7 +149,7 @@ function a() {
 }
             `,
       options: [{ functions: false }],
-      parserOptions: { ecmaVersion: 6 }
+      parserOptions
     },
     {
       code: `
@@ -150,7 +159,7 @@ function foo() {
 class A {};
             `,
       options: [{ classes: false }],
-      parserOptions: { ecmaVersion: 6 }
+      parserOptions
     },
 
     // "variables" option
@@ -169,7 +178,7 @@ var foo = () => bar;
 var bar;
             `,
       options: [{ variables: false }],
-      parserOptions: { ecmaVersion: 6 }
+      parserOptions
     },
 
     // "typedefs" option
@@ -188,7 +197,7 @@ var alias = Test;
 
 class Test {}
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       options: [{ classes: false }]
     },
     {
@@ -227,11 +236,14 @@ export namespace Third {
 a++;
 var a=19;
             `,
-      parserOptions: { sourceType: 'module' },
+      parserOptions: { sourceType: 'module' as 'module' },
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -240,11 +252,14 @@ var a=19;
 a++;
 var a=19;
             `,
-      parserOptions: { parserOptions: { ecmaVersion: 6 } },
+      parserOptions: { parserOptions },
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -255,8 +270,11 @@ var a=19;
             `,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -267,8 +285,11 @@ var a=function() {};
             `,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -279,8 +300,11 @@ var a=[1,3];
             `,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -295,12 +319,18 @@ function a() {
             `,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         },
         {
-          message: "'b' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'b'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -310,11 +340,14 @@ a();
 var a=function() {};
 
             `,
-      options: ['nofunc'],
+      options: ['nofunc'] as Options,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -327,11 +360,14 @@ var a=function() {};
     }
 )();
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -342,11 +378,14 @@ var a=function() {};
 )();
 function a() { }
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -361,8 +400,11 @@ a();
       parser: 'espree',
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -377,8 +419,11 @@ try {
             `,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -387,11 +432,14 @@ try {
 var f = () => a;
 var a;
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -400,11 +448,14 @@ var a;
 new A();
 class A {};
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'A' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'A'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -415,11 +466,14 @@ function foo() {
 }
 class A {};
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'A' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'A'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -428,11 +482,14 @@ class A {};
 new A();
 var A = class {};
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'A' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'A'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -443,11 +500,14 @@ function foo() {
 }
 var A = class {};
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'A' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'A'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -460,11 +520,14 @@ a++;
     var a;
 }
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -476,11 +539,14 @@ a++;
     function a() {}
 }
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -491,11 +557,14 @@ a++;
     let a = 1
 }
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -508,11 +577,14 @@ switch (foo) {
         let a;
 }
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -525,11 +597,14 @@ if (true) {
     let a;
 }
             `,
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -543,8 +618,11 @@ var a=function() {};
       options: [{ functions: false, classes: false }],
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -553,12 +631,15 @@ var a=function() {};
 new A();
 var A = class {};
             `,
-      options: [{ classes: false }],
-      parserOptions: { ecmaVersion: 6 },
+      options: [{ classes: false }] as Options,
+      parserOptions,
       errors: [
         {
-          message: "'A' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'A'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -569,12 +650,15 @@ function foo() {
 }
 var A = class {};
             `,
-      options: [{ classes: false }],
-      parserOptions: { ecmaVersion: 6 },
+      options: [{ classes: false }] as Options,
+      parserOptions,
       errors: [
         {
-          message: "'A' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'A'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -584,98 +668,128 @@ var A = class {};
       code: 'var a = a;',
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'let a = a + b;',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'const a = foo(a);',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'function foo(a = a) {}',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'var {a = a} = [];',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'var [a = a] = [];',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'var {b = a, a} = {};',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'var [b = a, a] = {};',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'var {a = 0} = a;',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'var [a = 0] = a;',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -683,18 +797,24 @@ var A = class {};
       code: 'for (var a in a) {}',
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
     {
       code: 'for (var a of a) {}',
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions,
       errors: [
         {
-          message: "'a' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'a'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     },
@@ -708,12 +828,15 @@ function foo() {
 }
 var bar;
             `,
-      parserOptions: { ecmaVersion: 6 },
-      options: [{ variables: false }],
+      parserOptions,
+      options: [{ variables: false }] as Options,
       errors: [
         {
-          message: "'bar' was used before it was defined.",
-          type: 'Identifier'
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'bar'
+          },
+          type: AST_NODE_TYPES.Identifier
         }
       ]
     }
