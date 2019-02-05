@@ -3,6 +3,7 @@
  * @author Patricio Trevino
  */
 
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -10,22 +11,41 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = [
+type Modifier =
+  | 'readonly'
+  | 'private'
+  | 'protected'
+  | 'public'
+  | 'private readonly'
+  | 'protected readonly'
+  | 'public readonly';
+type Options = [
+  {
+    allows: Modifier[];
+  }
+];
+type MessageIds = 'noParamProp';
+
+const defaultOptions: Options = [
   {
     allows: []
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {
       description:
         'Disallow the use of parameter properties in class constructors.',
       extraDescription: [util.tslintRule('no-parameter-properties')],
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('no-parameter-properties'),
       recommended: 'error'
+    },
+    messages: {
+      noParamProp:
+        'Property {{parameter}} cannot be declared in the constructor.'
     },
     schema: [
       {
@@ -61,33 +81,40 @@ const rule: RuleModule = {
 
     /**
      * Gets the modifiers of `node`.
-     * @param {ASTNode} node the node to be inspected.
+     * @param node the node to be inspected.
      */
-    function getModifiers(node): string {
-      const modifiers = [];
+    function getModifiers(node: TSESTree.TSParameterProperty): Modifier {
+      const modifiers: Modifier[] = [];
 
-      modifiers.push(node.accessibility);
-      if (node.readonly || node.isReadonly) {
+      if (node.accessibility) {
+        modifiers.push(node.accessibility);
+      }
+      if (node.readonly) {
         modifiers.push('readonly');
       }
 
-      return modifiers.filter(Boolean).join(' ');
+      return modifiers.filter(Boolean).join(' ') as Modifier;
     }
 
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
     return {
-      TSParameterProperty(node) {
+      TSParameterProperty(node: TSESTree.TSParameterProperty) {
         const modifiers = getModifiers(node);
 
         if (allows.indexOf(modifiers) === -1) {
+          const name =
+            node.parameter.type === AST_NODE_TYPES.Identifier
+              ? node.parameter.name
+              : // has to be an Identifier or TSC will throw an error
+                (node.parameter.left as TSESTree.Identifier).name;
+
           context.report({
             node,
-            message:
-              'Property {{parameter}} cannot be declared in the constructor.',
+            messageId: 'noParamProp',
             data: {
-              parameter: node.parameter.name
+              parameter: name
             }
           });
         }
