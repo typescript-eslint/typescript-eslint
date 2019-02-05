@@ -102,7 +102,9 @@ const rule: RuleModule<MessageIds, Options> = {
         const { variableScope } = scope;
         if (variableScope !== scope) {
           const superVar = variableScope.set.get(node.name);
-          if (superVar) superVar.eslintUsed = true;
+          if (superVar) {
+            superVar.eslintUsed = true;
+          }
         }
       }
     });

@@ -3583,7 +3583,7 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: '.'
+            type: ':'
           },
           line: 3,
           column: 30
@@ -3591,7 +3591,7 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: '.'
+            type: ':'
           },
           line: 3,
           column: 45
@@ -3599,7 +3599,7 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: '.'
+            type: ':'
           },
           line: 3,
           column: 52
@@ -3607,7 +3607,7 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: '.'
+            type: ':'
           },
           line: 4,
           column: 47
@@ -3615,7 +3615,7 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: '.'
+            type: ':'
           },
           line: 4,
           column: 62
@@ -3623,7 +3623,7 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: '.'
+            type: ':'
           },
           line: 4,
           column: 69
@@ -3631,7 +3631,7 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: '.'
+            type: ':'
           },
           line: 5,
           column: 45
@@ -3639,7 +3639,7 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: '.'
+            type: ':'
           },
           line: 5,
           column: 60
@@ -3647,7 +3647,7 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: '.'
+            type: ':'
           },
           line: 5,
           column: 67

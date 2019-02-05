@@ -443,6 +443,7 @@ declare module 'ts-eslint' {
       references: Reference[];
       defs: Definition[];
       scope: Scope;
+      eslintUsed?: boolean;
     }
 
     interface Scope {
