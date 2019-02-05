@@ -112,10 +112,7 @@ module.exports = {
         }
       },
       FunctionExpression(node) {
-        if (
-          !!node.parent &&
-          node.parent.kind === 'method'
-        ) {
+        if (!!node.parent && node.parent.kind === 'method') {
           if (checkMethodDeclarations && !node.async) {
             validateNode(node.parent);
           }
