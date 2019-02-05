@@ -282,18 +282,19 @@ export class Converter {
    */
   private convertParameters(
     parameters: ts.NodeArray<ts.ParameterDeclaration>
-  ): (es.TSParameterProperty | es.RestElement | es.AssignmentPattern)[] {
+  ): es.Parameter[] {
     if (!parameters || !parameters.length) {
       return [];
     }
     return parameters.map(param => {
-      const convertedParam = this.convertChild(param);
-      if (!param.decorators || !param.decorators.length) {
-        return convertedParam;
+      const convertedParam = this.convertChild(param) as es.Parameter;
+
+      if (param.decorators && param.decorators.length) {
+        convertedParam.decorators = param.decorators.map(el =>
+          this.convertChild(el)
+        );
       }
-      return Object.assign(convertedParam, {
-        decorators: param.decorators.map(el => this.convertChild(el))
-      });
+      return convertedParam;
     });
   }
 
