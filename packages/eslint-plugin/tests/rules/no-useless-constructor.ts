@@ -4,8 +4,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require('../../../lib/rules/no-useless-constructor'),
-  RuleTester = require('eslint').RuleTester;
+import rule from '../../src/rules/no-type-alias';
+import RuleTester from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -15,7 +15,11 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
 });
 
-const error = { message: 'Useless constructor.', type: 'MethodDefinition' };
+// the base rule doesn't use a message id...
+const error: any = {
+  message: 'Useless constructor.',
+  type: 'MethodDefinition'
+};
 
 ruleTester.run('no-useless-constructor', rule, {
   valid: [

@@ -5,7 +5,7 @@
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
-import tsutils from 'tsutils';
+import * as tsutils from 'tsutils';
 import ts from 'typescript';
 import * as util from '../util';
 

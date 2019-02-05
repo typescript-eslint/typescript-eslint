@@ -4,8 +4,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require('eslint/lib/rules/arrow-parens'),
-  RuleTester = require('eslint').RuleTester;
+import rule from 'eslint/lib/rules/arrow-parens';
+import RuleTester from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

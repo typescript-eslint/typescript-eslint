@@ -8,9 +8,9 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require('../../../lib/rules/no-unnecessary-type-assertion'),
-  RuleTester = require('eslint').RuleTester,
-  path = require('path');
+import path from 'path';
+import rule from '../../src/rules/no-unnecessary-type-assertion';
+import RuleTester from '../RuleTester';
 
 //------------------------------------------------------------------------------
 // Tests
