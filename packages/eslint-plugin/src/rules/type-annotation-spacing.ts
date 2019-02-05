@@ -6,10 +6,33 @@
 
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
+
+type Options = [
+  {
+    before?: boolean;
+    after?: boolean;
+    overrides?: {
+      colon?: {
+        before?: boolean;
+        after?: boolean;
+      };
+      arrow?: {
+        before?: boolean;
+        after?: boolean;
+      };
+    };
+  }?
+];
+type MessageIds =
+  | 'expectedSpaceAfter'
+  | 'expectedSpaceBefore'
+  | 'unexpectedSpaceAfter'
+  | 'unexpectedSpaceBefore';
 
 const definition = {
   type: 'object',
@@ -20,23 +43,29 @@ const definition = {
   additionalProperties: false
 };
 
-const defaultOptions = [
+const defaultOptions: Options = [
   // technically there is a default, but the overrides mean
   // that if we apply them here, it will break the no override case.
   {}
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'layout',
     docs: {
       description: 'Require consistent spacing around type annotations',
       extraDescription: [util.tslintRule('typedef-whitespace')],
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('type-annotation-spacing'),
       recommended: 'error'
     },
     fixable: 'whitespace',
+    messages: {
+      expectedSpaceAfter: "Expected a space after the '{{type}}'.",
+      expectedSpaceBefore: "Expected a space before the '{{type}}'.",
+      unexpectedSpaceAfter: "Unexpected a space after the '{{type}}'.",
+      unexpectedSpaceBefore: "Unexpected a space before the '{{type}}'."
+    },
     schema: [
       {
         type: 'object',
@@ -51,7 +80,8 @@ const rule: RuleModule = {
             },
             additionalProperties: false
           }
-        }
+        },
+        additionalProperties: false
       }
     ]
   },
@@ -61,7 +91,7 @@ const rule: RuleModule = {
     const sourceCode = context.getSourceCode();
     const options = util.applyDefault(defaultOptions, context.options)[0];
 
-    const overrides = options.overrides || {};
+    const overrides = options!.overrides || { colon: {}, arrow: {} };
 
     const colonOptions = Object.assign(
       {},
@@ -83,13 +113,14 @@ const rule: RuleModule = {
     /**
      * Checks if there's proper spacing around type annotations (no space
      * before colon, one space after).
-     * @param {ASTNode} typeAnnotation The TSTypeAnnotation node.
      */
-    function checkTypeAnnotationSpacing(typeAnnotation): void {
+    function checkTypeAnnotationSpacing(
+      typeAnnotation: TSESTree.TypeNode
+    ): void {
       const nextToken = typeAnnotation;
-      const punctuatorTokenEnd = sourceCode.getTokenBefore(nextToken);
+      const punctuatorTokenEnd = sourceCode.getTokenBefore(nextToken)!;
       let punctuatorTokenStart = punctuatorTokenEnd;
-      let previousToken = sourceCode.getTokenBefore(punctuatorTokenEnd);
+      let previousToken = sourceCode.getTokenBefore(punctuatorTokenEnd)!;
       let type = punctuatorTokenEnd.value;
 
       if (punctuators.indexOf(type) === -1) {
@@ -103,13 +134,13 @@ const rule: RuleModule = {
         // shift the start to the ?
         type = '?:';
         punctuatorTokenStart = previousToken;
-        previousToken = sourceCode.getTokenBefore(previousToken);
+        previousToken = sourceCode.getTokenBefore(previousToken)!;
 
         // handle the +/- modifiers for optional modification operators
         if (previousToken.value === '+' || previousToken.value === '-') {
           type = `${previousToken.value}?:`;
           punctuatorTokenStart = previousToken;
-          previousToken = sourceCode.getTokenBefore(previousToken);
+          previousToken = sourceCode.getTokenBefore(previousToken)!;
         }
       }
 
@@ -120,7 +151,7 @@ const rule: RuleModule = {
       if (after && nextDelta === 0) {
         context.report({
           node: punctuatorTokenEnd,
-          message: "Expected a space after the '{{type}}'.",
+          messageId: 'expectedSpaceAfter',
           data: {
             type
           },
@@ -131,7 +162,7 @@ const rule: RuleModule = {
       } else if (!after && nextDelta > 0) {
         context.report({
           node: punctuatorTokenEnd,
-          message: "Unexpected space after the '{{type}}'.",
+          messageId: 'unexpectedSpaceAfter',
           data: {
             type
           },
@@ -147,7 +178,7 @@ const rule: RuleModule = {
       if (before && previousDelta === 0) {
         context.report({
           node: punctuatorTokenStart,
-          message: "Expected a space before the '{{type}}'.",
+          messageId: 'expectedSpaceBefore',
           data: {
             type
           },
@@ -158,7 +189,7 @@ const rule: RuleModule = {
       } else if (!before && previousDelta > 0) {
         context.report({
           node: punctuatorTokenStart,
-          message: "Unexpected space before the '{{type}}'.",
+          messageId: 'unexpectedSpaceBefore',
           data: {
             type
           },
@@ -176,15 +207,16 @@ const rule: RuleModule = {
     // Public
     //----------------------------------------------------------------------
     return {
-      TSMappedType(node) {
+      TSMappedType(node: TSESTree.TSMappedType) {
         if (node.typeAnnotation) {
           checkTypeAnnotationSpacing(node.typeAnnotation);
         }
       },
-      TSTypeAnnotation(node) {
+      TSTypeAnnotation(node: TSESTree.TSTypeAnnotation) {
         checkTypeAnnotationSpacing(node.typeAnnotation);
       }
     };
   }
 };
 export default rule;
+export { Options, MessageIds };

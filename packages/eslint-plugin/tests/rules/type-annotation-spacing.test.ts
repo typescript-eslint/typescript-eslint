@@ -7,8 +7,11 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule from '../../src/rules/type-annotation-spacing';
-import RuleTester from '../RuleTester';
+import rule, {
+  Options,
+  MessageIds
+} from '../../src/rules/type-annotation-spacing';
+import RuleTester, { InvalidTestCase, ValidTestCase } from '../RuleTester';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -1043,7 +1046,8 @@ type Bar = Record<keyof Foo, string>
       output: 'let foo: string;',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 9
         }
@@ -1054,7 +1058,8 @@ type Bar = Record<keyof Foo, string>
       output: 'function foo(): string {}',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 16
         }
@@ -1065,7 +1070,8 @@ type Bar = Record<keyof Foo, string>
       output: 'function foo(a: string) {}',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 16
         }
@@ -1084,7 +1090,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         }
@@ -1103,7 +1110,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 25
         }
@@ -1122,7 +1130,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 13
         }
@@ -1141,12 +1150,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 26
         }
@@ -1165,7 +1176,8 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         }
@@ -1184,7 +1196,8 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 13
         }
@@ -1203,12 +1216,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 26
         }
@@ -1227,7 +1242,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         }
@@ -1246,7 +1262,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 13
         }
@@ -1265,12 +1282,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 26
         }
@@ -1281,7 +1300,8 @@ type Foo = {
       output: 'type Foo = (name: string) => string;',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 18
         }
@@ -1292,12 +1312,14 @@ type Foo = {
       output: 'type Foo = (name: string) => string;',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 27
         }
@@ -1316,7 +1338,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 18
         }
@@ -1335,12 +1358,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 27
         }
@@ -1352,7 +1377,8 @@ type Foo = {
       output: 'let foo: string;',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 9
         }
@@ -1364,7 +1390,8 @@ type Foo = {
       output: 'function foo(): string {}',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 16
         }
@@ -1376,7 +1403,8 @@ type Foo = {
       output: 'function foo(a: string) {}',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 16
         }
@@ -1396,7 +1424,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         }
@@ -1416,7 +1445,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 25
         }
@@ -1436,7 +1466,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 13
         }
@@ -1456,12 +1487,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 26
         }
@@ -1481,7 +1514,8 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         }
@@ -1501,7 +1535,8 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 13
         }
@@ -1521,12 +1556,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 26
         }
@@ -1546,7 +1583,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         }
@@ -1566,7 +1604,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 13
         }
@@ -1586,12 +1625,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 26
         }
@@ -1603,7 +1644,8 @@ type Foo = {
       output: 'type Foo = (name: string) => string;',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 18
         }
@@ -1615,12 +1657,14 @@ type Foo = {
       output: 'type Foo = (name: string) => string;',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 27
         }
@@ -1640,7 +1684,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 18
         }
@@ -1660,12 +1705,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 27
         }
@@ -1677,7 +1724,8 @@ type Foo = {
       output: 'let foo: string;',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 9
         }
@@ -1689,7 +1737,8 @@ type Foo = {
       output: 'function foo(): string {}',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 16
         }
@@ -1701,7 +1750,8 @@ type Foo = {
       output: 'function foo(a: string) {}',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 16
         }
@@ -1721,7 +1771,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         }
@@ -1741,7 +1792,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 25
         }
@@ -1761,7 +1813,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 13
         }
@@ -1781,12 +1834,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 26
         }
@@ -1806,7 +1861,8 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         }
@@ -1826,7 +1882,8 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 13
         }
@@ -1846,12 +1903,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 26
         }
@@ -1871,7 +1930,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         }
@@ -1891,7 +1951,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 13
         }
@@ -1911,12 +1972,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 26
         }
@@ -1928,12 +1991,14 @@ type Foo = {
       output: 'type Foo = (name: string)=> string;',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 18
         },
         {
-          message: "Unexpected space before the '=>'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 28
         }
@@ -1945,7 +2010,8 @@ type Foo = {
       output: 'type Foo = (name: string)=> string;',
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 18
         }
@@ -1965,12 +2031,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 18
         },
         {
-          message: "Unexpected space before the '=>'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 28
         }
@@ -1990,7 +2058,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 18
         }
@@ -2002,12 +2071,14 @@ type Foo = {
       output: 'let foo : string;',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 8
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 8
         }
@@ -2019,12 +2090,14 @@ type Foo = {
       output: 'function foo() : string {}',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 15
         }
@@ -2036,12 +2109,14 @@ type Foo = {
       output: 'function foo(a : string) {}',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 15
         }
@@ -2061,12 +2136,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 9
         }
@@ -2086,12 +2163,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -2111,12 +2190,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 12
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 12
         }
@@ -2136,22 +2217,26 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 23
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 23
         }
@@ -2171,12 +2256,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 9
         }
@@ -2196,12 +2283,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 12
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 12
         }
@@ -2221,22 +2310,26 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 23
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 23
         }
@@ -2256,12 +2349,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 9
         }
@@ -2281,12 +2376,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 12
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 12
         }
@@ -2306,22 +2403,26 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 23
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 23
         }
@@ -2333,12 +2434,14 @@ type Foo = {
       output: 'type Foo = (name : string) => string;',
       errors: [
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 17
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 26
         }
@@ -2350,7 +2453,8 @@ type Foo = {
       output: 'type Foo = (name : string) => string;',
       errors: [
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 27
         }
@@ -2370,17 +2474,20 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 17
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 26
         }
@@ -2400,7 +2507,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 28
         }
@@ -2412,12 +2520,14 @@ type Foo = {
       output: 'let foo : string;',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 8
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 8
         }
@@ -2429,12 +2539,14 @@ type Foo = {
       output: 'function foo() : string {}',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 15
         }
@@ -2446,12 +2558,14 @@ type Foo = {
       output: 'function foo(a : string) {}',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 15
         }
@@ -2471,12 +2585,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 9
         }
@@ -2496,12 +2612,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -2521,12 +2639,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 12
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 12
         }
@@ -2546,22 +2666,26 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 23
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 23
         }
@@ -2581,12 +2705,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 9
         }
@@ -2606,12 +2732,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 12
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 12
         }
@@ -2631,22 +2759,26 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 23
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 23
         }
@@ -2666,12 +2798,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 9
         }
@@ -2691,12 +2825,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 12
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 12
         }
@@ -2716,22 +2852,26 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 23
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 23
         }
@@ -2743,12 +2883,14 @@ type Foo = {
       output: 'type Foo = (name : string) => string;',
       errors: [
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 17
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 26
         }
@@ -2760,7 +2902,8 @@ type Foo = {
       output: 'type Foo = (name : string) => string;',
       errors: [
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 27
         }
@@ -2780,17 +2923,20 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 10
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 17
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 26
         }
@@ -2810,7 +2956,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 28
         }
@@ -2828,12 +2975,14 @@ type Foo = {
       output: 'let foo : string;',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 8
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 8
         }
@@ -2851,12 +3000,14 @@ type Foo = {
       output: 'function foo() : string {}',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 15
         }
@@ -2874,12 +3025,14 @@ type Foo = {
       output: 'function foo(a : string) {}',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 15
         }
@@ -2905,12 +3058,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 9
         }
@@ -2936,12 +3091,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -2967,12 +3124,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 12
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 12
         }
@@ -2998,22 +3157,26 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 23
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 23
         }
@@ -3039,12 +3202,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 9
         }
@@ -3070,12 +3235,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 12
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 12
         }
@@ -3101,22 +3268,26 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 23
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 23
         }
@@ -3142,12 +3313,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 9
         }
@@ -3173,12 +3346,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 12
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 12
         }
@@ -3204,22 +3379,26 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 23
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 23
         }
@@ -3237,12 +3416,14 @@ type Foo = {
       output: 'type Foo = (name : string)=>string;',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 17
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 17
         }
@@ -3268,12 +3449,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 18
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 18
         }
@@ -3300,22 +3483,26 @@ type Foo = {
       output: 'type Foo = (name : string) => string;',
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 1,
           column: 17
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 1,
           column: 17
         },
         {
-          message: "Expected a space after the '=>'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '=>' },
           line: 1,
           column: 25
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 25
         }
@@ -3350,22 +3537,26 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 18
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 18
         },
         {
-          message: "Expected a space after the '=>'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '=>' },
           line: 3,
           column: 26
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 26
         }
@@ -3390,47 +3581,74 @@ type Foo = {
             `,
       errors: [
         {
-          message: `Expected a space before the ':'.`,
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: '.'
+          },
           line: 3,
           column: 30
         },
         {
-          message: `Expected a space before the ':'.`,
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: '.'
+          },
           line: 3,
           column: 45
         },
         {
-          message: `Expected a space before the ':'.`,
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: '.'
+          },
           line: 3,
           column: 52
         },
         {
-          message: `Expected a space before the ':'.`,
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: '.'
+          },
           line: 4,
           column: 47
         },
         {
-          message: `Expected a space before the ':'.`,
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: '.'
+          },
           line: 4,
           column: 62
         },
         {
-          message: `Expected a space before the ':'.`,
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: '.'
+          },
           line: 4,
           column: 69
         },
         {
-          message: `Expected a space before the ':'.`,
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: '.'
+          },
           line: 5,
           column: 45
         },
         {
-          message: `Expected a space before the ':'.`,
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: '.'
+          },
           line: 5,
           column: 60
         },
         {
-          message: `Expected a space before the ':'.`,
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: '.'
+          },
           line: 5,
           column: 67
         }
@@ -4227,7 +4445,8 @@ type Bar = Record<keyof Foo, string>
       output: 'function foo(a?: string) {}',
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 16
         }
@@ -4246,7 +4465,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4265,7 +4485,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 25
         }
@@ -4284,12 +4505,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 27
         }
@@ -4308,7 +4531,8 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4327,12 +4551,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 27
         }
@@ -4351,7 +4577,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4370,12 +4597,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 27
         }
@@ -4386,7 +4615,8 @@ type Foo = {
       output: 'type Foo = (name?: string) => string;',
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 18
         }
@@ -4397,12 +4627,14 @@ type Foo = {
       output: 'type Foo = (name?: string) => string;',
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 28
         }
@@ -4421,7 +4653,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 18
         }
@@ -4440,12 +4673,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 28
         }
@@ -4457,7 +4692,8 @@ type Foo = {
       output: 'function foo(a?: string) {}',
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 16
         }
@@ -4477,7 +4713,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4497,7 +4734,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 25
         }
@@ -4517,12 +4755,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 27
         }
@@ -4542,7 +4782,8 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4562,12 +4803,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 27
         }
@@ -4587,7 +4830,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4607,12 +4851,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 27
         }
@@ -4624,7 +4870,8 @@ type Foo = {
       output: 'type Foo = (name?: string) => string;',
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 18
         }
@@ -4636,12 +4883,14 @@ type Foo = {
       output: 'type Foo = (name?: string) => string;',
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 28
         }
@@ -4661,7 +4910,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 18
         }
@@ -4681,12 +4931,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 28
         }
@@ -4698,7 +4950,8 @@ type Foo = {
       output: 'function foo(a?: string) {}',
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 16
         }
@@ -4718,7 +4971,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4738,7 +4992,8 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 25
         }
@@ -4758,12 +5013,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 27
         }
@@ -4783,7 +5040,8 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4803,12 +5061,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 27
         }
@@ -4828,7 +5088,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4848,12 +5109,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Unexpected space before the ':'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 27
         }
@@ -4865,12 +5128,14 @@ type Foo = {
       output: 'type Foo = (name?: string)=> string;',
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 18
         },
         {
-          message: "Unexpected space before the '=>'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 29
         }
@@ -4882,7 +5147,8 @@ type Foo = {
       output: 'type Foo = (name?: string)=> string;',
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 18
         }
@@ -4902,12 +5168,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 18
         },
         {
-          message: "Unexpected space before the '=>'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 29
         }
@@ -4927,7 +5195,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Unexpected space before the '?:'.",
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 18
         }
@@ -4939,12 +5208,14 @@ type Foo = {
       output: 'function foo(a ?: string) {}',
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 1,
           column: 16
         }
@@ -4964,12 +5235,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -4989,12 +5262,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 25
         }
@@ -5014,22 +5289,26 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -5049,12 +5328,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -5074,22 +5355,26 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -5109,12 +5394,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -5134,22 +5421,26 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -5161,12 +5452,14 @@ type Foo = {
       output: 'type Foo = (name ?: string) => string;',
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 17
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 27
         }
@@ -5178,7 +5471,8 @@ type Foo = {
       output: 'type Foo = (name ?: string) => string;',
       errors: [
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 28
         }
@@ -5198,17 +5492,20 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         },
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 28
         }
@@ -5228,7 +5525,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 30
         }
@@ -5240,12 +5538,14 @@ type Foo = {
       output: 'function foo(a ?: string) {}',
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 1,
           column: 16
         }
@@ -5265,12 +5565,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -5290,12 +5592,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 25
         }
@@ -5315,22 +5619,26 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -5350,12 +5658,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -5375,22 +5685,26 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -5410,12 +5724,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -5435,22 +5751,26 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -5462,12 +5782,14 @@ type Foo = {
       output: 'type Foo = (name ?: string) => string;',
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 17
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 27
         }
@@ -5479,7 +5801,8 @@ type Foo = {
       output: 'type Foo = (name : string) => string;',
       errors: [
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 27
         }
@@ -5499,17 +5822,20 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 10
         },
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 18
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 28
         }
@@ -5529,7 +5855,8 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 30
         }
@@ -5547,12 +5874,14 @@ type Foo = {
       output: 'function foo(a ?: string) {}',
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 1,
           column: 16
         }
@@ -5578,12 +5907,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -5609,12 +5940,14 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 25
         }
@@ -5640,22 +5973,26 @@ class Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -5681,12 +6018,14 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -5712,22 +6051,26 @@ interface Foo {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -5753,12 +6096,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 9
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 10
         }
@@ -5784,22 +6129,26 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 15
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 16
         },
         {
-          message: "Expected a space after the ':'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
           line: 3,
           column: 24
         },
         {
-          message: "Expected a space before the ':'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
           line: 3,
           column: 24
         }
@@ -5817,12 +6166,14 @@ type Foo = {
       output: 'type Foo = (name ?: string)=>string;',
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 17
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 1,
           column: 18
         }
@@ -5848,12 +6199,14 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 19
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 20
         }
@@ -5880,22 +6233,26 @@ type Foo = {
       output: 'type Foo = (name ?: string) => string;',
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 1,
           column: 17
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 1,
           column: 18
         },
         {
-          message: "Expected a space after the '=>'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '=>' },
           line: 1,
           column: 26
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 1,
           column: 26
         }
@@ -5930,22 +6287,26 @@ type Foo = {
             `,
       errors: [
         {
-          message: "Expected a space before the '?:'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '?:' },
           line: 3,
           column: 19
         },
         {
-          message: "Expected a space after the '?:'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '?:' },
           line: 3,
           column: 20
         },
         {
-          message: "Expected a space after the '=>'.",
+          messageId: 'expectedSpaceAfter',
+          data: { type: '=>' },
           line: 3,
           column: 28
         },
         {
-          message: "Expected a space before the '=>'.",
+          messageId: 'expectedSpaceBefore',
+          data: { type: '=>' },
           line: 3,
           column: 28
         }
@@ -5961,7 +6322,7 @@ type Foo = {
 const operators = ['+?:', '-?:'];
 
 ruleTester.run('type-annotation-spacing', rule, {
-  valid: operators.reduce<RuleTester.ValidTestCase[]>(
+  valid: operators.reduce<ValidTestCase<Options>[]>(
     (validCases, operator) =>
       validCases.concat([
         {
@@ -6003,7 +6364,7 @@ ruleTester.run('type-annotation-spacing', rule, {
       ]),
     []
   ),
-  invalid: operators.reduce<RuleTester.InvalidTestCase[]>(
+  invalid: operators.reduce<InvalidTestCase<MessageIds, Options>[]>(
     (invalidCases, operator) =>
       invalidCases.concat([
         // space before + after cases
@@ -6013,7 +6374,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
           errors: [
             {
-              message: `Unexpected space before the '${operator}'.`,
+              messageId: 'unexpectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 32
             }
@@ -6025,7 +6389,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
           errors: [
             {
-              message: `Unexpected space before the '${operator}'.`,
+              messageId: 'unexpectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 32
             }
@@ -6037,7 +6404,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
           errors: [
             {
-              message: `Unexpected space before the '${operator}'.`,
+              messageId: 'unexpectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 32
             }
@@ -6049,12 +6419,18 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
           errors: [
             {
-              message: `Unexpected space before the '${operator}'.`,
+              messageId: 'unexpectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 32
             },
             {
-              message: `Unexpected space after the '${operator}'.`,
+              messageId: 'unexpectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 34
             }
@@ -6066,12 +6442,18 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
           errors: [
             {
-              message: `Unexpected space before the '${operator}'.`,
+              messageId: 'unexpectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 32
             },
             {
-              message: `Unexpected space after the '${operator}'.`,
+              messageId: 'unexpectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 34
             }
@@ -6083,7 +6465,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
           errors: [
             {
-              message: `Unexpected space after the '${operator}'.`,
+              messageId: 'unexpectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 34
             }
@@ -6096,7 +6481,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
           errors: [
             {
-              message: `Expected a space after the '${operator}'.`,
+              messageId: 'expectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 33
             }
@@ -6108,12 +6496,18 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
           errors: [
             {
-              message: `Expected a space before the '${operator}'.`,
+              messageId: 'expectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 31
             },
             {
-              message: `Expected a space after the '${operator}'.`,
+              messageId: 'expectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 33
             }
@@ -6125,12 +6519,18 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
           errors: [
             {
-              message: `Expected a space before the '${operator}'.`,
+              messageId: 'expectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 31
             },
             {
-              message: `Expected a space after the '${operator}'.`,
+              messageId: 'expectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 33
             }
@@ -6142,7 +6542,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
           errors: [
             {
-              message: `Expected a space after the '${operator}'.`,
+              messageId: 'expectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 33
             }
@@ -6154,7 +6557,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
           errors: [
             {
-              message: `Expected a space before the '${operator}'.`,
+              messageId: 'expectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 31
             }
@@ -6167,12 +6573,18 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
           errors: [
             {
-              message: `Unexpected space before the '${operator}'.`,
+              messageId: 'unexpectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 32
             },
             {
-              message: `Expected a space after the '${operator}'.`,
+              messageId: 'expectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 34
             }
@@ -6184,12 +6596,18 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
           errors: [
             {
-              message: `Unexpected space before the '${operator}'.`,
+              messageId: 'unexpectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 32
             },
             {
-              message: `Expected a space after the '${operator}'.`,
+              messageId: 'expectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 34
             }
@@ -6201,7 +6619,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
           errors: [
             {
-              message: `Expected a space after the '${operator}'.`,
+              messageId: 'expectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 34
             }
@@ -6213,12 +6634,18 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
           errors: [
             {
-              message: `Unexpected space before the '${operator}'.`,
+              messageId: 'unexpectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 32
             },
             {
-              message: `Expected a space after the '${operator}'.`,
+              messageId: 'expectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 34
             }
@@ -6230,7 +6657,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
           errors: [
             {
-              message: `Expected a space after the '${operator}'.`,
+              messageId: 'expectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 34
             }
@@ -6243,7 +6673,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
           errors: [
             {
-              message: `Unexpected space after the '${operator}'.`,
+              messageId: 'unexpectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 33
             }
@@ -6255,7 +6688,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
           errors: [
             {
-              message: `Expected a space before the '${operator}'.`,
+              messageId: 'expectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 31
             }
@@ -6267,7 +6703,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
           errors: [
             {
-              message: `Expected a space before the '${operator}'.`,
+              messageId: 'expectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 31
             }
@@ -6279,12 +6718,18 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
           errors: [
             {
-              message: `Expected a space before the '${operator}'.`,
+              messageId: 'expectedSpaceBefore',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 31
             },
             {
-              message: `Unexpected space after the '${operator}'.`,
+              messageId: 'unexpectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 33
             }
@@ -6296,7 +6741,10 @@ ruleTester.run('type-annotation-spacing', rule, {
           output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
           errors: [
             {
-              message: `Unexpected space after the '${operator}'.`,
+              messageId: 'unexpectedSpaceAfter',
+              data: {
+                type: operator
+              },
               line: 1,
               column: 33
             }

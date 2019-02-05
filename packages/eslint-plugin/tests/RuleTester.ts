@@ -46,4 +46,4 @@ const RuleTesterRetyped = (RuleTester as any) as {
   new (config?: any): RuleTesterTyped;
 };
 export default RuleTesterRetyped;
-export { RunTests, TestCaseError };
+export { RunTests, TestCaseError, InvalidTestCase, ValidTestCase };
