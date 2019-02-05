@@ -36,8 +36,12 @@ export interface ParserOptions {
   extraFileExtensions?: string[];
 }
 
+export interface ParserWeakMap<TKey, TValueBase> {
+  get<TValue extends TValueBase>(key: TKey): TValue;
+}
+
 export interface ParserServices {
-  program?: Program;
-  esTreeNodeToTSNodeMap?: WeakMap<Node, TSNode>;
-  tsNodeToESTreeNodeMap?: WeakMap<TSNode, Node>;
+  program: Program | undefined;
+  esTreeNodeToTSNodeMap: ParserWeakMap<Node, TSNode> | undefined;
+  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, Node> | undefined;
 }

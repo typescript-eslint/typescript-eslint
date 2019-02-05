@@ -2,7 +2,7 @@
 // Project: http://github.com/eslint/eslint-scope
 // Definitions by: Armano <https://github.com/armano2>
 declare module 'eslint-scope/lib/options' {
-  import { es } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
   export type PatternVisitorCallback = (pattern: any, info: any) => void;
 
   export interface PatternVisitorOptions {
@@ -10,40 +10,42 @@ declare module 'eslint-scope/lib/options' {
   }
 
   export abstract class Visitor {
-    visitChildren<T extends es.BaseNode | undefined | null>(node?: T): void;
-    visit<T extends es.BaseNode | undefined | null>(node?: T): void;
+    visitChildren<T extends TSESTree.BaseNode | undefined | null>(
+      node?: T
+    ): void;
+    visit<T extends TSESTree.BaseNode | undefined | null>(node?: T): void;
   }
 }
 
 declare module 'eslint-scope/lib/variable' {
-  import { es } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
   import Reference from 'eslint-scope/lib/reference';
   import { Definition } from 'eslint-scope/lib/definition';
 
   export default class Variable {
     name: string;
-    identifiers: es.Identifier[];
+    identifiers: TSESTree.Identifier[];
     references: Reference[];
     defs: Definition[];
   }
 }
 
 declare module 'eslint-scope/lib/definition' {
-  import { es } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
 
   export class Definition {
     type: string;
-    name: es.BindingName;
-    node: es.Node;
-    parent?: es.Node | null;
+    name: TSESTree.BindingName;
+    node: TSESTree.Node;
+    parent?: TSESTree.Node | null;
     index?: number | null;
     kind?: string | null;
 
     constructor(
       type: string,
-      name: es.BindingName | es.PropertyName,
-      node: es.Node,
-      parent?: es.Node | null,
+      name: TSESTree.BindingName | TSESTree.PropertyName,
+      node: TSESTree.Node,
+      parent?: TSESTree.Node | null,
       index?: number | null,
       kind?: string | null
     );
@@ -53,8 +55,8 @@ declare module 'eslint-scope/lib/definition' {
     rest?: boolean;
 
     constructor(
-      name: es.BindingName | es.PropertyName,
-      node: es.Node,
+      name: TSESTree.BindingName | TSESTree.PropertyName,
+      node: TSESTree.Node,
       index?: number | null,
       rest?: boolean
     );
@@ -63,7 +65,7 @@ declare module 'eslint-scope/lib/definition' {
 
 declare module 'eslint-scope/lib/pattern-visitor' {
   import ScopeManager from 'eslint-scope/lib/scope-manager';
-  import { es } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
   import {
     PatternVisitorCallback,
     PatternVisitorOptions,
@@ -73,10 +75,10 @@ declare module 'eslint-scope/lib/pattern-visitor' {
   export default class PatternVisitor extends Visitor {
     protected options: any;
     protected scopeManager: ScopeManager;
-    protected parent?: es.Node;
-    public rightHandNodes: es.Node[];
+    protected parent?: TSESTree.Node;
+    public rightHandNodes: TSESTree.Node[];
 
-    static isPattern(node: es.Node): boolean;
+    static isPattern(node: TSESTree.Node): boolean;
 
     constructor(
       options: PatternVisitorOptions,
@@ -84,23 +86,23 @@ declare module 'eslint-scope/lib/pattern-visitor' {
       callback: PatternVisitorCallback
     );
 
-    Identifier(pattern: es.Node): void;
-    Property(property: es.Node): void;
-    ArrayPattern(pattern: es.Node): void;
-    AssignmentPattern(pattern: es.Node): void;
-    RestElement(pattern: es.Node): void;
-    MemberExpression(node: es.Node): void;
-    SpreadElement(node: es.Node): void;
-    ArrayExpression(node: es.Node): void;
-    AssignmentExpression(node: es.Node): void;
-    CallExpression(node: es.Node): void;
+    Identifier(pattern: TSESTree.Node): void;
+    Property(property: TSESTree.Node): void;
+    ArrayPattern(pattern: TSESTree.Node): void;
+    AssignmentPattern(pattern: TSESTree.Node): void;
+    RestElement(pattern: TSESTree.Node): void;
+    MemberExpression(node: TSESTree.Node): void;
+    SpreadElement(node: TSESTree.Node): void;
+    ArrayExpression(node: TSESTree.Node): void;
+    AssignmentExpression(node: TSESTree.Node): void;
+    CallExpression(node: TSESTree.Node): void;
   }
 }
 
 declare module 'eslint-scope/lib/referencer' {
   import { Scope } from 'eslint-scope/lib/scope';
   import ScopeManager from 'eslint-scope/lib/scope-manager';
-  import { es } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
   import {
     PatternVisitorCallback,
     PatternVisitorOptions,
@@ -111,12 +113,12 @@ declare module 'eslint-scope/lib/referencer' {
     protected isInnerMethodDefinition: boolean;
     protected options: any;
     protected scopeManager: ScopeManager;
-    protected parent?: es.Node;
+    protected parent?: TSESTree.Node;
 
     constructor(options: any, scopeManager: ScopeManager);
 
     currentScope(): Scope;
-    close(node: es.Node): void;
+    close(node: TSESTree.Node): void;
     pushInnerMethodDefinition(isInnerMethodDefinition: boolean): boolean;
     popInnerMethodDefinition(isInnerMethodDefinition: boolean): void;
 
@@ -127,57 +129,57 @@ declare module 'eslint-scope/lib/referencer' {
       init: boolean
     ): void;
     visitPattern(
-      node: es.Node,
+      node: TSESTree.Node,
       options: PatternVisitorOptions,
       callback: PatternVisitorCallback
     ): void;
-    visitFunction(node: es.Node): void;
-    visitClass(node: es.Node): void;
-    visitProperty(node: es.Node): void;
-    visitForIn(node: es.Node): void;
+    visitFunction(node: TSESTree.Node): void;
+    visitClass(node: TSESTree.Node): void;
+    visitProperty(node: TSESTree.Node): void;
+    visitForIn(node: TSESTree.Node): void;
     visitVariableDeclaration(
       variableTargetScope: any,
       type: any,
-      node: es.Node,
+      node: TSESTree.Node,
       index: any
     ): void;
 
-    AssignmentExpression(node: es.Node): void;
-    CatchClause(node: es.Node): void;
-    Program(node: es.Node): void;
-    Identifier(node: es.Node): void;
-    UpdateExpression(node: es.Node): void;
-    MemberExpression(node: es.Node): void;
-    Property(node: es.Node): void;
-    MethodDefinition(node: es.Node): void;
+    AssignmentExpression(node: TSESTree.Node): void;
+    CatchClause(node: TSESTree.Node): void;
+    Program(node: TSESTree.Node): void;
+    Identifier(node: TSESTree.Node): void;
+    UpdateExpression(node: TSESTree.Node): void;
+    MemberExpression(node: TSESTree.Node): void;
+    Property(node: TSESTree.Node): void;
+    MethodDefinition(node: TSESTree.Node): void;
     BreakStatement(): void;
     ContinueStatement(): void;
-    LabeledStatement(node: es.Node): void;
-    ForStatement(node: es.Node): void;
-    ClassExpression(node: es.Node): void;
-    ClassDeclaration(node: es.Node): void;
-    CallExpression(node: es.Node): void;
-    BlockStatement(node: es.Node): void;
+    LabeledStatement(node: TSESTree.Node): void;
+    ForStatement(node: TSESTree.Node): void;
+    ClassExpression(node: TSESTree.Node): void;
+    ClassDeclaration(node: TSESTree.Node): void;
+    CallExpression(node: TSESTree.Node): void;
+    BlockStatement(node: TSESTree.Node): void;
     ThisExpression(): void;
-    WithStatement(node: es.Node): void;
-    VariableDeclaration(node: es.Node): void;
-    SwitchStatement(node: es.Node): void;
-    FunctionDeclaration(node: es.Node): void;
-    FunctionExpression(node: es.Node): void;
-    ForOfStatement(node: es.Node): void;
-    ForInStatement(node: es.Node): void;
-    ArrowFunctionExpression(node: es.Node): void;
-    ImportDeclaration(node: es.Node): void;
-    visitExportDeclaration(node: es.Node): void;
-    ExportDeclaration(node: es.Node): void;
-    ExportNamedDeclaration(node: es.Node): void;
-    ExportSpecifier(node: es.Node): void;
+    WithStatement(node: TSESTree.Node): void;
+    VariableDeclaration(node: TSESTree.Node): void;
+    SwitchStatement(node: TSESTree.Node): void;
+    FunctionDeclaration(node: TSESTree.Node): void;
+    FunctionExpression(node: TSESTree.Node): void;
+    ForOfStatement(node: TSESTree.Node): void;
+    ForInStatement(node: TSESTree.Node): void;
+    ArrowFunctionExpression(node: TSESTree.Node): void;
+    ImportDeclaration(node: TSESTree.Node): void;
+    visitExportDeclaration(node: TSESTree.Node): void;
+    ExportDeclaration(node: TSESTree.Node): void;
+    ExportNamedDeclaration(node: TSESTree.Node): void;
+    ExportSpecifier(node: TSESTree.Node): void;
     MetaProperty(): void;
   }
 }
 
 declare module 'eslint-scope/lib/scope' {
-  import { es } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
   import Reference from 'eslint-scope/lib/reference';
   import Variable from 'eslint-scope/lib/variable';
   import ScopeManager from 'eslint-scope/lib/scope-manager';
@@ -202,7 +204,7 @@ declare module 'eslint-scope/lib/scope' {
     upper: Scope | null;
     childScopes: Scope[];
     variableScope: Scope;
-    block: es.Node;
+    block: TSESTree.Node;
     variables: Variable[];
     set: Map<string, Variable>;
     references: Reference[];
@@ -214,7 +216,7 @@ declare module 'eslint-scope/lib/scope' {
       scopeManager: ScopeManager,
       type: ScopeType,
       upperScope: Scope | null,
-      block: es.Node | null,
+      block: TSESTree.Node | null,
       isMethodDefinition: boolean
     );
 
@@ -227,7 +229,7 @@ declare module 'eslint-scope/lib/scope' {
     __isValidResolution(ref: any, variable: any): boolean;
     __resolve(ref: any): boolean;
     __delegateToUpperScope(ref: any): void;
-    __addDeclaredVariablesOfNode(variable: any, node: es.Node): void;
+    __addDeclaredVariablesOfNode(variable: any, node: TSESTree.Node): void;
     __defineGeneric(
       name: any,
       set: any,
@@ -236,12 +238,12 @@ declare module 'eslint-scope/lib/scope' {
       def: Definition
     ): void;
 
-    __define(node: es.Node, def: Definition): void;
+    __define(node: TSESTree.Node, def: Definition): void;
 
     __referencing(
-      node: es.Node,
+      node: TSESTree.Node,
       assign: number,
-      writeExpr: es.Node,
+      writeExpr: TSESTree.Node,
       maybeImplicitGlobal: any,
       partial: any,
       init: any
@@ -256,7 +258,7 @@ declare module 'eslint-scope/lib/scope' {
      * @param {Espree.Identifier} ident - identifier to be resolved.
      * @returns {Reference} reference
      */
-    resolve(ident: es.Node): Reference;
+    resolve(ident: TSESTree.Node): Reference;
 
     /**
      * returns this scope is static
@@ -283,14 +285,14 @@ declare module 'eslint-scope/lib/scope' {
   }
 
   export class GlobalScope extends Scope {
-    constructor(scopeManager: ScopeManager, block: es.Node | null);
+    constructor(scopeManager: ScopeManager, block: TSESTree.Node | null);
   }
 
   export class ModuleScope extends Scope {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: es.Node | null
+      block: TSESTree.Node | null
     );
   }
 
@@ -298,7 +300,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: es.Node | null
+      block: TSESTree.Node | null
     );
   }
 
@@ -306,7 +308,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: es.Node | null
+      block: TSESTree.Node | null
     );
   }
 
@@ -314,7 +316,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: es.Node | null
+      block: TSESTree.Node | null
     );
   }
 
@@ -322,7 +324,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: es.Node | null
+      block: TSESTree.Node | null
     );
   }
 
@@ -330,7 +332,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: es.Node | null
+      block: TSESTree.Node | null
     );
   }
 
@@ -338,7 +340,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: es.Node | null,
+      block: TSESTree.Node | null,
       isMethodDefinition: boolean
     );
   }
@@ -347,7 +349,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: es.Node | null
+      block: TSESTree.Node | null
     );
   }
 
@@ -355,21 +357,21 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: es.Node | null
+      block: TSESTree.Node | null
     );
   }
 }
 
 declare module 'eslint-scope/lib/reference' {
-  import { es } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
   import { Scope } from 'eslint-scope/lib/scope';
   import Variable from 'eslint-scope/lib/variable';
 
   export default class Reference {
-    identifier: es.Identifier;
+    identifier: TSESTree.Identifier;
     from: Scope;
     resolved: Variable | null;
-    writeExpr: es.Node | null;
+    writeExpr: TSESTree.Node | null;
     init: boolean;
 
     isWrite(): boolean;
@@ -385,7 +387,7 @@ declare module 'eslint-scope/lib/reference' {
 }
 
 declare module 'eslint-scope/lib/scope-manager' {
-  import { es } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
   import { Scope } from 'eslint-scope/lib/scope';
   import Variable from 'eslint-scope/lib/variable';
 
@@ -416,25 +418,28 @@ declare module 'eslint-scope/lib/scope-manager' {
     isStrictModeSupported(): boolean;
 
     // Returns appropriate scope for this node.
-    __get(node: es.Node): Scope;
-    getDeclaredVariables(node: es.Node): Variable[];
-    acquire(node: es.Node, inner?: boolean): Scope | null;
-    acquireAll(node: es.Node): Scope | null;
-    release(node: es.Node, inner?: boolean): Scope | null;
+    __get(node: TSESTree.Node): Scope;
+    getDeclaredVariables(node: TSESTree.Node): Variable[];
+    acquire(node: TSESTree.Node, inner?: boolean): Scope | null;
+    acquireAll(node: TSESTree.Node): Scope | null;
+    release(node: TSESTree.Node, inner?: boolean): Scope | null;
     attach(): void;
     detach(): void;
 
     __nestScope(scope: Scope): Scope;
-    __nestGlobalScope(node: es.Node): Scope;
-    __nestBlockScope(node: es.Node): Scope;
-    __nestFunctionScope(node: es.Node, isMethodDefinition: boolean): Scope;
-    __nestForScope(node: es.Node): Scope;
-    __nestCatchScope(node: es.Node): Scope;
-    __nestWithScope(node: es.Node): Scope;
-    __nestClassScope(node: es.Node): Scope;
-    __nestSwitchScope(node: es.Node): Scope;
-    __nestModuleScope(node: es.Node): Scope;
-    __nestFunctionExpressionNameScope(node: es.Node): Scope;
+    __nestGlobalScope(node: TSESTree.Node): Scope;
+    __nestBlockScope(node: TSESTree.Node): Scope;
+    __nestFunctionScope(
+      node: TSESTree.Node,
+      isMethodDefinition: boolean
+    ): Scope;
+    __nestForScope(node: TSESTree.Node): Scope;
+    __nestCatchScope(node: TSESTree.Node): Scope;
+    __nestWithScope(node: TSESTree.Node): Scope;
+    __nestClassScope(node: TSESTree.Node): Scope;
+    __nestSwitchScope(node: TSESTree.Node): Scope;
+    __nestModuleScope(node: TSESTree.Node): Scope;
+    __nestFunctionExpressionNameScope(node: TSESTree.Node): Scope;
 
     __isES6(): boolean;
   }

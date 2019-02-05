@@ -11,7 +11,7 @@ import {
   PatternVisitorCallback,
   PatternVisitorOptions
 } from 'eslint-scope/lib/options';
-import { es } from '@typescript-eslint/typescript-estree';
+import { TSESTree as es } from '@typescript-eslint/typescript-estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.

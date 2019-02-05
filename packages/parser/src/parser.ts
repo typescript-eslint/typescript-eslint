@@ -1,10 +1,10 @@
+/// <reference path="eslint-scope.d.ts" />
 import traverser from 'eslint/lib/util/traverser';
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
   ParserOptions as ParserOptionsTsESTree,
-  ParserServices,
-  es
+  ParserServices
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';

@@ -14,7 +14,7 @@ import ts from 'typescript';
 import convert from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
-import * as es from './typedefs';
+import * as TSESTree from './typedefs';
 import { Extra, ParserOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 
@@ -271,10 +271,10 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
-type AST<T extends ParserOptions> = es.Program &
+type AST<T extends ParserOptions> = TSESTree.Program &
   (T['range'] extends true ? { range: [number, number] } : {}) &
-  (T['tokens'] extends true ? { tokens: es.Token[] } : {}) &
-  (T['comment'] extends true ? { comments: es.Comment[] } : {});
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
 
 interface ParseAndGenerateServicesResult<T extends ParserOptions> {
   ast: AST<T>;
@@ -416,4 +416,4 @@ export function parseAndGenerateServices<
 export { AST_NODE_TYPES } from './ast-node-types';
 export { ParserOptions };
 export { ParserServices };
-export { es };
+export { TSESTree };
