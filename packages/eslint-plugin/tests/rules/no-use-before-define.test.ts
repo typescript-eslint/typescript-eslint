@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule, { Options } from '../../src/rules/no-use-before-define';
+import rule from '../../src/rules/no-use-before-define';
 import RuleTester from '../RuleTester';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
@@ -41,7 +41,7 @@ const x: Foo = {};
 a();
 function a() { alert(arguments); }
             `,
-      options: ['nofunc'] as Options
+      options: ['nofunc']
     },
     {
       code: '(() => { var a = 42; alert(a); })();',
@@ -104,7 +104,7 @@ a();
     function a() {}
 }
             `,
-      options: ['nofunc'] as Options,
+      options: ['nofunc'],
       parserOptions
     },
     {
@@ -236,7 +236,7 @@ export namespace Third {
 a++;
 var a=19;
             `,
-      parserOptions: { sourceType: 'module' as 'module' },
+      parserOptions: { sourceType: 'module' },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -252,7 +252,7 @@ var a=19;
 a++;
 var a=19;
             `,
-      parserOptions: { parserOptions },
+      parserOptions,
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -340,7 +340,7 @@ a();
 var a=function() {};
 
             `,
-      options: ['nofunc'] as Options,
+      options: ['nofunc'],
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -631,7 +631,7 @@ var a=function() {};
 new A();
 var A = class {};
             `,
-      options: [{ classes: false }] as Options,
+      options: [{ classes: false }],
       parserOptions,
       errors: [
         {
@@ -650,7 +650,7 @@ function foo() {
 }
 var A = class {};
             `,
-      options: [{ classes: false }] as Options,
+      options: [{ classes: false }],
       parserOptions,
       errors: [
         {
@@ -829,7 +829,7 @@ function foo() {
 var bar;
             `,
       parserOptions,
-      options: [{ variables: false }] as Options,
+      options: [{ variables: false }],
       errors: [
         {
           messageId: 'noUseBeforeDefine',

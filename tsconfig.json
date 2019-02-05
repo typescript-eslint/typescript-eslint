@@ -3,6 +3,8 @@
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -10,6 +12,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "pretty": true,
+    "sourceMap": true,
     "strict": true,
     "target": "es2017",
   }

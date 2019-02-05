@@ -161,7 +161,7 @@ interface Config {
   variables?: boolean;
   typedefs?: boolean;
 }
-type Options = [Config];
+type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
 
 const defaultOptions: Options = [

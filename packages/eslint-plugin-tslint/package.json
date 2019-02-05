@@ -21,8 +21,9 @@
   "scripts": {
     "test": "jest --coverage",
     "prebuild": "npm run clean",
-    "build": "tsc",
-    "clean": "rimraf dist/"
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rimraf dist/",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "lodash.memoize": "^4.1.2"

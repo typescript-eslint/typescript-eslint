@@ -1,12 +1,13 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import { RuleTester, Linter } from 'eslint';
+import { RuleTester } from 'eslint';
 import RuleModule from 'ts-eslint';
+import { ParserOptions } from '@typescript-eslint/parser';
 
 interface ValidTestCase<TOptions extends any[]> {
   code: string;
-  readonly options?: TOptions;
+  options?: TOptions;
   filename?: string;
-  parserOptions?: Linter.ParserOptions;
+  parserOptions?: ParserOptions;
   settings?: Record<string, any>;
   parser?: string;
   globals?: Record<string, boolean>;
@@ -15,7 +16,7 @@ interface ValidTestCase<TOptions extends any[]> {
 interface InvalidTestCase<TMessageIds extends string, TOptions extends any[]>
   extends ValidTestCase<TOptions> {
   errors: TestCaseError<TMessageIds>[];
-  output?: string | null;
+  output?: string;
 }
 
 interface TestCaseError<TMessageIds extends string> {
@@ -43,7 +44,10 @@ declare class RuleTesterTyped {
 }
 
 const RuleTesterRetyped = (RuleTester as any) as {
-  new (config?: any): RuleTesterTyped;
+  new (config?: {
+    parser: '@typescript-eslint/parser';
+    parserOptions?: ParserOptions;
+  }): RuleTesterTyped;
 };
 export default RuleTesterRetyped;
 export { RunTests, TestCaseError, InvalidTestCase, ValidTestCase };

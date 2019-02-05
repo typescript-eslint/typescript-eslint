@@ -1,8 +1,11 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "declaration": true,
-    "outDir": "./dist"
-  },
-  "include": ["src"]
+  "extends": "./tsconfig.build.json",
+  "include": [
+    "src",
+    "tests",
+  ],
+  "exclude": [
+    "tests/test-project",
+    "tests/test-tslint-rules-directory",
+  ],
 }

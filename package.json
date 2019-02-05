@@ -21,6 +21,7 @@
     "test": "lerna run test --parallel",
     "build": "lerna run build",
     "clean": "lerna clean && lerna run clean",
+    "typecheck": "lerna run typecheck",
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "cz": "git-cz",

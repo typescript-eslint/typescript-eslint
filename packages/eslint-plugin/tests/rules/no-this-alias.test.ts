@@ -8,20 +8,21 @@
 // Requirements
 //------------------------------------------------------------------------------
 
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import rule from '../../src/rules/no-this-alias';
 import RuleTester from '../RuleTester';
 
 const idError = {
   messageId: 'thisAssignment' as 'thisAssignment',
-  type: 'Identifier'
+  type: AST_NODE_TYPES.Identifier
 };
 const destructureError = {
   messageId: 'thisDestructure' as 'thisDestructure',
-  type: 'ObjectPattern'
+  type: AST_NODE_TYPES.ObjectPattern
 };
 const arrayDestructureError = {
   messageId: 'thisDestructure' as 'thisDestructure',
-  type: 'ArrayPattern'
+  type: AST_NODE_TYPES.ArrayPattern
 };
 
 //------------------------------------------------------------------------------

@@ -31,7 +31,8 @@
     "recommended:update": "ts-node tools/update-recommended.ts",
     "prebuild": "npm run clean",
     "build": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist/"
+    "clean": "rimraf dist/",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@typescript-eslint/parser": "1.2.0",

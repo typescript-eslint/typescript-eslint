@@ -1,9 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    // specifically disable declarations for the plugin
     "declaration": false,
+    "declarationMap": false,
     "outDir": "./dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
-  "include": ["src", "typings"]
+  "include": ["src", "typings"],
 }
