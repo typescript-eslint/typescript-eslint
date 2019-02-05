@@ -17,4 +17,5 @@ export interface ParserOptions {
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
+  warnOnUnsupportedTypeScriptVersion?: boolean;
 }

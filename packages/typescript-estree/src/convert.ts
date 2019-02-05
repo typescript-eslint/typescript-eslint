@@ -9,7 +9,6 @@ import ts from 'typescript';
 import * as es from './typedefs';
 import {
   canContainDirective,
-  convertToken,
   createError,
   findNextToken,
   fixExports,
@@ -25,7 +24,6 @@ import {
   isComma,
   isComputedProperty,
   isESTreeClassMember,
-  isJSXToken,
   isOptional,
   unescapeStringLiteralText
 } from './node-utils';
@@ -284,18 +282,19 @@ export class Converter {
    */
   private convertParameters(
     parameters: ts.NodeArray<ts.ParameterDeclaration>
-  ): (es.TSParameterProperty | es.RestElement | es.AssignmentPattern)[] {
+  ): es.Parameter[] {
     if (!parameters || !parameters.length) {
       return [];
     }
     return parameters.map(param => {
-      const convertedParam = this.convertChild(param);
-      if (!param.decorators || !param.decorators.length) {
-        return convertedParam;
+      const convertedParam = this.convertChild(param) as es.Parameter;
+
+      if (param.decorators && param.decorators.length) {
+        convertedParam.decorators = param.decorators.map(el =>
+          this.convertChild(el)
+        );
       }
-      return Object.assign(convertedParam, {
-        decorators: param.decorators.map(el => this.convertChild(el))
-      });
+      return convertedParam;
     });
   }
 
@@ -369,50 +368,47 @@ export class Converter {
 
   /**
    * Converts a TypeScript JSX node.tagName into an ESTree node.name
-   * @param tagName the tagName object from a JSX ts.Node
+   * @param node the tagName object from a JSX ts.Node
    * @param parent
    * @returns the converted ESTree name object
    */
-  private convertTypeScriptJSXTagNameToESTreeName(
-    tagName: ts.JsxTagNameExpression,
+  private convertJSXTagName(
+    node: ts.JsxTagNameExpression,
     parent: ts.Node
   ): es.JSXMemberExpression | es.JSXIdentifier {
-    // TODO: remove convertToken call
-    const tagNameToken = convertToken(tagName, this.ast);
-
-    if (tagName.kind === SyntaxKind.PropertyAccessExpression) {
-      const isNestedMemberExpression =
-        tagName.expression.kind === SyntaxKind.PropertyAccessExpression;
-
-      // Convert TSNode left and right objects into ESTreeNode object
-      // and property objects
-      const object = this.convertChild(tagName.expression, parent);
-      const property = this.convertChild(tagName.name, parent);
-
-      // Assign the appropriate types
-      object.type = isNestedMemberExpression
-        ? AST_NODE_TYPES.JSXMemberExpression
-        : AST_NODE_TYPES.JSXIdentifier;
-      property.type = AST_NODE_TYPES.JSXIdentifier;
-      if ((tagName as any).expression.kind === SyntaxKind.ThisKeyword) {
-        object.name = 'this';
-      }
-
-      return this.createNode<es.JSXMemberExpression>(tagName, {
-        type: AST_NODE_TYPES.JSXMemberExpression,
-        range: tagNameToken.range,
-        loc: tagNameToken.loc,
-        object: object,
-        property: property
-      });
-    } else {
-      return this.createNode<es.JSXIdentifier>(tagName, {
-        type: AST_NODE_TYPES.JSXIdentifier,
-        range: tagNameToken.range,
-        loc: tagNameToken.loc,
-        name: tagNameToken.value
-      });
+    let result: es.JSXMemberExpression | es.JSXIdentifier;
+    switch (node.kind) {
+      case SyntaxKind.PropertyAccessExpression:
+        result = this.createNode<es.JSXMemberExpression>(node, {
+          type: AST_NODE_TYPES.JSXMemberExpression,
+          object: this.convertJSXTagName(node.expression, parent),
+          property: this.convertJSXTagName(
+            node.name,
+            parent
+          ) as es.JSXIdentifier
+        });
+        break;
+      case SyntaxKind.ThisKeyword:
+        result = this.createNode<es.JSXIdentifier>(node, {
+          type: AST_NODE_TYPES.JSXIdentifier,
+          name: 'this'
+        });
+        break;
+      case SyntaxKind.Identifier:
+      default:
+        result = this.createNode<es.JSXIdentifier>(node, {
+          type: AST_NODE_TYPES.JSXIdentifier,
+          name: node.text
+        });
+        break;
     }
+
+    if (result && this.options.shouldProvideParserServices) {
+      this.tsNodeToESTreeNodeMap.set(node, result);
+      this.esTreeNodeToTSNodeMap.set(result, node);
+    }
+
+    return result;
   }
 
   /**
@@ -473,20 +469,22 @@ export class Converter {
   }
 
   /**
-   * Uses the current TSNode's end location for its `type` to adjust the location data of the given
-   * ESTreeNode, which should be the parent of the final typeAnnotation node
-   * @param typeAnnotationParent The node that will have its location data mutated
-   * @param node
+   * Uses the provided range location to adjust the location data of the given Node
+   * @param result The node that will have its location data mutated
+   * @param childRange The child node range used to expand location
    */
-  private fixTypeAnnotationParentLocation(
-    typeAnnotationParent: es.BaseNode,
-    node: ts.TypeNode
+  private fixParentLocation(
+    result: es.BaseNode,
+    childRange: [number, number]
   ): void {
-    typeAnnotationParent.range[1] = node.getEnd();
-    typeAnnotationParent.loc.end = getLineAndCharacterFor(
-      typeAnnotationParent.range[1],
-      this.ast
-    );
+    if (childRange[0] < result.range[0]) {
+      result.range[0] = childRange[0];
+      result.loc.start = getLineAndCharacterFor(result.range[0], this.ast);
+    }
+    if (childRange[1] > result.range[1]) {
+      result.range[1] = childRange[1];
+      result.loc.end = getLineAndCharacterFor(result.range[1], this.ast);
+    }
   }
 
   /**
@@ -718,7 +716,7 @@ export class Converter {
             node.type,
             node
           );
-          this.fixTypeAnnotationParentLocation(result.id, node.type);
+          this.fixParentLocation(result.id, result.id.typeAnnotation.range);
         }
         return result;
       }
@@ -898,6 +896,14 @@ export class Converter {
           method.returnType = this.convertTypeAnnotation(node.type, node);
         }
 
+        // Process typeParameters
+        if (node.typeParameters && node.typeParameters.length) {
+          method.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
+            node.typeParameters
+          );
+          this.fixParentLocation(method, method.typeParameters.range);
+        }
+
         let result:
           | es.Property
           | es.TSAbstractMethodDefinition
@@ -975,19 +981,6 @@ export class Converter {
         ) {
           result.kind = 'constructor';
         }
-
-        // Process typeParameters
-        if (node.typeParameters && node.typeParameters.length) {
-          if (result.type !== AST_NODE_TYPES.Property) {
-            method.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters
-            );
-          } else {
-            result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters
-            );
-          }
-        }
         return result;
       }
 
@@ -1014,6 +1007,7 @@ export class Converter {
           constructor.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
+          this.fixParentLocation(constructor, constructor.typeParameters.range);
         }
 
         // Process returnType
@@ -1296,7 +1290,7 @@ export class Converter {
             node.type,
             node
           );
-          this.fixTypeAnnotationParentLocation(parameter, node.type);
+          this.fixParentLocation(parameter, parameter.typeAnnotation.range);
         }
 
         if (node.questionToken) {
@@ -1617,36 +1611,12 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAccessExpression:
-        if (isJSXToken(parent)) {
-          const jsxMemberExpression = this.createNode<es.MemberExpression>(
-            node,
-            {
-              type: AST_NODE_TYPES.MemberExpression,
-              object: this.convertChild(node.expression),
-              property: this.convertChild(node.name)
-            }
-          );
-          // TODO: refactor this
-          const isNestedMemberExpression =
-            node.expression.kind === SyntaxKind.PropertyAccessExpression;
-          if (node.expression.kind === SyntaxKind.ThisKeyword) {
-            (jsxMemberExpression.object as any).name = 'this';
-          }
-
-          (jsxMemberExpression.object as any).type = isNestedMemberExpression
-            ? AST_NODE_TYPES.MemberExpression
-            : AST_NODE_TYPES.JSXIdentifier;
-          (jsxMemberExpression as any).property.type =
-            AST_NODE_TYPES.JSXIdentifier;
-          return jsxMemberExpression;
-        } else {
-          return this.createNode<es.MemberExpression>(node, {
-            type: AST_NODE_TYPES.MemberExpression,
-            object: this.convertChild(node.expression),
-            property: this.convertChild(node.name),
-            computed: false
-          });
-        }
+        return this.createNode<es.MemberExpression>(node, {
+          type: AST_NODE_TYPES.MemberExpression,
+          object: this.convertChild(node.expression),
+          property: this.convertChild(node.name),
+          computed: false
+        });
 
       case SyntaxKind.ElementAccessExpression:
         return this.createNode<es.MemberExpression>(node, {
@@ -1844,10 +1814,7 @@ export class Converter {
               ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
               : undefined,
             selfClosing: true,
-            name: this.convertTypeScriptJSXTagNameToESTreeName(
-              node.tagName,
-              node
-            ),
+            name: this.convertJSXTagName(node.tagName, node),
             attributes: node.attributes.properties.map(el =>
               this.convertChild(el)
             ),
@@ -1865,10 +1832,7 @@ export class Converter {
             ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
             : undefined,
           selfClosing: false,
-          name: this.convertTypeScriptJSXTagNameToESTreeName(
-            node.tagName,
-            node
-          ),
+          name: this.convertJSXTagName(node.tagName, node),
           attributes: node.attributes.properties.map(el =>
             this.convertChild(el)
           )
@@ -1877,7 +1841,7 @@ export class Converter {
       case SyntaxKind.JsxClosingElement:
         return this.createNode<es.JSXClosingElement>(node, {
           type: AST_NODE_TYPES.JSXClosingElement,
-          name: this.convertTypeScriptJSXTagNameToESTreeName(node.tagName, node)
+          name: this.convertJSXTagName(node.tagName, node)
         });
 
       case SyntaxKind.JsxOpeningFragment:
