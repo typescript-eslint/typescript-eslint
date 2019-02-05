@@ -7,19 +7,24 @@
 import RuleModule from 'ts-eslint';
 import ts from 'typescript';
 import * as util from '../util';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule = {
+type Options = [];
+type MessageIds = 'notNumbers' | 'notStrings';
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {
       description:
         'When adding two variables, operands must both be of type number or of type string.',
       extraDescription: [util.tslintRule('restrict-plus-operands')],
-      category: 'TypeScript',
+      category: 'Best Practices',
+      recommended: false,
       url: util.metaDocsUrl('restrict-plus-operands')
     },
     messages: {
@@ -36,14 +41,14 @@ const rule: RuleModule = {
 
     const typeChecker = service.program.getTypeChecker();
 
+    type BaseLiteral = 'string' | 'number' | 'invalid';
+
     /**
      * Helper function to get base type of node
      * @param type type to be evaluated
      * @returns string, number or invalid
      */
-    function getBaseTypeOfLiteralType(
-      type: ts.Type
-    ): 'string' | 'number' | 'invalid' {
+    function getBaseTypeOfLiteralType(type: ts.Type): BaseLiteral {
       if (type.isNumberLiteral()) {
         return 'number';
       }
@@ -66,10 +71,9 @@ const rule: RuleModule = {
 
     /**
      * Helper function to get base type of node
-     * @param {ASTNode} node the node to be evaluated.
-     * @returns {*} string, number or invalid
+     * @param node the node to be evaluated.
      */
-    function getNodeType(node) {
+    function getNodeType(node: TSESTree.Node): BaseLiteral {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = typeChecker.getTypeAtLocation(tsNode);
 
@@ -80,7 +84,7 @@ const rule: RuleModule = {
     // Public
     //----------------------------------------------------------------------
     return {
-      "BinaryExpression[operator='+']"(node) {
+      "BinaryExpression[operator='+']"(node: TSESTree.BinaryExpression) {
         const leftType = getNodeType(node.left);
         const rightType = getNodeType(node.right);
 
