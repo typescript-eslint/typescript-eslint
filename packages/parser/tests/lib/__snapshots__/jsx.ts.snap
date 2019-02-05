@@ -9526,7 +9526,6 @@ Object {
                     },
                   },
                   "object": Object {
-                    "computed": false,
                     "loc": Object {
                       "end": Object {
                         "column": 41,
@@ -9548,11 +9547,12 @@ Object {
                           "line": 2,
                         },
                       },
+                      "name": "this",
                       "range": Array [
                         45,
                         49,
                       ],
-                      "type": "ThisExpression",
+                      "type": "JSXIdentifier",
                     },
                     "property": Object {
                       "loc": Object {
@@ -9570,13 +9570,13 @@ Object {
                         50,
                         55,
                       ],
-                      "type": "Identifier",
+                      "type": "JSXIdentifier",
                     },
                     "range": Array [
                       45,
                       55,
                     ],
-                    "type": "MemberExpression",
+                    "type": "JSXMemberExpression",
                   },
                   "property": Object {
                     "loc": Object {
@@ -9677,7 +9677,6 @@ Object {
                     },
                   },
                   "object": Object {
-                    "computed": false,
                     "loc": Object {
                       "end": Object {
                         "column": 13,
@@ -9699,11 +9698,12 @@ Object {
                           "line": 2,
                         },
                       },
+                      "name": "this",
                       "range": Array [
                         17,
                         21,
                       ],
-                      "type": "ThisExpression",
+                      "type": "JSXIdentifier",
                     },
                     "property": Object {
                       "loc": Object {
@@ -9721,13 +9721,13 @@ Object {
                         22,
                         27,
                       ],
-                      "type": "Identifier",
+                      "type": "JSXIdentifier",
                     },
                     "range": Array [
                       17,
                       27,
                     ],
-                    "type": "MemberExpression",
+                    "type": "JSXMemberExpression",
                   },
                   "property": Object {
                     "loc": Object {
@@ -9846,7 +9846,6 @@ Object {
                 },
               },
               "object": Object {
-                "computed": false,
                 "loc": Object {
                   "end": Object {
                     "column": 9,
@@ -9858,7 +9857,6 @@ Object {
                   },
                 },
                 "object": Object {
-                  "computed": false,
                   "loc": Object {
                     "end": Object {
                       "column": 7,
@@ -9870,7 +9868,6 @@ Object {
                     },
                   },
                   "object": Object {
-                    "computed": false,
                     "loc": Object {
                       "end": Object {
                         "column": 5,
@@ -9897,7 +9894,7 @@ Object {
                         74,
                         75,
                       ],
-                      "type": "Identifier",
+                      "type": "JSXIdentifier",
                     },
                     "property": Object {
                       "loc": Object {
@@ -9915,13 +9912,13 @@ Object {
                         76,
                         77,
                       ],
-                      "type": "Identifier",
+                      "type": "JSXIdentifier",
                     },
                     "range": Array [
                       74,
                       77,
                     ],
-                    "type": "MemberExpression",
+                    "type": "JSXMemberExpression",
                   },
                   "property": Object {
                     "loc": Object {
@@ -9939,13 +9936,13 @@ Object {
                       78,
                       79,
                     ],
-                    "type": "Identifier",
+                    "type": "JSXIdentifier",
                   },
                   "range": Array [
                     74,
                     79,
                   ],
-                  "type": "MemberExpression",
+                  "type": "JSXMemberExpression",
                 },
                 "property": Object {
                   "loc": Object {
@@ -9963,13 +9960,13 @@ Object {
                     80,
                     81,
                   ],
-                  "type": "Identifier",
+                  "type": "JSXIdentifier",
                 },
                 "range": Array [
                   74,
                   81,
                 ],
-                "type": "MemberExpression",
+                "type": "JSXMemberExpression",
               },
               "property": Object {
                 "loc": Object {
@@ -10070,7 +10067,6 @@ Object {
                 },
               },
               "object": Object {
-                "computed": false,
                 "loc": Object {
                   "end": Object {
                     "column": 8,
@@ -10082,7 +10078,6 @@ Object {
                   },
                 },
                 "object": Object {
-                  "computed": false,
                   "loc": Object {
                     "end": Object {
                       "column": 6,
@@ -10094,7 +10089,6 @@ Object {
                     },
                   },
                   "object": Object {
-                    "computed": false,
                     "loc": Object {
                       "end": Object {
                         "column": 4,
@@ -10121,7 +10115,7 @@ Object {
                         1,
                         2,
                       ],
-                      "type": "Identifier",
+                      "type": "JSXIdentifier",
                     },
                     "property": Object {
                       "loc": Object {
@@ -10139,13 +10133,13 @@ Object {
                         3,
                         4,
                       ],
-                      "type": "Identifier",
+                      "type": "JSXIdentifier",
                     },
                     "range": Array [
                       1,
                       4,
                     ],
-                    "type": "MemberExpression",
+                    "type": "JSXMemberExpression",
                   },
                   "property": Object {
                     "loc": Object {
@@ -10163,13 +10157,13 @@ Object {
                       5,
                       6,
                     ],
-                    "type": "Identifier",
+                    "type": "JSXIdentifier",
                   },
                   "range": Array [
                     1,
                     6,
                   ],
-                  "type": "MemberExpression",
+                  "type": "JSXMemberExpression",
                 },
                 "property": Object {
                   "loc": Object {
@@ -10187,13 +10181,13 @@ Object {
                     7,
                     8,
                   ],
-                  "type": "Identifier",
+                  "type": "JSXIdentifier",
                 },
                 "range": Array [
                   1,
                   8,
                 ],
-                "type": "MemberExpression",
+                "type": "JSXMemberExpression",
               },
               "property": Object {
                 "loc": Object {
