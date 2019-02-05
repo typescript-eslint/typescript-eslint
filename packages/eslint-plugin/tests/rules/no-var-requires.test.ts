@@ -25,7 +25,7 @@ ruleTester.run('no-var-requires', rule, {
       code: "var foo = require('foo')",
       errors: [
         {
-          message: 'Require statement not part of import statement.',
+          messageId: 'noVarReqs',
           line: 1,
           column: 11
         }
@@ -35,7 +35,7 @@ ruleTester.run('no-var-requires', rule, {
       code: "const foo = require('foo')",
       errors: [
         {
-          message: 'Require statement not part of import statement.',
+          messageId: 'noVarReqs',
           line: 1,
           column: 13
         }
@@ -45,7 +45,7 @@ ruleTester.run('no-var-requires', rule, {
       code: "let foo = require('foo')",
       errors: [
         {
-          message: 'Require statement not part of import statement.',
+          messageId: 'noVarReqs',
           line: 1,
           column: 11
         }
