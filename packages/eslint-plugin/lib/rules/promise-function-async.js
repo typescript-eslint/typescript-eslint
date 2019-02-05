@@ -113,7 +113,7 @@ module.exports = {
       },
       FunctionExpression(node) {
         if (
-          typeof node.parent !== 'undefined' &&
+          !!node.parent &&
           node.parent.kind === 'method'
         ) {
           if (checkMethodDeclarations && !node.async) {
