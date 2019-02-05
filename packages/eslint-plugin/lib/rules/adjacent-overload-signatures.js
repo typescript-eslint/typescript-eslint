@@ -94,20 +94,17 @@ module.exports = {
       const members = node.body || node.members;
 
       if (members) {
-        let name;
-        let method;
-        let index;
         let lastMethod;
         const seenMethods = [];
 
         members.forEach(member => {
-          name = getMemberName(member);
-          method = {
+          const name = getMemberName(member);
+          const method = {
             name,
             static: member.static
           };
 
-          index = seenMethods.findIndex(seenMethod =>
+          const index = seenMethods.findIndex(seenMethod =>
             isSameMethod(method, seenMethod)
           );
           if (index > -1 && !isSameMethod(method, lastMethod)) {
