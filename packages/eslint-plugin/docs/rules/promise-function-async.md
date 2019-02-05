@@ -20,26 +20,6 @@ const arrowFunctionReturnsPromise = () => Promise.resolve('value');
 function functionDeturnsPromise() {
   return Math.random() > 0.5 ? Promise.resolve('value') : false;
 }
-
-const someObject = {
-  functionExpressionReturnsPromise() {
-    if (Math.random() > 0.5) {
-      return Promise.resolve('value');
-    }
-
-    return undefined;
-  }
-};
-
-class ContainsMethod {
-  methodDeclarationReturnsPromise(condition: boolean, value: string) {
-    if (condition) {
-      return undefined;
-    }
-
-    return Promise.resolve(value);
-  }
-}
 ```
 
 Examples of **correct** code for this rule
@@ -49,26 +29,6 @@ const arrowFunctionReturnsPromise = async () => 'value';
 
 async function functionDeturnsPromise() {
   return Math.random() > 0.5 ? 'value' : false;
-}
-
-const someObject = {
-  functionExpressionReturnsPromise: async function() {
-    if (Math.random() > 0.5) {
-      return 'value';
-    }
-
-    return undefined;
-  }
-};
-
-class ContainsMethod {
-  async methodDeclarationReturnsPromise(condition: boolean, value: string) {
-    if (condition) {
-      return undefined;
-    }
-
-    return value;
-  }
 }
 ```
 
