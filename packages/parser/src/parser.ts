@@ -1,4 +1,3 @@
-/// <reference path="eslint-scope.d.ts" />
 import traverser from 'eslint/lib/util/traverser';
 import {
   AST_NODE_TYPES,
