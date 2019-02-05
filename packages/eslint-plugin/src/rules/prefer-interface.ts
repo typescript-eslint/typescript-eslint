@@ -3,22 +3,25 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
+import RuleModule, { RuleFix } from 'ts-eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: RuleModule = {
+type Options = [];
+type MessageIds = 'interfaceOverType';
+
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Prefer an interface declaration over a type literal (type T = { ... })',
       extraDescription: [util.tslintRule('interface-over-type-literal')],
-      category: 'TypeScript',
+      category: 'Stylistic Issues',
       url: util.metaDocsUrl('prefer-interface'),
       recommended: 'error'
     },
@@ -36,26 +39,31 @@ const rule: RuleModule = {
     //----------------------------------------------------------------------
     return {
       // VariableDeclaration with kind type has only one VariableDeclarator
-      "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(node) {
+      "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
+        node: TSESTree.TSTypeAliasDeclaration
+      ) {
         context.report({
           node: node.id,
           messageId: 'interfaceOverType',
           fix(fixer) {
             const typeNode = node.typeParameters || node.id;
+            const fixes: RuleFix[] = [];
 
-            const fixes = [
-              fixer.replaceText(sourceCode.getFirstToken(node), 'interface'),
-              fixer.replaceTextRange(
-                [typeNode.range[1], node.typeAnnotation.range[0]],
-                ' '
-              )
-            ];
+            const firstToken = sourceCode.getFirstToken(node);
+            if (firstToken) {
+              fixes.push(fixer.replaceText(firstToken, 'interface'));
+              fixes.push(
+                fixer.replaceTextRange(
+                  [typeNode.range[1], node.typeAnnotation.range[0]],
+                  ' '
+                )
+              );
+            }
 
             const afterToken = sourceCode.getTokenAfter(node.typeAnnotation);
-
             if (
               afterToken &&
-              afterToken.type === AST_NODE_TYPES.Punctuator &&
+              afterToken.type === 'Punctuator' &&
               afterToken.value === ';'
             ) {
               fixes.push(fixer.remove(afterToken));

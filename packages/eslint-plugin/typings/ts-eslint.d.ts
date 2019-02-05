@@ -509,6 +509,6 @@ declare module 'ts-eslint' {
     type Definition = DefinitionType & { name: TSESTree.Identifier };
   }
 
-  export { RuleContext, ReportFixFunction, ReportDescriptor, Scope };
+  export { RuleContext, RuleFix, ReportFixFunction, ReportDescriptor, Scope };
   export default RuleModule;
 }
