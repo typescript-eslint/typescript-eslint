@@ -5,6 +5,28 @@
 //   export = rule;
 // }
 
+declare module 'eslint/lib/rules/arrow-parens' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    | 'unexpectedParens'
+    | 'expectedParens'
+    | 'unexpectedParensInline'
+    | 'expectedParensBlock',
+    [
+      'always' | 'as-needed',
+      {
+        requireForBlockBody?: boolean;
+      }?
+    ],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/camelcase' {
   import { TSESTree } from '@typescript-eslint/typescript-estree';
   import RuleModule from 'ts-eslint';
@@ -118,6 +140,178 @@ declare module 'eslint/lib/rules/indent' {
       JSXOpeningElement(node: TSESTree.JSXOpeningElement): void;
       JSXClosingElement(node: TSESTree.JSXClosingElement): void;
       JSXExpressionContainer(node: TSESTree.JSXExpressionContainer): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-dupe-args' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    'unexpected',
+    [],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-implicit-globals' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    never,
+    [],
+    {
+      Program(node: TSESTree.Program): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-redeclare' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    never,
+    [
+      {
+        builtinGlobals?: boolean;
+      }?
+    ],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-restricted-globals' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    never,
+    (
+      | string
+      | {
+          name: string;
+          message?: string;
+        })[],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-shadow' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    never,
+    [
+      {
+        builtinGlobals?: boolean;
+        hoist: 'all' | 'functions' | 'never';
+        allow: string[];
+      }
+    ],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-undef' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    'undef',
+    [
+      {
+        typeof?: boolean;
+      }
+    ],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-unused-vars' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    never,
+    (
+      | 'all'
+      | 'local'
+      | {
+          vars?: 'all' | 'local';
+          varsIgnorePattern?: string;
+          args?: 'all' | 'after-used' | 'none';
+          ignoreRestSiblings?: boolean;
+          argsIgnorePattern?: string;
+          caughtErrors?: 'all' | 'none';
+          caughtErrorsIgnorePattern?: string;
+        })[],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-use-before-define' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    never,
+    (
+      | 'nofunc'
+      | {
+          functions?: boolean;
+          classes?: boolean;
+          variables?: boolean;
+        })[],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/strict' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    | 'function'
+    | 'global'
+    | 'multiple'
+    | 'never'
+    | 'unnecessary'
+    | 'module'
+    | 'implied'
+    | 'unnecessaryInClasses'
+    | 'nonSimpleParameterList'
+    | 'wrap',
+    ['never' | 'global' | 'function' | 'safe'],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
   >;
   export = rule;

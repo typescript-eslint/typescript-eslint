@@ -44,7 +44,7 @@ window.whatevs = {
           message: "Use the function form of 'use strict'.",
           line: 3,
           column: 9
-        }
+        } as any // the base rule doesn't use messageId
       ]
     }
   ]
