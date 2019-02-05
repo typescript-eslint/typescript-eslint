@@ -351,7 +351,13 @@ export type ObjectLiteralElementLike =
   | RestElement
   | SpreadElement
   | TSAbstractMethodDefinition;
-export type Parameter = AssignmentPattern | RestElement | TSParameterProperty;
+export type Parameter =
+  | AssignmentPattern
+  | RestElement
+  | ArrayPattern
+  | ObjectPattern
+  | Identifier
+  | TSParameterProperty;
 export type PrimaryExpression =
   | ArrayExpression
   | ArrayPattern
@@ -541,6 +547,7 @@ export interface ArrayPattern extends BaseNode {
   elements: Expression[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface ArrowFunctionExpression extends BaseNode {
@@ -565,6 +572,7 @@ export interface AssignmentPattern extends BaseNode {
   right?: Expression;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface AwaitExpression extends BaseNode {
@@ -715,6 +723,7 @@ export interface Identifier extends BaseNode {
   name: string;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface IfStatement extends BaseNode {
@@ -875,6 +884,7 @@ export interface ObjectPattern extends BaseNode {
   properties: ObjectLiteralElementLike[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
+  decorators?: Decorator[];
 }
 
 export interface Program extends BaseNode {
@@ -901,6 +911,7 @@ export interface RestElement extends BaseNode {
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   value?: AssignmentPattern;
+  decorators?: Decorator[];
 }
 
 export interface ReturnStatement extends BaseNode {
@@ -1218,6 +1229,7 @@ export interface TSParameterProperty extends BaseNode {
   static?: boolean;
   export?: boolean;
   parameter: AssignmentPattern | BindingName | RestElement;
+  decorators?: Decorator[];
 }
 
 export interface TSParenthesizedType extends BaseNode {
