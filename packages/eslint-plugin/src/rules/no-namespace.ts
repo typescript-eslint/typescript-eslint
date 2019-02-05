@@ -3,7 +3,7 @@
  * @author Patricio Trevino
  */
 
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
@@ -11,21 +11,29 @@ import * as util from '../util';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const defaultOptions = [
+type Options = [
+  {
+    allowDeclarations?: boolean;
+    allowDefinitionFiles?: boolean;
+  }
+];
+type MessageIds = 'moduleSyntaxIsPreferred';
+
+const defaultOptions: Options = [
   {
     allowDeclarations: false,
     allowDefinitionFiles: true
   }
 ];
 
-const rule: RuleModule = {
+const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Disallow the use of custom TypeScript modules and namespaces',
       extraDescription: [util.tslintRule('no-namespace')],
-      category: 'TypeScript',
+      category: 'Best Practices',
       url: util.metaDocsUrl('no-namespace'),
       recommended: 'error'
     },
@@ -60,7 +68,9 @@ const rule: RuleModule = {
     // Public
     //----------------------------------------------------------------------
     return {
-      "TSModuleDeclaration[global!=true][id.type='Identifier']"(node) {
+      "TSModuleDeclaration[global!=true][id.type='Identifier']"(
+        node: TSESTree.TSModuleDeclaration
+      ) {
         if (
           (node.parent &&
             node.parent.type === AST_NODE_TYPES.TSModuleDeclaration) ||
