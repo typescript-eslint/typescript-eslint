@@ -74,6 +74,17 @@ module.exports = {
     }
 
     /**
+     * Determine whether two methods are the same or not
+     * @param {{ name: string; static: boolean }} method1 a method to compare
+     * @param {{ name: string; static: boolean }} method2 another method to compare with
+     * @returns {boolean} true if two methods are the same
+     * @private
+     */
+    function isSameMethod(method1, method2) {
+      return method1.name === method2.name && method1.static === method2.static;
+    }
+
+    /**
      * Check the body for overload methods.
      * @param {ASTNode} node the body to be inspected.
      * @returns {void}
@@ -84,29 +95,34 @@ module.exports = {
 
       if (members) {
         let name;
-        let nameWithStatic;
+        let method;
         let index;
-        let lastName;
-        const seen = [];
+        let lastMethod;
+        const seenMethods = [];
 
         members.forEach(member => {
           name = getMemberName(member);
-          nameWithStatic = (member.static ? 'static ' : '') + name;
+          method = {
+            name,
+            static: member.static
+          };
 
-          index = seen.indexOf(nameWithStatic);
-          if (index > -1 && lastName !== nameWithStatic) {
+          index = seenMethods.findIndex(seenMethod =>
+            isSameMethod(method, seenMethod)
+          );
+          if (index > -1 && !isSameMethod(method, lastMethod)) {
             context.report({
               node: member,
               messageId: 'adjacentSignature',
               data: {
-                name: nameWithStatic
+                name: (method.static ? 'static ' : '') + method.name
               }
             });
           } else if (name && index === -1) {
-            seen.push(nameWithStatic);
+            seenMethods.push(method);
           }
 
-          lastName = nameWithStatic;
+          lastMethod = method;
         });
       }
     }
