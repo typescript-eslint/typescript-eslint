@@ -18,10 +18,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@babel/parser@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.3.0.tgz#930251fe6714df47ce540a919ccdf6dcfb652b61"
-  integrity sha512-8M30TzMpLHGmuthHZStm4F+az5wxyYeh8U+LWK7+b2qnlQ0anXBmOQ1I8DCMV1K981wPY3C3kWZ4SA1lR3Y3xQ==
+"@babel/parser@7.3.2":
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.3.2.tgz#95cdeddfc3992a6ca2a1315191c1679ca32c55cd"
+  integrity sha512-QzNUC2RO1gadg+fs21fi0Uu0OuGNzRKEmgCxoLNzbCdoprLwjfmZwzUrpUNfJPaVRwBpDY47A17yYEGWyRelnQ==
 
 "@commitlint/cli@^7.1.2", "@commitlint/cli@^7.3.2":
   version "7.3.2"
