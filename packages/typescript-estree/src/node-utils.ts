@@ -6,7 +6,7 @@
  */
 import ts from 'typescript';
 import unescape from 'lodash.unescape';
-import * as es from './typedefs';
+import * as TSESTree from './typedefs';
 import { AST_NODE_TYPES } from './ast-node-types';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -224,7 +224,7 @@ export function getBinaryExpressionType(
 export function getLineAndCharacterFor(
   pos: number,
   ast: ts.SourceFile
-): es.LineAndColumnData {
+): TSESTree.LineAndColumnData {
   const loc = ast.getLineAndCharacterOfPosition(pos);
   return {
     line: loc.line + 1,
@@ -244,7 +244,7 @@ export function getLocFor(
   start: number,
   end: number,
   ast: ts.SourceFile
-): es.SourceLocation {
+): TSESTree.SourceLocation {
   return {
     start: getLineAndCharacterFor(start, ast),
     end: getLineAndCharacterFor(end, ast)
@@ -455,11 +455,11 @@ export function isOptional(node: {
  * @param ast    the AST
  * @returns the ESTreeNode with fixed exports
  */
-export function fixExports<T extends es.BaseNode>(
+export function fixExports<T extends TSESTree.BaseNode>(
   node: ts.Node,
   result: T,
   ast: ts.SourceFile
-): es.ExportDefaultDeclaration | es.ExportNamedDeclaration | T {
+): TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration | T {
   // check for exports
   if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
     const exportKeyword = node.modifiers[0];
@@ -501,7 +501,7 @@ export function fixExports<T extends es.BaseNode>(
  * @param token the ts.Token
  * @returns the token type
  */
-export function getTokenType(token: any): es.TokenType {
+export function getTokenType(token: any): TSESTree.TokenType {
   // Need two checks for keywords since some are also identifiers
   if (token.originalKeywordKind) {
     switch (token.originalKeywordKind) {
@@ -607,16 +607,19 @@ export function getTokenType(token: any): es.TokenType {
  * Extends and formats a given ts.Token, for a given AST
  * @param token the ts.Token
  * @param ast   the AST object
- * @returns the converted es.Token
+ * @returns the converted Token
  */
-export function convertToken(token: ts.Node, ast: ts.SourceFile): es.Token {
+export function convertToken(
+  token: ts.Node,
+  ast: ts.SourceFile
+): TSESTree.Token {
   const start =
       token.kind === SyntaxKind.JsxText
         ? token.getFullStart()
         : token.getStart(ast),
     end = token.getEnd(),
     value = ast.text.slice(start, end),
-    newToken: es.Token = {
+    newToken: TSESTree.Token = {
       type: getTokenType(token),
       value,
       range: [start, end],
@@ -638,8 +641,8 @@ export function convertToken(token: ts.Node, ast: ts.SourceFile): es.Token {
  * @param ast the AST object
  * @returns the converted Tokens
  */
-export function convertTokens(ast: ts.SourceFile): es.Token[] {
-  const result: es.Token[] = [];
+export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
+  const result: TSESTree.Token[] = [];
   /**
    * @param node the ts.Node
    */

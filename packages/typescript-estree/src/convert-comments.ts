@@ -7,7 +7,7 @@
 
 import ts from 'typescript';
 import { getLocFor, getNodeContainer } from './node-utils';
-import * as es from './typedefs';
+import * as TSESTree from './typedefs';
 
 /**
  * Converts a TypeScript comment to an Esprima comment.
@@ -25,10 +25,10 @@ function convertTypeScriptCommentToEsprimaComment(
   text: string,
   start: number,
   end: number,
-  startLoc: es.LineAndColumnData,
-  endLoc: es.LineAndColumnData
-): es.Comment {
-  const comment: es.OptionalRangeAndLoc<es.Comment> = {
+  startLoc: TSESTree.LineAndColumnData,
+  endLoc: TSESTree.LineAndColumnData
+): TSESTree.Comment {
+  const comment: TSESTree.OptionalRangeAndLoc<TSESTree.Comment> = {
     type: block ? 'Block' : 'Line',
     value: text
   };
@@ -44,7 +44,7 @@ function convertTypeScriptCommentToEsprimaComment(
     };
   }
 
-  return comment as es.Comment;
+  return comment as TSESTree.Comment;
 }
 
 /**
@@ -59,7 +59,7 @@ function getCommentFromTriviaScanner(
   triviaScanner: ts.Scanner,
   ast: ts.SourceFile,
   code: string
-): es.Comment {
+): TSESTree.Comment {
   const kind = triviaScanner.getToken();
   const isBlock = kind === ts.SyntaxKind.MultiLineCommentTrivia;
   const range = {
@@ -94,8 +94,8 @@ function getCommentFromTriviaScanner(
 export function convertComments(
   ast: ts.SourceFile,
   code: string
-): es.Comment[] {
-  const comments: es.Comment[] = [];
+): TSESTree.Comment[] {
+  const comments: TSESTree.Comment[] = [];
 
   /**
    * Create a TypeScript Scanner, with skipTrivia set to false so that
