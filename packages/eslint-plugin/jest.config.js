@@ -4,8 +4,8 @@ module.exports = {
   globals: {
     'ts-jest': {
       // TODO - re-enable type checking when the build is working
-      isolatedModules: true,
-    },
+      isolatedModules: true
+    }
   },
   testEnvironment: 'node',
   transform: {

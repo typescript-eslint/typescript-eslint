@@ -1,12 +1,5 @@
 {
   "extends": "./tsconfig.build.json",
-  "include": [
-    "src",
-    "typings",
-    "tests",
-    "tools",
-  ],
-  "exclude": [
-    "tests/fixtures",
-  ],
+  "include": ["src", "typings", "tests", "tools"],
+  "exclude": ["tests/fixtures"]
 }

@@ -5,12 +5,12 @@
     "declaration": false,
     "declarationMap": false,
     "outDir": "./dist",
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src",
     "typings",
     // include the parser's ambient typings because the parser exports them in its type defs
-    "../parser/typings",
-  ],
+    "../parser/typings"
+  ]
 }
