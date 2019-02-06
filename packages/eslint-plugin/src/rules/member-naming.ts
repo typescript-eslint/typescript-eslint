@@ -6,7 +6,6 @@
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
-import { getNameFromPropertyName } from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -87,7 +86,7 @@ const rule: RuleModule<MessageIds, Options> = {
     function validateName(
       node: TSESTree.MethodDefinition | TSESTree.ClassProperty
     ): void {
-      const name = getNameFromPropertyName(node.key);
+      const name = util.getNameFromPropertyName(node.key);
       const accessibility: Modifiers = node.accessibility || 'public';
       const convention = conventions[accessibility];
 

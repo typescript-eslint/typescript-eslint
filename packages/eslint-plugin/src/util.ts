@@ -1,5 +1,6 @@
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { ParserServices } from '@typescript-eslint/parser';
-import { RuleContext } from 'ts-eslint';
+import RuleModule, { RuleContext } from 'ts-eslint';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const version = require('../package.json').version;
@@ -149,3 +150,42 @@ export function getParserServices<
   }
   return context.parserServices as RequiredParserServices;
 }
+
+/**
+ * Gets a string name representation of the given PropertyName node
+ */
+export function getNameFromPropertyName(
+  propertyName: TSESTree.PropertyName
+): string {
+  if (propertyName.type === AST_NODE_TYPES.Identifier) {
+    return propertyName.name;
+  }
+  return `${propertyName.value}`;
+}
+
+type InferOptionsTypeFromRuleNever<T> = T extends RuleModule<
+  never,
+  infer TOptions
+>
+  ? TOptions
+  : unknown;
+/**
+ * Uses type inference to fetch the TOptions type from the given RuleModule
+ */
+export type InferOptionsTypeFromRule<T> = T extends RuleModule<
+  any,
+  infer TOptions
+>
+  ? TOptions
+  : InferOptionsTypeFromRuleNever<T>;
+
+/**
+ * Uses type inference to fetch the TMessageIds type from the given RuleModule
+ */
+export type InferMessageIdsTypeFromRule<T> = T extends RuleModule<
+  infer TMessageIds,
+  any
+>
+  ? TMessageIds
+  : unknown;
+

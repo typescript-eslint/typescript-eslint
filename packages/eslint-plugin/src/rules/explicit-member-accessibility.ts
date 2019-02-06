@@ -6,7 +6,6 @@
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
-import { getNameFromPropertyName } from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -54,7 +53,7 @@ const rule: RuleModule<MessageIds, Options> = {
           messageId: 'missingAccessibility',
           data: {
             type: 'method definition',
-            name: getNameFromPropertyName(methodDefinition.key)
+            name: util.getNameFromPropertyName(methodDefinition.key)
           }
         });
       }
@@ -76,7 +75,7 @@ const rule: RuleModule<MessageIds, Options> = {
           messageId: 'missingAccessibility',
           data: {
             type: 'class property',
-            name: getNameFromPropertyName(classProperty.key)
+            name: util.getNameFromPropertyName(classProperty.key)
           }
         });
       }

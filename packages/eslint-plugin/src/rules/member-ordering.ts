@@ -6,7 +6,6 @@
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
 import * as util from '../util';
-import { getNameFromPropertyName } from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -225,11 +224,11 @@ const rule: RuleModule<MessageIds, Options> = {
         case AST_NODE_TYPES.TSPropertySignature:
         case AST_NODE_TYPES.TSMethodSignature:
         case AST_NODE_TYPES.ClassProperty:
-          return getNameFromPropertyName(node.key);
+          return util.getNameFromPropertyName(node.key);
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind === 'constructor'
             ? 'constructor'
-            : getNameFromPropertyName(node.key);
+            : util.getNameFromPropertyName(node.key);
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
         default:

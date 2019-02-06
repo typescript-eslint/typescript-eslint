@@ -7,19 +7,15 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import baseRule from 'eslint/lib/rules/indent';
 import RuleModule from 'ts-eslint';
+import baseRule from 'eslint/lib/rules/indent';
 import * as util from '../util';
-import {
-  InferOptionsTypeFromRule,
-  InferMessageIdsTypeFromRule
-} from '../tsestree-utils';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 type Range = [number, number];
 
 const KNOWN_NODES = new Set([

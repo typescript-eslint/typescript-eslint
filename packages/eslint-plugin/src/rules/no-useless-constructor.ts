@@ -4,19 +4,15 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/no-useless-constructor';
 import * as util from '../util';
-import {
-  InferOptionsTypeFromRule,
-  InferMessageIdsTypeFromRule
-} from '../tsestree-utils';
-import RuleModule from 'ts-eslint';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 /**
  * Check if method with accessibility is not useless
