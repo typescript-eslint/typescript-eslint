@@ -55,7 +55,7 @@ The rule accepts an options object with the following property:
 
 ### `ignoreStatic`
 
-Examples of **correct** code for this rule with `{ ignoreStatic: ["Thenable"] }`:
+Examples of **correct** code for this rule with `{ ignoreStatic: true }`:
 
 ```ts
 class OtherClass {
