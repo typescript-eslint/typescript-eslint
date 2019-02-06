@@ -49,17 +49,13 @@ module.exports = {
      * @returns {boolean} Returns true iff there is no supertype or if the supertype is 'Function'
      */
     function noSupertype(node) {
-      if (
-        typeof node.extends === 'undefined' &&
-        typeof node.implements === 'undefined'
-      ) {
+      if (!node.extends || node.extends.length === 0) {
         return true;
       }
-      const heritageClauses = node.extends.concat(node.implements || []);
-      if (heritageClauses.length !== 1) {
+      if (node.extends.length !== 1) {
         return false;
       }
-      const expr = heritageClauses[0].expression;
+      const expr = node.extends[0].expression;
 
       return expr.type === 'Identifier' && expr.name === 'Function';
     }
@@ -167,10 +163,8 @@ module.exports = {
        * @param {TSTypeLiteral} node The node being checked
        * @returns {void}
        */
-      TSTypeLiteral(node) {
-        if (node.members.length === 1) {
-          checkMember(node.members[0], node);
-        }
+      'TSTypeLiteral[members.length = 1]'(node) {
+        checkMember(node.members[0], node);
       }
     };
   }
