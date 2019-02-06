@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import jsxKnownIssues from '../../../shared-fixtures/jsx-known-issues';
+import { isJSXFileType } from '../../tools/test-utils';
 
 interface Fixture {
   filename: string;
@@ -61,7 +62,7 @@ class FixturesTester {
     const ignore = config.ignore || [];
     const fileType = config.fileType || 'js';
     const ignoreSourceType = config.ignoreSourceType || [];
-    const jsx = fileType === 'js' || fileType === 'jsx' || fileType === 'tsx';
+    const jsx = isJSXFileType(fileType);
 
     /**
      * The TypeScript compiler gives us the "externalModuleIndicator" to allow typescript-estree do dynamically detect the "sourceType".
@@ -164,7 +165,20 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
      * with the same name, for example.
      */
     'error-dup-params', // babel parse errors
-    'error-strict-dup-params' // babel parse errors
+    'error-strict-dup-params', // babel parse errors
+    /**
+     * typescript reports TS1100 and babel errors on this
+     * TS1100: "Invalid use of '{0}' in strict mode."
+     * TODO: do we want TS1100 error code?
+     */
+    'error-strict-eval', // babel parse errors
+    'error-strict-default-param-eval',
+    'error-strict-eval-return',
+    'error-strict-param-arguments',
+    'error-strict-param-eval',
+    'error-strict-param-names',
+    'error-strict-param-no-paren-arguments',
+    'error-strict-param-no-paren-eval'
   ]
 });
 tester.addFixturePatternConfig('javascript/function', {
@@ -236,7 +250,12 @@ tester.addFixturePatternConfig('javascript/modules', {
      */
     'invalid-export-named-default' // babel parse errors
   ],
-  ignoreSourceType: ['error-function', 'error-strict', 'error-delete']
+  ignoreSourceType: [
+    'error-function',
+    'error-strict',
+    'error-delete',
+    'invalid-await'
+  ]
 });
 
 tester.addFixturePatternConfig('javascript/newTarget');
@@ -364,14 +383,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'type-assertion-arrow-function',
     /**
-     * PR for range of declare keyword has been merged into Babel: https://github.com/babel/babel/pull/9406
-     * TODO: remove me in next babel > 7.3.1
-     */
-    'export-declare-const-named-enum',
-    'export-declare-named-enum',
-    /**
      * Babel does not include optional keyword into range parameter in arrow function
-     * TODO: report it to babel
+     * https://github.com/babel/babel/issues/9461
      */
     'arrow-function-with-optional-parameter'
   ],

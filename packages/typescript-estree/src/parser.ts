@@ -108,7 +108,7 @@ function getASTAndDefaultProject(code: string, options: ParserOptions) {
 function createNewProgram(code: string) {
   const FILENAME = getFileName(extra);
 
-  const compilerHost = {
+  const compilerHost: ts.CompilerHost = {
     fileExists() {
       return true;
     },

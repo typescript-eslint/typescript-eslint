@@ -11,7 +11,8 @@ import { extname } from 'path';
 import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
-  formatSnapshotName
+  formatSnapshotName,
+  isJSXFileType
 } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
@@ -35,7 +36,7 @@ describe('Comments', () => {
       range: true,
       tokens: true,
       comment: true,
-      jsx: fileExtension === '.js'
+      jsx: isJSXFileType(fileExtension)
     };
     it(
       formatSnapshotName(filename, FIXTURES_DIR, fileExtension),
