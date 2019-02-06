@@ -452,7 +452,11 @@ tester.addFixturePatternConfig('typescript/types', {
     /**
      * AST difference
      */
-    'literal-number-negative'
+    'literal-number-negative',
+    /**
+     * Babel parse error: https://github.com/babel/babel/pull/9431
+     */
+    'function-with-array-destruction'
   ]
 });
 

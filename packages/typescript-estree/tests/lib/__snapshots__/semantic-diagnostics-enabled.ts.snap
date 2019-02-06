@@ -2362,6 +2362,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-in-generic.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-with-array-destruction.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-with-object-destruction.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-with-rest.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-with-this.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
