@@ -1,12 +1,6 @@
 'use strict';
 
 module.exports = {
-  globals: {
-    'ts-jest': {
-      // TODO - re-enable type checking when the build is working
-      isolatedModules: true
-    }
-  },
   testEnvironment: 'node',
   transform: {
     '^.+\\.tsx?$': 'ts-jest'
