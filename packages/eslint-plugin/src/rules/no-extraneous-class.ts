@@ -4,12 +4,7 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -20,22 +15,14 @@ type Options = [
 ];
 type MessageIds = 'empty' | 'onlyStatic' | 'onlyConstructor';
 
-const defaultOptions: Options = [
-  {
-    allowConstructorOnly: false,
-    allowEmpty: false,
-    allowStaticOnly: false
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-extraneous-class',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Forbids the use of classes as namespaces',
-      extraDescription: [util.tslintRule('no-unnecessary-class')],
+      tslintRuleName: 'no-unnecessary-class',
       category: 'Best Practices',
-      url: util.metaDocsUrl('no-extraneous-class'),
       recommended: false
     },
     schema: [
@@ -61,14 +48,14 @@ const rule: RuleModule<MessageIds, Options> = {
       onlyConstructor: 'Unexpected class with only a constructor.'
     }
   },
-
-  create(context) {
-    const {
-      allowConstructorOnly,
-      allowEmpty,
-      allowStaticOnly
-    } = util.applyDefault(defaultOptions, context.options)[0];
-
+  defaultOptions: [
+    {
+      allowConstructorOnly: false,
+      allowEmpty: false,
+      allowStaticOnly: false
+    }
+  ],
+  create(context, [{ allowConstructorOnly, allowEmpty, allowStaticOnly }]) {
     function getReportNode(node: TSESTree.ClassBody): TSESTree.Node {
       if (!node.parent) {
         return node;
@@ -146,6 +133,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

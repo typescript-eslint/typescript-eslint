@@ -4,12 +4,7 @@
  */
 
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -19,22 +14,15 @@ type Options = [
 ];
 type MessageIds = 'moduleSyntaxIsPreferred';
 
-const defaultOptions: Options = [
-  {
-    allowDeclarations: false,
-    allowDefinitionFiles: true
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-namespace',
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Disallow the use of custom TypeScript modules and namespaces',
-      extraDescription: [util.tslintRule('no-namespace')],
+      tslintRuleName: 'no-namespace',
       category: 'Best Practices',
-      url: util.metaDocsUrl('no-namespace'),
       recommended: 'error'
     },
     messages: {
@@ -56,17 +44,15 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
-    const { allowDeclarations, allowDefinitionFiles } = util.applyDefault(
-      defaultOptions,
-      context.options
-    )[0];
+  defaultOptions: [
+    {
+      allowDeclarations: false,
+      allowDefinitionFiles: true
+    }
+  ],
+  create(context, [{ allowDeclarations, allowDefinitionFiles }]) {
     const filename = context.getFilename();
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       "TSModuleDeclaration[global!=true][id.type='Identifier']"(
         node: TSESTree.TSModuleDeclaration
@@ -87,6 +73,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

@@ -4,12 +4,8 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 type Options = [
   {
     allowExpressions?: boolean;
@@ -17,20 +13,14 @@ type Options = [
 ];
 type MessageIds = 'missingReturnType';
 
-const defaultOptions: Options = [
-  {
-    allowExpressions: true
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'explicit-function-return-type',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Require explicit return types on functions and class methods',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('explicit-function-return-type'),
       recommended: 'warn'
     },
     messages: {
@@ -48,14 +38,12 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
-    const options = util.applyDefault(defaultOptions, context.options)[0];
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
-
+  defaultOptions: [
+    {
+      allowExpressions: true
+    }
+  ],
+  create(context, [options]) {
     /**
      * Checks if the parent of a function expression is a constructor.
      * @param parent The parent of a function expression node
@@ -123,15 +111,10 @@ const rule: RuleModule<MessageIds, Options> = {
       checkFunctionReturnType(node);
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       ArrowFunctionExpression: checkFunctionExpressionReturnType,
       FunctionDeclaration: checkFunctionReturnType,
       FunctionExpression: checkFunctionExpressionReturnType
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

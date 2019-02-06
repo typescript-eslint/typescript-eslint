@@ -5,12 +5,7 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Delimiter = 'comma' | 'none' | 'semi';
 interface TypeOptions {
@@ -33,19 +28,6 @@ type MessageIds =
   | 'unexpectedSemi'
   | 'expectedComma'
   | 'expectedSemi';
-
-const defaultOptions: Options = [
-  {
-    multiline: {
-      delimiter: 'semi',
-      requireLast: true
-    },
-    singleline: {
-      delimiter: 'semi',
-      requireLast: false
-    }
-  }
-];
 
 const definition = {
   type: 'object',
@@ -71,14 +53,14 @@ const definition = {
   additionalProperties: false
 };
 
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'member-delimiter-style',
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Require a specific member delimiter style for interfaces and type literals',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('member-delimiter-style'),
       recommended: 'error'
     },
     fixable: 'code',
@@ -105,10 +87,20 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
+  defaultOptions: [
+    {
+      multiline: {
+        delimiter: 'semi',
+        requireLast: true
+      },
+      singleline: {
+        delimiter: 'semi',
+        requireLast: false
+      }
+    }
+  ],
+  create(context, [options]) {
     const sourceCode = context.getSourceCode();
-    const options = util.applyDefault(defaultOptions, context.options)[0];
 
     // use the base options as the defaults for the cases
     const baseOptions = options;
@@ -121,10 +113,6 @@ const rule: RuleModule<MessageIds, Options> = {
       baseOptions,
       overrides.typeLiteral
     );
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
 
     /**
      * Check the last token in the given member.
@@ -243,15 +231,9 @@ const rule: RuleModule<MessageIds, Options> = {
       });
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
-
     return {
       TSInterfaceBody: checkMemberSeparatorStyle,
       TSTypeLiteral: checkMemberSeparatorStyle
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

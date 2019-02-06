@@ -4,12 +4,7 @@
  */
 
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -19,21 +14,14 @@ type Options = [
 ];
 type MessageIds = 'thisAssignment' | 'thisDestructure';
 
-const defaultOptions: Options = [
-  {
-    allowDestructuring: false,
-    allowedNames: [] as string[]
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-this-alias',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow aliasing `this`',
-      extraDescription: [util.tslintRule('no-this-assignment')],
+      tslintRuleName: 'no-this-assignment',
       category: 'Best Practices',
-      url: util.metaDocsUrl('no-this-alias'),
       recommended: false
     },
     schema: [
@@ -59,13 +47,13 @@ const rule: RuleModule<MessageIds, Options> = {
         "Unexpected aliasing of members of 'this' to local variables."
     }
   },
-
-  create(context) {
-    const { allowDestructuring, allowedNames } = util.applyDefault(
-      defaultOptions,
-      context.options
-    )[0];
-
+  defaultOptions: [
+    {
+      allowDestructuring: false,
+      allowedNames: []
+    }
+  ],
+  create(context, [{ allowDestructuring, allowedNames }]) {
     return {
       "VariableDeclarator[init.type='ThisExpression']"(
         node: TSESTree.VariableDeclarator
@@ -92,6 +80,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

@@ -4,38 +4,32 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/camelcase';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const defaultOptions: Options = [
-  {
-    allow: ['^UNSAFE_'],
-    ignoreDestructuring: false,
-    properties: 'never'
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'ban-types',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Enforce camelCase naming convention',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('ban-types'),
       recommended: 'error'
     },
     schema: baseRule.meta.schema!,
     messages: baseRule.meta.messages
   },
-
-  create(context) {
+  defaultOptions: [
+    {
+      allow: ['^UNSAFE_'],
+      ignoreDestructuring: false,
+      properties: 'never'
+    }
+  ],
+  create(context, [options]) {
     const rules = baseRule.create(context);
     const TS_PROPERTY_TYPES = [
       'TSPropertySignature',
@@ -44,7 +38,6 @@ const rule: RuleModule<MessageIds, Options> = {
       'TSAbstractClassProperty'
     ];
 
-    const options = util.applyDefault(defaultOptions, context.options)[0];
     const properties = options.properties;
     const allow = options.allow!;
 
@@ -126,6 +119,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

@@ -7,11 +7,15 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule, {
-  Options,
-  MessageIds
-} from '../../src/rules/type-annotation-spacing';
+import rule from '../../src/rules/type-annotation-spacing';
 import RuleTester, { InvalidTestCase, ValidTestCase } from '../RuleTester';
+import {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule
+} from '../../src/util';
+
+type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
+type Options = InferOptionsTypeFromRule<typeof rule>;
 
 //------------------------------------------------------------------------------
 // Tests

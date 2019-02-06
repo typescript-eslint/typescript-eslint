@@ -4,25 +4,20 @@
  */
 
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [];
 type MessageIds = 'noVarReqs';
 
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-var-requires',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Disallows the use of require statements except in import statements',
-      extraDescription: [util.tslintRule('no-var-requires')],
+      tslintRuleName: 'no-var-requires',
       category: 'Best Practices',
-      url: util.metaDocsUrl('no-var-requires'),
       recommended: 'error'
     },
     messages: {
@@ -30,11 +25,8 @@ const rule: RuleModule<MessageIds, Options> = {
     },
     schema: []
   },
+  defaultOptions: [],
   create(context) {
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
-
     return {
       CallExpression(node: TSESTree.CallExpression) {
         if (
@@ -51,6 +43,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

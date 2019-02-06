@@ -7,16 +7,11 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/indent';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
-type Range = [number, number];
 
 const KNOWN_NODES = new Set([
   // Class properties aren't yet supported by eslint...
@@ -85,41 +80,39 @@ const KNOWN_NODES = new Set([
   'TSUnionType'
 ]);
 
-const defaultOptions: Options = [
-  // typescript docs and playground use 4 space indent
-  4,
-  {
-    // typescript docs indent the case from the switch
-    // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-1-8.html#example-4
-    SwitchCase: 1,
-    flatTernaryExpressions: false,
-    ignoredNodes: []
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'indent',
   meta: {
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation',
-      extraDescription: [util.tslintRule('indent')],
+      tslintRuleName: 'indent',
       category: 'Stylistic Issues',
-      recommended: 'error',
-      url: util.metaDocsUrl('indent')
+      recommended: 'error'
     },
     fixable: 'whitespace',
     schema: baseRule.meta!.schema,
     messages: baseRule.meta!.messages
   },
-
-  create(context) {
+  defaultOptions: [
+    // typescript docs and playground use 4 space indent
+    4,
+    {
+      // typescript docs indent the case from the switch
+      // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-1-8.html#example-4
+      SwitchCase: 1,
+      flatTernaryExpressions: false,
+      ignoredNodes: []
+    }
+  ],
+  create(context, optionsWithDefaults) {
     // because we extend the base rule, have to update opts on the context
     // the context defines options as readonly though...
     const contextWithDefaults: typeof context = Object.create(context, {
       options: {
         writable: false,
         configurable: false,
-        value: util.applyDefault(defaultOptions, context.options)
+        value: optionsWithDefaults
       }
     });
 
@@ -254,7 +247,7 @@ const rule: RuleModule<MessageIds, Options> = {
           declarations: [
             {
               type: AST_NODE_TYPES.VariableDeclarator,
-              range: [id.range[0], moduleReference.range[1]] as Range,
+              range: [id.range[0], moduleReference.range[1]],
               loc: {
                 start: id.loc.start,
                 end: moduleReference.loc.end
@@ -268,7 +261,7 @@ const rule: RuleModule<MessageIds, Options> = {
                   range: [
                     moduleReference.range[0],
                     moduleReference.range[0] + 'require'.length
-                  ] as Range,
+                  ],
                   loc: {
                     start: moduleReference.loc.start,
                     end: {
@@ -370,7 +363,7 @@ const rule: RuleModule<MessageIds, Options> = {
                 node.typeAnnotation
                   ? node.typeAnnotation.range[1]
                   : squareBracketStart.range[0]
-              ] as Range,
+              ],
               loc: {
                 start: squareBracketStart.loc.start,
                 end: node.typeAnnotation
@@ -449,6 +442,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     });
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

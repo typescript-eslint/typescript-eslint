@@ -3,7 +3,7 @@ import { RuleTester } from 'eslint';
 import RuleModule from 'ts-eslint';
 import { ParserOptions } from '@typescript-eslint/parser';
 
-interface ValidTestCase<TOptions extends any[]> {
+interface ValidTestCase<TOptions extends Readonly<any[]>> {
   code: string;
   options?: TOptions;
   filename?: string;
@@ -13,8 +13,10 @@ interface ValidTestCase<TOptions extends any[]> {
   globals?: Record<string, boolean>;
 }
 
-interface InvalidTestCase<TMessageIds extends string, TOptions extends any[]>
-  extends ValidTestCase<TOptions> {
+interface InvalidTestCase<
+  TMessageIds extends string,
+  TOptions extends Readonly<any[]>
+> extends ValidTestCase<TOptions> {
   errors: TestCaseError<TMessageIds>[];
   output?: string;
 }
@@ -29,14 +31,17 @@ interface TestCaseError<TMessageIds extends string> {
   // endColumn?: number;
 }
 
-interface RunTests<TMessageIds extends string, TOptions extends any[]> {
+interface RunTests<
+  TMessageIds extends string,
+  TOptions extends Readonly<any[]>
+> {
   // RuleTester.run also accepts strings for valid cases
   valid: (ValidTestCase<TOptions> | string)[];
   invalid: InvalidTestCase<TMessageIds, TOptions>[];
 }
 
 declare class RuleTesterTyped {
-  run<TMessageIds extends string, TOptions extends any[]>(
+  run<TMessageIds extends string, TOptions extends Readonly<any[]>>(
     name: string,
     rule: RuleModule<TMessageIds, TOptions>,
     tests: RunTests<TMessageIds, TOptions>

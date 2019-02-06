@@ -4,24 +4,16 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'errorMessageInterface' | 'errorMessageClass';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'no-misused-new',
   meta: {
     type: 'problem',
     docs: {
       description: 'Enforce valid definition of `new` and `constructor`.',
-      extraDescription: [util.tslintRule('no-misused-new')],
+      tslintRuleName: 'no-misused-new',
       category: 'Best Practices',
-      url: util.metaDocsUrl('no-misused-new'),
       recommended: 'error'
     },
     schema: [],
@@ -30,11 +22,7 @@ const rule: RuleModule<MessageIds, Options> = {
       errorMessageClass: 'Class cannon have method named `new`.'
     }
   },
-
-  //----------------------------------------------------------------------
-  // Public
-  //----------------------------------------------------------------------
-
+  defaultOptions: [],
   create(context) {
     /**
      * @param {ASTNode} node type to be inspected.
@@ -123,6 +111,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

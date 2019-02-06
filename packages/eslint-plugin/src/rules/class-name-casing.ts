@@ -4,25 +4,17 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'notPascalCased';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'class-name-casing',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Require PascalCased class and interface names',
-      extraDescription: [util.tslintRule('class-name')],
+      tslintRuleName: 'class-name',
       category: 'Best Practices',
-      url: util.metaDocsUrl('class-name-casing'),
       recommended: 'error'
     },
     messages: {
@@ -30,14 +22,8 @@ const rule: RuleModule<MessageIds, Options> = {
     },
     schema: []
   },
-
+  defaultOptions: [],
   create(context) {
-    // variables should be defined here
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
-
     /**
      * Determine if the identifier name is PascalCased
      * @param name The identifier name
@@ -76,10 +62,6 @@ const rule: RuleModule<MessageIds, Options> = {
       });
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
-
     return {
       'ClassDeclaration, TSInterfaceDeclaration, ClassExpression'(
         node:
@@ -117,6 +99,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

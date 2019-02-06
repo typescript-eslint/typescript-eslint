@@ -4,31 +4,23 @@
  */
 
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/no-unused-vars';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'no-unused-vars',
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow unused variables',
-      extraDescription: [util.tslintRule('no-unused-variable')],
+      tslintRuleName: 'no-unused-variable',
       category: 'Variables',
-      url: util.metaDocsUrl('no-unused-vars'),
       recommended: 'warn'
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages
   },
-
+  defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
 
@@ -66,9 +58,6 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return Object.assign({}, rules, {
       "FunctionDeclaration Identifier[name='this']": markThisParameterAsUsed,
       "FunctionExpression Identifier[name='this']": markThisParameterAsUsed,
@@ -105,6 +94,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     });
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

@@ -8,8 +8,15 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule, { Options, MessageIds } from '../../src/rules/indent';
+import rule from '../../src/rules/indent';
 import RuleTester, { RunTests, TestCaseError } from '../RuleTester';
+import {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule
+} from '../../src/util';
+
+type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
+type Options = InferOptionsTypeFromRule<typeof rule>;
 
 /**
  * Marks a test case as a plain javascript case which should be indented the same

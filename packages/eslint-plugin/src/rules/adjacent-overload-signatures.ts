@@ -4,15 +4,7 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'adjacentSignature';
 
 type RuleNode =
   | TSESTree.ClassBody
@@ -22,14 +14,14 @@ type RuleNode =
   | TSESTree.TSInterfaceBody;
 type Member = TSESTree.ClassElement | TSESTree.Statement | TSESTree.TypeElement;
 
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'adjacent-overload-signatures',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Require that member overloads be consecutive',
       category: 'Best Practices',
-      extraDescription: [util.tslintRule('adjacent-overload-signatures')],
-      url: util.metaDocsUrl('adjacent-overload-signatures'),
+      tslintName: 'adjacent-overload-signatures',
       recommended: 'error'
     },
     schema: [],
@@ -37,12 +29,8 @@ const rule: RuleModule<MessageIds, Options> = {
       adjacentSignature: "All '{{name}}' signatures should be adjacent."
     }
   },
-
+  defaultOptions: [],
   create(context) {
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
-
     /**
      * Gets the name of the member being processed.
      * @param member the member being processed.
@@ -131,9 +119,6 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       ClassBody: checkBodyForOverloadMethods,
       Program: checkBodyForOverloadMethods,
@@ -142,6 +127,4 @@ const rule: RuleModule<MessageIds, Options> = {
       TSInterfaceBody: checkBodyForOverloadMethods
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

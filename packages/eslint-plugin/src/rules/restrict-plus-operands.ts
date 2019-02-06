@@ -4,28 +4,20 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import RuleModule from 'ts-eslint';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 import * as util from '../util';
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'notNumbers' | 'notStrings';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'restrict-plus-operands',
   meta: {
     type: 'problem',
     docs: {
       description:
         'When adding two variables, operands must both be of type number or of type string.',
-      extraDescription: [util.tslintRule('restrict-plus-operands')],
+      tslintRuleName: 'restrict-plus-operands',
       category: 'Best Practices',
-      recommended: false,
-      url: util.metaDocsUrl('restrict-plus-operands')
+      recommended: false
     },
     messages: {
       notNumbers:
@@ -35,7 +27,7 @@ const rule: RuleModule<MessageIds, Options> = {
     },
     schema: []
   },
-
+  defaultOptions: [],
   create(context) {
     const service = util.getParserServices(context);
 
@@ -80,9 +72,6 @@ const rule: RuleModule<MessageIds, Options> = {
       return getBaseTypeOfLiteralType(type);
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       "BinaryExpression[operator='+']"(node: TSESTree.BinaryExpression) {
         const leftType = getNodeType(node.left);
@@ -108,5 +97,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
+});

@@ -4,24 +4,16 @@
  */
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'no-empty-interface',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow the declaration of empty interfaces',
-      extraDescription: [util.tslintRule('no-empty-interface')],
+      tslintRuleName: 'no-empty-interface',
       category: 'Best Practices',
-      url: util.metaDocsUrl('no-empty-interface'),
       recommended: 'error'
     },
     messages: {
@@ -31,34 +23,26 @@ const rule: RuleModule<MessageIds, Options> = {
     },
     schema: []
   },
-
-  //----------------------------------------------------------------------
-  // Public
-  //----------------------------------------------------------------------
-
+  defaultOptions: [],
   create(context) {
     return {
       TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
         if (node.body.body.length !== 0) {
           return;
         }
-        let messageId: MessageIds | null = null;
-        if (!node.extends || node.extends.length === 0) {
-          messageId = 'noEmpty';
-        } else if (node.extends.length === 1) {
-          messageId = 'noEmptyWithSuper';
-        }
-        if (!messageId) {
-          return;
-        }
 
-        context.report({
-          node: node.id,
-          messageId
-        });
+        if (!node.extends || node.extends.length === 0) {
+          context.report({
+            node: node.id,
+            messageId: 'noEmpty'
+          });
+        } else if (node.extends.length === 1) {
+          context.report({
+            node: node.id,
+            messageId: 'noEmptyWithSuper'
+          });
+        }
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

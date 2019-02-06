@@ -5,12 +5,8 @@
  */
 
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule, { Scope } from 'ts-eslint';
+import { Scope } from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Helpers
-//------------------------------------------------------------------------------
 
 const SENTINEL_TYPE = /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
 
@@ -151,10 +147,6 @@ function isInInitializer(
   return false;
 }
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
 interface Config {
   functions?: boolean;
   classes?: boolean;
@@ -164,22 +156,13 @@ interface Config {
 type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
 
-const defaultOptions: Options = [
-  {
-    functions: true,
-    classes: true,
-    variables: true,
-    typedefs: true
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-use-before-define',
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow the use of variables before they are defined',
       category: 'Variables',
-      url: util.metaDocsUrl('no-use-before-define'),
       recommended: 'error'
     },
     messages: {
@@ -205,11 +188,16 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
-    const options = parseOptions(
-      util.applyDefault(defaultOptions, context.options)[0]
-    );
+  defaultOptions: [
+    {
+      functions: true,
+      classes: true,
+      variables: true,
+      typedefs: true
+    }
+  ],
+  create(context, optionsWithDefault) {
+    const options = parseOptions(optionsWithDefault[0]);
 
     /**
      * Determines whether a given use-before-define case should be reported according to the options.
@@ -273,6 +261,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

@@ -7,8 +7,9 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule, { Options } from '../../src/rules/ban-types';
+import rule from '../../src/rules/ban-types';
 import RuleTester from '../RuleTester';
+import { InferOptionsTypeFromRule } from '../../src/util';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -18,7 +19,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
 });
 
-const options: Options = [
+const options: InferOptionsTypeFromRule<typeof rule> = [
   {
     types: {
       String: {

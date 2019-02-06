@@ -4,25 +4,17 @@
  */
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'missingAccessibility';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'explicit-member-accessibility',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
-      extraDescription: [util.tslintRule('member-access')],
+      tslintRuleName: 'member-access',
       category: 'Best Practices',
-      url: util.metaDocsUrl('explicit-member-accessibility'),
       recommended: 'error'
     },
     messages: {
@@ -31,12 +23,8 @@ const rule: RuleModule<MessageIds, Options> = {
     },
     schema: []
   },
-
+  defaultOptions: [],
   create(context) {
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
-
     /**
      * Checks if a method declaration has an accessibility modifier.
      * @param methodDefinition The node representing a MethodDefinition.
@@ -81,14 +69,9 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       ClassProperty: checkPropertyAccessibilityModifier,
       MethodDefinition: checkMethodAccessibilityModifier
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

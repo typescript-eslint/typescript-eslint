@@ -4,25 +4,18 @@
  */
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule, { RuleFix } from 'ts-eslint';
+import { RuleFix } from 'ts-eslint';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'interfaceOverType';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'prefer-interface',
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Prefer an interface declaration over a type literal (type T = { ... })',
-      extraDescription: [util.tslintRule('interface-over-type-literal')],
+      tslintRuleName: 'interface-over-type-literal',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('prefer-interface'),
       recommended: 'error'
     },
     fixable: 'code',
@@ -31,12 +24,10 @@ const rule: RuleModule<MessageIds, Options> = {
     },
     schema: []
   },
+  defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       // VariableDeclaration with kind type has only one VariableDeclarator
       "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
@@ -75,5 +66,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
+});

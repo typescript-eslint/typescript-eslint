@@ -4,24 +4,16 @@
  * @author Patricio Trevino
  */
 
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'unexpectedAny';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'no-explicit-any',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow usage of the `any` type',
-      extraDescription: [util.tslintRule('no-any')],
+      tslintRuleName: 'no-any',
       category: 'Best Practices',
-      url: util.metaDocsUrl('no-explicit-any'),
       recommended: 'warn'
     },
     messages: {
@@ -29,7 +21,7 @@ const rule: RuleModule<MessageIds, Options> = {
     },
     schema: []
   },
-
+  defaultOptions: [],
   create(context) {
     return {
       TSAnyKeyword(node) {
@@ -40,6 +32,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

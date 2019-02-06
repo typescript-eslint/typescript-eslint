@@ -4,12 +4,7 @@
  */
 
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -18,21 +13,15 @@ type Options = [
 ];
 type MessageIds = 'unexpectedTypeAssertion';
 
-const defaultOptions: Options = [
-  {
-    allowAsParameter: false
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-object-literal-type-assertions',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Forbids an object literal to appear in a type assertion expression',
-      extraDescription: [util.tslintRule('no-object-literal-type-assertion')],
+      tslintRuleName: 'no-object-literal-type-assertion',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('no-object-literal-type-assertions'),
       recommended: 'error'
     },
     messages: {
@@ -51,16 +40,12 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-  create(context) {
-    const { allowAsParameter } = util.applyDefault(
-      defaultOptions,
-      context.options
-    )[0];
-
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
-
+  defaultOptions: [
+    {
+      allowAsParameter: false
+    }
+  ],
+  create(context, [{ allowAsParameter }]) {
     /**
      * Check whatever node should be reported
      * @param node the node to be evaluated.
@@ -100,5 +85,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
+});

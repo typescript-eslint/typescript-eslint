@@ -4,12 +4,7 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Modifier =
   | 'readonly'
@@ -26,21 +21,15 @@ type Options = [
 ];
 type MessageIds = 'noParamProp';
 
-const defaultOptions: Options = [
-  {
-    allows: []
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-parameter-properties',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Disallow the use of parameter properties in class constructors.',
-      extraDescription: [util.tslintRule('no-parameter-properties')],
+      tslintRuleName: 'no-parameter-properties',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('no-parameter-properties'),
       recommended: 'error'
     },
     messages: {
@@ -71,14 +60,12 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
-    const { allows } = util.applyDefault(defaultOptions, context.options)[0];
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
-
+  defaultOptions: [
+    {
+      allows: []
+    }
+  ],
+  create(context, [{ allows }]) {
     /**
      * Gets the modifiers of `node`.
      * @param node the node to be inspected.
@@ -96,9 +83,6 @@ const rule: RuleModule<MessageIds, Options> = {
       return modifiers.filter(Boolean).join(' ') as Modifier;
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       TSParameterProperty(node: TSESTree.TSParameterProperty) {
         const modifiers = getModifiers(node);
@@ -129,5 +113,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
+});

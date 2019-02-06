@@ -5,7 +5,6 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
 /**
@@ -73,10 +72,6 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
   }
 }
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
 type Options = ['array' | 'generic' | 'array-simple'];
 type MessageIds =
   | 'errorStringGeneric'
@@ -84,16 +79,14 @@ type MessageIds =
   | 'errorStringArray'
   | 'errorStringArraySimple';
 
-const defaultOptions: Options = ['array'];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'array-type',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
-      extraDescription: [util.tslintRule('array-type')],
+      tslintRuleName: 'array-type',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('array-type'),
       recommended: 'error'
     },
     fixable: 'code',
@@ -113,8 +106,8 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-  create(context) {
-    const option = util.applyDefault(defaultOptions, context.options)[0];
+  defaultOptions: ['array'],
+  create(context, [option]) {
     const sourceCode = context.getSourceCode();
 
     /**
@@ -148,10 +141,6 @@ const rule: RuleModule<MessageIds, Options> = {
       }
       return 'T';
     }
-
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
 
     return {
       TSArrayType(node: TSESTree.TSArrayType) {
@@ -254,6 +243,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

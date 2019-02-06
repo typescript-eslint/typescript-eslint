@@ -4,12 +4,7 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type MessageIds = 'incorrectOrder';
 type OrderConfig = string[] | 'never';
@@ -44,56 +39,14 @@ const schemaOptions = ['field', 'method', 'constructor'].reduce<string[]>(
   []
 );
 
-const defaultOptions: Options = [
-  {
-    default: [
-      'public-static-field',
-      'protected-static-field',
-      'private-static-field',
-
-      'public-instance-field',
-      'protected-instance-field',
-      'private-instance-field',
-
-      'public-field',
-      'protected-field',
-      'private-field',
-
-      'static-field',
-      'instance-field',
-
-      'field',
-
-      'constructor',
-
-      'public-static-method',
-      'protected-static-method',
-      'private-static-method',
-
-      'public-instance-method',
-      'protected-instance-method',
-      'private-instance-method',
-
-      'public-method',
-      'protected-method',
-      'private-method',
-
-      'static-method',
-      'instance-method',
-
-      'method'
-    ]
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'member-ordering',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
-      extraDescription: [util.tslintRule('member-ordering')],
+      tslintRuleName: 'member-ordering',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('member-ordering'),
       recommended: false
     },
     messages: {
@@ -174,18 +127,52 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
+  defaultOptions: [
+    {
+      default: [
+        'public-static-field',
+        'protected-static-field',
+        'private-static-field',
 
-  create(context) {
-    const options = util.applyDefault(defaultOptions, context.options)[0];
+        'public-instance-field',
+        'protected-instance-field',
+        'private-instance-field',
 
+        'public-field',
+        'protected-field',
+        'private-field',
+
+        'static-field',
+        'instance-field',
+
+        'field',
+
+        'constructor',
+
+        'public-static-method',
+        'protected-static-method',
+        'private-static-method',
+
+        'public-instance-method',
+        'protected-instance-method',
+        'private-instance-method',
+
+        'public-method',
+        'protected-method',
+        'private-method',
+
+        'static-method',
+        'instance-method',
+
+        'method'
+      ]
+    }
+  ],
+  create(context, [options]) {
     const functionExpressions = [
       'FunctionExpression',
       'ArrowFunctionExpression'
     ];
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
 
     /**
      * Gets the node type.
@@ -365,9 +352,6 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       ClassDeclaration(node: TSESTree.ClassDeclaration) {
         validateMembers(
@@ -399,6 +383,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

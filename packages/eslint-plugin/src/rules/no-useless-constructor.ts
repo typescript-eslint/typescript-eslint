@@ -4,13 +4,9 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/no-useless-constructor';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
@@ -49,25 +45,21 @@ function checkParams(node: TSESTree.MethodDefinition): boolean {
   );
 }
 
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-useless-constructor',
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow unnecessary constructors',
       category: 'Best Practices',
-      recommended: false,
-      url: util.metaDocsUrl('no-useless-constructor')
+      recommended: false
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages
   },
-
+  defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
-
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       MethodDefinition(node: TSESTree.MethodDefinition) {
         if (
@@ -81,6 +73,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

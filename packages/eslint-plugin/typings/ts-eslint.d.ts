@@ -202,6 +202,30 @@ declare module 'ts-eslint' {
 
   //#region Rule
 
+  interface RuleMetaDataDocs {
+    /**
+     * The general category the rule falls within
+     */
+    category: 'Best Practices' | 'Stylistic Issues' | 'Variables';
+    /**
+     * Concise description of the rule
+     */
+    description: string;
+    /**
+     * Extra information linking the rule to a tslint rule
+     */
+    extraDescription?: string[];
+    /**
+     * The recommendation level for the rule.
+     * Used by the build tools to generate the recommended config.
+     * Set to false to not include it as a recommendation
+     */
+    recommended: 'error' | 'warn' | false;
+    /**
+     * The URL of the rule's docs
+     */
+    url: string;
+  }
   interface RuleMetaData<TMessageIds extends string> {
     /**
      * True if the rule is deprecated, false otherwise
@@ -210,30 +234,7 @@ declare module 'ts-eslint' {
     /**
      * Documentation for the rule
      */
-    docs: {
-      /**
-       * The general category the rule falls within
-       */
-      category: 'Best Practices' | 'Stylistic Issues' | 'Variables';
-      /**
-       * Concise description of the rule
-       */
-      description: string;
-      /**
-       * Extra information linking the rule to a tslint rule
-       */
-      extraDescription?: string[];
-      /**
-       * The recommendation level for the rule.
-       * Used by the build tools to generate the recommended config.
-       * Set to false to not include it as a recommendation
-       */
-      recommended: 'error' | 'warn' | false;
-      /**
-       * The URL of the rule's docs
-       */
-      url: string;
-    };
+    docs: RuleMetaDataDocs;
     /**
      * The fixer category. Omit if there is no fixer
      */
@@ -315,7 +316,10 @@ declare module 'ts-eslint' {
     loc?: TSESTree.SourceLocation;
   }
 
-  interface RuleContext<TMessageIds extends string, TOptions extends any[]> {
+  interface RuleContext<
+    TMessageIds extends string,
+    TOptions extends Readonly<any[]>
+  > {
     /**
      * The rule ID.
      */
@@ -391,7 +395,7 @@ declare module 'ts-eslint' {
 
   interface RuleModule<
     TMessageIds extends string,
-    TOptions extends any[],
+    TOptions extends Readonly<any[]>,
     // for extending base rules
     TRuleListener extends RuleListener = RuleListener
   > {
@@ -510,6 +514,15 @@ declare module 'ts-eslint' {
     type Definition = DefinitionType & { name: TSESTree.Identifier };
   }
 
-  export { RuleContext, RuleFix, ReportFixFunction, ReportDescriptor, Scope };
+  export {
+    ReportDescriptor,
+    ReportFixFunction,
+    RuleContext,
+    RuleFix,
+    RuleListener,
+    RuleMetaData,
+    RuleMetaDataDocs,
+    Scope
+  };
   export default RuleModule;
 }

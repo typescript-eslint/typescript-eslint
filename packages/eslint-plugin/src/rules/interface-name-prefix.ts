@@ -4,25 +4,19 @@
  */
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 type Options = ['never' | 'always'];
 type MessageIds = 'noPrefix';
 
-const defaultOptions: Options = ['never'];
-
-const rule: RuleModule<'noPrefix', Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'interface-name-prefix',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Require that interface names be prefixed with `I`',
-      extraDescription: [util.tslintRule('interface-name')],
+      tslintRuleName: 'interface-name',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('interface-name-prefix'),
       recommended: 'error'
     },
     messages: {
@@ -34,14 +28,9 @@ const rule: RuleModule<'noPrefix', Options> = {
       }
     ]
   },
-
-  create(context) {
-    const option = util.applyDefault(defaultOptions, context.options)[0];
+  defaultOptions: ['never'],
+  create(context, [option]) {
     const never = option !== 'always';
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
 
     /**
      * Checks if a string is prefixed with "I".
@@ -55,9 +44,6 @@ const rule: RuleModule<'noPrefix', Options> = {
       return /^I[A-Z]/.test(name);
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration): void {
         if (never) {
@@ -78,6 +64,4 @@ const rule: RuleModule<'noPrefix', Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

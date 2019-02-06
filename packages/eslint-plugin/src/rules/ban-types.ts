@@ -4,12 +4,8 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule, { ReportFixFunction } from 'ts-eslint';
+import { ReportFixFunction } from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -26,41 +22,14 @@ type Options = [
 ];
 type MessageIds = 'bannedTypeMessage';
 
-const defaultOptions: Options = [
-  {
-    types: {
-      String: {
-        message: 'Use string instead',
-        fixWith: 'string'
-      },
-      Boolean: {
-        message: 'Use boolean instead',
-        fixWith: 'boolean'
-      },
-      Number: {
-        message: 'Use number instead',
-        fixWith: 'number'
-      },
-      Object: {
-        message: 'Use Record<string, any> instead',
-        fixWith: 'Record<string, any>'
-      },
-      Symbol: {
-        message: 'Use symbol instead',
-        fixWith: 'symbol'
-      }
-    }
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'ban-types',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Enforces that types will not to be used',
-      extraDescription: [util.tslintRule('ban-types')],
+      tslintRuleName: 'ban-types',
       category: 'Best Practices',
-      url: util.metaDocsUrl('ban-types'),
       recommended: 'error'
     },
     fixable: 'code',
@@ -93,24 +62,42 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
-    const banedTypes = util.applyDefault(defaultOptions, context.options)[0]
-      .types;
-
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
-
+  defaultOptions: [
+    {
+      types: {
+        String: {
+          message: 'Use string instead',
+          fixWith: 'string'
+        },
+        Boolean: {
+          message: 'Use boolean instead',
+          fixWith: 'boolean'
+        },
+        Number: {
+          message: 'Use number instead',
+          fixWith: 'number'
+        },
+        Object: {
+          message: 'Use Record<string, any> instead',
+          fixWith: 'Record<string, any>'
+        },
+        Symbol: {
+          message: 'Use symbol instead',
+          fixWith: 'symbol'
+        }
+      }
+    }
+  ],
+  create(context, [{ types: bannedTypes }]) {
     return {
       'TSTypeReference Identifier'(node: TSESTree.Identifier) {
         if (
           node.parent &&
           node.parent.type !== AST_NODE_TYPES.TSQualifiedName
         ) {
-          if (node.name in banedTypes) {
+          if (node.name in bannedTypes) {
             let customMessage = '';
-            const bannedCfgValue = banedTypes[node.name];
+            const bannedCfgValue = bannedTypes[node.name];
 
             let fix: ReportFixFunction | null = null;
 
@@ -140,6 +127,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

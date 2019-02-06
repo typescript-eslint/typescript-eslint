@@ -4,12 +4,7 @@
  */
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -19,22 +14,15 @@ type Options = [
 ];
 type MessageIds = 'noInferrableType';
 
-const defaultOptions: Options = [
-  {
-    ignoreParameters: true,
-    ignoreProperties: true
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-inferrable-types',
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.',
-      extraDescription: [util.tslintRule('no-inferrable-types')],
+      tslintRuleName: 'no-inferrable-types',
       category: 'Best Practices',
-      url: util.metaDocsUrl('no-inferrable-types'),
       recommended: 'error'
     },
     fixable: 'code',
@@ -57,13 +45,13 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
-    const { ignoreParameters, ignoreProperties } = util.applyDefault(
-      defaultOptions,
-      context.options
-    )[0];
-
+  defaultOptions: [
+    {
+      ignoreParameters: true,
+      ignoreProperties: true
+    }
+  ],
+  create(context, [{ ignoreParameters, ignoreProperties }]) {
     /**
      * Returns whether a node has an inferrable value or not
      * @param node the node to check
@@ -212,6 +200,4 @@ const rule: RuleModule<MessageIds, Options> = {
       ClassProperty: inferrablePropertyVisitor
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

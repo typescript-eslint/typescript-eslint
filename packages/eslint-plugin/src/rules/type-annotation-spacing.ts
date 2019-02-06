@@ -4,13 +4,8 @@
  * @author Patricio Trevino
  */
 
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 import { TSESTree } from '@typescript-eslint/typescript-estree';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -43,20 +38,14 @@ const definition = {
   additionalProperties: false
 };
 
-const defaultOptions: Options = [
-  // technically there is a default, but the overrides mean
-  // that if we apply them here, it will break the no override case.
-  {}
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'type-annotation-spacing',
   meta: {
     type: 'layout',
     docs: {
       description: 'Require consistent spacing around type annotations',
-      extraDescription: [util.tslintRule('typedef-whitespace')],
+      tslintRuleName: 'typedef-whitespace',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('type-annotation-spacing'),
       recommended: 'error'
     },
     fixable: 'whitespace',
@@ -85,11 +74,14 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
+  defaultOptions: [
+    // technically there is a default, but the overrides mean
+    // that if we apply them here, it will break the no override case.
+    {}
+  ],
+  create(context, [options]) {
     const punctuators = [':', '=>'];
     const sourceCode = context.getSourceCode();
-    const options = util.applyDefault(defaultOptions, context.options)[0];
 
     const overrides = options!.overrides || { colon: {}, arrow: {} };
 
@@ -105,10 +97,6 @@ const rule: RuleModule<MessageIds, Options> = {
       options,
       overrides.arrow
     );
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
 
     /**
      * Checks if there's proper spacing around type annotations (no space
@@ -203,9 +191,6 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       TSMappedType(node: TSESTree.TSMappedType) {
         if (node.typeAnnotation) {
@@ -217,6 +202,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

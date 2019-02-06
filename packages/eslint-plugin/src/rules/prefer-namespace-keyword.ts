@@ -5,25 +5,17 @@
  */
 
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'useNamespace';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'prefer-namespace-keyword',
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules.',
-      extraDescription: [util.tslintRule('no-internal-module')],
+      tslintRuleName: 'no-internal-module',
       category: 'Best Practices',
-      url: util.metaDocsUrl('prefer-namespace-keyword'),
       recommended: 'error'
     },
     fixable: 'code',
@@ -33,13 +25,10 @@ const rule: RuleModule<MessageIds, Options> = {
     },
     schema: []
   },
-
+  defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       TSModuleDeclaration(node: TSESTree.TSModuleDeclaration) {
         // Do nothing if the name is a string.
@@ -65,5 +54,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
+});

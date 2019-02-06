@@ -3,25 +3,17 @@
  * @author Danny Fritz
  */
 
-import RuleModule from 'ts-eslint';
-import * as util from '../util';
 import { TSESTree } from '@typescript-eslint/typescript-estree';
+import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-
-type Options = [];
-type MessageIds = 'tripleSlashReference';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'no-triple-slash-reference',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow `/// <reference path="" />` comments',
-      extraDescription: [util.tslintRule('no-reference')],
+      tslintRuleName: 'no-reference',
       category: 'Best Practices',
-      url: util.metaDocsUrl('no-triple-slash-reference'),
       recommended: 'error'
     },
     schema: [],
@@ -29,18 +21,11 @@ const rule: RuleModule<MessageIds, Options> = {
       tripleSlashReference: 'Do not use a triple slash reference.'
     }
   },
-
+  defaultOptions: [],
   create(context) {
     const referenceRegExp = /^\/\s*<reference\s*path=/;
     const sourceCode = context.getSourceCode();
 
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
-
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       Program(program: TSESTree.Program): void {
         const commentsBefore = sourceCode.getCommentsBefore(program);
@@ -59,5 +44,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
+});

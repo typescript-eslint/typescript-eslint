@@ -4,12 +4,8 @@
  */
 
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule, { ReportDescriptor } from 'ts-eslint';
+import { ReportDescriptor } from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -36,23 +32,14 @@ type Options = [
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
 
-const defaultOptions: Options = [
-  {
-    allowAliases: 'never',
-    allowCallbacks: 'never',
-    allowLiterals: 'never',
-    allowMappedTypes: 'never'
-  }
-];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-type-alias',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow the use of type aliases',
-      extraDescription: [util.tslintRule('interface-over-type-literal')],
+      tslintRuleName: 'interface-over-type-literal',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('no-type-alias'),
       recommended: false
     },
     messages: {
@@ -99,15 +86,18 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
-    const {
-      allowAliases,
-      allowCallbacks,
-      allowLiterals,
-      allowMappedTypes
-    } = util.applyDefault(defaultOptions, context.options)[0];
-
+  defaultOptions: [
+    {
+      allowAliases: 'never',
+      allowCallbacks: 'never',
+      allowLiterals: 'never',
+      allowMappedTypes: 'never'
+    }
+  ],
+  create(
+    context,
+    [{ allowAliases, allowCallbacks, allowLiterals, allowMappedTypes }]
+  ) {
     const unions = ['always', 'in-unions', 'in-unions-and-intersections'];
     const intersections = [
       'always',
@@ -120,10 +110,6 @@ const rule: RuleModule<MessageIds, Options> = {
       'in-unions-and-intersections'
     ];
     const aliasTypes = ['TSArrayType', 'TSTypeReference', 'TSLiteralType'];
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
 
     type CompositionType = TSESTree.TSUnionType | TSESTree.TSIntersectionType;
     /**
@@ -299,9 +285,6 @@ const rule: RuleModule<MessageIds, Options> = {
       });
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
       TSTypeAliasDeclaration(node: TSESTree.TSTypeAliasDeclaration) {
         if (isComposition(node.typeAnnotation)) {
@@ -312,5 +295,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
+});

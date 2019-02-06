@@ -4,23 +4,16 @@
  * @author Matt DuVall <http://www.mattduvall.com/>
  */
 
-import RuleModule from 'ts-eslint';
-import * as util from '../util';
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import * as util from '../util';
 
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
-type Options = [];
-type MessageIds = 'useLiteral';
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule({
+  name: 'no-array-constructor',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow generic `Array` constructors',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('no-array-constructor'),
       recommended: 'error'
     },
     fixable: 'code',
@@ -29,7 +22,7 @@ const rule: RuleModule<MessageIds, Options> = {
     },
     schema: []
   },
-
+  defaultOptions: [],
   create(context) {
     /**
      * Disallow construction of dense arrays using the Array constructor
@@ -68,6 +61,4 @@ const rule: RuleModule<MessageIds, Options> = {
       NewExpression: check
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

@@ -4,12 +4,7 @@
  */
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 interface Config<T = string> {
   private?: T;
@@ -20,16 +15,14 @@ type Modifiers = keyof Config;
 type Options = [Config];
 type MessageIds = 'incorrectName';
 
-const defaultOptions: Options = [{}];
-
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'member-naming',
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Enforces naming conventions for class members by visibility.',
       category: 'Stylistic Issues',
-      url: util.metaDocsUrl('member-naming'),
       recommended: false
     },
     messages: {
@@ -61,9 +54,8 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     ]
   },
-
-  create(context) {
-    const config = util.applyDefault(defaultOptions, context.options)[0];
+  defaultOptions: [{}],
+  create(context, [config]) {
     const conventions = (Object.keys(config) as Modifiers[]).reduce<
       Config<RegExp>
     >((acc, accessibility) => {
@@ -71,10 +63,6 @@ const rule: RuleModule<MessageIds, Options> = {
 
       return acc;
     }, {});
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
 
     /**
      * Check that the property name matches the convention for its
@@ -99,15 +87,9 @@ const rule: RuleModule<MessageIds, Options> = {
       });
     }
 
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
-
     return {
       MethodDefinition: validateName,
       ClassProperty: validateName
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});

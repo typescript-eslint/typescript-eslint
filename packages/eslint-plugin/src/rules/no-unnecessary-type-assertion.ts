@@ -4,14 +4,9 @@
  */
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
 import * as tsutils from 'tsutils';
 import ts from 'typescript';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -20,15 +15,15 @@ type Options = [
 ];
 type MessageIds = 'unnecessaryAssertion';
 
-const rule: RuleModule<MessageIds, Options> = {
+export default util.createRule<Options, MessageIds>({
+  name: 'no-unnecessary-type-assertion',
   meta: {
     docs: {
       description:
         'Warns if a type assertion does not change the type of an expression',
       category: 'Best Practices',
       recommended: false,
-      extraDescription: [util.tslintRule('no-unnecessary-type-assertion')],
-      url: util.metaDocsUrl('no-unnecessary-type-assertion')
+      tslintRuleName: 'no-unnecessary-type-assertion'
     },
     fixable: 'code',
     messages: {
@@ -50,8 +45,8 @@ const rule: RuleModule<MessageIds, Options> = {
     ],
     type: 'suggestion'
   },
-
-  create(context) {
+  defaultOptions: [{}],
+  create(context, [options]) {
     const parserServices = util.getParserServices(context);
 
     /**
@@ -125,10 +120,7 @@ const rule: RuleModule<MessageIds, Options> = {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
         ts.AssertionExpression
       >(node);
-      const options = context.options[0];
-
       if (
-        options &&
         options.typesToIgnore &&
         options.typesToIgnore.indexOf(originalNode.type.getText()) !== -1
       ) {
@@ -182,6 +174,4 @@ const rule: RuleModule<MessageIds, Options> = {
       }
     };
   }
-};
-export default rule;
-export { Options, MessageIds };
+});
