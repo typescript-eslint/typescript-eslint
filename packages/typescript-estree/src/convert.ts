@@ -6,7 +6,7 @@
  * MIT License
  */
 import ts from 'typescript';
-import * as TSESTree from './typedefs';
+import { TSESTree } from './ts-estree';
 import {
   canContainDirective,
   createError,
