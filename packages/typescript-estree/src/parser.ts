@@ -339,7 +339,7 @@ export function parse<T extends ParserOptions = ParserOptions>(
 
 export function parseAndGenerateServices<
   T extends ParserOptions = ParserOptions
-  >(code: string, options: T): ParseAndGenerateServicesResult<T> {
+>(code: string, options: T): ParseAndGenerateServicesResult<T> {
   /**
    * Reset the parse configuration
    */
@@ -358,7 +358,7 @@ export function parseAndGenerateServices<
     applyParserOptionsToExtra(options);
     if (
       typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
-      'boolean' &&
+        'boolean' &&
       options.errorOnTypeScriptSyntacticAndSemanticIssues
     ) {
       extra.errorOnTypeScriptSyntacticAndSemanticIssues = true;
