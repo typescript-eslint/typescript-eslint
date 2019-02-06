@@ -1,12 +1,3 @@
-/**
- * @fileoverview Enforces spacing around type annotations
- * @author Nicholas C. Zakas
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/type-annotation-spacing';
 import RuleTester, { InvalidTestCase, ValidTestCase } from '../RuleTester';
 import {
@@ -16,10 +7,6 @@ import {
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

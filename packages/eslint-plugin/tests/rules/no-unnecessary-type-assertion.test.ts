@@ -1,20 +1,6 @@
-/**
- * @fileoverview Warns if a type assertion does not change the type of an expression.
- * @author Benjamin Lichtman
- */
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const rootDir = path.join(process.cwd(), 'tests/fixtures');
 const parserOptions = {

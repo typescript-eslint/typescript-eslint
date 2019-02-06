@@ -1,18 +1,5 @@
-/**
- * @fileoverview Enforces naming conventions for class members by visibility.
- * @author Ian MacLeod
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/member-naming';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

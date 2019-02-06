@@ -1,12 +1,3 @@
-/**
- * @fileoverview Prevent variables used in TypeScript being marked as unused
- * @author James Henry
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-unused-vars';
 import RuleTester from '../RuleTester';
 
@@ -18,10 +9,6 @@ const ruleTester = new RuleTester({
   },
   parser: '@typescript-eslint/parser'
 });
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 // the base rule doesn't have messageIds
 function error(

@@ -1,9 +1,3 @@
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from 'eslint/lib/rules/strict';
 import RuleTester from '../RuleTester';
 

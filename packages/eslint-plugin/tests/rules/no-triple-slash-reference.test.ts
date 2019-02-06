@@ -1,18 +1,5 @@
-/**
- * @fileoverview Enforces triple slash references are not used
- * @author Danny Fritz
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-triple-slash-reference';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

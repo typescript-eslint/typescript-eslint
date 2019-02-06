@@ -1,18 +1,5 @@
-/**
- * @fileoverview Disallows the use of custom TypeScript modules and namespaces.
- * @author Patricio Trevino
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-namespace';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

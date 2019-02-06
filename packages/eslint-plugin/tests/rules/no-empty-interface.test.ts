@@ -1,18 +1,5 @@
-/**
- * @fileoverview Disallows the declaration of empty interfaces.
- * @author Patricio Trevino
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-empty-interface';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

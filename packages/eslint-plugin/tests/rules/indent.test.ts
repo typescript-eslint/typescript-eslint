@@ -1,13 +1,3 @@
-/**
- * @fileoverview Check internal rule
- * @author Armano <https://github.com/armano2>
- */
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/indent';
 import RuleTester, { RunTests, TestCaseError } from '../RuleTester';
 import {

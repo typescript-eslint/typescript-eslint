@@ -1,13 +1,3 @@
-/**
- * @fileoverview Forbids the use of classes as namespaces
- * Some tests adapted from  https://github.com/palantir/tslint/tree/c7fc99b5/test/rules/no-unnecessary-class
- * @author Jed Fox
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-extraneous-class';
 import RuleTester from '../RuleTester';
 
@@ -20,10 +10,6 @@ const onlyStatic = {
 const onlyConstructor = {
   messageId: 'onlyConstructor' as 'onlyConstructor'
 };
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

@@ -1,18 +1,5 @@
-/**
- * @fileoverview Prefer an interface declaration over a type literal (type T = { ... })
- * @author Armano <https://github.com/armano2>
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/prefer-interface';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

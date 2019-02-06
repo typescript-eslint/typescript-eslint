@@ -1,19 +1,5 @@
-/**
- * @fileoverview Enforces PascalCased class and interface names.
- * @author Jed Fox
- * @author Armano <https://github.com/armano2>
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/class-name-casing';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

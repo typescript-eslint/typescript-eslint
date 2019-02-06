@@ -1,18 +1,5 @@
-/**
- * @fileoverview Requires the use of as Type for type assertions instead of <Type>
- * @author Patricio Trevino
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-angle-bracket-type-assertion';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

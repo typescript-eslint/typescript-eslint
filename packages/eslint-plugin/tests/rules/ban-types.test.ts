@@ -1,19 +1,6 @@
-/**
- * @fileoverview Enforces that types will not to be used
- * @author Armano <https://github.com/armano2>
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/ban-types';
 import RuleTester from '../RuleTester';
 import { InferOptionsTypeFromRule } from '../../src/util';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

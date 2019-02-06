@@ -1,21 +1,6 @@
-/**
- * @fileoverview Requires using either `T[]` or `Array<T>` for arrays.
- * @author Mackie Underdown
- * @author Armano <https://github.com/armano2>
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/array-type';
 import RuleTester from '../RuleTester';
 import { Linter } from 'eslint';
-import assert from 'assert';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
@@ -837,7 +822,7 @@ describe('array-type (nested)', () => {
         }
       );
 
-      assert.strictEqual(output, result.output);
+      expect(output).toBe(result.output);
     }
 
     testOutput(

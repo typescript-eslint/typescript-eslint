@@ -1,9 +1,3 @@
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-useless-constructor';
 import RuleTester from '../RuleTester';
 

@@ -1,19 +1,5 @@
-/**
- * @fileoverview disallow generic `Array` constructors
- * @author Jed Fox
- * @author Matt DuVall <http://www.mattduvall.com/>
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-array-constructor';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

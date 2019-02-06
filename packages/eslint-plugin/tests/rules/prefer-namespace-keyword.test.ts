@@ -1,19 +1,5 @@
-/**
- * @fileoverview Enforces the use of the keyword `namespace` over `module` to declare custom TypeScript modules.
- * @author Patricio Trevino
- * @author Armano <https://github.com/armano2>
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/prefer-namespace-keyword';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

@@ -1,18 +1,5 @@
-/**
- * @fileoverview Disallows non-null assertions using the `!` postfix operator.
- * @author Macklin Underdown
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-non-null-assertion';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

@@ -2,20 +2,11 @@
  * @fileoverview TypeScript plugin for ESLint
  * @author Nicholas C. Zakas
  */
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
 
 import requireIndex from 'requireindex';
 import path from 'path';
 
 import recommended from './configs/recommended.json';
-
-//------------------------------------------------------------------------------
-// Plugin Definition
-//------------------------------------------------------------------------------
 
 const rules = requireIndex(path.join(__dirname, 'rules'));
 // eslint expects the rule to be on rules[name], not rules[name].default

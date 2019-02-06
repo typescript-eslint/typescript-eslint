@@ -1,13 +1,3 @@
-/**
- * @fileoverview Disallow aliasing `this`
- * Some tests taken from TSLint:  https://github.com/palantir/tslint/tree/c7fc99b5/test/rules/no-this-assignment
- * @author Jed Fox
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import rule from '../../src/rules/no-this-alias';
 import RuleTester from '../RuleTester';
@@ -24,10 +14,6 @@ const arrayDestructureError = {
   messageId: 'thisDestructure' as 'thisDestructure',
   type: AST_NODE_TYPES.ArrayPattern
 };
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

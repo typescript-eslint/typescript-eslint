@@ -1,9 +1,3 @@
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from 'eslint/lib/rules/no-restricted-globals';
 import RuleTester from '../RuleTester';
 

@@ -1,20 +1,6 @@
-/**
- * @fileoverview When adding two variables, operands must both be of type number or of type string.
- * @author James Henry
- * @author Armano <https://github.com/armano2>
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-const path = require('path');
-
+import path from 'path';
 import rule from '../../src/rules/restrict-plus-operands';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 

@@ -1,13 +1,3 @@
-/**
- * @fileoverview Check internal rule
- * @author Armano <https://github.com/armano2>
- */
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from 'eslint/lib/rules/no-undef';
 import RuleTester from '../RuleTester';
 

@@ -1,18 +1,5 @@
-/**
- * @fileoverview Enforces member overloads to be consecutive.
- * @author Patricio Trevino
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/adjacent-overload-signatures';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

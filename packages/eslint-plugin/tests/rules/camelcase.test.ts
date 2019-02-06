@@ -1,24 +1,9 @@
-/**
- * @fileoverview Tests for camelcase rule
- * @author Guy Lilian
- * @author Shahar Or
- * @author Patricio Trevino
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/camelcase';
 import RuleTester from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
 });
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 ruleTester.run('camelcase', rule, {
   valid: [

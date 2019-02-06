@@ -1,20 +1,6 @@
-/**
- * @fileoverview Tests for no-use-before-define rule.
- * @author Ilya Volodin
- * @author Jed Fox
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-use-before-define';
 import RuleTester from '../RuleTester';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

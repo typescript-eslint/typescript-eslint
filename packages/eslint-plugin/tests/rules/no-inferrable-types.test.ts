@@ -1,18 +1,5 @@
-/**
- * @fileoverview Disallows explicit type declarations for inferrable types
- * @author James Garbutt <https://github.com/43081j>
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/no-inferrable-types';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

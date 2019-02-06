@@ -1,18 +1,5 @@
-/**
- * @fileoverview Enforces explicit accessibility modifiers for class members
- * @author Danny Fritz
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/explicit-member-accessibility';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

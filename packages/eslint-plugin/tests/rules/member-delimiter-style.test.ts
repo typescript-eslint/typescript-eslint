@@ -1,19 +1,5 @@
-/**
- * @fileoverview Enforces a member delimiter style in interfaces and type literals.
- * @author Patricio Trevino
- * @author Brad Zacher
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../../src/rules/member-delimiter-style';
 import RuleTester from '../RuleTester';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
