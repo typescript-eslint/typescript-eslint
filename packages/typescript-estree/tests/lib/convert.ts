@@ -45,6 +45,30 @@ describe('convert', () => {
     expect((instance as any).deeplyCopy(ast.statements[0])).toMatchSnapshot();
   });
 
+  it('deeplyCopy should convert node with type arguments correctly', () => {
+    const ast = convertCode('new foo<T>()');
+
+    const instance = new Converter(ast, {
+      errorOnUnknownASTType: false,
+      useJSXTextNode: false,
+      shouldProvideParserServices: false
+    });
+    expect(
+      (instance as any).deeplyCopy((ast.statements[0] as any).expression)
+    ).toMatchSnapshot();
+  });
+
+  it('deeplyCopy should convert array of nodes', () => {
+    const ast = convertCode('new foo<T>()');
+
+    const instance = new Converter(ast, {
+      errorOnUnknownASTType: false,
+      useJSXTextNode: false,
+      shouldProvideParserServices: false
+    });
+    expect((instance as any).deeplyCopy(ast)).toMatchSnapshot();
+  });
+
   it('deeplyCopy should fail on unknown node', () => {
     const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
 
