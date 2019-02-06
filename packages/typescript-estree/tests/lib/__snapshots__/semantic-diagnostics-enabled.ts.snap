@@ -1800,6 +1800,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-anonymus-with-type-parameters.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-anynomus-with-return-type.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-overloads.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-with-await.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
