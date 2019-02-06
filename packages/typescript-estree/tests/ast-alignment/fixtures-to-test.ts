@@ -434,7 +434,16 @@ tester.addFixturePatternConfig('typescript/expressions', {
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
-  fileType: 'ts'
+  fileType: 'ts',
+  ignore: [
+    /**
+     * Expected error on empty type arguments and type parameters
+     * TypeScript report diagnostics correctly but babel not
+     * https://github.com/babel/babel/issues/9462
+     */
+    'empty-type-arguments',
+    'empty-type-parameters'
+  ]
 });
 
 tester.addFixturePatternConfig('typescript/types', {

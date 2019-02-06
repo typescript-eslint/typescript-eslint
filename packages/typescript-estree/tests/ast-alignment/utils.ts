@@ -262,7 +262,7 @@ export function preprocessBabylonAST(ast: any): any {
         /**
          * babel issue: ranges of typeParameters are not included in FunctionExpression range
          */
-        if (node.typeParameters) {
+        if (node.typeParameters && node.typeParameters.range[0] < node.range[0]) {
           node.range[0] = node.typeParameters.range[0];
           node.loc.start = Object.assign({}, node.typeParameters.loc.start);
         }

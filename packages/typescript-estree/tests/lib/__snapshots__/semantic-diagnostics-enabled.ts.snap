@@ -1798,6 +1798,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-type-function-declaration.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-anonymus-with-type-parameters.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-overloads.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-with-await.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -2073,7 +2075,23 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments.src 1`] = `
+Object {
+  "column": 14,
+  "index": 14,
+  "lineNumber": 1,
+  "message": "Type argument list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters.src 1`] = `
+Object {
+  "column": 11,
+  "index": 11,
+  "lineNumber": 1,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/enum-with-keywords.src 1`] = `
 Object {
