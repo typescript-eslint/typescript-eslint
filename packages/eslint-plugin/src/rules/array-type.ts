@@ -32,7 +32,7 @@ function isSimpleType(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.TSTypeReference:
       if (
         node.typeName &&
-        node.typeName.type === 'Identifier' &&
+        node.typeName.type === AST_NODE_TYPES.Identifier &&
         node.typeName.name === 'Array'
       ) {
         if (!node.typeParameters) {
@@ -132,7 +132,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function getMessageType(node: TSESTree.Node): string {
       if (node) {
-        if (node.type === 'TSParenthesizedType') {
+        if (node.type === AST_NODE_TYPES.TSParenthesizedType) {
           return getMessageType(node.typeAnnotation);
         }
         if (isSimpleType(node)) {
@@ -186,7 +186,7 @@ export default util.createRule<Options, MessageIds>({
       TSTypeReference(node: TSESTree.TSTypeReference) {
         if (
           option === 'generic' ||
-          node.typeName.type !== 'Identifier' ||
+          node.typeName.type !== AST_NODE_TYPES.Identifier ||
           node.typeName.name !== 'Array'
         ) {
           return;

@@ -32,10 +32,10 @@ export default util.createRule<Options, MessageIds>({
   create(context, [options]) {
     const rules = baseRule.create(context);
     const TS_PROPERTY_TYPES = [
-      'TSPropertySignature',
-      'ClassProperty',
-      'TSParameterProperty',
-      'TSAbstractClassProperty'
+      AST_NODE_TYPES.TSPropertySignature,
+      AST_NODE_TYPES.ClassProperty,
+      AST_NODE_TYPES.TSParameterProperty,
+      AST_NODE_TYPES.TSAbstractClassProperty
     ];
 
     const properties = options.properties;

@@ -109,7 +109,11 @@ export default util.createRule<Options, MessageIds>({
       'in-intersections',
       'in-unions-and-intersections'
     ];
-    const aliasTypes = ['TSArrayType', 'TSTypeReference', 'TSLiteralType'];
+    const aliasTypes = [
+      AST_NODE_TYPES.TSArrayType,
+      AST_NODE_TYPES.TSTypeReference,
+      AST_NODE_TYPES.TSLiteralType
+    ];
 
     type CompositionType = TSESTree.TSUnionType | TSESTree.TSIntersectionType;
     /**

@@ -170,8 +170,8 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const functionExpressions = [
-      'FunctionExpression',
-      'ArrowFunctionExpression'
+      AST_NODE_TYPES.FunctionExpression,
+      AST_NODE_TYPES.ArrowFunctionExpression
     ];
 
     /**
