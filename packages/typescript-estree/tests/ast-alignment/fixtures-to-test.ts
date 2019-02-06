@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import jsxKnownIssues from '../../../shared-fixtures/jsx-known-issues';
+import { isJSXFileType } from '../../tools/test-utils';
 
 interface Fixture {
   filename: string;
@@ -61,7 +62,7 @@ class FixturesTester {
     const ignore = config.ignore || [];
     const fileType = config.fileType || 'js';
     const ignoreSourceType = config.ignoreSourceType || [];
-    const jsx = fileType === 'js' || fileType === 'jsx' || fileType === 'tsx';
+    const jsx = isJSXFileType(fileType);
 
     /**
      * The TypeScript compiler gives us the "externalModuleIndicator" to allow typescript-estree do dynamically detect the "sourceType".

@@ -8,7 +8,7 @@ import { readFileSync } from 'fs';
 import glob from 'glob';
 import * as parser from '../../src/parser';
 import { extname } from 'path';
-import { formatSnapshotName } from '../../tools/test-utils';
+import { formatSnapshotName, isJSXFileType } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -30,12 +30,13 @@ describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" 
   testFiles.forEach(filename => {
     const code = readFileSync(filename, 'utf8');
     const fileExtension = extname(filename);
-    const config = {
+    const config: parser.ParserOptions = {
       loc: true,
       range: true,
       tokens: true,
       errorOnUnknownASTType: true,
-      errorOnTypeScriptSyntacticAndSemanticIssues: true
+      errorOnTypeScriptSyntacticAndSemanticIssues: true,
+      jsx: isJSXFileType(fileExtension)
     };
     it(formatSnapshotName(filename, FIXTURES_DIR, fileExtension), () => {
       expect.assertions(1);

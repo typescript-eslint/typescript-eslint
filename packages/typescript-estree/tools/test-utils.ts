@@ -80,3 +80,14 @@ export function formatSnapshotName(
     .replace(fixturesDir + '/', '')
     .replace(fileExtension, '')}`;
 }
+
+/**
+ * Check if file extension is one used for jsx
+ * @param fileType
+ */
+export function isJSXFileType(fileType: string): boolean {
+  if (fileType.startsWith('.')) {
+    fileType = fileType.slice(1);
+  }
+  return fileType === 'js' || fileType === 'jsx' || fileType === 'tsx';
+}
