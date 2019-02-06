@@ -3,6 +3,8 @@
   "include": [
     "src",
     "typings",
+    // include the parser's ambient typings because the parser exports them in its type defs
+    "../parser/typings",
     "tests",
     "tools",
   ],

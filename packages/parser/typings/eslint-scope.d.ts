@@ -1,6 +1,12 @@
 // Type definitions for eslint-scope 4.0.0
 // Project: http://github.com/eslint/eslint-scope
 // Definitions by: Armano <https://github.com/armano2>
+
+//-----------------------------------------------------------------------
+// TODO - figure out how to make ScopeManager exportable so that
+//        the module's type declaration files don't break
+//-----------------------------------------------------------------------
+
 declare module 'eslint-scope/lib/options' {
   export type PatternVisitorCallback = (pattern: any, info: any) => void;
 
