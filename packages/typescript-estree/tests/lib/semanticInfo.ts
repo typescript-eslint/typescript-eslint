@@ -123,10 +123,10 @@ describe('semanticInfo', () => {
       arrayBoundName
     );
     expect(tsArrayBoundName).toBeDefined();
-    checkNumberArrayType(checker, tsArrayBoundName);
+    checkNumberArrayType(checker, tsArrayBoundName!);
 
     expect(
-      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName)
+      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName!)
     ).toBe(arrayBoundName);
   });
 
@@ -149,9 +149,9 @@ describe('semanticInfo', () => {
     );
     expect(tsBoundName).toBeDefined();
 
-    checkNumberArrayType(checker, tsBoundName);
+    checkNumberArrayType(checker, tsBoundName!);
 
-    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName)).toBe(
+    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName!)).toBe(
       boundName
     );
   });

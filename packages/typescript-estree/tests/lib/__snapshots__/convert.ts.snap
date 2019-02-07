@@ -1,5 +1,179 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`convert deeplyCopy should convert array of nodes 1`] = `
+Object {
+  "amdDependencies": Array [],
+  "bindDiagnostics": Array [],
+  "bindSuggestionDiagnostics": undefined,
+  "checkJsDirective": undefined,
+  "endOfFileToken": Object {
+    "loc": Object {
+      "end": Object {
+        "column": 12,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 12,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      12,
+      12,
+    ],
+    "type": "TSEndOfFileToken",
+  },
+  "externalModuleIndicator": undefined,
+  "fileName": "text.ts",
+  "hasNoDefaultLib": false,
+  "identifierCount": 2,
+  "identifiers": Map {
+    "foo" => "foo",
+    "T" => "T",
+  },
+  "isDeclarationFile": false,
+  "languageVariant": 1,
+  "languageVersion": 6,
+  "libReferenceDirectives": Array [],
+  "lineMap": Array [
+    null,
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 12,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "nodeCount": 7,
+  "parseDiagnostics": Array [],
+  "pragmas": Map {},
+  "range": Array [
+    0,
+    12,
+  ],
+  "referencedFiles": Array [],
+  "scriptKind": 4,
+  "statements": Array [
+    Object {
+      "expression": Object {
+        "arguments": Array [],
+        "callee": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 7,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "name": "foo",
+          "range": Array [
+            4,
+            7,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          12,
+        ],
+        "type": "NewExpression",
+        "typeParameters": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 10,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 7,
+              "line": 1,
+            },
+          },
+          "params": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                8,
+                9,
+              ],
+              "type": "TSTypeReference",
+              "typeName": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 9,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 8,
+                    "line": 1,
+                  },
+                },
+                "name": "T",
+                "range": Array [
+                  8,
+                  9,
+                ],
+                "type": "Identifier",
+              },
+              "typeParameters": undefined,
+            },
+          ],
+          "range": Array [
+            7,
+            10,
+          ],
+          "type": "TSTypeParameterInstantiation",
+        },
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        12,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "text": "new foo<T>()",
+  "transformFlags": undefined,
+  "type": "TSSourceFile",
+  "typeReferenceDirectives": Array [],
+}
+`;
+
 exports[`convert deeplyCopy should convert node correctly 1`] = `
 Object {
   "body": Array [
@@ -418,6 +592,101 @@ Object {
   "transformFlags": undefined,
   "type": "TSClassDeclaration",
   "typeParameters": null,
+}
+`;
+
+exports[`convert deeplyCopy should convert node with type arguments correctly 1`] = `
+Object {
+  "arguments": Array [],
+  "expression": Object {
+    "loc": Object {
+      "end": Object {
+        "column": 7,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 4,
+        "line": 1,
+      },
+    },
+    "name": "foo",
+    "range": Array [
+      4,
+      7,
+    ],
+    "type": "Identifier",
+  },
+  "loc": Object {
+    "end": Object {
+      "column": 12,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    12,
+  ],
+  "transformFlags": undefined,
+  "type": "TSNewExpression",
+  "typeParameters": Object {
+    "loc": Object {
+      "end": Object {
+        "column": 10,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 7,
+        "line": 1,
+      },
+    },
+    "params": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "TSTypeReference",
+        "typeName": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 9,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 8,
+              "line": 1,
+            },
+          },
+          "name": "T",
+          "range": Array [
+            8,
+            9,
+          ],
+          "type": "Identifier",
+        },
+        "typeParameters": undefined,
+      },
+    ],
+    "range": Array [
+      7,
+      10,
+    ],
+    "type": "TSTypeParameterInstantiation",
+  },
 }
 `;
 

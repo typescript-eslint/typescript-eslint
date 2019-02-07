@@ -213,6 +213,23 @@ class Foo {
     baz(): void {}
 }
         `,
+    `
+class Foo {
+    name: string;
+    static foo(s: string): void;
+    static foo(n: number): void;
+    static foo(sn: string | number): void {}
+    bar(): void {}
+    baz(): void {}
+}
+        `,
+    `
+class Test {
+  static test() {}
+  untest() {}
+  test() {}
+}
+        `,
     // examples from https://github.com/nzakas/eslint-plugin-typescript/issues/138
     'export default function<T>(foo : T) {}',
     'export default function named<T>(foo : T) {}'
@@ -785,6 +802,26 @@ class Foo {
         {
           messageId: 'adjacentSignature',
           data: { name: 'foo' },
+          line: 5,
+          column: 5
+        }
+      ]
+    },
+    {
+      code: `
+class Foo {
+    static foo(s: string): void;
+    name: string;
+    static foo(n: number): void;
+    static foo(sn: string | number): void {}
+    bar(): void {}
+    baz(): void {}
+}
+            `,
+      errors: [
+        {
+          messageId: 'adjacentSignature',
+          data: { name: 'static foo' },
           line: 5,
           column: 5
         }
