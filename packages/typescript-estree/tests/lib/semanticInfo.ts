@@ -18,7 +18,11 @@ import {
   parseCodeAndGenerateServices
 } from '../../tools/test-utils';
 import { parseAndGenerateServices } from '../../src/parser';
-import { VariableDeclaration } from '../../src/typedefs';
+import {
+  VariableDeclaration,
+  ClassDeclaration,
+  ClassProperty
+} from '../../src/typedefs';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -102,8 +106,8 @@ describe('semanticInfo', () => {
     testIsolatedFile(parseResult);
   });
 
-  it('parenthesized-expression tests', () => {
-    const fileName = resolve(FIXTURES_DIR, 'parenthesized-expression.ts');
+  it('non-existent-estree-nodes tests', () => {
+    const fileName = resolve(FIXTURES_DIR, 'non-existent-estree-nodes.src.ts');
     const parseResult = parseCodeAndGenerateServices(
       readFileSync(fileName, 'utf8'),
       createOptions(fileName)
@@ -116,6 +120,13 @@ describe('semanticInfo', () => {
       binaryExpression
     );
     expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
+
+    const computedPropertyString = ((parseResult.ast
+      .body[1] as ClassDeclaration).body.body[0] as ClassProperty).key;
+    const tsComputedPropertyString = parseResult.services.esTreeNodeToTSNodeMap!.get(
+      computedPropertyString
+    );
+    expect(tsComputedPropertyString.kind).toEqual(ts.SyntaxKind.StringLiteral);
   });
 
   it('imported-file tests', () => {

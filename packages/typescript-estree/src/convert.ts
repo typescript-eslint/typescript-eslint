@@ -119,10 +119,13 @@ export class Converter {
 
     if (result && this.options.shouldProvideParserServices) {
       this.tsNodeToESTreeNodeMap.set(node, result);
-      if (node.kind !== SyntaxKind.ParenthesizedExpression) {
-        // Parenthesized expressions do not have individual nodes in ESTree.
+      if (
+        node.kind !== SyntaxKind.ParenthesizedExpression &&
+        node.kind !== SyntaxKind.ComputedPropertyName
+      ) {
+        // Parenthesized expressions and computed property names do not have individual nodes in ESTree.
         // Therefore, result.type will never "match" node.kind if it is a ParenthesizedExpression
-        // and furthermore, will overwrite the "matching" node
+        // or a ComputedPropertyName and, furthermore, will overwrite the "matching" node
         this.esTreeNodeToTSNodeMap.set(result, node);
       }
     }
