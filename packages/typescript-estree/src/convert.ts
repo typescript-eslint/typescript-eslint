@@ -690,7 +690,7 @@ export class Converter {
         }
 
         // Process typeParameters
-        if (node.typeParameters && node.typeParameters.length) {
+        if (node.typeParameters) {
           result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
@@ -897,7 +897,7 @@ export class Converter {
         }
 
         // Process typeParameters
-        if (node.typeParameters && node.typeParameters.length) {
+        if (node.typeParameters) {
           method.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
@@ -1003,7 +1003,7 @@ export class Converter {
         });
 
         // Process typeParameters
-        if (node.typeParameters && node.typeParameters.length) {
+        if (node.typeParameters) {
           constructor.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
@@ -1060,7 +1060,7 @@ export class Converter {
         }
 
         // Process typeParameters
-        if (node.typeParameters && node.typeParameters.length) {
+        if (node.typeParameters) {
           result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
@@ -1159,7 +1159,7 @@ export class Converter {
         }
 
         // Process typeParameters
-        if (node.typeParameters && node.typeParameters.length) {
+        if (node.typeParameters) {
           result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
@@ -1368,7 +1368,7 @@ export class Converter {
           }
         }
 
-        if (node.typeParameters && node.typeParameters.length) {
+        if (node.typeParameters) {
           result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
@@ -1640,7 +1640,7 @@ export class Converter {
           callee: this.convertChild(node.expression),
           arguments: node.arguments.map(el => this.convertChild(el))
         });
-        if (node.typeArguments && node.typeArguments.length) {
+        if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments
           );
@@ -1656,7 +1656,7 @@ export class Converter {
             ? node.arguments.map(el => this.convertChild(el))
             : []
         });
-        if (node.typeArguments && node.typeArguments.length) {
+        if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments
           );
@@ -2060,7 +2060,7 @@ export class Converter {
         }
 
         // Process typeParameters
-        if (node.typeParameters && node.typeParameters.length) {
+        if (node.typeParameters) {
           result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
@@ -2216,7 +2216,7 @@ export class Converter {
           expression: this.convertChild(node.expression)
         });
 
-        if (node.typeArguments && node.typeArguments.length) {
+        if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments
           );
@@ -2236,7 +2236,7 @@ export class Converter {
           id: this.convertChild(node.name)
         });
 
-        if (node.typeParameters && node.typeParameters.length) {
+        if (node.typeParameters) {
           result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters
           );
