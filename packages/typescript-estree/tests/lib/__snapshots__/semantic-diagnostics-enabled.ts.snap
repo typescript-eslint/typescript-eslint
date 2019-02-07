@@ -2086,11 +2086,74 @@ Object {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments-in-call-expression.src 1`] = `
+Object {
+  "column": 3,
+  "index": 3,
+  "lineNumber": 1,
+  "message": "Type argument list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments-in-new-expression.src 1`] = `
+Object {
+  "column": 7,
+  "index": 7,
+  "lineNumber": 1,
+  "message": "Type argument list cannot be empty.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters.src 1`] = `
 Object {
   "column": 11,
   "index": 11,
   "lineNumber": 1,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-arrow-function.src 1`] = `
+Object {
+  "column": 11,
+  "index": 11,
+  "lineNumber": 1,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-constructor.src 1`] = `
+Object {
+  "column": 13,
+  "index": 25,
+  "lineNumber": 2,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-function-expression.src 1`] = `
+Object {
+  "column": 20,
+  "index": 20,
+  "lineNumber": 1,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-method.src 1`] = `
+Object {
+  "column": 6,
+  "index": 18,
+  "lineNumber": 2,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-method-signature.src 1`] = `
+Object {
+  "column": 6,
+  "index": 22,
+  "lineNumber": 2,
   "message": "Type parameter list cannot be empty.",
 }
 `;
