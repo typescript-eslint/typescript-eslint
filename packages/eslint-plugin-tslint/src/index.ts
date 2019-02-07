@@ -3,19 +3,11 @@ import memoize from 'lodash.memoize';
 import { Configuration, RuleSeverity } from 'tslint';
 import { Program } from 'typescript';
 import { CustomLinter } from './custom-linter';
+import { ParserServices } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Plugin Definition
 //------------------------------------------------------------------------------
-
-/**
- * @todo share types between packages
- */
-interface ParserServices {
-  program: Program | undefined;
-  esTreeNodeToTSNodeMap: WeakMap<object, any> | undefined;
-  tsNodeToESTreeNodeMap: WeakMap<object, any> | undefined;
-}
 
 type RawRuleConfig =
   | null
