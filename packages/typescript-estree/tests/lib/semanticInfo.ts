@@ -18,6 +18,7 @@ import {
   parseCodeAndGenerateServices
 } from '../../tools/test-utils';
 import { parseAndGenerateServices } from '../../src/parser';
+import { VariableDeclaration } from '../../src/typedefs';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -99,6 +100,22 @@ describe('semanticInfo', () => {
     );
 
     testIsolatedFile(parseResult);
+  });
+
+  it('parenthesized-expression tests', () => {
+    const fileName = resolve(FIXTURES_DIR, 'parenthesized-expression.ts');
+    const parseResult = parseCodeAndGenerateServices(
+      readFileSync(fileName, 'utf8'),
+      createOptions(fileName)
+    );
+
+    expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
+    const binaryExpression = (parseResult.ast.body[0] as VariableDeclaration)
+      .declarations[0].init!;
+    const tsBinaryExpression = parseResult.services.esTreeNodeToTSNodeMap!.get(
+      binaryExpression
+    );
+    expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
   });
 
   it('imported-file tests', () => {

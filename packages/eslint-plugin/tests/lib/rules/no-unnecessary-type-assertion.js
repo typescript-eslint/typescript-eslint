@@ -52,6 +52,18 @@ const foo = (3 + 5) as Foo;`,
       options: [{ typesToIgnore: ['Foo'] }]
     },
     {
+      code: `const foo = (3 + 5) as any;`,
+      options: [{ typesToIgnore: ['any'] }]
+    },
+    {
+      code: `((Syntax as any).ArrayExpression = 'foo')`,
+      options: [{ typesToIgnore: ['any'] }]
+    },
+    {
+      code: `const foo = (3 + 5) as string;`,
+      options: [{ typesToIgnore: ['string'] }]
+    },
+    {
       code: `
 type Foo = number;
 const foo = <Foo>(3 + 5);`,
