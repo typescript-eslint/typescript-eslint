@@ -383,8 +383,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'type-assertion-arrow-function',
     /**
-     * Babel does not include optional keyword into range parameter in arrow function
-     * https://github.com/babel/babel/issues/9461
+     * PR for optional parameters in arrow function has been merged into Babel: https://github.com/babel/babel/pull/9463
+     * TODO: remove me in next babel > 7.3.2
      */
     'arrow-function-with-optional-parameter'
   ],
@@ -434,7 +434,23 @@ tester.addFixturePatternConfig('typescript/expressions', {
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
-  fileType: 'ts'
+  fileType: 'ts',
+  ignore: [
+    /**
+     * Expected error on empty type arguments and type parameters
+     * TypeScript report diagnostics correctly but babel not
+     * https://github.com/babel/babel/issues/9462
+     */
+    'empty-type-arguments',
+    'empty-type-arguments-in-call-expression',
+    'empty-type-arguments-in-new-expression',
+    'empty-type-parameters',
+    'empty-type-parameters-in-arrow-function',
+    'empty-type-parameters-in-constructor',
+    'empty-type-parameters-in-function-expression',
+    'empty-type-parameters-in-method',
+    'empty-type-parameters-in-method-signature'
+  ]
 });
 
 tester.addFixturePatternConfig('typescript/types', {
@@ -443,7 +459,11 @@ tester.addFixturePatternConfig('typescript/types', {
     /**
      * AST difference
      */
-    'literal-number-negative'
+    'literal-number-negative',
+    /**
+     * Babel parse error: https://github.com/babel/babel/pull/9431
+     */
+    'function-with-array-destruction'
   ]
 });
 
