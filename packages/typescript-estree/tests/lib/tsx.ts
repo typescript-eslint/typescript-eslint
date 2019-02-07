@@ -10,7 +10,8 @@ import { extname } from 'path';
 import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
-  formatSnapshotName
+  formatSnapshotName,
+  isJSXFileType
 } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
@@ -28,16 +29,17 @@ const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.tsx`);
 describe('TSX', () => {
   testFiles.forEach(filename => {
     const code = readFileSync(filename, 'utf8');
+    const fileExtension = extname(filename);
     const config: ParserOptions = {
       loc: true,
       range: true,
       tokens: true,
       errorOnUnknownASTType: true,
       useJSXTextNode: true,
-      jsx: true
+      jsx: isJSXFileType(fileExtension)
     };
     it(
-      formatSnapshotName(filename, FIXTURES_DIR, extname(filename)),
+      formatSnapshotName(filename, FIXTURES_DIR, fileExtension),
       createSnapshotTestBlock(code, config)
     );
   });
