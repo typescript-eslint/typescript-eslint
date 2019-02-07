@@ -56,17 +56,6 @@ export default util.createRule<Options, MessageIds>({
     }
   ],
   create(context, [{ allowConstructorOnly, allowEmpty, allowStaticOnly }]) {
-    function getReportNode(node: TSESTree.ClassBody): TSESTree.Node {
-      if (!node.parent) {
-        return node;
-      }
-      if ('id' in node.parent && node.parent.id) {
-        return node.parent.id;
-      }
-
-      return node.parent;
-    }
-
     return {
       ClassBody(node: TSESTree.ClassBody) {
         const parent = node.parent as
@@ -78,7 +67,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const reportNode = getReportNode(node);
+        const reportNode = 'id' in parent && parent.id ? parent.id : parent;
 
         if (node.body.length === 0) {
           if (allowEmpty) {
