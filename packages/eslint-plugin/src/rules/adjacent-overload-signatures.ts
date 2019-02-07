@@ -68,6 +68,18 @@ export default util.createRule({
       return null;
     }
 
+    interface Method {
+      name: string;
+      static: boolean;
+    }
+    function isSameMethod(method1: Method, method2: Method | null): boolean {
+      return (
+        !!method2 &&
+        method1.name === method2.name &&
+        method1.static === method2.static
+      );
+    }
+
     function getMembers(node: RuleNode): Member[] {
       switch (node.type) {
         case AST_NODE_TYPES.ClassBody:
@@ -91,30 +103,36 @@ export default util.createRule({
       const members = getMembers(node);
 
       if (members) {
-        let lastName: string | null;
-        const seen: string[] = [];
+        let lastMethod: Method | null = null;
+        const seenMethods: Method[] = [];
 
         members.forEach(member => {
           const name = getMemberName(member);
           if (name === null) {
-            lastName = null;
+            lastMethod = null;
             return;
           }
+          const method = {
+            name,
+            static: 'static' in member && !!member.static
+          };
 
-          const index = seen.indexOf(name!);
-          if (index > -1 && lastName !== name) {
+          const index = seenMethods.findIndex(seenMethod =>
+            isSameMethod(method, seenMethod)
+          );
+          if (index > -1 && !isSameMethod(method, lastMethod)) {
             context.report({
               node: member,
               messageId: 'adjacentSignature',
               data: {
-                name
+                name: (method.static ? 'static ' : '') + method.name
               }
             });
           } else if (index === -1) {
-            seen.push(name);
+            seenMethods.push(method);
           }
 
-          lastName = name;
+          lastMethod = method;
         });
       }
     }

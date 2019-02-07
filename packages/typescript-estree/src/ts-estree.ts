@@ -1178,7 +1178,7 @@ export interface TSModuleBlock extends BaseNode {
 export interface TSModuleDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSModuleDeclaration;
   id: Identifier | Literal;
-  body?: TSModuleBlock | Identifier;
+  body?: TSModuleBlock | TSModuleDeclaration;
   global?: boolean;
   declare?: boolean;
   modifiers?: Modifier[];

@@ -1,27 +1,16 @@
 import traverser from 'eslint/lib/util/traverser';
 import {
   AST_NODE_TYPES,
-  TSESTree,
   parseAndGenerateServices,
-  ParserOptions as ParserOptionsTsESTree
+  ParserOptions as ParserOptionsTsESTree,
+  ParserServices
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
-import { Program, Node as TSNode } from 'typescript';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const packageJSON = require('../package.json');
-
-interface ParserWeakMap<TKey, TValueBase> {
-  get<TValue extends TValueBase>(key: TKey): TValue;
-}
-
-interface ParserServices {
-  program: Program | undefined;
-  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, TSNode> | undefined;
-  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node> | undefined;
-}
 
 interface ParseForESLintResult {
   ast: any;

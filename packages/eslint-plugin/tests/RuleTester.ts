@@ -1,7 +1,8 @@
+import { ParserOptions } from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { RuleTester } from 'eslint';
+import * as path from 'path';
 import RuleModule from 'ts-eslint';
-import { ParserOptions } from '@typescript-eslint/parser';
 
 interface ValidTestCase<TOptions extends Readonly<any[]>> {
   code: string;
@@ -54,5 +55,16 @@ const RuleTesterRetyped = (RuleTester as any) as {
     parserOptions?: ParserOptions;
   }): RuleTesterTyped;
 };
+
+function getFixturesRootDir() {
+  return path.join(process.cwd(), 'tests/fixtures/');
+}
+
 export default RuleTesterRetyped;
-export { RunTests, TestCaseError, InvalidTestCase, ValidTestCase };
+export {
+  RunTests,
+  TestCaseError,
+  InvalidTestCase,
+  ValidTestCase,
+  getFixturesRootDir
+};
