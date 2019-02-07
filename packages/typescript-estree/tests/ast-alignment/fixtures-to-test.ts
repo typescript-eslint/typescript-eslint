@@ -384,7 +384,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     'type-assertion-arrow-function',
     /**
      * PR for optional parameters in arrow function has been merged into Babel: https://github.com/babel/babel/pull/9463
-     * TODO: remove me in next babel > 7.2.3
+     * TODO: remove me in next babel > 7.3.2
      */
     'arrow-function-with-optional-parameter'
   ],
