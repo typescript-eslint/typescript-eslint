@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var rule = require('../../../lib/rules/callable-types'),
+var rule = require('../../../lib/rules/prefer-function-type'),
   RuleTester = require('eslint').RuleTester;
 
 //------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ var ruleTester = new RuleTester({
   parserOptions,
   parser: '@typescript-eslint/parser'
 });
-ruleTester.run('callable-types', rule, {
+ruleTester.run('prefer-function-type', rule, {
   valid: [
     `
 interface Foo {

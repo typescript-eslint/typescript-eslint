@@ -24,8 +24,8 @@ module.exports = {
         'Use function types instead of interfaces with call signatures',
       category: 'TypeScript',
       recommended: false,
-      extraDescription: [util.tslintRule('callable-types')],
-      url: util.metaDocsUrl('callable-types')
+      extraDescription: [util.tslintRule('prefer-function-type')],
+      url: util.metaDocsUrl('prefer-function-type')
     },
     fixable: 'code',
     messages: {

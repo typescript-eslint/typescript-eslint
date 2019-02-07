@@ -1,4 +1,4 @@
-# Use function types instead of interfaces with call signatures (callable-types)
+# Use function types instead of interfaces with call signatures (prefer-function-type)
 
 ## Rule Details
 
