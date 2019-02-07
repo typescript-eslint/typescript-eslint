@@ -696,6 +696,17 @@ export class Converter {
           );
         }
 
+        /**
+         * Semantically, decorators are not allowed on function declarations,
+         * but the TypeScript compiler will parse them and produce a valid AST,
+         * so we handle them here too.
+         */
+        if (node.decorators) {
+          (result as any).decorators = node.decorators.map(el =>
+            this.convertChild(el)
+          );
+        }
+
         // check for exports
         return fixExports(node, result, this.ast);
       }
@@ -729,6 +740,17 @@ export class Converter {
           ),
           kind: getDeclarationKind(node.declarationList)
         });
+
+        /**
+         * Semantically, decorators are not allowed on variable declarations,
+         * but the TypeScript compiler will parse them and produce a valid AST,
+         * so we handle them here too.
+         */
+        if (node.decorators) {
+          (result as any).decorators = node.decorators.map(el =>
+            this.convertChild(el)
+          );
+        }
 
         if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
           result.declare = true;
