@@ -68,10 +68,6 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      if (!init) {
-        return false;
-      }
-
       const annotation = node.typeAnnotation;
 
       if (annotation.type === AST_NODE_TYPES.TSStringKeyword) {

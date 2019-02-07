@@ -29,7 +29,7 @@ declare module 'ts-eslint' {
     }
 
     export type FilterPredicate = (
-      tokenOrComment: AST.Token | TSESTree.Comment
+      tokenOrComment: TSESTree.Token | TSESTree.Comment
     ) => boolean;
 
     export type CursorWithSkipOptions =
@@ -80,11 +80,14 @@ declare module 'ts-eslint' {
       node: TSESTree.Node
     ): { leading: TSESTree.Comment[]; trailing: TSESTree.Comment[] };
 
-    getJSDocComment(node: TSESTree.Node): AST.Token | null;
+    getJSDocComment(node: TSESTree.Node): TSESTree.Node | TSESTree.Token | null;
 
     getNodeByRangeIndex(index: number): TSESTree.Node | null;
 
-    isSpaceBetweenTokens(first: AST.Token, second: AST.Token): boolean;
+    isSpaceBetweenTokens(
+      first: TSESTree.Token,
+      second: TSESTree.Token
+    ): boolean;
 
     getLocFromIndex(index: number): TSESTree.LineAndColumnData;
 
@@ -96,103 +99,103 @@ declare module 'ts-eslint' {
     getTokenByRangeStart(
       offset: number,
       options?: { includeComments?: boolean }
-    ): AST.Token | null;
+    ): TSESTree.Token | null;
 
     getFirstToken(
       node: TSESTree.Node,
       options?: SourceCode.CursorWithSkipOptions
-    ): AST.Token | null;
+    ): TSESTree.Token | null;
 
     getFirstTokens(
       node: TSESTree.Node,
       options?: SourceCode.CursorWithCountOptions
-    ): AST.Token[];
+    ): TSESTree.Token[];
 
     getLastToken(
       node: TSESTree.Node,
       options?: SourceCode.CursorWithSkipOptions
-    ): AST.Token | null;
+    ): TSESTree.Token | null;
 
     getLastTokens(
       node: TSESTree.Node,
       options?: SourceCode.CursorWithCountOptions
-    ): AST.Token[];
+    ): TSESTree.Token[];
 
     getTokenBefore(
-      node: TSESTree.Node | AST.Token | TSESTree.Comment,
+      node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithSkipOptions
-    ): AST.Token | null;
+    ): TSESTree.Token | null;
 
     getTokensBefore(
-      node: TSESTree.Node | AST.Token | TSESTree.Comment,
+      node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithCountOptions
-    ): AST.Token[];
+    ): TSESTree.Token[];
 
     getTokenAfter(
-      node: TSESTree.Node | AST.Token | TSESTree.Comment,
+      node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithSkipOptions
-    ): AST.Token | null;
+    ): TSESTree.Token | null;
 
     getTokensAfter(
-      node: TSESTree.Node | AST.Token | TSESTree.Comment,
+      node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithCountOptions
-    ): AST.Token[];
+    ): TSESTree.Token[];
 
     getFirstTokenBetween(
-      left: TSESTree.Node | AST.Token | TSESTree.Comment,
-      right: TSESTree.Node | AST.Token | TSESTree.Comment,
+      left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+      right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithSkipOptions
-    ): AST.Token | null;
+    ): TSESTree.Token | null;
 
     getFirstTokensBetween(
-      left: TSESTree.Node | AST.Token | TSESTree.Comment,
-      right: TSESTree.Node | AST.Token | TSESTree.Comment,
+      left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+      right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithCountOptions
-    ): AST.Token[];
+    ): TSESTree.Token[];
 
     getLastTokenBetween(
-      left: TSESTree.Node | AST.Token | TSESTree.Comment,
-      right: TSESTree.Node | AST.Token | TSESTree.Comment,
+      left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+      right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithSkipOptions
-    ): AST.Token | null;
+    ): TSESTree.Token | null;
 
     getLastTokensBetween(
-      left: TSESTree.Node | AST.Token | TSESTree.Comment,
-      right: TSESTree.Node | AST.Token | TSESTree.Comment,
+      left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+      right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       options?: SourceCode.CursorWithCountOptions
-    ): AST.Token[];
+    ): TSESTree.Token[];
 
     getTokensBetween(
-      left: TSESTree.Node | AST.Token | TSESTree.Comment,
-      right: TSESTree.Node | AST.Token | TSESTree.Comment,
+      left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+      right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       padding?:
         | number
         | SourceCode.FilterPredicate
         | SourceCode.CursorWithCountOptions
-    ): AST.Token[];
+    ): TSESTree.Token[];
 
     getTokens(
       node: TSESTree.Node,
       beforeCount?: number,
       afterCount?: number
-    ): AST.Token[];
+    ): TSESTree.Token[];
     // eslint-disable-next-line no-dupe-class-members
     getTokens(
       node: TSESTree.Node,
       options: SourceCode.FilterPredicate | SourceCode.CursorWithCountOptions
-    ): AST.Token[];
+    ): TSESTree.Token[];
 
     commentsExistBetween(
-      left: TSESTree.Node | AST.Token,
-      right: TSESTree.Node | AST.Token
+      left: TSESTree.Node | TSESTree.Token,
+      right: TSESTree.Node | TSESTree.Token
     ): boolean;
 
     getCommentsBefore(
-      nodeOrToken: TSESTree.Node | AST.Token
+      nodeOrToken: TSESTree.Node | TSESTree.Token
     ): TSESTree.Comment[];
 
     getCommentsAfter(
-      nodeOrToken: TSESTree.Node | AST.Token
+      nodeOrToken: TSESTree.Node | TSESTree.Token
     ): TSESTree.Comment[];
 
     getCommentsInside(node: TSESTree.Node): TSESTree.Comment[];
@@ -269,24 +272,27 @@ declare module 'ts-eslint' {
 
   interface RuleFixer {
     insertTextAfter(
-      nodeOrToken: TSESTree.Node | AST.Token,
+      nodeOrToken: TSESTree.Node | TSESTree.Token,
       text: string
     ): RuleFix;
 
     insertTextAfterRange(range: AST.Range, text: string): RuleFix;
 
     insertTextBefore(
-      nodeOrToken: TSESTree.Node | AST.Token,
+      nodeOrToken: TSESTree.Node | TSESTree.Token,
       text: string
     ): RuleFix;
 
     insertTextBeforeRange(range: AST.Range, text: string): RuleFix;
 
-    remove(nodeOrToken: TSESTree.Node | AST.Token): RuleFix;
+    remove(nodeOrToken: TSESTree.Node | TSESTree.Token): RuleFix;
 
     removeRange(range: AST.Range): RuleFix;
 
-    replaceText(nodeOrToken: TSESTree.Node | AST.Token, text: string): RuleFix;
+    replaceText(
+      nodeOrToken: TSESTree.Node | TSESTree.Token,
+      text: string
+    ): RuleFix;
 
     replaceTextRange(range: AST.Range, text: string): RuleFix;
   }
@@ -309,7 +315,7 @@ declare module 'ts-eslint' {
     /**
      * The Node or AST Token which the report is being attached to
      */
-    node: TSESTree.Node | TSESTree.Comment | AST.Token;
+    node: TSESTree.Node | TSESTree.Comment | TSESTree.Token;
     /**
      * An override of the location of the report
      */

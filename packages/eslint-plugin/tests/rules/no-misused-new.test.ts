@@ -42,6 +42,11 @@ interface I {
 type T = {
     new(): T;
 }
+        `,
+    `
+export default class {
+    constructor();
+}
         `
   ],
   invalid: [
