@@ -4,7 +4,11 @@
  * @author Armano <https://github.com/armano2>
  */
 
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  TSESTree
+} from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 export default util.createRule({
@@ -40,7 +44,7 @@ export default util.createRule({
 
         if (
           moduleType &&
-          moduleType.type === AST_NODE_TYPES.Identifier &&
+          moduleType.type === AST_TOKEN_TYPES.Identifier &&
           moduleType.value === 'module'
         ) {
           context.report({
