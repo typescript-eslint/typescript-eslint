@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces naming conventions for class members by visibility.
- * @author Ian MacLeod
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

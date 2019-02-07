@@ -56,6 +56,7 @@
     "@types/lodash.unescape": "^4.0.4",
     "@types/node": "^10.12.2",
     "@types/semver": "^5.5.0",
+    "all-contributors-cli": "^6.0.0",
     "cz-conventional-changelog": "2.1.0",
     "eslint": "^5.12.1",
     "eslint-plugin-eslint-plugin": "^2.0.1",

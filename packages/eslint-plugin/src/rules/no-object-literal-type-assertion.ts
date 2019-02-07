@@ -1,8 +1,3 @@
-/**
- * @fileoverview Forbids an object literal to appear in a type assertion expression
- * @author Armano <https://github.com/armano2>
- */
-
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

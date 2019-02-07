@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallow unnecessary constructors
- * @author Armano <https://github.com/armano2>
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import baseRule from 'eslint/lib/rules/no-useless-constructor';
 import * as util from '../util';

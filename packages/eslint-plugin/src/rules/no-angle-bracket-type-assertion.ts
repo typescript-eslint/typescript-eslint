@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces the use of `as Type` assertions instead of `<Type>` assertions.
- * @author Patricio Trevino
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

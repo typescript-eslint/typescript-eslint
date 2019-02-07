@@ -1,10 +1,3 @@
-/**
- * @fileoverview Tools for running test cases
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import * as parser from '../src/parser';
 import { ParserOptions } from '../src/parser-options';
 

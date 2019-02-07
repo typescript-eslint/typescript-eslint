@@ -1,9 +1,3 @@
-/**
- * @fileoverview Utilities for finding and converting ts.Nodes into ESTreeNodes
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import ts from 'typescript';
 import unescape from 'lodash.unescape';
 import * as TSESTree from './ts-estree';

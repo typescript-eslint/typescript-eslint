@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforce valid definition of `new` and `constructor`.
- * @author Armano <https://github.com/armano2>
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

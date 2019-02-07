@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces triple slash references are not used.
- * @author Danny Fritz
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

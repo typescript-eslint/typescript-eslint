@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows non-null assertions using the `!` postfix operator.
- * @author Macklin Underdown
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

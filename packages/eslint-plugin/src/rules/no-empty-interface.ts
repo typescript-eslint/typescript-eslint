@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows the declaration of empty interfaces.
- * @author Patricio Trevino
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

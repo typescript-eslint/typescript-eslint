@@ -1,9 +1,3 @@
-/**
- * @fileoverview Enforces the any type is not used.
- * @author Danny Fritz
- * @author Patricio Trevino
- */
-
 import * as util from '../util';
 
 export default util.createRule({

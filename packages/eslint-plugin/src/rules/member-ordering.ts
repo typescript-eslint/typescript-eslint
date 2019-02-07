@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces a standard member declaration order.
- * @author Patricio Trevino
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

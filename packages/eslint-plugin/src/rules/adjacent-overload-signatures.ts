@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces member overloads to be consecutive.
- * @author Patricio Trevino
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

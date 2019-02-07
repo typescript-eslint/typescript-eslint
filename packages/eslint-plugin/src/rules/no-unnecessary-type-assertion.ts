@@ -1,8 +1,3 @@
-/**
- * @fileoverview Rule to warn if a type assertion does not change the type of an expression
- * @author Benjamin Lichtman
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as tsutils from 'tsutils';
 import ts from 'typescript';
@@ -52,8 +47,6 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Sometimes tuple types don't have ObjectFlags.Tuple set, like when they're being matched against an inferred type.
      * So, in addition, check if there are integer properties 0..n and no other numeric keys
-     * @param type type
-     * @returns true if type could be a tuple type
      */
     function couldBeTupleType(type: ts.ObjectType): boolean {
       const properties = type.getProperties();
@@ -82,10 +75,6 @@ export default util.createRule<Options, MessageIds>({
       return true;
     }
 
-    /**
-     * @param node node being linted
-     * @param checker TypeScript typechecker
-     */
     function checkNonNullAssertion(
       node: TSESTree.Node,
       checker: ts.TypeChecker
@@ -112,10 +101,6 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
-    /**
-     * @param node node being linted
-     * @param checker TypeScript typechecker
-     */
     function verifyCast(node: TSESTree.Node, checker: ts.TypeChecker): void {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
         ts.AssertionExpression

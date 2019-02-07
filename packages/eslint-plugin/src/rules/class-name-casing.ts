@@ -1,9 +1,3 @@
-/**
- * @fileoverview Enforces PascalCased class and interface names.
- * @author Jed Fox
- * @author Armano <https://github.com/armano2>
- */
-
 import * as util from '../util';
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 

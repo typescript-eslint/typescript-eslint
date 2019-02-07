@@ -1,10 +1,3 @@
-/**
- * @fileoverview Convert comment using TypeScript token scanner
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
-
 import ts from 'typescript';
 import { getLocFor, getNodeContainer } from './node-utils';
 import * as TSESTree from './ts-estree';

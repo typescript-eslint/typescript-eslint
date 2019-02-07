@@ -1,9 +1,3 @@
-/**
- * @fileoverview Enforces the use of the keyword `namespace` over `module` to declare custom TypeScript modules.
- * @author Patricio Trevino
- * @author Armano <https://github.com/armano2>
- */
-
 import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,

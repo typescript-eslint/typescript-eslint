@@ -1,7 +1,3 @@
-/**
- * @fileoverview Enforces naming of generic type variables.
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

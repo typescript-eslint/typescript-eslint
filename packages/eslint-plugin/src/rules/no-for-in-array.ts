@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallow iterating over an array with a for-in loop
- * @author Benjamin Lichtman
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 import * as util from '../util';

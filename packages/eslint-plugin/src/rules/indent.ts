@@ -1,6 +1,4 @@
 /**
- * @fileoverview Rule to flag non-camelcased identifiers
- *
  * Note this file is rather type-unsafe in its current state.
  * This is due to some really funky type conversions between different node types.
  * This is done intentionally based on the internal implementation of the base indent rule.

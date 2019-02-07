@@ -1,9 +1,3 @@
-/**
- * @fileoverview When adding two variables, operands must both be of type number or of type string.
- * @author James Henry
- * @author Armano <https://github.com/armano2>
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 import * as util from '../util';

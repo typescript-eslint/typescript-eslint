@@ -1,10 +1,3 @@
-/**
- * @fileoverview Tests for TypeScript-specific constructs
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname } from 'path';

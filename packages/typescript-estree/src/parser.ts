@@ -1,10 +1,3 @@
-/**
- * @fileoverview Parser that converts TypeScript into ESTree format.
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import {
   calculateProjectParserOptions,
   createProgram

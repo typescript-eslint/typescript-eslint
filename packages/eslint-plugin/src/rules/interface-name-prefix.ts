@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces interface names are prefixed with "I".
- * @author Danny Fritz
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
