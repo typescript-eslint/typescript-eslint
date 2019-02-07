@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import jsxKnownIssues from '../../../shared-fixtures/jsx-known-issues';
+import { isJSXFileType } from '../../tools/test-utils';
 
 interface Fixture {
   filename: string;
@@ -61,7 +62,7 @@ class FixturesTester {
     const ignore = config.ignore || [];
     const fileType = config.fileType || 'js';
     const ignoreSourceType = config.ignoreSourceType || [];
-    const jsx = fileType === 'js' || fileType === 'jsx' || fileType === 'tsx';
+    const jsx = isJSXFileType(fileType);
 
     /**
      * The TypeScript compiler gives us the "externalModuleIndicator" to allow typescript-estree do dynamically detect the "sourceType".
@@ -164,7 +165,20 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
      * with the same name, for example.
      */
     'error-dup-params', // babel parse errors
-    'error-strict-dup-params' // babel parse errors
+    'error-strict-dup-params', // babel parse errors
+    /**
+     * typescript reports TS1100 and babel errors on this
+     * TS1100: "Invalid use of '{0}' in strict mode."
+     * TODO: do we want TS1100 error code?
+     */
+    'error-strict-eval', // babel parse errors
+    'error-strict-default-param-eval',
+    'error-strict-eval-return',
+    'error-strict-param-arguments',
+    'error-strict-param-eval',
+    'error-strict-param-names',
+    'error-strict-param-no-paren-arguments',
+    'error-strict-param-no-paren-eval'
   ]
 });
 tester.addFixturePatternConfig('javascript/function', {
@@ -236,7 +250,12 @@ tester.addFixturePatternConfig('javascript/modules', {
      */
     'invalid-export-named-default' // babel parse errors
   ],
-  ignoreSourceType: ['error-function', 'error-strict', 'error-delete']
+  ignoreSourceType: [
+    'error-function',
+    'error-strict',
+    'error-delete',
+    'invalid-await'
+  ]
 });
 
 tester.addFixturePatternConfig('javascript/newTarget');
@@ -364,14 +383,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'type-assertion-arrow-function',
     /**
-     * PR for range of declare keyword has been merged into Babel: https://github.com/babel/babel/pull/9406
-     * TODO: remove me in next babel > 7.3.1
-     */
-    'export-declare-const-named-enum',
-    'export-declare-named-enum',
-    /**
-     * Babel does not include optional keyword into range parameter in arrow function
-     * TODO: report it to babel
+     * PR for optional parameters in arrow function has been merged into Babel: https://github.com/babel/babel/pull/9463
+     * TODO: remove me in next babel > 7.3.2
      */
     'arrow-function-with-optional-parameter'
   ],
@@ -421,7 +434,23 @@ tester.addFixturePatternConfig('typescript/expressions', {
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
-  fileType: 'ts'
+  fileType: 'ts',
+  ignore: [
+    /**
+     * Expected error on empty type arguments and type parameters
+     * TypeScript report diagnostics correctly but babel not
+     * https://github.com/babel/babel/issues/9462
+     */
+    'empty-type-arguments',
+    'empty-type-arguments-in-call-expression',
+    'empty-type-arguments-in-new-expression',
+    'empty-type-parameters',
+    'empty-type-parameters-in-arrow-function',
+    'empty-type-parameters-in-constructor',
+    'empty-type-parameters-in-function-expression',
+    'empty-type-parameters-in-method',
+    'empty-type-parameters-in-method-signature'
+  ]
 });
 
 tester.addFixturePatternConfig('typescript/types', {
@@ -430,7 +459,11 @@ tester.addFixturePatternConfig('typescript/types', {
     /**
      * AST difference
      */
-    'literal-number-negative'
+    'literal-number-negative',
+    /**
+     * Babel parse error: https://github.com/babel/babel/pull/9431
+     */
+    'function-with-array-destruction'
   ]
 });
 
