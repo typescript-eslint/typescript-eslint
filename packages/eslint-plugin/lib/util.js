@@ -109,7 +109,7 @@ exports.upperCaseFirst = str => str[0].toUpperCase() + str.slice(1);
 /**
  * Try to retrieve typescript parser service from context
  * @param {RuleContext} context Rule context
- * @returns {{esTreeNodeToTSNodeMap}|{program}|Object|*} parserServices
+ * @returns {{program: Program, esTreeNodeToTSNodeMap: NodeMap}} parserServices
  */
 exports.getParserServices = context => {
   if (
