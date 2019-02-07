@@ -14,13 +14,15 @@ import ts from 'typescript';
 import convert from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
-import * as es from './typedefs';
-import { Extra, ParserOptions } from './parser-options';
+import { TSESTree } from './ts-estree';
+import { Extra, ParserOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 
-const packageJSON = require('../package.json');
-
-const SUPPORTED_TYPESCRIPT_VERSIONS = packageJSON.devDependencies.typescript;
+/**
+ * This needs to be kept in sync with the top-level README.md in the
+ * typescript-eslint monorepo
+ */
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.2.1 <3.4.0';
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
@@ -105,7 +107,7 @@ function getASTAndDefaultProject(code: string, options: ParserOptions) {
 function createNewProgram(code: string) {
   const FILENAME = getFileName(extra);
 
-  const compilerHost = {
+  const compilerHost: ts.CompilerHost = {
     fileExists() {
       return true;
     },
@@ -269,25 +271,21 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
-type AST<T extends ParserOptions> = es.Program &
+type AST<T extends ParserOptions> = TSESTree.Program &
   (T['range'] extends true ? { range: [number, number] } : {}) &
-  (T['tokens'] extends true ? { tokens: es.Token[] } : {}) &
-  (T['comment'] extends true ? { comments: es.Comment[] } : {});
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
 
 interface ParseAndGenerateServicesResult<T extends ParserOptions> {
   ast: AST<T>;
-  services: {
-    program: ts.Program | undefined;
-    esTreeNodeToTSNodeMap: WeakMap<object, any> | undefined;
-    tsNodeToESTreeNodeMap: WeakMap<object, any> | undefined;
-  };
+  services: ParserServices;
 }
 
 //------------------------------------------------------------------------------
 // Public
 //------------------------------------------------------------------------------
 
-export const version: string = packageJSON.version;
+export const version: string = require('../package.json').version;
 
 export function parse<T extends ParserOptions = ParserOptions>(
   code: string,
@@ -417,3 +415,5 @@ export function parseAndGenerateServices<
 
 export { AST_NODE_TYPES } from './ast-node-types';
 export { ParserOptions };
+export { ParserServices };
+export { TSESTree };

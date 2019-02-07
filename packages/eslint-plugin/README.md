@@ -84,6 +84,22 @@ Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-pre
 
 **Note: Make sure you have `eslint-config-prettier@4.0.0` or newer.**
 
+## Usage with Airbnb
+
+Airbnb has two configs, a base one [`eslint-config-airbnb-base`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base) and one that includes rules for React [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb).
+
+First you'll need to install the config according to the instructions in one of the links above. `npx install-peerdeps --dev eslint-config-airbnb` or `npx install-peerdeps --dev eslint-config-airbnb-base` should work if you are using **npm 5+**.
+
+Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.eslintrc`. You might also want to turn on `plugin:@typescript-eslint/recommended` as well to enable all of the recommended rules.
+
+```json
+{
+  "extends": ["airbnb-base", "plugin:@typescript-eslint/recommended"]
+}
+```
+
+**Note: You can use Airbnb's rules alongside Prettier, see [Usage with Prettier](#usage-with-prettier)**
+
 ## Supported Rules
 
 <!-- Please run `npm run docs` to update this section -->
@@ -112,6 +128,7 @@ Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-pre
 | [`@typescript-eslint/no-empty-interface`](./docs/rules/no-empty-interface.md)                             | Disallow the declaration of empty interfaces (`no-empty-interface` from TSLint)                                                                     | :heavy_check_mark: |          |
 | [`@typescript-eslint/no-explicit-any`](./docs/rules/no-explicit-any.md)                                   | Disallow usage of the `any` type (`no-any` from TSLint)                                                                                             | :heavy_check_mark: |          |
 | [`@typescript-eslint/no-extraneous-class`](./docs/rules/no-extraneous-class.md)                           | Forbids the use of classes as namespaces (`no-unnecessary-class` from TSLint)                                                                       |                    |          |
+| [`@typescript-eslint/no-for-in-array`](./docs/rules/no-for-in-array.md)                                           | Disallow iterating over an array with a for-in loop (`no-for-in-array` from TSLint)                                                                 |                    |          |
 | [`@typescript-eslint/no-inferrable-types`](./docs/rules/no-inferrable-types.md)                           | Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean. (`no-inferrable-types` from TSLint)   | :heavy_check_mark: | :wrench: |
 | [`@typescript-eslint/no-misused-new`](./docs/rules/no-misused-new.md)                                     | Enforce valid definition of `new` and `constructor`. (`no-misused-new` from TSLint)                                                                 | :heavy_check_mark: |          |
 | [`@typescript-eslint/no-namespace`](./docs/rules/no-namespace.md)                                         | Disallow the use of custom TypeScript modules and namespaces (`no-namespace` from TSLint)                                                           | :heavy_check_mark: |          |
