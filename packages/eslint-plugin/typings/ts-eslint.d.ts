@@ -397,7 +397,8 @@ declare module 'ts-eslint' {
 
   // This isn't the correct signature, but it makes it easier to do custom unions within reusable listneers
   // never will break someone's code unless they specifically type the function argument
-  type RuleListener = Record<string, (node: never) => void>;
+  type RuleFunction = (node: never) => void;
+  type RuleListener = Record<string, RuleFunction>;
 
   interface RuleModule<
     TMessageIds extends string,
@@ -525,6 +526,7 @@ declare module 'ts-eslint' {
     ReportFixFunction,
     RuleContext,
     RuleFix,
+    RuleFunction,
     RuleListener,
     RuleMetaData,
     RuleMetaDataDocs,

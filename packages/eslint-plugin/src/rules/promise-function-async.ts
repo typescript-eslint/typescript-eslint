@@ -90,12 +90,7 @@ export default util.createRule<Options, MessageIds>({
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
-    function validateNode(
-      node:
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression
-    ) {
+    function validateNode(node: TSESTree.Node) {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const [callSignature] = checker
         .getTypeAtLocation(originalNode)
@@ -132,7 +127,6 @@ export default util.createRule<Options, MessageIds>({
           node.parent.kind === 'method'
         ) {
           if (checkMethodDeclarations) {
-            // @ts-ignore
             validateNode(node.parent);
           }
         } else if (checkFunctionExpressions) {
