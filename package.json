@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@babel/code-frame": "7.0.0",
-    "@babel/parser": "7.3.0",
+    "@babel/parser": "7.3.2",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@commitlint/travis-cli": "^7.1.2",
