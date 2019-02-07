@@ -30,7 +30,7 @@
 | [`no-var-requires`]               | ✅  | [`@typescript-eslint/no-var-requires`]               |
 | [`only-arrow-functions`]          | 🔌  | [`prefer-arrow/prefer-arrow-functions`]              |
 | [`prefer-for-of`]                 | 🛑  | N/A                                                  |
-| [`promise-function-async`]        | 🛑  | N/A ([relevant plugin][plugin:promise])              |
+| [`promise-function-async`]        | ✅  | [`@typescript-eslint/promise-function-async`]        |
 | [`typedef`]                       | 🛑  | N/A                                                  |
 | [`typedef-whitespace`]            | ✅  | [`@typescript-eslint/type-annotation-spacing`]       |
 | [`unified-signatures`]            | 🛑  | N/A                                                  |
