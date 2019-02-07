@@ -63,7 +63,6 @@ TypeScript ESLint inherits from the the original TypeScript ESLint Parser licens
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
-Use `yarn all-contributors add <github-name> code && yarn all-contributors generate` to add yourself.
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
