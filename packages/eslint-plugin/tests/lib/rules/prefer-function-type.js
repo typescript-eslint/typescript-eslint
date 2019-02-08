@@ -62,7 +62,7 @@ interface Foo {
 }`,
       errors: [
         {
-          messageId: 'callableTypeViolation',
+          messageId: 'functionTypeOverCallableType',
           type: 'TSCallSignatureDeclaration'
         }
       ],
@@ -76,7 +76,7 @@ type Foo = {
 }`,
       errors: [
         {
-          messageId: 'callableTypeViolation',
+          messageId: 'functionTypeOverCallableType',
           type: 'TSCallSignatureDeclaration'
         }
       ],
@@ -90,7 +90,7 @@ function foo(bar: { (s: string): number }): number {
 }`,
       errors: [
         {
-          messageId: 'callableTypeViolation',
+          messageId: 'functionTypeOverCallableType',
           type: 'TSCallSignatureDeclaration'
         }
       ],
@@ -106,7 +106,7 @@ function foo(bar: { (s: string): number } | undefined): number {
 }`,
       errors: [
         {
-          messageId: 'callableTypeViolation',
+          messageId: 'functionTypeOverCallableType',
           type: 'TSCallSignatureDeclaration'
         }
       ],
@@ -122,7 +122,7 @@ interface Foo extends Function {
 }`,
       errors: [
         {
-          messageId: 'callableTypeViolation',
+          messageId: 'functionTypeOverCallableType',
           type: 'TSCallSignatureDeclaration'
         }
       ],
@@ -136,7 +136,7 @@ interface Foo<T> {
 }`,
       errors: [
         {
-          messageId: 'callableTypeViolation',
+          messageId: 'functionTypeOverCallableType',
           type: 'TSCallSignatureDeclaration'
         }
       ],

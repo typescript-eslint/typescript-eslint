@@ -29,7 +29,7 @@ module.exports = {
     },
     fixable: 'code',
     messages: {
-      callableTypeViolation:
+      functionTypeOverCallableType:
         "{{ type }} has only a call signature - use '{{ sigSuggestion }}' instead."
     },
     schema: [],
@@ -130,7 +130,7 @@ module.exports = {
 
         context.report({
           node: member,
-          messageId: 'callableTypeViolation',
+          messageId: 'functionTypeOverCallableType',
           data: {
             type: node.type === 'TSTypeLiteral' ? 'Type literal' : 'Interface',
             sigSuggestion: suggestion
