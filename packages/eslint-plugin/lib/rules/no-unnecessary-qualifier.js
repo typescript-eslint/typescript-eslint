@@ -29,17 +29,17 @@ module.exports = {
   meta: {
     docs: {
       description: 'Warns when a namespace qualifier is unnecessary.',
-      category: 'Fill me in',
-      recommended: false
+      category: 'TypeScript',
+      recommended: false,
+      extraDescription: [utils.tslintRule('no-unnecessary-qualifier')],
+      url: utils.metaDocsUrl('no-unnecessary-qualifier')
     },
     fixable: 'code',
     messages: {
       unnecessaryQualifier:
         "Qualifier is unnecessary since '{{ name }}' is in scope."
     },
-    schema: [
-      // fill in your schema
-    ],
+    schema: [],
     type: 'suggestion'
   },
 
