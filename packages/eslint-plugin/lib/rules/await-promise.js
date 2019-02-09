@@ -30,8 +30,7 @@ module.exports = {
     },
     fixable: null,
     messages: {
-      await: 'Invalid `await` of a non-Promise value.',
-      forOf: 'Invalid `for-await-of` of a non-AsyncIterable value.'
+      await: 'Invalid `await` of a non-Promise value.'
     },
     schema: [
       {
@@ -53,11 +52,6 @@ module.exports = {
   create(context) {
     const options = util.applyDefault(defaultOptions, context.options)[0];
 
-    const allowedAsyncIterableNames = new Set([
-      'AsyncIterable',
-      'AsyncIterableIterator'
-    ]);
-
     const allowedPromiseNames = new Set([
       'Promise',
       ...options.allowedPromiseNames
@@ -66,25 +60,16 @@ module.exports = {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
-    function validateNode(node, allowedSymbolNames, messageId) {
-      const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = checker.getTypeAtLocation(originalNode.expression);
-
-      if (!types.containsTypeByName(type, allowedSymbolNames)) {
-        context.report({
-          messageId,
-          node
-        });
-      }
-    }
-
     return {
       AwaitExpression(node) {
-        validateNode(node, allowedPromiseNames, 'await');
-      },
-      ForOfStatement(node) {
-        if (node.await) {
-          validateNode(node, allowedAsyncIterableNames, 'forOf');
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+        const type = checker.getTypeAtLocation(originalNode.expression);
+
+        if (!types.containsTypeByName(type, allowedPromiseNames)) {
+          context.report({
+            messageId,
+            node
+          });
         }
       }
     };

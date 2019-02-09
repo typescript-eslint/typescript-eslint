@@ -82,24 +82,7 @@ async function test() {
           allowedPromiseNames: ['AllowedCustomClass']
         }
       ]
-    },
-    `
-async function correct(foo: AsyncIterableIterator<string>) {
-  for await (const element of foo) {}
-}
-
-async function correct2() {
-  for await (const element of asyncGenerator()) {}
-}
-
-async function correct(foo: AsyncIterable<string>) {
-  for await (const element of foo) {}
-}
-
-async function correct3(foo: AsyncIterableIterator<string> | AsyncIterableIterator<number>) {
-  for await (const element of foo) {}
-}
-    `
+    }
   ],
 
   invalid: [
@@ -156,38 +139,6 @@ function test() {
       options: [
         {
           allowedPromiseNames: ['AllowedCustomClass']
-        }
-      ]
-    },
-    {
-      code: `
-async function incorrect(foo: Array<Promise<string>>) {
-  for await (const element of foo) {}
-}
-
-async function incorrect2(foo: IterableIterator<Promise<string>>) {
-  for await (const element of foo) {}
-}
-
-async function incorrect5(foo: Iterable<string>) {
-  for await (const element of foo) {}
-}
-`,
-      errors: [
-        {
-          line: 3,
-          messageId: 'forOf',
-          type: 'ForOfStatement'
-        },
-        {
-          line: 7,
-          messageId: 'forOf',
-          type: 'ForOfStatement'
-        },
-        {
-          line: 11,
-          messageId: 'forOf',
-          type: 'ForOfStatement'
         }
       ]
     }

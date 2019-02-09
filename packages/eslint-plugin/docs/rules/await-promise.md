@@ -14,14 +14,6 @@ const createValue = () => 'value';
 await createValue();
 ```
 
-```ts
-// An array of Promises is not the same as an AsyncIterable
-async function incorrect(arrayOfPromises: Array<Promise<string>>) {
-  for await (const element of arrayOfPromises) {
-  }
-}
-```
-
 Examples of **correct** code for this rule:
 
 ```ts
@@ -31,40 +23,17 @@ const createValue = (async() = 'value');
 await createValue();
 ```
 
-```ts
-async function overIterable(iterable: AsyncIterable<string>) {
-  for await (const element of iterable) {
-  }
-}
-
-async function overIterableIterator(iterable: AsyncIterableIterator<string>) {
-  for await (const element of iterable) {
-  }
-}
-```
-
 ## Options
 
 The rule accepts an options object with the following property:
 
 - `allowedPromiseNames` any extra names of classes or interfaces to be considered "awaitable" in `await` statements.
 
-Classes named `Promise` may always be awaited.
-`allowedPromiseNames` does not affect `for-await-of` statements.
+Classes and interfaces named `Promise` are always allowed in `await` statements.
 
 ### allowedPromiseNames
 
 Examples of **incorrect** code for this rule with `{ allowedPromiseNames: ["Thenable"] }`:
-
-```ts
-class Thenable {
-  /* ... */
-}
-
-await new Thenable();
-```
-
-Examples of **correct** code for this rule with `{ allowedPromiseNames: ["Thenable"] }`:
 
 ```ts
 class OtherClass {
@@ -72,6 +41,16 @@ class OtherClass {
 }
 
 await new OtherClass();
+```
+
+Examples of **correct** code for this rule with `{ allowedPromiseNames: ["Thenable"] }`:
+
+```ts
+class Thenable {
+  /* ... */
+}
+
+await new Thenable();
 ```
 
 ## When Not To Use It
