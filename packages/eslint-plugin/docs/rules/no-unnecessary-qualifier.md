@@ -42,6 +42,27 @@ Examples of **correct** code for this rule:
 ```ts
 namespace X {
   export type T = number;
+}
+
+namespace Y {
+  export const x: X.T = 3;
+}
+```
+
+```ts
+enum A {
+  X,
+  Y
+}
+
+enum B {
+  Z = A.X
+}
+```
+
+```ts
+namespace X {
+  export type T = number;
   namespace Y {
     type T = string;
     const x: X.T = 0;

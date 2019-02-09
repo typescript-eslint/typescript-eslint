@@ -32,6 +32,23 @@ ruleTester.run('no-unnecessary-qualifier', rule, {
   valid: [
     `
 namespace X {
+  export type T = number;
+}
+
+namespace Y {
+  export const x: X.T = 3;
+}`,
+    `
+enum A {
+    X,
+    Y
+}
+
+enum B {
+    Z = A.X
+}`,
+    `
+namespace X {
     export type T = number;
     namespace Y {
         type T = string;
