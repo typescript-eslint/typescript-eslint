@@ -25,15 +25,13 @@ function containsTypeByName(type, allowedNames) {
   }
 
   if (tsutils.isUnionOrIntersectionType(type)) {
-    return type.types.some(innerType =>
-      containsTypeByName(innerType, allowedNames)
-    );
+    return type.types.some(t => containsTypeByName(t, allowedNames));
   }
 
-  const baseTypes = type.getBaseTypes();
+  const bases = type.getBaseTypes();
   return (
-    typeof baseTypes !== 'undefined' &&
-    baseTypes.some(baseType => containsTypeByName(baseType, allowedNames))
+    typeof bases !== 'undefined' &&
+    bases.some(t => containsTypeByName(t, allowedNames))
   );
 }
 
