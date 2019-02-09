@@ -39,7 +39,7 @@
 
 | TSLint rule                          |     | ESLint rule                                                           |
 | ------------------------------------ | :-: | --------------------------------------------------------------------- |
-| [`await-promise`]                    | ✅  | [`@typescript-eslint/no-misused-new`]                                 |
+| [`await-promise`]                    | ✅  | [`await-promise`][await-promise]                                      |
 | [`ban-comma-operator`]               | 🌟  | [`no-sequences`][no-sequences]                                        |
 | [`ban`]                              | 🌟  | [`no-restricted-properties`][no-restricted-properties]                |
 | [`curly`]                            | 🌟  | [`curly`][curly]                                                      |
