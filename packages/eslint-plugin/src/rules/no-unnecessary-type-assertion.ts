@@ -47,13 +47,12 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
+    const sourceCode = context.getSourceCode();
     const parserServices = util.getParserServices(context);
 
     /**
      * Sometimes tuple types don't have ObjectFlags.Tuple set, like when they're being matched against an inferred type.
      * So, in addition, check if there are integer properties 0..n and no other numeric keys
-     * @param type type
-     * @returns true if type could be a tuple type
      */
     function couldBeTupleType(type: ts.ObjectType): boolean {
       const properties = type.getProperties();
@@ -82,17 +81,10 @@ export default util.createRule<Options, MessageIds>({
       return true;
     }
 
-    /**
-     * @param node node being linted
-     * @param checker TypeScript typechecker
-     */
     function checkNonNullAssertion(
       node: TSESTree.Node,
       checker: ts.TypeChecker
     ): void {
-      /**
-       * Corresponding TSNode is guaranteed to be in map
-       */
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
         ts.NonNullExpression
       >(node);
@@ -112,20 +104,23 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
-    /**
-     * @param node node being linted
-     * @param checker TypeScript typechecker
-     */
-    function verifyCast(node: TSESTree.Node, checker: ts.TypeChecker): void {
-      const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-        ts.AssertionExpression
-      >(node);
+    function verifyCast(
+      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+      checker: ts.TypeChecker
+    ): void {
       if (
+        options &&
         options.typesToIgnore &&
-        options.typesToIgnore.indexOf(originalNode.type.getText()) !== -1
+        options.typesToIgnore.indexOf(
+          sourceCode.getText(node.typeAnnotation)
+        ) !== -1
       ) {
         return;
       }
+
+      const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
+        ts.AssertionExpression
+      >(node);
       const castType = checker.getTypeAtLocation(originalNode);
 
       if (
