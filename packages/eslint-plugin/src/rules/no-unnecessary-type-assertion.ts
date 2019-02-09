@@ -42,6 +42,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
+    const sourceCode = context.getSourceCode();
     const parserServices = util.getParserServices(context);
 
     /**
@@ -79,9 +80,6 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.Node,
       checker: ts.TypeChecker
     ): void {
-      /**
-       * Corresponding TSNode is guaranteed to be in map
-       */
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
         ts.NonNullExpression
       >(node);
@@ -101,16 +99,23 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
-    function verifyCast(node: TSESTree.Node, checker: ts.TypeChecker): void {
-      const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-        ts.AssertionExpression
-      >(node);
+    function verifyCast(
+      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+      checker: ts.TypeChecker
+    ): void {
       if (
+        options &&
         options.typesToIgnore &&
-        options.typesToIgnore.indexOf(originalNode.type.getText()) !== -1
+        options.typesToIgnore.indexOf(
+          sourceCode.getText(node.typeAnnotation)
+        ) !== -1
       ) {
         return;
       }
+
+      const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
+        ts.AssertionExpression
+      >(node);
       const castType = checker.getTypeAtLocation(originalNode);
 
       if (
