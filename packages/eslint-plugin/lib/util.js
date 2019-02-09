@@ -127,17 +127,3 @@ exports.getParserServices = context => {
   }
   return context.parserServices;
 };
-
-/**
- * @template T
- * @param {ReadonlyArray<T> | undefined} a An array
- * @param {ReadonlyArray<T> | undefined} b Another array
- * @param {function(T, T): boolean} eq Comparison function
- * @returns {boolean} Returns true iff the arrays are equal
- */
-exports.arraysAreEqual = (a, b, eq) =>
-  a === b ||
-  (typeof a !== 'undefined' &&
-    typeof b !== 'undefined' &&
-    a.length === b.length &&
-    a.every((x, idx) => eq(x, b[idx])));

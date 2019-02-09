@@ -91,11 +91,8 @@ module.exports = {
      * @returns {boolean} True iff the symbol is a namespace that is in scope
      */
     function symbolIsNamespaceInScope(symbol) {
-      const symbolDeclarations = symbol.getDeclarations();
+      const symbolDeclarations = symbol.getDeclarations() || [];
 
-      if (typeof symbolDeclarations === 'undefined') {
-        return false;
-      }
       if (
         symbolDeclarations.some(decl =>
           namespacesInScope.some(ns => ns === decl)
@@ -128,19 +125,7 @@ module.exports = {
      * @returns {boolean} Returns true iff the symbols are equal
      */
     function symbolsAreEqual(accessed, inScope) {
-      // Available starting in typescript@2.6
-      if (typeof checker.getExportSymbolOfSymbol !== 'undefined') {
-        return accessed === checker.getExportSymbolOfSymbol(inScope);
-      }
-      return (
-        accessed === inScope ||
-        // For compatibility with typescript@2.5: compare declarations because the symbols don't have the same reference
-        utils.arraysAreEqual(
-          accessed.declarations,
-          inScope.declarations,
-          (a, b) => a === b
-        )
-      );
+      return accessed === checker.getExportSymbolOfSymbol(inScope);
     }
 
     /**

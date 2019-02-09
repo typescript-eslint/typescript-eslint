@@ -22,7 +22,9 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: rootPath,
-    project: './tsconfig.json'
+    project: './tsconfig.json',
+    sourceType: 'module',
+    ecmaVersion: 6
   }
 });
 
@@ -35,6 +37,11 @@ namespace X {
         type T = string;
         const x: X.T = 0;
     }
+}`,
+    `const x: A.B = 3;`,
+    `
+namespace X {
+  const z = X.y;
 }`
   ],
 
@@ -179,6 +186,25 @@ namespace Foo {
     B,
     C = B
   }
+}`
+    },
+    {
+      code: `
+import * as Foo from './foo';
+declare module './foo' {
+  const x: Foo.T = 3;
+}`,
+      filename: path.join(rootPath, 'bar.ts'),
+      errors: [
+        {
+          messageId: 'unnecessaryQualifier',
+          type: 'Identifier'
+        }
+      ],
+      output: `
+import * as Foo from './foo';
+declare module './foo' {
+  const x: T = 3;
 }`
     }
   ]
