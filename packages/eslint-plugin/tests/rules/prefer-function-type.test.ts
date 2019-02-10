@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import rule from '../../src/rules/prefer-function-type';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 var ruleTester = new RuleTester({
   parserOptions: {

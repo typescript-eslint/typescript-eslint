@@ -1,5 +1,5 @@
 import rule from '../../src/rules/ban-types';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 import { InferOptionsTypeFromRule } from '../../src/util';
 
 const ruleTester = new RuleTester({

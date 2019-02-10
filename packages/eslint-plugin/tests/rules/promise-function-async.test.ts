@@ -1,5 +1,5 @@
 import rule from '../../src/rules/promise-function-async';
-import RuleTester, { getFixturesRootDir } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const parserOptions = {

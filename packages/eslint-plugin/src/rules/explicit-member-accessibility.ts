@@ -29,7 +29,7 @@ export default util.createRule({
     ): void {
       if (
         !methodDefinition.accessibility &&
-        util.isTypescript(context.getFilename())
+        util.isTypeScriptFile(context.getFilename())
       ) {
         context.report({
           node: methodDefinition,
@@ -51,7 +51,7 @@ export default util.createRule({
     ): void {
       if (
         !classProperty.accessibility &&
-        util.isTypescript(context.getFilename())
+        util.isTypeScriptFile(context.getFilename())
       ) {
         context.report({
           node: classProperty,

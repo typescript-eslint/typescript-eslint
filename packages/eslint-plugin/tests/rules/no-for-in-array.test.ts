@@ -1,5 +1,6 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import rule from '../../src/rules/no-for-in-array';
-import RuleTester, { getFixturesRootDir } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -31,7 +32,8 @@ for (const x in [3, 4, 5]) {
 }`,
       errors: [
         {
-          messageId: 'forInViolation'
+          messageId: 'forInViolation',
+          type: AST_NODE_TYPES.ForInStatement
         }
       ]
     },
@@ -43,7 +45,8 @@ for (const x in z) {
 }`,
       errors: [
         {
-          messageId: 'forInViolation'
+          messageId: 'forInViolation',
+          type: AST_NODE_TYPES.ForInStatement
         }
       ]
     }

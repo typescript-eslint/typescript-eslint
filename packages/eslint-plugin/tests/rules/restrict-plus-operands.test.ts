@@ -1,6 +1,6 @@
 import path from 'path';
 import rule from '../../src/rules/restrict-plus-operands';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 

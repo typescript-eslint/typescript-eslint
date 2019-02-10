@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-use-before-define';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 const ruleTester = new RuleTester({

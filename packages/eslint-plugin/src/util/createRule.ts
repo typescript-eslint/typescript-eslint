@@ -15,7 +15,7 @@ type RemoveProps<
   TKeys extends keyof TObj
 > = Pick<TObj, Exclude<keyof TObj, TKeys>>;
 
-// we'll automatically
+// we'll automatically add the url + tslint description for people.
 type CreateRuleMetaDocs = RemoveProps<RuleMetaDataDocs, 'url'> & {
   tslintName?: string;
 };

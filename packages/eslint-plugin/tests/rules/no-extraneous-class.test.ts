@@ -1,5 +1,6 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import rule from '../../src/rules/no-extraneous-class';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const empty = {
   messageId: 'empty' as 'empty'
@@ -117,7 +118,12 @@ export class AClass {
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/170
       code: 'export default class { static hello() {} }',
-      errors: [onlyStatic]
+      errors: [
+        {
+          ...onlyStatic,
+          type: AST_NODE_TYPES.ClassDeclaration
+        }
+      ]
     }
   ]
 });

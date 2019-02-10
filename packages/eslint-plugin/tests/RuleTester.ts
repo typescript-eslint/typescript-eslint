@@ -1,6 +1,6 @@
 import { ParserOptions } from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import { RuleTester } from 'eslint';
+import { RuleTester as ESLintRuleTester } from 'eslint';
 import * as path from 'path';
 import RuleModule from 'ts-eslint';
 
@@ -28,8 +28,6 @@ interface TestCaseError<TMessageIds extends string> {
   type?: AST_NODE_TYPES;
   line?: number;
   column?: number;
-  // endLine?: number;
-  // endColumn?: number;
 }
 
 interface RunTests<
@@ -49,7 +47,7 @@ declare class RuleTesterTyped {
   ): void;
 }
 
-const RuleTesterRetyped = (RuleTester as any) as {
+const RuleTester = (ESLintRuleTester as any) as {
   new (config?: {
     parser: '@typescript-eslint/parser';
     parserOptions?: ParserOptions;
@@ -60,8 +58,8 @@ function getFixturesRootDir() {
   return path.join(process.cwd(), 'tests/fixtures/');
 }
 
-export default RuleTesterRetyped;
 export {
+  RuleTester,
   RunTests,
   TestCaseError,
   InvalidTestCase,

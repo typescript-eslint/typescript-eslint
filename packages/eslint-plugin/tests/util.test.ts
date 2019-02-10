@@ -16,7 +16,7 @@ describe('isTypescript', () => {
     ];
 
     invalid.forEach(f => {
-      assert.strictEqual(util.isTypescript(f), false);
+      assert.strictEqual(util.isTypeScriptFile(f), false);
     });
   });
 
@@ -33,7 +33,7 @@ describe('isTypescript', () => {
     ];
 
     valid.forEach(f => {
-      assert.strictEqual(util.isTypescript(f), true);
+      assert.strictEqual(util.isTypeScriptFile(f), true);
     });
   });
 });
