@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import rule from '../../src/rules/no-array-constructor';
 import { RuleTester } from '../RuleTester';
 
@@ -29,37 +30,72 @@ ruleTester.run('no-array-constructor', rule, {
     {
       code: 'new Array()',
       output: '[]',
-      errors: [{ messageId }]
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.NewExpression
+        }
+      ]
     },
     {
       code: 'Array()',
       output: '[]',
-      errors: [{ messageId }]
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression
+        }
+      ]
     },
     {
       code: 'new Array',
       output: '[]',
-      errors: [{ messageId }]
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.NewExpression
+        }
+      ]
     },
     {
       code: 'new Array(x, y)',
       output: '[x, y]',
-      errors: [{ messageId }]
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.NewExpression
+        }
+      ]
     },
     {
       code: 'Array(x, y)',
       output: '[x, y]',
-      errors: [{ messageId }]
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression
+        }
+      ]
     },
     {
       code: 'new Array(0, 1, 2)',
       output: '[0, 1, 2]',
-      errors: [{ messageId }]
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.NewExpression
+        }
+      ]
     },
     {
       code: 'Array(0, 1, 2)',
       output: '[0, 1, 2]',
-      errors: [{ messageId }]
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression
+        }
+      ]
     },
     {
       code: `new Array(
@@ -72,7 +108,12 @@ ruleTester.run('no-array-constructor', rule, {
                 1,
                 2
             ]`,
-      errors: [{ messageId }]
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.NewExpression
+        }
+      ]
     }
   ]
 });
