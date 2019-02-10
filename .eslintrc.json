@@ -29,10 +29,10 @@
   "overrides": [
     {
       "files": [
-        "packages/eslint-plugin-tslint/**/*.ts",
-        "packages/eslint-plugin/**/*.js",
-        "packages/parser/**/*.ts",
-        "packages/typescript-estree/**/*.ts"
+        "packages/eslint-plugin-tslint/tests/**/*.ts",
+        "packages/eslint-plugin/tests/**/*.js",
+        "packages/parser/tests/**/*.ts",
+        "packages/typescript-estree/tests/**/*.ts"
       ],
       "env": {
         "jest/globals": true
@@ -40,8 +40,15 @@
       "rules": {
         "jest/no-disabled-tests": "warn",
         "jest/no-focused-tests": "error",
+        "jest/no-alias-methods": "error",
         "jest/no-identical-title": "error",
+        "jest/no-jasmine-globals": "error",
+        "jest/no-jest-import": "error",
+        "jest/no-test-prefixes": "error",
+        "jest/no-test-callback": "error",
+        "jest/no-test-return-statement": "error",
         "jest/prefer-to-have-length": "warn",
+        "jest/prefer-spy-on": "error",
         "jest/valid-expect": "error"
       }
     },

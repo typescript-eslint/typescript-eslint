@@ -139,6 +139,11 @@ ruleTester.run('array-type', rule, {
       options: ['array']
     },
     {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/172
+      code: 'type Unwrap<T> = T extends (infer E)[] ? E : T',
+      options: ['array']
+    },
+    {
       code: `let z: Array = [3, "4"];`,
       options: ['generic']
     },
@@ -172,6 +177,11 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `type fooIntersection = Array<string & number>;`,
+      options: ['generic']
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/172
+      code: 'type Unwrap<T> = T extends Array<infer E> ? E : T',
       options: ['generic']
     }
   ],
@@ -772,6 +782,34 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
           data: { type: 'string' },
           line: 2,
           column: 19
+        }
+      ]
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/172
+      code: 'type Unwrap<T> = T extends Array<infer E> ? E : T',
+      output: 'type Unwrap<T> = T extends (infer E)[] ? E : T',
+      options: ['array'],
+      errors: [
+        {
+          messageId: 'errorStringArray',
+          data: { type: 'T' },
+          line: 1,
+          column: 28
+        }
+      ]
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/172
+      code: 'type Unwrap<T> = T extends (infer E)[] ? E : T',
+      output: 'type Unwrap<T> = T extends Array<infer E> ? E : T',
+      options: ['generic'],
+      errors: [
+        {
+          messageId: 'errorStringGeneric',
+          data: { type: 'T' },
+          line: 1,
+          column: 28
         }
       ]
     }

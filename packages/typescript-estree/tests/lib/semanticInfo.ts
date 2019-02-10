@@ -11,13 +11,18 @@ import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
 import ts from 'typescript';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
   parseCodeAndGenerateServices
 } from '../../tools/test-utils';
 import { parseAndGenerateServices } from '../../src/parser';
+import {
+  VariableDeclaration,
+  ClassDeclaration,
+  ClassProperty
+} from '../../src/typedefs';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -101,6 +106,29 @@ describe('semanticInfo', () => {
     testIsolatedFile(parseResult);
   });
 
+  it('non-existent-estree-nodes tests', () => {
+    const fileName = resolve(FIXTURES_DIR, 'non-existent-estree-nodes.src.ts');
+    const parseResult = parseCodeAndGenerateServices(
+      readFileSync(fileName, 'utf8'),
+      createOptions(fileName)
+    );
+
+    expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
+    const binaryExpression = (parseResult.ast.body[0] as VariableDeclaration)
+      .declarations[0].init!;
+    const tsBinaryExpression = parseResult.services.esTreeNodeToTSNodeMap!.get(
+      binaryExpression
+    );
+    expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
+
+    const computedPropertyString = ((parseResult.ast
+      .body[1] as ClassDeclaration).body.body[0] as ClassProperty).key;
+    const tsComputedPropertyString = parseResult.services.esTreeNodeToTSNodeMap!.get(
+      computedPropertyString
+    );
+    expect(tsComputedPropertyString.kind).toEqual(ts.SyntaxKind.StringLiteral);
+  });
+
   it('imported-file tests', () => {
     const fileName = resolve(FIXTURES_DIR, 'import-file.src.ts');
     const parseResult = parseCodeAndGenerateServices(
@@ -123,10 +151,10 @@ describe('semanticInfo', () => {
       arrayBoundName
     );
     expect(tsArrayBoundName).toBeDefined();
-    checkNumberArrayType(checker, tsArrayBoundName);
+    checkNumberArrayType(checker, tsArrayBoundName!);
 
     expect(
-      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName)
+      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName!)
     ).toBe(arrayBoundName);
   });
 
@@ -149,9 +177,9 @@ describe('semanticInfo', () => {
     );
     expect(tsBoundName).toBeDefined();
 
-    checkNumberArrayType(checker, tsBoundName);
+    checkNumberArrayType(checker, tsBoundName!);
 
-    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName)).toBe(
+    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName!)).toBe(
       boundName
     );
   });
@@ -179,7 +207,7 @@ describe('semanticInfo', () => {
     badConfig.project = './tsconfigs.json';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+tsconfigs\.json' not found/);
+    ).toThrow(/File .+tsconfigs\.json' not found/);
   });
 
   it('fail to read project file', () => {
@@ -188,7 +216,7 @@ describe('semanticInfo', () => {
     badConfig.project = '.';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+semanticInfo' not found/);
+    ).toThrow(/File .+semanticInfo' not found/);
   });
 
   it('malformed project file', () => {

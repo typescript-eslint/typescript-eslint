@@ -6,7 +6,7 @@
  * MIT License
  */
 import * as parser from '../src/parser';
-import { ParserOptions } from '../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../src/parser-options';
 
 /**
  * Returns a raw copy of the given AST
@@ -79,4 +79,15 @@ export function formatSnapshotName(
   return `fixtures/${filename
     .replace(fixturesDir + '/', '')
     .replace(fileExtension, '')}`;
+}
+
+/**
+ * Check if file extension is one used for jsx
+ * @param fileType
+ */
+export function isJSXFileType(fileType: string): boolean {
+  if (fileType.startsWith('.')) {
+    fileType = fileType.slice(1);
+  }
+  return fileType === 'js' || fileType === 'jsx' || fileType === 'tsx';
 }

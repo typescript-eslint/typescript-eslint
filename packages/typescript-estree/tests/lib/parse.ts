@@ -7,7 +7,7 @@
  */
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ describe('parse()', () => {
       });
 
       expect(spy).toHaveBeenCalledWith(
-        jasmine.any(Object),
+        expect.any(Object),
         {
           code: 'let foo = bar;',
           comment: true,
@@ -96,12 +96,45 @@ describe('parse()', () => {
           projects: [],
           range: true,
           strict: false,
-          tokens: jasmine.any(Array),
-          tsconfigRootDir: jasmine.any(String),
+          tokens: expect.any(Array),
+          tsconfigRootDir: expect.any(String),
           useJSXTextNode: false
         },
         false
       );
+    });
+  });
+
+  describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
+    const code = '@test const foo = 2';
+    const options: ParserOptions = {
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true,
+      errorOnTypeScriptSyntacticAndSemanticIssues: true
+    };
+
+    it('should throw on invalid option when used in parse', () => {
+      expect(() => {
+        parser.parse(code, options);
+      }).toThrow(
+        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`
+      );
+    });
+
+    it('should not throw when used in parseAndGenerateServices', () => {
+      expect(() => {
+        parser.parseAndGenerateServices(code, options);
+      }).not.toThrow(
+        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`
+      );
+    });
+
+    it('should error on invalid code', () => {
+      expect(() => {
+        parser.parseAndGenerateServices(code, options);
+      }).toThrow('Decorators are not valid here.');
     });
   });
 });
