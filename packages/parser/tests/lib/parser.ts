@@ -24,7 +24,7 @@ describe('parser', () => {
       sourceType: 'script',
       useJSXTextNode: true
     });
-    expect(spyScope).toHaveBeenCalledWith(jasmine.any(Object), {
+    expect(spyScope).toHaveBeenCalledWith(expect.any(Object), {
       ecmaFeatures: {},
       sourceType: 'script'
     });
@@ -83,5 +83,26 @@ describe('parser', () => {
     ).toThrowErrorMatchingInlineSnapshot(
       `"Cannot assign to read only property 'ArrayExpression' of object '#<Object>'"`
     );
+  });
+
+  it('`warnOnUnsupportedTypeScriptVersion: false` should set `loggerFn: false` on typescript-estree', () => {
+    const code = 'const valid = true;';
+    const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: true });
+    expect(spy).toHaveBeenCalledWith(code, {
+      ecmaFeatures: {},
+      jsx: false,
+      sourceType: 'script',
+      useJSXTextNode: true
+    });
+    parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: false });
+    expect(spy).toHaveBeenCalledWith(code, {
+      ecmaFeatures: {},
+      jsx: false,
+      sourceType: 'script',
+      useJSXTextNode: true,
+      loggerFn: false,
+      warnOnUnsupportedTypeScriptVersion: false
+    });
   });
 });

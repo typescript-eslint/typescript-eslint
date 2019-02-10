@@ -2,20 +2,14 @@ import traverser from 'eslint/lib/util/traverser';
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
-  ParserOptions as ParserOptionsTsESTree
+  ParserOptions as ParserOptionsTsESTree,
+  ParserServices
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
-import { Program } from 'typescript';
 
 const packageJSON = require('../package.json');
-
-interface ParserServices {
-  program: Program | undefined;
-  esTreeNodeToTSNodeMap: WeakMap<object, any> | undefined;
-  tsNodeToESTreeNodeMap: WeakMap<object, any> | undefined;
-}
 
 interface ParseForESLintResult {
   ast: any;
@@ -73,6 +67,18 @@ export function parseForESLint(
     if (tsx || options.filePath.endsWith('.ts')) {
       parserOptions.jsx = tsx;
     }
+  }
+
+  /**
+   * Allow the user to suppress the warning from typescript-estree if they are using an unsupported
+   * version of TypeScript
+   */
+  const warnOnUnsupportedTypeScriptVersion = validateBoolean(
+    options.warnOnUnsupportedTypeScriptVersion,
+    true
+  );
+  if (!warnOnUnsupportedTypeScriptVersion) {
+    parserOptions.loggerFn = false;
   }
 
   const { ast, services } = parseAndGenerateServices(code, parserOptions);

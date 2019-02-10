@@ -8,77 +8,21 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsdoc-comment.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-block-comment.src 1`] = `
-Object {
-  "column": 10,
-  "index": 84,
-  "lineNumber": 5,
-  "message": "Unterminated regular expression literal.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-block-comment.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-comment-after-jsx.src 1`] = `
-Object {
-  "column": 14,
-  "index": 48,
-  "lineNumber": 3,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-comment-after-jsx.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-comment-after-self-closing-jsx.src 1`] = `
-Object {
-  "column": 13,
-  "index": 47,
-  "lineNumber": 3,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-comment-after-self-closing-jsx.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-tag-comments.src 1`] = `
-Object {
-  "column": 9,
-  "index": 113,
-  "lineNumber": 7,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-tag-comments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-text-with-multiline-non-comment.src 1`] = `
-Object {
-  "column": 5,
-  "index": 81,
-  "lineNumber": 7,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-text-with-multiline-non-comment.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-text-with-url.src 1`] = `
-Object {
-  "column": 17,
-  "index": 17,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-text-with-url.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-with-greather-than.src 1`] = `
-Object {
-  "column": 0,
-  "index": 69,
-  "lineNumber": 4,
-  "message": "Expression expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-with-greather-than.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-with-operators.src 1`] = `
-Object {
-  "column": 0,
-  "index": 69,
-  "lineNumber": 4,
-  "message": "Expression expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/jsx-with-operators.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/comments/line-comment-with-block-syntax.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1330,120 +1274,71 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/attributes.src 1`] = `
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/attributes.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/element-keyword-name.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-comment.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-conditional.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-invalid-js-identifier.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-tags.src 1`] = `
+Object {
+  "column": 16,
+  "index": 16,
+  "lineNumber": 1,
+  "message": "'{' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/empty-placeholder.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/escape-patterns.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-attribute.src 1`] = `
 Object {
   "column": 5,
   "index": 5,
   "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/element-keyword-name.src 1`] = `
-Object {
-  "column": 12,
-  "index": 18,
-  "lineNumber": 2,
-  "message": "'>' expected.",
-}
-`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-comment.src 1`] = `
-Object {
-  "column": 30,
-  "index": 30,
-  "lineNumber": 1,
-  "message": "Unterminated regular expression literal.",
-}
-`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-conditional.src 1`] = `
-Object {
-  "column": 3,
-  "index": 3,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-invalid-js-identifier.src 1`] = `
-Object {
-  "column": 9,
-  "index": 9,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-tags.src 1`] = `
-Object {
-  "column": 11,
-  "index": 11,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/empty-placeholder.src 1`] = `
-Object {
-  "column": 7,
-  "index": 7,
-  "lineNumber": 1,
-  "message": "Unterminated regular expression literal.",
-}
-`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/escape-patterns.src 1`] = `
-Object {
-  "column": 3,
-  "index": 3,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-attribute.src 1`] = `
-Object {
-  "column": 3,
-  "index": 3,
-  "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "'{' expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-attribute-missing-equals.src 1`] = `
 Object {
-  "column": 5,
-  "index": 5,
+  "column": 14,
+  "index": 14,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-broken-tag.src 1`] = `
 Object {
-  "column": 3,
-  "index": 3,
+  "column": 12,
+  "index": 12,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Unterminated string literal.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-computed-end-tag-name.src 1`] = `
 Object {
-  "column": 9,
-  "index": 9,
+  "column": 2,
+  "index": 2,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Identifier expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-computed-string-end-tag-name.src 1`] = `
 Object {
-  "column": 11,
-  "index": 11,
+  "column": 2,
+  "index": 2,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Identifier expected.",
 }
 `;
 
@@ -1452,23 +1347,23 @@ Object {
   "column": 9,
   "index": 9,
   "lineNumber": 1,
-  "message": "':' expected.",
+  "message": "'}' expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-leading-dot-tag-name.src 1`] = `
 Object {
-  "column": 1,
-  "index": 1,
+  "column": 0,
+  "index": 0,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Expression expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-matching-placeholder-in-closing-tag.src 1`] = `
 Object {
-  "column": 5,
-  "index": 5,
+  "column": 27,
+  "index": 27,
   "lineNumber": 1,
   "message": "'>' expected.",
 }
@@ -1476,28 +1371,28 @@ Object {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-closing-tag.src 1`] = `
 Object {
-  "column": 4,
-  "index": 4,
+  "column": 3,
+  "index": 3,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Expected corresponding JSX closing tag for 'a'.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-closing-tags.src 1`] = `
 Object {
-  "column": 6,
-  "index": 6,
+  "column": 1,
+  "index": 1,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "JSX element 'a' has no corresponding closing tag.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-dot-tag-name.src 1`] = `
 Object {
-  "column": 8,
-  "index": 8,
+  "column": 7,
+  "index": 7,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Expected corresponding JSX closing tag for 'a.b.c'.",
 }
 `;
 
@@ -1506,34 +1401,34 @@ Object {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-missing-closing-tag.src 1`] = `
 Object {
-  "column": 3,
-  "index": 3,
+  "column": 1,
+  "index": 1,
   "lineNumber": 1,
-  "message": "Expression expected.",
+  "message": "JSX element 'a' has no corresponding closing tag.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-missing-closing-tag-attribute-placeholder.src 1`] = `
 Object {
-  "column": 3,
-  "index": 3,
+  "column": 1,
+  "index": 1,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "JSX element 'a' has no corresponding closing tag.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-missing-namespace-name.src 1`] = `
 Object {
-  "column": 1,
-  "index": 1,
+  "column": 0,
+  "index": 0,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Expression expected.",
 }
 `;
 
@@ -1542,16 +1437,16 @@ Object {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-missing-spread-operator.src 1`] = `
 Object {
-  "column": 5,
-  "index": 5,
+  "column": 6,
+  "index": 6,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "'...' expected.",
 }
 `;
 
@@ -1560,7 +1455,7 @@ Object {
   "column": 4,
   "index": 4,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;
 
@@ -1569,7 +1464,7 @@ Object {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;
 
@@ -1578,43 +1473,43 @@ Object {
   "column": 36,
   "index": 36,
   "lineNumber": 1,
-  "message": "Expression expected.",
+  "message": "JSX expressions must have one parent element.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-no-common-parent-with-comment.src 1`] = `
 Object {
-  "column": 38,
-  "index": 38,
+  "column": 63,
+  "index": 63,
   "lineNumber": 1,
-  "message": "',' expected.",
+  "message": "JSX expressions must have one parent element.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-no-tag-name.src 1`] = `
 Object {
-  "column": 1,
-  "index": 1,
+  "column": 0,
+  "index": 0,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Declaration or statement expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-placeholder-in-closing-tag.src 1`] = `
 Object {
-  "column": 12,
-  "index": 12,
+  "column": 16,
+  "index": 16,
   "lineNumber": 1,
-  "message": "Unterminated regular expression literal.",
+  "message": "'>' expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-shorthand-fragment-no-closing.src 1`] = `
 Object {
-  "column": 1,
-  "index": 1,
+  "column": 0,
+  "index": 0,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "JSX fragment has no corresponding closing tag.",
 }
 `;
 
@@ -1629,64 +1524,29 @@ Object {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-unexpected-comma.src 1`] = `
 Object {
-  "column": 6,
-  "index": 6,
+  "column": 19,
+  "index": 19,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/japanese-characters.src 1`] = `
-Object {
-  "column": 6,
-  "index": 6,
-  "lineNumber": 1,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/japanese-characters.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/less-than-operator.src 1`] = `
-Object {
-  "column": 6,
-  "index": 6,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/less-than-operator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/member-expression.src 1`] = `
-Object {
-  "column": 6,
-  "index": 6,
-  "lineNumber": 1,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/member-expression.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/member-expression-this.src 1`] = `
-Object {
-  "column": 5,
-  "index": 5,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/member-expression-this.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/multiple-blank-spaces.src 1`] = `
-Object {
-  "column": 8,
-  "index": 8,
-  "lineNumber": 1,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/multiple-blank-spaces.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/namespaced-attribute-and-value-inserted.src 1`] = `
 Object {
-  "column": 3,
-  "index": 3,
+  "column": 4,
+  "index": 4,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;
 
@@ -1695,36 +1555,22 @@ Object {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/newslines-and-entities.src 1`] = `
 Object {
-  "column": 4,
-  "index": 4,
+  "column": 8,
+  "index": 8,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Invalid character.",
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/self-closing-tag.src 1`] = `
-Object {
-  "column": 3,
-  "index": 3,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/self-closing-tag.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/self-closing-tag-inside-tag.src 1`] = `
-Object {
-  "column": 9,
-  "index": 15,
-  "lineNumber": 2,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/self-closing-tag-inside-tag.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/self-closing-tag-with-newline.src 1`] = `
 Object {
@@ -1735,131 +1581,35 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/shorthand-fragment.src 1`] = `
-Object {
-  "column": 1,
-  "index": 1,
-  "lineNumber": 1,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/shorthand-fragment.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/shorthand-fragment-with-child.src 1`] = `
-Object {
-  "column": 1,
-  "index": 1,
-  "lineNumber": 1,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/shorthand-fragment-with-child.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/spread-child.src 1`] = `
-Object {
-  "column": 15,
-  "index": 15,
-  "lineNumber": 1,
-  "message": "Unterminated regular expression literal.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/spread-child.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/spread-operator-attribute-and-regular-attribute.src 1`] = `
-Object {
-  "column": 5,
-  "index": 5,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/spread-operator-attribute-and-regular-attribute.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/spread-operator-attributes.src 1`] = `
-Object {
-  "column": 5,
-  "index": 5,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/spread-operator-attributes.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/tag-names-with-dots.src 1`] = `
-Object {
-  "column": 6,
-  "index": 6,
-  "lineNumber": 1,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/tag-names-with-dots.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/tag-names-with-multi-dots.src 1`] = `
-Object {
-  "column": 8,
-  "index": 8,
-  "lineNumber": 1,
-  "message": "Type expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/tag-names-with-multi-dots.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/test-content.src 1`] = `
-Object {
-  "column": 5,
-  "index": 5,
-  "lineNumber": 1,
-  "message": "Expression expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/tag-names-with-multi-dots-multi.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/trailing-spread-operator-attribute.src 1`] = `
-Object {
-  "column": 5,
-  "index": 5,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/test-content.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/unknown-escape-pattern.src 1`] = `
-Object {
-  "column": 3,
-  "index": 3,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/trailing-spread-operator-attribute.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx-useJSXTextNode/self-closing-tag-inside-tag.src 1`] = `
-Object {
-  "column": 9,
-  "index": 15,
-  "lineNumber": 2,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/unknown-escape-pattern.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx-useJSXTextNode/test-content.src 1`] = `
-Object {
-  "column": 5,
-  "index": 5,
-  "lineNumber": 1,
-  "message": "Expression expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx-useJSXTextNode/self-closing-tag-inside-tag.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/generic-jsx-element.src 1`] = `
-Object {
-  "column": 21,
-  "index": 21,
-  "lineNumber": 1,
-  "message": "'>' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx-useJSXTextNode/test-content.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/react-typed-props.src 1`] = `
-Object {
-  "column": 12,
-  "index": 141,
-  "lineNumber": 9,
-  "message": "',' expected.",
-}
-`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/generic-jsx-element.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/react-typed-props.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/babylon-convergence/type-parameter-whitespace-loc.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -2048,6 +1798,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-type-function-declaration.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-anonymus-with-type-parameters.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-anynomus-with-return-type.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-overloads.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/function-with-await.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -2227,6 +1981,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/method-decorators/method-decorator-static-member.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/parameter-decorators/parameter-array-pattern-decorator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/parameter-decorators/parameter-decorator-constructor.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/parameter-decorators/parameter-decorator-decorator-instance-member.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -2236,6 +1992,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/parameter-decorators/parameter-decorator-instance-member.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/parameter-decorators/parameter-decorator-static-member.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/parameter-decorators/parameter-object-pattern-decorator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/parameter-decorators/parameter-rest-element-decorator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/property-decorators/property-decorator-factory-instance-member.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -2290,6 +2050,15 @@ Object {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-function.src 1`] = `
+Object {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "Decorators are not valid here.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-interface-declaration.src 1`] = `
 Object {
   "column": 0,
@@ -2299,7 +2068,95 @@ Object {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-variable.src 1`] = `
+Object {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "Decorators are not valid here.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments.src 1`] = `
+Object {
+  "column": 14,
+  "index": 14,
+  "lineNumber": 1,
+  "message": "Type argument list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments-in-call-expression.src 1`] = `
+Object {
+  "column": 3,
+  "index": 3,
+  "lineNumber": 1,
+  "message": "Type argument list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments-in-new-expression.src 1`] = `
+Object {
+  "column": 7,
+  "index": 7,
+  "lineNumber": 1,
+  "message": "Type argument list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters.src 1`] = `
+Object {
+  "column": 11,
+  "index": 11,
+  "lineNumber": 1,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-arrow-function.src 1`] = `
+Object {
+  "column": 11,
+  "index": 11,
+  "lineNumber": 1,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-constructor.src 1`] = `
+Object {
+  "column": 13,
+  "index": 25,
+  "lineNumber": 2,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-function-expression.src 1`] = `
+Object {
+  "column": 20,
+  "index": 20,
+  "lineNumber": 1,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-method.src 1`] = `
+Object {
+  "column": 6,
+  "index": 18,
+  "lineNumber": 2,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-method-signature.src 1`] = `
+Object {
+  "column": 6,
+  "index": 22,
+  "lineNumber": 2,
+  "message": "Type parameter list cannot be empty.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/enum-with-keywords.src 1`] = `
 Object {
@@ -2569,6 +2426,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-generic.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-in-generic.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-with-array-destruction.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-with-object-destruction.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/function-with-rest.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
