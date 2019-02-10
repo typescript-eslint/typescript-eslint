@@ -6,8 +6,7 @@
  */
 import ts from 'typescript';
 import unescape from 'lodash.unescape';
-import * as TSESTree from './ts-estree';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ast-node-types';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 

@@ -7,7 +7,7 @@
 
 import ts from 'typescript';
 import { getLocFor, getNodeContainer } from './node-utils';
-import * as TSESTree from './ts-estree';
+import { TSESTree } from './ts-estree';
 
 /**
  * Converts a TypeScript comment to an Esprima comment.

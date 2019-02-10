@@ -14,7 +14,7 @@ import ts from 'typescript';
 import convert from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
-import * as TSESTree from './ts-estree';
+import { TSESTree } from './ts-estree';
 import { Extra, ParserOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 
@@ -413,5 +413,5 @@ export function parseAndGenerateServices<
   };
 }
 
-export { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ast-node-types';
-export { ParserOptions, ParserServices, TSESTree };
+export { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+export { ParserOptions, ParserServices };
