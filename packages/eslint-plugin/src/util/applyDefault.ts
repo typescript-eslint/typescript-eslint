@@ -14,8 +14,7 @@ export function applyDefault<TUser extends any[], TDefault extends TUser>(
   // clone defaults
   const options: TDefault = JSON.parse(JSON.stringify(defaultOptions));
 
-  // eslint-disable-next-line eqeqeq
-  if (userOptions == null) {
+  if (userOptions === null || userOptions === undefined) {
     return options;
   }
 

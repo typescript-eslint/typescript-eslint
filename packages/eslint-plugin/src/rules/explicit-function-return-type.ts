@@ -80,7 +80,7 @@ export default util.createRule<Options, MessageIds>({
         node.parent &&
         !isConstructor(node.parent) &&
         !isSetter(node.parent) &&
-        util.isTypescript(context.getFilename())
+        util.isTypeScriptFile(context.getFilename())
       ) {
         context.report({
           node,
