@@ -254,3 +254,39 @@ export function getTokenAtPosition(
   }
   return current!;
 }
+
+export interface EqualsKind {
+  isPositive: boolean;
+  isStrict: boolean;
+}
+
+export function getEqualsKind(operator: string): EqualsKind | undefined {
+  switch (operator) {
+    case '==':
+      return {
+        isPositive: true,
+        isStrict: false,
+      };
+
+    case '===':
+      return {
+        isPositive: true,
+        isStrict: true,
+      };
+
+    case '!=':
+      return {
+        isPositive: false,
+        isStrict: false,
+      };
+
+    case '!==':
+      return {
+        isPositive: true,
+        isStrict: true,
+      };
+
+    default:
+      return undefined;
+  }
+}

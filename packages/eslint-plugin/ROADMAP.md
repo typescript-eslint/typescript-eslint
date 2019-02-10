@@ -158,8 +158,8 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`newline-before-return`]           | 🌟  | [`padding-line-between-statements`][padding-line-between-statements] <sup>[1]</sup> |
 | [`newline-per-chained-call`]        | 🌟  | [`newline-per-chained-call`][newline-per-chained-call]                              |
 | [`new-parens`]                      | 🌟  | [`new-parens`][new-parens]                                                          |
-| [`no-angle-bracket-type-assertion`] | ✅  | [`@typescript-eslint/consistent-type-assertions`]                                   |
-| [`no-boolean-literal-compare`]      | 🛑  | N/A                                                                                 |
+| [`no-angle-bracket-type-assertion`] | ✅  | [`@typescript-eslint/no-angle-bracket-type-assertion`]                              |
+| [`no-boolean-literal-compare`]      | ✅  | [`@typescript-eslint/no-unnecessary-boolean-literal-compare`]                       |
 | [`no-consecutive-blank-lines`]      | 🌟  | [`no-multiple-empty-lines`][no-multiple-empty-lines]                                |
 | [`no-irregular-whitespace`]         | 🌟  | [`no-irregular-whitespace`][no-irregular-whitespace] with `skipStrings: false`      |
 | [`no-parameter-properties`]         | ✅  | [`@typescript-eslint/no-parameter-properties`]                                      |
