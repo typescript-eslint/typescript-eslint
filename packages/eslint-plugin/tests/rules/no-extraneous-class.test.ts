@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-extraneous-class';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const empty = {
   messageId: 'empty' as 'empty'

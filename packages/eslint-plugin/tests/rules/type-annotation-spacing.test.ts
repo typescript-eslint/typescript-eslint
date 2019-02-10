@@ -1,5 +1,5 @@
 import rule from '../../src/rules/type-annotation-spacing';
-import RuleTester, { InvalidTestCase, ValidTestCase } from '../RuleTester';
+import { RuleTester, InvalidTestCase, ValidTestCase } from '../RuleTester';
 import {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule

@@ -1,5 +1,5 @@
 import rule from 'eslint/lib/rules/no-unused-vars';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {

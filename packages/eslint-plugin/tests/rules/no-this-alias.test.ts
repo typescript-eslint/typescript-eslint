@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import rule from '../../src/rules/no-this-alias';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const idError = {
   messageId: 'thisAssignment' as 'thisAssignment',

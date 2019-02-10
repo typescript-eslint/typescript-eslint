@@ -1,5 +1,5 @@
 import rule from '../../src/rules/array-type';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 import { Linter } from 'eslint';
 
 const ruleTester = new RuleTester({

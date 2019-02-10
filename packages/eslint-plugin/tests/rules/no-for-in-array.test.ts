@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-for-in-array';
-import RuleTester, { getFixturesRootDir } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({

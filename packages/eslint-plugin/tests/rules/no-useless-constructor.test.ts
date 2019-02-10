@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-useless-constructor';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {

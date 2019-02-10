@@ -1,6 +1,6 @@
 import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-assertion';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const rootDir = path.join(process.cwd(), 'tests/fixtures');
 const parserOptions = {

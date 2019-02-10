@@ -1,5 +1,5 @@
 import rule from '../../src/rules/interface-name-prefix';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'

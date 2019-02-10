@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-unused-vars';
-import RuleTester from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
