@@ -120,7 +120,6 @@
 | [`prefer-readonly`]          | 🛑  | N/A                                                |
 | [`trailing-comma`]           | 🌓  | [`comma-dangle`][comma-dangle] or [Prettier]       |
 
-<sup>[1]</sup> Only warns when importing deprecated symbols
 <sup>[1]</sup> Only warns when importing deprecated symbols<br>
 <sup>[2]</sup> Missing support for blank-line-delimited sections
 
