@@ -321,7 +321,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
   TSDeclareFunction(node: TSESTree.TSDeclareFunction): void {
     const scopeManager = this.scopeManager;
     const upperScope = this.currentScope();
-    const { id, typeParameters, params, returnType, body } = node;
+    const { id, typeParameters, params, returnType } = node;
 
     // Ignore this if other overloadings have already existed.
     if (id) {
@@ -354,7 +354,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
             new ParameterDefinition(pattern, node, i, info.rest)
           );
 
-          // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
+          // Set `variable.eslintUsed` to tell ESLint that the variable is used.
           const variable = innerScope.set.get(pattern.name);
           if (variable) {
             variable.eslintUsed = true;
