@@ -2,20 +2,21 @@
  * @fileoverview Warns when a namespace qualifier is unnecessary.
  * @author Benjamin Lichtman
  */
-'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
-const path = require('path');
 
-const rule = require('../../../lib/rules/no-unnecessary-qualifier'),
-  RuleTester = require('eslint').RuleTester;
+import path from 'path';
+import rule from '../../src/rules/no-unnecessary-qualifier';
+import { RuleTester } from '../RuleTester';
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
+const messageId = 'unnecessaryQualifier';
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 
 const ruleTester = new RuleTester({
@@ -71,8 +72,8 @@ namespace A {
 }`,
       errors: [
         {
-          messageId: 'unnecessaryQualifier',
-          type: 'Identifier'
+          messageId,
+          type: AST_NODE_TYPES.Identifier
         }
       ],
       output: `
@@ -89,8 +90,8 @@ namespace A {
 }`,
       errors: [
         {
-          messageId: 'unnecessaryQualifier',
-          type: 'Identifier'
+          messageId,
+          type: AST_NODE_TYPES.Identifier
         }
       ],
       output: `
@@ -109,8 +110,8 @@ namespace A {
 }`,
       errors: [
         {
-          messageId: 'unnecessaryQualifier',
-          type: 'Identifier'
+          messageId,
+          type: AST_NODE_TYPES.Identifier
         }
       ],
       output: `
@@ -131,8 +132,8 @@ namespace A {
 }`,
       errors: [
         {
-          messageId: 'unnecessaryQualifier',
-          type: 'TSQualifiedName'
+          messageId,
+          type: AST_NODE_TYPES.TSQualifiedName
         }
       ],
       output: `
@@ -153,8 +154,8 @@ namespace A {
 }`,
       errors: [
         {
-          messageId: 'unnecessaryQualifier',
-          type: 'MemberExpression'
+          messageId,
+          type: AST_NODE_TYPES.MemberExpression
         }
       ],
       output: `
@@ -173,8 +174,8 @@ enum A {
 }`,
       errors: [
         {
-          messageId: 'unnecessaryQualifier',
-          type: 'Identifier'
+          messageId,
+          type: AST_NODE_TYPES.Identifier
         }
       ],
       output: `
@@ -193,8 +194,8 @@ namespace Foo {
 }`,
       errors: [
         {
-          messageId: 'unnecessaryQualifier',
-          type: 'MemberExpression'
+          messageId,
+          type: AST_NODE_TYPES.MemberExpression
         }
       ],
       output: `
@@ -214,8 +215,8 @@ declare module './foo' {
       filename: path.join(rootPath, 'bar.ts'),
       errors: [
         {
-          messageId: 'unnecessaryQualifier',
-          type: 'Identifier'
+          messageId,
+          type: AST_NODE_TYPES.Identifier
         }
       ],
       output: `

@@ -2,37 +2,24 @@
  * @fileoverview Warns when a namespace qualifier is unnecessary.
  * @author Benjamin Lichtman
  */
-'use strict';
 
-/**
- * @typedef {import("eslint").Rule.RuleModule} RuleModule
- * @typedef {import("estree").Node} ESTreeNode
- * @typedef {import("estree").Expression} Expression
- * @typedef {import("estree").MemberExpression} MemberExpression
- * @typedef {import("estree").Identifier} Identifier
- * @typedef {Identifier | QualifiedName} EntityName
- * @typedef {{ left: EntityName, right: Identifier } & ESTreeNode} QualifiedName
- */
-
-const ts = require('typescript');
-const tsutils = require('tsutils');
-const utils = require('../util');
+import { TSESTree } from '@typescript-eslint/typescript-estree';
+import ts from 'typescript';
+import * as tsutils from 'tsutils';
+import * as util from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-/**
- * @type {RuleModule}
- */
-module.exports = {
+export default util.createRule({
+  name: 'no-unnecessary-qualifier',
   meta: {
     docs: {
+      category: 'Best Practices',
       description: 'Warns when a namespace qualifier is unnecessary.',
-      category: 'TypeScript',
       recommended: false,
-      extraDescription: [utils.tslintRule('no-unnecessary-qualifier')],
-      url: utils.metaDocsUrl('no-unnecessary-qualifier')
+      tslintName: 'no-unnecessary-qualifier'
     },
     fixable: 'code',
     messages: {
@@ -42,55 +29,30 @@ module.exports = {
     schema: [],
     type: 'suggestion'
   },
-
+  defaultOptions: [],
   create(context) {
-    // variables should be defined here
-    /**
-     * @type {(ts.ModuleDeclaration | ts.EnumDeclaration)[]}
-     */
-    const namespacesInScope = [];
-
-    /**
-     * Track failing namespace expression so nested qualifier errors are not reported
-     * @type {ESTreeNode | null}
-     */
-    let currentFailedNamespaceExpression = null;
-
-    const parserServices = utils.getParserServices(context);
-
-    /**
-     * @type {WeakMap<ESTreeNode, ts.Node>}
-     */
+    const namespacesInScope: ts.Node[] = [];
+    let currentFailedNamespaceExpression: TSESTree.Node | null = null;
+    const parserServices = util.getParserServices(context);
     const esTreeNodeToTSNodeMap = parserServices.esTreeNodeToTSNodeMap;
-
-    /**
-     * @type {ts.Program}
-     */
     const program = parserServices.program;
     const checker = program.getTypeChecker();
-
     const sourceCode = context.getSourceCode();
 
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
 
-    /**
-     * @param {ts.Symbol} symbol the symbol being inspected
-     * @param {ts.TypeChecker} checker The program's type checker
-     * @returns {ts.Symbol | null} Returns the aliased symbol of symbol if it exists, or undefined otherwise
-     */
-    function tryGetAliasedSymbol(symbol, checker) {
+    function tryGetAliasedSymbol(
+      symbol: ts.Symbol,
+      checker: ts.TypeChecker
+    ): ts.Symbol | null {
       return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
         ? checker.getAliasedSymbol(symbol)
         : null;
     }
 
-    /**
-     * @param {ts.Symbol} symbol The symbol being checked
-     * @returns {boolean} True iff the symbol is a namespace that is in scope
-     */
-    function symbolIsNamespaceInScope(symbol) {
+    function symbolIsNamespaceInScope(symbol: ts.Symbol): boolean {
       const symbolDeclarations = symbol.getDeclarations() || [];
 
       if (
@@ -106,34 +68,25 @@ module.exports = {
       return alias !== null && symbolIsNamespaceInScope(alias);
     }
 
-    /**
-     * @param {ts.Node} node The node whose in-scope symbols are to be searched
-     * @param {ts.SymbolFlags} flags The symbol flags being inspected
-     * @param {any} name The name of the symbol being searched for
-     * @returns {ts.Symbol | undefined} The symbol in the scope of node with the provided name, or null if one does not exist
-     */
-    function getSymbolInScope(node, flags, name) {
+    function getSymbolInScope(
+      node: ts.Node,
+      flags: ts.SymbolFlags,
+      name: string
+    ): ts.Symbol | undefined {
       // TODO:PERF `getSymbolsInScope` gets a long list. Is there a better way?
       const scope = checker.getSymbolsInScope(node, flags);
 
       return scope.find(scopeSymbol => scopeSymbol.name === name);
     }
 
-    /**
-     * @param {ts.Symbol} accessed The symbol of the namespace that's accessed
-     * @param {ts.Symbol} inScope The symbol in scope that has the same text as accessed
-     * @returns {boolean} Returns true iff the symbols are equal
-     */
-    function symbolsAreEqual(accessed, inScope) {
+    function symbolsAreEqual(accessed: ts.Symbol, inScope: ts.Symbol): boolean {
       return accessed === checker.getExportSymbolOfSymbol(inScope);
     }
 
-    /**
-     * @param {ESTreeNode} qualifier The qualifier being checked
-     * @param {Identifier} name The name being accessed from the qualifier
-     * @returns {boolean} True iff the qualifier is unnecessary
-     */
-    function qualifierIsUnnecessary(qualifier, name) {
+    function qualifierIsUnnecessary(
+      qualifier: TSESTree.Node,
+      name: TSESTree.Identifier
+    ): boolean {
       const tsQualifier = esTreeNodeToTSNodeMap.get(qualifier);
       const tsName = esTreeNodeToTSNodeMap.get(name);
 
@@ -167,13 +120,11 @@ module.exports = {
       );
     }
 
-    /**
-     * @param {ESTreeNode} node The namespace access node
-     * @param {ESTreeNode} qualifier The qualifier of the namespace access
-     * @param {Identifier} name The name being accessed in the namespace
-     * @returns {void}
-     */
-    function visitNamespaceAccess(node, qualifier, name) {
+    function visitNamespaceAccess(
+      node: TSESTree.Node,
+      qualifier: TSESTree.Node,
+      name: TSESTree.Identifier
+    ): void {
       // Only look for nested qualifier errors if we didn't already fail on the outer qualifier.
       if (
         !currentFailedNamespaceExpression &&
@@ -193,49 +144,32 @@ module.exports = {
       }
     }
 
-    /**
-     * @param {ESTreeNode} node The TSModuleDeclaration or TSEnumDeclaration being visited
-     * @returns {void}
-     */
-    function enterDeclaration(node) {
+    function enterDeclaration(node: TSESTree.Node): void {
       const tsDeclaration = esTreeNodeToTSNodeMap.get(node);
       if (tsDeclaration) {
         namespacesInScope.push(tsDeclaration);
       }
     }
 
-    /**
-     * @returns {void}
-     */
-    function exitDeclaration(node) {
+    function exitDeclaration(node: TSESTree.Node) {
       if (esTreeNodeToTSNodeMap.has(node)) {
         namespacesInScope.pop();
       }
     }
 
-    /**
-     * @param {ESTreeNode} node The current node being exited
-     * @returns {void}
-     */
-    function resetCurrentNamespaceExpression(node) {
+    function resetCurrentNamespaceExpression(node: TSESTree.Node): void {
       if (node === currentFailedNamespaceExpression) {
         currentFailedNamespaceExpression = null;
       }
     }
 
-    /**
-     * @param {ESTreeNode} node An ESTree AST node
-     * @returns {boolean} Returns true if node is a PropertyAccessExpression
-     */
-    function isPropertyAccessExpression(node) {
+    function isPropertyAccessExpression(
+      node: TSESTree.Node
+    ): node is TSESTree.MemberExpression {
       return node.type === 'MemberExpression' && !node.computed;
     }
 
-    /**
-     * @param {ESTreeNode} node An ESTree AST node
-     * @returns {boolean} Returns true if node is an EntityNameExpression
-     */
-    function isEntityNameExpression(node) {
+    function isEntityNameExpression(node: TSESTree.Node): boolean {
       return (
         node.type === 'Identifier' ||
         (isPropertyAccessExpression(node) &&
@@ -256,20 +190,12 @@ module.exports = {
       'TSEnumDeclaration:exit': exitDeclaration,
       'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]:exit': exitDeclaration,
       'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]:exit': exitDeclaration,
-      /**
-       * @param {QualifiedName} node The node being inspected
-       * @returns {void}
-       */
-      TSQualifiedName(node) {
+      TSQualifiedName(node: TSESTree.TSQualifiedName): void {
         visitNamespaceAccess(node, node.left, node.right);
       },
-      /**
-       * @param {MemberExpression} node The node being inspected
-       * @returns {void}
-       */
-      MemberExpression(node) {
+      MemberExpression(node: TSESTree.MemberExpression): void {
         if (node.computed) return;
-        const property = /** @type {Identifier} */ (node.property);
+        const property = node.property as TSESTree.Identifier;
 
         if (isEntityNameExpression(node.object)) {
           visitNamespaceAccess(node, node.object, property);
@@ -279,4 +205,4 @@ module.exports = {
       'MemberExpression:exit': resetCurrentNamespaceExpression
     };
   }
-};
+});
