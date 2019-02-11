@@ -1,5 +1,5 @@
 import { Program } from 'typescript';
-import { Token, Comment, Node } from './typedefs';
+import { Token, Comment, Node } from './ts-estree/ts-estree';
 import { TSNode } from './ts-nodes';
 
 export interface Extra {

@@ -413,7 +413,5 @@ export function parseAndGenerateServices<
   };
 }
 
-export { AST_NODE_TYPES } from './ast-node-types';
-export { ParserOptions };
-export { ParserServices };
-export { TSESTree };
+export { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+export { ParserOptions, ParserServices };
