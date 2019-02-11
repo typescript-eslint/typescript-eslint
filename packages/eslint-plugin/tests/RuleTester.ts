@@ -12,6 +12,9 @@ interface ValidTestCase<TOptions extends Readonly<any[]>> {
   settings?: Record<string, any>;
   parser?: string;
   globals?: Record<string, boolean>;
+  env?: {
+    browser?: boolean;
+  };
 }
 
 interface InvalidTestCase<
