@@ -49,13 +49,13 @@ class Foo {}
     `
 export class Foo {}
 export class Bar {}
- export type FooBar = Foo | Bar;
+export type FooBar = Foo | Bar;
         `,
     `
 export interface Foo {}
 export class Foo {}
 export class Bar {}
- export type FooBar = Foo | Bar;
+export type FooBar = Foo | Bar;
         `,
     `
 export function foo(s: string);
