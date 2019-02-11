@@ -23,4 +23,3 @@ export class EmptyFunctionScope extends Scope {
     super(scopeManager, 'empty-function', upperScope, block, false);
   }
 }
-
