@@ -66,6 +66,17 @@ export type SomeThing = {
     `
 export abstract class Foo {}
 export class FooBar extends Foo {}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/18
+    `
+function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
+function eachr(subject: Object | Array<Value>): typeof subject {
+  return subject
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/18
+    `
+function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
     `
   ],
   invalid: []
