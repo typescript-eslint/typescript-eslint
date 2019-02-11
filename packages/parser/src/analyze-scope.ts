@@ -361,7 +361,9 @@ class Referencer extends OriginalReferencer {
    * Create reference objects for the references in parameters and return type.
    * @param node The TSEmptyBodyFunctionExpression node to visit.
    */
-  TSEmptyBodyFunctionExpression(node: TSESTree.FunctionExpression): void {
+  TSEmptyBodyFunctionExpression(
+    node: TSESTree.TSEmptyBodyFunctionExpression
+  ): void {
     const upperTypeMode = this.typeMode;
     const { typeParameters, params, returnType } = node;
 
