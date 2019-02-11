@@ -193,10 +193,10 @@ export default util.createRule({
       TSQualifiedName(node: TSESTree.TSQualifiedName): void {
         visitNamespaceAccess(node, node.left, node.right);
       },
-      MemberExpression(node: TSESTree.MemberExpression): void {
-        if (node.computed) return;
+      'MemberExpression[computed=false]': function(
+        node: TSESTree.MemberExpression
+      ): void {
         const property = node.property as TSESTree.Identifier;
-
         if (isEntityNameExpression(node.object)) {
           visitNamespaceAccess(node, node.object, property);
         }
