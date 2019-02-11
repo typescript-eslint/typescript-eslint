@@ -1,7 +1,3 @@
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
@@ -17,11 +13,7 @@ import {
   VariableDeclaration,
   ClassDeclaration,
   ClassProperty
-} from '../../src/ts-estree';
-
-//------------------------------------------------------------------------------
-// Setup
-//------------------------------------------------------------------------------
+} from '../../src/ts-estree/ts-estree';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
@@ -41,10 +33,6 @@ function createOptions(fileName: string): ParserOptions & { cwd?: string } {
     loggerFn: false
   };
 }
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 describe('semanticInfo', () => {
   // test all AST snapshots

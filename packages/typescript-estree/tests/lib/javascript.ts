@@ -6,17 +6,9 @@ import {
   formatSnapshotName
 } from '../../tools/test-utils';
 
-//------------------------------------------------------------------------------
-// Setup
-//------------------------------------------------------------------------------
-
 const FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/javascript';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.js`);
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 describe('javascript', () => {
   testFiles.forEach(filename => {

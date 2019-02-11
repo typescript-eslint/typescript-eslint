@@ -3,10 +3,6 @@ import * as astConverter from '../../src/ast-converter';
 import { ParserOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
-
 describe('parse()', () => {
   describe('basic functionality', () => {
     it('should parse an empty string', () => {

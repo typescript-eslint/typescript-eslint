@@ -8,17 +8,9 @@ import {
   isJSXFileType
 } from '../../tools/test-utils';
 
-//------------------------------------------------------------------------------
-// Setup
-//------------------------------------------------------------------------------
-
 const FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/comments';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.*`);
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 describe('Comments', () => {
   testFiles.forEach(filename => {

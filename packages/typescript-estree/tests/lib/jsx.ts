@@ -7,10 +7,6 @@ import {
 } from '../../tools/test-utils';
 import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
 
-//------------------------------------------------------------------------------
-// Setup
-//------------------------------------------------------------------------------
-
 const JSX_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx';
 const jsxTestFiles = glob
@@ -22,10 +18,6 @@ const jsxTestFiles = glob
 const JSX_JSXTEXT_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx-useJSXTextNode';
 const jsxTextTestFiles = glob.sync(`${JSX_JSXTEXT_FIXTURES_DIR}/**/*.src.js`);
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 describe('JSX', () => {
   /**

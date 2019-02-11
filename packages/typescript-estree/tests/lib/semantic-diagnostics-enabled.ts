@@ -4,10 +4,6 @@ import * as parser from '../../src/parser';
 import { extname } from 'path';
 import { formatSnapshotName, isJSXFileType } from '../../tools/test-utils';
 
-//------------------------------------------------------------------------------
-// Setup
-//------------------------------------------------------------------------------
-
 /**
  * Process all fixtures, we will only snapshot the ones that have semantic errors
  * which are ignored by default parsing logic.
@@ -15,10 +11,6 @@ import { formatSnapshotName, isJSXFileType } from '../../tools/test-utils';
 const FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.*`);
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled', () => {
   testFiles.forEach(filename => {
