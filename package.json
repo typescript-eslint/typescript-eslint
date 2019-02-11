@@ -7,7 +7,7 @@
   "contributors": [
     "James Henry <typescript-eslint@jameshenry.blog>",
     "Nicholas C. Zakas",
-    "Brad Zacher",
+    "Brad Zacher <brad.zacher@gmail.com>",
     "armano2",
     "Jed Fox"
   ],
@@ -21,6 +21,7 @@
     "test": "lerna run test --parallel",
     "build": "lerna run build",
     "clean": "lerna clean && lerna run clean",
+    "typecheck": "lerna run typecheck",
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "cz": "git-cz",
