@@ -6,7 +6,6 @@
  * MIT License
  */
 import ts from 'typescript';
-import { TSESTree } from './ts-estree';
 import {
   canContainDirective,
   createError,
@@ -27,7 +26,7 @@ import {
   isOptional,
   unescapeStringLiteralText
 } from './node-utils';
-import { AST_NODE_TYPES } from './ast-node-types';
+import { AST_NODE_TYPES, TSESTree } from './ts-estree';
 import { TSNode } from './ts-nodes';
 
 const SyntaxKind = ts.SyntaxKind;

@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // specifically disable declarations for the plugin
+    "declaration": false,
+    "declarationMap": false,
+    "outDir": "./dist",
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src",
+    "typings",
+    // include the parser's ambient typings because the parser exports them in its type defs
+    "../parser/typings"
+  ]
+}

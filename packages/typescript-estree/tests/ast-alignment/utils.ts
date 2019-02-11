@@ -1,5 +1,5 @@
 import isPlainObject from 'lodash.isplainobject';
-import { AST_NODE_TYPES } from '../../src/ast-node-types';
+import { AST_NODE_TYPES } from '../../src/ts-estree';
 
 /**
  * By default, pretty-format (within Jest matchers) retains the names/types of nodes from the babylon AST,
