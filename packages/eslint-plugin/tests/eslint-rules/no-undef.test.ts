@@ -5,8 +5,8 @@ const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 10,
     sourceType: 'module',
-    ecmaFeatures: {},
   },
+  env: { es6: true },
   parser: '@typescript-eslint/parser',
 });
 
@@ -35,12 +35,16 @@ class X {
 }
     `,
     // https://github.com/eslint/typescript-eslint-parser/issues/466
-    `
+    {
+      code: `
 /*globals document, selector */
 const links = document.querySelectorAll( selector ) as NodeListOf<HTMLElement>
-    `,
+      `,
+      env: { browser: true }
+    },
     // https://github.com/eslint/typescript-eslint-parser/issues/437
     `
+type Result = string
 interface Runnable {
   run (): Result
   toString (): string

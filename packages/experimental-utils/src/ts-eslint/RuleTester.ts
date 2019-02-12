@@ -6,6 +6,11 @@ import { RuleTester as ESLintRuleTester } from 'eslint';
 import { ParserOptions } from './ParserOptions';
 import { RuleModule } from './Rule';
 
+interface EnvTestOptions {
+  browser?: boolean;
+  es6?: boolean;
+}
+
 interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   code: string;
   options?: TOptions;
@@ -14,9 +19,7 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   settings?: Record<string, unknown>;
   parser?: string;
   globals?: Record<string, boolean>;
-  env?: {
-    browser?: boolean;
-  };
+  env?: EnvTestOptions;
 }
 
 interface SuggestionOutput<TMessageIds extends string> {
@@ -59,6 +62,7 @@ interface RunTests<
 interface RuleTesterConfig {
   // should be require.resolve(parserPackageName)
   parser: string;
+  env?: EnvTestOptions;
   parserOptions?: ParserOptions;
 }
 
@@ -89,6 +93,7 @@ class RuleTester extends (ESLintRuleTester as {
 }
 
 export {
+  EnvTestOptions,
   InvalidTestCase,
   SuggestionOutput,
   RuleTester,
