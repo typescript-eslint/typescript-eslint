@@ -41,6 +41,8 @@ declare module 'eslint-scope/lib/variable' {
     references: Reference[];
     defs: Definition[];
     eslintUsed?: boolean;
+    stack?: any;
+    tainted?: boolean;
   }
 }
 
@@ -49,7 +51,7 @@ declare module 'eslint-scope/lib/definition' {
 
   export class Definition {
     type: string;
-    name: TSESTree.BindingName;
+    name: TSESTree.Node;
     node: TSESTree.Node;
     parent?: TSESTree.Node | null;
     index?: number | null;
@@ -58,7 +60,7 @@ declare module 'eslint-scope/lib/definition' {
 
     constructor(
       type: string,
-      name: TSESTree.BindingName | TSESTree.PropertyName,
+      name: TSESTree.Node,
       node: TSESTree.Node,
       parent?: TSESTree.Node | null,
       index?: number | null,
@@ -90,6 +92,8 @@ declare module 'eslint-scope/lib/pattern-visitor' {
     protected scopeManager: ScopeManager;
     protected parent?: TSESTree.Node;
     public rightHandNodes: TSESTree.Node[];
+    public assignments: TSESTree.Node[];
+    public restElements: TSESTree.Node[];
 
     static isPattern(node: TSESTree.Node): boolean;
 
@@ -148,7 +152,12 @@ declare module 'eslint-scope/lib/referencer' {
     ): void;
     visitFunction(node: TSESTree.Node): void;
     visitClass(node: TSESTree.Node): void;
-    visitProperty(node: TSESTree.Node): void;
+    visitProperty(
+      node:
+        | TSESTree.MethodDefinition
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.Property
+    ): void;
     visitForIn(node: TSESTree.Node): void;
     visitVariableDeclaration(
       variableTargetScope: any,
@@ -211,7 +220,9 @@ declare module 'eslint-scope/lib/scope' {
     | 'with'
     | 'TDZ'
     | 'enum'
-    | 'empty-function';
+    | 'empty-function'
+    | 'interface'
+    | 'type-alias';
 
   export class Scope {
     type: ScopeType;
@@ -225,7 +236,9 @@ declare module 'eslint-scope/lib/scope' {
     references: Reference[];
     through: Reference[];
     thisFound?: boolean;
+    taints: Map<string, boolean>;
     functionExpressionScope: boolean;
+    __left: Reference[];
 
     constructor(
       scopeManager: ScopeManager,
@@ -241,8 +254,8 @@ declare module 'eslint-scope/lib/scope' {
     __dynamicCloseRef(ref: any): void;
     __globalCloseRef(ref: any): void;
     __close(scopeManager: ScopeManager): Scope;
-    __isValidResolution(ref: any, variable: any): boolean;
-    __resolve(ref: any): boolean;
+    __isValidResolution(ref: any, variable: any): variable is Variable;
+    __resolve(ref: Reference): boolean;
     __delegateToUpperScope(ref: any): void;
     __addDeclaredVariablesOfNode(variable: any, node: TSESTree.Node): void;
     __defineGeneric(
@@ -257,11 +270,11 @@ declare module 'eslint-scope/lib/scope' {
 
     __referencing(
       node: TSESTree.Node,
-      assign: number,
-      writeExpr: TSESTree.Node,
-      maybeImplicitGlobal: any,
-      partial: any,
-      init: any
+      assign?: number,
+      writeExpr?: TSESTree.Node,
+      maybeImplicitGlobal?: any,
+      partial?: any,
+      init?: any
     ): void;
 
     __detectEval(): void;
@@ -382,12 +395,29 @@ declare module 'eslint-scope/lib/reference' {
   import { Scope } from 'eslint-scope/lib/scope';
   import Variable from 'eslint-scope/lib/variable';
 
+  export type ReferenceFlag = 0x1 | 0x2 | 0x3;
+
   export default class Reference {
     identifier: TSESTree.Identifier;
     from: Scope;
     resolved: Variable | null;
     writeExpr: TSESTree.Node | null;
     init: boolean;
+    partial: boolean;
+    protected __maybeImplicitGlobal: boolean;
+    tainted?: boolean;
+
+    typeMode?: boolean;
+
+    constructor(
+      identifier: TSESTree.Identifier,
+      scope: Scope,
+      flag?: ReferenceFlag,
+      writeExpr?: TSESTree.Node | null,
+      maybeImplicitGlobal?: boolean,
+      partial?: boolean,
+      init?: boolean
+    );
 
     isWrite(): boolean;
     isRead(): boolean;
@@ -417,8 +447,11 @@ declare module 'eslint-scope/lib/scope-manager' {
   }
 
   export default class ScopeManager {
-    __options: ScopeManagerOptions;
+    protected __options: ScopeManagerOptions;
     __currentScope: Scope;
+    protected __nodeToScope: WeakMap<TSESTree.Node, Scope[]>;
+    protected __declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
+
     scopes: Scope[];
     globalScope: Scope;
 
@@ -433,7 +466,7 @@ declare module 'eslint-scope/lib/scope-manager' {
     isStrictModeSupported(): boolean;
 
     // Returns appropriate scope for this node.
-    __get(node: TSESTree.Node): Scope;
+    __get(node: TSESTree.Node): Scope[] | undefined;
     getDeclaredVariables(node: TSESTree.Node): Variable[];
     acquire(node: TSESTree.Node, inner?: boolean): Scope | null;
     acquireAll(node: TSESTree.Node): Scope | null;

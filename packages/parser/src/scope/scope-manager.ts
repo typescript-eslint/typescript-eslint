@@ -3,7 +3,12 @@ import { TSESTree } from '@typescript-eslint/typescript-estree';
 import EslintScopeManager, {
   ScopeManagerOptions
 } from 'eslint-scope/lib/scope-manager';
-import { EmptyFunctionScope, EnumScope } from './scopes';
+import {
+  EmptyFunctionScope,
+  EnumScope,
+  InterfaceScope,
+  TypeAliasScope
+} from './scopes';
 import { Scope } from 'eslint-scope/lib/scope';
 
 /**
@@ -28,4 +33,20 @@ export class ScopeManager extends EslintScopeManager {
       new EmptyFunctionScope(this, this.__currentScope, node)
     );
   }
+
+  /** @internal */
+  __nestInterfaceScope(node: TSESTree.TSInterfaceDeclaration) {
+    return this.__nestScope(
+      new InterfaceScope(this, this.__currentScope, node)
+    );
+  }
+
+  /** @internal */
+  __nestTypeAliasScope(node: TSESTree.TSTypeAliasDeclaration) {
+    return this.__nestScope(
+      new TypeAliasScope(this, this.__currentScope, node)
+    );
+  }
+
+  // TODO: override __nest**Scope methods with new scope classes
 }

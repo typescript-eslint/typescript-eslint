@@ -8,6 +8,7 @@ import {
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
+import { ScopeManager } from './scope/scope-manager';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const packageJSON = require('../package.json');
@@ -16,7 +17,7 @@ interface ParseForESLintResult {
   ast: any;
   services: ParserServices;
   visitorKeys: typeof visitorKeys;
-  scopeManager: ReturnType<typeof analyzeScope>;
+  scopeManager: ScopeManager;
 }
 
 function validateBoolean(

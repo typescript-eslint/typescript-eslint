@@ -171,7 +171,7 @@ var bar;
     {
       code: `
 var x: Foo = 2;
-type Foo = string | number
+type Foo = string | number;
             `,
       options: [{ typedefs: false }]
     },
@@ -836,6 +836,22 @@ var bar;
           messageId: 'noUseBeforeDefine',
           data: {
             name: 'bar'
+          },
+          type: AST_NODE_TYPES.Identifier
+        }
+      ]
+    },
+    // types
+    {
+      code: `
+var x: Foo = 2;
+type Foo = string | number
+      `,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'Foo'
           },
           type: AST_NODE_TYPES.Identifier
         }

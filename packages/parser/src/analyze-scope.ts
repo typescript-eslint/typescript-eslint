@@ -1,5 +1,3 @@
-import { ScopeManager } from './scope/scope-manager';
-import { Definition, ParameterDefinition } from 'eslint-scope/lib/definition';
 import OriginalPatternVisitor from 'eslint-scope/lib/pattern-visitor';
 import Reference from 'eslint-scope/lib/reference';
 import OriginalReferencer from 'eslint-scope/lib/referencer';
@@ -11,6 +9,14 @@ import {
   PatternVisitorOptions
 } from 'eslint-scope/lib/options';
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+
+import {
+  Definition,
+  ParameterDefinition,
+  TypeDefinition
+} from './scope/definition';
+import { typeReferencing } from './scope/reference';
+import { ScopeManager } from './scope/scope-manager';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -36,6 +42,16 @@ class PatternVisitor extends OriginalPatternVisitor {
     callback: PatternVisitorCallback
   ) {
     super(options, rootPattern, callback);
+  }
+
+  static isPattern(node: TSESTree.Node) {
+    const nodeType = node.type;
+
+    return (
+      OriginalPatternVisitor.isPattern(node) ||
+      nodeType === AST_NODE_TYPES.TSParameterProperty ||
+      nodeType === AST_NODE_TYPES.TSTypeParameter
+    );
   }
 
   Identifier(node: TSESTree.Identifier): void {
@@ -80,8 +96,20 @@ class PatternVisitor extends OriginalPatternVisitor {
 
   TSParameterProperty(node: TSESTree.TSParameterProperty): void {
     this.visit(node.parameter);
+
     if (node.decorators) {
       this.rightHandNodes.push(...node.decorators);
+    }
+  }
+
+  TSTypeParameter(node: TSESTree.TSTypeParameter): void {
+    this.visit(node.name);
+
+    if (node.constraint) {
+      this.rightHandNodes.push(node.constraint);
+    }
+    if (node.default) {
+      this.rightHandNodes.push(node.default);
     }
   }
 }
@@ -102,8 +130,8 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    */
   visitPattern<T extends TSESTree.BaseNode>(
     node: T,
-    options: PatternVisitorOptions,
-    callback: PatternVisitorCallback
+    options: PatternVisitorOptions | PatternVisitorCallback,
+    callback?: PatternVisitorCallback
   ): void {
     if (!node) {
       return;
@@ -114,11 +142,11 @@ class Referencer extends OriginalReferencer<ScopeManager> {
       options = { processRightHandNodes: false };
     }
 
-    const visitor = new PatternVisitor(this.options, node, callback);
+    const visitor = new PatternVisitor(this.options, node, callback!);
     visitor.visit(node);
 
+    // Process the right hand nodes recursively.
     if (options.processRightHandNodes) {
-      // @ts-ignore
       visitor.rightHandNodes.forEach(this.visit, this);
     }
   }
@@ -151,7 +179,6 @@ class Referencer extends OriginalReferencer<ScopeManager> {
         const def = defs[i];
         if (
           def.type === 'FunctionName' &&
-          // @ts-ignore
           def.node.type === 'TSDeclareFunction'
         ) {
           defs.splice(i, 1);
@@ -214,6 +241,9 @@ class Referencer extends OriginalReferencer<ScopeManager> {
 
     const upperTypeMode = this.typeMode;
     this.typeMode = true;
+    if (node.typeParameters) {
+      this.visit(node.typeParameters);
+    }
     if (node.superTypeParameters) {
       this.visit(node.superTypeParameters);
     }
@@ -257,9 +287,13 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    * @param node The Identifier node to visit.
    */
   Identifier(node: TSESTree.Identifier): void {
+    const currentScope = this.currentScope();
+
     this.visitDecorators(node.decorators);
 
     if (!this.typeMode) {
+      typeReferencing(currentScope, node);
+    } else {
       super.Identifier(node);
     }
 
@@ -406,7 +440,31 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    * @param node The TSInterfaceDeclaration node to visit.
    */
   TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration): void {
-    this.visitTypeNodes(node);
+    const upperTypeMode = this.typeMode;
+    this.typeMode = true;
+
+    const scopeManager = this.scopeManager;
+    const scope = this.currentScope();
+
+    this.visit(node.typeParameters);
+
+    if (node.id) {
+      scope.__define(
+        node.id,
+        new TypeDefinition('InterfaceName', node.id, node, null, null, null)
+      );
+    }
+
+    scopeManager.__nestInterfaceScope(node);
+
+    if (node.extends) {
+      node.extends.forEach(this.visit, this);
+    }
+
+    this.visit(node.body);
+    this.close(node);
+
+    this.typeMode = upperTypeMode;
   }
 
   /**
@@ -472,7 +530,23 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    * @param node The TSTypeParameterDeclaration node to visit.
    */
   TSTypeParameterDeclaration(node: TSESTree.TSTypeParameterDeclaration): void {
-    this.visitTypeNodes(node);
+    let i: number, iz: number;
+
+    // Process parameter declarations.
+    for (i = 0, iz = node.params.length; i < iz; ++i) {
+      this.visitPattern(
+        node.params[i],
+        { processRightHandNodes: true },
+        (pattern, info) => {
+          this.currentScope().__define(
+            pattern,
+            new TypeDefinition('TypeParameter', pattern, node, null, i)
+          );
+
+          this.referencingDefaultValue(pattern, info.assignments, null, true);
+        }
+      );
+    }
   }
 
   /**
@@ -593,21 +667,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    * @param node The TSPropertySignature node to visit.
    */
   TSPropertySignature(node: TSESTree.TSPropertySignature): void {
-    const upperTypeMode = this.typeMode;
-    const { computed, key, typeAnnotation, initializer } = node;
-
-    if (computed) {
-      this.typeMode = false;
-      this.visit(key);
-      this.typeMode = true;
-    } else {
-      this.typeMode = true;
-      this.visit(key);
-    }
-    this.visit(typeAnnotation);
-    this.visit(initializer);
-
-    this.typeMode = upperTypeMode;
+    this.visitTypeProperty(node);
   }
 
   /**
@@ -615,22 +675,25 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    * @param node The TSMethodSignature node to visit.
    */
   TSMethodSignature(node: TSESTree.TSMethodSignature): void {
-    const upperTypeMode = this.typeMode;
-    const { computed, key, typeParameters, params, returnType } = node;
+    this.visitTypeFunctionSignature(node);
+  }
 
-    if (computed) {
-      this.typeMode = false;
-      this.visit(key);
-      this.typeMode = true;
-    } else {
-      this.typeMode = true;
-      this.visit(key);
-    }
-    this.visit(typeParameters);
-    params.forEach(this.visit, this);
-    this.visit(returnType);
+  TSConstructorType(node: TSESTree.TSConstructorType): void {
+    this.visitTypeFunctionSignature(node);
+  }
 
-    this.typeMode = upperTypeMode;
+  TSConstructSignatureDeclaration(
+    node: TSESTree.TSConstructSignatureDeclaration
+  ): void {
+    this.visitTypeFunctionSignature(node);
+  }
+
+  TSCallSignatureDeclaration(node: TSESTree.TSCallSignatureDeclaration): void {
+    this.visitTypeFunctionSignature(node);
+  }
+
+  TSFunctionType(node: TSESTree.TSFunctionType) {
+    this.visitTypeFunctionSignature(node);
   }
 
   /**
@@ -706,8 +769,29 @@ class Referencer extends OriginalReferencer<ScopeManager> {
   }
 
   TSTypeAliasDeclaration(node: TSESTree.TSTypeAliasDeclaration): void {
+    const scopeManager = this.scopeManager;
+    const scope = this.currentScope();
     this.typeMode = true;
-    this.visitChildren(node);
+
+    if (node.id && node.id.type === 'Identifier') {
+      scope.__define(
+        node.id,
+        new Definition('TypeAliasName', node.id, node, null, null, 'type')
+      );
+    }
+
+    scopeManager.__nestTypeAliasScope(node);
+
+    if (node.typeParameters) {
+      this.visit(node.typeParameters);
+    }
+
+    if (node.typeAnnotation) {
+      this.visit(node.typeAnnotation);
+    }
+
+    this.close(node);
+
     this.typeMode = false;
   }
 
@@ -724,6 +808,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
   TSAbstractClassProperty(node: TSESTree.TSAbstractClassProperty): void {
     this.ClassProperty(node);
   }
+
   TSAbstractMethodDefinition(node: TSESTree.TSAbstractMethodDefinition): void {
     this.MethodDefinition(node);
   }
@@ -790,9 +875,83 @@ class Referencer extends OriginalReferencer<ScopeManager> {
       this.typeMode = false;
     }
   }
+
+  /**
+   * Create reference objects for the references in computed keys.
+   * @param node The TSMethodSignature node to visit.
+   */
+  visitTypeFunctionSignature(
+    node:
+      | TSESTree.TSMethodSignature
+      | TSESTree.TSConstructorType
+      | TSESTree.TSConstructSignatureDeclaration
+      | TSESTree.TSCallSignatureDeclaration
+      | TSESTree.TSFunctionType
+  ): void {
+    const upperTypeMode = this.typeMode;
+    this.typeMode = true;
+
+    if (node.type === AST_NODE_TYPES.TSMethodSignature) {
+      if (node.computed) {
+        this.visit(node.key);
+      }
+    }
+
+    this.visit(node.typeParameters);
+    node.params.forEach(this.visit, this);
+    this.visit(node.returnType);
+
+    this.typeMode = upperTypeMode;
+  }
+
+  visitTypeProperty(node: TSESTree.TSPropertySignature) {
+    const upperTypeMode = this.typeMode;
+
+    if (node.computed) {
+      this.visit(node.key);
+    }
+
+    this.visit(node.typeAnnotation);
+    this.visit(node.initializer);
+
+    this.typeMode = upperTypeMode;
+  }
+
+  /**
+   * @param node
+   */
+  visitProperty(
+    node:
+      | TSESTree.MethodDefinition
+      | TSESTree.TSAbstractMethodDefinition
+      | TSESTree.Property
+  ) {
+    let previous = false;
+
+    if (node.computed) {
+      this.visit(node.key);
+    }
+
+    const isMethodDefinition =
+      node.type === AST_NODE_TYPES.MethodDefinition ||
+      node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
+
+    if (isMethodDefinition) {
+      previous = this.pushInnerMethodDefinition(true);
+    }
+    if ('value' in node) {
+      this.visit(node.value);
+    }
+    if (isMethodDefinition) {
+      this.popInnerMethodDefinition(previous);
+    }
+  }
 }
 
-export function analyzeScope(ast: any, parserOptions: ParserOptions) {
+export function analyzeScope(
+  ast: any,
+  parserOptions: ParserOptions
+): ScopeManager {
   const options = {
     ignoreEval: true,
     optimistic: false,
