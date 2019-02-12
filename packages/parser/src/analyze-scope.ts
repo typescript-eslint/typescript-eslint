@@ -482,7 +482,23 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    * @param node The TSIndexSignature node to visit.
    */
   TSIndexSignature(node: TSESTree.TSIndexSignature): void {
-    this.visitTypeNodes(node);
+    const upperType = this.typeMode;
+    this.typeMode = true;
+    let i: number;
+    let iz: number;
+
+    // Process parameter declarations.
+    for (i = 0, iz = node.parameters.length; i < iz; ++i) {
+      this.visitPattern(
+        node.parameters[i],
+        { processRightHandNodes: true },
+        () => {}
+      );
+    }
+
+    this.visit(node.typeAnnotation);
+
+    this.typeMode = upperType;
   }
 
   /**

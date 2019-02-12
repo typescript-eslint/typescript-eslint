@@ -20670,7 +20670,7 @@ Object {
 
 exports[`typescript fixtures/basics/interface-with-all-property-types.src 1`] = `
 Object {
-  "$id": 23,
+  "$id": 21,
   "block": Object {
     "range": Array [
       0,
@@ -20680,7 +20680,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 22,
+      "$id": 20,
       "block": Object {
         "range": Array [
           0,
@@ -20690,7 +20690,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 21,
+          "$id": 19,
           "block": Object {
             "range": Array [
               0,
@@ -20705,7 +20705,7 @@ Object {
             Object {
               "$id": 3,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "bax",
@@ -20722,7 +20722,7 @@ Object {
             Object {
               "$id": 4,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "baz",
@@ -20739,41 +20739,7 @@ Object {
             Object {
               "$id": 5,
               "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "eee",
-                "range": Array [
-                  95,
-                  106,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 6,
-              "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "fff",
-                "range": Array [
-                  122,
-                  134,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 7,
-              "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "a",
@@ -20788,9 +20754,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 8,
+              "$id": 6,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "b",
@@ -20805,9 +20771,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 9,
+              "$id": 7,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "c",
@@ -20822,9 +20788,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 10,
+              "$id": 8,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "loo",
@@ -20839,9 +20805,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 11,
+              "$id": 9,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "a",
@@ -20856,9 +20822,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 12,
+              "$id": 10,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "b",
@@ -20873,9 +20839,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 13,
+              "$id": 11,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "c",
@@ -20890,9 +20856,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 14,
+              "$id": 12,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "a",
@@ -20907,9 +20873,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 15,
+              "$id": 13,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "b",
@@ -20924,9 +20890,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 16,
+              "$id": 14,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "c",
@@ -20941,9 +20907,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 17,
+              "$id": 15,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "a",
@@ -20958,9 +20924,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 18,
+              "$id": 16,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "b",
@@ -20975,9 +20941,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 19,
+              "$id": 17,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "a",
@@ -20992,9 +20958,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 20,
+              "$id": 18,
               "from": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
               "identifier": Object {
                 "name": "b",
@@ -21058,16 +21024,10 @@ Object {
             Object {
               "$ref": 18,
             },
-            Object {
-              "$ref": 19,
-            },
-            Object {
-              "$ref": 20,
-            },
           ],
           "type": "interface",
           "upperScope": Object {
-            "$ref": 22,
+            "$ref": 20,
           },
           "variableMap": Object {
             "F": Object {
@@ -21078,7 +21038,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 22,
+            "$ref": 20,
           },
           "variables": Array [
             Object {
@@ -21118,7 +21078,7 @@ Object {
               "name": "J",
               "references": Array [],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
             },
             Object {
@@ -21158,7 +21118,7 @@ Object {
               "name": "F",
               "references": Array [],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 19,
               },
             },
           ],
@@ -21216,16 +21176,10 @@ Object {
         Object {
           "$ref": 18,
         },
-        Object {
-          "$ref": 19,
-        },
-        Object {
-          "$ref": 20,
-        },
       ],
       "type": "module",
       "upperScope": Object {
-        "$ref": 23,
+        "$ref": 21,
       },
       "variableMap": Object {
         "Foo": Object {
@@ -21233,7 +21187,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 22,
+        "$ref": 20,
       },
       "variables": Array [
         Object {
@@ -21273,7 +21227,7 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 22,
+            "$ref": 20,
           },
         },
       ],
@@ -21331,18 +21285,12 @@ Object {
     Object {
       "$ref": 18,
     },
-    Object {
-      "$ref": 19,
-    },
-    Object {
-      "$ref": 20,
-    },
   ],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 23,
+    "$ref": 21,
   },
   "variables": Array [],
 }
@@ -40275,7 +40223,7 @@ Object {
 
 exports[`typescript fixtures/errorRecovery/index-signature-parameters.src 1`] = `
 Object {
-  "$id": 5,
+  "$id": 3,
   "block": Object {
     "range": Array [
       0,
@@ -40285,7 +40233,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 4,
+      "$id": 2,
       "block": Object {
         "range": Array [
           0,
@@ -40295,7 +40243,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 3,
+          "$id": 1,
           "block": Object {
             "range": Array [
               0,
@@ -40306,57 +40254,15 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [
-            Object {
-              "$id": 1,
-              "from": Object {
-                "$ref": 3,
-              },
-              "identifier": Object {
-                "name": "a",
-                "range": Array [
-                  16,
-                  25,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 2,
-              "from": Object {
-                "$ref": 3,
-              },
-              "identifier": Object {
-                "name": "b",
-                "range": Array [
-                  27,
-                  36,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-          ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 1,
-            },
-            Object {
-              "$ref": 2,
-            },
-          ],
+          "references": Array [],
+          "throughReferences": Array [],
           "type": "type-alias",
           "upperScope": Object {
-            "$ref": 4,
+            "$ref": 2,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 4,
+            "$ref": 2,
           },
           "variables": Array [],
         },
@@ -40364,17 +40270,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 1,
-        },
-        Object {
-          "$ref": 2,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 5,
+        "$ref": 3,
       },
       "variableMap": Object {
         "foo": Object {
@@ -40382,7 +40281,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 4,
+        "$ref": 2,
       },
       "variables": Array [
         Object {
@@ -40422,7 +40321,7 @@ Object {
           "name": "foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 4,
+            "$ref": 2,
           },
         },
       ],
@@ -40431,19 +40330,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 1,
-    },
-    Object {
-      "$ref": 2,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 5,
+    "$ref": 3,
   },
   "variables": Array [],
 }
@@ -40691,7 +40583,7 @@ Object {
 
 exports[`typescript fixtures/errorRecovery/interface-index-signature-export.src 1`] = `
 Object {
-  "$id": 4,
+  "$id": 3,
   "block": Object {
     "range": Array [
       0,
@@ -40701,7 +40593,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 3,
+      "$id": 2,
       "block": Object {
         "range": Array [
           0,
@@ -40711,7 +40603,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 1,
           "block": Object {
             "range": Array [
               0,
@@ -40722,37 +40614,15 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [
-            Object {
-              "$id": 1,
-              "from": Object {
-                "$ref": 2,
-              },
-              "identifier": Object {
-                "name": "baz",
-                "range": Array [
-                  26,
-                  37,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-          ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 1,
-            },
-          ],
+          "references": Array [],
+          "throughReferences": Array [],
           "type": "interface",
           "upperScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variables": Array [],
         },
@@ -40760,14 +40630,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 1,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 4,
+        "$ref": 3,
       },
       "variableMap": Object {
         "Foo": Object {
@@ -40775,7 +40641,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 3,
+        "$ref": 2,
       },
       "variables": Array [
         Object {
@@ -40815,7 +40681,7 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
         },
       ],
@@ -40824,16 +40690,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 1,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 4,
+    "$ref": 3,
   },
   "variables": Array [],
 }
@@ -40841,7 +40703,7 @@ Object {
 
 exports[`typescript fixtures/errorRecovery/interface-index-signature-private.src 1`] = `
 Object {
-  "$id": 4,
+  "$id": 3,
   "block": Object {
     "range": Array [
       0,
@@ -40851,7 +40713,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 3,
+      "$id": 2,
       "block": Object {
         "range": Array [
           0,
@@ -40861,7 +40723,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 1,
           "block": Object {
             "range": Array [
               0,
@@ -40872,37 +40734,15 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [
-            Object {
-              "$id": 1,
-              "from": Object {
-                "$ref": 2,
-              },
-              "identifier": Object {
-                "name": "baz",
-                "range": Array [
-                  27,
-                  38,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-          ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 1,
-            },
-          ],
+          "references": Array [],
+          "throughReferences": Array [],
           "type": "interface",
           "upperScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variables": Array [],
         },
@@ -40910,14 +40750,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 1,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 4,
+        "$ref": 3,
       },
       "variableMap": Object {
         "Foo": Object {
@@ -40925,7 +40761,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 3,
+        "$ref": 2,
       },
       "variables": Array [
         Object {
@@ -40965,7 +40801,7 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
         },
       ],
@@ -40974,16 +40810,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 1,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 4,
+    "$ref": 3,
   },
   "variables": Array [],
 }
@@ -40991,7 +40823,7 @@ Object {
 
 exports[`typescript fixtures/errorRecovery/interface-index-signature-protected.src 1`] = `
 Object {
-  "$id": 4,
+  "$id": 3,
   "block": Object {
     "range": Array [
       0,
@@ -41001,7 +40833,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 3,
+      "$id": 2,
       "block": Object {
         "range": Array [
           0,
@@ -41011,7 +40843,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 1,
           "block": Object {
             "range": Array [
               0,
@@ -41022,37 +40854,15 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [
-            Object {
-              "$id": 1,
-              "from": Object {
-                "$ref": 2,
-              },
-              "identifier": Object {
-                "name": "baz",
-                "range": Array [
-                  29,
-                  40,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-          ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 1,
-            },
-          ],
+          "references": Array [],
+          "throughReferences": Array [],
           "type": "interface",
           "upperScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variables": Array [],
         },
@@ -41060,14 +40870,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 1,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 4,
+        "$ref": 3,
       },
       "variableMap": Object {
         "Foo": Object {
@@ -41075,7 +40881,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 3,
+        "$ref": 2,
       },
       "variables": Array [
         Object {
@@ -41115,7 +40921,7 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
         },
       ],
@@ -41124,16 +40930,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 1,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 4,
+    "$ref": 3,
   },
   "variables": Array [],
 }
@@ -41141,7 +40943,7 @@ Object {
 
 exports[`typescript fixtures/errorRecovery/interface-index-signature-public.src 1`] = `
 Object {
-  "$id": 4,
+  "$id": 3,
   "block": Object {
     "range": Array [
       0,
@@ -41151,7 +40953,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 3,
+      "$id": 2,
       "block": Object {
         "range": Array [
           0,
@@ -41161,7 +40963,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 1,
           "block": Object {
             "range": Array [
               0,
@@ -41172,37 +40974,15 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [
-            Object {
-              "$id": 1,
-              "from": Object {
-                "$ref": 2,
-              },
-              "identifier": Object {
-                "name": "baz",
-                "range": Array [
-                  26,
-                  37,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-          ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 1,
-            },
-          ],
+          "references": Array [],
+          "throughReferences": Array [],
           "type": "interface",
           "upperScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variables": Array [],
         },
@@ -41210,14 +40990,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 1,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 4,
+        "$ref": 3,
       },
       "variableMap": Object {
         "Foo": Object {
@@ -41225,7 +41001,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 3,
+        "$ref": 2,
       },
       "variables": Array [
         Object {
@@ -41265,7 +41041,7 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
         },
       ],
@@ -41274,16 +41050,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 1,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 4,
+    "$ref": 3,
   },
   "variables": Array [],
 }
@@ -41291,7 +41063,7 @@ Object {
 
 exports[`typescript fixtures/errorRecovery/interface-index-signature-static.src 1`] = `
 Object {
-  "$id": 4,
+  "$id": 3,
   "block": Object {
     "range": Array [
       0,
@@ -41301,7 +41073,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 3,
+      "$id": 2,
       "block": Object {
         "range": Array [
           0,
@@ -41311,7 +41083,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 1,
           "block": Object {
             "range": Array [
               0,
@@ -41322,37 +41094,15 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [
-            Object {
-              "$id": 1,
-              "from": Object {
-                "$ref": 2,
-              },
-              "identifier": Object {
-                "name": "baz",
-                "range": Array [
-                  26,
-                  37,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-          ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 1,
-            },
-          ],
+          "references": Array [],
+          "throughReferences": Array [],
           "type": "interface",
           "upperScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variables": Array [],
         },
@@ -41360,14 +41110,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 1,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 4,
+        "$ref": 3,
       },
       "variableMap": Object {
         "Foo": Object {
@@ -41375,7 +41121,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 3,
+        "$ref": 2,
       },
       "variables": Array [
         Object {
@@ -41415,7 +41161,7 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
         },
       ],
@@ -41424,16 +41170,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 1,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 4,
+    "$ref": 3,
   },
   "variables": Array [],
 }
@@ -48205,7 +47947,7 @@ Object {
 
 exports[`typescript fixtures/types/index-signature.src 1`] = `
 Object {
-  "$id": 4,
+  "$id": 3,
   "block": Object {
     "range": Array [
       0,
@@ -48215,7 +47957,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 3,
+      "$id": 2,
       "block": Object {
         "range": Array [
           0,
@@ -48225,7 +47967,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 1,
           "block": Object {
             "range": Array [
               0,
@@ -48236,37 +47978,15 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [
-            Object {
-              "$id": 1,
-              "from": Object {
-                "$ref": 2,
-              },
-              "identifier": Object {
-                "name": "a",
-                "range": Array [
-                  16,
-                  25,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-          ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 1,
-            },
-          ],
+          "references": Array [],
+          "throughReferences": Array [],
           "type": "type-alias",
           "upperScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variables": Array [],
         },
@@ -48274,14 +47994,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 1,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 4,
+        "$ref": 3,
       },
       "variableMap": Object {
         "foo": Object {
@@ -48289,7 +48005,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 3,
+        "$ref": 2,
       },
       "variables": Array [
         Object {
@@ -48329,7 +48045,7 @@ Object {
           "name": "foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
         },
       ],
@@ -48338,16 +48054,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 1,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 4,
+    "$ref": 3,
   },
   "variables": Array [],
 }
@@ -48355,7 +48067,7 @@ Object {
 
 exports[`typescript fixtures/types/index-signature-readonly.src 1`] = `
 Object {
-  "$id": 4,
+  "$id": 3,
   "block": Object {
     "range": Array [
       0,
@@ -48365,7 +48077,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 3,
+      "$id": 2,
       "block": Object {
         "range": Array [
           0,
@@ -48375,7 +48087,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 1,
           "block": Object {
             "range": Array [
               0,
@@ -48386,37 +48098,15 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [
-            Object {
-              "$id": 1,
-              "from": Object {
-                "$ref": 2,
-              },
-              "identifier": Object {
-                "name": "key",
-                "range": Array [
-                  25,
-                  36,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-          ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 1,
-            },
-          ],
+          "references": Array [],
+          "throughReferences": Array [],
           "type": "type-alias",
           "upperScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variables": Array [],
         },
@@ -48424,14 +48114,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 1,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 4,
+        "$ref": 3,
       },
       "variableMap": Object {
         "foo": Object {
@@ -48439,7 +48125,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 3,
+        "$ref": 2,
       },
       "variables": Array [
         Object {
@@ -48479,7 +48165,7 @@ Object {
           "name": "foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
         },
       ],
@@ -48488,16 +48174,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 1,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 4,
+    "$ref": 3,
   },
   "variables": Array [],
 }
@@ -48505,7 +48187,7 @@ Object {
 
 exports[`typescript fixtures/types/index-signature-without-type.src 1`] = `
 Object {
-  "$id": 4,
+  "$id": 3,
   "block": Object {
     "range": Array [
       0,
@@ -48515,7 +48197,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 3,
+      "$id": 2,
       "block": Object {
         "range": Array [
           0,
@@ -48525,7 +48207,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 1,
           "block": Object {
             "range": Array [
               0,
@@ -48536,37 +48218,15 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [
-            Object {
-              "$id": 1,
-              "from": Object {
-                "$ref": 2,
-              },
-              "identifier": Object {
-                "name": "a",
-                "range": Array [
-                  16,
-                  25,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-          ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 1,
-            },
-          ],
+          "references": Array [],
+          "throughReferences": Array [],
           "type": "type-alias",
           "upperScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
           "variables": Array [],
         },
@@ -48574,14 +48234,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 1,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 4,
+        "$ref": 3,
       },
       "variableMap": Object {
         "foo": Object {
@@ -48589,7 +48245,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 3,
+        "$ref": 2,
       },
       "variables": Array [
         Object {
@@ -48629,7 +48285,7 @@ Object {
           "name": "foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 3,
+            "$ref": 2,
           },
         },
       ],
@@ -48638,16 +48294,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 1,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 4,
+    "$ref": 3,
   },
   "variables": Array [],
 }

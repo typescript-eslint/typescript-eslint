@@ -3,7 +3,7 @@ import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
-    ecmaVersion: 6,
+    ecmaVersion: 10,
     sourceType: 'module',
     ecmaFeatures: {}
   },
@@ -60,14 +60,48 @@ export class FooBar extends Foo {}
     // https://github.com/typescript-eslint/typescript-eslint/issues/18
     `
 function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
-function eachr(subject: Object | Array<Value>): typeof subject {
+function eachr<Value = string>(subject: Object | Array<Value>): typeof subject {
   return subject
 }
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/18
     `
 function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/262
+    `
+export default class Foo {
+  [key: string]: any;
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/262
+    `
+export default interface Foo {
+  [key: string]: any;
+}
     `
   ],
-  invalid: []
+  invalid: [
+    {
+      code: 'function foo(subject: Object<Key> | Array<Value>)',
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Key'
+          },
+          line: 1,
+          column: 30
+        },
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Value'
+          },
+          line: 1,
+          column: 43
+        }
+      ]
+    }
+  ]
 });
