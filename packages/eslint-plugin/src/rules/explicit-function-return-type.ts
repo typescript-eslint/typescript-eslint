@@ -9,6 +9,7 @@ import * as util from '../util';
 type Options = [
   {
     allowExpressions?: boolean;
+    allowTypedFunctionExpressions?: boolean;
   }
 ];
 type MessageIds = 'missingReturnType';
@@ -32,6 +33,9 @@ export default util.createRule<Options, MessageIds>({
         properties: {
           allowExpressions: {
             type: 'boolean'
+          },
+          allowTypedFunctionExpressions: {
+            type: 'boolean'
           }
         },
         additionalProperties: false
@@ -40,7 +44,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowExpressions: true
+      allowExpressions: true,
+      allowTypedFunctionExpressions: false
     }
   ],
   create(context, [options]) {
@@ -62,6 +67,17 @@ export default util.createRule<Options, MessageIds>({
     function isSetter(parent: TSESTree.Node): boolean {
       return (
         parent.type === AST_NODE_TYPES.MethodDefinition && parent.kind === 'set'
+      );
+    }
+
+    /**
+     * Checks if the parent of a function expression has a type annotation.
+     * @param parent The parent of a function expression node
+     */
+    function hasTypeAnnotation(parent: TSESTree.Node): boolean {
+      return (
+        parent.type === AST_NODE_TYPES.VariableDeclarator &&
+        !!parent.id.typeAnnotation
       );
     }
 
@@ -104,6 +120,14 @@ export default util.createRule<Options, MessageIds>({
         node.parent &&
         node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
         node.parent.type !== AST_NODE_TYPES.MethodDefinition
+      ) {
+        return;
+      }
+
+      if (
+        options.allowTypedFunctionExpressions &&
+        node.parent &&
+        hasTypeAnnotation(node.parent)
       ) {
         return;
       }

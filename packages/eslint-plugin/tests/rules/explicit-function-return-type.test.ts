@@ -91,6 +91,28 @@ function test() {
           allowExpressions: true
         }
       ]
+    },
+    {
+      filename: 'test.ts',
+      code: `
+var arrowFn: Foo = () => 'test';
+            `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true
+        }
+      ]
+    },
+    {
+      filename: 'test.ts',
+      code: `
+var funcExpr: Foo = function() { return 'test'; };
+            `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true
+        }
+      ]
     }
   ],
   invalid: [
@@ -185,6 +207,30 @@ class Test {
           messageId: 'missingReturnType',
           line: 1,
           column: 13
+        }
+      ]
+    },
+    {
+      filename: 'test.ts',
+      code: `var arrowFn = () => 'test';`,
+      options: [{ allowTypedFunctionExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          column: 15
+        }
+      ]
+    },
+    {
+      filename: 'test.ts',
+      code: `var funcExpr = function() { return 'test'; };`,
+      options: [{ allowTypedFunctionExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          column: 16
         }
       ]
     }
