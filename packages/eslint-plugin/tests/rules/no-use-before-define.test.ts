@@ -214,7 +214,22 @@ export namespace Third {
             `,
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       parser: '@typescript-eslint/parser'
-    }
+    },
+    // https://github.com/eslint/typescript-eslint-parser/issues/550
+    `
+function test(file: Blob) {
+  const slice: typeof file.slice =
+    file.slice || (file as any).webkitSlice || (file as any).mozSlice
+  return slice
+}
+    `,
+    // https://github.com/eslint/typescript-eslint-parser/issues/435
+    `
+interface Foo {
+    bar: string
+}
+const bar = 'blah'
+    `
   ],
   invalid: [
     {
@@ -813,7 +828,7 @@ function foo() {
     var bar = 1;
 }
 var bar;
-            `,
+      `,
       parserOptions,
       options: [{ variables: false }],
       errors: [

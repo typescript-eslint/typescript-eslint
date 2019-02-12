@@ -10,7 +10,7 @@ import {
   PatternVisitorCallback,
   PatternVisitorOptions
 } from 'eslint-scope/lib/options';
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -75,6 +75,13 @@ class PatternVisitor extends OriginalPatternVisitor {
     }
     if (node.typeAnnotation) {
       this.rightHandNodes.push(node.typeAnnotation);
+    }
+  }
+
+  TSParameterProperty(node: TSESTree.TSParameterProperty): void {
+    this.visit(node.parameter);
+    if (node.decorators) {
+      this.rightHandNodes.push(...node.decorators);
     }
   }
 }
@@ -169,11 +176,16 @@ class Referencer extends OriginalReferencer<ScopeManager> {
         params[i],
         { processRightHandNodes: true },
         (pattern, info) => {
-          innerScope.__define(
-            pattern,
-            new ParameterDefinition(pattern, node, i, info.rest)
-          );
-          this.referencingDefaultValue(pattern, info.assignments, null, true);
+          if (
+            pattern.type !== AST_NODE_TYPES.Identifier ||
+            pattern.name !== 'this'
+          ) {
+            innerScope.__define(
+              pattern,
+              new ParameterDefinition(pattern, node, i, info.rest)
+            );
+            this.referencingDefaultValue(pattern, info.assignments, null, true);
+          }
         }
       );
     }

@@ -9,7 +9,14 @@
 
 declare module 'eslint-scope/lib/options' {
   import { TSESTree } from '@typescript-eslint/typescript-estree';
-  export type PatternVisitorCallback = (pattern: any, info: any) => void;
+  export type PatternVisitorCallback = (
+    pattern: TSESTree.Identifier,
+    info: {
+      rest: boolean;
+      topLevel: boolean;
+      assignments: TSESTree.AssignmentPattern[];
+    }
+  ) => void;
 
   export interface PatternVisitorOptions {
     processRightHandNodes?: boolean;
@@ -47,6 +54,7 @@ declare module 'eslint-scope/lib/definition' {
     parent?: TSESTree.Node | null;
     index?: number | null;
     kind?: string | null;
+    rest?: boolean;
 
     constructor(
       type: string,
@@ -59,10 +67,8 @@ declare module 'eslint-scope/lib/definition' {
   }
 
   export class ParameterDefinition extends Definition {
-    rest?: boolean;
-
     constructor(
-      name: TSESTree.BindingName | TSESTree.PropertyName,
+      name: TSESTree.Node,
       node: TSESTree.Node,
       index?: number | null,
       rest?: boolean
