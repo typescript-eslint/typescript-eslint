@@ -31,7 +31,7 @@ interface ScopeManager {
   isStrictModeSupported(): boolean;
 
   // Returns appropriate scope for this node.
-  __get(node: TSESTree.Node): Scope | undefined;
+  __get(node: TSESTree.Node): Scope[] | undefined;
   getDeclaredVariables(node: TSESTree.Node): Variable[];
   acquire(node: TSESTree.Node, inner?: boolean): Scope | null;
   acquireAll(node: TSESTree.Node): Scope | null;

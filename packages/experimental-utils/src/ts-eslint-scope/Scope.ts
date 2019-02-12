@@ -32,7 +32,9 @@ type ScopeType =
   | 'with'
   | 'TDZ'
   | 'enum'
-  | 'empty-function';
+  | 'empty-function'
+  | 'interface'
+  | 'type-alias';
 
 interface Scope {
   type: ScopeType;

@@ -22,41 +22,24 @@ export default util.createRule({
   create(context) {
     const rules = baseRule.create(context);
 
-    /**
-     * Mark heritage clause as used
-     * @param node The node currently being traversed
-     */
-    function markHeritageAsUsed(node: TSESTree.Expression): void {
+    function markParameterAsUsed(node: TSESTree.Node): void {
       switch (node.type) {
         case AST_NODE_TYPES.Identifier:
           context.markVariableAsUsed(node.name);
           break;
-        case AST_NODE_TYPES.MemberExpression:
-          markHeritageAsUsed(node.object);
+        case AST_NODE_TYPES.AssignmentPattern:
+          markParameterAsUsed(node.left);
           break;
-        case AST_NODE_TYPES.CallExpression:
-          markHeritageAsUsed(node.callee);
+        case AST_NODE_TYPES.RestElement:
+          markParameterAsUsed(node.argument);
           break;
       }
     }
 
     return Object.assign({}, rules, {
-      'TSTypeReference Identifier'(node: TSESTree.Identifier) {
-        context.markVariableAsUsed(node.name);
-      },
-      TSInterfaceHeritage(node: TSESTree.TSInterfaceHeritage) {
-        if (node.expression) {
-          markHeritageAsUsed(node.expression);
-        }
-      },
-      TSClassImplements(node: TSESTree.TSClassImplements) {
-        if (node.expression) {
-          markHeritageAsUsed(node.expression);
-        }
-      },
-      'TSParameterProperty Identifier'(node: TSESTree.Identifier) {
+      TSParameterProperty(node: TSESTree.TSParameterProperty) {
         // just assume parameter properties are used
-        context.markVariableAsUsed(node.name);
+        markParameterAsUsed(node.parameter);
       },
       'TSEnumMember Identifier'(node: TSESTree.Identifier) {
         context.markVariableAsUsed(node.name);

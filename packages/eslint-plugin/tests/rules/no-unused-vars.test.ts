@@ -127,23 +127,31 @@ const a: Base = {}
 console.log(a);
         `,
     `
-import { Foo } from 'foo'
-function bar<T>() {}
+import { Foo, baz } from 'foo'
+function bar<T>() {
+  baz<T>()
+}
+bar<Foo>()
+        `,
+    `
+import { Foo, baz } from 'foo'
+const bar = function <T>() {
+  baz<T>()
+}
+bar<Foo>()
+        `,
+    `
+import { Foo, baz } from 'foo'
+const bar = <T>() => {
+  baz<T>()
+}
 bar<Foo>()
         `,
     `
 import { Foo } from 'foo'
-const bar = function <T>() {}
-bar<Foo>()
-        `,
-    `
-import { Foo } from 'foo'
-const bar = <T>() => {}
-bar<Foo>()
-        `,
-    `
-import { Foo } from 'foo'
-<Foo>(<T>() => {})()
+<Foo>(<T>() => {
+  new baz<T>()
+})()
         `,
     `
 import { Nullable } from 'nullable';
@@ -265,14 +273,14 @@ new A();
     `
 import { Nullable } from 'nullable';
 import { Another } from 'some';
-interface A {
+export interface A {
     do(a: Nullable<Another>);
 }
 		`,
     `
 import { Nullable } from 'nullable';
 import { Another } from 'some';
-interface A {
+export interface A {
     other: Nullable<Another>;
 }
 		`,
@@ -308,7 +316,7 @@ new A();
 import { Nullable } from 'nullable';
 import { SomeOther } from 'some';
 import { Another } from 'some';
-interface A extends Nullable<SomeOther> {
+export interface A extends Nullable<SomeOther> {
     other: Nullable<Another>;
 }
 		`,
@@ -316,52 +324,64 @@ interface A extends Nullable<SomeOther> {
 import { Nullable } from 'nullable';
 import { SomeOther } from 'some';
 import { Another } from 'some';
-interface A extends Nullable<SomeOther> {
+export interface A extends Nullable<SomeOther> {
     do(a: Nullable<Another>);
 }
-        `,
+    `,
     `
 import { Foo } from './types';
 
-class Bar<T extends Foo> {}
+class Bar<T extends Foo> {
+  test() { return new Array<T>() }
+}
 
 new Bar<number>()
-        `,
+    `,
     `
 import { Foo, Bar } from './types';
 
-class Baz<T extends Foo & Bar> {}
+class Baz<T extends Foo & Bar> {
+  test() { return new Array<T>() }
+}
 
 new Baz<any>()
-        `,
+    `,
     `
 import { Foo } from './types';
 
-class Bar<T = Foo> {}
+class Bar<T = Foo> {
+  test() { return new Array<T>() }
+}
 
 new Bar<number>()
-        `,
+    `,
     `
 import { Foo } from './types';
 
-class Foo<T = any> {}
+class Foo<T = any> {
+  test() { return new Array<T>() }
+}
 
 new Foo()
-        `,
+    `,
     `
 import { Foo } from './types';
 
-class Foo<T = {}> {}
+class Foo<T = {}> {
+  test() { return new Array<T>() }
+}
 
 new Foo()
-        `,
+    `,
     `
 import { Foo } from './types';
 
-class Foo<T extends {} = {}> {}
+class Foo<T extends {} = {}> {
+  test() { return new Array<T>() }
+}
 
 new Foo()
-        `,
+    `,
     `
 type Foo = "a" | "b" | "c"
 type Bar = number
@@ -382,7 +402,7 @@ new A<Nullable>();
     `
 import { Nullable } from 'nullable';
 import { SomeOther } from 'other';
-function foo<T extends Nullable>() {
+function foo<T extends Nullable>(): T {
 }
 foo<SomeOther>();
         `,
@@ -469,47 +489,51 @@ export function authenticated(cb: (user: User | null) => void): void {
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/33
     `
 import { Foo } from './types';
-export class Bar<T extends Foo> {}
-        `,
+export class Bar<T extends Foo> { 
+  test() { new test<T>(); }
+}
+    `,
     `
 import webpack from 'webpack';
 export default function webpackLoader(this: webpack.loader.LoaderContext) {}
-        `,
+    `,
     `
 import execa, { Options as ExecaOptions } from 'execa';
 export function foo(options: ExecaOptions): execa {
     options()
 }
-        `,
+    `,
     `
 import { Foo, Bar } from './types';
-export class Baz<F = Foo & Bar> {}
-        `,
+export class Baz<F = Foo & Bar> {
+  test() { new test<F>(); }
+}
+    `,
     `
 // warning 'B' is defined but never used
 export const a: Array<{b: B}> = []
-        `,
+    `,
     `
 export enum FormFieldIds {
 	PHONE = 'phone',
 	EMAIL = 'email',
 }
-        `,
+    `,
     `
 enum FormFieldIds {
 	PHONE = 'phone',
 	EMAIL = 'email',
 }
-interface IFoo {
+export interface IFoo {
 	fieldName: FormFieldIds,
 }
-        `,
+    `,
     `
 enum FormFieldIds {
     PHONE = 'phone',
     EMAIL = 'email',
 }
-interface IFoo {
+export interface IFoo {
     fieldName: FormFieldIds.EMAIL,
 }
     `,
@@ -615,7 +639,7 @@ export default class Foo {
       code: `
 import { ClassDecoratorFactory } from 'decorators';
 export class Foo {}
-            `,
+      `,
       errors: error([
         {
           message: "'ClassDecoratorFactory' is defined but never used.",
@@ -629,12 +653,17 @@ export class Foo {}
 import { Foo, Bar } from 'foo';
 function baz<Foo>() {}
 baz<Bar>()
-            `,
+      `,
       errors: error([
         {
           message: "'Foo' is defined but never used.",
           line: 2,
           column: 10,
+        },
+        {
+          message: "'Foo' is defined but never used.",
+          line: 3,
+          column: 14,
         },
       ]),
     },
@@ -643,7 +672,7 @@ baz<Bar>()
 import { Nullable } from 'nullable';
 const a: string = 'hello';
 console.log(a);
-            `,
+      `,
       errors: error([
         {
           message: "'Nullable' is defined but never used.",
@@ -733,6 +762,11 @@ interface A {
           line: 3,
           column: 10,
         },
+        {
+          message: "'A' is defined but never used.",
+          line: 4,
+          column: 11,
+        },
       ]),
     },
     {
@@ -748,6 +782,11 @@ interface A {
           message: "'Another' is defined but never used.",
           line: 3,
           column: 10,
+        },
+        {
+          message: "'A' is defined but never used.",
+          line: 4,
+          column: 11,
         },
       ]),
     },
@@ -883,6 +922,127 @@ export class Bar implements baz().test {}
           message: "'test' is defined but never used.",
           line: 2,
           column: 8,
+        },
+      ]),
+    },
+    {
+      code: `
+import { Foo } from 'foo'
+function bar<T>() {}
+bar<Foo>()
+      `,
+      errors: error([
+        {
+          message: "'T' is defined but never used.",
+          line: 3,
+          column: 14,
+        },
+      ]),
+    },
+    {
+      code: `
+import { Foo } from 'foo'
+const bar = function <T>() {}
+bar<Foo>()
+      `,
+      errors: error([
+        {
+          message: "'T' is defined but never used.",
+          line: 3,
+          column: 23,
+        },
+      ]),
+    },
+    {
+      code: `
+import { Foo } from 'foo'
+<Foo>(<T>() => {})()
+      `,
+      errors: error([
+        {
+          message: "'T' is defined but never used.",
+          line: 3,
+          column: 8,
+        },
+      ]),
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+import { SomeOther } from 'other';
+function foo<T extends Nullable>() {
+}
+foo<SomeOther>();
+      `,
+      errors: error([
+        {
+          message: "'T' is defined but never used.",
+          line: 4,
+          column: 14,
+        },
+      ]),
+    },
+    {
+      code: `
+const foo = 2;
+new test<foo>();
+      `,
+      errors: error([
+        {
+          message: "'foo' is defined but never used.",
+          line: 3,
+          column: 10,
+        },
+      ]),
+    },
+    {
+      code: `
+type foo = 2;
+const test = foo;
+class bar<test> {};
+      `,
+      errors: error([
+        {
+          message: "'foo' is defined but never used.",
+          line: 2,
+          column: 6,
+        },
+        {
+          message: "'test' is defined but never used.",
+          line: 3,
+          column: 7,
+        },
+        {
+          message: "'bar' is defined but never used.",
+          line: 4,
+          column: 7,
+        },
+      ]),
+    },
+    {
+      code: `
+interface IFoo {
+	fieldName: FormFieldIds,
+}
+      `,
+      errors: error([
+        {
+          message: "'IFoo' is defined but never used.",
+          line: 2,
+          column: 11,
+        },
+      ]),
+    },
+    {
+      code: `
+import { Foo, Bar } from './types';
+export class Baz<F = Foo & Bar> { }
+      `,
+      errors: error([
+        {
+          message: "'F' is defined but never used.",
+          line: 3,
+          column: 18,
         },
       ]),
     },

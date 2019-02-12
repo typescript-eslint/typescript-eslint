@@ -33,7 +33,12 @@ interface Referencer<SM extends ScopeManager> extends Visitor {
   ): void;
   visitFunction(node: TSESTree.Node): void;
   visitClass(node: TSESTree.Node): void;
-  visitProperty(node: TSESTree.Node): void;
+  visitProperty(
+    node:
+      | TSESTree.MethodDefinition
+      | TSESTree.TSAbstractMethodDefinition
+      | TSESTree.Property,
+  ): void;
   visitForIn(node: TSESTree.Node): void;
   visitVariableDeclaration(
     variableTargetScope: any,

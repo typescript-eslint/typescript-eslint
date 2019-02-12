@@ -951,5 +951,21 @@ enum Foo {
         },
       ],
     },
+    // types
+    {
+      code: `
+var x: Foo = 2;
+type Foo = string | number
+      `,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: {
+            name: 'Foo',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
   ],
 });
