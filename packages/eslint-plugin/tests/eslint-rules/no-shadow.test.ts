@@ -21,6 +21,12 @@ function bar(foo: any) {}
     `
 export abstract class Foo {}
 export class FooBar extends Foo {}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/207
+    `
+function test(this: Foo) {
+  function test2(this: Bar) {}
+}
     `
   ],
   invalid: []
