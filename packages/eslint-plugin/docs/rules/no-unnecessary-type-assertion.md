@@ -29,7 +29,7 @@ const foo = 3 as Foo;
 
 ```ts
 function foo(x: number): number {
-    return x!; // unnecessary non-null
+  return x!; // unnecessary non-null
 }
 ```
 
@@ -45,7 +45,7 @@ const foo = 3 as number;
 
 ```ts
 function foo(x: number | undefined): number {
-    return x!;
+  return x!;
 }
 ```
 
