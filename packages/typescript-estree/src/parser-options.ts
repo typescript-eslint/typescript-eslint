@@ -38,6 +38,7 @@ export interface ParserOptions {
 
 export interface ParserWeakMap<TKey, TValueBase> {
   get<TValue extends TValueBase>(key: TKey): TValue;
+  has(key: any): boolean;
 }
 
 export interface ParserServices {
