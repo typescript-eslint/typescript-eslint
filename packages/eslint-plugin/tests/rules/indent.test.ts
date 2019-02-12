@@ -758,7 +758,7 @@ type Foo = {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -767,7 +767,7 @@ type Foo = {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -808,7 +808,7 @@ interface Foo {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -817,7 +817,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -826,7 +826,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -835,7 +835,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -844,7 +844,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -853,7 +853,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -862,7 +862,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -871,7 +871,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -880,7 +880,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -889,7 +889,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -918,7 +918,7 @@ interface Foo {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -927,7 +927,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -936,7 +936,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -945,7 +945,7 @@ interface Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -970,7 +970,7 @@ interface Foo extends Bar {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -979,7 +979,7 @@ interface Foo extends Bar {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1008,7 +1008,7 @@ class Foo
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1017,7 +1017,7 @@ class Foo
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1026,7 +1026,7 @@ class Foo
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1053,7 +1053,7 @@ interface Foo
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1062,7 +1062,7 @@ interface Foo
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1071,7 +1071,7 @@ interface Foo
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1096,7 +1096,7 @@ const foo : Foo<{
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1105,7 +1105,7 @@ const foo : Foo<{
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1136,7 +1136,7 @@ type T = {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1145,7 +1145,7 @@ type T = {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1154,7 +1154,7 @@ type T = {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1163,7 +1163,7 @@ type T = {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1198,7 +1198,7 @@ type T =
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -1207,7 +1207,7 @@ type T =
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -1216,7 +1216,7 @@ type T =
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1225,7 +1225,7 @@ type T =
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 4
@@ -1234,7 +1234,7 @@ type T =
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 4
@@ -1243,7 +1243,7 @@ type T =
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1262,7 +1262,7 @@ import Dialogs = require("widgets/Dialogs");
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
             actual: 4
@@ -1307,7 +1307,7 @@ class Foo {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1316,7 +1316,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1325,7 +1325,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1334,7 +1334,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1343,7 +1343,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1352,7 +1352,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1361,7 +1361,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -1370,7 +1370,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1379,7 +1379,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1388,7 +1388,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -1397,7 +1397,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -1406,7 +1406,7 @@ class Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1427,7 +1427,7 @@ class Foo {}
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
             actual: 4
@@ -1436,7 +1436,7 @@ class Foo {}
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
             actual: 4
@@ -1463,7 +1463,7 @@ enum Foo {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1472,7 +1472,7 @@ enum Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1481,7 +1481,7 @@ enum Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1508,7 +1508,7 @@ const enum Foo {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1517,7 +1517,7 @@ const enum Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1526,7 +1526,7 @@ const enum Foo {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1545,7 +1545,7 @@ export = Foo;
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
             actual: 4
@@ -1564,7 +1564,7 @@ declare function h(x: number): number;
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
             actual: 4
@@ -1587,7 +1587,7 @@ declare function h(
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1614,7 +1614,7 @@ namespace Validation {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1623,7 +1623,7 @@ namespace Validation {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -1632,7 +1632,7 @@ namespace Validation {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1659,7 +1659,7 @@ declare module "Validation" {
             `,
       errors: [
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0
@@ -1668,7 +1668,7 @@ declare module "Validation" {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
             actual: 0
@@ -1677,7 +1677,7 @@ declare module "Validation" {
           column: 1
         },
         {
-          messageId: 'wrongIndentation' as 'wrongIndentation',
+          messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
             actual: 0

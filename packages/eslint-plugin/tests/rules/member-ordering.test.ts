@@ -1231,7 +1231,7 @@ interface Foo {
             `,
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'new',
             rank: 'method'
@@ -1263,7 +1263,7 @@ interface Foo {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -1272,7 +1272,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'field'
@@ -1281,7 +1281,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -1290,7 +1290,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -1299,7 +1299,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -1308,7 +1308,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -1317,7 +1317,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'new',
             rank: 'field'
@@ -1349,7 +1349,7 @@ interface Foo {
       options: [{ interfaces: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -1358,7 +1358,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'field'
@@ -1367,7 +1367,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -1376,7 +1376,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -1385,7 +1385,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -1394,7 +1394,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -1403,7 +1403,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'new',
             rank: 'field'
@@ -1440,7 +1440,7 @@ interface Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -1449,7 +1449,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'field'
@@ -1458,7 +1458,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -1467,7 +1467,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -1476,7 +1476,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -1485,7 +1485,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -1494,7 +1494,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'new',
             rank: 'field'
@@ -1530,7 +1530,7 @@ interface Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'B',
             rank: 'method'
@@ -1539,7 +1539,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'C',
             rank: 'method'
@@ -1548,7 +1548,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'D',
             rank: 'method'
@@ -1557,7 +1557,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'E',
             rank: 'method'
@@ -1566,7 +1566,7 @@ interface Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'F',
             rank: 'method'
@@ -1597,7 +1597,7 @@ type Foo = {
             `,
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'new',
             rank: 'method'
@@ -1629,7 +1629,7 @@ type Foo = {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -1638,7 +1638,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'field'
@@ -1647,7 +1647,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -1656,7 +1656,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -1665,7 +1665,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -1674,7 +1674,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -1683,7 +1683,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'new',
             rank: 'field'
@@ -1715,7 +1715,7 @@ type Foo = {
       options: [{ typeLiterals: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -1724,7 +1724,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'field'
@@ -1733,7 +1733,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -1742,7 +1742,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -1751,7 +1751,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -1760,7 +1760,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -1769,7 +1769,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'new',
             rank: 'field'
@@ -1806,7 +1806,7 @@ type Foo = {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -1815,7 +1815,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'field'
@@ -1824,7 +1824,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -1833,7 +1833,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -1842,7 +1842,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -1851,7 +1851,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -1860,7 +1860,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'new',
             rank: 'field'
@@ -1896,7 +1896,7 @@ type Foo = {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'B',
             rank: 'method'
@@ -1905,7 +1905,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'C',
             rank: 'method'
@@ -1914,7 +1914,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'D',
             rank: 'method'
@@ -1923,7 +1923,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'E',
             rank: 'method'
@@ -1932,7 +1932,7 @@ type Foo = {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'F',
             rank: 'method'
@@ -1962,7 +1962,7 @@ class Foo {
             `,
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'public instance method'
@@ -1971,7 +1971,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'public instance method'
@@ -1980,7 +1980,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'public instance method'
@@ -2011,7 +2011,7 @@ class Foo {
       options: [{ default: ['field', 'constructor', 'method'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'A',
             rank: 'constructor'
@@ -2020,7 +2020,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'B',
             rank: 'constructor'
@@ -2029,7 +2029,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'C',
             rank: 'constructor'
@@ -2038,7 +2038,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'D',
             rank: 'constructor'
@@ -2047,7 +2047,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'E',
             rank: 'constructor'
@@ -2056,7 +2056,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'F',
             rank: 'constructor'
@@ -2087,7 +2087,7 @@ class Foo {
       options: [{ default: ['field', 'method'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'A',
             rank: 'method'
@@ -2118,7 +2118,7 @@ class Foo {
       options: [{ default: ['method', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -2149,7 +2149,7 @@ class Foo {
       options: [{ classes: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -2158,7 +2158,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -2167,7 +2167,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -2176,7 +2176,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -2185,7 +2185,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
             rank: 'field'
@@ -2221,7 +2221,7 @@ class Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -2230,7 +2230,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'field'
@@ -2239,7 +2239,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -2248,7 +2248,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -2257,7 +2257,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -2266,7 +2266,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -2275,7 +2275,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
             rank: 'field'
@@ -2318,7 +2318,7 @@ class Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'A',
             rank: 'private field'
@@ -2327,7 +2327,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'F',
             rank: 'protected field'
@@ -2371,7 +2371,7 @@ class Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'public instance method'
@@ -2380,7 +2380,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
             rank: 'public field'
@@ -2421,7 +2421,7 @@ class Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
             rank: 'method'
@@ -2464,7 +2464,7 @@ class Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'private static method'
@@ -2473,7 +2473,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'private static method'
@@ -2508,7 +2508,7 @@ class Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'protected static field'
@@ -2544,7 +2544,7 @@ class Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'protected static field'
@@ -2574,7 +2574,7 @@ const foo = class Foo {
             `,
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'public instance method'
@@ -2583,7 +2583,7 @@ const foo = class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'public instance method'
@@ -2592,7 +2592,7 @@ const foo = class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'public instance method'
@@ -2623,7 +2623,7 @@ const foo = class {
       options: [{ default: ['field', 'constructor', 'method'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'A',
             rank: 'constructor'
@@ -2632,7 +2632,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'B',
             rank: 'constructor'
@@ -2641,7 +2641,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'C',
             rank: 'constructor'
@@ -2650,7 +2650,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'D',
             rank: 'constructor'
@@ -2659,7 +2659,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'E',
             rank: 'constructor'
@@ -2668,7 +2668,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'F',
             rank: 'constructor'
@@ -2699,7 +2699,7 @@ const foo = class {
       options: [{ default: ['field', 'method'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'A',
             rank: 'method'
@@ -2730,7 +2730,7 @@ const foo = class {
       options: [{ default: ['method', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -2761,7 +2761,7 @@ const foo = class {
       options: [{ classExpressions: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -2770,7 +2770,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -2779,7 +2779,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -2788,7 +2788,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -2797,7 +2797,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
             rank: 'field'
@@ -2833,7 +2833,7 @@ const foo = class {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'field'
@@ -2842,7 +2842,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'field'
@@ -2851,7 +2851,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'I',
             rank: 'field'
@@ -2860,7 +2860,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
@@ -2869,7 +2869,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'field'
@@ -2878,7 +2878,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'field'
@@ -2887,7 +2887,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
             rank: 'field'
@@ -2930,7 +2930,7 @@ const foo = class {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'A',
             rank: 'private field'
@@ -2939,7 +2939,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'F',
             rank: 'protected field'
@@ -2983,7 +2983,7 @@ const foo = class {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'public instance method'
@@ -2992,7 +2992,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
             rank: 'public field'
@@ -3033,7 +3033,7 @@ const foo = class {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
             rank: 'method'
@@ -3076,7 +3076,7 @@ const foo = class {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'G',
             rank: 'private static method'
@@ -3085,7 +3085,7 @@ const foo = class {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'H',
             rank: 'private static method'
@@ -3124,7 +3124,7 @@ const foo = class {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'L',
             rank: 'protected static field'
@@ -3160,7 +3160,7 @@ const foo = class {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'protected static field'
@@ -3182,7 +3182,7 @@ class Foo {
             `,
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'A',
             rank: 'public instance method'
@@ -3191,7 +3191,7 @@ class Foo {
           column: 5
         },
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
             rank: 'public instance method'
@@ -3213,7 +3213,7 @@ class Foo {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'constructor'
@@ -3236,7 +3236,7 @@ class Foo {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'K',
             rank: 'constructor'
@@ -3256,7 +3256,7 @@ interface Foo {
             `,
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'A',
             rank: 'method'
@@ -3276,7 +3276,7 @@ type Foo = {
             `,
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'A',
             rank: 'method'
@@ -3297,7 +3297,7 @@ type Foo = {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder' as 'incorrectOrder',
+          messageId: 'incorrectOrder',
           data: {
             name: 'J',
             rank: 'field'
