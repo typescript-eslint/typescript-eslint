@@ -577,7 +577,36 @@ export function Foo() {
   );
 }
       `
-    }
+    },
+    // https://github.com/eslint/typescript-eslint-parser/issues/535
+    `
+import { observable } from 'mobx';
+export default class ListModalStore {
+  @observable
+  orderList: IObservableArray<BizPurchaseOrderTO> = observable([]);
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/122#issuecomment-462008078
+    `
+import { Dec, TypeA, Class } from 'test';
+export default class Foo {
+  constructor(
+    @Dec(Class)
+    private readonly prop: TypeA<Class>,
+  ) {}
+}
+    `,
+    `
+import { Dec, TypeA, Class } from 'test';
+export default class Foo {
+  constructor(
+    @Dec(Class)
+    ...prop: TypeA<Class>,
+  ) {
+    prop()
+  }
+}
+    `
   ],
 
   invalid: [

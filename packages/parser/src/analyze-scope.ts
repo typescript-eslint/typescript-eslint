@@ -1,9 +1,8 @@
-import { ScopeManager } from 'eslint-scope';
+import { ScopeManager } from './scope/scope-manager';
 import { Definition, ParameterDefinition } from 'eslint-scope/lib/definition';
 import OriginalPatternVisitor from 'eslint-scope/lib/pattern-visitor';
 import Reference from 'eslint-scope/lib/reference';
 import OriginalReferencer from 'eslint-scope/lib/referencer';
-import { Scope } from 'eslint-scope/lib/scope';
 import { getKeys as fallback } from 'eslint-visitor-keys';
 import { ParserOptions } from './parser-options';
 import { visitorKeys as childVisitorKeys } from './visitor-keys';
@@ -11,7 +10,7 @@ import {
   PatternVisitorCallback,
   PatternVisitorOptions
 } from 'eslint-scope/lib/options';
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -28,18 +27,6 @@ function overrideDefine(define: any) {
       variable.eslintUsed = true;
     }
   };
-}
-
-/** The scope class for enum. */
-class EnumScope extends Scope {
-  constructor(
-    scopeManager: ScopeManager,
-    upperScope: Scope,
-    block: TSESTree.Node | null
-  ) {
-    // @ts-ignore
-    super(scopeManager, 'enum', upperScope, block, false);
-  }
 }
 
 class PatternVisitor extends OriginalPatternVisitor {
@@ -90,9 +77,16 @@ class PatternVisitor extends OriginalPatternVisitor {
       this.rightHandNodes.push(node.typeAnnotation);
     }
   }
+
+  TSParameterProperty(node: TSESTree.TSParameterProperty): void {
+    this.visit(node.parameter);
+    if (node.decorators) {
+      this.rightHandNodes.push(...node.decorators);
+    }
+  }
 }
 
-class Referencer extends OriginalReferencer {
+class Referencer extends OriginalReferencer<ScopeManager> {
   protected typeMode: boolean;
 
   constructor(options: any, scopeManager: ScopeManager) {
@@ -169,12 +163,12 @@ class Referencer extends OriginalReferencer {
       scopeManager.__nestFunctionExpressionNameScope(node);
     }
 
-    // Process the type parameters
-    this.visit(typeParameters);
-
     // Open the function scope.
     scopeManager.__nestFunctionScope(node, this.isInnerMethodDefinition);
     const innerScope = this.currentScope();
+
+    // Process the type parameters
+    this.visit(typeParameters);
 
     // Process parameter declarations.
     for (let i = 0; i < params.length; ++i) {
@@ -182,11 +176,16 @@ class Referencer extends OriginalReferencer {
         params[i],
         { processRightHandNodes: true },
         (pattern, info) => {
-          innerScope.__define(
-            pattern,
-            new ParameterDefinition(pattern, node, i, info.rest)
-          );
-          this.referencingDefaultValue(pattern, info.assignments, null, true);
+          if (
+            pattern.type !== AST_NODE_TYPES.Identifier ||
+            pattern.name !== 'this'
+          ) {
+            innerScope.__define(
+              pattern,
+              new ParameterDefinition(pattern, node, i, info.rest)
+            );
+            this.referencingDefaultValue(pattern, info.assignments, null, true);
+          }
         }
       );
     }
@@ -332,29 +331,56 @@ class Referencer extends OriginalReferencer {
    * @param node The TSDeclareFunction node to visit.
    */
   TSDeclareFunction(node: TSESTree.TSDeclareFunction): void {
-    const upperTypeMode = this.typeMode;
-    const scope = this.currentScope();
+    const scopeManager = this.scopeManager;
+    const upperScope = this.currentScope();
     const { id, typeParameters, params, returnType } = node;
 
     // Ignore this if other overloadings have already existed.
     if (id) {
-      const variable = scope.set.get(id.name);
+      const variable = upperScope.set.get(id.name);
       const defs = variable && variable.defs;
       const existed = defs && defs.some(d => d.type === 'FunctionName');
       if (!existed) {
-        scope.__define(
+        upperScope.__define(
           id,
           new Definition('FunctionName', id, node, null, null, null)
         );
       }
     }
 
-    // Find `typeof` expressions.
-    this.typeMode = true;
+    // Open the function scope.
+    scopeManager.__nestEmptyFunctionScope(node);
+    const innerScope = this.currentScope();
+
+    // Process the type parameters
     this.visit(typeParameters);
-    params.forEach(this.visit, this);
+
+    // Process parameter declarations.
+    for (let i = 0; i < params.length; ++i) {
+      this.visitPattern(
+        params[i],
+        { processRightHandNodes: true },
+        (pattern, info) => {
+          innerScope.__define(
+            pattern,
+            new ParameterDefinition(pattern, node, i, info.rest)
+          );
+
+          // Set `variable.eslintUsed` to tell ESLint that the variable is used.
+          const variable = innerScope.set.get(pattern.name);
+          if (variable) {
+            variable.eslintUsed = true;
+          }
+          this.referencingDefaultValue(pattern, info.assignments, null, true);
+        }
+      );
+    }
+
+    // Process the return type.
     this.visit(returnType);
-    this.typeMode = upperTypeMode;
+
+    // Close the function scope.
+    this.close(node);
   }
 
   /**
@@ -633,7 +659,7 @@ class Referencer extends OriginalReferencer {
       scope.__define(id, new Definition('EnumName', id, node));
     }
 
-    scopeManager.__nestScope(new EnumScope(scopeManager, scope, node));
+    scopeManager.__nestEnumScope(node);
     for (const member of members) {
       this.visit(member);
     }

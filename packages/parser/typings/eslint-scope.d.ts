@@ -9,7 +9,14 @@
 
 declare module 'eslint-scope/lib/options' {
   import { TSESTree } from '@typescript-eslint/typescript-estree';
-  export type PatternVisitorCallback = (pattern: any, info: any) => void;
+  export type PatternVisitorCallback = (
+    pattern: TSESTree.Identifier,
+    info: {
+      rest: boolean;
+      topLevel: boolean;
+      assignments: TSESTree.AssignmentPattern[];
+    }
+  ) => void;
 
   export interface PatternVisitorOptions {
     processRightHandNodes?: boolean;
@@ -33,6 +40,7 @@ declare module 'eslint-scope/lib/variable' {
     identifiers: TSESTree.Identifier[];
     references: Reference[];
     defs: Definition[];
+    eslintUsed?: boolean;
   }
 }
 
@@ -46,6 +54,7 @@ declare module 'eslint-scope/lib/definition' {
     parent?: TSESTree.Node | null;
     index?: number | null;
     kind?: string | null;
+    rest?: boolean;
 
     constructor(
       type: string,
@@ -58,10 +67,8 @@ declare module 'eslint-scope/lib/definition' {
   }
 
   export class ParameterDefinition extends Definition {
-    rest?: boolean;
-
     constructor(
-      name: TSESTree.BindingName | TSESTree.PropertyName,
+      name: TSESTree.Node,
       node: TSESTree.Node,
       index?: number | null,
       rest?: boolean
@@ -115,13 +122,13 @@ declare module 'eslint-scope/lib/referencer' {
     Visitor
   } from 'eslint-scope/lib/options';
 
-  export default class Referencer extends Visitor {
+  export default class Referencer<SM extends ScopeManager> extends Visitor {
     protected isInnerMethodDefinition: boolean;
     protected options: any;
-    protected scopeManager: ScopeManager;
+    protected scopeManager: SM;
     protected parent?: TSESTree.Node;
 
-    constructor(options: any, scopeManager: ScopeManager);
+    constructor(options: any, scopeManager: SM);
 
     currentScope(): Scope;
     close(node: TSESTree.Node): void;
@@ -202,7 +209,9 @@ declare module 'eslint-scope/lib/scope' {
     | 'module'
     | 'switch'
     | 'with'
-    | 'TDZ';
+    | 'TDZ'
+    | 'enum'
+    | 'empty-function';
 
   export class Scope {
     type: ScopeType;
