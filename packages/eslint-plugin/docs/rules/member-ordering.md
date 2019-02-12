@@ -14,26 +14,29 @@ Besides grouping the members and sorting their groups, this rule also allows to 
 
 ## Options
 These options allow to specify how to group the members and sort their groups.
+
 ```ts
 {
-  default?: Array<MemberType> | never
-  classes?: Array<MemberType> | never
-  classExpressions?: Array<MemberType> | never
+  default?: Array<MemberType> | 'never'
 
-  interfaces?: ['signature' | 'field' | 'method' | 'constructor'] | never
-  typeLiterals?: ['signature' | 'field' | 'method' | 'constructor'] | never
+  classes?: Array<MemberType> | 'never'
+  classExpressions?: Array<MemberType> | 'never'
+
+  interfaces?: ['signature' | 'field' | 'method' | 'constructor'] | 'never'
+  typeLiterals?: ['signature' | 'field' | 'method' | 'constructor'] | 'never'
 }
 ```
 
 If you want to enforce an alphabetic order, you have to use this form
 ```ts
 {
-  default?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
-  classes?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
-  classExpressions?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
+  default?: Array<MemberType> | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
 
-  interfaces?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
-  typeLiterals?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
+  classes?: Array<MemberType> | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
+  classExpressions?: Array<MemberType> | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
+
+  interfaces?: ['field' | 'method' | 'constructor'] | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
+  typeLiterals?: ['field' | 'method' | 'constructor'] | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
 }
 ```
 
@@ -728,6 +731,72 @@ type Foo = {
   B: string; // -> field
 };
 ```
+
+### Sorting alphabetically within member groups
+It is possible to sort all members within a group alphabetically.
+
+#### Configuration: `{ default: { order: 'alphabetically' } }`
+This will apply the default order (see above) and enforce an alphabetic order within each group.
+
+##### Incorrect examples
+
+```ts
+interface Foo {
+  a: x;
+  b: x;
+  c: x;
+
+  a(): void;
+  b(): void;
+  c(): void;
+
+  [a: string]: number;
+  (): Baz;
+
+  new (): Bar;
+}
+```
+
+Note: Wrong group order for `new () : Bar`.
+
+```ts
+interface Foo {
+  a: x;
+  b: x;
+  c: x;
+
+  new (): Bar;
+
+  c(): void;
+  b(): void;
+  a(): void;
+
+  [a: string]: number;
+  (): Baz;
+}
+```
+
+Note: Wrong alphabetic order (should be `a(): void` --> `b(): void` --> `c(): void`).
+
+### Sorting alphabetically while ignoring member groups
+It is also possible to sort all members and ignore the member groups completely.
+
+#### Configuration: `{ default: { memberTypes: 'never', order: 'alphabetically' } }`
+
+##### Incorrect example
+
+```ts
+interface Foo {
+  b(): void;
+  a: b;
+
+  [a: string]: number; // Order doesn't matter (no sortable identifier)
+  new (): Bar; // Order doesn't matter (no sortable identifier)
+  (): Baz; // Order doesn't matter (no sortable identifier)
+}
+```
+
+Note: Wrong alphabetic order `b(): void` should come after `a: b`.
 
 ## When Not To Use It
 
