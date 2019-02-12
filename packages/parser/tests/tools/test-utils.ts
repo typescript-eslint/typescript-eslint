@@ -1,5 +1,6 @@
-import * as parser from '../src/parser';
-import { ParserOptions } from '../src/parser-options';
+import * as parser from '../../src/parser';
+import { ParserOptions } from '../../src/parser-options';
+import { getScopeTree } from './scope-analysis';
 
 const defaultConfig = {
   loc: true,
@@ -43,6 +44,44 @@ export function createSnapshotTestBlock(code: any, config: ParserOptions = {}) {
   function parse() {
     const ast = parser.parseForESLint(code, config).ast;
     return getRaw(ast);
+  }
+
+  return () => {
+    try {
+      const result = parse();
+      expect(result).toMatchSnapshot();
+    } catch (e) {
+      /**
+       * If we are deliberately throwing because of encountering an unknown
+       * AST_NODE_TYPE, we rethrow to cause the test to fail
+       */
+      if (e.message.match('Unknown AST_NODE_TYPE')) {
+        throw new Error(e);
+      }
+      expect(parse).toThrowErrorMatchingSnapshot();
+    }
+  };
+}
+
+/**
+ * Returns a function which can be used as the callback of a Jest test() block,
+ * and which performs an assertion on the snapshot for the given code and config.
+ * @param {string} code The source code to parse
+ * @param {ParserOptions} config the parser configuration
+ * @returns {Function} callback for Jest test() block
+ */
+export function createScopeSnapshotTestBlock(
+  code: string,
+  config: ParserOptions = {}
+) {
+  config = Object.assign({}, defaultConfig, config);
+
+  /**
+   * @returns {Object} the AST object
+   */
+  function parse() {
+    const result = parser.parseForESLint(code, config);
+    return getScopeTree(result.scopeManager);
   }
 
   return () => {
