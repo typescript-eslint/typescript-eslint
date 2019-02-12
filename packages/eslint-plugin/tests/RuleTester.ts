@@ -4,6 +4,11 @@ import { RuleTester as ESLintRuleTester } from 'eslint';
 import * as path from 'path';
 import RuleModule from 'ts-eslint';
 
+interface EnvTestOptions {
+  browser?: boolean;
+  es6?: boolean;
+}
+
 interface ValidTestCase<TOptions extends Readonly<any[]>> {
   code: string;
   options?: TOptions;
@@ -12,9 +17,7 @@ interface ValidTestCase<TOptions extends Readonly<any[]>> {
   settings?: Record<string, any>;
   parser?: string;
   globals?: Record<string, boolean>;
-  env?: {
-    browser?: boolean;
-  };
+  env?: EnvTestOptions;
 }
 
 interface InvalidTestCase<
@@ -53,6 +56,7 @@ declare class RuleTesterTyped {
 const RuleTester = (ESLintRuleTester as any) as {
   new (config?: {
     parser: '@typescript-eslint/parser';
+    env?: EnvTestOptions;
     parserOptions?: ParserOptions;
   }): RuleTesterTyped;
 };
