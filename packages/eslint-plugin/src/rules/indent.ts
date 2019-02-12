@@ -89,8 +89,8 @@ export default util.createRule<Options, MessageIds>({
       recommended: 'error'
     },
     fixable: 'whitespace',
-    schema: baseRule.meta!.schema,
-    messages: baseRule.meta!.messages
+    schema: baseRule.meta.schema,
+    messages: baseRule.meta.messages
   },
   defaultOptions: [
     // typescript docs and playground use 4 space indent

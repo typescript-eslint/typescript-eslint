@@ -14,7 +14,7 @@ export default util.createRule<Options, MessageIds>({
       category: 'Stylistic Issues',
       recommended: 'error'
     },
-    schema: baseRule.meta.schema!,
+    schema: baseRule.meta.schema,
     messages: baseRule.meta.messages
   },
   defaultOptions: [

@@ -231,7 +231,7 @@ export default util.createRule<Options, MessageIds>({
           reference.init ||
           !variable ||
           variable.identifiers.length === 0 ||
-          (variable.identifiers[0].range![1] < reference.identifier.range![1] &&
+          (variable.identifiers[0].range[1] < reference.identifier.range[1] &&
             !isInInitializer(variable, reference)) ||
           !isForbidden(variable, reference)
         ) {

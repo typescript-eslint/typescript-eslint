@@ -20,22 +20,6 @@ export default util.createRule({
     const rules = baseRule.create(context);
 
     /**
-     * Mark this function parameter as used
-     * @param node The node currently being traversed
-     */
-    function markThisParameterAsUsed(node: TSESTree.Identifier): void {
-      if (node.name) {
-        const variable = context
-          .getScope()
-          .variables.find(scopeVar => scopeVar.name === node.name);
-
-        if (variable) {
-          variable.eslintUsed = true;
-        }
-      }
-    }
-
-    /**
      * Mark heritage clause as used
      * @param node The node currently being traversed
      */
@@ -54,8 +38,6 @@ export default util.createRule({
     }
 
     return Object.assign({}, rules, {
-      "FunctionDeclaration Identifier[name='this']": markThisParameterAsUsed,
-      "FunctionExpression Identifier[name='this']": markThisParameterAsUsed,
       'TSTypeReference Identifier'(node: TSESTree.Identifier) {
         context.markVariableAsUsed(node.name);
       },
