@@ -988,9 +988,9 @@ new test<foo>();
       `,
       errors: error([
         {
-          message: "'foo' is defined but never used.",
-          line: 3,
-          column: 10
+          message: "'foo' is assigned a value but never used.",
+          line: 2,
+          column: 7
         }
       ])
     },
@@ -1007,7 +1007,7 @@ class bar<test> {};
           column: 6
         },
         {
-          message: "'test' is defined but never used.",
+          message: "'test' is assigned a value but never used.",
           line: 3,
           column: 7
         },
@@ -1015,6 +1015,11 @@ class bar<test> {};
           message: "'bar' is defined but never used.",
           line: 4,
           column: 7
+        },
+        {
+          message: "'test' is defined but never used.",
+          line: 4,
+          column: 11
         }
       ])
     },

@@ -1855,9 +1855,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 0,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -1874,9 +1872,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 1,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -1893,9 +1889,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 0,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -1912,9 +1906,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 1,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
           ],
@@ -2039,6 +2031,18 @@ Object {
         Object {
           "$ref": 6,
         },
+        Object {
+          "$ref": 7,
+        },
+        Object {
+          "$ref": 8,
+        },
+        Object {
+          "$ref": 9,
+        },
+        Object {
+          "$ref": 10,
+        },
       ],
       "type": "module",
       "typeMap": Object {
@@ -2106,12 +2110,6 @@ Object {
             Object {
               "$ref": 3,
             },
-            Object {
-              "$ref": 7,
-            },
-            Object {
-              "$ref": 9,
-            },
           ],
           "scope": Object {
             "$ref": 12,
@@ -2161,12 +2159,6 @@ Object {
           "references": Array [
             Object {
               "$ref": 5,
-            },
-            Object {
-              "$ref": 8,
-            },
-            Object {
-              "$ref": 10,
             },
           ],
           "scope": Object {
@@ -2225,6 +2217,18 @@ Object {
     },
     Object {
       "$ref": 6,
+    },
+    Object {
+      "$ref": 7,
+    },
+    Object {
+      "$ref": 8,
+    },
+    Object {
+      "$ref": 9,
+    },
+    Object {
+      "$ref": 10,
     },
   ],
   "type": "global",
@@ -2286,9 +2290,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 0,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -2305,9 +2307,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 1,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -2324,9 +2324,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 0,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -2343,9 +2341,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 1,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
           ],
@@ -2470,6 +2466,18 @@ Object {
         Object {
           "$ref": 6,
         },
+        Object {
+          "$ref": 7,
+        },
+        Object {
+          "$ref": 8,
+        },
+        Object {
+          "$ref": 9,
+        },
+        Object {
+          "$ref": 10,
+        },
       ],
       "type": "module",
       "typeMap": Object {
@@ -2537,12 +2545,6 @@ Object {
             Object {
               "$ref": 3,
             },
-            Object {
-              "$ref": 7,
-            },
-            Object {
-              "$ref": 9,
-            },
           ],
           "scope": Object {
             "$ref": 12,
@@ -2592,12 +2594,6 @@ Object {
           "references": Array [
             Object {
               "$ref": 5,
-            },
-            Object {
-              "$ref": 8,
-            },
-            Object {
-              "$ref": 10,
             },
           ],
           "scope": Object {
@@ -2656,6 +2652,18 @@ Object {
     },
     Object {
       "$ref": 6,
+    },
+    Object {
+      "$ref": 7,
+    },
+    Object {
+      "$ref": 8,
+    },
+    Object {
+      "$ref": 9,
+    },
+    Object {
+      "$ref": 10,
     },
   ],
   "type": "global",
@@ -8322,9 +8330,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 3,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -8415,7 +8421,11 @@ Object {
           "writeExpr": undefined,
         },
       ],
-      "throughReferences": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 9,
+        },
+      ],
       "type": "module",
       "typeMap": Object {
         "A": Object {
@@ -8619,11 +8629,7 @@ Object {
             },
           ],
           "name": "a",
-          "references": Array [
-            Object {
-              "$ref": 9,
-            },
-          ],
+          "references": Array [],
           "scope": Object {
             "$ref": 13,
           },
@@ -8634,7 +8640,11 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 9,
+    },
+  ],
   "type": "global",
   "typeMap": Object {},
   "upperScope": null,
@@ -9825,9 +9835,7 @@ Object {
             "type": "Identifier",
           },
           "kind": "r",
-          "resolved": Object {
-            "$ref": 0,
-          },
+          "resolved": null,
           "writeExpr": undefined,
         },
         Object {
@@ -9849,6 +9857,9 @@ Object {
         },
       ],
       "throughReferences": Array [
+        Object {
+          "$ref": 2,
+        },
         Object {
           "$ref": 3,
         },
@@ -9912,9 +9923,6 @@ Object {
             Object {
               "$ref": 1,
             },
-            Object {
-              "$ref": 2,
-            },
           ],
           "scope": Object {
             "$ref": 4,
@@ -9927,6 +9935,9 @@ Object {
   "isStrict": false,
   "references": Array [],
   "throughReferences": Array [
+    Object {
+      "$ref": 2,
+    },
     Object {
       "$ref": 3,
     },
