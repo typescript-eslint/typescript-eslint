@@ -1,7 +1,10 @@
 import fs from 'fs';
 import glob from 'glob';
 import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
-import * as testUtils from '../../tools/test-utils';
+import {
+  createScopeSnapshotTestBlock,
+  formatSnapshotName
+} from '../tools/test-utils';
 
 const JSX_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx';
@@ -33,8 +36,8 @@ describe('JSX', () => {
         }
       };
       it(
-        testUtils.formatSnapshotName(filename, fixturesDir),
-        testUtils.createSnapshotTestBlock(code, config)
+        formatSnapshotName(filename, fixturesDir),
+        createScopeSnapshotTestBlock(code, config)
       );
     };
   }
