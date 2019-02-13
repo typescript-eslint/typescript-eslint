@@ -66,7 +66,7 @@ export class TypeAliasScope extends Scope {
 
 /// eslint scopes
 
-export class GlobalScope extends esScope.GlobalScope {
+export class GlobalScope extends esScope.GlobalScope implements Scope {
   setTypes: Map<string, Variable> = new Map();
   types: Variable[] = [];
 
@@ -88,7 +88,9 @@ export class GlobalScope extends esScope.GlobalScope {
   }
 }
 
-export class FunctionExpressionNameScope extends esScope.FunctionExpressionNameScope {
+export class FunctionExpressionNameScope
+  extends esScope.FunctionExpressionNameScope
+  implements Scope {
   setTypes: Map<string, Variable> = new Map();
   types: Variable[] = [];
 
@@ -100,7 +102,7 @@ export class FunctionExpressionNameScope extends esScope.FunctionExpressionNameS
   }
 }
 
-export class WithScope extends esScope.WithScope {
+export class WithScope extends esScope.WithScope implements Scope {
   setTypes: Map<string, Variable> = new Map();
   types: Variable[] = [];
 
@@ -112,7 +114,7 @@ export class WithScope extends esScope.WithScope {
   }
 }
 
-export class FunctionScope extends esScope.FunctionScope {
+export class FunctionScope extends esScope.FunctionScope implements Scope {
   setTypes: Map<string, Variable> = new Map();
   types: Variable[] = [];
 

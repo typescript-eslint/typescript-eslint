@@ -171,8 +171,8 @@ declare module 'eslint-scope/lib/referencer' {
 
     AssignmentExpression(node: TSESTree.Node): void;
     CatchClause(node: TSESTree.Node): void;
-    Program(node: TSESTree.Node): void;
-    Identifier(node: TSESTree.Node): void;
+    Program(node: TSESTree.Program): void;
+    Identifier(node: TSESTree.Identifier): void;
     UpdateExpression(node: TSESTree.Node): void;
     MemberExpression(node: TSESTree.Node): void;
     Property(node: TSESTree.Node): void;
