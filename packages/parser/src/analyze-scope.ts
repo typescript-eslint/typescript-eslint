@@ -16,8 +16,8 @@ import {
 } from './scope/definition';
 import { typeReferencing } from './scope/reference';
 import { ScopeManager } from './scope/scope-manager';
-import { PatternVisitor } from "./scope/pattern-visitor";
-import { Scope } from "./scope/scopes";
+import { PatternVisitor } from './scope/pattern-visitor';
+import { Scope } from './scope/scopes';
 
 class Referencer extends OriginalReferencer<Scope, ScopeManager> {
   protected typeMode: boolean;

@@ -126,7 +126,10 @@ declare module 'eslint-scope/lib/referencer' {
     Visitor
   } from 'eslint-scope/lib/options';
 
-  export default class Referencer<SC extends Scope, SM extends ScopeManager<SC>> extends Visitor {
+  export default class Referencer<
+    SC extends Scope,
+    SM extends ScopeManager<SC>
+  > extends Visitor {
     protected isInnerMethodDefinition: boolean;
     protected options: any;
     protected scopeManager: SM;
@@ -477,10 +480,7 @@ declare module 'eslint-scope/lib/scope-manager' {
     __nestScope<T extends Scope>(scope: T): T;
     __nestGlobalScope(node: TSESTree.Node): SC;
     __nestBlockScope(node: TSESTree.Node): SC;
-    __nestFunctionScope(
-      node: TSESTree.Node,
-      isMethodDefinition: boolean
-    ): SC;
+    __nestFunctionScope(node: TSESTree.Node, isMethodDefinition: boolean): SC;
     __nestForScope(node: TSESTree.Node): SC;
     __nestCatchScope(node: TSESTree.Node): SC;
     __nestWithScope(node: TSESTree.Node): SC;
