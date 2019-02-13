@@ -2,7 +2,10 @@ import { Linter } from 'eslint';
 import fs from 'fs';
 import glob from 'glob';
 import * as parser from '../../src/parser';
-import * as testUtils from '../../tools/test-utils';
+import {
+  createScopeSnapshotTestBlock,
+  formatSnapshotName
+} from '../tools/test-utils';
 
 const FIXTURES_DIR = './tests/fixtures/basics';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.js`);
@@ -15,8 +18,8 @@ describe('basics', () => {
   testFiles.forEach(filename => {
     const code = fs.readFileSync(filename, 'utf8');
     it(
-      testUtils.formatSnapshotName(filename, FIXTURES_DIR),
-      testUtils.createSnapshotTestBlock(code)
+      formatSnapshotName(filename, FIXTURES_DIR),
+      createScopeSnapshotTestBlock(code)
     );
   });
 

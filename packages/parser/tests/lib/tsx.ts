@@ -2,7 +2,10 @@ import { Linter } from 'eslint';
 import fs from 'fs';
 import glob from 'glob';
 import * as parser from '../../src/parser';
-import * as testUtils from '../../tools/test-utils';
+import {
+  createScopeSnapshotTestBlock,
+  formatSnapshotName
+} from '../tools/test-utils';
 
 const FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/tsx';
@@ -22,8 +25,8 @@ describe('TSX', () => {
       }
     };
     it(
-      testUtils.formatSnapshotName(filename, FIXTURES_DIR, '.tsx'),
-      testUtils.createSnapshotTestBlock(code, config)
+      formatSnapshotName(filename, FIXTURES_DIR, '.tsx'),
+      createScopeSnapshotTestBlock(code, config)
     );
   });
 
