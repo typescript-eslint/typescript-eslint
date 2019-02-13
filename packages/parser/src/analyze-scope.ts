@@ -204,7 +204,7 @@ class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
 
     this.visitDecorators(node.decorators);
 
-    if (!this.typeMode) {
+    if (this.typeMode) {
       typeReferencing(currentScope, node);
     } else {
       super.Identifier(node);

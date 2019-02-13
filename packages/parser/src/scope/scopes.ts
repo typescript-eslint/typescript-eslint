@@ -66,7 +66,7 @@ export class TypeAliasScope extends Scope {
 
 /// eslint scopes
 
-export class GlobalScope extends TSESLintScope.GlobalScope {
+export class GlobalScope extends TSESLintScope.GlobalScope implements Scope {
   setTypes: Map<string, TSESLintScope.Variable> = new Map();
   types: TSESLintScope.Variable[] = [];
 
@@ -91,7 +91,9 @@ export class GlobalScope extends TSESLintScope.GlobalScope {
   }
 }
 
-export class FunctionExpressionNameScope extends TSESLintScope.FunctionExpressionNameScope {
+export class FunctionExpressionNameScope
+  extends TSESLintScope.FunctionExpressionNameScope
+  implements Scope {
   setTypes: Map<string, TSESLintScope.Variable> = new Map();
   types: TSESLintScope.Variable[] = [];
 
@@ -103,7 +105,7 @@ export class FunctionExpressionNameScope extends TSESLintScope.FunctionExpressio
   }
 }
 
-export class WithScope extends TSESLintScope.WithScope {
+export class WithScope extends TSESLintScope.WithScope implements Scope {
   setTypes: Map<string, TSESLintScope.Variable> = new Map();
   types: TSESLintScope.Variable[] = [];
 
@@ -115,7 +117,8 @@ export class WithScope extends TSESLintScope.WithScope {
   }
 }
 
-export class FunctionScope extends TSESLintScope.FunctionScope {
+export class FunctionScope extends TSESLintScope.FunctionScope
+  implements Scope {
   setTypes: Map<string, TSESLintScope.Variable> = new Map();
   types: TSESLintScope.Variable[] = [];
 
