@@ -22,8 +22,5 @@
   "javascript.preferences.importModuleSpecifier": "auto",
   "typescript.preferences.importModuleSpecifier": "auto",
   "javascript.preferences.quoteStyle": "single",
-  "typescript.preferences.quoteStyle": "single",
-
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": false
+  "typescript.preferences.quoteStyle": "single"
 }

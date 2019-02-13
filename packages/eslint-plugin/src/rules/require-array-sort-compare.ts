@@ -29,20 +29,11 @@ export default util.createRule({
     const checker = service.program.getTypeChecker();
 
     return {
-      CallExpression(node: TSESTree.CallExpression) {
-        // Skip if this is not a call of `sort` method or giving arguments.
-        if (
-          node.callee.type !== 'MemberExpression' ||
-          node.callee.computed ||
-          node.callee.property.type !== 'Identifier' ||
-          node.callee.property.name !== 'sort' ||
-          node.arguments.length >= 1
-        ) {
-          return;
-        }
-
+      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
+        node: TSESTree.MemberExpression
+      ) {
         // Get the symbol of the `sort` method.
-        const tsNode = service.esTreeNodeToTSNodeMap.get(node.callee);
+        const tsNode = service.esTreeNodeToTSNodeMap.get(node);
         const sortSymbol = checker.getSymbolAtLocation(tsNode);
         if (sortSymbol == null) {
           return;
@@ -56,7 +47,7 @@ export default util.createRule({
             ts.isSourceFile(typeDecl.parent) &&
             typeDecl.name.escapedText === 'Array'
           ) {
-            context.report({ node, messageId: 'requireCompare' });
+            context.report({ node: node.parent!, messageId: 'requireCompare' });
             return;
           }
         }
