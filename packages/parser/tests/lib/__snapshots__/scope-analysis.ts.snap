@@ -56,6 +56,7 @@ Object {
           ],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 5,
           },
@@ -134,6 +135,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 6,
       },
@@ -194,6 +196,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -239,6 +242,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 3,
           },
@@ -299,6 +303,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -359,6 +364,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -401,15 +407,101 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [],
-          "throughReferences": Array [],
+          "references": Array [
+            Object {
+              "$id": 3,
+              "from": Object {
+                "$ref": 7,
+              },
+              "identifier": Object {
+                "name": "Component",
+                "range": Array [
+                  31,
+                  40,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 4,
+              "from": Object {
+                "$ref": 7,
+              },
+              "identifier": Object {
+                "name": "Nullable",
+                "range": Array [
+                  41,
+                  49,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 5,
+              "from": Object {
+                "$ref": 7,
+              },
+              "identifier": Object {
+                "name": "SomeOther",
+                "range": Array [
+                  50,
+                  59,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 6,
+              "from": Object {
+                "$ref": 7,
+              },
+              "identifier": Object {
+                "name": "Component2",
+                "range": Array [
+                  67,
+                  77,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [
+            Object {
+              "$ref": 3,
+            },
+            Object {
+              "$ref": 5,
+            },
+            Object {
+              "$ref": 6,
+            },
+          ],
           "type": "class",
+          "typeMap": Object {
+            "Nullable": Object {
+              "$ref": 2,
+            },
+          },
           "upperScope": Object {
             "$ref": 8,
           },
           "variableMap": Object {
             "Foo": Object {
-              "$ref": 6,
+              "$ref": 1,
             },
           },
           "variableScope": Object {
@@ -417,7 +509,7 @@ Object {
           },
           "variables": Array [
             Object {
-              "$id": 6,
+              "$id": 1,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -456,103 +548,74 @@ Object {
                 "$ref": 7,
               },
             },
+            Object {
+              "$id": 2,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "Nullable",
+                    "range": Array [
+                      10,
+                      18,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      9,
+                      19,
+                    ],
+                    "type": "TSTypeParameterDeclaration",
+                  },
+                  "parent": null,
+                  "type": "TypeParameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "Nullable",
+                  "range": Array [
+                    10,
+                    18,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "Nullable",
+              "references": Array [
+                Object {
+                  "$ref": 4,
+                },
+              ],
+              "scope": Object {
+                "$ref": 7,
+              },
+            },
           ],
         },
       ],
       "functionExpressionScope": false,
       "isStrict": true,
-      "references": Array [
-        Object {
-          "$id": 2,
-          "from": Object {
-            "$ref": 8,
-          },
-          "identifier": Object {
-            "name": "Component",
-            "range": Array [
-              31,
-              40,
-            ],
-            "type": "Identifier",
-          },
-          "kind": "r",
-          "resolved": null,
-          "writeExpr": undefined,
-        },
-        Object {
-          "$id": 3,
-          "from": Object {
-            "$ref": 8,
-          },
-          "identifier": Object {
-            "name": "Nullable",
-            "range": Array [
-              41,
-              49,
-            ],
-            "type": "Identifier",
-          },
-          "kind": "r",
-          "resolved": Object {
-            "$ref": 0,
-          },
-          "writeExpr": undefined,
-        },
-        Object {
-          "$id": 4,
-          "from": Object {
-            "$ref": 8,
-          },
-          "identifier": Object {
-            "name": "SomeOther",
-            "range": Array [
-              50,
-              59,
-            ],
-            "type": "Identifier",
-          },
-          "kind": "r",
-          "resolved": null,
-          "writeExpr": undefined,
-        },
-        Object {
-          "$id": 5,
-          "from": Object {
-            "$ref": 8,
-          },
-          "identifier": Object {
-            "name": "Component2",
-            "range": Array [
-              67,
-              77,
-            ],
-            "type": "Identifier",
-          },
-          "kind": "r",
-          "resolved": null,
-          "writeExpr": undefined,
-        },
-      ],
+      "references": Array [],
       "throughReferences": Array [
         Object {
-          "$ref": 2,
-        },
-        Object {
-          "$ref": 4,
+          "$ref": 3,
         },
         Object {
           "$ref": 5,
         },
+        Object {
+          "$ref": 6,
+        },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 9,
       },
       "variableMap": Object {
         "Foo": Object {
-          "$ref": 1,
-        },
-        "Nullable": Object {
           "$ref": 0,
         },
       },
@@ -562,50 +625,6 @@ Object {
       "variables": Array [
         Object {
           "$id": 0,
-          "defs": Array [
-            Object {
-              "name": Object {
-                "name": "Nullable",
-                "range": Array [
-                  10,
-                  18,
-                ],
-                "type": "Identifier",
-              },
-              "node": Object {
-                "range": Array [
-                  9,
-                  19,
-                ],
-                "type": "TSTypeParameterDeclaration",
-              },
-              "parent": null,
-              "type": "TypeParameter",
-            },
-          ],
-          "eslintUsed": undefined,
-          "identifiers": Array [
-            Object {
-              "name": "Nullable",
-              "range": Array [
-                10,
-                18,
-              ],
-              "type": "Identifier",
-            },
-          ],
-          "name": "Nullable",
-          "references": Array [
-            Object {
-              "$ref": 3,
-            },
-          ],
-          "scope": Object {
-            "$ref": 8,
-          },
-        },
-        Object {
-          "$id": 1,
           "defs": Array [
             Object {
               "name": Object {
@@ -652,16 +671,17 @@ Object {
   "references": Array [],
   "throughReferences": Array [
     Object {
-      "$ref": 2,
-    },
-    Object {
-      "$ref": 4,
+      "$ref": 3,
     },
     Object {
       "$ref": 5,
     },
+    Object {
+      "$ref": 6,
+    },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -753,6 +773,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 8,
           },
@@ -860,6 +881,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 9,
       },
@@ -983,6 +1005,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1014,7 +1037,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 10,
+          "$id": 8,
           "block": Object {
             "range": Array [
               0,
@@ -1025,15 +1048,38 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [],
-          "throughReferences": Array [],
+          "references": Array [
+            Object {
+              "$id": 7,
+              "from": Object {
+                "$ref": 8,
+              },
+              "identifier": Object {
+                "name": "Baz",
+                "range": Array [
+                  31,
+                  34,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [
+            Object {
+              "$ref": 7,
+            },
+          ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 15,
           },
           "variableMap": Object {
             "Foo": Object {
-              "$ref": 9,
+              "$ref": 6,
             },
           },
           "variableScope": Object {
@@ -1041,7 +1087,7 @@ Object {
           },
           "variables": Array [
             Object {
-              "$id": 9,
+              "$id": 6,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -1077,13 +1123,13 @@ Object {
               "name": "Foo",
               "references": Array [],
               "scope": Object {
-                "$ref": 10,
+                "$ref": 8,
               },
             },
           ],
         },
         Object {
-          "$id": 12,
+          "$id": 11,
           "block": Object {
             "range": Array [
               42,
@@ -1094,15 +1140,38 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [],
-          "throughReferences": Array [],
+          "references": Array [
+            Object {
+              "$id": 10,
+              "from": Object {
+                "$ref": 11,
+              },
+              "identifier": Object {
+                "name": "Baz",
+                "range": Array [
+                  73,
+                  76,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [
+            Object {
+              "$ref": 10,
+            },
+          ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 15,
           },
           "variableMap": Object {
             "Foo2": Object {
-              "$ref": 11,
+              "$ref": 9,
             },
           },
           "variableScope": Object {
@@ -1110,7 +1179,7 @@ Object {
           },
           "variables": Array [
             Object {
-              "$id": 11,
+              "$id": 9,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -1146,7 +1215,7 @@ Object {
               "name": "Foo2",
               "references": Array [],
               "scope": Object {
-                "$ref": 12,
+                "$ref": 11,
               },
             },
           ],
@@ -1163,15 +1232,38 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [],
-          "throughReferences": Array [],
+          "references": Array [
+            Object {
+              "$id": 13,
+              "from": Object {
+                "$ref": 14,
+              },
+              "identifier": Object {
+                "name": "Baz",
+                "range": Array [
+                  107,
+                  110,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [
+            Object {
+              "$ref": 13,
+            },
+          ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 15,
           },
           "variableMap": Object {
             "Foo3": Object {
-              "$ref": 13,
+              "$ref": 12,
             },
           },
           "variableScope": Object {
@@ -1179,7 +1271,7 @@ Object {
           },
           "variables": Array [
             Object {
-              "$id": 13,
+              "$id": 12,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -1230,23 +1322,6 @@ Object {
             "$ref": 15,
           },
           "identifier": Object {
-            "name": "Baz",
-            "range": Array [
-              31,
-              34,
-            ],
-            "type": "Identifier",
-          },
-          "kind": "r",
-          "resolved": null,
-          "writeExpr": undefined,
-        },
-        Object {
-          "$id": 4,
-          "from": Object {
-            "$ref": 15,
-          },
-          "identifier": Object {
             "name": "Bar",
             "range": Array [
               27,
@@ -1259,24 +1334,7 @@ Object {
           "writeExpr": undefined,
         },
         Object {
-          "$id": 5,
-          "from": Object {
-            "$ref": 15,
-          },
-          "identifier": Object {
-            "name": "Baz",
-            "range": Array [
-              73,
-              76,
-            ],
-            "type": "Identifier",
-          },
-          "kind": "r",
-          "resolved": null,
-          "writeExpr": undefined,
-        },
-        Object {
-          "$id": 6,
+          "$id": 4,
           "from": Object {
             "$ref": 15,
           },
@@ -1293,24 +1351,7 @@ Object {
           "writeExpr": undefined,
         },
         Object {
-          "$id": 7,
-          "from": Object {
-            "$ref": 15,
-          },
-          "identifier": Object {
-            "name": "Baz",
-            "range": Array [
-              107,
-              110,
-            ],
-            "type": "Identifier",
-          },
-          "kind": "r",
-          "resolved": null,
-          "writeExpr": undefined,
-        },
-        Object {
-          "$id": 8,
+          "$id": 5,
           "from": Object {
             "$ref": 15,
           },
@@ -1332,22 +1373,23 @@ Object {
           "$ref": 3,
         },
         Object {
+          "$ref": 7,
+        },
+        Object {
           "$ref": 4,
+        },
+        Object {
+          "$ref": 10,
         },
         Object {
           "$ref": 5,
         },
         Object {
-          "$ref": 6,
-        },
-        Object {
-          "$ref": 7,
-        },
-        Object {
-          "$ref": 8,
+          "$ref": 13,
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 16,
       },
@@ -1497,22 +1539,23 @@ Object {
       "$ref": 3,
     },
     Object {
+      "$ref": 7,
+    },
+    Object {
       "$ref": 4,
+    },
+    Object {
+      "$ref": 10,
     },
     Object {
       "$ref": 5,
     },
     Object {
-      "$ref": 6,
-    },
-    Object {
-      "$ref": 7,
-    },
-    Object {
-      "$ref": 8,
+      "$ref": 13,
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1555,15 +1598,42 @@ Object {
           "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [],
-          "throughReferences": Array [],
+          "references": Array [
+            Object {
+              "$id": 3,
+              "from": Object {
+                "$ref": 4,
+              },
+              "identifier": Object {
+                "name": "Foo",
+                "range": Array [
+                  27,
+                  30,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [
+            Object {
+              "$ref": 3,
+            },
+          ],
           "type": "class",
+          "typeMap": Object {
+            "T": Object {
+              "$ref": 2,
+            },
+          },
           "upperScope": Object {
             "$ref": 5,
           },
           "variableMap": Object {
             "Bar": Object {
-              "$ref": 3,
+              "$ref": 1,
             },
           },
           "variableScope": Object {
@@ -1571,7 +1641,7 @@ Object {
           },
           "variables": Array [
             Object {
-              "$id": 3,
+              "$id": 1,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -1610,44 +1680,64 @@ Object {
                 "$ref": 4,
               },
             },
+            Object {
+              "$id": 2,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "T",
+                    "range": Array [
+                      17,
+                      18,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      16,
+                      35,
+                    ],
+                    "type": "TSTypeParameterDeclaration",
+                  },
+                  "parent": null,
+                  "type": "TypeParameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "T",
+                  "range": Array [
+                    17,
+                    18,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "T",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 4,
+              },
+            },
           ],
         },
       ],
       "functionExpressionScope": false,
       "isStrict": true,
-      "references": Array [
-        Object {
-          "$id": 2,
-          "from": Object {
-            "$ref": 5,
-          },
-          "identifier": Object {
-            "name": "Foo",
-            "range": Array [
-              27,
-              30,
-            ],
-            "type": "Identifier",
-          },
-          "kind": "r",
-          "resolved": null,
-          "writeExpr": undefined,
-        },
-      ],
+      "references": Array [],
       "throughReferences": Array [
         Object {
-          "$ref": 2,
+          "$ref": 3,
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 6,
       },
       "variableMap": Object {
         "Bar": Object {
-          "$ref": 1,
-        },
-        "T": Object {
           "$ref": 0,
         },
       },
@@ -1657,46 +1747,6 @@ Object {
       "variables": Array [
         Object {
           "$id": 0,
-          "defs": Array [
-            Object {
-              "name": Object {
-                "name": "T",
-                "range": Array [
-                  17,
-                  18,
-                ],
-                "type": "Identifier",
-              },
-              "node": Object {
-                "range": Array [
-                  16,
-                  35,
-                ],
-                "type": "TSTypeParameterDeclaration",
-              },
-              "parent": null,
-              "type": "TypeParameter",
-            },
-          ],
-          "eslintUsed": undefined,
-          "identifiers": Array [
-            Object {
-              "name": "T",
-              "range": Array [
-                17,
-                18,
-              ],
-              "type": "Identifier",
-            },
-          ],
-          "name": "T",
-          "references": Array [],
-          "scope": Object {
-            "$ref": 5,
-          },
-        },
-        Object {
-          "$id": 1,
           "defs": Array [
             Object {
               "name": Object {
@@ -1743,10 +1793,11 @@ Object {
   "references": Array [],
   "throughReferences": Array [
     Object {
-      "$ref": 2,
+      "$ref": 3,
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1882,6 +1933,7 @@ Object {
             },
           ],
           "type": "interface",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 12,
           },
@@ -1989,13 +2041,15 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {
+        "A": Object {
+          "$ref": 2,
+        },
+      },
       "upperScope": Object {
         "$ref": 13,
       },
       "variableMap": Object {
-        "A": Object {
-          "$ref": 2,
-        },
         "s1": Object {
           "$ref": 0,
         },
@@ -2174,6 +2228,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -2309,6 +2364,7 @@ Object {
             },
           ],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 12,
           },
@@ -2416,13 +2472,15 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {
+        "A": Object {
+          "$ref": 2,
+        },
+      },
       "upperScope": Object {
         "$ref": 13,
       },
       "variableMap": Object {
-        "A": Object {
-          "$ref": 2,
-        },
         "s1": Object {
           "$ref": 0,
         },
@@ -2601,6 +2659,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -2646,6 +2705,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "empty-function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 4,
           },
@@ -2726,6 +2786,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -2790,6 +2851,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -2914,16 +2976,18 @@ Object {
             },
           ],
           "type": "empty-function",
-          "upperScope": Object {
-            "$ref": 9,
-          },
-          "variableMap": Object {
+          "typeMap": Object {
             "Key": Object {
               "$ref": 1,
             },
             "Value": Object {
               "$ref": 2,
             },
+          },
+          "upperScope": Object {
+            "$ref": 9,
+          },
+          "variableMap": Object {
             "subject": Object {
               "$ref": 3,
             },
@@ -3076,6 +3140,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 10,
       },
@@ -3140,6 +3205,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -3205,6 +3271,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -3220,6 +3287,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "C": Object {
@@ -3340,6 +3408,7 @@ Object {
           ],
           "throughReferences": Array [],
           "type": "block",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -3504,6 +3573,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 8,
       },
@@ -3577,6 +3647,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -3654,6 +3725,7 @@ Object {
                 },
               ],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 5,
               },
@@ -3689,6 +3761,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 6,
           },
@@ -3753,6 +3826,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -3817,6 +3891,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -3894,6 +3969,7 @@ Object {
                 },
               ],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 6,
               },
@@ -3972,6 +4048,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -4036,6 +4113,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 8,
       },
@@ -4100,6 +4178,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -4177,6 +4256,7 @@ Object {
                 },
               ],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 5,
               },
@@ -4212,6 +4292,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 6,
           },
@@ -4276,6 +4357,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -4340,6 +4422,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -4417,6 +4500,7 @@ Object {
                 },
               ],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 6,
               },
@@ -4495,6 +4579,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -4559,6 +4644,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 8,
       },
@@ -4623,6 +4709,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -4700,6 +4787,7 @@ Object {
                 },
               ],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 6,
               },
@@ -4778,6 +4866,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -4842,6 +4931,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 8,
       },
@@ -4906,6 +4996,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -4951,6 +5042,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 18,
           },
@@ -5044,6 +5136,7 @@ Object {
               "references": Array [],
               "throughReferences": Array [],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 11,
               },
@@ -5147,6 +5240,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 18,
           },
@@ -5197,6 +5291,7 @@ Object {
               "references": Array [],
               "throughReferences": Array [],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 17,
               },
@@ -5274,6 +5369,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 18,
           },
@@ -5354,6 +5450,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 19,
       },
@@ -5511,6 +5608,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -5635,16 +5733,18 @@ Object {
             },
           ],
           "type": "empty-function",
-          "upperScope": Object {
-            "$ref": 9,
-          },
-          "variableMap": Object {
+          "typeMap": Object {
             "Key": Object {
               "$ref": 1,
             },
             "Value": Object {
               "$ref": 2,
             },
+          },
+          "upperScope": Object {
+            "$ref": 9,
+          },
+          "variableMap": Object {
             "subject": Object {
               "$ref": 3,
             },
@@ -5797,6 +5897,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 10,
       },
@@ -5861,6 +5962,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -6066,6 +6168,7 @@ Object {
             },
           ],
           "type": "enum",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 14,
           },
@@ -6256,6 +6359,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 15,
       },
@@ -6375,6 +6479,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -6446,6 +6551,7 @@ Object {
           ],
           "throughReferences": Array [],
           "type": "enum",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 4,
           },
@@ -6510,6 +6616,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -6570,6 +6677,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -6627,6 +6735,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -6646,6 +6755,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -6703,6 +6813,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -6722,6 +6833,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -6953,6 +7065,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 17,
       },
@@ -7301,6 +7414,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -7346,6 +7460,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "empty-function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -7370,6 +7485,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "empty-function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -7439,6 +7555,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -7513,6 +7630,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 8,
       },
@@ -7573,6 +7691,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -7618,6 +7737,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "empty-function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 4,
           },
@@ -7642,6 +7762,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "empty-function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 4,
           },
@@ -7702,6 +7823,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -7762,6 +7884,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -7839,6 +7962,7 @@ Object {
                 },
               ],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 6,
               },
@@ -7917,6 +8041,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -7981,6 +8106,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 8,
       },
@@ -8045,6 +8171,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -8090,6 +8217,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 13,
           },
@@ -8138,6 +8266,7 @@ Object {
             },
           ],
           "type": "interface",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 13,
           },
@@ -8252,6 +8381,7 @@ Object {
             },
           ],
           "type": "interface",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 13,
           },
@@ -8287,10 +8417,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 14,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "A": Object {
           "$ref": 0,
         },
@@ -8300,6 +8427,11 @@ Object {
         "C": Object {
           "$ref": 2,
         },
+      },
+      "upperScope": Object {
+        "$ref": 14,
+      },
+      "variableMap": Object {
         "a": Object {
           "$ref": 3,
         },
@@ -8504,6 +8636,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -8539,6 +8672,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -8599,6 +8733,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -8634,6 +8769,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -8649,6 +8785,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -8694,6 +8831,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "interface",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -8742,6 +8880,7 @@ Object {
             },
           ],
           "type": "interface",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 7,
           },
@@ -8777,10 +8916,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 8,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "C": Object {
           "$ref": 1,
         },
@@ -8791,6 +8927,10 @@ Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 8,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 7,
       },
@@ -8957,6 +9097,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -9026,6 +9167,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 6,
           },
@@ -9083,6 +9225,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -9199,6 +9342,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -9254,6 +9398,7 @@ Object {
               "references": Array [],
               "throughReferences": Array [],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 10,
               },
@@ -9372,6 +9517,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 11,
           },
@@ -9482,6 +9628,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 12,
       },
@@ -9605,6 +9752,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -9706,6 +9854,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -9783,6 +9932,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -9873,6 +10023,7 @@ Object {
           ],
           "throughReferences": Array [],
           "type": "block",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 9,
           },
@@ -10010,6 +10161,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 10,
       },
@@ -10130,6 +10282,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -10175,6 +10328,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 4,
           },
@@ -10249,6 +10403,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -10309,6 +10464,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -10354,6 +10510,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 2,
           },
@@ -10369,14 +10526,15 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 3,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "foo": Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 2,
       },
@@ -10429,6 +10587,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -10474,6 +10633,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 12,
           },
@@ -10554,6 +10714,7 @@ Object {
                 },
               ],
               "type": "function",
+              "typeMap": Object {},
               "upperScope": Object {
                 "$ref": 11,
               },
@@ -10635,6 +10796,7 @@ Object {
             },
           ],
           "type": "class",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 12,
           },
@@ -10715,13 +10877,15 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {
+        "A": Object {
+          "$ref": 0,
+        },
+      },
       "upperScope": Object {
         "$ref": 13,
       },
       "variableMap": Object {
-        "A": Object {
-          "$ref": 0,
-        },
         "C": Object {
           "$ref": 2,
         },
@@ -10877,6 +11041,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -10922,6 +11087,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 8,
           },
@@ -11069,14 +11235,15 @@ Object {
         },
       ],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 9,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "A": Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 9,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 8,
       },
@@ -11149,6 +11316,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -11194,13 +11362,15 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {
+            "T": Object {
+              "$ref": 2,
+            },
+          },
           "upperScope": Object {
             "$ref": 4,
           },
           "variableMap": Object {
-            "T": Object {
-              "$ref": 2,
-            },
             "arguments": Object {
               "$ref": 1,
             },
@@ -11268,6 +11438,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -11328,6 +11499,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -11410,6 +11582,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -11484,6 +11657,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -11551,6 +11725,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 4,
           },
@@ -11586,6 +11761,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -11650,6 +11826,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -11719,6 +11896,7 @@ Object {
             },
           ],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 5,
           },
@@ -11760,13 +11938,15 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {
+        "B": Object {
+          "$ref": 1,
+        },
+      },
       "upperScope": Object {
         "$ref": 6,
       },
       "variableMap": Object {
-        "B": Object {
-          "$ref": 1,
-        },
         "obj": Object {
           "$ref": 0,
         },
@@ -11876,6 +12056,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -12068,6 +12249,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 9,
       },
@@ -12157,6 +12339,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -12454,14 +12637,15 @@ Object {
             },
           ],
           "type": "interface",
-          "upperScope": Object {
-            "$ref": 17,
-          },
-          "variableMap": Object {
+          "typeMap": Object {
             "T": Object {
               "$ref": 3,
             },
           },
+          "upperScope": Object {
+            "$ref": 17,
+          },
+          "variableMap": Object {},
           "variableScope": Object {
             "$ref": 17,
           },
@@ -12587,13 +12771,15 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {
+        "A": Object {
+          "$ref": 1,
+        },
+      },
       "upperScope": Object {
         "$ref": 18,
       },
       "variableMap": Object {
-        "A": Object {
-          "$ref": 1,
-        },
         "obj": Object {
           "$ref": 0,
         },
@@ -12731,6 +12917,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -12796,6 +12983,7 @@ Object {
           ],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 5,
           },
@@ -12874,6 +13062,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 6,
       },
@@ -12934,6 +13123,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -13018,13 +13208,15 @@ Object {
           ],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {
+            "T": Object {
+              "$ref": 2,
+            },
+          },
           "upperScope": Object {
             "$ref": 7,
           },
           "variableMap": Object {
-            "T": Object {
-              "$ref": 2,
-            },
             "arguments": Object {
               "$ref": 1,
             },
@@ -13143,6 +13335,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 8,
       },
@@ -13203,6 +13396,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -13396,6 +13590,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 12,
       },
@@ -13634,6 +13829,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -13679,6 +13875,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 2,
           },
@@ -13694,14 +13891,15 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 3,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "Foo": Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 2,
       },
@@ -13754,6 +13952,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -13789,6 +13988,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -13855,6 +14055,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -13890,6 +14091,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -13956,6 +14158,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -14033,6 +14236,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -14106,6 +14310,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -14369,14 +14574,15 @@ Object {
             },
           ],
           "type": "type-alias",
-          "upperScope": Object {
-            "$ref": 14,
-          },
-          "variableMap": Object {
+          "typeMap": Object {
             "T": Object {
               "$ref": 1,
             },
           },
+          "upperScope": Object {
+            "$ref": 14,
+          },
+          "variableMap": Object {},
           "variableScope": Object {
             "$ref": 14,
           },
@@ -14464,14 +14670,15 @@ Object {
         },
       ],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 15,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "Unpacked": Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 15,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 14,
       },
@@ -14546,6 +14753,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -14653,14 +14861,15 @@ Object {
             },
           ],
           "type": "type-alias",
-          "upperScope": Object {
-            "$ref": 6,
-          },
-          "variableMap": Object {
+          "typeMap": Object {
             "T": Object {
               "$ref": 1,
             },
           },
+          "upperScope": Object {
+            "$ref": 6,
+          },
+          "variableMap": Object {},
           "variableScope": Object {
             "$ref": 6,
           },
@@ -14720,14 +14929,15 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 7,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "LinkedList": Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 7,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 6,
       },
@@ -14784,6 +14994,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -14841,6 +15052,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -14911,6 +15123,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -14968,6 +15181,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -15038,6 +15252,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -15095,6 +15310,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -15165,6 +15381,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -15222,6 +15439,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -15292,6 +15510,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -15337,6 +15556,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 2,
           },
@@ -15352,14 +15572,15 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 3,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "Foo": Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 2,
       },
@@ -15412,6 +15633,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -15457,6 +15679,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 2,
           },
@@ -15472,14 +15695,15 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 3,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "Foo": Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 2,
       },
@@ -15532,6 +15756,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -15589,6 +15814,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -15659,6 +15885,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -15716,6 +15943,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -15786,6 +16014,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -15863,6 +16092,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -15936,6 +16166,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -15971,6 +16202,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -16037,6 +16269,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -16072,6 +16305,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -16138,6 +16372,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -16173,6 +16408,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -16239,6 +16475,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -16274,6 +16511,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -16340,6 +16578,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -16385,6 +16624,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 2,
           },
@@ -16400,14 +16640,15 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 3,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "Foo": Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 2,
       },
@@ -16460,6 +16701,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -16495,6 +16737,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -16561,6 +16804,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -16618,6 +16862,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -16737,6 +16982,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -16794,6 +17040,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -16864,6 +17111,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -16899,6 +17147,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -17112,6 +17361,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -17157,6 +17407,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 2,
           },
@@ -17172,14 +17423,15 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
-      "upperScope": Object {
-        "$ref": 3,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "Foo": Object {
           "$ref": 0,
         },
       },
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 2,
       },
@@ -17232,6 +17484,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -17287,6 +17540,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -17365,6 +17619,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "foo": Object {
@@ -17445,6 +17700,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -17505,6 +17761,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "A": Object {
@@ -17582,15 +17839,101 @@ Object {
       "childScopes": Array [],
       "functionExpressionScope": false,
       "isStrict": true,
-      "references": Array [],
-      "throughReferences": Array [],
+      "references": Array [
+        Object {
+          "$id": 3,
+          "from": Object {
+            "$ref": 7,
+          },
+          "identifier": Object {
+            "name": "Component",
+            "range": Array [
+              31,
+              40,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+        Object {
+          "$id": 4,
+          "from": Object {
+            "$ref": 7,
+          },
+          "identifier": Object {
+            "name": "Nullable",
+            "range": Array [
+              41,
+              49,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": Object {
+            "$ref": 2,
+          },
+          "writeExpr": undefined,
+        },
+        Object {
+          "$id": 5,
+          "from": Object {
+            "$ref": 7,
+          },
+          "identifier": Object {
+            "name": "SomeOther",
+            "range": Array [
+              50,
+              59,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+        Object {
+          "$id": 6,
+          "from": Object {
+            "$ref": 7,
+          },
+          "identifier": Object {
+            "name": "Component2",
+            "range": Array [
+              67,
+              77,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 3,
+        },
+        Object {
+          "$ref": 5,
+        },
+        Object {
+          "$ref": 6,
+        },
+      ],
       "type": "class",
+      "typeMap": Object {
+        "Nullable": Object {
+          "$ref": 2,
+        },
+      },
       "upperScope": Object {
         "$ref": 8,
       },
       "variableMap": Object {
         "Foo": Object {
-          "$ref": 6,
+          "$ref": 1,
         },
       },
       "variableScope": Object {
@@ -17598,7 +17941,7 @@ Object {
       },
       "variables": Array [
         Object {
-          "$id": 6,
+          "$id": 1,
           "defs": Array [
             Object {
               "name": Object {
@@ -17637,101 +17980,72 @@ Object {
             "$ref": 7,
           },
         },
+        Object {
+          "$id": 2,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "Nullable",
+                "range": Array [
+                  10,
+                  18,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  9,
+                  19,
+                ],
+                "type": "TSTypeParameterDeclaration",
+              },
+              "parent": null,
+              "type": "TypeParameter",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "Nullable",
+              "range": Array [
+                10,
+                18,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "Nullable",
+          "references": Array [
+            Object {
+              "$ref": 4,
+            },
+          ],
+          "scope": Object {
+            "$ref": 7,
+          },
+        },
       ],
     },
   ],
   "functionExpressionScope": false,
   "isStrict": false,
-  "references": Array [
-    Object {
-      "$id": 2,
-      "from": Object {
-        "$ref": 8,
-      },
-      "identifier": Object {
-        "name": "Component",
-        "range": Array [
-          31,
-          40,
-        ],
-        "type": "Identifier",
-      },
-      "kind": "r",
-      "resolved": null,
-      "writeExpr": undefined,
-    },
-    Object {
-      "$id": 3,
-      "from": Object {
-        "$ref": 8,
-      },
-      "identifier": Object {
-        "name": "Nullable",
-        "range": Array [
-          41,
-          49,
-        ],
-        "type": "Identifier",
-      },
-      "kind": "r",
-      "resolved": Object {
-        "$ref": 0,
-      },
-      "writeExpr": undefined,
-    },
-    Object {
-      "$id": 4,
-      "from": Object {
-        "$ref": 8,
-      },
-      "identifier": Object {
-        "name": "SomeOther",
-        "range": Array [
-          50,
-          59,
-        ],
-        "type": "Identifier",
-      },
-      "kind": "r",
-      "resolved": null,
-      "writeExpr": undefined,
-    },
-    Object {
-      "$id": 5,
-      "from": Object {
-        "$ref": 8,
-      },
-      "identifier": Object {
-        "name": "Component2",
-        "range": Array [
-          67,
-          77,
-        ],
-        "type": "Identifier",
-      },
-      "kind": "r",
-      "resolved": null,
-      "writeExpr": undefined,
-    },
-  ],
+  "references": Array [],
   "throughReferences": Array [
     Object {
-      "$ref": 2,
-    },
-    Object {
-      "$ref": 4,
+      "$ref": 3,
     },
     Object {
       "$ref": 5,
     },
+    Object {
+      "$ref": 6,
+    },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Foo": Object {
-      "$ref": 1,
-    },
-    "Nullable": Object {
       "$ref": 0,
     },
   },
@@ -17741,50 +18055,6 @@ Object {
   "variables": Array [
     Object {
       "$id": 0,
-      "defs": Array [
-        Object {
-          "name": Object {
-            "name": "Nullable",
-            "range": Array [
-              10,
-              18,
-            ],
-            "type": "Identifier",
-          },
-          "node": Object {
-            "range": Array [
-              9,
-              19,
-            ],
-            "type": "TSTypeParameterDeclaration",
-          },
-          "parent": null,
-          "type": "TypeParameter",
-        },
-      ],
-      "eslintUsed": true,
-      "identifiers": Array [
-        Object {
-          "name": "Nullable",
-          "range": Array [
-            10,
-            18,
-          ],
-          "type": "Identifier",
-        },
-      ],
-      "name": "Nullable",
-      "references": Array [
-        Object {
-          "$ref": 3,
-        },
-      ],
-      "scope": Object {
-        "$ref": 8,
-      },
-    },
-    Object {
-      "$id": 1,
       "defs": Array [
         Object {
           "name": Object {
@@ -17899,6 +18169,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 8,
       },
@@ -18006,6 +18277,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "A": Object {
@@ -18131,7 +18403,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 10,
+      "$id": 8,
       "block": Object {
         "range": Array [
           0,
@@ -18142,15 +18414,38 @@ Object {
       "childScopes": Array [],
       "functionExpressionScope": false,
       "isStrict": true,
-      "references": Array [],
-      "throughReferences": Array [],
+      "references": Array [
+        Object {
+          "$id": 7,
+          "from": Object {
+            "$ref": 8,
+          },
+          "identifier": Object {
+            "name": "Baz",
+            "range": Array [
+              31,
+              34,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 7,
+        },
+      ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 15,
       },
       "variableMap": Object {
         "Foo": Object {
-          "$ref": 9,
+          "$ref": 6,
         },
       },
       "variableScope": Object {
@@ -18158,7 +18453,7 @@ Object {
       },
       "variables": Array [
         Object {
-          "$id": 9,
+          "$id": 6,
           "defs": Array [
             Object {
               "name": Object {
@@ -18194,13 +18489,13 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 10,
+            "$ref": 8,
           },
         },
       ],
     },
     Object {
-      "$id": 12,
+      "$id": 11,
       "block": Object {
         "range": Array [
           42,
@@ -18211,15 +18506,38 @@ Object {
       "childScopes": Array [],
       "functionExpressionScope": false,
       "isStrict": true,
-      "references": Array [],
-      "throughReferences": Array [],
+      "references": Array [
+        Object {
+          "$id": 10,
+          "from": Object {
+            "$ref": 11,
+          },
+          "identifier": Object {
+            "name": "Baz",
+            "range": Array [
+              73,
+              76,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 10,
+        },
+      ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 15,
       },
       "variableMap": Object {
         "Foo2": Object {
-          "$ref": 11,
+          "$ref": 9,
         },
       },
       "variableScope": Object {
@@ -18227,7 +18545,7 @@ Object {
       },
       "variables": Array [
         Object {
-          "$id": 11,
+          "$id": 9,
           "defs": Array [
             Object {
               "name": Object {
@@ -18263,7 +18581,7 @@ Object {
           "name": "Foo2",
           "references": Array [],
           "scope": Object {
-            "$ref": 12,
+            "$ref": 11,
           },
         },
       ],
@@ -18280,15 +18598,38 @@ Object {
       "childScopes": Array [],
       "functionExpressionScope": false,
       "isStrict": true,
-      "references": Array [],
-      "throughReferences": Array [],
+      "references": Array [
+        Object {
+          "$id": 13,
+          "from": Object {
+            "$ref": 14,
+          },
+          "identifier": Object {
+            "name": "Baz",
+            "range": Array [
+              107,
+              110,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 13,
+        },
+      ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 15,
       },
       "variableMap": Object {
         "Foo3": Object {
-          "$ref": 13,
+          "$ref": 12,
         },
       },
       "variableScope": Object {
@@ -18296,7 +18637,7 @@ Object {
       },
       "variables": Array [
         Object {
-          "$id": 13,
+          "$id": 12,
           "defs": Array [
             Object {
               "name": Object {
@@ -18347,23 +18688,6 @@ Object {
         "$ref": 15,
       },
       "identifier": Object {
-        "name": "Baz",
-        "range": Array [
-          31,
-          34,
-        ],
-        "type": "Identifier",
-      },
-      "kind": "r",
-      "resolved": null,
-      "writeExpr": undefined,
-    },
-    Object {
-      "$id": 4,
-      "from": Object {
-        "$ref": 15,
-      },
-      "identifier": Object {
         "name": "Bar",
         "range": Array [
           27,
@@ -18376,24 +18700,7 @@ Object {
       "writeExpr": undefined,
     },
     Object {
-      "$id": 5,
-      "from": Object {
-        "$ref": 15,
-      },
-      "identifier": Object {
-        "name": "Baz",
-        "range": Array [
-          73,
-          76,
-        ],
-        "type": "Identifier",
-      },
-      "kind": "r",
-      "resolved": null,
-      "writeExpr": undefined,
-    },
-    Object {
-      "$id": 6,
+      "$id": 4,
       "from": Object {
         "$ref": 15,
       },
@@ -18410,24 +18717,7 @@ Object {
       "writeExpr": undefined,
     },
     Object {
-      "$id": 7,
-      "from": Object {
-        "$ref": 15,
-      },
-      "identifier": Object {
-        "name": "Baz",
-        "range": Array [
-          107,
-          110,
-        ],
-        "type": "Identifier",
-      },
-      "kind": "r",
-      "resolved": null,
-      "writeExpr": undefined,
-    },
-    Object {
-      "$id": 8,
+      "$id": 5,
       "from": Object {
         "$ref": 15,
       },
@@ -18449,22 +18739,23 @@ Object {
       "$ref": 3,
     },
     Object {
+      "$ref": 7,
+    },
+    Object {
       "$ref": 4,
+    },
+    Object {
+      "$ref": 10,
     },
     Object {
       "$ref": 5,
     },
     Object {
-      "$ref": 6,
-    },
-    Object {
-      "$ref": 7,
-    },
-    Object {
-      "$ref": 8,
+      "$ref": 13,
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Foo": Object {
@@ -18628,15 +18919,42 @@ Object {
       "childScopes": Array [],
       "functionExpressionScope": false,
       "isStrict": true,
-      "references": Array [],
-      "throughReferences": Array [],
+      "references": Array [
+        Object {
+          "$id": 3,
+          "from": Object {
+            "$ref": 4,
+          },
+          "identifier": Object {
+            "name": "Foo",
+            "range": Array [
+              27,
+              30,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 3,
+        },
+      ],
       "type": "class",
+      "typeMap": Object {
+        "T": Object {
+          "$ref": 2,
+        },
+      },
       "upperScope": Object {
         "$ref": 5,
       },
       "variableMap": Object {
         "Bar": Object {
-          "$ref": 3,
+          "$ref": 1,
         },
       },
       "variableScope": Object {
@@ -18644,7 +18962,7 @@ Object {
       },
       "variables": Array [
         Object {
-          "$id": 3,
+          "$id": 1,
           "defs": Array [
             Object {
               "name": Object {
@@ -18683,42 +19001,62 @@ Object {
             "$ref": 4,
           },
         },
+        Object {
+          "$id": 2,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "T",
+                "range": Array [
+                  17,
+                  18,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  16,
+                  35,
+                ],
+                "type": "TSTypeParameterDeclaration",
+              },
+              "parent": null,
+              "type": "TypeParameter",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "T",
+              "range": Array [
+                17,
+                18,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "T",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 4,
+          },
+        },
       ],
     },
   ],
   "functionExpressionScope": false,
   "isStrict": false,
-  "references": Array [
-    Object {
-      "$id": 2,
-      "from": Object {
-        "$ref": 5,
-      },
-      "identifier": Object {
-        "name": "Foo",
-        "range": Array [
-          27,
-          30,
-        ],
-        "type": "Identifier",
-      },
-      "kind": "r",
-      "resolved": null,
-      "writeExpr": undefined,
-    },
-  ],
+  "references": Array [],
   "throughReferences": Array [
     Object {
-      "$ref": 2,
+      "$ref": 3,
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Bar": Object {
-      "$ref": 1,
-    },
-    "T": Object {
       "$ref": 0,
     },
   },
@@ -18728,46 +19066,6 @@ Object {
   "variables": Array [
     Object {
       "$id": 0,
-      "defs": Array [
-        Object {
-          "name": Object {
-            "name": "T",
-            "range": Array [
-              17,
-              18,
-            ],
-            "type": "Identifier",
-          },
-          "node": Object {
-            "range": Array [
-              16,
-              35,
-            ],
-            "type": "TSTypeParameterDeclaration",
-          },
-          "parent": null,
-          "type": "TypeParameter",
-        },
-      ],
-      "eslintUsed": true,
-      "identifiers": Array [
-        Object {
-          "name": "T",
-          "range": Array [
-            17,
-            18,
-          ],
-          "type": "Identifier",
-        },
-      ],
-      "name": "T",
-      "references": Array [],
-      "scope": Object {
-        "$ref": 5,
-      },
-    },
-    Object {
-      "$id": 1,
       "defs": Array [
         Object {
           "name": Object {
@@ -18926,6 +19224,7 @@ Object {
         },
       ],
       "type": "interface",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 12,
       },
@@ -19033,11 +19332,13 @@ Object {
     },
   ],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "A": Object {
       "$ref": 2,
     },
+  },
+  "upperScope": null,
+  "variableMap": Object {
     "s1": Object {
       "$ref": 0,
     },
@@ -19184,7 +19485,7 @@ Object {
           "type": "InterfaceName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "A",
@@ -19321,6 +19622,7 @@ Object {
         },
       ],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 12,
       },
@@ -19428,11 +19730,13 @@ Object {
     },
   ],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "A": Object {
       "$ref": 2,
     },
+  },
+  "upperScope": null,
+  "variableMap": Object {
     "s1": Object {
       "$ref": 0,
     },
@@ -19579,7 +19883,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "A",
@@ -19626,6 +19930,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "empty-function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -19706,6 +20011,7 @@ Object {
   ],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "f": Object {
@@ -19869,16 +20175,18 @@ Object {
         },
       ],
       "type": "empty-function",
-      "upperScope": Object {
-        "$ref": 9,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "Key": Object {
           "$ref": 1,
         },
         "Value": Object {
           "$ref": 2,
         },
+      },
+      "upperScope": Object {
+        "$ref": 9,
+      },
+      "variableMap": Object {
         "subject": Object {
           "$ref": 3,
         },
@@ -20031,6 +20339,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "eachr": Object {
@@ -20127,6 +20436,7 @@ Object {
   ],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "C": Object {
@@ -20237,6 +20547,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "block",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -20401,6 +20712,7 @@ Object {
   ],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "a": Object {
@@ -20526,6 +20838,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 5,
           },
@@ -20561,6 +20874,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 6,
       },
@@ -20625,6 +20939,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Foo": Object {
@@ -20737,6 +21052,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 6,
           },
@@ -20815,6 +21131,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -20879,6 +21196,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Foo": Object {
@@ -20991,6 +21309,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 5,
           },
@@ -21026,6 +21345,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 6,
       },
@@ -21090,6 +21410,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Foo": Object {
@@ -21202,6 +21523,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 6,
           },
@@ -21280,6 +21602,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -21344,6 +21667,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Foo": Object {
@@ -21456,6 +21780,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 6,
           },
@@ -21534,6 +21859,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -21598,6 +21924,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Foo": Object {
@@ -21678,6 +22005,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 18,
       },
@@ -21771,6 +22099,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 11,
           },
@@ -21874,6 +22203,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 18,
       },
@@ -21924,6 +22254,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 17,
           },
@@ -22001,6 +22332,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 18,
       },
@@ -22081,6 +22413,7 @@ Object {
   ],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "C": Object {
@@ -22337,16 +22670,18 @@ Object {
         },
       ],
       "type": "empty-function",
-      "upperScope": Object {
-        "$ref": 9,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "Key": Object {
           "$ref": 1,
         },
         "Value": Object {
           "$ref": 2,
         },
+      },
+      "upperScope": Object {
+        "$ref": 9,
+      },
+      "variableMap": Object {
         "subject": Object {
           "$ref": 3,
         },
@@ -22499,6 +22834,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "eachr": Object {
@@ -22739,6 +23075,7 @@ Object {
         },
       ],
       "type": "enum",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 14,
       },
@@ -22929,6 +23266,7 @@ Object {
   ],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "E": Object {
@@ -23094,6 +23432,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "enum",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -23158,6 +23497,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Foo": Object {
@@ -23250,6 +23590,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -23297,6 +23638,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -23518,6 +23860,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "a": Object {
@@ -23873,6 +24216,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "empty-function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -23897,6 +24241,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "empty-function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -23966,6 +24311,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -24040,6 +24386,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "f": Object {
@@ -24120,6 +24467,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "empty-function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -24144,6 +24492,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "empty-function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -24204,6 +24553,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "f": Object {
@@ -24316,6 +24666,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 6,
           },
@@ -24394,6 +24745,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -24458,6 +24810,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Test": Object {
@@ -24538,6 +24891,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 13,
       },
@@ -24574,9 +24928,7 @@ Object {
             "type": "Identifier",
           },
           "kind": "r",
-          "resolved": Object {
-            "$ref": 0,
-          },
+          "resolved": null,
           "writeExpr": undefined,
         },
       ],
@@ -24586,6 +24938,7 @@ Object {
         },
       ],
       "type": "interface",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 13,
       },
@@ -24622,9 +24975,7 @@ Object {
             "type": "Identifier",
           },
           "kind": "r",
-          "resolved": Object {
-            "$ref": 1,
-          },
+          "resolved": null,
           "writeExpr": undefined,
         },
         Object {
@@ -24660,9 +25011,7 @@ Object {
             "type": "Identifier",
           },
           "kind": "r",
-          "resolved": Object {
-            "$ref": 0,
-          },
+          "resolved": null,
           "writeExpr": undefined,
         },
         Object {
@@ -24679,9 +25028,7 @@ Object {
             "type": "Identifier",
           },
           "kind": "r",
-          "resolved": Object {
-            "$ref": 0,
-          },
+          "resolved": null,
           "writeExpr": undefined,
         },
       ],
@@ -24700,6 +25047,7 @@ Object {
         },
       ],
       "type": "interface",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 13,
       },
@@ -24727,16 +25075,29 @@ Object {
         "type": "Identifier",
       },
       "kind": "r",
-      "resolved": Object {
-        "$ref": 2,
-      },
+      "resolved": null,
       "writeExpr": undefined,
     },
   ],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 6,
+    },
+    Object {
+      "$ref": 8,
+    },
+    Object {
+      "$ref": 10,
+    },
+    Object {
+      "$ref": 11,
+    },
+    Object {
+      "$ref": 4,
+    },
+  ],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "A": Object {
       "$ref": 0,
     },
@@ -24746,6 +25107,9 @@ Object {
     "C": Object {
       "$ref": 2,
     },
+  },
+  "upperScope": null,
+  "variableMap": Object {
     "a": Object {
       "$ref": 3,
     },
@@ -24777,7 +25141,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "A",
@@ -24789,17 +25153,7 @@ Object {
         },
       ],
       "name": "A",
-      "references": Array [
-        Object {
-          "$ref": 6,
-        },
-        Object {
-          "$ref": 10,
-        },
-        Object {
-          "$ref": 11,
-        },
-      ],
+      "references": Array [],
       "scope": Object {
         "$ref": 13,
       },
@@ -24827,7 +25181,7 @@ Object {
           "type": "InterfaceName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "B",
@@ -24839,11 +25193,7 @@ Object {
         },
       ],
       "name": "B",
-      "references": Array [
-        Object {
-          "$ref": 8,
-        },
-      ],
+      "references": Array [],
       "scope": Object {
         "$ref": 13,
       },
@@ -24871,7 +25221,7 @@ Object {
           "type": "InterfaceName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "C",
@@ -24883,11 +25233,7 @@ Object {
         },
       ],
       "name": "C",
-      "references": Array [
-        Object {
-          "$ref": 4,
-        },
-      ],
+      "references": Array [],
       "scope": Object {
         "$ref": 13,
       },
@@ -24962,6 +25308,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "foo": Object {
@@ -25032,6 +25379,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -25067,6 +25415,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "interface",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -25103,9 +25452,7 @@ Object {
             "type": "Identifier",
           },
           "kind": "r",
-          "resolved": Object {
-            "$ref": 1,
-          },
+          "resolved": null,
           "writeExpr": undefined,
         },
       ],
@@ -25115,6 +25462,7 @@ Object {
         },
       ],
       "type": "interface",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 7,
       },
@@ -25142,16 +25490,20 @@ Object {
         "type": "Identifier",
       },
       "kind": "r",
-      "resolved": Object {
-        "$ref": 1,
-      },
+      "resolved": null,
       "writeExpr": undefined,
     },
   ],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+    Object {
+      "$ref": 5,
+    },
+  ],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "C": Object {
       "$ref": 1,
     },
@@ -25162,6 +25514,8 @@ Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 7,
   },
@@ -25208,7 +25562,7 @@ Object {
           "type": "TypeParameter",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "T",
@@ -25256,7 +25610,7 @@ Object {
           "type": "InterfaceName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "C",
@@ -25268,14 +25622,7 @@ Object {
         },
       ],
       "name": "C",
-      "references": Array [
-        Object {
-          "$ref": 3,
-        },
-        Object {
-          "$ref": 5,
-        },
-      ],
+      "references": Array [],
       "scope": Object {
         "$ref": 7,
       },
@@ -25303,7 +25650,7 @@ Object {
           "type": "InterfaceName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "R",
@@ -25374,6 +25721,7 @@ Object {
         },
       ],
       "type": "function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 6,
       },
@@ -25431,6 +25779,7 @@ Object {
   ],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "Foo": Object {
@@ -25577,6 +25926,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 10,
           },
@@ -25695,6 +26045,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 11,
       },
@@ -25805,6 +26156,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "A": Object {
@@ -25997,6 +26349,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "foo": Object {
@@ -26135,6 +26488,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "block",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 9,
       },
@@ -26272,6 +26626,7 @@ Object {
   ],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "N": Object {
@@ -26412,6 +26767,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -26486,6 +26842,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "foo": Object {
@@ -26566,6 +26923,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -26581,12 +26939,13 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "foo": Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 2,
   },
@@ -26614,7 +26973,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "foo",
@@ -26661,6 +27020,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 12,
       },
@@ -26707,9 +27067,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 0,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -26726,9 +27084,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 0,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
           ],
@@ -26741,6 +27097,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 11,
           },
@@ -26822,6 +27179,7 @@ Object {
         },
       ],
       "type": "class",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 12,
       },
@@ -26894,19 +27252,29 @@ Object {
         "type": "Identifier",
       },
       "kind": "r",
-      "resolved": Object {
-        "$ref": 0,
-      },
+      "resolved": null,
       "writeExpr": undefined,
     },
   ],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+    Object {
+      "$ref": 8,
+    },
+    Object {
+      "$ref": 9,
+    },
+  ],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "A": Object {
       "$ref": 0,
     },
+  },
+  "upperScope": null,
+  "variableMap": Object {
     "C": Object {
       "$ref": 2,
     },
@@ -26941,7 +27309,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "A",
@@ -26953,17 +27321,7 @@ Object {
         },
       ],
       "name": "A",
-      "references": Array [
-        Object {
-          "$ref": 3,
-        },
-        Object {
-          "$ref": 8,
-        },
-        Object {
-          "$ref": 9,
-        },
-      ],
+      "references": Array [],
       "scope": Object {
         "$ref": 12,
       },
@@ -27084,6 +27442,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 8,
       },
@@ -27134,9 +27493,7 @@ Object {
         "type": "Identifier",
       },
       "kind": "r",
-      "resolved": Object {
-        "$ref": 0,
-      },
+      "resolved": null,
       "writeExpr": undefined,
     },
     Object {
@@ -27210,15 +27567,16 @@ Object {
         "type": "Identifier",
       },
       "kind": "r",
-      "resolved": Object {
-        "$ref": 0,
-      },
+      "resolved": null,
       "writeExpr": undefined,
     },
   ],
   "throughReferences": Array [
     Object {
       "$ref": 1,
+    },
+    Object {
+      "$ref": 2,
     },
     Object {
       "$ref": 3,
@@ -27229,14 +27587,18 @@ Object {
     Object {
       "$ref": 5,
     },
+    Object {
+      "$ref": 6,
+    },
   ],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "A": Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 8,
   },
@@ -27264,7 +27626,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "A",
@@ -27276,14 +27638,7 @@ Object {
         },
       ],
       "name": "A",
-      "references": Array [
-        Object {
-          "$ref": 2,
-        },
-        Object {
-          "$ref": 6,
-        },
-      ],
+      "references": Array [],
       "scope": Object {
         "$ref": 8,
       },
@@ -27318,13 +27673,15 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "function",
+      "typeMap": Object {
+        "T": Object {
+          "$ref": 2,
+        },
+      },
       "upperScope": Object {
         "$ref": 4,
       },
       "variableMap": Object {
-        "T": Object {
-          "$ref": 2,
-        },
         "arguments": Object {
           "$ref": 1,
         },
@@ -27392,6 +27749,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "f": Object {
@@ -27509,6 +27867,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "a": Object {
@@ -27621,6 +27980,7 @@ Object {
         },
       ],
       "type": "function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 4,
       },
@@ -27656,6 +28016,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "test": Object {
@@ -27760,6 +28121,7 @@ Object {
         },
       ],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -27801,11 +28163,13 @@ Object {
   ],
   "throughReferences": Array [],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "B": Object {
       "$ref": 1,
     },
+  },
+  "upperScope": null,
+  "variableMap": Object {
     "obj": Object {
       "$ref": 0,
     },
@@ -27890,7 +28254,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "B",
@@ -28084,6 +28448,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "obj": Object {
@@ -28432,14 +28797,15 @@ Object {
         },
       ],
       "type": "interface",
-      "upperScope": Object {
-        "$ref": 17,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "T": Object {
           "$ref": 3,
         },
       },
+      "upperScope": Object {
+        "$ref": 17,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 17,
       },
@@ -28565,11 +28931,13 @@ Object {
     },
   ],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "A": Object {
       "$ref": 1,
     },
+  },
+  "upperScope": null,
+  "variableMap": Object {
     "obj": Object {
       "$ref": 0,
     },
@@ -28669,7 +29037,7 @@ Object {
           "type": "InterfaceName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "A",
@@ -28736,6 +29104,7 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "function",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 5,
       },
@@ -28814,6 +29183,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "f": Object {
@@ -28933,13 +29303,15 @@ Object {
       ],
       "throughReferences": Array [],
       "type": "function",
+      "typeMap": Object {
+        "T": Object {
+          "$ref": 2,
+        },
+      },
       "upperScope": Object {
         "$ref": 7,
       },
       "variableMap": Object {
-        "T": Object {
-          "$ref": 2,
-        },
         "arguments": Object {
           "$ref": 1,
         },
@@ -29058,6 +29430,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "g": Object {
@@ -29286,6 +29659,7 @@ Object {
   ],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "element": Object {
@@ -29544,6 +29918,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -29559,12 +29934,13 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "Foo": Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 2,
   },
@@ -29592,7 +29968,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "Foo",
@@ -29629,6 +30005,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -29705,6 +30082,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -29823,6 +30201,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -30127,14 +30506,15 @@ Object {
         },
       ],
       "type": "type-alias",
-      "upperScope": Object {
-        "$ref": 14,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "T": Object {
           "$ref": 1,
         },
       },
+      "upperScope": Object {
+        "$ref": 14,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 14,
       },
@@ -30222,12 +30602,13 @@ Object {
     },
   ],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "Unpacked": Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 14,
   },
@@ -30255,7 +30636,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "Unpacked",
@@ -30333,9 +30714,7 @@ Object {
             "type": "Identifier",
           },
           "kind": "r",
-          "resolved": Object {
-            "$ref": 0,
-          },
+          "resolved": null,
           "writeExpr": undefined,
         },
         Object {
@@ -30364,14 +30743,15 @@ Object {
         },
       ],
       "type": "type-alias",
-      "upperScope": Object {
-        "$ref": 6,
-      },
-      "variableMap": Object {
+      "typeMap": Object {
         "T": Object {
           "$ref": 1,
         },
       },
+      "upperScope": Object {
+        "$ref": 6,
+      },
+      "variableMap": Object {},
       "variableScope": Object {
         "$ref": 6,
       },
@@ -30429,14 +30809,19 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+  ],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "LinkedList": Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 6,
   },
@@ -30464,7 +30849,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "LinkedList",
@@ -30476,11 +30861,7 @@ Object {
         },
       ],
       "name": "LinkedList",
-      "references": Array [
-        Object {
-          "$ref": 3,
-        },
-      ],
+      "references": Array [],
       "scope": Object {
         "$ref": 6,
       },
@@ -30527,6 +30908,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "map": Object {
@@ -30625,6 +31007,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "map": Object {
@@ -30723,6 +31106,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "map": Object {
@@ -30821,6 +31205,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "map": Object {
@@ -30907,6 +31292,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -30922,12 +31308,13 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "Foo": Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 2,
   },
@@ -30955,7 +31342,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "Foo",
@@ -31002,6 +31389,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -31017,12 +31405,13 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "Foo": Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 2,
   },
@@ -31050,7 +31439,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "Foo",
@@ -31109,6 +31498,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -31207,6 +31597,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -31325,6 +31716,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -31401,6 +31793,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -31477,6 +31870,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -31553,6 +31947,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -31629,6 +32024,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -31715,6 +32111,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -31730,12 +32127,13 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "Foo": Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 2,
   },
@@ -31763,7 +32161,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "Foo",
@@ -31800,6 +32198,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "obj": Object {
@@ -31898,6 +32297,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -32045,6 +32445,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "x": Object {
@@ -32121,6 +32522,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {
     "intersection": Object {
@@ -32354,6 +32756,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "type-alias",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -32369,12 +32772,13 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
-  "upperScope": null,
-  "variableMap": Object {
+  "typeMap": Object {
     "Foo": Object {
       "$ref": 0,
     },
   },
+  "upperScope": null,
+  "variableMap": Object {},
   "variableScope": Object {
     "$ref": 2,
   },
@@ -32402,7 +32806,7 @@ Object {
           "type": "TypeAliasName",
         },
       ],
-      "eslintUsed": true,
+      "eslintUsed": undefined,
       "identifiers": Array [
         Object {
           "name": "Foo",

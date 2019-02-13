@@ -1,14 +1,49 @@
 import * as esScope from 'eslint-scope/lib/scope';
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { ScopeManager } from './scope-manager';
+import { Reference } from 'eslint-scope';
 import { Definition } from 'eslint-scope/lib/definition';
+import Variable from 'eslint-scope/lib/variable';
 
 export class Scope extends esScope.Scope {
+  setTypes: Map<string, Variable> = new Map();
+  types: Variable[] = [];
+
   /** @internal */
   __defineType(node: TSESTree.Node, def: Definition) {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.set, this.variables, node, def);
+      this.__defineGeneric(node.name, this.setTypes, this.variables, node, def);
     }
+  }
+
+  __resolveType(ref: Reference) {
+    const name = ref.identifier.name;
+
+    if (!this.setTypes.has(name)) {
+      return false;
+    }
+    const variable = this.setTypes.get(name);
+
+    if (!this.__isValidResolution(ref, variable)) {
+      return false;
+    }
+    variable.references.push(ref);
+    variable.stack = variable.stack && ref.from.variableScope === this.variableScope;
+    if (ref.tainted) {
+      variable.tainted = true;
+      this.taints.set(variable.name, true);
+    }
+    ref.resolved = variable;
+
+    return true;
+  }
+
+  /** @internal */
+  __resolve(ref: Reference): boolean {
+    if (ref.typeMode && this.__resolveType(ref)) {
+      return true;
+    }
+    return super.__resolve(ref);
   }
 }
 
@@ -57,10 +92,43 @@ export class TypeAliasScope extends Scope {
 /// eslint scopes
 
 export class GlobalScope extends esScope.GlobalScope implements Scope {
+  setTypes: Map<string, Variable> = new Map();
+  types: Variable[] = [];
+
+  __resolveType(ref: Reference) {
+    const name = ref.identifier.name;
+
+    if (!this.setTypes.has(name)) {
+      return false;
+    }
+    const variable = this.setTypes.get(name);
+
+    if (!this.__isValidResolution(ref, variable)) {
+      return false;
+    }
+    variable.references.push(ref);
+    variable.stack = variable.stack && ref.from.variableScope === this.variableScope;
+    if (ref.tainted) {
+      variable.tainted = true;
+      this.taints.set(variable.name, true);
+    }
+    ref.resolved = variable;
+
+    return true;
+  }
+
+  /** @internal */
+  __resolve(ref: Reference): boolean {
+    if (ref.typeMode && this.__resolveType(ref)) {
+      return true;
+    }
+    return super.__resolve(ref);
+  }
+
   /** @internal */
   __defineType(node: TSESTree.Node, def: Definition) {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.set, this.variables, node, def);
+      this.__defineGeneric(node.name, this.setTypes, this.variables, node, def);
 
       // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
       const variable = this.set.get(node.name);
@@ -87,28 +155,127 @@ export class GlobalScope extends esScope.GlobalScope implements Scope {
 export class FunctionExpressionNameScope
   extends esScope.FunctionExpressionNameScope
   implements Scope {
+  setTypes: Map<string, Variable> = new Map();
+  types: Variable[] = [];
+
+  __resolveType(ref: Reference) {
+    const name = ref.identifier.name;
+
+    if (!this.setTypes.has(name)) {
+      return false;
+    }
+    const variable = this.setTypes.get(name);
+
+    if (!this.__isValidResolution(ref, variable)) {
+      return false;
+    }
+    variable.references.push(ref);
+    variable.stack = variable.stack && ref.from.variableScope === this.variableScope;
+    if (ref.tainted) {
+      variable.tainted = true;
+      this.taints.set(variable.name, true);
+    }
+    ref.resolved = variable;
+
+    return true;
+  }
+
+  /** @internal */
+  __resolve(ref: Reference): boolean {
+    if (ref.typeMode && this.__resolveType(ref)) {
+      return true;
+    }
+    return super.__resolve(ref);
+  }
+
   /** @internal */
   __defineType(node: TSESTree.Node, def: Definition) {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.set, this.variables, node, def);
+      this.__defineGeneric(node.name, this.setTypes, this.variables, node, def);
     }
   }
 }
 
 export class WithScope extends esScope.WithScope implements Scope {
+  setTypes: Map<string, Variable> = new Map();
+  types: Variable[] = [];
+
+  __resolveType(ref: Reference) {
+    const name = ref.identifier.name;
+
+    if (!this.setTypes.has(name)) {
+      return false;
+    }
+    const variable = this.setTypes.get(name);
+
+    if (!this.__isValidResolution(ref, variable)) {
+      return false;
+    }
+    variable.references.push(ref);
+    variable.stack = variable.stack && ref.from.variableScope === this.variableScope;
+    if (ref.tainted) {
+      variable.tainted = true;
+      this.taints.set(variable.name, true);
+    }
+    ref.resolved = variable;
+
+    return true;
+  }
+
+  /** @internal */
+  __resolve(ref: Reference): boolean {
+    if (ref.typeMode && this.__resolveType(ref)) {
+      return true;
+    }
+    return super.__resolve(ref);
+  }
+
   /** @internal */
   __defineType(node: TSESTree.Node, def: Definition) {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.set, this.variables, node, def);
+      this.__defineGeneric(node.name, this.setTypes, this.variables, node, def);
     }
   }
 }
 
 export class FunctionScope extends esScope.FunctionScope implements Scope {
+  setTypes: Map<string, Variable> = new Map();
+  types: Variable[] = [];
+
+  __resolveType(ref: Reference) {
+    const name = ref.identifier.name;
+
+    if (!this.setTypes.has(name)) {
+      return false;
+    }
+    const variable = this.setTypes.get(name);
+
+    if (!this.__isValidResolution(ref, variable)) {
+      return false;
+    }
+    variable.references.push(ref);
+    variable.stack = variable.stack && ref.from.variableScope === this.variableScope;
+    if (ref.tainted) {
+      variable.tainted = true;
+      this.taints.set(variable.name, true);
+    }
+    ref.resolved = variable;
+
+    return true;
+  }
+
+  /** @internal */
+  __resolve(ref: Reference): boolean {
+    if (ref.typeMode && this.__resolveType(ref)) {
+      return true;
+    }
+    return super.__resolve(ref);
+  }
+
   /** @internal */
   __defineType(node: TSESTree.Node, def: Definition) {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.set, this.variables, node, def);
+      this.__defineGeneric(node.name, this.setTypes, this.variables, node, def);
     }
   }
 }

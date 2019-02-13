@@ -26,6 +26,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -41,6 +42,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -86,6 +88,7 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "type-alias",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 9,
           },
@@ -153,6 +156,7 @@ Object {
             },
           ],
           "type": "function",
+          "typeMap": Object {},
           "upperScope": Object {
             "$ref": 9,
           },
@@ -231,15 +235,17 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {
+        "Props": Object {
+          "$ref": 1,
+        },
+      },
       "upperScope": Object {
         "$ref": 10,
       },
       "variableMap": Object {
         "App": Object {
           "$ref": 2,
-        },
-        "Props": Object {
-          "$ref": 1,
         },
         "React": Object {
           "$ref": 0,
@@ -387,6 +393,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {

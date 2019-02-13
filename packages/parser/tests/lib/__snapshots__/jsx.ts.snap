@@ -68,6 +68,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 3,
       },
@@ -90,6 +91,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -125,6 +127,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -140,6 +143,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -175,6 +179,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -190,6 +195,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -247,6 +253,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -266,6 +273,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -301,6 +309,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -316,6 +325,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -351,6 +361,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -366,6 +377,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -401,6 +413,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -416,6 +429,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -501,6 +515,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -516,6 +531,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -573,6 +589,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -592,6 +609,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -627,6 +645,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -642,6 +661,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -677,6 +697,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -692,6 +713,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -727,6 +749,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -742,6 +765,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -779,6 +803,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -794,6 +819,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -829,6 +855,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -844,6 +871,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -881,6 +909,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -896,6 +925,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -931,6 +961,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -946,6 +977,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -981,6 +1013,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -996,6 +1029,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1053,6 +1087,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -1072,6 +1107,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1129,6 +1165,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -1148,6 +1185,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1183,6 +1221,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -1198,6 +1237,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1233,6 +1273,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -1248,6 +1289,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1283,6 +1325,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -1298,6 +1341,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1333,6 +1377,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -1348,6 +1393,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1405,6 +1451,7 @@ Object {
         },
       ],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 2,
       },
@@ -1424,6 +1471,7 @@ Object {
     },
   ],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1459,6 +1507,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -1474,6 +1523,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1509,6 +1559,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -1524,6 +1575,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
@@ -1559,6 +1611,7 @@ Object {
       "references": Array [],
       "throughReferences": Array [],
       "type": "module",
+      "typeMap": Object {},
       "upperScope": Object {
         "$ref": 1,
       },
@@ -1574,6 +1627,7 @@ Object {
   "references": Array [],
   "throughReferences": Array [],
   "type": "global",
+  "typeMap": Object {},
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
