@@ -1,4 +1,8 @@
 /** Reference resolver. */
+import { Reference, Variable } from "eslint-scope";
+import { Scope } from "../../src/scope/scopes";
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
+
 export class ReferenceResolver {
   map: Map<any, any>;
 
@@ -6,7 +10,7 @@ export class ReferenceResolver {
     this.map = new Map();
   }
 
-  resolve(obj: any, properties: any) {
+  resolve<T>(obj: any, properties: T): T & { $id: number } {
     const resolved = Object.assign({ $id: this.map.size }, properties);
     this.map.set(obj, resolved);
     return resolved;
@@ -29,28 +33,28 @@ export class ReferenceResolver {
 /**
  * Convert a given node object to JSON object.
  * This saves only type and range to know what the node is.
- * @param {ASTNode} node The AST node object.
- * @returns {Object} The object that can be used for JSON.stringify.
+ * @param node The AST node object.
+ * @returns The object that can be used for JSON.stringify.
  */
-export function nodeToJSON(node: any) {
+export function nodeToJSON(node: TSESTree.Node | null): any {
   if (!node) {
     return node;
   }
 
-  const { type, name, range } = node;
-  if (node.type === 'Identifier') {
-    return { type, name, range };
+  const { type, range } = node;
+  if (node.type === AST_NODE_TYPES.Identifier) {
+    return { type, name: node.name, range };
   }
   return { type, range };
 }
 
 /**
  * Convert a given variable object to JSON object.
- * @param {Variable} variable The eslint-scope's variable object.
- * @param {ReferenceResolver} resolver The reference resolver.
+ * @param variable The eslint-scope's variable object.
+ * @param resolver The reference resolver.
  * @returns {Object} The object that can be used for JSON.stringify.
  */
-export function variableToJSON(variable: any, resolver: any) {
+export function variableToJSON(variable: Variable, resolver: ReferenceResolver) {
   const { name, eslintUsed } = variable;
   const defs = variable.defs.map((d: any) => ({
     type: d.type,
@@ -74,11 +78,14 @@ export function variableToJSON(variable: any, resolver: any) {
 
 /**
  * Convert a given reference object to JSON object.
- * @param {Reference} reference The eslint-scope's reference object.
- * @param {ReferenceResolver} resolver The reference resolver.
- * @returns {Object} The object that can be used for JSON.stringify.
+ * @param reference The eslint-scope's reference object.
+ * @param resolver The reference resolver.
+ * @returns The object that can be used for JSON.stringify.
  */
-export function referenceToJSON(reference: any, resolver: any) {
+export function referenceToJSON(
+  reference: Reference,
+  resolver: ReferenceResolver
+) {
   const kind = `${reference.isRead() ? 'r' : ''}${
     reference.isWrite() ? 'w' : ''
   }`;
@@ -98,11 +105,14 @@ export function referenceToJSON(reference: any, resolver: any) {
 
 /**
  * Convert a given scope object to JSON object.
- * @param {Scope} scope The eslint-scope's scope object.
- * @param {ReferenceResolver} resolver The reference resolver.
+ * @param scope The eslint-scope's scope object.
+ * @param resolver The reference resolver.
  * @returns {Object} The object that can be used for JSON.stringify.
  */
-export function scopeToJSON(scope: any, resolver = new ReferenceResolver()) {
+export function scopeToJSON(
+  scope: Scope,
+  resolver = new ReferenceResolver()
+): any {
   const { type, functionExpressionScope, isStrict } = scope;
   const block = nodeToJSON(scope.block);
   const variables = scope.variables.map((v: any) =>
@@ -121,8 +131,8 @@ export function scopeToJSON(scope: any, resolver = new ReferenceResolver()) {
   const throughReferences = scope.through.map(resolver.ref, resolver);
   const variableScope = resolver.ref(scope.variableScope);
   const upperScope = resolver.ref(scope.upper);
-  const childScopes = scope.childScopes.map((c: any) =>
-    scopeToJSON(c, resolver)
+  const childScopes = scope.childScopes.map(c =>
+    scopeToJSON(c as Scope, resolver)
   );
 
   return resolver.resolve(scope, {
@@ -145,7 +155,7 @@ export function getScopeTree(scopeManager: any) {
 
   // Do the postprocess to test.
   // https://github.com/eslint/eslint/blob/84ce72fdeba082b7b132e4ac6b714fb1a93831b7/lib/linter.js#L112-L129
-  globalScope.through = globalScope.through.filter((reference: any) => {
+  globalScope.through = globalScope.through.filter((reference: Reference) => {
     const name = reference.identifier.name;
     const variable = globalScope.set.get(name);
     if (variable) {

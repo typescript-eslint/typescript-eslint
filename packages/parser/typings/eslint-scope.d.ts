@@ -42,6 +42,7 @@ declare module 'eslint-scope/lib/variable' {
     defs: Definition[];
     eslintUsed?: boolean;
     stack?: any;
+    scope?: any;
     tainted?: boolean;
   }
 }
@@ -205,7 +206,7 @@ declare module 'eslint-scope/lib/referencer' {
 
 declare module 'eslint-scope/lib/scope' {
   import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import Reference from 'eslint-scope/lib/reference';
+  import Reference, { ReferenceFlag } from 'eslint-scope/lib/reference';
   import Variable from 'eslint-scope/lib/variable';
   import ScopeManager from 'eslint-scope/lib/scope-manager';
   import { Definition } from 'eslint-scope/lib/definition';
@@ -273,7 +274,7 @@ declare module 'eslint-scope/lib/scope' {
 
     __referencing(
       node: TSESTree.Node,
-      assign?: number,
+      assign?: ReferenceFlag,
       writeExpr?: TSESTree.Node,
       maybeImplicitGlobal?: any,
       partial?: any,
