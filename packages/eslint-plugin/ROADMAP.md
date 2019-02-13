@@ -169,7 +169,7 @@
 | [`object-literal-shorthand`]        | 🌟  | [`object-shorthand`][object-shorthand]                                              |
 | [`one-line`]                        | 🛑  | N/A                                                                                 |
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
-| [`ordered-imports`]                 | 🔌  | [`import/order`]                                                                    |
+| [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
 | [`prefer-function-over-method`]     | 🌟  | [`class-methods-use-this`][class-methods-use-this]                                  |
 | [`prefer-method-signature`]         | 🛑  | N/A                                                                                 |
 | [`prefer-switch`]                   | 🛑  | N/A                                                                                 |
