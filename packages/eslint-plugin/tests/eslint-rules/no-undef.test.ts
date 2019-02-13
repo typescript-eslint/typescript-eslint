@@ -40,7 +40,7 @@ class X {
 /*globals document, selector */
 const links = document.querySelectorAll( selector ) as NodeListOf<HTMLElement>
       `,
-      env: { browser: true }
+      env: { browser: true },
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/437
     `

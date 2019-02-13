@@ -1,29 +1,24 @@
-import { TSESTree, TSESLintScope } from '@typescript-eslint/experimental-utils';
+import {
+  TSESTree,
+  TSESLintScope,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import { ScopeManager } from './scope-manager';
 
 export class Scope extends TSESLintScope.Scope {
+  setTypes: Map<string, TSESLintScope.Variable> = new Map();
+  types: TSESLintScope.Variable[] = [];
+
+  /** @internal */
+  __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
+    if (node && node.type === AST_NODE_TYPES.Identifier) {
+      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+    }
+  }
+
   /** @internal */
   __resolve(ref: TSESLintScope.Reference): boolean {
-    const name = ref.identifier.name;
-
-    if (!this.set.has(name)) {
-      return false;
-    }
-    const variable = this.set.get(name)!;
-
-    if (!this.__isValidResolution(ref, variable)) {
-      return false;
-    }
-    variable.references.push(ref);
-    variable.stack =
-      variable.stack && ref.from.variableScope === this.variableScope;
-    if (ref.tainted) {
-      variable.tainted = true;
-      this.taints.set(variable.name, true);
-    }
-    ref.resolved = variable;
-
-    return true;
+    return super.__resolve(ref);
   }
 }
 
@@ -31,7 +26,7 @@ export class Scope extends TSESLintScope.Scope {
 export class EnumScope extends Scope {
   constructor(
     scopeManager: ScopeManager,
-    upperScope: TSESLintScope.Scope,
+    upperScope: Scope,
     block: TSESTree.TSEnumDeclaration | null,
   ) {
     super(scopeManager, 'enum', upperScope, block, false);
@@ -42,7 +37,7 @@ export class EnumScope extends Scope {
 export class EmptyFunctionScope extends Scope {
   constructor(
     scopeManager: ScopeManager,
-    upperScope: TSESLintScope.Scope,
+    upperScope: Scope,
     block: TSESTree.TSDeclareFunction | null,
   ) {
     super(scopeManager, 'empty-function', upperScope, block, false);
@@ -52,7 +47,7 @@ export class EmptyFunctionScope extends Scope {
 export class InterfaceScope extends Scope {
   constructor(
     scopeManager: ScopeManager,
-    upperScope: TSESLintScope.Scope,
+    upperScope: Scope,
     block: TSESTree.TSInterfaceDeclaration | null,
   ) {
     super(scopeManager, 'interface', upperScope, block, false);
@@ -62,11 +57,134 @@ export class InterfaceScope extends Scope {
 export class TypeAliasScope extends Scope {
   constructor(
     scopeManager: ScopeManager,
-    upperScope: TSESLintScope.Scope,
+    upperScope: Scope,
     block: TSESTree.TSTypeAliasDeclaration | null,
   ) {
     super(scopeManager, 'type-alias', upperScope, block, false);
   }
 }
 
-// TODO: extend all Scopes
+/// eslint scopes
+
+export class GlobalScope extends TSESLintScope.GlobalScope {
+  setTypes: Map<string, TSESLintScope.Variable> = new Map();
+  types: TSESLintScope.Variable[] = [];
+
+  /** @internal */
+  __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
+    if (node && node.type === AST_NODE_TYPES.Identifier) {
+      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+    }
+  }
+
+  __define(
+    node: TSESTree.Identifier,
+    definition: TSESLintScope.Definition,
+  ): void {
+    super.__define(node, definition);
+
+    // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
+    const variable = this.set.get(node.name);
+    if (variable) {
+      variable.eslintUsed = true;
+    }
+  }
+}
+
+export class FunctionExpressionNameScope extends TSESLintScope.FunctionExpressionNameScope {
+  setTypes: Map<string, TSESLintScope.Variable> = new Map();
+  types: TSESLintScope.Variable[] = [];
+
+  /** @internal */
+  __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
+    if (node && node.type === AST_NODE_TYPES.Identifier) {
+      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+    }
+  }
+}
+
+export class WithScope extends TSESLintScope.WithScope {
+  setTypes: Map<string, TSESLintScope.Variable> = new Map();
+  types: TSESLintScope.Variable[] = [];
+
+  /** @internal */
+  __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
+    if (node && node.type === AST_NODE_TYPES.Identifier) {
+      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+    }
+  }
+}
+
+export class FunctionScope extends TSESLintScope.FunctionScope {
+  setTypes: Map<string, TSESLintScope.Variable> = new Map();
+  types: TSESLintScope.Variable[] = [];
+
+  /** @internal */
+  __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
+    if (node && node.type === AST_NODE_TYPES.Identifier) {
+      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+    }
+  }
+}
+
+// eslint simple scopes
+
+export class ModuleScope extends Scope {
+  constructor(
+    scopeManager: ScopeManager,
+    upperScope: Scope,
+    block: TSESTree.Node | null,
+  ) {
+    super(scopeManager, 'module', upperScope, block, false);
+  }
+}
+
+export class CatchScope extends Scope {
+  constructor(
+    scopeManager: ScopeManager,
+    upperScope: Scope,
+    block: TSESTree.Node | null,
+  ) {
+    super(scopeManager, 'catch', upperScope, block, false);
+  }
+}
+
+export class BlockScope extends Scope {
+  constructor(
+    scopeManager: ScopeManager,
+    upperScope: Scope,
+    block: TSESTree.Node | null,
+  ) {
+    super(scopeManager, 'block', upperScope, block, false);
+  }
+}
+
+export class SwitchScope extends Scope {
+  constructor(
+    scopeManager: ScopeManager,
+    upperScope: Scope,
+    block: TSESTree.Node | null,
+  ) {
+    super(scopeManager, 'switch', upperScope, block, false);
+  }
+}
+
+export class ForScope extends Scope {
+  constructor(
+    scopeManager: ScopeManager,
+    upperScope: Scope,
+    block: TSESTree.Node | null,
+  ) {
+    super(scopeManager, 'for', upperScope, block, false);
+  }
+}
+
+export class ClassScope extends Scope {
+  constructor(
+    scopeManager: ScopeManager,
+    upperScope: Scope,
+    block: TSESTree.Node | null,
+  ) {
+    super(scopeManager, 'class', upperScope, block, false);
+  }
+}

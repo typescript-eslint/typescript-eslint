@@ -9,13 +9,14 @@ import {
 import { Scope } from './Scope';
 import { ScopeManager } from './ScopeManager';
 
-interface Referencer<SM extends ScopeManager> extends Visitor {
+interface Referencer<SC extends Scope, SM extends ScopeManager<SC>>
+  extends Visitor {
   isInnerMethodDefinition: boolean;
   options: any;
   scopeManager: SM;
   parent?: TSESTree.Node;
 
-  currentScope(): Scope;
+  currentScope(): SC;
   close(node: TSESTree.Node): void;
   pushInnerMethodDefinition(isInnerMethodDefinition: boolean): boolean;
   popInnerMethodDefinition(isInnerMethodDefinition: boolean): void;
@@ -80,7 +81,10 @@ interface Referencer<SM extends ScopeManager> extends Visitor {
   MetaProperty(): void;
 }
 const Referencer = ESLintReferencer as {
-  new <SM extends ScopeManager>(options: any, scopeManager: SM): Referencer<SM>;
+  new <SC extends Scope, SM extends ScopeManager<SC>>(
+    options: any,
+    scopeManager: SM,
+  ): Referencer<SC, SM>;
 };
 
 export { Referencer };

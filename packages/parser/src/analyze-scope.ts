@@ -10,112 +10,10 @@ import { typeReferencing } from './scope/typeReferencing';
 import { ScopeManager } from './scope/scope-manager';
 import { visitorKeys as childVisitorKeys } from '@typescript-eslint/typescript-estree';
 import { TypeDefinition } from './scope/TypeDefinition';
+import { PatternVisitor } from './scope/pattern-visitor';
+import { Scope } from './scope/scopes';
 
-/**
- * Define the override function of `Scope#__define` for global augmentation.
- * @param {Function} define The original Scope#__define method.
- * @returns {Function} The override function.
- */
-function overrideDefine(
-  define: (node: TSESTree.Node, def: TSESLintScope.Definition) => void,
-) {
-  return function(
-    this: TSESLintScope.Scope,
-    node: TSESTree.Node,
-    definition: TSESLintScope.Definition,
-  ): void {
-    define.call(this, node, definition);
-
-    // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
-    const variable =
-      'name' in node &&
-      typeof node.name === 'string' &&
-      this.set.get(node.name);
-    if (variable) {
-      variable.eslintUsed = true;
-    }
-  };
-}
-
-class PatternVisitor extends TSESLintScope.PatternVisitor {
-  constructor(
-    options: TSESLintScope.PatternVisitorOptions,
-    rootPattern: TSESTree.BaseNode,
-    callback: TSESLintScope.PatternVisitorCallback,
-  ) {
-    super(options, rootPattern, callback);
-  }
-
-  static isPattern(node: TSESTree.Node): boolean {
-    const nodeType = node.type;
-
-    return (
-      TSESLintScope.PatternVisitor.isPattern(node) ||
-      nodeType === AST_NODE_TYPES.TSParameterProperty ||
-      nodeType === AST_NODE_TYPES.TSTypeParameter
-    );
-  }
-
-  Identifier(node: TSESTree.Identifier): void {
-    super.Identifier(node);
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-    if (node.typeAnnotation) {
-      this.rightHandNodes.push(node.typeAnnotation);
-    }
-  }
-
-  ArrayPattern(node: TSESTree.ArrayPattern): void {
-    node.elements.forEach(this.visit, this);
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-    if (node.typeAnnotation) {
-      this.rightHandNodes.push(node.typeAnnotation);
-    }
-  }
-
-  ObjectPattern(node: TSESTree.ObjectPattern): void {
-    node.properties.forEach(this.visit, this);
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-    if (node.typeAnnotation) {
-      this.rightHandNodes.push(node.typeAnnotation);
-    }
-  }
-
-  RestElement(node: TSESTree.RestElement): void {
-    super.RestElement(node);
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-    if (node.typeAnnotation) {
-      this.rightHandNodes.push(node.typeAnnotation);
-    }
-  }
-
-  TSParameterProperty(node: TSESTree.TSParameterProperty): void {
-    this.visit(node.parameter);
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-  }
-
-  TSTypeParameter(node: TSESTree.TSTypeParameter): void {
-    this.visit(node.name);
-
-    if (node.constraint) {
-      this.rightHandNodes.push(node.constraint);
-    }
-    if (node.default) {
-      this.rightHandNodes.push(node.default);
-    }
-  }
-}
-
-class Referencer extends TSESLintScope.Referencer<ScopeManager> {
+class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
   protected typeMode: boolean;
 
   constructor(
@@ -494,7 +392,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     this.visit(node.typeParameters);
 
     if (node.id) {
-      scope.__define(
+      scope.__defineType(
         node.id,
         new TypeDefinition('InterfaceName', node.id, node, null, null, null),
       );
@@ -537,7 +435,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
       this.visitPattern(
         node.parameters[i],
         { processRightHandNodes: true },
-        () => {}
+        () => {},
       );
     }
 
@@ -599,7 +497,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
         node.params[i],
         { processRightHandNodes: true },
         (pattern, info) => {
-          this.currentScope().__define(
+          this.currentScope().__defineType(
             pattern,
             new TypeDefinition('TypeParameter', pattern, node, null, i),
           );
@@ -852,7 +750,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     this.typeMode = true;
 
     if (node.id && node.id.type === AST_NODE_TYPES.Identifier) {
-      scope.__define(
+      scope.__defineType(
         node.id,
         new TSESLintScope.Definition(
           'TypeAliasName',
@@ -929,11 +827,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
   visitGlobalAugmentation(node: TSESTree.TSModuleDeclaration): void {
     const scopeManager = this.scopeManager;
     const currentScope = this.currentScope();
-    const globalScope = scopeManager.globalScope;
-    const originalDefine = globalScope.__define;
-
-    globalScope.__define = overrideDefine(originalDefine);
-    scopeManager.__currentScope = globalScope;
+    scopeManager.__currentScope = scopeManager.globalScope;
 
     // Skip TSModuleBlock to avoid to create that block scope.
     if (node.body && node.body.type === AST_NODE_TYPES.TSModuleBlock) {
@@ -941,7 +835,6 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     }
 
     scopeManager.__currentScope = currentScope;
-    globalScope.__define = originalDefine;
   }
 
   /**
