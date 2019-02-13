@@ -150,7 +150,31 @@ class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
    * @param node The class node to visit.
    */
   visitClass(node: TSESTree.ClassDeclaration | TSESTree.ClassExpression): void {
+    if (node.type === AST_NODE_TYPES.ClassDeclaration && node.id) {
+      this.currentScope().__define(
+        node.id,
+        new TSESLintScope.Definition(
+          'ClassName',
+          node.id,
+          node,
+          null,
+          null,
+          null,
+        ),
+      );
+    }
+
     this.visitDecorators(node.decorators);
+    this.visit(node.superClass);
+
+    this.scopeManager.__nestClassScope(node);
+
+    if (node.id) {
+      this.currentScope().__define(
+        node.id,
+        new TSESLintScope.Definition('ClassName', node.id, node),
+      );
+    }
 
     const upperTypeMode = this.typeMode;
     this.typeMode = true;
@@ -165,7 +189,9 @@ class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
     }
     this.typeMode = upperTypeMode;
 
-    super.visitClass(node);
+    this.visit(node.body);
+
+    this.close(node);
   }
 
   /**

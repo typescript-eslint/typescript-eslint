@@ -134,6 +134,12 @@ export function scopeToJSON(
     map[name] = resolver.ref(variable);
     return map;
   }, {});
+  const typeMap = Array.from(scope.setTypes.entries()).reduce<
+    Record<string, { $ref: number }>
+  >((map, [name, variable]) => {
+    map[name] = resolver.ref(variable);
+    return map;
+  }, {});
   const throughReferences = scope.through.map(resolver.ref, resolver);
   const variableScope = resolver.ref(scope.variableScope);
   const upperScope = resolver.ref(scope.upper);
@@ -147,6 +153,7 @@ export function scopeToJSON(
     variables,
     references,
     variableMap,
+    typeMap,
     throughReferences,
     variableScope,
     upperScope,
