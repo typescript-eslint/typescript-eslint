@@ -102,7 +102,7 @@ Object {
 
 exports[`TSX fixtures/react-typed-props.src 1`] = `
 Object {
-  "$id": 9,
+  "$id": 10,
   "block": Object {
     "range": Array [
       0,
@@ -112,7 +112,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 8,
+      "$id": 9,
       "block": Object {
         "range": Array [
           0,
@@ -122,7 +122,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 3,
           "block": Object {
             "range": Array [
               31,
@@ -137,16 +137,16 @@ Object {
           "throughReferences": Array [],
           "type": "type-alias",
           "upperScope": Object {
-            "$ref": 8,
+            "$ref": 9,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 8,
+            "$ref": 9,
           },
           "variables": Array [],
         },
         Object {
-          "$id": 7,
+          "$id": 8,
           "block": Object {
             "range": Array [
               80,
@@ -159,9 +159,9 @@ Object {
           "isStrict": true,
           "references": Array [
             Object {
-              "$id": 5,
+              "$id": 6,
               "from": Object {
-                "$ref": 7,
+                "$ref": 8,
               },
               "identifier": Object {
                 "name": "Props",
@@ -172,13 +172,15 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": null,
+              "resolved": Object {
+                "$ref": 1,
+              },
               "writeExpr": undefined,
             },
             Object {
-              "$id": 6,
+              "$id": 7,
               "from": Object {
-                "$ref": 7,
+                "$ref": 8,
               },
               "identifier": Object {
                 "name": "props",
@@ -190,45 +192,45 @@ Object {
               },
               "kind": "r",
               "resolved": Object {
-                "$ref": 4,
+                "$ref": 5,
               },
               "writeExpr": undefined,
             },
           ],
           "throughReferences": Array [
             Object {
-              "$ref": 5,
+              "$ref": 6,
             },
           ],
           "type": "function",
           "upperScope": Object {
-            "$ref": 8,
+            "$ref": 9,
           },
           "variableMap": Object {
             "arguments": Object {
-              "$ref": 3,
+              "$ref": 4,
             },
             "props": Object {
-              "$ref": 4,
+              "$ref": 5,
             },
           },
           "variableScope": Object {
-            "$ref": 7,
+            "$ref": 8,
           },
           "variables": Array [
             Object {
-              "$id": 3,
+              "$id": 4,
               "defs": Array [],
               "eslintUsed": undefined,
               "identifiers": Array [],
               "name": "arguments",
               "references": Array [],
               "scope": Object {
-                "$ref": 7,
+                "$ref": 8,
               },
             },
             Object {
-              "$id": 4,
+              "$id": 5,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -264,11 +266,11 @@ Object {
               "name": "props",
               "references": Array [
                 Object {
-                  "$ref": 6,
+                  "$ref": 7,
                 },
               ],
               "scope": Object {
-                "$ref": 7,
+                "$ref": 8,
               },
             },
           ],
@@ -277,17 +279,16 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 5,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 9,
+        "$ref": 10,
       },
       "variableMap": Object {
         "App": Object {
+          "$ref": 2,
+        },
+        "Props": Object {
           "$ref": 1,
         },
         "React": Object {
@@ -295,7 +296,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 8,
+        "$ref": 9,
       },
       "variables": Array [
         Object {
@@ -341,11 +342,55 @@ Object {
           "name": "React",
           "references": Array [],
           "scope": Object {
-            "$ref": 8,
+            "$ref": 9,
           },
         },
         Object {
           "$id": 1,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "Props",
+                "range": Array [
+                  36,
+                  41,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  31,
+                  63,
+                ],
+                "type": "TSTypeAliasDeclaration",
+              },
+              "parent": null,
+              "type": "TypeAliasName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "Props",
+              "range": Array [
+                36,
+                41,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "Props",
+          "references": Array [
+            Object {
+              "$ref": 6,
+            },
+          ],
+          "scope": Object {
+            "$ref": 9,
+          },
+        },
+        Object {
+          "$id": 2,
           "defs": Array [
             Object {
               "name": Object {
@@ -381,7 +426,7 @@ Object {
           "name": "App",
           "references": Array [],
           "scope": Object {
-            "$ref": 8,
+            "$ref": 9,
           },
         },
       ],
@@ -390,16 +435,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 5,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 9,
+    "$ref": 10,
   },
   "variables": Array [],
 }

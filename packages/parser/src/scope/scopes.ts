@@ -6,19 +6,11 @@ import {
 import { ScopeManager } from './scope-manager';
 
 export class Scope extends TSESLintScope.Scope {
-  setTypes: Map<string, TSESLintScope.Variable> = new Map();
-  types: TSESLintScope.Variable[] = [];
-
   /** @internal */
   __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+      this.__defineGeneric(node.name, this.set, this.variables, node, def);
     }
-  }
-
-  /** @internal */
-  __resolve(ref: TSESLintScope.Reference): boolean {
-    return super.__resolve(ref);
   }
 }
 
@@ -67,26 +59,32 @@ export class TypeAliasScope extends Scope {
 /// eslint scopes
 
 export class GlobalScope extends TSESLintScope.GlobalScope implements Scope {
-  setTypes: Map<string, TSESLintScope.Variable> = new Map();
-  types: TSESLintScope.Variable[] = [];
-
   /** @internal */
   __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+      this.__defineGeneric(node.name, this.set, this.variables, node, def);
+
+      // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
+      const variable = this.set.get(node.name);
+      if (variable) {
+        variable.eslintUsed = true;
+      }
     }
   }
 
+  /** @internal */
   __define(
     node: TSESTree.Identifier,
     definition: TSESLintScope.Definition,
   ): void {
-    super.__define(node, definition);
+    if (node && node.type === AST_NODE_TYPES.Identifier) {
+      super.__define(node, definition);
 
-    // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
-    const variable = this.set.get(node.name);
-    if (variable) {
-      variable.eslintUsed = true;
+      // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
+      const variable = this.set.get(node.name);
+      if (variable) {
+        variable.eslintUsed = true;
+      }
     }
   }
 }
@@ -94,38 +92,29 @@ export class GlobalScope extends TSESLintScope.GlobalScope implements Scope {
 export class FunctionExpressionNameScope
   extends TSESLintScope.FunctionExpressionNameScope
   implements Scope {
-  setTypes: Map<string, TSESLintScope.Variable> = new Map();
-  types: TSESLintScope.Variable[] = [];
-
   /** @internal */
   __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+      this.__defineGeneric(node.name, this.set, this.variables, node, def);
     }
   }
 }
 
 export class WithScope extends TSESLintScope.WithScope implements Scope {
-  setTypes: Map<string, TSESLintScope.Variable> = new Map();
-  types: TSESLintScope.Variable[] = [];
-
   /** @internal */
   __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+      this.__defineGeneric(node.name, this.set, this.variables, node, def);
     }
   }
 }
 
 export class FunctionScope extends TSESLintScope.FunctionScope
   implements Scope {
-  setTypes: Map<string, TSESLintScope.Variable> = new Map();
-  types: TSESLintScope.Variable[] = [];
-
   /** @internal */
   __defineType(node: TSESTree.Node, def: TSESLintScope.Definition): void {
     if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.__defineGeneric(node.name, this.setTypes, this.types, node, def);
+      this.__defineGeneric(node.name, this.set, this.variables, node, def);
     }
   }
 }
