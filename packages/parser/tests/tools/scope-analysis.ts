@@ -1,7 +1,7 @@
 /** Reference resolver. */
-import { Reference, Variable } from "eslint-scope";
-import { Scope } from "../../src/scope/scopes";
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
+import { Reference, Variable } from 'eslint-scope';
+import { Scope } from '../../src/scope/scopes';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 
 export class ReferenceResolver {
   map: Map<any, any>;
@@ -54,7 +54,10 @@ export function nodeToJSON(node: TSESTree.Node | null): any {
  * @param resolver The reference resolver.
  * @returns {Object} The object that can be used for JSON.stringify.
  */
-export function variableToJSON(variable: Variable, resolver: ReferenceResolver) {
+export function variableToJSON(
+  variable: Variable,
+  resolver: ReferenceResolver
+) {
   const { name, eslintUsed } = variable;
   const defs = variable.defs.map((d: any) => ({
     type: d.type,
