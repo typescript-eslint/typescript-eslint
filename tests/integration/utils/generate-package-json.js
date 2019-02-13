@@ -16,8 +16,8 @@ const testPackageJSON = {
      * we need the bleeding edge snapshotResolver option
      */
     // jest: rootPackageJSON.devDependencies.jest,
-    jest: '24.0.0-alpha.12'
-  }
+    jest: '24.0.0-alpha.12',
+  },
 };
 
 fs.writeFileSync('/usr/package.json', JSON.stringify(testPackageJSON, null, 2));

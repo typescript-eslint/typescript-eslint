@@ -21,7 +21,7 @@ describe('visitor-keys', () => {
 
   it('check if there is no deprecated TS nodes', () => {
     const TSTypes = Object.keys(visitorKeys).filter(type =>
-      type.startsWith('TS')
+      type.startsWith('TS'),
     );
     expect(astTypes).toEqual(expect.arrayContaining(TSTypes));
   });

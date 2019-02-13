@@ -14,14 +14,14 @@ export default util.createRule({
       description: 'Disallow the declaration of empty interfaces',
       tslintRuleName: 'no-empty-interface',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       noEmpty: 'An empty interface is equivalent to `{}`.',
       noEmptyWithSuper:
-        'An interface declaring no members is equivalent to its supertype.'
+        'An interface declaring no members is equivalent to its supertype.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -34,15 +34,15 @@ export default util.createRule({
         if (!node.extends || node.extends.length === 0) {
           context.report({
             node: node.id,
-            messageId: 'noEmpty'
+            messageId: 'noEmpty',
           });
         } else if (node.extends.length === 1) {
           context.report({
             node: node.id,
-            messageId: 'noEmptyWithSuper'
+            messageId: 'noEmptyWithSuper',
           });
         }
-      }
+      },
     };
-  }
+  },
 });

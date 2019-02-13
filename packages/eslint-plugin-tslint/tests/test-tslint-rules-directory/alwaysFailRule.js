@@ -3,7 +3,7 @@ const Lint = require('tslint');
 class Rule extends Lint.Rules.AbstractRule {
   apply(sourceFile) {
     return this.applyWithWalker(
-      new AlwaysFailWalker(sourceFile, this.getOptions())
+      new AlwaysFailWalker(sourceFile, this.getOptions()),
     );
   }
 }
@@ -11,7 +11,7 @@ class Rule extends Lint.Rules.AbstractRule {
 class AlwaysFailWalker extends Lint.RuleWalker {
   visitSourceFile(node) {
     this.addFailure(
-      this.createFailure(node.getStart(), node.getWidth(), 'failure')
+      this.createFailure(node.getStart(), node.getWidth(), 'failure'),
     );
   }
 }

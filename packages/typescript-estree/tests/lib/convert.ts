@@ -8,7 +8,7 @@ describe('convert', () => {
       code,
       ts.ScriptTarget.ESNext,
       true,
-      ts.ScriptKind.TSX
+      ts.ScriptKind.TSX,
     );
   }
 
@@ -18,7 +18,7 @@ describe('convert', () => {
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
-      shouldProvideParserServices: false
+      shouldProvideParserServices: false,
     });
     expect(instance.convertProgram()).toMatchSnapshot();
   });
@@ -29,7 +29,7 @@ describe('convert', () => {
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
-      shouldProvideParserServices: false
+      shouldProvideParserServices: false,
     });
     expect((instance as any).deeplyCopy(ast.statements[0])).toMatchSnapshot();
   });
@@ -40,7 +40,7 @@ describe('convert', () => {
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
-      shouldProvideParserServices: false
+      shouldProvideParserServices: false,
     });
     expect((instance as any).deeplyCopy(ast.statements[0])).toMatchSnapshot();
   });
@@ -51,10 +51,10 @@ describe('convert', () => {
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
-      shouldProvideParserServices: false
+      shouldProvideParserServices: false,
     });
     expect(
-      (instance as any).deeplyCopy((ast.statements[0] as any).expression)
+      (instance as any).deeplyCopy((ast.statements[0] as any).expression),
     ).toMatchSnapshot();
   });
 
@@ -64,7 +64,7 @@ describe('convert', () => {
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
-      shouldProvideParserServices: false
+      shouldProvideParserServices: false,
     });
     expect((instance as any).deeplyCopy(ast)).toMatchSnapshot();
   });
@@ -75,10 +75,10 @@ describe('convert', () => {
     const instance = new Converter(ast, {
       errorOnUnknownASTType: true,
       useJSXTextNode: false,
-      shouldProvideParserServices: false
+      shouldProvideParserServices: false,
     });
     expect(() => instance.convertProgram()).toThrow(
-      'Unknown AST_NODE_TYPE: "TSJSDocNullableType"'
+      'Unknown AST_NODE_TYPE: "TSJSDocNullableType"',
     );
   });
 
@@ -93,7 +93,7 @@ describe('convert', () => {
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
-      shouldProvideParserServices: true
+      shouldProvideParserServices: true,
     });
     instance.convertProgram();
     const maps = instance.getASTMaps();
@@ -106,7 +106,9 @@ describe('convert', () => {
           node.kind !== ts.SyntaxKind.VariableDeclaration
         ) {
           expect(node).toBe(
-            maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(node))
+            maps.esTreeNodeToTSNodeMap.get(
+              maps.tsNodeToESTreeNodeMap.get(node),
+            ),
           );
         }
         checkMaps(node);
@@ -114,7 +116,7 @@ describe('convert', () => {
     }
 
     expect(ast).toBe(
-      maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast))
+      maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast)),
     );
     checkMaps(ast);
   });
@@ -125,7 +127,7 @@ describe('convert', () => {
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
-      shouldProvideParserServices: true
+      shouldProvideParserServices: true,
     });
     instance.convertProgram();
     const maps = instance.getASTMaps();
@@ -137,7 +139,9 @@ describe('convert', () => {
           node.kind !== ts.SyntaxKind.JsxAttributes
         ) {
           expect(node).toBe(
-            maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(node))
+            maps.esTreeNodeToTSNodeMap.get(
+              maps.tsNodeToESTreeNodeMap.get(node),
+            ),
           );
         }
         checkMaps(node);
@@ -145,7 +149,7 @@ describe('convert', () => {
     }
 
     expect(ast).toBe(
-      maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast))
+      maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast)),
     );
     checkMaps(ast);
   });

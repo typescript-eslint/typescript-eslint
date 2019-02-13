@@ -16,13 +16,13 @@ export default util.createRule({
         'Prefer an interface declaration over a type literal (type T = { ... })',
       tslintRuleName: 'interface-over-type-literal',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     fixable: 'code',
     messages: {
-      interfaceOverType: 'Use an interface instead of a type literal.'
+      interfaceOverType: 'Use an interface instead of a type literal.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -31,7 +31,7 @@ export default util.createRule({
     return {
       // VariableDeclaration with kind type has only one VariableDeclarator
       "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
-        node: TSESTree.TSTypeAliasDeclaration
+        node: TSESTree.TSTypeAliasDeclaration,
       ) {
         context.report({
           node: node.id,
@@ -46,8 +46,8 @@ export default util.createRule({
               fixes.push(
                 fixer.replaceTextRange(
                   [typeNode.range[1], node.typeAnnotation.range[0]],
-                  ' '
-                )
+                  ' ',
+                ),
               );
             }
 
@@ -61,9 +61,9 @@ export default util.createRule({
             }
 
             return fixes;
-          }
+          },
         });
-      }
+      },
     };
-  }
+  },
 });

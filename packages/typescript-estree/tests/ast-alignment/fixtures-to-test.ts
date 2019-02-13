@@ -27,7 +27,7 @@ interface CreateFixturePatternConfig {
 const fixturesDirPath = path.join(__dirname, '../fixtures');
 const sharedFixturesDirPath = path.join(
   __dirname,
-  '../../../shared-fixtures/fixtures'
+  '../../../shared-fixtures/fixtures',
 );
 
 class FixturesTester {
@@ -44,7 +44,7 @@ class FixturesTester {
    */
   public addFixturePatternConfig(
     fixturesSubPath: string,
-    config: CreateFixturePatternConfig = {}
+    config: CreateFixturePatternConfig = {},
   ) {
     let _fixturesDirPath = fixturesDirPath;
     if (!fs.existsSync(path.join(fixturesDirPath, fixturesSubPath))) {
@@ -53,8 +53,8 @@ class FixturesTester {
         throw new Error(
           `Registered path '${path.join(
             __dirname,
-            fixturesSubPath
-          )}' was not found`
+            fixturesSubPath,
+          )}' was not found`,
         );
       }
     }
@@ -78,7 +78,7 @@ class FixturesTester {
           pattern: `${fixturesSubPath}/${fixture}.src.${fileType}`,
           ignoreSourceType: true,
           directory: _fixturesDirPath,
-          jsx
+          jsx,
         });
       }
     }
@@ -87,7 +87,7 @@ class FixturesTester {
       pattern: `${fixturesSubPath}/!(${ignore.join('|')}).src.${fileType}`,
       ignoreSourceType: false,
       directory: _fixturesDirPath,
-      jsx
+      jsx,
     });
   }
 
@@ -99,8 +99,8 @@ class FixturesTester {
           .map(filename => ({
             filename,
             ignoreSourceType: fixture.ignoreSourceType,
-            jsx: fixture.jsx
-          }))
+            jsx: fixture.jsx,
+          })),
       )
       .reduce((acc, x) => acc.concat(x), []);
   }
@@ -134,12 +134,12 @@ tester.addFixturePatternConfig('comments', {
      * https://github.com/babel/babel/issues/6681
      */
     'no-comment-template', // Purely AST diffs
-    'template-string-block' // Purely AST diffs
-  ]
+    'template-string-block', // Purely AST diffs
+  ],
 });
 
 tester.addFixturePatternConfig('javascript/templateStrings', {
-  ignore: ['**/*']
+  ignore: ['**/*'],
 });
 
 tester.addFixturePatternConfig('javascript/arrayLiteral');
@@ -178,8 +178,8 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
     'error-strict-param-eval',
     'error-strict-param-names',
     'error-strict-param-no-paren-arguments',
-    'error-strict-param-no-paren-eval'
-  ]
+    'error-strict-param-no-paren-eval',
+  ],
 });
 tester.addFixturePatternConfig('javascript/function', {
   ignore: [
@@ -187,8 +187,8 @@ tester.addFixturePatternConfig('javascript/function', {
      * Babel has invalid end range of multiline SequenceExpression
      * TODO: report it to babel
      */
-    'return-multiline-sequence'
-  ]
+    'return-multiline-sequence',
+  ],
 });
 
 tester.addFixturePatternConfig('javascript/bigIntLiterals');
@@ -202,8 +202,8 @@ tester.addFixturePatternConfig('javascript/classes', {
     /**
      * super() is being used outside of constructor. Other parsers (e.g. espree, acorn) do not error on this.
      */
-    'class-one-method-super' // babel parse errors
-  ]
+    'class-one-method-super', // babel parse errors
+  ],
 });
 
 tester.addFixturePatternConfig('javascript/defaultParams');
@@ -232,8 +232,8 @@ tester.addFixturePatternConfig('javascript/forIn', {
      *
      * TODO: Investigate this in more detail
      */
-    'for-in-with-assigment' // babel parse errors
-  ]
+    'for-in-with-assigment', // babel parse errors
+  ],
 });
 
 tester.addFixturePatternConfig('javascript/forOf');
@@ -248,14 +248,14 @@ tester.addFixturePatternConfig('javascript/modules', {
     /**
      * Expected babel parse errors - ts-estree is not currently throwing
      */
-    'invalid-export-named-default' // babel parse errors
+    'invalid-export-named-default', // babel parse errors
   ],
   ignoreSourceType: [
     'error-function',
     'error-strict',
     'error-delete',
-    'invalid-await'
-  ]
+    'invalid-await',
+  ],
 });
 
 tester.addFixturePatternConfig('javascript/newTarget');
@@ -278,8 +278,8 @@ tester.addFixturePatternConfig('javascript/objectLiteralDuplicateProperties', {
      *
      * Babel does not throw for some reason...
      */
-    'strict-duplicate-properties' // ts-estree parse errors
-  ]
+    'strict-duplicate-properties', // ts-estree parse errors
+  ],
 });
 
 tester.addFixturePatternConfig('javascript/objectLiteralShorthandMethods');
@@ -290,8 +290,8 @@ tester.addFixturePatternConfig('javascript/octalLiterals', {
      * Old-style octal literals are not supported in typescript
      * @see https://github.com/Microsoft/TypeScript/issues/10101
      */
-    'legacy'
-  ]
+    'legacy',
+  ],
 });
 tester.addFixturePatternConfig('javascript/regex');
 tester.addFixturePatternConfig('javascript/regexUFlag');
@@ -303,7 +303,7 @@ tester.addFixturePatternConfig('javascript/unicodeCodePointEscapes');
 /* ================================================== */
 
 tester.addFixturePatternConfig('jsx', {
-  ignore: jsxFilesWithKnownIssues
+  ignore: jsxFilesWithKnownIssues,
 });
 tester.addFixturePatternConfig('jsx-useJSXTextNode');
 
@@ -314,7 +314,7 @@ tester.addFixturePatternConfig('jsx-useJSXTextNode');
  */
 
 tester.addFixturePatternConfig('tsx', {
-  fileType: 'tsx'
+  fileType: 'tsx',
 });
 
 /* ================================================== */
@@ -324,7 +324,7 @@ tester.addFixturePatternConfig('tsx', {
  */
 
 tester.addFixturePatternConfig('typescript/babylon-convergence', {
-  fileType: 'ts'
+  fileType: 'ts',
 });
 
 tester.addFixturePatternConfig('typescript/basics', {
@@ -386,7 +386,7 @@ tester.addFixturePatternConfig('typescript/basics', {
      * PR for optional parameters in arrow function has been merged into Babel: https://github.com/babel/babel/pull/9463
      * TODO: remove me in next babel > 7.3.2
      */
-    'arrow-function-with-optional-parameter'
+    'arrow-function-with-optional-parameter',
   ],
   ignoreSourceType: [
     /**
@@ -395,18 +395,18 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'export-assignment',
     'import-equal-declaration',
-    'import-export-equal-declaration'
-  ]
+    'import-export-equal-declaration',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/decorators/accessor-decorators', {
-  fileType: 'ts'
+  fileType: 'ts',
 });
 tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
-  fileType: 'ts'
+  fileType: 'ts',
 });
 tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
-  fileType: 'ts'
+  fileType: 'ts',
 });
 tester.addFixturePatternConfig('typescript/decorators/parameter-decorators', {
   fileType: 'ts',
@@ -416,11 +416,11 @@ tester.addFixturePatternConfig('typescript/decorators/parameter-decorators', {
      * TODO: report this to babel
      */
     'parameter-array-pattern-decorator',
-    'parameter-rest-element-decorator'
-  ]
+    'parameter-rest-element-decorator',
+  ],
 });
 tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
-  fileType: 'ts'
+  fileType: 'ts',
 });
 
 tester.addFixturePatternConfig('typescript/expressions', {
@@ -429,8 +429,8 @@ tester.addFixturePatternConfig('typescript/expressions', {
     /**
      * there is difference in range between babel and ts-estree
      */
-    'tagged-template-expression-type-arguments'
-  ]
+    'tagged-template-expression-type-arguments',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
@@ -449,8 +449,8 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
     'empty-type-parameters-in-constructor',
     'empty-type-parameters-in-function-expression',
     'empty-type-parameters-in-method',
-    'empty-type-parameters-in-method-signature'
-  ]
+    'empty-type-parameters-in-method-signature',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/types', {
@@ -463,12 +463,12 @@ tester.addFixturePatternConfig('typescript/types', {
     /**
      * Babel parse error: https://github.com/babel/babel/pull/9431
      */
-    'function-with-array-destruction'
-  ]
+    'function-with-array-destruction',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/declare', {
-  fileType: 'ts'
+  fileType: 'ts',
 });
 
 tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
@@ -477,8 +477,8 @@ tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
     'nested-internal-module',
     'module-with-default-exports',
     'ambient-module-declaration-with-import',
-    'declare-namespace-with-exported-function'
-  ]
+    'declare-namespace-with-exported-function',
+  ],
 });
 
 const fixturesToTest = tester.getFixtures();

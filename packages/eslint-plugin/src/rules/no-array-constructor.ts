@@ -14,13 +14,13 @@ export default util.createRule({
     docs: {
       description: 'Disallow generic `Array` constructors',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     fixable: 'code',
     messages: {
-      useLiteral: 'The array literal notation [] is preferrable.'
+      useLiteral: 'The array literal notation [] is preferrable.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -29,7 +29,7 @@ export default util.createRule({
      * @param node node to evaluate
      */
     function check(
-      node: TSESTree.CallExpression | TSESTree.NewExpression
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       if (
         node.arguments.length !== 1 &&
@@ -49,16 +49,16 @@ export default util.createRule({
 
             return fixer.replaceText(
               node,
-              `[${fullText.slice(preambleLength + 1, -1)}]`
+              `[${fullText.slice(preambleLength + 1, -1)}]`,
             );
-          }
+          },
         });
       }
     }
 
     return {
       CallExpression: check,
-      NewExpression: check
+      NewExpression: check,
     };
-  }
+  },
 });

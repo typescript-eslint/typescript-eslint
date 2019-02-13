@@ -2,7 +2,7 @@ import rule from '../../src/rules/indent';
 import { RuleTester, RunTests, TestCaseError } from '../RuleTester';
 import {
   InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule
+  InferOptionsTypeFromRule,
 } from '../../src/util';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
@@ -26,8 +26,8 @@ abstract class Foo {
         console.log('hi');
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSAbstractClassProperty',
@@ -40,8 +40,8 @@ class Foo {
         b : number
     };
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSAbstractMethodDefinition',
@@ -54,16 +54,16 @@ class Foo {
         b : number
     };
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSArrayType',
     code: [
       `
 type foo = ArrType[];
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSAsExpression',
@@ -87,8 +87,8 @@ const foo = {} as
     foo: string,
     bar: number,
 };
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSConditionalType',
@@ -124,8 +124,8 @@ type Foo<T> = T extends string ? {
     a: number,
     b: boolean
 } : string;
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSConstructorType',
@@ -134,8 +134,8 @@ type Foo<T> = T extends string ? {
 type Constructor<T> = new (
     ...args: any[]
 ) => T;
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSConstructSignature',
@@ -148,8 +148,8 @@ interface Foo {
         baz : string
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSDeclareFunction',
@@ -159,8 +159,8 @@ declare function foo() : {
     bar : number,
     baz : string,
 };
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSEmptyBodyFunctionExpression',
@@ -174,8 +174,8 @@ class Foo {
         }
     )
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSEnumDeclaration, TSEnumMember',
@@ -185,8 +185,8 @@ enum Foo {
     bar = 1,
     baz = 1,
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSExportAssignment',
@@ -196,8 +196,8 @@ export = {
     a: 1,
     b: 2,
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSFunctionType',
@@ -237,8 +237,8 @@ const foo: ({
     a: arg.a,
     b: arg.b,
 });
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSImportType',
@@ -256,8 +256,8 @@ const foo: import(
     a: 1,
     b: 2,
 };
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSIndexedAccessType',
@@ -271,8 +271,8 @@ const Foo = Bar[
 type Foo = Bar[
     'asdf'
 ];
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSIndexSignature',
@@ -284,8 +284,8 @@ type Foo = {
         [b : number] : boolean
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSInferType',
@@ -296,8 +296,8 @@ type Foo<T> = T extends string
     : {
         a : string
     };
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSInterfaceBody, TSInterfaceDeclaration',
@@ -310,8 +310,8 @@ interface Foo {
         d : boolean
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSInterfaceHeritage',
@@ -324,8 +324,8 @@ interface Foo extends Bar {
         d : boolean
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSIntersectionType',
@@ -334,8 +334,8 @@ interface Foo extends Bar {
 type Foo = "string" & {
     a : number
 } & number;
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSImportEqualsDeclaration, TSExternalModuleReference',
@@ -349,8 +349,8 @@ const foo = require(
 import foo = require(
     'asdf'
 );
-            `
-    ]
+            `,
+    ],
   },
   // TSLiteralType
   {
@@ -378,8 +378,8 @@ type Partial<T> = {
 type Partial<T> = {
     [P in keyof T]-?: T[P];
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSMethodSignature',
@@ -392,8 +392,8 @@ interface Foo {
         b : string
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   // TSMinusToken - tested in TSMappedType
   {
@@ -406,8 +406,8 @@ declare module "foo" {
         b : number,
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSNonNullExpression',
@@ -421,8 +421,8 @@ const foo = a
 const foo = a!
     .b!.
     c;
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSParameterProperty',
@@ -439,8 +439,8 @@ class Foo {
         console.log('foo')
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSParenthesizedType',
@@ -462,8 +462,8 @@ const x: Array<(
         }
     )
 )>;
-            `
-    ]
+            `,
+    ],
   },
   // TSPlusToken - tested in TSMappedType
   {
@@ -477,8 +477,8 @@ interface Foo {
         b : number
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSQualifiedName',
@@ -504,8 +504,8 @@ const a: Foo.
         a: 1,
         b: 2,
     };
-            `
-    ]
+            `,
+    ],
   },
   // TSQuestionToken - tested in TSMappedType
   {
@@ -516,8 +516,8 @@ type foo = [
     string,
     ...string[],
 ];
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSThisType',
@@ -529,8 +529,8 @@ declare class MyArray<T> extends Array<T> {
         a: number,
     }
 }
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSTupleType',
@@ -562,8 +562,8 @@ type foo = [
         number,
     ],
 ];
-            `
-    ]
+            `,
+    ],
   },
   // TSTypeAnnotation - tested in everything..
   // TSTypeLiteral - tested in everything..
@@ -575,8 +575,8 @@ type T = keyof {
     a: 1,
     b: 2,
 };
-            `
-    ]
+            `,
+    ],
   },
   {
     node: 'TSTypeParameter, TSTypeParameterDeclaration',
@@ -594,8 +594,8 @@ function foo<
 >() {
     console.log('');
 }
-            `
-    ]
+            `,
+    ],
   },
   // TSTypeReference - tested in everything..
   {
@@ -605,9 +605,9 @@ function foo<
 type Foo = string | {
     a : number
 } | number;
-            `
-    ]
-  }
+            `,
+    ],
+  },
 ].reduce<RunTests<MessageIds, Options>>(
   (acc, testCase) => {
     const indent = '    ';
@@ -616,8 +616,8 @@ type Foo = string | {
       [
         '', // newline to make test error messages nicer
         `// ${testCase.node}`, // add comment to easily identify which node a test belongs to
-        code.trim() // remove leading/trailing spaces from the case
-      ].join('\n')
+        code.trim(), // remove leading/trailing spaces from the case
+      ].join('\n'),
     );
 
     codeCases.forEach(code => {
@@ -642,28 +642,30 @@ type Foo = string | {
               messageId: 'wrongIndentation',
               data: {
                 expected: `${spaceCount} spaces`,
-                actual: 0
+                actual: 0,
               },
               line: lineNum + 1,
-              column: 1
+              column: 1,
             };
           })
-          .filter((error): error is TestCaseError<MessageIds> => error !== null)
+          .filter(
+            (error): error is TestCaseError<MessageIds> => error !== null,
+          ),
       });
     });
 
     return acc;
   },
-  { valid: [], invalid: [] }
+  { valid: [], invalid: [] },
 );
 
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
-    ecmaFeatures: {}
+    ecmaFeatures: {},
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('indent', rule, {
@@ -728,7 +730,7 @@ const foo = {
             },
             bar = 1;
             `,
-      options: [4, { VariableDeclarator: { const: 3 } }]
+      options: [4, { VariableDeclarator: { const: 3 } }],
     },
     {
       code: `
@@ -738,8 +740,8 @@ const foo : Foo = {
             },
             bar = 1;
             `,
-      options: [4, { VariableDeclarator: { const: 3 } }]
-    }
+      options: [4, { VariableDeclarator: { const: 3 } }],
+    },
   ],
   invalid: [
     ...individualNodeTests.invalid,
@@ -761,21 +763,21 @@ type Foo = {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -811,93 +813,93 @@ interface Foo {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 6,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 7,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 8,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 9,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 10,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 11,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 12,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -921,39 +923,39 @@ interface Foo {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 6,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -973,21 +975,21 @@ interface Foo extends Bar {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     // this is just to show how eslint handles class with extends on a new line so we can keep the interface indent
     // handling the same
@@ -1011,30 +1013,30 @@ class Foo
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1056,30 +1058,30 @@ interface Foo
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1099,21 +1101,21 @@ const foo : Foo<{
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1139,39 +1141,39 @@ type T = {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 6,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 7,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1201,57 +1203,57 @@ type T =
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 6,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 4
+            actual: 4,
           },
           line: 8,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 4
+            actual: 4,
           },
           line: 9,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 10,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1265,12 +1267,12 @@ import Dialogs = require("widgets/Dialogs");
           messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
-            actual: 4
+            actual: 4,
           },
           line: 2,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1310,111 +1312,111 @@ class Foo {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 6,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 7,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 8,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 9,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 10,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 11,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 12,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 13,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 14,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1430,21 +1432,21 @@ class Foo {}
           messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
-            actual: 4
+            actual: 4,
           },
           line: 2,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
-            actual: 4
+            actual: 4,
           },
           line: 3,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1466,30 +1468,30 @@ enum Foo {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1511,30 +1513,30 @@ const enum Foo {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1548,12 +1550,12 @@ export = Foo;
           messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
-            actual: 4
+            actual: 4,
           },
           line: 2,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1567,12 +1569,12 @@ declare function h(x: number): number;
           messageId: 'wrongIndentation',
           data: {
             expected: '0 spaces',
-            actual: 4
+            actual: 4,
           },
           line: 2,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1590,12 +1592,12 @@ declare function h(
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1617,30 +1619,30 @@ namespace Validation {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -1662,30 +1664,30 @@ declare module "Validation" {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 3,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '8 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 4,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'wrongIndentation',
           data: {
             expected: '4 spaces',
-            actual: 0
+            actual: 0,
           },
           line: 5,
-          column: 1
-        }
-      ]
-    }
-  ]
+          column: 1,
+        },
+      ],
+    },
+  ],
 });

@@ -6,11 +6,11 @@ const rootDir = path.join(process.cwd(), 'tests/fixtures');
 const parserOptions = {
   ecmaVersion: 2015,
   tsconfigRootDir: rootDir,
-  project: './tsconfig.json'
+  project: './tsconfig.json',
 };
 const ruleTester = new RuleTester({
   parserOptions,
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
@@ -35,26 +35,26 @@ const foo = ({ 0: "hello", 5: "hello" }) as PossibleTuple;`,
       code: `
 type Foo = number;
 const foo = (3 + 5) as Foo;`,
-      options: [{ typesToIgnore: ['Foo'] }]
+      options: [{ typesToIgnore: ['Foo'] }],
     },
     {
       code: `const foo = (3 + 5) as any;`,
-      options: [{ typesToIgnore: ['any'] }]
+      options: [{ typesToIgnore: ['any'] }],
     },
     {
       code: `((Syntax as any).ArrayExpression = 'foo')`,
-      options: [{ typesToIgnore: ['any'] }]
+      options: [{ typesToIgnore: ['any'] }],
     },
     {
       code: `const foo = (3 + 5) as string;`,
-      options: [{ typesToIgnore: ['string'] }]
+      options: [{ typesToIgnore: ['string'] }],
     },
     {
       code: `
 type Foo = number;
 const foo = <Foo>(3 + 5);`,
-      options: [{ typesToIgnore: ['Foo'] }]
-    }
+      options: [{ typesToIgnore: ['Foo'] }],
+    },
   ],
 
   invalid: [
@@ -66,9 +66,9 @@ const bar = foo!;`,
         {
           messageId: 'unnecessaryAssertion',
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -77,9 +77,9 @@ const foo = (3 + 5) as number;`,
         {
           messageId: 'unnecessaryAssertion',
           line: 2,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -88,9 +88,9 @@ const foo = <number>(3 + 5);`,
         {
           messageId: 'unnecessaryAssertion',
           line: 2,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -100,9 +100,9 @@ const foo = (3 + 5) as Foo;`,
         {
           messageId: 'unnecessaryAssertion',
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -112,9 +112,9 @@ const foo = <Foo>(3 + 5);`,
         {
           messageId: 'unnecessaryAssertion',
           line: 3,
-          column: 13
-        }
-      ]
-    }
-  ]
+          column: 13,
+        },
+      ],
+    },
+  ],
 });

@@ -2,7 +2,7 @@ import rule from '../../src/rules/no-non-null-assertion';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-non-null-assertion', rule, {
@@ -14,9 +14,9 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           messageId: 'noNonNull',
           line: 1,
-          column: 17
-        }
-      ]
-    }
-  ]
+          column: 17,
+        },
+      ],
+    },
+  ],
 });

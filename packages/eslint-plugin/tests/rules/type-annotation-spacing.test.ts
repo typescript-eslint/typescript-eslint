@@ -2,14 +2,14 @@ import rule from '../../src/rules/type-annotation-spacing';
 import { RuleTester, InvalidTestCase, ValidTestCase } from '../RuleTester';
 import {
   InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule
+  InferOptionsTypeFromRule,
 } from '../../src/util';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('type-annotation-spacing', rule, {
@@ -86,15 +86,15 @@ type Foo = {
         `,
     {
       code: 'let foo: string;',
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: 'function foo(): string {}',
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: 'function foo(a: string) {}',
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -102,7 +102,7 @@ class Foo {
     name: string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -110,7 +110,7 @@ class Foo {
     constructor(message: string);
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -118,7 +118,7 @@ class Foo {
     greet(): string { return "hello"; }
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -126,7 +126,7 @@ class Foo {
     greet(name: string): string { return name; }
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -134,7 +134,7 @@ interface Foo {
     name: string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -142,7 +142,7 @@ interface Foo {
     greet(): string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -150,7 +150,7 @@ interface Foo {
     greet(name: string): string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -158,7 +158,7 @@ type Foo = {
     name: string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -166,7 +166,7 @@ type Foo = {
     greet(): string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -174,11 +174,11 @@ type Foo = {
     greet(name: string): string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: 'type Foo = (name: string) => string;',
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -186,19 +186,19 @@ type Foo = {
     greet: (name: string) => string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: 'let foo: string;',
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: 'function foo(): string {}',
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: 'function foo(a: string) {}',
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -206,7 +206,7 @@ class Foo {
     name: string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -214,7 +214,7 @@ class Foo {
     constructor(message: string);
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -222,7 +222,7 @@ class Foo {
     greet(): string { return "hello"; }
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -230,7 +230,7 @@ class Foo {
     greet(name: string): string { return name; }
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -238,7 +238,7 @@ interface Foo {
     name: string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -246,7 +246,7 @@ interface Foo {
     greet(): string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -254,7 +254,7 @@ interface Foo {
     greet(name: string): string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -262,7 +262,7 @@ type Foo = {
     name: string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -270,7 +270,7 @@ type Foo = {
     greet(): string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -278,11 +278,11 @@ type Foo = {
     greet(name: string): string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: 'type Foo = (name: string)=> string;',
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -290,19 +290,19 @@ type Foo = {
     greet: (name: string)=> string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: 'let foo : string;',
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: 'function foo() : string {}',
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: 'function foo(a : string) {}',
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -310,7 +310,7 @@ class Foo {
     name : string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -318,7 +318,7 @@ class Foo {
     constructor(message : string);
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -326,7 +326,7 @@ class Foo {
     greet() : string { return "hello"; }
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -334,7 +334,7 @@ class Foo {
     greet(name : string) : string { return name; }
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -342,7 +342,7 @@ interface Foo {
     name : string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -350,7 +350,7 @@ interface Foo {
     greet() : string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -358,7 +358,7 @@ interface Foo {
     greet(name : string) : string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -366,7 +366,7 @@ type Foo = {
     name : string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -374,7 +374,7 @@ type Foo = {
     greet() : string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -382,11 +382,11 @@ type Foo = {
     greet(name : string) : string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: 'type Foo = (name : string) => string;',
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -394,19 +394,19 @@ type Foo = {
     greet : (name : string) => string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: 'let foo :string;',
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: 'function foo() :string {}',
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: 'function foo(a :string) {}',
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -414,7 +414,7 @@ class Foo {
     name :string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -422,7 +422,7 @@ class Foo {
     constructor(message :string);
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -430,7 +430,7 @@ class Foo {
     greet() :string { return "hello"; }
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -438,7 +438,7 @@ class Foo {
     greet(name :string) :string { return name; }
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -446,7 +446,7 @@ interface Foo {
     name :string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -454,7 +454,7 @@ interface Foo {
     greet() :string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -462,7 +462,7 @@ interface Foo {
     greet(name :string) :string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -470,7 +470,7 @@ type Foo = {
     name :string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -478,7 +478,7 @@ type Foo = {
     greet() :string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -486,11 +486,11 @@ type Foo = {
     greet(name :string) :string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: 'type Foo = (name :string) =>string;',
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -498,19 +498,19 @@ type Foo = {
     greet :(name :string) =>string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: 'let foo : string;',
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: 'function foo() : string {}',
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: 'function foo(a : string) {}',
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -518,7 +518,7 @@ class Foo {
     name : string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -526,7 +526,7 @@ class Foo {
     constructor(message : string);
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -534,7 +534,7 @@ class Foo {
     greet() : string { return "hello"; }
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -542,7 +542,7 @@ class Foo {
     greet(name : string) : string { return name; }
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -550,7 +550,7 @@ interface Foo {
     name : string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -558,7 +558,7 @@ interface Foo {
     greet() : string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -566,7 +566,7 @@ interface Foo {
     greet(name : string) : string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -574,7 +574,7 @@ type Foo = {
     name : string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -582,7 +582,7 @@ type Foo = {
     greet() : string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -590,11 +590,11 @@ type Foo = {
     greet(name : string) : string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: 'type Foo = (name : string) => string;',
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -602,7 +602,7 @@ type Foo = {
     greet : (name : string) => string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: 'let foo : string;',
@@ -610,9 +610,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: 'function foo() : string {}',
@@ -620,9 +620,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: 'function foo(a : string) {}',
@@ -630,9 +630,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -644,9 +644,9 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -658,9 +658,9 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -672,9 +672,9 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -686,9 +686,9 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -700,9 +700,9 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -714,9 +714,9 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -728,9 +728,9 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -742,9 +742,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -756,9 +756,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -770,9 +770,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string)=>string;',
@@ -780,9 +780,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -794,9 +794,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string) => string;',
@@ -807,15 +807,15 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
               before: true,
-              after: true
-            }
-          }
-        }
-      ]
+              after: true,
+            },
+          },
+        },
+      ],
     },
     {
       code: `
@@ -830,15 +830,15 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
               before: true,
-              after: true
-            }
-          }
-        }
-      ]
+              after: true,
+            },
+          },
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string) =>string;',
@@ -849,14 +849,14 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
-              before: true
-            }
-          }
-        }
-      ]
+              before: true,
+            },
+          },
+        },
+      ],
     },
     {
       code: `
@@ -871,14 +871,14 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
-              before: true
-            }
-          }
-        }
-      ]
+              before: true,
+            },
+          },
+        },
+      ],
     },
     {
       code: `
@@ -886,7 +886,7 @@ interface Foo {
     thing: { [key in string]: number };
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -894,7 +894,7 @@ interface Foo {
     thing: { [key in string]: number };
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -902,7 +902,7 @@ interface Foo {
     thing : { [key in string] : number };
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -910,7 +910,7 @@ interface Foo {
     thing :{ [key in string] :number };
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -918,7 +918,7 @@ interface Foo {
     thing : { [key in string] : number };
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     `
 type Foo = {
@@ -931,7 +931,7 @@ type Foo = {
     thing: { [key in string]: number };
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -939,7 +939,7 @@ type Foo = {
     thing: { [key in string]: number };
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -947,7 +947,7 @@ type Foo = {
     thing : { [key in string] : number };
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -955,7 +955,7 @@ type Foo = {
     thing :{ [key in string] :number };
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -963,7 +963,7 @@ type Foo = {
     thing : { [key in string] : number };
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     `
 class Foo {
@@ -976,7 +976,7 @@ class Foo {
     greet: (name: string) => void = {}
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -984,7 +984,7 @@ class Foo {
     greet: (name: string)=> void = {}
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -992,7 +992,7 @@ class Foo {
     greet : (name : string) => void = {}
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -1000,7 +1000,7 @@ class Foo {
     greet :(name :string) =>void = {}
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -1008,7 +1008,7 @@ class Foo {
     greet : (name : string) => void = {}
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -1022,14 +1022,14 @@ type Bar = Record<keyof Foo, string>
           overrides: {
             arrow: {
               after: true,
-              before: true
-            }
-          }
-        }
+              before: true,
+            },
+          },
+        },
       ],
-      parser: '@typescript-eslint/parser'
+      parser: '@typescript-eslint/parser',
     },
-    'let resolver: (() => PromiseLike<T>) | PromiseLike<T>;'
+    'let resolver: (() => PromiseLike<T>) | PromiseLike<T>;',
   ],
   invalid: [
     {
@@ -1040,9 +1040,9 @@ type Bar = Record<keyof Foo, string>
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: 'function foo() : string {}',
@@ -1052,9 +1052,9 @@ type Bar = Record<keyof Foo, string>
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: 'function foo(a : string) {}',
@@ -1064,9 +1064,9 @@ type Bar = Record<keyof Foo, string>
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: `
@@ -1084,9 +1084,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -1104,9 +1104,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -1124,9 +1124,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -1144,15 +1144,15 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -1170,9 +1170,9 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -1190,9 +1190,9 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -1210,15 +1210,15 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -1236,9 +1236,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -1256,9 +1256,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -1276,15 +1276,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string) => string;',
@@ -1294,9 +1294,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string)=> string;',
@@ -1306,15 +1306,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -1332,9 +1332,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: `
@@ -1352,15 +1352,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: 'let foo : string;',
@@ -1371,9 +1371,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: 'function foo() : string {}',
@@ -1384,9 +1384,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: 'function foo(a : string) {}',
@@ -1397,9 +1397,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: `
@@ -1418,9 +1418,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -1439,9 +1439,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -1460,9 +1460,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -1481,15 +1481,15 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -1508,9 +1508,9 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -1529,9 +1529,9 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -1550,15 +1550,15 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -1577,9 +1577,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -1598,9 +1598,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -1619,15 +1619,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string) => string;',
@@ -1638,9 +1638,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string)=> string;',
@@ -1651,15 +1651,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -1678,9 +1678,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: `
@@ -1699,15 +1699,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: 'let foo : string;',
@@ -1718,9 +1718,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: 'function foo() : string {}',
@@ -1731,9 +1731,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: 'function foo(a : string) {}',
@@ -1744,9 +1744,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: `
@@ -1765,9 +1765,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -1786,9 +1786,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -1807,9 +1807,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -1828,15 +1828,15 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -1855,9 +1855,9 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -1876,9 +1876,9 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -1897,15 +1897,15 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -1924,9 +1924,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -1945,9 +1945,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -1966,15 +1966,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string) => string;',
@@ -1985,15 +1985,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string)=> string;',
@@ -2004,9 +2004,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: `
@@ -2025,15 +2025,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: `
@@ -2052,9 +2052,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: 'let foo:string;',
@@ -2065,15 +2065,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 8
+          column: 8,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 8
-        }
-      ]
+          column: 8,
+        },
+      ],
     },
     {
       code: 'function foo():string {}',
@@ -2084,15 +2084,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: 'function foo(a:string) {}',
@@ -2103,15 +2103,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: `
@@ -2130,15 +2130,15 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `
@@ -2157,15 +2157,15 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: `
@@ -2184,15 +2184,15 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: `
@@ -2211,27 +2211,27 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 23
+          column: 23,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -2250,15 +2250,15 @@ interface Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `
@@ -2277,15 +2277,15 @@ interface Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: `
@@ -2304,27 +2304,27 @@ interface Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 23
+          column: 23,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -2343,15 +2343,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `
@@ -2370,15 +2370,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: `
@@ -2397,27 +2397,27 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 23
+          column: 23,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: 'type Foo = (name: string)=> string;',
@@ -2428,15 +2428,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string)=> string;',
@@ -2447,9 +2447,9 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -2468,21 +2468,21 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
+          column: 10,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -2501,9 +2501,9 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: 'let foo:string;',
@@ -2514,15 +2514,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 8
+          column: 8,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 8
-        }
-      ]
+          column: 8,
+        },
+      ],
     },
     {
       code: 'function foo():string {}',
@@ -2533,15 +2533,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: 'function foo(a:string) {}',
@@ -2552,15 +2552,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: `
@@ -2579,15 +2579,15 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `
@@ -2606,15 +2606,15 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: `
@@ -2633,15 +2633,15 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: `
@@ -2660,27 +2660,27 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 23
+          column: 23,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -2699,15 +2699,15 @@ interface Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `
@@ -2726,15 +2726,15 @@ interface Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: `
@@ -2753,27 +2753,27 @@ interface Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 23
+          column: 23,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -2792,15 +2792,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `
@@ -2819,15 +2819,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: `
@@ -2846,27 +2846,27 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 23
+          column: 23,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: 'type Foo = (name: string)=> string;',
@@ -2877,15 +2877,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string)=> string;',
@@ -2896,9 +2896,9 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -2917,21 +2917,21 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 10
+          column: 10,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -2950,9 +2950,9 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: 'let foo:string;',
@@ -2960,8 +2960,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: 'let foo : string;',
       errors: [
@@ -2969,15 +2969,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 8
+          column: 8,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 8
-        }
-      ]
+          column: 8,
+        },
+      ],
     },
     {
       code: 'function foo():string {}',
@@ -2985,8 +2985,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: 'function foo() : string {}',
       errors: [
@@ -2994,15 +2994,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: 'function foo(a:string) {}',
@@ -3010,8 +3010,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: 'function foo(a : string) {}',
       errors: [
@@ -3019,15 +3019,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: `
@@ -3039,8 +3039,8 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 class Foo {
@@ -3052,15 +3052,15 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `
@@ -3072,8 +3072,8 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 class Foo {
@@ -3085,15 +3085,15 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: `
@@ -3105,8 +3105,8 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 class Foo {
@@ -3118,15 +3118,15 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: `
@@ -3138,8 +3138,8 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 class Foo {
@@ -3151,27 +3151,27 @@ class Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 23
+          column: 23,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -3183,8 +3183,8 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 interface Foo {
@@ -3196,15 +3196,15 @@ interface Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `
@@ -3216,8 +3216,8 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 interface Foo {
@@ -3229,15 +3229,15 @@ interface Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: `
@@ -3249,8 +3249,8 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 interface Foo {
@@ -3262,27 +3262,27 @@ interface Foo {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 23
+          column: 23,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -3294,8 +3294,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 type Foo = {
@@ -3307,15 +3307,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `
@@ -3327,8 +3327,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 type Foo = {
@@ -3340,15 +3340,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: `
@@ -3360,8 +3360,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 type Foo = {
@@ -3373,27 +3373,27 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 23
+          column: 23,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: 'type Foo = (name:string)=>string;',
@@ -3401,8 +3401,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: 'type Foo = (name : string)=>string;',
       errors: [
@@ -3410,15 +3410,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 17
-        }
-      ]
+          column: 17,
+        },
+      ],
     },
     {
       code: `
@@ -3430,8 +3430,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 type Foo = {
@@ -3443,15 +3443,15 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: 'type Foo = (name:string)=>string;',
@@ -3462,14 +3462,14 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
               before: true,
-              after: true
-            }
-          }
-        }
+              after: true,
+            },
+          },
+        },
       ],
       output: 'type Foo = (name : string) => string;',
       errors: [
@@ -3477,27 +3477,27 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 1,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 1,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '=>' },
           line: 1,
-          column: 25
+          column: 25,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -3512,14 +3512,14 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
               before: true,
-              after: true
-            }
-          }
-        }
+              after: true,
+            },
+          },
+        },
       ],
       output: `
 type Foo = {
@@ -3531,27 +3531,27 @@ type Foo = {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '=>' },
           line: 3,
-          column: 26
+          column: 26,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/152
     {
@@ -3574,78 +3574,78 @@ type Foo = {
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: ':'
+            type: ':',
           },
           line: 3,
-          column: 30
+          column: 30,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: ':'
+            type: ':',
           },
           line: 3,
-          column: 45
+          column: 45,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: ':'
+            type: ':',
           },
           line: 3,
-          column: 52
+          column: 52,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: ':'
+            type: ':',
           },
           line: 4,
-          column: 47
+          column: 47,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: ':'
+            type: ':',
           },
           line: 4,
-          column: 62
+          column: 62,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: ':'
+            type: ':',
           },
           line: 4,
-          column: 69
+          column: 69,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: ':'
+            type: ':',
           },
           line: 5,
-          column: 45
+          column: 45,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: ':'
+            type: ':',
           },
           line: 5,
-          column: 60
+          column: 60,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: {
-            type: ':'
+            type: ':',
           },
           line: 5,
-          column: 67
-        }
-      ]
-    }
-  ]
+          column: 67,
+        },
+      ],
+    },
+  ],
 });
 
 //------------------------------------------------------------------------------
@@ -3708,7 +3708,7 @@ type Foo = {
         `,
     {
       code: 'function foo(a?: string) {}',
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -3716,7 +3716,7 @@ class Foo {
     name?: string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -3724,7 +3724,7 @@ class Foo {
     constructor(message?: string);
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -3732,7 +3732,7 @@ class Foo {
     greet(name?: string): string { return name; }
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -3740,7 +3740,7 @@ interface Foo {
     name?: string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -3748,7 +3748,7 @@ interface Foo {
     greet(name?: string): string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -3756,7 +3756,7 @@ type Foo = {
     name?: string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -3764,11 +3764,11 @@ type Foo = {
     greet(name?: string): string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: 'type Foo = (name?: string) => string;',
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -3776,11 +3776,11 @@ type Foo = {
     greet?: (name?: string) => string;
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: 'function foo(a?: string) {}',
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -3788,7 +3788,7 @@ class Foo {
     name?: string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -3796,7 +3796,7 @@ class Foo {
     constructor(message?: string);
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -3804,7 +3804,7 @@ class Foo {
     greet(name?: string): string { return name; }
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -3812,7 +3812,7 @@ interface Foo {
     name?: string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -3820,7 +3820,7 @@ interface Foo {
     greet(name?: string): string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -3828,7 +3828,7 @@ type Foo = {
     name?: string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -3836,11 +3836,11 @@ type Foo = {
     greet(name?: string): string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: 'type Foo = (name?: string)=> string;',
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -3848,11 +3848,11 @@ type Foo = {
     greet?: (name?: string)=> string;
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: 'function foo(a ?: string) {}',
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -3860,7 +3860,7 @@ class Foo {
     name ?: string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -3868,7 +3868,7 @@ class Foo {
     constructor(message ?: string);
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -3876,7 +3876,7 @@ class Foo {
     greet(name ?: string) : string { return name; }
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -3884,7 +3884,7 @@ interface Foo {
     name ?: string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -3892,7 +3892,7 @@ interface Foo {
     greet(name ?: string) : string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -3900,7 +3900,7 @@ type Foo = {
     name ?: string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -3908,11 +3908,11 @@ type Foo = {
     greet(name ?: string) : string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: 'type Foo = (name ?: string) => string;',
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -3920,11 +3920,11 @@ type Foo = {
     greet ?: (name : string) => string;
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: 'function foo(a ?:string) {}',
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -3932,7 +3932,7 @@ class Foo {
     name ?:string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -3940,7 +3940,7 @@ class Foo {
     constructor(message ?:string);
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -3948,7 +3948,7 @@ class Foo {
     greet(name ?:string) :string { return name; }
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -3956,7 +3956,7 @@ interface Foo {
     name ?:string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -3964,7 +3964,7 @@ interface Foo {
     greet(name ?:string) :string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -3972,7 +3972,7 @@ type Foo = {
     name ?:string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -3980,11 +3980,11 @@ type Foo = {
     greet(name ?:string) :string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: 'type Foo = (name ?:string) =>string;',
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -3992,11 +3992,11 @@ type Foo = {
     greet :(name ?:string) =>string;
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: 'function foo(a ?: string) {}',
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -4004,7 +4004,7 @@ class Foo {
     name ?: string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -4012,7 +4012,7 @@ class Foo {
     constructor(message ?: string);
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -4020,7 +4020,7 @@ class Foo {
     greet(name ?: string) : string { return name; }
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -4028,7 +4028,7 @@ interface Foo {
     name ?: string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -4036,7 +4036,7 @@ interface Foo {
     greet(name ?: string) : string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -4044,7 +4044,7 @@ type Foo = {
     name ?: string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -4052,11 +4052,11 @@ type Foo = {
     greet(name ?: string) : string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: 'type Foo = (name ?: string) => string;',
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -4064,7 +4064,7 @@ type Foo = {
     greet : (name ?: string) => string;
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: 'function foo(a ?: string) {}',
@@ -4072,9 +4072,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -4086,9 +4086,9 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -4100,9 +4100,9 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -4114,9 +4114,9 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -4128,9 +4128,9 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -4142,9 +4142,9 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -4156,9 +4156,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -4170,9 +4170,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string)=>string;',
@@ -4180,9 +4180,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: `
@@ -4194,9 +4194,9 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
-      ]
+          overrides: { colon: { before: true, after: true } },
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string) => string;',
@@ -4207,15 +4207,15 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
               before: true,
-              after: true
-            }
-          }
-        }
-      ]
+              after: true,
+            },
+          },
+        },
+      ],
     },
     {
       code: `
@@ -4230,15 +4230,15 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
               before: true,
-              after: true
-            }
-          }
-        }
-      ]
+              after: true,
+            },
+          },
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string) =>string;',
@@ -4249,14 +4249,14 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
-              before: true
-            }
-          }
-        }
-      ]
+              before: true,
+            },
+          },
+        },
+      ],
     },
     {
       code: `
@@ -4271,14 +4271,14 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
-              before: true
-            }
-          }
-        }
-      ]
+              before: true,
+            },
+          },
+        },
+      ],
     },
     {
       code: `
@@ -4286,7 +4286,7 @@ interface Foo {
     thing?: { [key in string]?: number };
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -4294,7 +4294,7 @@ interface Foo {
     thing?: { [key in string]?: number };
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -4302,7 +4302,7 @@ interface Foo {
     thing ?: { [key in string] ?: number };
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -4310,7 +4310,7 @@ interface Foo {
     thing ?:{ [key in string] ?:number };
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -4318,7 +4318,7 @@ interface Foo {
     thing ?: { [key in string] ?: number };
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     `
 type Foo = {
@@ -4331,7 +4331,7 @@ type Foo = {
     thing?: { [key in string]?: number };
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -4339,7 +4339,7 @@ type Foo = {
     thing?: { [key in string]?: number };
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -4347,7 +4347,7 @@ type Foo = {
     thing ?: { [key in string] ?: number };
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -4355,7 +4355,7 @@ type Foo = {
     thing ?:{ [key in string] ?:number };
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -4363,7 +4363,7 @@ type Foo = {
     thing ?: { [key in string] ?: number };
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     `
 class Foo {
@@ -4376,7 +4376,7 @@ class Foo {
     greet: (name?: string) => void = {}
 }
             `,
-      options: [{ after: true }]
+      options: [{ after: true }],
     },
     {
       code: `
@@ -4384,7 +4384,7 @@ class Foo {
     greet: (name?: string)=> void = {}
 }
             `,
-      options: [{ after: true, before: false }]
+      options: [{ after: true, before: false }],
     },
     {
       code: `
@@ -4392,7 +4392,7 @@ class Foo {
     greet : (name ?: string) => void = {}
 }
             `,
-      options: [{ after: true, before: true }]
+      options: [{ after: true, before: true }],
     },
     {
       code: `
@@ -4400,7 +4400,7 @@ class Foo {
     greet :(name ?:string) =>void = {}
 }
             `,
-      options: [{ after: false, before: true }]
+      options: [{ after: false, before: true }],
     },
     {
       code: `
@@ -4408,7 +4408,7 @@ class Foo {
     greet : (name ?: string) => void = {}
 }
             `,
-      options: [{ before: true }]
+      options: [{ before: true }],
     },
     {
       code: `
@@ -4422,13 +4422,13 @@ type Bar = Record<keyof Foo, string>
           overrides: {
             arrow: {
               after: true,
-              before: true
-            }
-          }
-        }
+              before: true,
+            },
+          },
+        },
       ],
-      parser: '@typescript-eslint/parser'
-    }
+      parser: '@typescript-eslint/parser',
+    },
   ],
   invalid: [
     {
@@ -4439,9 +4439,9 @@ type Bar = Record<keyof Foo, string>
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: `
@@ -4459,9 +4459,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -4479,9 +4479,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -4499,15 +4499,15 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -4525,9 +4525,9 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -4545,15 +4545,15 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -4571,9 +4571,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -4591,15 +4591,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string) => string;',
@@ -4609,9 +4609,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string)=> string;',
@@ -4621,15 +4621,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: `
@@ -4647,9 +4647,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: `
@@ -4667,15 +4667,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: 'function foo(a ?: string) {}',
@@ -4686,9 +4686,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: `
@@ -4707,9 +4707,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -4728,9 +4728,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -4749,15 +4749,15 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -4776,9 +4776,9 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -4797,15 +4797,15 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -4824,9 +4824,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -4845,15 +4845,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string) => string;',
@@ -4864,9 +4864,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string)=> string;',
@@ -4877,15 +4877,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: `
@@ -4904,9 +4904,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: `
@@ -4925,15 +4925,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: 'function foo(a ?: string) {}',
@@ -4944,9 +4944,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: `
@@ -4965,9 +4965,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -4986,9 +4986,9 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -5007,15 +5007,15 @@ class Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -5034,9 +5034,9 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -5055,15 +5055,15 @@ interface Foo {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -5082,9 +5082,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -5103,15 +5103,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string) => string;',
@@ -5122,15 +5122,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 29
-        }
-      ]
+          column: 29,
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string)=> string;',
@@ -5141,9 +5141,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: `
@@ -5162,15 +5162,15 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 29
-        }
-      ]
+          column: 29,
+        },
+      ],
     },
     {
       code: `
@@ -5189,9 +5189,9 @@ type Foo = {
           messageId: 'unexpectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: 'function foo(a?:string) {}',
@@ -5202,15 +5202,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: `
@@ -5229,15 +5229,15 @@ class Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -5256,15 +5256,15 @@ class Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -5283,27 +5283,27 @@ class Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: `
@@ -5322,15 +5322,15 @@ interface Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -5349,27 +5349,27 @@ interface Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: `
@@ -5388,15 +5388,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -5415,27 +5415,27 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: 'type Foo = (name?: string)=> string;',
@@ -5446,15 +5446,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: 'type Foo = (name ?: string)=> string;',
@@ -5465,9 +5465,9 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: `
@@ -5486,21 +5486,21 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
+          column: 10,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: `
@@ -5519,9 +5519,9 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 30
-        }
-      ]
+          column: 30,
+        },
+      ],
     },
     {
       code: 'function foo(a?:string) {}',
@@ -5532,15 +5532,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: `
@@ -5559,15 +5559,15 @@ class Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -5586,15 +5586,15 @@ class Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -5613,27 +5613,27 @@ class Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: `
@@ -5652,15 +5652,15 @@ interface Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -5679,27 +5679,27 @@ interface Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: `
@@ -5718,15 +5718,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -5745,27 +5745,27 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: 'type Foo = (name?: string)=> string;',
@@ -5776,15 +5776,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: 'type Foo = (name : string)=> string;',
@@ -5795,9 +5795,9 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -5816,21 +5816,21 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 10
+          column: 10,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 28
-        }
-      ]
+          column: 28,
+        },
+      ],
     },
     {
       code: `
@@ -5849,9 +5849,9 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 30
-        }
-      ]
+          column: 30,
+        },
+      ],
     },
     {
       code: 'function foo(a?:string) {}',
@@ -5859,8 +5859,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: 'function foo(a ?: string) {}',
       errors: [
@@ -5868,15 +5868,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: `
@@ -5888,8 +5888,8 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 class Foo {
@@ -5901,15 +5901,15 @@ class Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -5921,8 +5921,8 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 class Foo {
@@ -5934,15 +5934,15 @@ class Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `
@@ -5954,8 +5954,8 @@ class Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 class Foo {
@@ -5967,27 +5967,27 @@ class Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: `
@@ -5999,8 +5999,8 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 interface Foo {
@@ -6012,15 +6012,15 @@ interface Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -6032,8 +6032,8 @@ interface Foo {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 interface Foo {
@@ -6045,27 +6045,27 @@ interface Foo {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: `
@@ -6077,8 +6077,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 type Foo = {
@@ -6090,15 +6090,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 9
+          column: 9,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       code: `
@@ -6110,8 +6110,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 type Foo = {
@@ -6123,27 +6123,27 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 16
+          column: 16,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: ':' },
           line: 3,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: ':' },
           line: 3,
-          column: 24
-        }
-      ]
+          column: 24,
+        },
+      ],
     },
     {
       code: 'type Foo = (name?:string)=>string;',
@@ -6151,8 +6151,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: 'type Foo = (name ?: string)=>string;',
       errors: [
@@ -6160,15 +6160,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 1,
-          column: 18
-        }
-      ]
+          column: 18,
+        },
+      ],
     },
     {
       code: `
@@ -6180,8 +6180,8 @@ type Foo = {
         {
           before: false,
           after: false,
-          overrides: { colon: { before: true, after: true } }
-        }
+          overrides: { colon: { before: true, after: true } },
+        },
       ],
       output: `
 type Foo = {
@@ -6193,15 +6193,15 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 19
+          column: 19,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 20
-        }
-      ]
+          column: 20,
+        },
+      ],
     },
     {
       code: 'type Foo = (name?:string)=>string;',
@@ -6212,14 +6212,14 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
               before: true,
-              after: true
-            }
-          }
-        }
+              after: true,
+            },
+          },
+        },
       ],
       output: 'type Foo = (name ?: string) => string;',
       errors: [
@@ -6227,27 +6227,27 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 1,
-          column: 17
+          column: 17,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 1,
-          column: 18
+          column: 18,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '=>' },
           line: 1,
-          column: 26
+          column: 26,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 1,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -6262,14 +6262,14 @@ type Foo = {
           overrides: {
             colon: {
               before: true,
-              after: true
+              after: true,
             },
             arrow: {
               before: true,
-              after: true
-            }
-          }
-        }
+              after: true,
+            },
+          },
+        },
       ],
       output: `
 type Foo = {
@@ -6281,29 +6281,29 @@ type Foo = {
           messageId: 'expectedSpaceBefore',
           data: { type: '?:' },
           line: 3,
-          column: 19
+          column: 19,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '?:' },
           line: 3,
-          column: 20
+          column: 20,
         },
         {
           messageId: 'expectedSpaceAfter',
           data: { type: '=>' },
           line: 3,
-          column: 28
+          column: 28,
         },
         {
           messageId: 'expectedSpaceBefore',
           data: { type: '=>' },
           line: 3,
-          column: 28
-        }
-      ]
-    }
-  ]
+          column: 28,
+        },
+      ],
+    },
+  ],
 });
 
 //------------------------------------------------------------------------------
@@ -6318,42 +6318,42 @@ ruleTester.run('type-annotation-spacing', rule, {
       validCases.concat([
         {
           code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: []
+          options: [],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ after: true }]
+          options: [{ after: true }],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ before: false }]
+          options: [{ before: false }],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ after: true, before: false }]
+          options: [{ after: true, before: false }],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          options: [{ after: false, before: true }]
+          options: [{ after: false, before: true }],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ before: true }]
+          options: [{ before: true }],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ after: true, before: true }]
+          options: [{ after: true, before: true }],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          options: [{ after: false }]
+          options: [{ after: false }],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          options: [{ after: false, before: false }]
-        }
+          options: [{ after: false, before: false }],
+        },
       ]),
-    []
+    [],
   ),
   invalid: operators.reduce<InvalidTestCase<MessageIds, Options>[]>(
     (invalidCases, operator) =>
@@ -6367,12 +6367,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 32
-            }
-          ]
+              column: 32,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
@@ -6382,12 +6382,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 32
-            }
-          ]
+              column: 32,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
@@ -6397,12 +6397,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 32
-            }
-          ]
+              column: 32,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
@@ -6412,20 +6412,20 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 32
+              column: 32,
             },
             {
               messageId: 'unexpectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 34
-            }
-          ]
+              column: 34,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
@@ -6435,20 +6435,20 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 32
+              column: 32,
             },
             {
               messageId: 'unexpectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 34
-            }
-          ]
+              column: 34,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
@@ -6458,12 +6458,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 34
-            }
-          ]
+              column: 34,
+            },
+          ],
         },
         // no space cases
         {
@@ -6474,12 +6474,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 33
-            }
-          ]
+              column: 33,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
@@ -6489,20 +6489,20 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 31
+              column: 31,
             },
             {
               messageId: 'expectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 33
-            }
-          ]
+              column: 33,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
@@ -6512,20 +6512,20 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 31
+              column: 31,
             },
             {
               messageId: 'expectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 33
-            }
-          ]
+              column: 33,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
@@ -6535,12 +6535,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 33
-            }
-          ]
+              column: 33,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
@@ -6550,12 +6550,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 31
-            }
-          ]
+              column: 31,
+            },
+          ],
         },
         // space before cases
         {
@@ -6566,20 +6566,20 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 32
+              column: 32,
             },
             {
               messageId: 'expectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 34
-            }
-          ]
+              column: 34,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
@@ -6589,20 +6589,20 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 32
+              column: 32,
             },
             {
               messageId: 'expectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 34
-            }
-          ]
+              column: 34,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
@@ -6612,12 +6612,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 34
-            }
-          ]
+              column: 34,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
@@ -6627,20 +6627,20 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 32
+              column: 32,
             },
             {
               messageId: 'expectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 34
-            }
-          ]
+              column: 34,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
@@ -6650,12 +6650,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 34
-            }
-          ]
+              column: 34,
+            },
+          ],
         },
         // space after cases
         {
@@ -6666,12 +6666,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 33
-            }
-          ]
+              column: 33,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
@@ -6681,12 +6681,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 31
-            }
-          ]
+              column: 31,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
@@ -6696,12 +6696,12 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 31
-            }
-          ]
+              column: 31,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
@@ -6711,20 +6711,20 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'expectedSpaceBefore',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 31
+              column: 31,
             },
             {
               messageId: 'unexpectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 33
-            }
-          ]
+              column: 33,
+            },
+          ],
         },
         {
           code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
@@ -6734,14 +6734,14 @@ ruleTester.run('type-annotation-spacing', rule, {
             {
               messageId: 'unexpectedSpaceAfter',
               data: {
-                type: operator
+                type: operator,
               },
               line: 1,
-              column: 33
-            }
-          ]
-        }
+              column: 33,
+            },
+          ],
+        },
       ]),
-    []
-  )
+    [],
+  ),
 });

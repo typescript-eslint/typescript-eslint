@@ -2,30 +2,30 @@ import rule from '../../src/rules/member-naming';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('member-naming', rule, {
   valid: [
     {
       code: `class Class { _fooBar() {} }`,
-      options: [{ public: '^_' }]
+      options: [{ public: '^_' }],
     },
     {
       code: `class Class { public _fooBar() {} }`,
-      options: [{ public: '^_' }]
+      options: [{ public: '^_' }],
     },
     {
       code: `class Class { protected _fooBar() {} }`,
-      options: [{ protected: '^_' }]
+      options: [{ protected: '^_' }],
     },
     {
       code: `class Class { private _fooBar() {} }`,
-      options: [{ private: '^_' }]
+      options: [{ private: '^_' }],
     },
     {
       code: `class Class { protected fooBar() {} }`,
-      options: [{ private: '^_' }]
+      options: [{ private: '^_' }],
     },
     {
       code: `
@@ -40,9 +40,9 @@ class Class {
         {
           public: '^pub[A-Z]',
           protected: '^prot[A-Z]',
-          private: '^priv[A-Z]'
-        }
-      ]
+          private: '^priv[A-Z]',
+        },
+      ],
     },
     {
       code: `
@@ -57,9 +57,9 @@ class Class {
         {
           public: '^pub[A-Z]',
           protected: '^prot[A-Z]',
-          private: '^priv[A-Z]'
-        }
-      ]
+          private: '^priv[A-Z]',
+        },
+      ],
     },
     {
       code: `
@@ -74,10 +74,10 @@ class Class {
         {
           public: '^pub[A-Z]',
           protected: '^prot[A-Z]',
-          private: '^priv[A-Z]'
-        }
-      ]
-    }
+          private: '^priv[A-Z]',
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -89,12 +89,12 @@ class Class {
           data: {
             accessibility: 'public',
             convention: '/^_/',
-            name: 'fooBar'
+            name: 'fooBar',
           },
           line: 1,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: `class Class { public fooBar() {} }`,
@@ -105,12 +105,12 @@ class Class {
           data: {
             accessibility: 'public',
             convention: '/^_/',
-            name: 'fooBar'
+            name: 'fooBar',
           },
           line: 1,
-          column: 22
-        }
-      ]
+          column: 22,
+        },
+      ],
     },
     {
       code: `class Class { protected fooBar() {} }`,
@@ -121,12 +121,12 @@ class Class {
           data: {
             accessibility: 'protected',
             convention: '/^_/',
-            name: 'fooBar'
+            name: 'fooBar',
           },
           line: 1,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: `class Class { private fooBar() {} }`,
@@ -137,12 +137,12 @@ class Class {
           data: {
             accessibility: 'private',
             convention: '/^_/',
-            name: 'fooBar'
+            name: 'fooBar',
           },
           line: 1,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -157,8 +157,8 @@ class Class {
         {
           public: '^pub[A-Z]',
           protected: '^prot[A-Z]',
-          private: '^priv[A-Z]'
-        }
+          private: '^priv[A-Z]',
+        },
       ],
       errors: [
         {
@@ -166,42 +166,42 @@ class Class {
           data: {
             accessibility: 'public',
             convention: '/^pub[A-Z]/',
-            name: 'one'
+            name: 'one',
           },
           line: 3,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectName',
           data: {
             accessibility: 'public',
             convention: '/^pub[A-Z]/',
-            name: 'two'
+            name: 'two',
           },
           line: 4,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'incorrectName',
           data: {
             accessibility: 'protected',
             convention: '/^prot[A-Z]/',
-            name: 'three'
+            name: 'three',
           },
           line: 5,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'incorrectName',
           data: {
             accessibility: 'private',
             convention: '/^priv[A-Z]/',
-            name: 'four'
+            name: 'four',
           },
           line: 6,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -216,8 +216,8 @@ class Class {
         {
           public: '^pub[A-Z]',
           protected: '^prot[A-Z]',
-          private: '^priv[A-Z]'
-        }
+          private: '^priv[A-Z]',
+        },
       ],
       errors: [
         {
@@ -225,42 +225,42 @@ class Class {
           data: {
             accessibility: 'public',
             convention: '/^pub[A-Z]/',
-            name: 'one'
+            name: 'one',
           },
           line: 3,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectName',
           data: {
             accessibility: 'public',
             convention: '/^pub[A-Z]/',
-            name: 'two'
+            name: 'two',
           },
           line: 4,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'incorrectName',
           data: {
             accessibility: 'protected',
             convention: '/^prot[A-Z]/',
-            name: 'three'
+            name: 'three',
           },
           line: 5,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'incorrectName',
           data: {
             accessibility: 'private',
             convention: '/^priv[A-Z]/',
-            name: 'four'
+            name: 'four',
           },
           line: 6,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: `
@@ -275,8 +275,8 @@ class Class {
         {
           public: '^pub[A-Z]',
           protected: '^prot[A-Z]',
-          private: '^priv[A-Z]'
-        }
+          private: '^priv[A-Z]',
+        },
       ],
       errors: [
         {
@@ -284,42 +284,42 @@ class Class {
           data: {
             accessibility: 'public',
             convention: '/^pub[A-Z]/',
-            name: 'one'
+            name: 'one',
           },
           line: 3,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectName',
           data: {
             accessibility: 'public',
             convention: '/^pub[A-Z]/',
-            name: 'two'
+            name: 'two',
           },
           line: 4,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'incorrectName',
           data: {
             accessibility: 'protected',
             convention: '/^prot[A-Z]/',
-            name: 'three'
+            name: 'three',
           },
           line: 5,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'incorrectName',
           data: {
             accessibility: 'private',
             convention: '/^priv[A-Z]/',
-            name: 'four'
+            name: 'four',
           },
           line: 6,
-          column: 13
-        }
-      ]
-    }
-  ]
+          column: 13,
+        },
+      ],
+    },
+  ],
 });

@@ -2,7 +2,7 @@ import rule from '../../src/rules/no-empty-interface';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-empty-interface', rule, {
@@ -23,7 +23,7 @@ interface Bar {
 
 // valid because extending multiple interfaces can be used instead of a union type
 interface Baz extends Foo, Bar {}
-        `
+        `,
   ],
   invalid: [
     {
@@ -32,9 +32,9 @@ interface Baz extends Foo, Bar {}
         {
           messageId: 'noEmpty',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: 'interface Foo extends {}',
@@ -42,9 +42,9 @@ interface Baz extends Foo, Bar {}
         {
           messageId: 'noEmpty',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -58,9 +58,9 @@ interface Bar extends Foo {}
         {
           messageId: 'noEmptyWithSuper',
           line: 6,
-          column: 11
-        }
-      ]
-    }
-  ]
+          column: 11,
+        },
+      ],
+    },
+  ],
 });

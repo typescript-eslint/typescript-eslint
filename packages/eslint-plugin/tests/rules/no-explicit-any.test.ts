@@ -2,7 +2,7 @@ import rule from '../../src/rules/no-explicit-any';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-explicit-any', rule, {
@@ -128,7 +128,7 @@ type obj = {
 type obj = {
     message: string & Array<Array<string>>;
 }
-        `
+        `,
   ],
   invalid: [
     {
@@ -137,9 +137,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: 'function generic(): any {}',
@@ -147,9 +147,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 21
-        }
-      ]
+          column: 21,
+        },
+      ],
     },
     {
       code: 'function generic(): Array<any> {}',
@@ -157,9 +157,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: 'function generic(): any[] {}',
@@ -167,9 +167,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 21
-        }
-      ]
+          column: 21,
+        },
+      ],
     },
     {
       code: 'function generic(param: Array<any>): number {}',
@@ -177,9 +177,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 31
-        }
-      ]
+          column: 31,
+        },
+      ],
     },
     {
       code: 'function generic(param: any[]): number {}',
@@ -187,9 +187,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 25
-        }
-      ]
+          column: 25,
+        },
+      ],
     },
     {
       code: 'function generic(param: Array<any>): Array<any> {}',
@@ -197,14 +197,14 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 31
+          column: 31,
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 44
-        }
-      ]
+          column: 44,
+        },
+      ],
     },
     {
       code: 'function generic(): Array<Array<any>> {}',
@@ -212,9 +212,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 33
-        }
-      ]
+          column: 33,
+        },
+      ],
     },
     {
       code: 'function generic(): Array<any[]> {}',
@@ -222,9 +222,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -236,9 +236,9 @@ class Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 30
-        }
-      ]
+          column: 30,
+        },
+      ],
     },
     {
       code: `
@@ -250,9 +250,9 @@ class Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 14
-        }
-      ]
+          column: 14,
+        },
+      ],
     },
     {
       code: `
@@ -264,9 +264,9 @@ class Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 20
-        }
-      ]
+          column: 20,
+        },
+      ],
     },
     {
       code: `
@@ -278,9 +278,9 @@ class Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 14
-        }
-      ]
+          column: 14,
+        },
+      ],
     },
     {
       code: `
@@ -292,9 +292,9 @@ class Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -306,9 +306,9 @@ class Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 20
-        }
-      ]
+          column: 20,
+        },
+      ],
     },
     {
       code: `
@@ -320,9 +320,9 @@ interface Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 14
-        }
-      ]
+          column: 14,
+        },
+      ],
     },
     {
       code: `
@@ -334,9 +334,9 @@ interface Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 20
-        }
-      ]
+          column: 20,
+        },
+      ],
     },
     {
       code: `
@@ -348,9 +348,9 @@ interface Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 14
-        }
-      ]
+          column: 14,
+        },
+      ],
     },
     {
       code: `
@@ -362,9 +362,9 @@ interface Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -376,9 +376,9 @@ interface Greeter {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 20
-        }
-      ]
+          column: 20,
+        },
+      ],
     },
     {
       code: `
@@ -390,9 +390,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 14
-        }
-      ]
+          column: 14,
+        },
+      ],
     },
     {
       code: `
@@ -404,9 +404,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 20
-        }
-      ]
+          column: 20,
+        },
+      ],
     },
     {
       code: `
@@ -418,9 +418,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 14
-        }
-      ]
+          column: 14,
+        },
+      ],
     },
     {
       code: `
@@ -432,9 +432,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 26
-        }
-      ]
+          column: 26,
+        },
+      ],
     },
     {
       code: `
@@ -446,9 +446,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 20
-        }
-      ]
+          column: 20,
+        },
+      ],
     },
     {
       code: `
@@ -460,9 +460,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -474,9 +474,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 29
-        }
-      ]
+          column: 29,
+        },
+      ],
     },
     {
       code: `
@@ -488,9 +488,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -502,9 +502,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 35
-        }
-      ]
+          column: 35,
+        },
+      ],
     },
     {
       code: `
@@ -516,9 +516,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 29
-        }
-      ]
+          column: 29,
+        },
+      ],
     },
     {
       code: `
@@ -530,9 +530,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -544,9 +544,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 29
-        }
-      ]
+          column: 29,
+        },
+      ],
     },
     {
       code: `
@@ -558,9 +558,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 23
-        }
-      ]
+          column: 23,
+        },
+      ],
     },
     {
       code: `
@@ -572,9 +572,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 35
-        }
-      ]
+          column: 35,
+        },
+      ],
     },
     {
       code: `
@@ -586,9 +586,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 29
-        }
-      ]
+          column: 29,
+        },
+      ],
     },
     {
       code: `class Foo<t = any> extends Bar<any> {}`,
@@ -596,14 +596,14 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 15
+          column: 15,
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 32
-        }
-      ]
+          column: 32,
+        },
+      ],
     },
     {
       code: `abstract class Foo<t = any> extends Bar<any> {}`,
@@ -611,14 +611,14 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 41
-        }
-      ]
+          column: 41,
+        },
+      ],
     },
     {
       code: `abstract class Foo<t = any> implements Bar<any>, Baz<any> {}`,
@@ -626,19 +626,19 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 24
+          column: 24,
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 44
+          column: 44,
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 54
-        }
-      ]
+          column: 54,
+        },
+      ],
     },
     {
       code: `new Foo<any>()`,
@@ -646,9 +646,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       code: `Foo<any>()`,
@@ -656,9 +656,9 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 1,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/64
@@ -670,14 +670,14 @@ type obj = {
         {
           messageId: 'unexpectedAny',
           line: 2,
-          column: 41
+          column: 41,
         },
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 41
-        }
-      ]
-    }
-  ]
+          column: 41,
+        },
+      ],
+    },
+  ],
 });

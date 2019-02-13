@@ -56,7 +56,7 @@ export type InferMessageIdsTypeFromRule<T> = T extends RuleModule<
  * Gets a string name representation of the given PropertyName node
  */
 export function getNameFromPropertyName(
-  propertyName: TSESTree.PropertyName
+  propertyName: TSESTree.PropertyName,
 ): string {
   if (propertyName.type === AST_NODE_TYPES.Identifier) {
     return propertyName.name;

@@ -46,7 +46,7 @@ declare class RuleTesterTyped {
   run<TMessageIds extends string, TOptions extends Readonly<any[]>>(
     name: string,
     rule: RuleModule<TMessageIds, TOptions>,
-    tests: RunTests<TMessageIds, TOptions>
+    tests: RunTests<TMessageIds, TOptions>,
   ): void;
 }
 
@@ -67,5 +67,5 @@ export {
   TestCaseError,
   InvalidTestCase,
   ValidTestCase,
-  getFixturesRootDir
+  getFixturesRootDir,
 };

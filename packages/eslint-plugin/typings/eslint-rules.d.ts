@@ -90,22 +90,22 @@ declare module 'eslint/lib/rules/indent' {
     {
       '*:exit'(node: TSESTree.Node): void;
       'ArrayExpression, ArrayPattern'(
-        node: TSESTree.ArrayExpression | TSESTree.ArrayPattern
+        node: TSESTree.ArrayExpression | TSESTree.ArrayPattern,
       ): void;
       'ObjectExpression, ObjectPattern'(
-        node: TSESTree.ObjectExpression | TSESTree.ObjectPattern
+        node: TSESTree.ObjectExpression | TSESTree.ObjectPattern,
       ): void;
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
       AssignmentExpression(node: TSESTree.AssignmentExpression): void;
       'BinaryExpression, LogicalExpression'(
-        node: TSESTree.BinaryExpression | TSESTree.LogicalExpression
+        node: TSESTree.BinaryExpression | TSESTree.LogicalExpression,
       ): void;
       'BlockStatement, ClassBody'(
-        node: TSESTree.BlockStatement | TSESTree.ClassBody
+        node: TSESTree.BlockStatement | TSESTree.ClassBody,
       ): void;
       CallExpression(node: TSESTree.CallExpression): void;
       'ClassDeclaration[superClass], ClassExpression[superClass]'(
-        node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
+        node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
       ): void;
       ConditionalExpression(node: TSESTree.ConditionalExpression): void;
       'DoWhileStatement, WhileStatement, ForInStatement, ForOfStatement'(
@@ -113,12 +113,12 @@ declare module 'eslint/lib/rules/indent' {
           | TSESTree.DoWhileStatement
           | TSESTree.WhileStatement
           | TSESTree.ForInStatement
-          | TSESTree.ForOfStatement
+          | TSESTree.ForOfStatement,
       ): void;
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
       ForStatement(node: TSESTree.ForStatement): void;
       'FunctionDeclaration, FunctionExpression'(
-        node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression
+        node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
       ): void;
       IfStatement(node: TSESTree.IfStatement): void;
       ImportDeclaration(node: TSESTree.ImportDeclaration): void;
@@ -126,7 +126,7 @@ declare module 'eslint/lib/rules/indent' {
         node:
           | TSESTree.MemberExpression
           | TSESTree.JSXMemberExpression
-          | TSESTree.MetaProperty
+          | TSESTree.MetaProperty,
       ): void;
       NewExpression(node: TSESTree.NewExpression): void;
       Property(node: TSESTree.Property): void;

@@ -4,9 +4,9 @@ import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
-    ecmaVersion: 6
+    ecmaVersion: 6,
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-redeclare', rule, {
@@ -16,20 +16,20 @@ ruleTester.run('no-redeclare', rule, {
     {
       code: 'if (true) {\n    let b = 2;\n} else {    \nlet b = 3;\n}',
       parserOptions: {
-        ecmaVersion: 6
-      }
+        ecmaVersion: 6,
+      },
     },
     'var Object = 0;',
     { code: 'var Object = 0;', options: [{ builtinGlobals: false }] },
     {
       code: 'var Object = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { sourceType: 'module' }
+      parserOptions: { sourceType: 'module' },
     },
     {
       code: 'var Object = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaFeatures: { globalReturn: true } }
+      parserOptions: { ecmaFeatures: { globalReturn: true } },
     },
     { code: 'var top = 0;', env: { browser: true } },
     { code: 'var top = 0;', options: [{ builtinGlobals: true }] },
@@ -37,18 +37,18 @@ ruleTester.run('no-redeclare', rule, {
       code: 'var top = 0;',
       options: [{ builtinGlobals: true }],
       parserOptions: { ecmaFeatures: { globalReturn: true } },
-      env: { browser: true }
+      env: { browser: true },
     },
     {
       code: 'var top = 0;',
       options: [{ builtinGlobals: true }],
       parserOptions: { sourceType: 'module' },
-      env: { browser: true }
+      env: { browser: true },
     },
     {
       code: 'var self = 1',
       options: [{ builtinGlobals: true }],
-      env: { browser: false }
+      env: { browser: false },
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/443
     `
@@ -76,7 +76,7 @@ function A<T>() {}
 interface B<T> {}
 type C<T> = Array<T>
 class D<T> {}
-    `
+    `,
   ],
   invalid: [
     {
@@ -85,85 +85,85 @@ class D<T> {}
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'switch(foo) { case a: var b = 3;\ncase b: var b = 4}',
       errors: [
         {
           message: "'b' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a = 3; var a = 10;',
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a = {}; var a = [];',
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a; function a() {}',
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'function a() {} function a() {}',
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a = function() { }; var a = function() { }',
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a = function() { }; var a = new Date();',
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a = 3; var a = 10; var a = 15;',
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
+          type: AST_NODE_TYPES.Identifier,
         } as any,
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a; var a;',
@@ -171,9 +171,9 @@ class D<T> {}
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'export var a; var a;',
@@ -181,9 +181,9 @@ class D<T> {}
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var Object = 0;',
@@ -191,9 +191,9 @@ class D<T> {}
       errors: [
         {
           message: "'Object' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var top = 0;',
@@ -201,10 +201,10 @@ class D<T> {}
       errors: [
         {
           message: "'top' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
       ],
-      env: { browser: true }
+      env: { browser: true },
     },
     {
       code: 'var a; var {a = 0, b: Object = 0} = {};',
@@ -213,13 +213,13 @@ class D<T> {}
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
+          type: AST_NODE_TYPES.Identifier,
         } as any,
         {
           message: "'Object' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a; var {a = 0, b: Object = 0} = {};',
@@ -228,9 +228,9 @@ class D<T> {}
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a; var {a = 0, b: Object = 0} = {};',
@@ -239,9 +239,9 @@ class D<T> {}
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
     {
       code: 'var a; var {a = 0, b: Object = 0} = {};',
@@ -250,9 +250,9 @@ class D<T> {}
       errors: [
         {
           message: "'a' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
     },
 
     // Notifications of readonly are moved from no-undef: https://github.com/eslint/eslint/issues/4504
@@ -262,9 +262,9 @@ class D<T> {}
       errors: [
         {
           message: "'b' is already defined.",
-          type: AST_NODE_TYPES.Identifier
-        } as any
-      ]
-    }
-  ]
+          type: AST_NODE_TYPES.Identifier,
+        } as any,
+      ],
+    },
+  ],
 });

@@ -40,12 +40,12 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow the use of type aliases',
       tslintRuleName: 'interface-over-type-literal',
       category: 'Stylistic Issues',
-      recommended: false
+      recommended: false,
     },
     messages: {
       noTypeAlias: 'Type {{alias}} are not allowed.',
       noCompositionAlias:
-        '{{typeName}} in {{compositionType}} types are not allowed.'
+        '{{typeName}} in {{compositionType}} types are not allowed.',
     },
     schema: [
       {
@@ -57,11 +57,11 @@ export default util.createRule<Options, MessageIds>({
               'never',
               'in-unions',
               'in-intersections',
-              'in-unions-and-intersections'
-            ]
+              'in-unions-and-intersections',
+            ],
           },
           allowCallbacks: {
-            enum: ['always', 'never']
+            enum: ['always', 'never'],
           },
           allowLiterals: {
             enum: [
@@ -69,8 +69,8 @@ export default util.createRule<Options, MessageIds>({
               'never',
               'in-unions',
               'in-intersections',
-              'in-unions-and-intersections'
-            ]
+              'in-unions-and-intersections',
+            ],
           },
           allowMappedTypes: {
             enum: [
@@ -78,41 +78,41 @@ export default util.createRule<Options, MessageIds>({
               'never',
               'in-unions',
               'in-intersections',
-              'in-unions-and-intersections'
-            ]
-          }
+              'in-unions-and-intersections',
+            ],
+          },
         },
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
       allowAliases: 'never',
       allowCallbacks: 'never',
       allowLiterals: 'never',
-      allowMappedTypes: 'never'
-    }
+      allowMappedTypes: 'never',
+    },
   ],
   create(
     context,
-    [{ allowAliases, allowCallbacks, allowLiterals, allowMappedTypes }]
+    [{ allowAliases, allowCallbacks, allowLiterals, allowMappedTypes }],
   ) {
     const unions = ['always', 'in-unions', 'in-unions-and-intersections'];
     const intersections = [
       'always',
       'in-intersections',
-      'in-unions-and-intersections'
+      'in-unions-and-intersections',
     ];
     const compositions = [
       'in-unions',
       'in-intersections',
-      'in-unions-and-intersections'
+      'in-unions-and-intersections',
     ];
     const aliasTypes = [
       AST_NODE_TYPES.TSArrayType,
       AST_NODE_TYPES.TSTypeReference,
-      AST_NODE_TYPES.TSLiteralType
+      AST_NODE_TYPES.TSLiteralType,
     ];
 
     type CompositionType = TSESTree.TSUnionType | TSESTree.TSIntersectionType;
@@ -136,7 +136,7 @@ export default util.createRule<Options, MessageIds>({
     function isSupportedComposition(
       isTopLevel: boolean,
       compositionType: string | undefined,
-      allowed: string
+      allowed: string,
     ): boolean {
       return (
         compositions.indexOf(allowed) === -1 ||
@@ -153,7 +153,7 @@ export default util.createRule<Options, MessageIds>({
      * @param node the node to be evaluated.
      */
     function isAlias(
-      node: TSESTree.Node
+      node: TSESTree.Node,
     ): boolean /* not worth enumerating the ~25 individual types here */ {
       return (
         node &&
@@ -197,15 +197,15 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.Node,
       compositionType: string | undefined,
       isRoot: boolean,
-      type?: string
+      type?: string,
     ): ReportDescriptor<MessageIds> {
       if (isRoot) {
         return {
           node,
           messageId: 'noTypeAlias',
           data: {
-            alias: type || 'aliases'
-          }
+            alias: type || 'aliases',
+          },
         };
       }
 
@@ -217,8 +217,8 @@ export default util.createRule<Options, MessageIds>({
             compositionType === AST_NODE_TYPES.TSUnionType
               ? 'union'
               : 'intersection',
-          typeName: util.upperCaseFirst(type!)
-        }
+          typeName: util.upperCaseFirst(type!),
+        },
       };
     }
 
@@ -232,12 +232,12 @@ export default util.createRule<Options, MessageIds>({
     function validateTypeAliases(
       node: TSESTree.Node,
       isTopLevel: boolean,
-      compositionType?: string
+      compositionType?: string,
     ): void {
       if (isCallback(node)) {
         if (allowCallbacks === 'never') {
           context.report(
-            getMessage(node, compositionType, isTopLevel, 'callbacks')
+            getMessage(node, compositionType, isTopLevel, 'callbacks'),
           );
         }
       } else if (isLiteral(node)) {
@@ -246,7 +246,7 @@ export default util.createRule<Options, MessageIds>({
           !isSupportedComposition(isTopLevel, compositionType, allowLiterals!)
         ) {
           context.report(
-            getMessage(node, compositionType, isTopLevel, 'literals')
+            getMessage(node, compositionType, isTopLevel, 'literals'),
           );
         }
       } else if (isMappedType(node)) {
@@ -255,11 +255,11 @@ export default util.createRule<Options, MessageIds>({
           !isSupportedComposition(
             isTopLevel,
             compositionType,
-            allowMappedTypes!
+            allowMappedTypes!,
           )
         ) {
           context.report(
-            getMessage(node, compositionType, isTopLevel, 'mapped types')
+            getMessage(node, compositionType, isTopLevel, 'mapped types'),
           );
         }
       } else if (isAlias(node)) {
@@ -268,7 +268,7 @@ export default util.createRule<Options, MessageIds>({
           !isSupportedComposition(isTopLevel, compositionType, allowAliases!)
         ) {
           context.report(
-            getMessage(node, compositionType, isTopLevel, 'aliases')
+            getMessage(node, compositionType, isTopLevel, 'aliases'),
           );
         }
       } else {
@@ -296,7 +296,7 @@ export default util.createRule<Options, MessageIds>({
         } else {
           validateTypeAliases(node.typeAnnotation, true);
         }
-      }
+      },
     };
-  }
+  },
 });

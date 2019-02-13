@@ -14,12 +14,12 @@ export default util.createRule({
       description: 'Disallow `/// <reference path="" />` comments',
       tslintRuleName: 'no-reference',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     schema: [],
     messages: {
-      tripleSlashReference: 'Do not use a triple slash reference.'
-    }
+      tripleSlashReference: 'Do not use a triple slash reference.',
+    },
   },
   defaultOptions: [],
   create(context) {
@@ -37,11 +37,11 @@ export default util.createRule({
           if (referenceRegExp.test(comment.value)) {
             context.report({
               node: comment,
-              messageId: 'tripleSlashReference'
+              messageId: 'tripleSlashReference',
             });
           }
         });
-      }
+      },
     };
-  }
+  },
 });

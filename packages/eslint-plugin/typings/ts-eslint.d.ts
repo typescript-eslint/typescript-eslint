@@ -29,7 +29,7 @@ declare module 'ts-eslint' {
     }
 
     export type FilterPredicate = (
-      tokenOrComment: TSESTree.Token | TSESTree.Comment
+      tokenOrComment: TSESTree.Token | TSESTree.Comment,
     ) => boolean;
 
     export type CursorWithSkipOptions =
@@ -69,7 +69,7 @@ declare module 'ts-eslint' {
     getText(
       node?: TSESTree.Node,
       beforeCount?: number,
-      afterCount?: number
+      afterCount?: number,
     ): string;
 
     getLines(): string[];
@@ -77,7 +77,7 @@ declare module 'ts-eslint' {
     getAllComments(): TSESTree.Comment[];
 
     getComments(
-      node: TSESTree.Node
+      node: TSESTree.Node,
     ): { leading: TSESTree.Comment[]; trailing: TSESTree.Comment[] };
 
     getJSDocComment(node: TSESTree.Node): TSESTree.Node | TSESTree.Token | null;
@@ -86,7 +86,7 @@ declare module 'ts-eslint' {
 
     isSpaceBetweenTokens(
       first: TSESTree.Token,
-      second: TSESTree.Token
+      second: TSESTree.Token,
     ): boolean;
 
     getLocFromIndex(index: number): TSESTree.LineAndColumnData;
@@ -98,71 +98,71 @@ declare module 'ts-eslint' {
 
     getTokenByRangeStart(
       offset: number,
-      options?: { includeComments?: boolean }
+      options?: { includeComments?: boolean },
     ): TSESTree.Token | null;
 
     getFirstToken(
       node: TSESTree.Node,
-      options?: SourceCode.CursorWithSkipOptions
+      options?: SourceCode.CursorWithSkipOptions,
     ): TSESTree.Token | null;
 
     getFirstTokens(
       node: TSESTree.Node,
-      options?: SourceCode.CursorWithCountOptions
+      options?: SourceCode.CursorWithCountOptions,
     ): TSESTree.Token[];
 
     getLastToken(
       node: TSESTree.Node,
-      options?: SourceCode.CursorWithSkipOptions
+      options?: SourceCode.CursorWithSkipOptions,
     ): TSESTree.Token | null;
 
     getLastTokens(
       node: TSESTree.Node,
-      options?: SourceCode.CursorWithCountOptions
+      options?: SourceCode.CursorWithCountOptions,
     ): TSESTree.Token[];
 
     getTokenBefore(
       node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-      options?: SourceCode.CursorWithSkipOptions
+      options?: SourceCode.CursorWithSkipOptions,
     ): TSESTree.Token | null;
 
     getTokensBefore(
       node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-      options?: SourceCode.CursorWithCountOptions
+      options?: SourceCode.CursorWithCountOptions,
     ): TSESTree.Token[];
 
     getTokenAfter(
       node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-      options?: SourceCode.CursorWithSkipOptions
+      options?: SourceCode.CursorWithSkipOptions,
     ): TSESTree.Token | null;
 
     getTokensAfter(
       node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-      options?: SourceCode.CursorWithCountOptions
+      options?: SourceCode.CursorWithCountOptions,
     ): TSESTree.Token[];
 
     getFirstTokenBetween(
       left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-      options?: SourceCode.CursorWithSkipOptions
+      options?: SourceCode.CursorWithSkipOptions,
     ): TSESTree.Token | null;
 
     getFirstTokensBetween(
       left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-      options?: SourceCode.CursorWithCountOptions
+      options?: SourceCode.CursorWithCountOptions,
     ): TSESTree.Token[];
 
     getLastTokenBetween(
       left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-      options?: SourceCode.CursorWithSkipOptions
+      options?: SourceCode.CursorWithSkipOptions,
     ): TSESTree.Token | null;
 
     getLastTokensBetween(
       left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
       right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-      options?: SourceCode.CursorWithCountOptions
+      options?: SourceCode.CursorWithCountOptions,
     ): TSESTree.Token[];
 
     getTokensBetween(
@@ -171,31 +171,31 @@ declare module 'ts-eslint' {
       padding?:
         | number
         | SourceCode.FilterPredicate
-        | SourceCode.CursorWithCountOptions
+        | SourceCode.CursorWithCountOptions,
     ): TSESTree.Token[];
 
     getTokens(
       node: TSESTree.Node,
       beforeCount?: number,
-      afterCount?: number
+      afterCount?: number,
     ): TSESTree.Token[];
     // eslint-disable-next-line no-dupe-class-members
     getTokens(
       node: TSESTree.Node,
-      options: SourceCode.FilterPredicate | SourceCode.CursorWithCountOptions
+      options: SourceCode.FilterPredicate | SourceCode.CursorWithCountOptions,
     ): TSESTree.Token[];
 
     commentsExistBetween(
       left: TSESTree.Node | TSESTree.Token,
-      right: TSESTree.Node | TSESTree.Token
+      right: TSESTree.Node | TSESTree.Token,
     ): boolean;
 
     getCommentsBefore(
-      nodeOrToken: TSESTree.Node | TSESTree.Token
+      nodeOrToken: TSESTree.Node | TSESTree.Token,
     ): TSESTree.Comment[];
 
     getCommentsAfter(
-      nodeOrToken: TSESTree.Node | TSESTree.Token
+      nodeOrToken: TSESTree.Node | TSESTree.Token,
     ): TSESTree.Comment[];
 
     getCommentsInside(node: TSESTree.Node): TSESTree.Comment[];
@@ -273,14 +273,14 @@ declare module 'ts-eslint' {
   interface RuleFixer {
     insertTextAfter(
       nodeOrToken: TSESTree.Node | TSESTree.Token,
-      text: string
+      text: string,
     ): RuleFix;
 
     insertTextAfterRange(range: AST.Range, text: string): RuleFix;
 
     insertTextBefore(
       nodeOrToken: TSESTree.Node | TSESTree.Token,
-      text: string
+      text: string,
     ): RuleFix;
 
     insertTextBeforeRange(range: AST.Range, text: string): RuleFix;
@@ -291,7 +291,7 @@ declare module 'ts-eslint' {
 
     replaceText(
       nodeOrToken: TSESTree.Node | TSESTree.Token,
-      text: string
+      text: string,
     ): RuleFix;
 
     replaceTextRange(range: AST.Range, text: string): RuleFix;
@@ -530,7 +530,7 @@ declare module 'ts-eslint' {
     RuleListener,
     RuleMetaData,
     RuleMetaDataDocs,
-    Scope
+    Scope,
   };
   export default RuleModule;
 }

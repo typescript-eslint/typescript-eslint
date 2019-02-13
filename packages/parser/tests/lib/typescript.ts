@@ -2,7 +2,7 @@ import fs from 'fs';
 import glob from 'glob';
 import {
   createScopeSnapshotTestBlock,
-  formatSnapshotName
+  formatSnapshotName,
 } from '../tools/test-utils';
 
 const FIXTURES_DIR =
@@ -18,7 +18,7 @@ describe('typescript', () => {
     const code = fs.readFileSync(filename, 'utf8');
     it(
       formatSnapshotName(filename, FIXTURES_DIR, '.ts'),
-      createScopeSnapshotTestBlock(code)
+      createScopeSnapshotTestBlock(code),
     );
   });
 });

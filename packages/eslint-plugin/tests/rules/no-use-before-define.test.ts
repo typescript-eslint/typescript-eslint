@@ -3,7 +3,7 @@ import { RuleTester } from '../RuleTester';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 const parserOptions = { ecmaVersion: 6 as 6 };
@@ -27,11 +27,11 @@ const x: Foo = {};
 a();
 function a() { alert(arguments); }
             `,
-      options: ['nofunc']
+      options: ['nofunc'],
     },
     {
       code: '(() => { var a = 42; alert(a); })();',
-      parserOptions
+      parserOptions,
     },
     `
 a();
@@ -44,7 +44,7 @@ try {
 class A {}
 new A();
             `,
-      parserOptions
+      parserOptions,
     },
     'var a = 0, b = a;',
     { code: 'var {a = 0, b = a} = {};', parserOptions },
@@ -68,7 +68,7 @@ for (a in a) {}
 var a;
 for (a of a) {}
             `,
-      parserOptions
+      parserOptions,
     },
 
     // Block-level bindings
@@ -80,7 +80,7 @@ a();
     function a() {}
 }
             `,
-      parserOptions
+      parserOptions,
     },
     {
       code: `
@@ -91,7 +91,7 @@ a();
 }
             `,
       options: ['nofunc'],
-      parserOptions
+      parserOptions,
     },
     {
       code: `
@@ -104,7 +104,7 @@ switch (foo) {
     }
 }
             `,
-      parserOptions
+      parserOptions,
     },
     {
       code: `
@@ -113,7 +113,7 @@ a();
     let a = function () {};
 }
             `,
-      parserOptions
+      parserOptions,
     },
 
     // object style options
@@ -124,7 +124,7 @@ function a() {
     alert(arguments);
 }
             `,
-      options: [{ functions: false }]
+      options: [{ functions: false }],
     },
     {
       code: `
@@ -135,7 +135,7 @@ function a() {
 }
             `,
       options: [{ functions: false }],
-      parserOptions
+      parserOptions,
     },
     {
       code: `
@@ -145,7 +145,7 @@ function foo() {
 class A {};
             `,
       options: [{ classes: false }],
-      parserOptions
+      parserOptions,
     },
 
     // "variables" option
@@ -156,7 +156,7 @@ function foo() {
 }
 var bar;
             `,
-      options: [{ variables: false }]
+      options: [{ variables: false }],
     },
     {
       code: `
@@ -164,7 +164,7 @@ var foo = () => bar;
 var bar;
             `,
       options: [{ variables: false }],
-      parserOptions
+      parserOptions,
     },
 
     // "typedefs" option
@@ -173,7 +173,7 @@ var bar;
 var x: Foo = 2;
 type Foo = string | number
             `,
-      options: [{ typedefs: false }]
+      options: [{ typedefs: false }],
     },
 
     // test for https://github.com/bradzacher/eslint-plugin-typescript/issues/142
@@ -184,7 +184,7 @@ var alias = Test;
 class Test {}
             `,
       parserOptions,
-      options: [{ classes: false }]
+      options: [{ classes: false }],
     },
     {
       code: `
@@ -193,7 +193,7 @@ var alias = Test;
 export class Test {}
             `,
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      options: [{ classes: false }]
+      options: [{ classes: false }],
     },
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/141
     {
@@ -213,7 +213,7 @@ export namespace Third {
 }
             `,
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      parser: '@typescript-eslint/parser'
+      parser: '@typescript-eslint/parser',
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/550
     `
@@ -229,7 +229,7 @@ interface Foo {
     bar: string
 }
 const bar = 'blah'
-    `
+    `,
   ],
   invalid: [
     {
@@ -242,11 +242,11 @@ var a=19;
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -258,11 +258,11 @@ var a=19;
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -273,11 +273,11 @@ var a=19;
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -288,11 +288,11 @@ var a=function() {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -303,11 +303,11 @@ var a=[1,3];
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -322,18 +322,18 @@ function a() {
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
+          type: AST_NODE_TYPES.Identifier,
         },
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'b'
+            name: 'b',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -346,11 +346,11 @@ var a=function() {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -366,11 +366,11 @@ var a=function() {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -384,11 +384,11 @@ function a() { }
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -403,11 +403,11 @@ a();
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -422,11 +422,11 @@ try {
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -438,11 +438,11 @@ var a;
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -454,11 +454,11 @@ class A {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'A'
+            name: 'A',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -472,11 +472,11 @@ class A {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'A'
+            name: 'A',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -488,11 +488,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'A'
+            name: 'A',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -506,11 +506,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'A'
+            name: 'A',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
 
     // Block-level bindings
@@ -526,11 +526,11 @@ a++;
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -545,11 +545,11 @@ a++;
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -563,11 +563,11 @@ a++;
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -583,11 +583,11 @@ switch (foo) {
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -603,11 +603,11 @@ if (true) {
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
 
     // object style options
@@ -621,11 +621,11 @@ var a=function() {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -638,11 +638,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'A'
+            name: 'A',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: `
@@ -657,11 +657,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'A'
+            name: 'A',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
 
     // invalid initializers
@@ -671,11 +671,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'let a = a + b;',
@@ -684,11 +684,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'const a = foo(a);',
@@ -697,11 +697,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'function foo(a = a) {}',
@@ -710,11 +710,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var {a = a} = [];',
@@ -723,11 +723,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var [a = a] = [];',
@@ -736,11 +736,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var {b = a, a} = {};',
@@ -749,11 +749,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var [b = a, a] = {};',
@@ -762,11 +762,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var {a = 0} = a;',
@@ -775,11 +775,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var [a = 0] = a;',
@@ -788,11 +788,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'for (var a in a) {}',
@@ -800,11 +800,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'for (var a of a) {}',
@@ -813,11 +813,11 @@ var A = class {};
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'a'
+            name: 'a',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
 
     // "variables" option
@@ -835,11 +835,11 @@ var bar;
         {
           messageId: 'noUseBeforeDefine',
           data: {
-            name: 'bar'
+            name: 'bar',
           },
-          type: AST_NODE_TYPES.Identifier
-        }
-      ]
-    }
-  ]
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+  ],
 });

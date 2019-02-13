@@ -7,6 +7,7 @@
   },
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "rules": {
+    "comma-dangle": ["error", "always-multiline"],
     "no-mixed-operators": "error",
     "no-console": "off",
     "no-undef": "off",
