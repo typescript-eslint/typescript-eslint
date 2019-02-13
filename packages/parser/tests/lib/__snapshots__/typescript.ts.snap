@@ -9864,9 +9864,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 0,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -10023,6 +10021,9 @@ Object {
         Object {
           "$ref": 4,
         },
+        Object {
+          "$ref": 5,
+        },
       ],
       "type": "module",
       "typeMap": Object {},
@@ -10073,11 +10074,7 @@ Object {
             },
           ],
           "name": "M",
-          "references": Array [
-            Object {
-              "$ref": 5,
-            },
-          ],
+          "references": Array [],
           "scope": Object {
             "$ref": 8,
           },
@@ -10091,6 +10088,9 @@ Object {
   "throughReferences": Array [
     Object {
       "$ref": 4,
+    },
+    Object {
+      "$ref": 5,
     },
   ],
   "type": "global",
@@ -32304,13 +32304,15 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 2,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
           ],
-          "throughReferences": Array [],
+          "throughReferences": Array [
+            Object {
+              "$ref": 3,
+            },
+          ],
           "type": "function",
           "typeMap": Object {},
           "upperScope": Object {
@@ -32360,11 +32362,7 @@ Object {
                 },
               ],
               "name": "x",
-              "references": Array [
-                Object {
-                  "$ref": 3,
-                },
-              ],
+              "references": Array [],
               "scope": Object {
                 "$ref": 4,
               },
@@ -32401,7 +32399,11 @@ Object {
           },
         },
       ],
-      "throughReferences": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 3,
+        },
+      ],
       "type": "module",
       "typeMap": Object {},
       "upperScope": Object {
@@ -32472,7 +32474,11 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+  ],
   "type": "global",
   "typeMap": Object {},
   "upperScope": null,
@@ -32532,13 +32538,15 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 2,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
           ],
-          "throughReferences": Array [],
+          "throughReferences": Array [
+            Object {
+              "$ref": 3,
+            },
+          ],
           "type": "function",
           "typeMap": Object {},
           "upperScope": Object {
@@ -32602,11 +32610,7 @@ Object {
                 },
               ],
               "name": "x",
-              "references": Array [
-                Object {
-                  "$ref": 3,
-                },
-              ],
+              "references": Array [],
               "scope": Object {
                 "$ref": 4,
               },
@@ -32617,7 +32621,11 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 3,
+        },
+      ],
       "type": "module",
       "typeMap": Object {},
       "upperScope": Object {
@@ -32678,7 +32686,11 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+  ],
   "type": "global",
   "typeMap": Object {},
   "upperScope": null,
@@ -33152,13 +33164,15 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 2,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
           ],
-          "throughReferences": Array [],
+          "throughReferences": Array [
+            Object {
+              "$ref": 3,
+            },
+          ],
           "type": "function",
           "typeMap": Object {},
           "upperScope": Object {
@@ -33208,11 +33222,7 @@ Object {
                 },
               ],
               "name": "x",
-              "references": Array [
-                Object {
-                  "$ref": 3,
-                },
-              ],
+              "references": Array [],
               "scope": Object {
                 "$ref": 4,
               },
@@ -33249,7 +33259,11 @@ Object {
           },
         },
       ],
-      "throughReferences": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 3,
+        },
+      ],
       "type": "module",
       "typeMap": Object {},
       "upperScope": Object {
@@ -33320,7 +33334,11 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+  ],
   "type": "global",
   "typeMap": Object {},
   "upperScope": null,
@@ -33380,13 +33398,15 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 2,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
           ],
-          "throughReferences": Array [],
+          "throughReferences": Array [
+            Object {
+              "$ref": 3,
+            },
+          ],
           "type": "function",
           "typeMap": Object {},
           "upperScope": Object {
@@ -33450,11 +33470,7 @@ Object {
                 },
               ],
               "name": "x",
-              "references": Array [
-                Object {
-                  "$ref": 3,
-                },
-              ],
+              "references": Array [],
               "scope": Object {
                 "$ref": 4,
               },
@@ -33465,7 +33481,11 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 3,
+        },
+      ],
       "type": "module",
       "typeMap": Object {},
       "upperScope": Object {
@@ -33526,7 +33546,11 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+  ],
   "type": "global",
   "typeMap": Object {},
   "upperScope": null,
@@ -34000,9 +34024,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 2,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -34025,7 +34047,11 @@ Object {
               "writeExpr": undefined,
             },
           ],
-          "throughReferences": Array [],
+          "throughReferences": Array [
+            Object {
+              "$ref": 3,
+            },
+          ],
           "type": "function",
           "typeMap": Object {},
           "upperScope": Object {
@@ -34077,9 +34103,6 @@ Object {
               "name": "x",
               "references": Array [
                 Object {
-                  "$ref": 3,
-                },
-                Object {
                   "$ref": 4,
                 },
               ],
@@ -34119,7 +34142,11 @@ Object {
           },
         },
       ],
-      "throughReferences": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 3,
+        },
+      ],
       "type": "module",
       "typeMap": Object {},
       "upperScope": Object {
@@ -34190,7 +34217,11 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+  ],
   "type": "global",
   "typeMap": Object {},
   "upperScope": null,
@@ -34250,9 +34281,7 @@ Object {
                 "type": "Identifier",
               },
               "kind": "r",
-              "resolved": Object {
-                "$ref": 2,
-              },
+              "resolved": null,
               "writeExpr": undefined,
             },
             Object {
@@ -34275,7 +34304,11 @@ Object {
               "writeExpr": undefined,
             },
           ],
-          "throughReferences": Array [],
+          "throughReferences": Array [
+            Object {
+              "$ref": 3,
+            },
+          ],
           "type": "function",
           "typeMap": Object {},
           "upperScope": Object {
@@ -34341,9 +34374,6 @@ Object {
               "name": "x",
               "references": Array [
                 Object {
-                  "$ref": 3,
-                },
-                Object {
                   "$ref": 4,
                 },
               ],
@@ -34357,7 +34387,11 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 3,
+        },
+      ],
       "type": "module",
       "typeMap": Object {},
       "upperScope": Object {
@@ -34418,7 +34452,11 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+  ],
   "type": "global",
   "typeMap": Object {},
   "upperScope": null,

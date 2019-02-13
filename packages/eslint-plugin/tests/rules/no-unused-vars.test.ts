@@ -990,8 +990,8 @@ new test<foo>();
       errors: error([
         {
           message: "'foo' is defined but never used.",
-          line: 3,
-          column: 10,
+          line: 2,
+          column: 7,
         },
       ]),
     },
@@ -1016,6 +1016,11 @@ class bar<test> {};
           message: "'bar' is defined but never used.",
           line: 4,
           column: 7,
+        },
+        {
+          message: "'test' is defined but never used.",
+          line: 4,
+          column: 11,
         },
       ]),
     },
