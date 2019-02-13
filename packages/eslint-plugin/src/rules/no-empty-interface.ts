@@ -3,7 +3,6 @@
  * @author Patricio Trevino
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 export default util.createRule({
@@ -26,7 +25,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
+      TSInterfaceDeclaration(node) {
         if (node.body.body.length !== 0) {
           return;
         }

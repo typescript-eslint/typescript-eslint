@@ -10,7 +10,7 @@ The def is wrapped up in a fake module so that it can be used in eslint-rules.d.
 declare module 'ts-eslint' {
   import { TSESTree } from '@typescript-eslint/typescript-estree';
   import { ParserServices } from '@typescript-eslint/parser';
-  import { AST, Linter } from 'eslint';
+  import { AST, Linter, Rule } from 'eslint';
   import { JSONSchema4 } from 'json-schema';
 
   //#region SourceCode
@@ -397,8 +397,218 @@ declare module 'ts-eslint' {
 
   // This isn't the correct signature, but it makes it easier to do custom unions within reusable listneers
   // never will break someone's code unless they specifically type the function argument
-  type RuleFunction = (node: never) => void;
-  type RuleListener = Record<string, RuleFunction>;
+  type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
+
+  type CodePathFunction<T extends TSESTree.BaseNode = TSESTree.Node> = (
+    codePath: Rule.CodePath,
+    node: TSESTree.BaseNode
+  ) => void;
+
+  type CodePathSegmentFunction<T extends TSESTree.BaseNode = TSESTree.Node> = (
+    codePathSegment: Rule.CodePathSegment,
+    node: TSESTree.BaseNode
+  ) => void;
+
+  type CodePathSegmentLoopFunction<
+    T extends TSESTree.BaseNode = TSESTree.Node
+  > = (
+    fromCodePathSegment: Rule.CodePathSegment,
+    toCodePathSegment: Rule.CodePathSegment,
+    node: TSESTree.BaseNode
+  ) => void;
+
+  interface RuleListener {
+    [nodeSelector: string]:
+      | RuleFunction
+      | CodePathFunction
+      | CodePathSegmentFunction
+      | CodePathSegmentLoopFunction
+      | undefined;
+    ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
+    ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
+    ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
+    AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
+    AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
+    BlockStatement?: RuleFunction<TSESTree.BlockStatement>;
+    BreakStatement?: RuleFunction<TSESTree.BreakStatement>;
+    CallExpression?: RuleFunction<TSESTree.CallExpression>;
+    CatchClause?: RuleFunction<TSESTree.CatchClause>;
+    ClassBody?: RuleFunction<TSESTree.ClassBody>;
+    ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
+    ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
+    Comment?: RuleFunction<TSESTree.Comment>;
+    ConditionalExpression?: RuleFunction<TSESTree.ConditionalExpression>;
+    ContinueStatement?: RuleFunction<TSESTree.ContinueStatement>;
+    DebuggerStatement?: RuleFunction<TSESTree.DebuggerStatement>;
+    Decorator?: RuleFunction<TSESTree.Decorator>;
+    DoWhileStatement?: RuleFunction<TSESTree.DoWhileStatement>;
+    EmptyStatement?: RuleFunction<TSESTree.EmptyStatement>;
+    ExportAllDeclaration?: RuleFunction<TSESTree.ExportAllDeclaration>;
+    ExportDefaultDeclaration?: RuleFunction<TSESTree.ExportDefaultDeclaration>;
+    ExportNamedDeclaration?: RuleFunction<TSESTree.ExportNamedDeclaration>;
+    ExportSpecifier?: RuleFunction<TSESTree.ExportSpecifier>;
+    ExpressionStatement?: RuleFunction<TSESTree.ExpressionStatement>;
+    ForInStatement?: RuleFunction<TSESTree.ForInStatement>;
+    ForOfStatement?: RuleFunction<TSESTree.ForOfStatement>;
+    ForStatement?: RuleFunction<TSESTree.ForStatement>;
+    Identifier?: RuleFunction<TSESTree.Identifier>;
+    IfStatement?: RuleFunction<TSESTree.IfStatement>;
+    Import?: RuleFunction<TSESTree.Import>;
+    ImportDeclaration?: RuleFunction<TSESTree.ImportDeclaration>;
+    ImportDefaultSpecifier?: RuleFunction<TSESTree.ImportDefaultSpecifier>;
+    ImportNamespaceSpecifier?: RuleFunction<TSESTree.ImportNamespaceSpecifier>;
+    ImportSpecifier?: RuleFunction<TSESTree.ImportSpecifier>;
+    JSXAttribute?: RuleFunction<TSESTree.JSXAttribute>;
+    JSXClosingElement?: RuleFunction<TSESTree.JSXClosingElement>;
+    JSXClosingFragment?: RuleFunction<TSESTree.JSXClosingFragment>;
+    JSXElement?: RuleFunction<TSESTree.JSXElement>;
+    JSXEmptyExpression?: RuleFunction<TSESTree.JSXEmptyExpression>;
+    JSXExpressionContainer?: RuleFunction<TSESTree.JSXExpressionContainer>;
+    JSXFragment?: RuleFunction<TSESTree.JSXFragment>;
+    JSXIdentifier?: RuleFunction<TSESTree.JSXIdentifier>;
+    JSXMemberExpression?: RuleFunction<TSESTree.JSXMemberExpression>;
+    JSXOpeningElement?: RuleFunction<TSESTree.JSXOpeningElement>;
+    JSXOpeningFragment?: RuleFunction<TSESTree.JSXOpeningFragment>;
+    JSXSpreadAttribute?: RuleFunction<TSESTree.JSXSpreadAttribute>;
+    JSXSpreadChild?: RuleFunction<TSESTree.JSXSpreadChild>;
+    JSXText?: RuleFunction<TSESTree.JSXText>;
+    LabeledStatement?: RuleFunction<TSESTree.LabeledStatement>;
+    MemberExpression?: RuleFunction<TSESTree.MemberExpression>;
+    MetaProperty?: RuleFunction<TSESTree.MetaProperty>;
+    MethodDefinition?: RuleFunction<TSESTree.MethodDefinition>;
+    NewExpression?: RuleFunction<TSESTree.NewExpression>;
+    ObjectExpression?: RuleFunction<TSESTree.ObjectExpression>;
+    ObjectPattern?: RuleFunction<TSESTree.ObjectPattern>;
+    Program?: RuleFunction<TSESTree.Program>;
+    Property?: RuleFunction<TSESTree.Property>;
+    RestElement?: RuleFunction<TSESTree.RestElement>;
+    ReturnStatement?: RuleFunction<TSESTree.ReturnStatement>;
+    SequenceExpression?: RuleFunction<TSESTree.SequenceExpression>;
+    SpreadElement?: RuleFunction<TSESTree.SpreadElement>;
+    Super?: RuleFunction<TSESTree.Super>;
+    SwitchCase?: RuleFunction<TSESTree.SwitchCase>;
+    SwitchStatement?: RuleFunction<TSESTree.SwitchStatement>;
+    TaggedTemplateExpression?: RuleFunction<TSESTree.TaggedTemplateExpression>;
+    TemplateElement?: RuleFunction<TSESTree.TemplateElement>;
+    TemplateLiteral?: RuleFunction<TSESTree.TemplateLiteral>;
+    ThisExpression?: RuleFunction<TSESTree.ThisExpression>;
+    ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
+    Token?: RuleFunction<TSESTree.Token>;
+    TryStatement?: RuleFunction<TSESTree.TryStatement>;
+    TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
+    TSAnyKeyword?: RuleFunction<TSESTree.TSAnyKeyword>;
+    TSArrayType?: RuleFunction<TSESTree.TSArrayType>;
+    TSAsExpression?: RuleFunction<TSESTree.TSAsExpression>;
+    TSAsyncKeyword?: RuleFunction<TSESTree.TSAsyncKeyword>;
+    TSBigIntKeyword?: RuleFunction<TSESTree.TSBigIntKeyword>;
+    TSBooleanKeyword?: RuleFunction<TSESTree.TSBooleanKeyword>;
+    TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
+    TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
+    TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
+    TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
+    TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
+    TSExportKeyword?: RuleFunction<TSESTree.TSExportKeyword>;
+    TSExternalModuleReference?: RuleFunction<
+      TSESTree.TSExternalModuleReference
+    >;
+    TSImportEqualsDeclaration?: RuleFunction<
+      TSESTree.TSImportEqualsDeclaration
+    >;
+    TSImportType?: RuleFunction<TSESTree.TSImportType>;
+    TSIndexedAccessType?: RuleFunction<TSESTree.TSIndexedAccessType>;
+    TSIndexSignature?: RuleFunction<TSESTree.TSIndexSignature>;
+    TSInferType?: RuleFunction<TSESTree.TSInferType>;
+    TSInterfaceBody?: RuleFunction<TSESTree.TSInterfaceBody>;
+    TSInterfaceDeclaration?: RuleFunction<TSESTree.TSInterfaceDeclaration>;
+    TSIntersectionType?: RuleFunction<TSESTree.TSIntersectionType>;
+    TSLiteralType?: RuleFunction<TSESTree.TSLiteralType>;
+    TSMappedType?: RuleFunction<TSESTree.TSMappedType>;
+    TSMethodSignature?: RuleFunction<TSESTree.TSMethodSignature>;
+    TSModuleBlock?: RuleFunction<TSESTree.TSModuleBlock>;
+    TSModuleDeclaration?: RuleFunction<TSESTree.TSModuleDeclaration>;
+    TSNamespaceExportDeclaration?: RuleFunction<
+      TSESTree.TSNamespaceExportDeclaration
+    >;
+    TSNeverKeyword?: RuleFunction<TSESTree.TSNeverKeyword>;
+    TSNonNullExpression?: RuleFunction<TSESTree.TSNonNullExpression>;
+    TSNullKeyword?: RuleFunction<TSESTree.TSNullKeyword>;
+    TSNumberKeyword?: RuleFunction<TSESTree.TSNumberKeyword>;
+    TSObjectKeyword?: RuleFunction<TSESTree.TSObjectKeyword>;
+    TSOptionalType?: RuleFunction<TSESTree.TSOptionalType>;
+    TSParameterProperty?: RuleFunction<TSESTree.TSParameterProperty>;
+    TSParenthesizedType?: RuleFunction<TSESTree.TSParenthesizedType>;
+    TSPrivateKeyword?: RuleFunction<TSESTree.TSPrivateKeyword>;
+    TSPropertySignature?: RuleFunction<TSESTree.TSPropertySignature>;
+    TSProtectedKeyword?: RuleFunction<TSESTree.TSProtectedKeyword>;
+    TSPublicKeyword?: RuleFunction<TSESTree.TSPublicKeyword>;
+    TSQualifiedName?: RuleFunction<TSESTree.TSQualifiedName>;
+    TSReadonlyKeyword?: RuleFunction<TSESTree.TSReadonlyKeyword>;
+    TSRestType?: RuleFunction<TSESTree.TSRestType>;
+    TSStaticKeyword?: RuleFunction<TSESTree.TSStaticKeyword>;
+    TSStringKeyword?: RuleFunction<TSESTree.TSStringKeyword>;
+    TSSymbolKeyword?: RuleFunction<TSESTree.TSSymbolKeyword>;
+    TSThisType?: RuleFunction<TSESTree.TSThisType>;
+    TSTupleType?: RuleFunction<TSESTree.TSTupleType>;
+    TSTypeAliasDeclaration?: RuleFunction<TSESTree.TSTypeAliasDeclaration>;
+    TSTypeAnnotation?: RuleFunction<TSESTree.TSTypeAnnotation>;
+    TSTypeAssertion?: RuleFunction<TSESTree.TSTypeAssertion>;
+    TSTypeLiteral?: RuleFunction<TSESTree.TSTypeLiteral>;
+    TSTypeOperator?: RuleFunction<TSESTree.TSTypeOperator>;
+    TSTypeParameter?: RuleFunction<TSESTree.TSTypeParameter>;
+    TSTypeParameterDeclaration?: RuleFunction<
+      TSESTree.TSTypeParameterDeclaration
+    >;
+    TSTypeParameterInstantiation?: RuleFunction<
+      TSESTree.TSTypeParameterInstantiation
+    >;
+    TSTypePredicate?: RuleFunction<TSESTree.TSTypePredicate>;
+    TSTypeQuery?: RuleFunction<TSESTree.TSTypeQuery>;
+    TSTypeReference?: RuleFunction<TSESTree.TSTypeReference>;
+    TSUndefinedKeyword?: RuleFunction<TSESTree.TSUndefinedKeyword>;
+    TSUnionType?: RuleFunction<TSESTree.TSUnionType>;
+    TSUnknownKeyword?: RuleFunction<TSESTree.TSUnknownKeyword>;
+    TSVoidKeyword?: RuleFunction<TSESTree.TSVoidKeyword>;
+    VariableDeclaration?: RuleFunction<TSESTree.VariableDeclaration>;
+    VariableDeclarator?: RuleFunction<TSESTree.VariableDeclarator>;
+    WhileStatement?: RuleFunction<TSESTree.WhileStatement>;
+    WithStatement?: RuleFunction<TSESTree.WithStatement>;
+    YieldExpression?: RuleFunction<TSESTree.YieldExpression>;
+
+    // CodePath and CodePath segment methods
+    /**
+     * This is called at the start of analyzing a code path.
+     * In this time, the code path object has only the initial segment.
+     */
+    onCodePathStart?: CodePathFunction;
+
+    /**
+     * This is called at the end of analyzing a code path.
+     * In this time, the code path object is complete.
+     */
+    onCodePathEnd?: CodePathFunction;
+
+    /**
+     * This is called when a code path segment was created.
+     * It meant the code path is forked or merged.
+     * In this time, the segment has the previous segments and has been
+     * judged reachable or not.
+     */
+    onCodePathSegmentStart?: CodePathSegmentFunction;
+
+    /**
+     * This is called when a code path segment was leaved.
+     * In this time, the segment does not have the next segments yet.
+     */
+    onCodePathSegmentEnd?: CodePathSegmentFunction;
+
+    /**
+     * This is called when a code path segment was looped.
+     * Usually segments have each previous segments when created,
+     * but when looped, a segment is added as a new previous segment into a
+     * existing segment.
+     */
+    onCodePathSegmentLoop?: CodePathSegmentLoopFunction;
+  }
 
   interface RuleModule<
     TMessageIds extends string,
