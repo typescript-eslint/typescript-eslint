@@ -1,4 +1,3 @@
-import OriginalPatternVisitor from 'eslint-scope/lib/pattern-visitor';
 import Reference from 'eslint-scope/lib/reference';
 import OriginalReferencer from 'eslint-scope/lib/referencer';
 import { getKeys as fallback } from 'eslint-visitor-keys';
@@ -17,104 +16,10 @@ import {
 } from './scope/definition';
 import { typeReferencing } from './scope/reference';
 import { ScopeManager } from './scope/scope-manager';
+import { PatternVisitor } from "./scope/pattern-visitor";
+import { Scope } from "./scope/scopes";
 
-/**
- * Define the override function of `Scope#__define` for global augmentation.
- * @param {Function} define The original Scope#__define method.
- * @returns {Function} The override function.
- */
-function overrideDefine(define: any) {
-  return /* @this {Scope} */ function(this: any, node: any, definition: any) {
-    define.call(this, node, definition);
-
-    // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
-    const variable = this.set.get(node.name);
-    if (variable) {
-      variable.eslintUsed = true;
-    }
-  };
-}
-
-class PatternVisitor extends OriginalPatternVisitor {
-  constructor(
-    options: PatternVisitorOptions,
-    rootPattern: any,
-    callback: PatternVisitorCallback
-  ) {
-    super(options, rootPattern, callback);
-  }
-
-  static isPattern(node: TSESTree.Node) {
-    const nodeType = node.type;
-
-    return (
-      OriginalPatternVisitor.isPattern(node) ||
-      nodeType === AST_NODE_TYPES.TSParameterProperty ||
-      nodeType === AST_NODE_TYPES.TSTypeParameter
-    );
-  }
-
-  Identifier(node: TSESTree.Identifier): void {
-    super.Identifier(node);
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-    if (node.typeAnnotation) {
-      this.rightHandNodes.push(node.typeAnnotation);
-    }
-  }
-
-  ArrayPattern(node: TSESTree.ArrayPattern): void {
-    node.elements.forEach(this.visit, this);
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-    if (node.typeAnnotation) {
-      this.rightHandNodes.push(node.typeAnnotation);
-    }
-  }
-
-  ObjectPattern(node: TSESTree.ObjectPattern): void {
-    node.properties.forEach(this.visit, this);
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-    if (node.typeAnnotation) {
-      this.rightHandNodes.push(node.typeAnnotation);
-    }
-  }
-
-  RestElement(node: TSESTree.RestElement): void {
-    super.RestElement(node);
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-    if (node.typeAnnotation) {
-      this.rightHandNodes.push(node.typeAnnotation);
-    }
-  }
-
-  TSParameterProperty(node: TSESTree.TSParameterProperty): void {
-    this.visit(node.parameter);
-
-    if (node.decorators) {
-      this.rightHandNodes.push(...node.decorators);
-    }
-  }
-
-  TSTypeParameter(node: TSESTree.TSTypeParameter): void {
-    this.visit(node.name);
-
-    if (node.constraint) {
-      this.rightHandNodes.push(node.constraint);
-    }
-    if (node.default) {
-      this.rightHandNodes.push(node.default);
-    }
-  }
-}
-
-class Referencer extends OriginalReferencer<ScopeManager> {
+class Referencer extends OriginalReferencer<Scope, ScopeManager> {
   protected typeMode: boolean;
 
   constructor(options: any, scopeManager: ScopeManager) {
@@ -449,7 +354,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     this.visit(node.typeParameters);
 
     if (node.id) {
-      scope.__define(
+      scope.__defineType(
         node.id,
         new TypeDefinition('InterfaceName', node.id, node, null, null, null)
       );
@@ -554,7 +459,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
         node.params[i],
         { processRightHandNodes: true },
         (pattern, info) => {
-          this.currentScope().__define(
+          this.currentScope().__defineType(
             pattern,
             new TypeDefinition('TypeParameter', pattern, node, null, i)
           );
@@ -790,7 +695,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     this.typeMode = true;
 
     if (node.id && node.id.type === 'Identifier') {
-      scope.__define(
+      scope.__defineType(
         node.id,
         new Definition('TypeAliasName', node.id, node, null, null, 'type')
       );
@@ -853,11 +758,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
   visitGlobalAugmentation(node: TSESTree.TSModuleDeclaration): void {
     const scopeManager = this.scopeManager;
     const currentScope = this.currentScope();
-    const globalScope = scopeManager.globalScope;
-    const originalDefine = globalScope.__define;
-
-    globalScope.__define = overrideDefine(originalDefine);
-    scopeManager.__currentScope = globalScope;
+    scopeManager.__currentScope = scopeManager.globalScope;
 
     // Skip TSModuleBlock to avoid to create that block scope.
     if (node.body && node.body.type === 'TSModuleBlock') {
@@ -865,7 +766,6 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     }
 
     scopeManager.__currentScope = currentScope;
-    globalScope.__define = originalDefine;
   }
 
   /**

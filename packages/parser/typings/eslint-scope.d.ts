@@ -126,7 +126,7 @@ declare module 'eslint-scope/lib/referencer' {
     Visitor
   } from 'eslint-scope/lib/options';
 
-  export default class Referencer<SM extends ScopeManager> extends Visitor {
+  export default class Referencer<SC extends Scope, SM extends ScopeManager<SC>> extends Visitor {
     protected isInnerMethodDefinition: boolean;
     protected options: any;
     protected scopeManager: SM;
@@ -134,7 +134,7 @@ declare module 'eslint-scope/lib/referencer' {
 
     constructor(options: any, scopeManager: SM);
 
-    currentScope(): Scope;
+    currentScope(): SC;
     close(node: TSESTree.Node): void;
     pushInnerMethodDefinition(isInnerMethodDefinition: boolean): boolean;
     popInnerMethodDefinition(isInnerMethodDefinition: boolean): void;
@@ -259,10 +259,10 @@ declare module 'eslint-scope/lib/scope' {
     __delegateToUpperScope(ref: any): void;
     __addDeclaredVariablesOfNode(variable: any, node: TSESTree.Node): void;
     __defineGeneric(
-      name: any,
-      set: any,
-      variables: any,
-      node: any,
+      name: string,
+      set: Map<string, Variable>,
+      variables: Variable[],
+      node: TSESTree.Identifier,
       def: Definition
     ): void;
 
@@ -446,14 +446,14 @@ declare module 'eslint-scope/lib/scope-manager' {
     ecmaVersion?: number;
   }
 
-  export default class ScopeManager {
+  export default class ScopeManager<SC extends Scope = Scope> {
     protected __options: ScopeManagerOptions;
-    __currentScope: Scope;
-    protected __nodeToScope: WeakMap<TSESTree.Node, Scope[]>;
+    __currentScope: SC;
+    protected __nodeToScope: WeakMap<TSESTree.Node, SC[]>;
     protected __declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
 
-    scopes: Scope[];
-    globalScope: Scope;
+    scopes: SC[];
+    globalScope: SC;
 
     constructor(options: ScopeManagerOptions);
 
@@ -466,28 +466,28 @@ declare module 'eslint-scope/lib/scope-manager' {
     isStrictModeSupported(): boolean;
 
     // Returns appropriate scope for this node.
-    __get(node: TSESTree.Node): Scope[] | undefined;
+    __get(node: TSESTree.Node): SC[] | undefined;
     getDeclaredVariables(node: TSESTree.Node): Variable[];
-    acquire(node: TSESTree.Node, inner?: boolean): Scope | null;
-    acquireAll(node: TSESTree.Node): Scope | null;
-    release(node: TSESTree.Node, inner?: boolean): Scope | null;
+    acquire(node: TSESTree.Node, inner?: boolean): SC | null;
+    acquireAll(node: TSESTree.Node): SC | null;
+    release(node: TSESTree.Node, inner?: boolean): SC | null;
     attach(): void;
     detach(): void;
 
-    __nestScope(scope: Scope): Scope;
-    __nestGlobalScope(node: TSESTree.Node): Scope;
-    __nestBlockScope(node: TSESTree.Node): Scope;
+    __nestScope<T extends Scope>(scope: T): T;
+    __nestGlobalScope(node: TSESTree.Node): SC;
+    __nestBlockScope(node: TSESTree.Node): SC;
     __nestFunctionScope(
       node: TSESTree.Node,
       isMethodDefinition: boolean
-    ): Scope;
-    __nestForScope(node: TSESTree.Node): Scope;
-    __nestCatchScope(node: TSESTree.Node): Scope;
-    __nestWithScope(node: TSESTree.Node): Scope;
-    __nestClassScope(node: TSESTree.Node): Scope;
-    __nestSwitchScope(node: TSESTree.Node): Scope;
-    __nestModuleScope(node: TSESTree.Node): Scope;
-    __nestFunctionExpressionNameScope(node: TSESTree.Node): Scope;
+    ): SC;
+    __nestForScope(node: TSESTree.Node): SC;
+    __nestCatchScope(node: TSESTree.Node): SC;
+    __nestWithScope(node: TSESTree.Node): SC;
+    __nestClassScope(node: TSESTree.Node): SC;
+    __nestSwitchScope(node: TSESTree.Node): SC;
+    __nestModuleScope(node: TSESTree.Node): SC;
+    __nestFunctionExpressionNameScope(node: TSESTree.Node): SC;
 
     __isES6(): boolean;
   }
