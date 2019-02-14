@@ -163,7 +163,7 @@
 | [`no-trailing-whitespace`]          | 🌟  | [`no-trailing-spaces`][no-trailing-spaces]                                          |
 | [`no-unnecessary-callback-wrapper`] | 🛑  | N/A and this might be unsafe (i.e. with `forEach`)                                  |
 | [`no-unnecessary-initializer`]      | 🌟  | [`no-undef-init`][no-undef-init]                                                    |
-| [`no-unnecessary-qualifier`]        | ✅  | [`@typescript-eslint/no-unnecessary-qualifier`][no-unnecessary-qualifier]           |
+| [`no-unnecessary-qualifier`]        | ✅  | [`@typescript-eslint/no-unnecessary-qualifier`]                                     |
 | [`number-literal-format`]           | 🛑  | N/A                                                                                 |
 | [`object-literal-key-quotes`]       | 🌟  | [`quote-props`][quote-props]                                                        |
 | [`object-literal-shorthand`]        | 🌟  | [`object-shorthand`][object-shorthand]                                              |
@@ -581,6 +581,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-empty-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-empty-interface.md
 [`@typescript-eslint/no-inferrable-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-inferrable-types.md
 [`@typescript-eslint/prefer-namespace-keyword`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-namespace-keyword.md
+[`@typescript-eslint/promise-function-async`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/promise-function-async.md
 [`@typescript-eslint/no-namespace`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-namespace.md
 [`@typescript-eslint/no-non-null-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-non-null-assertion.md
 [`@typescript-eslint/no-triple-slash-reference`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-triple-slash-reference.md
