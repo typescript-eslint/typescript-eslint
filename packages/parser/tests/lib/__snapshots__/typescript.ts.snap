@@ -23548,7 +23548,11 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "interface",
-          "typeMap": Object {},
+          "typeMap": Object {
+            "T": Object {
+              "$ref": 1,
+            },
+          },
           "upperScope": Object {
             "$ref": 3,
           },
@@ -23556,7 +23560,48 @@ Object {
           "variableScope": Object {
             "$ref": 3,
           },
-          "variables": Array [],
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "T",
+                    "range": Array [
+                      14,
+                      15,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      13,
+                      16,
+                    ],
+                    "type": "TSTypeParameterDeclaration",
+                  },
+                  "parent": null,
+                  "type": "TypeParameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "T",
+                  "range": Array [
+                    14,
+                    15,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "T",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 2,
+              },
+            },
+          ],
         },
       ],
       "functionExpressionScope": false,
@@ -23566,9 +23611,6 @@ Object {
       "type": "module",
       "typeMap": Object {
         "Foo": Object {
-          "$ref": 1,
-        },
-        "T": Object {
           "$ref": 0,
         },
       },
@@ -23582,46 +23624,6 @@ Object {
       "variables": Array [
         Object {
           "$id": 0,
-          "defs": Array [
-            Object {
-              "name": Object {
-                "name": "T",
-                "range": Array [
-                  14,
-                  15,
-                ],
-                "type": "Identifier",
-              },
-              "node": Object {
-                "range": Array [
-                  13,
-                  16,
-                ],
-                "type": "TSTypeParameterDeclaration",
-              },
-              "parent": null,
-              "type": "TypeParameter",
-            },
-          ],
-          "eslintUsed": undefined,
-          "identifiers": Array [
-            Object {
-              "name": "T",
-              "range": Array [
-                14,
-                15,
-              ],
-              "type": "Identifier",
-            },
-          ],
-          "name": "T",
-          "references": Array [],
-          "scope": Object {
-            "$ref": 3,
-          },
-        },
-        Object {
-          "$id": 1,
           "defs": Array [
             Object {
               "name": Object {
@@ -24719,7 +24721,11 @@ Object {
             },
           ],
           "type": "interface",
-          "typeMap": Object {},
+          "typeMap": Object {
+            "T": Object {
+              "$ref": 1,
+            },
+          },
           "upperScope": Object {
             "$ref": 5,
           },
@@ -24727,7 +24733,48 @@ Object {
           "variableScope": Object {
             "$ref": 5,
           },
-          "variables": Array [],
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "T",
+                    "range": Array [
+                      14,
+                      15,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      13,
+                      16,
+                    ],
+                    "type": "TSTypeParameterDeclaration",
+                  },
+                  "parent": null,
+                  "type": "TypeParameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "T",
+                  "range": Array [
+                    14,
+                    15,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "T",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 4,
+              },
+            },
+          ],
         },
       ],
       "functionExpressionScope": false,
@@ -24744,9 +24791,6 @@ Object {
       "type": "module",
       "typeMap": Object {
         "Foo": Object {
-          "$ref": 1,
-        },
-        "T": Object {
           "$ref": 0,
         },
       },
@@ -24760,46 +24804,6 @@ Object {
       "variables": Array [
         Object {
           "$id": 0,
-          "defs": Array [
-            Object {
-              "name": Object {
-                "name": "T",
-                "range": Array [
-                  14,
-                  15,
-                ],
-                "type": "Identifier",
-              },
-              "node": Object {
-                "range": Array [
-                  13,
-                  16,
-                ],
-                "type": "TSTypeParameterDeclaration",
-              },
-              "parent": null,
-              "type": "TypeParameter",
-            },
-          ],
-          "eslintUsed": undefined,
-          "identifiers": Array [
-            Object {
-              "name": "T",
-              "range": Array [
-                14,
-                15,
-              ],
-              "type": "Identifier",
-            },
-          ],
-          "name": "T",
-          "references": Array [],
-          "scope": Object {
-            "$ref": 5,
-          },
-        },
-        Object {
-          "$id": 1,
           "defs": Array [
             Object {
               "name": Object {
@@ -24899,7 +24903,11 @@ Object {
           "references": Array [],
           "throughReferences": Array [],
           "type": "interface",
-          "typeMap": Object {},
+          "typeMap": Object {
+            "T": Object {
+              "$ref": 1,
+            },
+          },
           "upperScope": Object {
             "$ref": 3,
           },
@@ -24907,7 +24915,48 @@ Object {
           "variableScope": Object {
             "$ref": 3,
           },
-          "variables": Array [],
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "T",
+                    "range": Array [
+                      15,
+                      16,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      14,
+                      17,
+                    ],
+                    "type": "TSTypeParameterDeclaration",
+                  },
+                  "parent": null,
+                  "type": "TypeParameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "T",
+                  "range": Array [
+                    15,
+                    16,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "T",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 2,
+              },
+            },
+          ],
         },
       ],
       "functionExpressionScope": false,
@@ -24916,11 +24965,8 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "typeMap": Object {
-        "T": Object {
-          "$ref": 0,
-        },
         "Test": Object {
-          "$ref": 1,
+          "$ref": 0,
         },
       },
       "upperScope": Object {
@@ -24933,46 +24979,6 @@ Object {
       "variables": Array [
         Object {
           "$id": 0,
-          "defs": Array [
-            Object {
-              "name": Object {
-                "name": "T",
-                "range": Array [
-                  15,
-                  16,
-                ],
-                "type": "Identifier",
-              },
-              "node": Object {
-                "range": Array [
-                  14,
-                  17,
-                ],
-                "type": "TSTypeParameterDeclaration",
-              },
-              "parent": null,
-              "type": "TypeParameter",
-            },
-          ],
-          "eslintUsed": undefined,
-          "identifiers": Array [
-            Object {
-              "name": "T",
-              "range": Array [
-                15,
-                16,
-              ],
-              "type": "Identifier",
-            },
-          ],
-          "name": "T",
-          "references": Array [],
-          "scope": Object {
-            "$ref": 3,
-          },
-        },
-        Object {
-          "$id": 1,
           "defs": Array [
             Object {
               "name": Object {
@@ -35327,7 +35333,7 @@ Object {
 
 exports[`typescript fixtures/basics/type-parameters-comments-heritage.src 1`] = `
 Object {
-  "$id": 22,
+  "$id": 23,
   "block": Object {
     "range": Array [
       0,
@@ -35337,7 +35343,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 21,
+      "$id": 22,
       "block": Object {
         "range": Array [
           0,
@@ -35347,7 +35353,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 10,
+          "$id": 9,
           "block": Object {
             "range": Array [
               0,
@@ -35360,9 +35366,9 @@ Object {
           "isStrict": true,
           "references": Array [
             Object {
-              "$id": 9,
+              "$id": 8,
               "from": Object {
-                "$ref": 10,
+                "$ref": 9,
               },
               "identifier": Object {
                 "name": "A",
@@ -35374,7 +35380,7 @@ Object {
               },
               "kind": "r",
               "resolved": Object {
-                "$ref": 8,
+                "$ref": 7,
               },
               "writeExpr": undefined,
             },
@@ -35383,23 +35389,23 @@ Object {
           "type": "class",
           "typeMap": Object {
             "A": Object {
-              "$ref": 8,
-            },
-          },
-          "upperScope": Object {
-            "$ref": 21,
-          },
-          "variableMap": Object {
-            "foo": Object {
               "$ref": 7,
             },
           },
+          "upperScope": Object {
+            "$ref": 22,
+          },
+          "variableMap": Object {
+            "foo": Object {
+              "$ref": 6,
+            },
+          },
           "variableScope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
           "variables": Array [
             Object {
-              "$id": 7,
+              "$id": 6,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -35435,11 +35441,11 @@ Object {
               "name": "foo",
               "references": Array [],
               "scope": Object {
-                "$ref": 10,
+                "$ref": 9,
               },
             },
             Object {
-              "$id": 8,
+              "$id": 7,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -35475,17 +35481,17 @@ Object {
               "name": "A",
               "references": Array [
                 Object {
-                  "$ref": 9,
+                  "$ref": 8,
                 },
               ],
               "scope": Object {
-                "$ref": 10,
+                "$ref": 9,
               },
             },
           ],
         },
         Object {
-          "$id": 14,
+          "$id": 13,
           "block": Object {
             "range": Array [
               75,
@@ -35498,9 +35504,9 @@ Object {
           "isStrict": true,
           "references": Array [
             Object {
-              "$id": 13,
+              "$id": 12,
               "from": Object {
-                "$ref": 14,
+                "$ref": 13,
               },
               "identifier": Object {
                 "name": "A",
@@ -35512,7 +35518,7 @@ Object {
               },
               "kind": "r",
               "resolved": Object {
-                "$ref": 12,
+                "$ref": 11,
               },
               "writeExpr": undefined,
             },
@@ -35521,23 +35527,23 @@ Object {
           "type": "class",
           "typeMap": Object {
             "A": Object {
-              "$ref": 12,
-            },
-          },
-          "upperScope": Object {
-            "$ref": 21,
-          },
-          "variableMap": Object {
-            "foo2": Object {
               "$ref": 11,
             },
           },
+          "upperScope": Object {
+            "$ref": 22,
+          },
+          "variableMap": Object {
+            "foo2": Object {
+              "$ref": 10,
+            },
+          },
           "variableScope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
           "variables": Array [
             Object {
-              "$id": 11,
+              "$id": 10,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -35573,11 +35579,11 @@ Object {
               "name": "foo2",
               "references": Array [],
               "scope": Object {
-                "$ref": 14,
+                "$ref": 13,
               },
             },
             Object {
-              "$id": 12,
+              "$id": 11,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -35613,11 +35619,11 @@ Object {
               "name": "A",
               "references": Array [
                 Object {
-                  "$ref": 13,
+                  "$ref": 12,
                 },
               ],
               "scope": Object {
-                "$ref": 14,
+                "$ref": 13,
               },
             },
           ],
@@ -35650,7 +35656,7 @@ Object {
               },
               "kind": "r",
               "resolved": Object {
-                "$ref": 4,
+                "$ref": 3,
               },
               "writeExpr": undefined,
             },
@@ -35669,7 +35675,7 @@ Object {
               },
               "kind": "r",
               "resolved": Object {
-                "$ref": 2,
+                "$ref": 14,
               },
               "writeExpr": undefined,
             },
@@ -35678,23 +35684,69 @@ Object {
             Object {
               "$ref": 15,
             },
-            Object {
-              "$ref": 16,
-            },
           ],
           "type": "interface",
-          "typeMap": Object {},
+          "typeMap": Object {
+            "A": Object {
+              "$ref": 14,
+            },
+          },
           "upperScope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
-          "variables": Array [],
+          "variables": Array [
+            Object {
+              "$id": 14,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "A",
+                    "range": Array [
+                      191,
+                      192,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      179,
+                      203,
+                    ],
+                    "type": "TSTypeParameterDeclaration",
+                  },
+                  "parent": null,
+                  "type": "TypeParameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "A",
+                  "range": Array [
+                    191,
+                    192,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "A",
+              "references": Array [
+                Object {
+                  "$ref": 16,
+                },
+              ],
+              "scope": Object {
+                "$ref": 17,
+              },
+            },
+          ],
         },
         Object {
-          "$id": 20,
+          "$id": 21,
           "block": Object {
             "range": Array [
               245,
@@ -35707,9 +35759,9 @@ Object {
           "isStrict": true,
           "references": Array [
             Object {
-              "$id": 18,
+              "$id": 19,
               "from": Object {
-                "$ref": 20,
+                "$ref": 21,
               },
               "identifier": Object {
                 "name": "bar",
@@ -35721,14 +35773,14 @@ Object {
               },
               "kind": "r",
               "resolved": Object {
-                "$ref": 3,
+                "$ref": 2,
               },
               "writeExpr": undefined,
             },
             Object {
-              "$id": 19,
+              "$id": 20,
               "from": Object {
-                "$ref": 20,
+                "$ref": 21,
               },
               "identifier": Object {
                 "name": "A",
@@ -35740,38 +35792,84 @@ Object {
               },
               "kind": "r",
               "resolved": Object {
-                "$ref": 2,
+                "$ref": 18,
               },
               "writeExpr": undefined,
             },
           ],
           "throughReferences": Array [
             Object {
-              "$ref": 18,
-            },
-            Object {
               "$ref": 19,
             },
           ],
           "type": "interface",
-          "typeMap": Object {},
+          "typeMap": Object {
+            "A": Object {
+              "$ref": 18,
+            },
+          },
           "upperScope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
           "variableMap": Object {},
           "variableScope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
-          "variables": Array [],
+          "variables": Array [
+            Object {
+              "$id": 18,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "A",
+                    "range": Array [
+                      272,
+                      273,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      260,
+                      298,
+                    ],
+                    "type": "TSTypeParameterDeclaration",
+                  },
+                  "parent": null,
+                  "type": "TypeParameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "A",
+                  "range": Array [
+                    272,
+                    273,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "A",
+              "references": Array [
+                Object {
+                  "$ref": 20,
+                },
+              ],
+              "scope": Object {
+                "$ref": 21,
+              },
+            },
+          ],
         },
       ],
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [
         Object {
-          "$id": 5,
+          "$id": 4,
           "from": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
           "identifier": Object {
             "name": "bar",
@@ -35786,9 +35884,9 @@ Object {
           "writeExpr": undefined,
         },
         Object {
-          "$id": 6,
+          "$id": 5,
           "from": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
           "identifier": Object {
             "name": "bar",
@@ -35805,26 +35903,23 @@ Object {
       ],
       "throughReferences": Array [
         Object {
-          "$ref": 5,
+          "$ref": 4,
         },
         Object {
-          "$ref": 6,
+          "$ref": 5,
         },
       ],
       "type": "module",
       "typeMap": Object {
-        "A": Object {
+        "bar": Object {
           "$ref": 2,
         },
-        "bar": Object {
-          "$ref": 3,
-        },
         "bar2": Object {
-          "$ref": 4,
+          "$ref": 3,
         },
       },
       "upperScope": Object {
-        "$ref": 22,
+        "$ref": 23,
       },
       "variableMap": Object {
         "foo": Object {
@@ -35835,7 +35930,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 21,
+        "$ref": 22,
       },
       "variables": Array [
         Object {
@@ -35875,7 +35970,7 @@ Object {
           "name": "foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
         },
         Object {
@@ -35915,85 +36010,11 @@ Object {
           "name": "foo2",
           "references": Array [],
           "scope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
         },
         Object {
           "$id": 2,
-          "defs": Array [
-            Object {
-              "name": Object {
-                "name": "A",
-                "range": Array [
-                  191,
-                  192,
-                ],
-                "type": "Identifier",
-              },
-              "node": Object {
-                "range": Array [
-                  179,
-                  203,
-                ],
-                "type": "TSTypeParameterDeclaration",
-              },
-              "parent": null,
-              "type": "TypeParameter",
-            },
-            Object {
-              "name": Object {
-                "name": "A",
-                "range": Array [
-                  272,
-                  273,
-                ],
-                "type": "Identifier",
-              },
-              "node": Object {
-                "range": Array [
-                  260,
-                  298,
-                ],
-                "type": "TSTypeParameterDeclaration",
-              },
-              "parent": null,
-              "type": "TypeParameter",
-            },
-          ],
-          "eslintUsed": undefined,
-          "identifiers": Array [
-            Object {
-              "name": "A",
-              "range": Array [
-                191,
-                192,
-              ],
-              "type": "Identifier",
-            },
-            Object {
-              "name": "A",
-              "range": Array [
-                272,
-                273,
-              ],
-              "type": "Identifier",
-            },
-          ],
-          "name": "A",
-          "references": Array [
-            Object {
-              "$ref": 16,
-            },
-            Object {
-              "$ref": 19,
-            },
-          ],
-          "scope": Object {
-            "$ref": 21,
-          },
-        },
-        Object {
-          "$id": 3,
           "defs": Array [
             Object {
               "name": Object {
@@ -36029,15 +36050,15 @@ Object {
           "name": "bar",
           "references": Array [
             Object {
-              "$ref": 18,
+              "$ref": 19,
             },
           ],
           "scope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
         },
         Object {
-          "$id": 4,
+          "$id": 3,
           "defs": Array [
             Object {
               "name": Object {
@@ -36077,7 +36098,7 @@ Object {
             },
           ],
           "scope": Object {
-            "$ref": 21,
+            "$ref": 22,
           },
         },
       ],
@@ -36088,10 +36109,10 @@ Object {
   "references": Array [],
   "throughReferences": Array [
     Object {
-      "$ref": 5,
+      "$ref": 4,
     },
     Object {
-      "$ref": 6,
+      "$ref": 5,
     },
   ],
   "type": "global",
@@ -36099,7 +36120,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 22,
+    "$ref": 23,
   },
   "variables": Array [],
 }

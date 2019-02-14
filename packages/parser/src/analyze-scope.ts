@@ -415,8 +415,6 @@ class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
     const scopeManager = this.scopeManager;
     const scope = this.currentScope();
 
-    this.visit(node.typeParameters);
-
     if (node.id) {
       scope.__defineType(
         node.id,
@@ -425,6 +423,8 @@ class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
     }
 
     scopeManager.__nestInterfaceScope(node);
+
+    this.visit(node.typeParameters);
 
     if (node.extends) {
       node.extends.forEach(this.visit, this);
