@@ -23,7 +23,17 @@ interface Bar {
 
 // valid because extending multiple interfaces can be used instead of a union type
 interface Baz extends Foo, Bar {}
-        `
+        `,
+    {
+      code: `
+interface Foo {
+    name: string;
+}
+
+interface Bar extends Foo {}
+        `,
+      options: [{ allowSingleExtends: true }]
+    }
   ],
   invalid: [
     {
@@ -54,6 +64,7 @@ interface Foo {
 
 interface Bar extends Foo {}
             `,
+      options: [{ allowSingleExtends: false }],
       errors: [
         {
           messageId: 'noEmptyWithSuper',
