@@ -206,14 +206,7 @@ tester.addFixturePatternConfig('javascript/classes', {
   ]
 });
 
-tester.addFixturePatternConfig('javascript/commaOperator', {
-  ignore: [
-    /**
-     * ts-estree: conversion ignores nested sequence expressions
-     */
-    'comma-operator-nested'
-  ]
-});
+tester.addFixturePatternConfig('javascript/commaOperator');
 
 tester.addFixturePatternConfig('javascript/defaultParams');
 
