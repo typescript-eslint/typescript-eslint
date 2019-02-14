@@ -273,7 +273,7 @@ export type ExportDeclaration =
   | TSInterfaceDeclaration
   | TSModuleDeclaration
   | TSTypeAliasDeclaration
-  | VariableDeclarator;
+  | VariableDeclaration;
 export type Expression =
   | ArrowFunctionExpression
   | AssignmentExpression

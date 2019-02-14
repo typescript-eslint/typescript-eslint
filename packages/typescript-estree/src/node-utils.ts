@@ -454,7 +454,7 @@ export function isOptional(node: {
  * @param ast    the AST
  * @returns the ESTreeNode with fixed exports
  */
-export function fixExports<T extends TSESTree.BaseNode>(
+export function fixExports<T extends TSESTree.ExportDeclaration>(
   node: ts.Node,
   result: T,
   ast: ts.SourceFile
@@ -470,22 +470,22 @@ export function fixExports<T extends TSESTree.BaseNode>(
       ? findNextToken(nextModifier, ast, ast)
       : findNextToken(exportKeyword, ast, ast);
 
-    result.range![0] = varToken!.getStart(ast);
-    result.loc = getLocFor(result.range![0], result.range![1], ast);
+    result.range[0] = varToken!.getStart(ast);
+    result.loc = getLocFor(result.range[0], result.range[1], ast);
 
     if (declarationIsDefault) {
       return {
         type: AST_NODE_TYPES.ExportDefaultDeclaration,
-        declaration: result as any,
-        range: [exportKeyword.getStart(ast), result.range![1]],
-        loc: getLocFor(exportKeyword.getStart(ast), result.range![1], ast)
+        declaration: result,
+        range: [exportKeyword.getStart(ast), result.range[1]],
+        loc: getLocFor(exportKeyword.getStart(ast), result.range[1], ast)
       };
     } else {
       return {
         type: AST_NODE_TYPES.ExportNamedDeclaration,
-        declaration: result as any,
-        range: [exportKeyword.getStart(ast), result.range![1]],
-        loc: getLocFor(exportKeyword.getStart(ast), result.range![1], ast),
+        declaration: result,
+        range: [exportKeyword.getStart(ast), result.range[1]],
+        loc: getLocFor(exportKeyword.getStart(ast), result.range[1], ast),
         specifiers: [],
         source: null
       };
