@@ -247,7 +247,7 @@ type Foo = (name: string, age: number) => string | Person;
 type Foo = (name: string, age: number) => string & Person;
 ```
 
-### allowsLiterals
+### allowLiterals
 
 This applies to literal types (`type Foo = { ... }`).
 
