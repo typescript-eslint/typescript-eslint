@@ -76,6 +76,10 @@ function A<T>() {}
 interface B<T> {}
 type C<T> = Array<T>
 class D<T> {}
+    `,
+    `
+interface foo<TMessageIds> {}
+interface bar<TMessageIds> {}
     `
   ],
   invalid: [
