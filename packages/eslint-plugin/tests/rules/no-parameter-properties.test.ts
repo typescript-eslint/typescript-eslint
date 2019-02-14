@@ -14,7 +14,7 @@ class Foo {
         `,
     `
 class Foo {
-    constructor(...name: string) {}
+    constructor(...name: string[]) {}
 }
         `,
     `
