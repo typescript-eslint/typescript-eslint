@@ -42,8 +42,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowSingleExtends: false
-    }
+      allowSingleExtends: false,
+    },
   ],
   create(context, [{ allowSingleExtends }]) {
     return {
