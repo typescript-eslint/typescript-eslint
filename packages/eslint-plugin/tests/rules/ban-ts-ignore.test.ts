@@ -8,11 +8,23 @@ const ruleTester = new RuleTester({
 ruleTester.run('ban-ts-ignore', rule, {
   valid: [
     `// just a comment containing @ts-ignore somewhere`,
+    `/* @ts-ignore */`,
+    `/** @ts-ignore */`,
     `/*
 // @ts-ignore in a block
 */`
   ],
   invalid: [
+    {
+      code: '// @ts-ignore',
+      errors: [
+        {
+          messageId: 'tsIgnoreComment',
+          line: 1,
+          column: 1
+        }
+      ]
+    },
     {
       code: '// @ts-ignore: Suppress next line',
       errors: [
