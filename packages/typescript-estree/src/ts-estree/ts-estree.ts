@@ -127,6 +127,7 @@ export type Node =
   | JSXOpeningFragment
   | JSXSpreadAttribute
   | JSXSpreadChild
+  | JSXMemberExpression
   | JSXText
   | LabeledStatement
   | Literal
