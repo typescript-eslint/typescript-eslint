@@ -110,10 +110,7 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    let result = this.convertNode(
-      node as TSNode,
-      parent || node.parent
-    );
+    let result = this.convertNode(node as TSNode, parent || node.parent);
 
     this.registerNodeInMaps(node, result);
 
@@ -170,7 +167,9 @@ export class Converter {
 
   private registerNodeInMaps(node: ts.Node, result: TSESTree.BaseNode | null) {
     if (result && this.options.shouldProvideParserServices) {
-      this.tsNodeToESTreeNodeMap.set(node, result);
+      if (!this.tsNodeToESTreeNodeMap.has(result)) {
+        this.tsNodeToESTreeNodeMap.set(node, result);
+      }
       if (!this.esTreeNodeToTSNodeMap.has(result)) {
         // Parenthesized expressions and computed property names do not have individual nodes in ESTree.
         // Therefore, result.type will never "match" node.kind if it is a ParenthesizedExpression
