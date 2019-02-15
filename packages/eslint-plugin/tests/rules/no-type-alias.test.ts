@@ -2888,6 +2888,20 @@ type Foo<T> = {
           column: 5
         }
       ]
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/270
+      code: `export type ButtonProps = JSX.IntrinsicElements['button'];`,
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'aliases'
+          },
+          line: 1,
+          column: 27
+        }
+      ]
     }
   ]
 });
