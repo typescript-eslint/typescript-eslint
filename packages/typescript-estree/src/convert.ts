@@ -167,14 +167,8 @@ export class Converter {
 
   private registerNodeInMaps(node: ts.Node, result: TSESTree.BaseNode | null) {
     if (result && this.options.shouldProvideParserServices) {
-      if (!this.tsNodeToESTreeNodeMap.has(result)) {
+      if (!this.tsNodeToESTreeNodeMap.has(node)) {
         this.tsNodeToESTreeNodeMap.set(node, result);
-      }
-      if (!this.esTreeNodeToTSNodeMap.has(result)) {
-        // Parenthesized expressions and computed property names do not have individual nodes in ESTree.
-        // Therefore, result.type will never "match" node.kind if it is a ParenthesizedExpression
-        // or a ComputedPropertyName and, furthermore, will overwrite the "matching" node
-        this.esTreeNodeToTSNodeMap.set(result, node);
       }
     }
   }
@@ -221,6 +215,9 @@ export class Converter {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
     }
 
+    if (result && this.options.shouldProvideParserServices) {
+      this.esTreeNodeToTSNodeMap.set(result, node);
+    }
     return result as T;
   }
 
