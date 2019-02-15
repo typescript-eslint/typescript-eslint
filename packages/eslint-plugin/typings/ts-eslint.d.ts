@@ -399,31 +399,8 @@ declare module 'ts-eslint' {
   // never will break someone's code unless they specifically type the function argument
   type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
 
-  type CodePathFunction<T extends TSESTree.BaseNode = TSESTree.Node> = (
-    codePath: Rule.CodePath,
-    node: TSESTree.BaseNode
-  ) => void;
-
-  type CodePathSegmentFunction<T extends TSESTree.BaseNode = TSESTree.Node> = (
-    codePathSegment: Rule.CodePathSegment,
-    node: TSESTree.BaseNode
-  ) => void;
-
-  type CodePathSegmentLoopFunction<
-    T extends TSESTree.BaseNode = TSESTree.Node
-  > = (
-    fromCodePathSegment: Rule.CodePathSegment,
-    toCodePathSegment: Rule.CodePathSegment,
-    node: TSESTree.BaseNode
-  ) => void;
-
   interface RuleListener {
-    [nodeSelector: string]:
-      | RuleFunction
-      | CodePathFunction
-      | CodePathSegmentFunction
-      | CodePathSegmentLoopFunction
-      | undefined;
+    [nodeSelector: string]: RuleFunction | undefined;
     ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
     ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
     ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
@@ -573,41 +550,6 @@ declare module 'ts-eslint' {
     WhileStatement?: RuleFunction<TSESTree.WhileStatement>;
     WithStatement?: RuleFunction<TSESTree.WithStatement>;
     YieldExpression?: RuleFunction<TSESTree.YieldExpression>;
-
-    // CodePath and CodePath segment methods
-    /**
-     * This is called at the start of analyzing a code path.
-     * In this time, the code path object has only the initial segment.
-     */
-    onCodePathStart?: CodePathFunction;
-
-    /**
-     * This is called at the end of analyzing a code path.
-     * In this time, the code path object is complete.
-     */
-    onCodePathEnd?: CodePathFunction;
-
-    /**
-     * This is called when a code path segment was created.
-     * It meant the code path is forked or merged.
-     * In this time, the segment has the previous segments and has been
-     * judged reachable or not.
-     */
-    onCodePathSegmentStart?: CodePathSegmentFunction;
-
-    /**
-     * This is called when a code path segment was leaved.
-     * In this time, the segment does not have the next segments yet.
-     */
-    onCodePathSegmentEnd?: CodePathSegmentFunction;
-
-    /**
-     * This is called when a code path segment was looped.
-     * Usually segments have each previous segments when created,
-     * but when looped, a segment is added as a new previous segment into a
-     * existing segment.
-     */
-    onCodePathSegmentLoop?: CodePathSegmentLoopFunction;
   }
 
   interface RuleModule<
