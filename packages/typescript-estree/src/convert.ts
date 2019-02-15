@@ -171,7 +171,10 @@ export class Converter {
   /**
    * Register specific TypeScript node into map with first ESTree node provided
    */
-  private registerTSNodeInNodeMap(node: ts.Node, result: TSESTree.BaseNode | null) {
+  private registerTSNodeInNodeMap(
+    node: ts.Node,
+    result: TSESTree.BaseNode | null
+  ) {
     if (result && this.options.shouldProvideParserServices) {
       if (!this.tsNodeToESTreeNodeMap.has(node)) {
         this.tsNodeToESTreeNodeMap.set(node, result);
