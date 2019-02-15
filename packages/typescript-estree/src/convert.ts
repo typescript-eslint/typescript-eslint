@@ -112,7 +112,7 @@ export class Converter {
 
     let result = this.convertNode(node as TSNode, parent || node.parent);
 
-    this.registerNodeInMaps(node, result);
+    this.registerTSNodeInNodeMap(node, result);
 
     this.inTypeMode = typeMode;
     this.allowPattern = pattern;
@@ -131,7 +131,10 @@ export class Converter {
   ): TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration | T {
     // check for exports
     if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
-      this.registerNodeInMaps(node, result);
+      /**
+       * Make sure that original node is registered instead of export
+       */
+      this.registerTSNodeInNodeMap(node, result);
 
       const exportKeyword = node.modifiers[0];
       const nextModifier = node.modifiers[1];
@@ -165,7 +168,10 @@ export class Converter {
     return result;
   }
 
-  private registerNodeInMaps(node: ts.Node, result: TSESTree.BaseNode | null) {
+  /**
+   * Register specific TypeScript node into map with first ESTree node provided
+   */
+  private registerTSNodeInNodeMap(node: ts.Node, result: TSESTree.BaseNode | null) {
     if (result && this.options.shouldProvideParserServices) {
       if (!this.tsNodeToESTreeNodeMap.has(node)) {
         this.tsNodeToESTreeNodeMap.set(node, result);
@@ -452,7 +458,7 @@ export class Converter {
         break;
     }
 
-    this.registerNodeInMaps(node, result);
+    this.registerTSNodeInNodeMap(node, result);
     return result;
   }
 
