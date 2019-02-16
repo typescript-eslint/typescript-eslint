@@ -50,77 +50,108 @@
       "name": "Benjamin Lichtman",
       "avatar_url": "https://avatars1.githubusercontent.com/u/9092011?v=4",
       "profile": "https://github.com/uniqueiniquity",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "JoshuaKGoldberg",
       "name": "Josh Goldberg",
       "avatar_url": "https://avatars1.githubusercontent.com/u/3335181?v=4",
       "profile": "http://www.joshuakgoldberg.com",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "lukyth",
       "name": "Kanitkorn Sujautra",
       "avatar_url": "https://avatars3.githubusercontent.com/u/7040242?v=4",
       "profile": "https://github.com/lukyth",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "weirdpattern",
       "name": "Patricio Trevino",
       "avatar_url": "https://avatars0.githubusercontent.com/u/19519411?v=4",
       "profile": "https://www.weirdpattern.com",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "kaicataldo",
       "name": "Kai Cataldo",
       "avatar_url": "https://avatars2.githubusercontent.com/u/7041728?v=4",
       "profile": "https://github.com/kaicataldo",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "mysticatea",
       "name": "Toru Nagashima",
       "avatar_url": "https://avatars2.githubusercontent.com/u/1937871?v=4",
       "profile": "https://plus.google.com/u/0/+ToruNagashimax/",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "platinumazure",
       "name": "Kevin Partington",
       "avatar_url": "https://avatars0.githubusercontent.com/u/284282?v=4",
       "profile": "https://github.com/platinumazure",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "macklinu",
       "name": "mackie",
       "avatar_url": "https://avatars1.githubusercontent.com/u/2344137?v=4",
       "profile": "https://mackie.world",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "g-plane",
       "name": "Pig Fang",
       "avatar_url": "https://avatars1.githubusercontent.com/u/17216317?v=4",
       "profile": "https://gplane.win",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "ikatyang",
       "name": "Ika",
       "avatar_url": "https://avatars1.githubusercontent.com/u/8341033?v=4",
       "profile": "https://twitter.com/ikatyang_",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "43081j",
       "name": "James Garbutt",
       "avatar_url": "https://avatars1.githubusercontent.com/u/5677153?v=4",
       "profile": "http://43081j.com/",
-      "contributions": []
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ldrick",
+      "name": "Ricky Lippmann",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/3674067?v=4",
+      "profile": "https://github.com/ldrick",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

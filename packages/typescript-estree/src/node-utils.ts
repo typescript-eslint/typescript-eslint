@@ -573,23 +573,16 @@ export function getTokenType(token: any): AST_TOKEN_TYPES {
   }
 
   // Some JSX tokens have to be determined based on their parent
-  if (token.parent) {
+  if (token.parent && token.kind === SyntaxKind.Identifier) {
+    if (isJSXToken(token.parent)) {
+      return AST_TOKEN_TYPES.JSXIdentifier;
+    }
+
     if (
-      token.kind === SyntaxKind.Identifier &&
       token.parent.kind === SyntaxKind.PropertyAccessExpression &&
       hasJSXAncestor(token)
     ) {
       return AST_TOKEN_TYPES.JSXIdentifier;
-    }
-
-    if (isJSXToken(token.parent)) {
-      if (token.kind === SyntaxKind.PropertyAccessExpression) {
-        return AST_TOKEN_TYPES.JSXMemberExpression;
-      }
-
-      if (token.kind === SyntaxKind.Identifier) {
-        return AST_TOKEN_TYPES.JSXIdentifier;
-      }
     }
   }
 
