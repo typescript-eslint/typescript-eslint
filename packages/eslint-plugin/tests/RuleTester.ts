@@ -22,7 +22,7 @@ interface InvalidTestCase<
   TOptions extends Readonly<any[]>
 > extends ValidTestCase<TOptions> {
   errors: TestCaseError<TMessageIds>[];
-  output?: string;
+  output?: string | null;
 }
 
 interface TestCaseError<TMessageIds extends string> {
