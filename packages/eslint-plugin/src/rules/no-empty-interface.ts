@@ -5,7 +5,14 @@
 
 import * as util from '../util';
 
-export default util.createRule({
+type Options = [
+  {
+    allowSingleExtends?: boolean;
+  }
+];
+type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
+
+export default util.createRule<Options, MessageIds>({
   name: 'no-empty-interface',
   meta: {
     type: 'suggestion',
@@ -20,13 +27,28 @@ export default util.createRule({
       noEmptyWithSuper:
         'An interface declaring no members is equivalent to its supertype.'
     },
-    schema: []
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowSingleExtends: {
+            type: 'boolean'
+          }
+        }
+      }
+    ]
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      allowSingleExtends: false
+    }
+  ],
+  create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node) {
         if (node.body.body.length !== 0) {
+          // interface contains members --> Nothing to report
           return;
         }
 
@@ -36,10 +58,15 @@ export default util.createRule({
             messageId: 'noEmpty'
           });
         } else if (node.extends.length === 1) {
-          context.report({
-            node: node.id,
-            messageId: 'noEmptyWithSuper'
-          });
+          // interface extends exactly 1 interface --> Report depending on rule setting
+          if (allowSingleExtends) {
+            return;
+          } else {
+            context.report({
+              node: node.id,
+              messageId: 'noEmptyWithSuper'
+            });
+          }
         }
       }
     };

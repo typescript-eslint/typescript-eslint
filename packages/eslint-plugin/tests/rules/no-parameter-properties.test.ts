@@ -14,6 +14,11 @@ class Foo {
         `,
     `
 class Foo {
+    constructor(...name: string[]) {}
+}
+        `,
+    `
+class Foo {
     constructor(name: string, age: number) {}
 }
         `,
@@ -94,7 +99,19 @@ class Foo {
 }
             `,
       options: [{ allows: ['public readonly', 'private'] }]
-    }
+    },
+    // Semantically invalid test case
+    `
+class Foo {
+    constructor(private ...name: string[]) {}
+}
+    `,
+    // Semantically invalid test case
+    `
+class Foo {
+    constructor(private [test]: [string]) {}
+}
+    `
   ],
   invalid: [
     {
