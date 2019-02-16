@@ -14442,6 +14442,996 @@ Object {
 }
 `;
 
+exports[`javascript fixtures/commaOperator/comma-operator-conditional.src 1`] = `
+Object {
+  "$id": 5,
+  "block": Object {
+    "range": Array [
+      0,
+      29,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 4,
+      "block": Object {
+        "range": Array [
+          0,
+          29,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 1,
+          "from": Object {
+            "$ref": 4,
+          },
+          "identifier": Object {
+            "name": "xx",
+            "range": Array [
+              4,
+              6,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 0,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              10,
+              26,
+            ],
+            "type": "SequenceExpression",
+          },
+        },
+        Object {
+          "$id": 2,
+          "from": Object {
+            "$ref": 4,
+          },
+          "identifier": Object {
+            "name": "xx",
+            "range": Array [
+              10,
+              12,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": Object {
+            "$ref": 0,
+          },
+          "writeExpr": undefined,
+        },
+        Object {
+          "$id": 3,
+          "from": Object {
+            "$ref": 4,
+          },
+          "identifier": Object {
+            "name": "x",
+            "range": Array [
+              15,
+              16,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "rw",
+          "resolved": null,
+          "writeExpr": null,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 3,
+        },
+      ],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 5,
+      },
+      "variableMap": Object {
+        "xx": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 4,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "xx",
+                "range": Array [
+                  4,
+                  6,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  4,
+                  27,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  28,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "xx",
+              "range": Array [
+                4,
+                6,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "xx",
+          "references": Array [
+            Object {
+              "$ref": 1,
+            },
+            Object {
+              "$ref": 2,
+            },
+          ],
+          "scope": Object {
+            "$ref": 4,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 3,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 5,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`javascript fixtures/commaOperator/comma-operator-multi.src 1`] = `
+Object {
+  "$id": 3,
+  "block": Object {
+    "range": Array [
+      0,
+      32,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 2,
+      "block": Object {
+        "range": Array [
+          0,
+          32,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 1,
+          "from": Object {
+            "$ref": 2,
+          },
+          "identifier": Object {
+            "name": "v1",
+            "range": Array [
+              4,
+              6,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 0,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              10,
+              29,
+            ],
+            "type": "SequenceExpression",
+          },
+        },
+      ],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {
+        "v1": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 2,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "v1",
+                "range": Array [
+                  4,
+                  6,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  4,
+                  30,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  31,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "v1",
+              "range": Array [
+                4,
+                6,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "v1",
+          "references": Array [
+            Object {
+              "$ref": 1,
+            },
+          ],
+          "scope": Object {
+            "$ref": 2,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 3,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`javascript fixtures/commaOperator/comma-operator-nested.src 1`] = `
+Object {
+  "$id": 3,
+  "block": Object {
+    "range": Array [
+      0,
+      36,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 2,
+      "block": Object {
+        "range": Array [
+          0,
+          36,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 1,
+          "from": Object {
+            "$ref": 2,
+          },
+          "identifier": Object {
+            "name": "v1",
+            "range": Array [
+              4,
+              6,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 0,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              10,
+              33,
+            ],
+            "type": "SequenceExpression",
+          },
+        },
+      ],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {
+        "v1": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 2,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "v1",
+                "range": Array [
+                  4,
+                  6,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  4,
+                  34,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  35,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "v1",
+              "range": Array [
+                4,
+                6,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "v1",
+          "references": Array [
+            Object {
+              "$ref": 1,
+            },
+          ],
+          "scope": Object {
+            "$ref": 2,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 3,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`javascript fixtures/commaOperator/comma-operator-return.src 1`] = `
+Object {
+  "$id": 9,
+  "block": Object {
+    "range": Array [
+      0,
+      50,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 8,
+      "block": Object {
+        "range": Array [
+          0,
+          50,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 7,
+          "block": Object {
+            "range": Array [
+              0,
+              49,
+            ],
+            "type": "FunctionDeclaration",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [
+            Object {
+              "$id": 3,
+              "from": Object {
+                "$ref": 7,
+              },
+              "identifier": Object {
+                "name": "a",
+                "range": Array [
+                  22,
+                  23,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  26,
+                  27,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 4,
+              "from": Object {
+                "$ref": 7,
+              },
+              "identifier": Object {
+                "name": "a",
+                "range": Array [
+                  38,
+                  39,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 5,
+              "from": Object {
+                "$ref": 7,
+              },
+              "identifier": Object {
+                "name": "v1",
+                "range": Array [
+                  41,
+                  43,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 6,
+              "from": Object {
+                "$ref": 7,
+              },
+              "identifier": Object {
+                "name": "a",
+                "range": Array [
+                  45,
+                  46,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [
+            Object {
+              "$ref": 5,
+            },
+          ],
+          "type": "function",
+          "upperScope": Object {
+            "$ref": 8,
+          },
+          "variableMap": Object {
+            "a": Object {
+              "$ref": 2,
+            },
+            "arguments": Object {
+              "$ref": 1,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 7,
+          },
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [],
+              "eslintUsed": undefined,
+              "identifiers": Array [],
+              "name": "arguments",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 7,
+              },
+            },
+            Object {
+              "$id": 2,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "a",
+                    "range": Array [
+                      22,
+                      23,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      22,
+                      27,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      18,
+                      28,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "a",
+                  "range": Array [
+                    22,
+                    23,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "a",
+              "references": Array [
+                Object {
+                  "$ref": 3,
+                },
+                Object {
+                  "$ref": 4,
+                },
+                Object {
+                  "$ref": 6,
+                },
+              ],
+              "scope": Object {
+                "$ref": 7,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 5,
+        },
+      ],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 9,
+      },
+      "variableMap": Object {
+        "f1": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 8,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "f1",
+                "range": Array [
+                  9,
+                  11,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  49,
+                ],
+                "type": "FunctionDeclaration",
+              },
+              "parent": null,
+              "type": "FunctionName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "f1",
+              "range": Array [
+                9,
+                11,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "f1",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 8,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 5,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 9,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`javascript fixtures/commaOperator/comma-operator-simple.src 1`] = `
+Object {
+  "$id": 3,
+  "block": Object {
+    "range": Array [
+      0,
+      17,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 2,
+      "block": Object {
+        "range": Array [
+          0,
+          17,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 1,
+          "from": Object {
+            "$ref": 2,
+          },
+          "identifier": Object {
+            "name": "foo",
+            "range": Array [
+              6,
+              9,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 0,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              13,
+              14,
+            ],
+            "type": "Literal",
+          },
+        },
+      ],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {
+        "foo": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 2,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "foo",
+                "range": Array [
+                  6,
+                  9,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  6,
+                  15,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  16,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "foo",
+              "range": Array [
+                6,
+                9,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "foo",
+          "references": Array [
+            Object {
+              "$ref": 1,
+            },
+          ],
+          "scope": Object {
+            "$ref": 2,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 3,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`javascript fixtures/commaOperator/comma-operator-simple-nested.src 1`] = `
+Object {
+  "$id": 3,
+  "block": Object {
+    "range": Array [
+      0,
+      24,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 2,
+      "block": Object {
+        "range": Array [
+          0,
+          24,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 1,
+          "from": Object {
+            "$ref": 2,
+          },
+          "identifier": Object {
+            "name": "foo",
+            "range": Array [
+              6,
+              9,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 0,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              15,
+              19,
+            ],
+            "type": "SequenceExpression",
+          },
+        },
+      ],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {
+        "foo": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 2,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "foo",
+                "range": Array [
+                  6,
+                  9,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  6,
+                  22,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  23,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "foo",
+              "range": Array [
+                6,
+                9,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "foo",
+          "references": Array [
+            Object {
+              "$ref": 1,
+            },
+          ],
+          "scope": Object {
+            "$ref": 2,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 3,
+  },
+  "variables": Array [],
+}
+`;
+
 exports[`javascript fixtures/defaultParams/class-constructor.src 1`] = `
 Object {
   "$id": 8,
