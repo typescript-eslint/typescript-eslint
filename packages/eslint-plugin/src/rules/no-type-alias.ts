@@ -290,7 +290,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSTypeAliasDeclaration(node: TSESTree.TSTypeAliasDeclaration) {
+      TSTypeAliasDeclaration(node) {
         if (isComposition(node.typeAnnotation)) {
           validateCompositions(node.typeAnnotation);
         } else {

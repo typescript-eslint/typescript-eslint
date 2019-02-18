@@ -3,7 +3,6 @@
  * @author Macklin Underdown
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 export default util.createRule({
@@ -25,7 +24,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      TSNonNullExpression(node: TSESTree.TSNonNullExpression) {
+      TSNonNullExpression(node) {
         context.report({
           node,
           messageId: 'noNonNull'
