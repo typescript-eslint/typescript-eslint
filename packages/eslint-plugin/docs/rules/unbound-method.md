@@ -1,4 +1,4 @@
-# Enforces unbound methods are called with their expected scope (no-unbound-method)
+# Enforces unbound methods are called with their expected scope (unbound-method)
 
 Warns when a method is used outside of a method call.
 
@@ -74,7 +74,7 @@ log();
 
 ```json
 {
-  "@typescript-eslint/no-unbound-method": [
+  "@typescript-eslint/unbound-method": [
     "error",
     {
       "ignoreStatic": true

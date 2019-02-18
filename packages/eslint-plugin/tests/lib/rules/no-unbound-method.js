@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require('../../../lib/rules/no-unbound-method'),
+const rule = require('../../../lib/rules/unbound-method'),
   RuleTester = require('eslint').RuleTester,
   path = require('path');
 
@@ -26,7 +26,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser'
 });
 
-ruleTester.run('no-unbound-method', rule, {
+ruleTester.run('unbound-method', rule, {
   valid: [
     `
 class ContainsMethods {
