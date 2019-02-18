@@ -5,7 +5,7 @@
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { getStaticValue } from 'eslint-utils';
-import { AST as RegExpAST, parseRegExpLiteral } from "regexpp"
+import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
 import ts from 'typescript';
 import { createRule, getParserServices } from '../util';
 
@@ -95,16 +95,18 @@ export default createRule({
      * Parse a given node if it's a `RegExp` instance.
      * @param node The node to parse.
      */
-    function parseRegExp(
-      node: TSESTree.Node
-    ): string | null {
+    function parseRegExp(node: TSESTree.Node): string | null {
       const evaluated = getStaticValue(node, globalScope);
       if (evaluated == null || !(evaluated.value instanceof RegExp)) {
         return null;
       }
 
       const { pattern, flags } = parseRegExpLiteral(evaluated.value);
-      if (pattern.alternatives.length !== 1 || flags.ignoreCase || flags.global) {
+      if (
+        pattern.alternatives.length !== 1 ||
+        flags.ignoreCase ||
+        flags.global
+      ) {
         return null;
       }
 
@@ -185,7 +187,7 @@ export default createRule({
 
         context.report({
           node: callNode,
-          messageId: "preferStringIncludes",
+          messageId: 'preferStringIncludes',
           *fix(fixer) {
             const argNode = callNode.arguments[0];
             const needsParen =

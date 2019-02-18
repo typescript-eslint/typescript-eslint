@@ -18,41 +18,40 @@ Additionally, this rule reports the tests of simple regular expressions in favor
 Examples of **incorrect** code for this rule:
 
 ```ts
-let str: string
-let array: any[]
-let readonlyArray: ReadonlyArray<any>
-let typedArray: UInt8Array
-let userDefined: { indexOf(x: any): number; includes(x: any): boolean }
+let str: string;
+let array: any[];
+let readonlyArray: ReadonlyArray<any>;
+let typedArray: UInt8Array;
+let userDefined: { indexOf(x: any): number; includes(x: any): boolean };
 
-str.indexOf(value) !== -1
-array.indexOf(value) !== -1
-readonlyArray.indexOf(value) === -1
-typedArray.indexOf(value) > -1
-userDefined.indexOf(value) >= 0
+str.indexOf(value) !== -1;
+array.indexOf(value) !== -1;
+readonlyArray.indexOf(value) === -1;
+typedArray.indexOf(value) > -1;
+userDefined.indexOf(value) >= 0;
 
 // simple RegExp test
-/foo/.test(str)
+/foo/.test(str);
 ```
 
 Examples of **correct** code for this rule:
 
 ```ts
-str.indexOf(value) !== -1
-let array: any[]
-let readonlyArray: ReadonlyArray<any>
-let typedArray: UInt8Array
+let array: any[];
+let readonlyArray: ReadonlyArray<any>;
+let typedArray: UInt8Array;
 let userDefined: {
-  indexOf(x: any, fromIndex?: number): number
-  includes(x: any): boolean
-}
+  indexOf(x: any, fromIndex?: number): number;
+  includes(x: any): boolean;
+};
 
-str.includes(value)
-array.includes(value)
-readonlyArray.includes(value)
-typedArray.includes(value)
+str.includes(value);
+array.includes(value);
+readonlyArray.includes(value);
+typedArray.includes(value);
 
 // the two methods have different parameters.
-userDefined.indexOf(value) >= 0
+userDefined.indexOf(value) >= 0;
 ```
 
 ## Options
