@@ -1,5 +1,5 @@
 import { Program } from 'typescript';
-import { Token, Comment, Node } from './typedefs';
+import { Token, Comment, Node } from './ts-estree/ts-estree';
 import { TSNode } from './ts-nodes';
 
 export interface Extra {
@@ -38,6 +38,7 @@ export interface ParserOptions {
 
 export interface ParserWeakMap<TKey, TValueBase> {
   get<TValue extends TValueBase>(key: TKey): TValue;
+  has(key: any): boolean;
 }
 
 export interface ParserServices {

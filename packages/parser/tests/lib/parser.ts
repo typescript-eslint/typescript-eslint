@@ -33,12 +33,12 @@ describe('parser', () => {
   it('parseAndGenerateServices() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
-    parseForESLint(code, {
+    const config = {
       loc: false,
       comment: false,
       range: false,
       tokens: false,
-      sourceType: 'module',
+      sourceType: 'module' as 'module',
       ecmaVersion: 10,
       ecmaFeatures: {
         globalReturn: false,
@@ -50,29 +50,13 @@ describe('parser', () => {
       useJSXTextNode: false,
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      tsconfigRootDir: '../../',
+      tsconfigRootDir: './',
       extraFileExtensions: ['foo']
-    });
+    };
+    parseForESLint(code, config);
     expect(spy).toHaveBeenCalledWith(code, {
       jsx: false,
-      loc: false,
-      comment: false,
-      range: false,
-      tokens: false,
-      sourceType: 'module',
-      ecmaVersion: 10,
-      ecmaFeatures: {
-        globalReturn: false,
-        jsx: false
-      },
-      // ts-estree specific
-      filePath: 'test/foo',
-      project: 'tsconfig.json',
-      useJSXTextNode: false,
-      errorOnUnknownASTType: false,
-      errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      tsconfigRootDir: '../../',
-      extraFileExtensions: ['foo']
+      ...config
     });
   });
 

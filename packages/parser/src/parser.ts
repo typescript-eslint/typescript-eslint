@@ -9,6 +9,7 @@ import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
 
+// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const packageJSON = require('../package.json');
 
 interface ParseForESLintResult {
@@ -101,3 +102,5 @@ export function parseForESLint(
   const scopeManager = analyzeScope(ast, options);
   return { ast, services, scopeManager, visitorKeys };
 }
+
+export { ParserServices, ParserOptions };

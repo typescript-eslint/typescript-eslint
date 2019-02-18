@@ -27,6 +27,12 @@ type Foo = 3;
 const foo = 3 as Foo;
 ```
 
+```ts
+function foo(x: number): number {
+  return x!; // unnecessary non-null
+}
+```
+
 Examples of **correct** code for this rule:
 
 ```ts
@@ -35,6 +41,12 @@ const foo = <number>3;
 
 ```ts
 const foo = 3 as number;
+```
+
+```ts
+function foo(x: number | undefined): number {
+  return x!;
+}
 ```
 
 ### Options

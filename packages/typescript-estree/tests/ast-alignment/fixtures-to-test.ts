@@ -206,6 +206,8 @@ tester.addFixturePatternConfig('javascript/classes', {
   ]
 });
 
+tester.addFixturePatternConfig('javascript/commaOperator');
+
 tester.addFixturePatternConfig('javascript/defaultParams');
 
 tester.addFixturePatternConfig('javascript/destructuring');

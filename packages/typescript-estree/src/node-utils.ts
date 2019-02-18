@@ -6,8 +6,7 @@
  */
 import ts from 'typescript';
 import unescape from 'lodash.unescape';
-import { TSESTree } from './ts-estree';
-import { AST_NODE_TYPES } from './ast-node-types';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -501,21 +500,21 @@ export function fixExports<T extends TSESTree.BaseNode>(
  * @param token the ts.Token
  * @returns the token type
  */
-export function getTokenType(token: any): TSESTree.TokenType {
+export function getTokenType(token: any): AST_TOKEN_TYPES {
   // Need two checks for keywords since some are also identifiers
   if (token.originalKeywordKind) {
     switch (token.originalKeywordKind) {
       case SyntaxKind.NullKeyword:
-        return 'Null';
+        return AST_TOKEN_TYPES.Null;
 
       case SyntaxKind.GetKeyword:
       case SyntaxKind.SetKeyword:
       case SyntaxKind.TypeKeyword:
       case SyntaxKind.ModuleKeyword:
-        return 'Identifier';
+        return AST_TOKEN_TYPES.Identifier;
 
       default:
-        return 'Keyword';
+        return AST_TOKEN_TYPES.Keyword;
     }
   }
 
@@ -527,32 +526,32 @@ export function getTokenType(token: any): TSESTree.TokenType {
       token.kind === SyntaxKind.FalseKeyword ||
       token.kind === SyntaxKind.TrueKeyword
     ) {
-      return 'Boolean';
+      return AST_TOKEN_TYPES.Boolean;
     }
 
-    return 'Keyword';
+    return AST_TOKEN_TYPES.Keyword;
   }
 
   if (
     token.kind >= SyntaxKind.FirstPunctuation &&
     token.kind <= SyntaxKind.LastBinaryOperator
   ) {
-    return 'Punctuator';
+    return AST_TOKEN_TYPES.Punctuator;
   }
 
   if (
     token.kind >= SyntaxKind.NoSubstitutionTemplateLiteral &&
     token.kind <= SyntaxKind.TemplateTail
   ) {
-    return 'Template';
+    return AST_TOKEN_TYPES.Template;
   }
 
   switch (token.kind) {
     case SyntaxKind.NumericLiteral:
-      return 'Numeric';
+      return AST_TOKEN_TYPES.Numeric;
 
     case SyntaxKind.JsxText:
-      return 'JSXText';
+      return AST_TOKEN_TYPES.JSXText;
 
     case SyntaxKind.StringLiteral:
       // A TypeScript-StringLiteral token with a TypeScript-JsxAttribute or TypeScript-JsxElement parent,
@@ -562,13 +561,13 @@ export function getTokenType(token: any): TSESTree.TokenType {
         (token.parent.kind === SyntaxKind.JsxAttribute ||
           token.parent.kind === SyntaxKind.JsxElement)
       ) {
-        return 'JSXText';
+        return AST_TOKEN_TYPES.JSXText;
       }
 
-      return 'String';
+      return AST_TOKEN_TYPES.String;
 
     case SyntaxKind.RegularExpressionLiteral:
-      return 'RegularExpression';
+      return AST_TOKEN_TYPES.RegularExpression;
 
     case SyntaxKind.Identifier:
     case SyntaxKind.ConstructorKeyword:
@@ -580,27 +579,20 @@ export function getTokenType(token: any): TSESTree.TokenType {
   }
 
   // Some JSX tokens have to be determined based on their parent
-  if (token.parent) {
+  if (token.parent && token.kind === SyntaxKind.Identifier) {
+    if (isJSXToken(token.parent)) {
+      return AST_TOKEN_TYPES.JSXIdentifier;
+    }
+
     if (
-      token.kind === SyntaxKind.Identifier &&
       token.parent.kind === SyntaxKind.PropertyAccessExpression &&
       hasJSXAncestor(token)
     ) {
-      return 'JSXIdentifier';
-    }
-
-    if (isJSXToken(token.parent)) {
-      if (token.kind === SyntaxKind.PropertyAccessExpression) {
-        return 'JSXMemberExpression';
-      }
-
-      if (token.kind === SyntaxKind.Identifier) {
-        return 'JSXIdentifier';
-      }
+      return AST_TOKEN_TYPES.JSXIdentifier;
     }
   }
 
-  return 'Identifier';
+  return AST_TOKEN_TYPES.Identifier;
 }
 
 /**
