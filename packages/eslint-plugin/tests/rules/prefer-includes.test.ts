@@ -78,7 +78,17 @@ ruleTester.run('prefer-includes', rule, {
       function f(a: string): void {
         /foo|bar/.test(a)
       }
+    `,
     `
+      function f(a: string): void {
+        /bar/.test()
+      }
+    `,
+    `
+      function f(a: string): void {
+        something.test(a)
+      }
+    `,
   ],
   invalid: [
     // positive
@@ -214,6 +224,21 @@ ruleTester.run('prefer-includes', rule, {
         const pattern = new RegExp("bar")
         function f(a: string): void {
           a.includes("bar")
+        }
+      `,
+      errors: [{ messageId: 'preferStringIncludes' }]
+    },
+    {
+      code: `
+        const pattern = /bar/
+        function f(a: string, b: string): void {
+          pattern.test(a + b)
+        }
+      `,
+      output: `
+        const pattern = /bar/
+        function f(a: string, b: string): void {
+          (a + b).includes("bar")
         }
       `,
       errors: [{ messageId: 'preferStringIncludes' }]
