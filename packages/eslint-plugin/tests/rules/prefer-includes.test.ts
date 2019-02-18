@@ -88,7 +88,7 @@ ruleTester.run('prefer-includes', rule, {
       function f(a: string): void {
         something.test(a)
       }
-    `,
+    `
   ],
   invalid: [
     // positive
