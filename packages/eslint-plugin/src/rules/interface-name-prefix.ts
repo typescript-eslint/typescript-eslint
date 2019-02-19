@@ -1,4 +1,3 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 type Options = ['never' | 'always'];
@@ -40,7 +39,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration): void {
+      TSInterfaceDeclaration(node): void {
         if (never) {
           if (isPrefixedWithI(node.id.name)) {
             context.report({

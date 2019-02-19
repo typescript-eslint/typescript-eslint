@@ -141,7 +141,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSArrayType(node: TSESTree.TSArrayType) {
+      TSArrayType(node) {
         if (
           option === 'array' ||
           (option === 'array-simple' && isSimpleType(node.elementType))

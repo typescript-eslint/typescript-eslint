@@ -1,4 +1,3 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 type Options = [
@@ -42,7 +41,7 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ allowSingleExtends }]) {
     return {
-      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
+      TSInterfaceDeclaration(node) {
         if (node.body.body.length !== 0) {
           // interface contains members --> Nothing to report
           return;
