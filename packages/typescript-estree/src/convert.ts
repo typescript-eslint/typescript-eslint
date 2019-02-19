@@ -6,7 +6,6 @@
  * MIT License
  */
 import ts from 'typescript';
-import { TSESTree } from './ts-estree';
 import {
   canContainDirective,
   createError,
@@ -27,7 +26,7 @@ import {
   isOptional,
   unescapeStringLiteralText
 } from './node-utils';
-import { AST_NODE_TYPES } from './ast-node-types';
+import { AST_NODE_TYPES, TSESTree } from './ts-estree';
 import { TSNode } from './ts-nodes';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -1597,20 +1596,17 @@ export class Converter {
             expressions: []
           });
 
-          const left = this.convertChild(node.left),
-            right = this.convertChild(node.right);
-
-          if (left.type === AST_NODE_TYPES.SequenceExpression) {
+          const left = this.convertChild(node.left);
+          if (
+            left.type === AST_NODE_TYPES.SequenceExpression &&
+            node.left.kind !== SyntaxKind.ParenthesizedExpression
+          ) {
             result.expressions = result.expressions.concat(left.expressions);
           } else {
             result.expressions.push(left);
           }
 
-          if (right.type === AST_NODE_TYPES.SequenceExpression) {
-            result.expressions = result.expressions.concat(right.expressions);
-          } else {
-            result.expressions.push(right);
-          }
+          result.expressions.push(this.convertChild(node.right));
           return result;
         } else {
           const type = getBinaryExpressionType(node.operatorToken);

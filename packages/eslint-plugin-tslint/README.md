@@ -25,9 +25,12 @@ Configure in your eslint config file:
   "plugins": [
     "@typescript-eslint/tslint"
   ],
+  "parserOptions": {
+      "project": "tsconfig.json",
+  },
   "rules": {
     "@typescript-eslint/tslint/config": ["warn", {
-      "lintFile": '', // path to tslint.json of your project
+      "lintFile": "", // path to tslint.json of your project
       "rules": {
         // tslint rules (will be used if `lintFile` is not specified)
       },
@@ -38,6 +41,8 @@ Configure in your eslint config file:
   }
 }
 ```
+
+**Note:** The ability to automatically fix problems with `--fix` is unavailable for tslint rules loaded with this plugin.
 
 ## Rules
 

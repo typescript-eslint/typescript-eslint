@@ -38,6 +38,23 @@ interface Bar {
 interface Baz extends Foo, Bar {}
 ```
 
+### Options
+
+This rule accepts a single object option with the following default configuration:
+
+```json
+{
+  "@typescript-eslint/no-empty-interface": [
+    "error",
+    {
+      "allowSingleExtends": false
+    }
+  ]
+}
+```
+
+- `allowSingleExtends: true` will silence warnings about extending a single interface without adding additional members
+
 ## When Not To Use It
 
 If you don't care about having empty/meaningless interfaces, then you will not need this rule.

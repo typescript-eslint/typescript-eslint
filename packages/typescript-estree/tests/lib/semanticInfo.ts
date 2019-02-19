@@ -22,7 +22,7 @@ import {
   VariableDeclaration,
   ClassDeclaration,
   ClassProperty
-} from '../../src/typedefs';
+} from '../../src/ts-estree/ts-estree';
 
 //------------------------------------------------------------------------------
 // Setup
