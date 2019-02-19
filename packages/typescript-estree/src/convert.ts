@@ -2360,7 +2360,7 @@ export class Converter {
         return this.fixExports(node, result);
       }
 
-      case SyntaxKind.FirstTypeNode: {
+      case SyntaxKind.TypePredicate: {
         const result = this.createNode<TSESTree.TSTypePredicate>(node, {
           type: AST_NODE_TYPES.TSTypePredicate,
           parameterName: this.convertChild(node.parameterName),
