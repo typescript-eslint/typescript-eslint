@@ -456,7 +456,7 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
      * Babel correctly errors on this
      * TODO: enable error code TS1024
      */
-    'interface-method-readonly'
+    'interface-method-readonly',
   ],
 });
 
