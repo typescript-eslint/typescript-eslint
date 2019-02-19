@@ -494,7 +494,11 @@ export default createRule({
       ): void {
         const callNode = node.parent as TSESTree.CallExpression;
         const parentNode = callNode.parent as TSESTree.BinaryExpression;
-        if (!isEqualityComparison(parentNode) || !isNull(parentNode.right) || !isStringType(node.object)) {
+        if (
+          !isEqualityComparison(parentNode) ||
+          !isNull(parentNode.right) ||
+          !isStringType(node.object)
+        ) {
           return;
         }
 
@@ -511,15 +515,18 @@ export default createRule({
           node: callNode,
           messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
           *fix(fixer) {
-            if (!parentNode.operator.startsWith("!")) {
-              yield fixer.insertTextBefore(parentNode, "!")
+            if (!parentNode.operator.startsWith('!')) {
+              yield fixer.insertTextBefore(parentNode, '!');
             }
             yield fixer.replaceTextRange(
               getPropertyRange(node),
               `.${isStartsWith ? 'start' : 'end'}sWith`
-            )
-            yield fixer.replaceText(callNode.arguments[0], JSON.stringify(text))
-            yield fixer.removeRange([callNode.range[1], parentNode.range[1]])
+            );
+            yield fixer.replaceText(
+              callNode.arguments[0],
+              JSON.stringify(text)
+            );
+            yield fixer.removeRange([callNode.range[1], parentNode.range[1]]);
           }
         });
       },
