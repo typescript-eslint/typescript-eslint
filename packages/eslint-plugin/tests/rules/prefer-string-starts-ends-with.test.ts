@@ -125,58 +125,68 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       }
     `,
     `
+      function f(s: string) {
+        s.match(/^foo/) + 1
+      }
+    `,
+    `
+      function f(s: string) {
+        s.match(/foo$/) + 1
+      }
+    `,
+    `
       function f(s: { match(x: any): boolean }) {
-        s.match(/^foo/)
+        s.match(/^foo/) !== null
       }
     `,
     `
       function f(s: { match(x: any): boolean }) {
-        s.match(/foo$/)
+        s.match(/foo$/) !== null
       }
     `,
     `
       function f(s: string) {
-        s.match(/foo/)
+        s.match(/foo/) !== null
       }
     `,
     `
       function f(s: string) {
-        s.match(/^foo$/)
+        s.match(/^foo$/) !== null
       }
     `,
     `
       function f(s: string) {
-        s.match(/^foo./)
+        s.match(/^foo./) !== null
       }
     `,
     `
       function f(s: string) {
-        s.match(/^foo|bar/)
+        s.match(/^foo|bar/) !== null
       }
     `,
     `
       function f(s: string) {
-        s.match(new RegExp(""))
+        s.match(new RegExp("")) !== null
       }
     `,
     `
       function f(s: string) {
-        s.match(pattern) // cannot check '^'/'$'
+        s.match(pattern) !== null // cannot check '^'/'$'
       }
     `,
     `
       function f(s: string) {
-        s.match(new RegExp("^/!{[", "u")) // has syntax error
+        s.match(new RegExp("^/!{[", "u")) !== null // has syntax error
       }
     `,
     `
       function f(s: string) {
-        s.match()
+        s.match() !== null
       }
     `,
     `
       function f(s: string) {
-        s.match(777)
+        s.match(777) !== null
       }
     `,
     `
