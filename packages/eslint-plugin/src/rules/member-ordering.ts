@@ -353,28 +353,28 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      ClassDeclaration(node: TSESTree.ClassDeclaration) {
+      ClassDeclaration(node) {
         validateMembers(
           node.body.body,
           options.classes || options.default!,
           true
         );
       },
-      ClassExpression(node: TSESTree.ClassExpression) {
+      ClassExpression(node) {
         validateMembers(
           node.body.body,
           options.classExpressions || options.default!,
           true
         );
       },
-      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
+      TSInterfaceDeclaration(node) {
         validateMembers(
           node.body.body,
           options.interfaces || options.default!,
           false
         );
       },
-      TSTypeLiteral(node: TSESTree.TSTypeLiteral) {
+      TSTypeLiteral(node) {
         validateMembers(
           node.members,
           options.typeLiterals || options.default!,
