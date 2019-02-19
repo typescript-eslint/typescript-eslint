@@ -266,7 +266,7 @@ export class Converter {
    */
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
-    parent: ts.Node,
+    parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
   ): any[] {
     let allowDirectives = canContainDirective(parent);
 
@@ -1183,7 +1183,7 @@ export class Converter {
           } else {
             return arrayItem;
           }
-        } else if (parent.kind === SyntaxKind.ObjectBindingPattern) {
+        } else {
           let result: TSESTree.RestElement | TSESTree.Property;
           if (node.dotDotDotToken) {
             result = this.createNode<TSESTree.RestElement>(node, {
@@ -1215,7 +1215,6 @@ export class Converter {
           }
           return result;
         }
-        return null;
       }
 
       case SyntaxKind.ArrowFunction: {
@@ -2360,7 +2359,7 @@ export class Converter {
         return this.fixExports(node, result);
       }
 
-      case SyntaxKind.FirstTypeNode: {
+      case SyntaxKind.TypePredicate: {
         const result = this.createNode<TSESTree.TSTypePredicate>(node, {
           type: AST_NODE_TYPES.TSTypePredicate,
           parameterName: this.convertChild(node.parameterName),

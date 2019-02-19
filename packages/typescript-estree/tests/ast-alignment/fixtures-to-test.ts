@@ -452,6 +452,11 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
     'empty-type-parameters-in-function-expression',
     'empty-type-parameters-in-method',
     'empty-type-parameters-in-method-signature',
+    /**
+     * Babel correctly errors on this
+     * TODO: enable error code TS1024
+     */
+    'interface-method-readonly',
   ],
 });
 

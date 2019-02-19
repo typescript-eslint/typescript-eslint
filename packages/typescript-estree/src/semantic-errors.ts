@@ -44,7 +44,9 @@ export function getFirstSemanticOrSyntacticError(
      * For our current use-cases this is undesired behavior, so we just suppress it
      * and log a a warning.
      */
+    /* istanbul ignore next */
     console.warn(`Warning From TSC: "${e.message}`);
+    /* istanbul ignore next */
     return undefined;
   }
 }
