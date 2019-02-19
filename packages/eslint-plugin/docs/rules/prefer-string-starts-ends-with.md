@@ -41,7 +41,7 @@ foo.endsWith('bar');
 
 ## Options
 
-There is no option.
+There are no options.
 
 ```JSON
 {
