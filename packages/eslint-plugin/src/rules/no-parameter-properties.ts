@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSParameterProperty(node: TSESTree.TSParameterProperty) {
+      TSParameterProperty(node) {
         const modifiers = getModifiers(node);
 
         if (allows.indexOf(modifiers) === -1) {
