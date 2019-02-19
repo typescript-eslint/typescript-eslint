@@ -103,6 +103,15 @@ export default createRule({
     }
 
     /**
+     * Check if a given node is a `Literal` node that is null.
+     * @param node The node to check.
+     */
+    function isNull(node: TSESTree.Node): node is TSESTree.Literal {
+      const evaluated = getStaticValue(node, globalScope);
+      return evaluated != null && evaluated.value === null;
+    }
+
+    /**
      * Check if a given node is a `Literal` node that is a given value.
      * @param node The node to check.
      * @param value The expected value of the `Literal` node.
@@ -366,16 +375,14 @@ export default createRule({
       // @ts-ignore
       [[
         'BinaryExpression > MemberExpression.left[computed=true]',
-        'CallExpression > MemberExpression.callee[property.name="charAt"][computed=false]'
+        'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="charAt"][computed=false]'
       ]](node: TSESTree.MemberExpression): void {
         let parentNode = node.parent!;
-        let leftNode: TSESTree.Node = node;
         let indexNode: TSESTree.Node | null = null;
         if (parentNode.type === 'CallExpression') {
           if (parentNode.arguments.length === 1) {
             indexNode = parentNode.arguments[0];
           }
-          leftNode = parentNode;
           parentNode = parentNode.parent!;
         } else {
           indexNode = node.property;
@@ -384,7 +391,6 @@ export default createRule({
         if (
           indexNode == null ||
           !isEqualityComparison(parentNode) ||
-          parentNode.left !== leftNode ||
           !isStringType(node.object)
         ) {
           return;
@@ -416,7 +422,7 @@ export default createRule({
       },
 
       // foo.indexOf('bar') === 0
-      'CallExpression > MemberExpression.callee[property.name="indexOf"][computed=false]'(
+      'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="indexOf"][computed=false]'(
         node: TSESTree.MemberExpression
       ): void {
         const callNode = node.parent! as TSESTree.CallExpression;
@@ -448,7 +454,7 @@ export default createRule({
 
       // foo.lastIndexOf('bar') === foo.length - 3
       // foo.lastIndexOf(bar) === foo.length - bar.length
-      'CallExpression > MemberExpression.callee[property.name="lastIndexOf"][computed=false]'(
+      'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="lastIndexOf"][computed=false]'(
         node: TSESTree.MemberExpression
       ): void {
         const callNode = node.parent! as TSESTree.CallExpression;
@@ -481,16 +487,17 @@ export default createRule({
         });
       },
 
-      // foo.match(/^bar/)
-      // foo.match(/bar$/)
-      'CallExpression > MemberExpression.callee[property.name="match"][computed=false]'(
+      // foo.match(/^bar/) === null
+      // foo.match(/bar$/) === null
+      'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="match"][computed=false]'(
         node: TSESTree.MemberExpression
       ): void {
-        if (!isStringType(node.object)) {
+        const callNode = node.parent as TSESTree.CallExpression;
+        const parentNode = callNode.parent as TSESTree.BinaryExpression;
+        if (!isEqualityComparison(parentNode) || !isNull(parentNode.right) || !isStringType(node.object)) {
           return;
         }
 
-        const callNode = node.parent as TSESTree.CallExpression;
         const parsed =
           callNode.arguments.length === 1
             ? parseRegExp(callNode.arguments[0])
@@ -503,14 +510,16 @@ export default createRule({
         context.report({
           node: callNode,
           messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
-          fix(fixer) {
-            return [
-              fixer.replaceTextRange(
-                getPropertyRange(node),
-                `.${isStartsWith ? 'start' : 'end'}sWith`
-              ),
-              fixer.replaceText(callNode.arguments[0], JSON.stringify(text))
-            ];
+          *fix(fixer) {
+            if (!parentNode.operator.startsWith("!")) {
+              yield fixer.insertTextBefore(parentNode, "!")
+            }
+            yield fixer.replaceTextRange(
+              getPropertyRange(node),
+              `.${isStartsWith ? 'start' : 'end'}sWith`
+            )
+            yield fixer.replaceText(callNode.arguments[0], JSON.stringify(text))
+            yield fixer.removeRange([callNode.range[1], parentNode.range[1]])
           }
         });
       },

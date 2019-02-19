@@ -115,6 +115,16 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       }
     `,
     `
+      function f(s: string) {
+        s.match(/^foo/)
+      }
+    `,
+    `
+      function f(s: string) {
+        s.match(/foo$/)
+      }
+    `,
+    `
       function f(s: { match(x: any): boolean }) {
         s.match(/^foo/)
       }
@@ -566,7 +576,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
     {
       code: `
         function f(s: string) {
-          s.match(/^bar/)
+          s.match(/^bar/) !== null
         }
       `,
       output: `
@@ -579,7 +589,20 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
     {
       code: `
         function f(s: string) {
-          s.match(/bar$/)
+          s.match(/^bar/) != null
+        }
+      `,
+      output: `
+        function f(s: string) {
+          s.startsWith("bar")
+        }
+      `,
+      errors: [{ messageId: 'preferStartsWith' }]
+    },
+    {
+      code: `
+        function f(s: string) {
+          s.match(/bar$/) !== null
         }
       `,
       output: `
@@ -591,9 +614,74 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
     },
     {
       code: `
+        function f(s: string) {
+          s.match(/bar$/) != null
+        }
+      `,
+      output: `
+        function f(s: string) {
+          s.endsWith("bar")
+        }
+      `,
+      errors: [{ messageId: 'preferEndsWith' }]
+    },
+    {
+      code: `
+        function f(s: string) {
+          s.match(/^bar/) === null
+        }
+      `,
+      output: `
+        function f(s: string) {
+          !s.startsWith("bar")
+        }
+      `,
+      errors: [{ messageId: 'preferStartsWith' }]
+    },
+    {
+      code: `
+        function f(s: string) {
+          s.match(/^bar/) == null
+        }
+      `,
+      output: `
+        function f(s: string) {
+          !s.startsWith("bar")
+        }
+      `,
+      errors: [{ messageId: 'preferStartsWith' }]
+    },
+    {
+      code: `
+        function f(s: string) {
+          s.match(/bar$/) === null
+        }
+      `,
+      output: `
+        function f(s: string) {
+          !s.endsWith("bar")
+        }
+      `,
+      errors: [{ messageId: 'preferEndsWith' }]
+    },
+    {
+      code: `
+        function f(s: string) {
+          s.match(/bar$/) == null
+        }
+      `,
+      output: `
+        function f(s: string) {
+          !s.endsWith("bar")
+        }
+      `,
+      errors: [{ messageId: 'preferEndsWith' }]
+    },
+    {
+      code: `
         const pattern = /^bar/
         function f(s: string) {
-          s.match(pattern)
+          s.match(pattern) != null
         }
       `,
       output: `
@@ -608,7 +696,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       code: `
         const pattern = new RegExp("^bar")
         function f(s: string) {
-          s.match(pattern)
+          s.match(pattern) != null
         }
       `,
       output: `
@@ -623,7 +711,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       code: `
         const pattern = /^"quoted"/
         function f(s: string) {
-          s.match(pattern)
+          s.match(pattern) != null
         }
       `,
       output: `
