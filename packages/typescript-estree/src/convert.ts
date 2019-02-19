@@ -1183,7 +1183,7 @@ export class Converter {
           } else {
             return arrayItem;
           }
-        } else if (parent.kind === SyntaxKind.ObjectBindingPattern) {
+        } else {
           let result: TSESTree.RestElement | TSESTree.Property;
           if (node.dotDotDotToken) {
             result = this.createNode<TSESTree.RestElement>(node, {
@@ -1215,7 +1215,6 @@ export class Converter {
           }
           return result;
         }
-        return null;
       }
 
       case SyntaxKind.ArrowFunction: {
