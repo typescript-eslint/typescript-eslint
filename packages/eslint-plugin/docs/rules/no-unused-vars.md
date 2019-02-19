@@ -63,7 +63,7 @@ alert(x);
 myFunc(
   function foo() {
     // ...
-  }.bind(this)
+  }.bind(this),
 );
 
 (function(foo) {

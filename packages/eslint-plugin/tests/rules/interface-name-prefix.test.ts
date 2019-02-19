@@ -2,7 +2,7 @@ import rule from '../../src/rules/interface-name-prefix';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('interface-name-prefix', rule, {
@@ -18,7 +18,7 @@ interface IAnimal {
     name: string;
 }
             `,
-      options: ['always']
+      options: ['always'],
     },
     {
       code: `
@@ -26,7 +26,7 @@ interface IIguana {
     name: string;
 }
             `,
-      options: ['always']
+      options: ['always'],
     },
     {
       code: `
@@ -34,7 +34,7 @@ interface Iguana {
     name: string;
 }
             `,
-      options: ['never']
+      options: ['never'],
     },
     {
       code: `
@@ -42,7 +42,7 @@ interface Animal {
     name: string;
 }
             `,
-      options: ['never']
+      options: ['never'],
     },
     {
       code: `
@@ -50,8 +50,8 @@ interface I18n {
     name: string;
 }
             `,
-      options: ['never']
-    }
+      options: ['never'],
+    },
   ],
   invalid: [
     {
@@ -64,9 +64,9 @@ interface IAnimal {
         {
           messageId: 'noPrefix',
           line: 2,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -79,9 +79,9 @@ interface Animal {
         {
           messageId: 'noPrefix',
           line: 2,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -94,9 +94,9 @@ interface Iguana {
         {
           messageId: 'noPrefix',
           line: 2,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -109,9 +109,9 @@ interface IIguana {
         {
           messageId: 'noPrefix',
           line: 2,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -124,9 +124,9 @@ interface IAnimal {
         {
           messageId: 'noPrefix',
           line: 2,
-          column: 11
-        }
-      ]
-    }
-  ]
+          column: 11,
+        },
+      ],
+    },
+  ],
 });

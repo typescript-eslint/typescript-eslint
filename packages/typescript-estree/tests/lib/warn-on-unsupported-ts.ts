@@ -15,8 +15,8 @@ describe('Warn on unsupported TypeScript version', () => {
     parser.parse('');
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining(
-        'WARNING: You are currently running a version of TypeScript which is not officially supported by typescript-estree'
-      )
+        'WARNING: You are currently running a version of TypeScript which is not officially supported by typescript-estree',
+      ),
     );
   });
 });

@@ -38,12 +38,12 @@ describe('parse()', () => {
       comment: true,
       tokens: true,
       range: true,
-      loc: true
+      loc: true,
     };
 
     it(
       'output tokens, comments, locs, and ranges when called with those options',
-      createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config),
     );
   });
 
@@ -53,17 +53,17 @@ describe('parse()', () => {
       comment: true,
       tokens: true,
       range: true,
-      loc: true
+      loc: true,
     };
 
     it(
       'should correctly convert code to a string for parse()',
-      createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config),
     );
 
     it(
       'should correctly convert code to a string for parseAndGenerateServices()',
-      createSnapshotTestBlock(code, config, true)
+      createSnapshotTestBlock(code, config, true),
     );
   });
 
@@ -78,7 +78,7 @@ describe('parse()', () => {
         comment: true,
         tokens: true,
         range: true,
-        loc: true
+        loc: true,
       });
 
       expect(spy).toHaveBeenCalledWith(
@@ -98,9 +98,9 @@ describe('parse()', () => {
           strict: false,
           tokens: expect.any(Array),
           tsconfigRootDir: expect.any(String),
-          useJSXTextNode: false
+          useJSXTextNode: false,
         },
-        false
+        false,
       );
     });
   });
@@ -112,14 +112,14 @@ describe('parse()', () => {
       tokens: true,
       range: true,
       loc: true,
-      errorOnTypeScriptSyntacticAndSemanticIssues: true
+      errorOnTypeScriptSyntacticAndSemanticIssues: true,
     };
 
     it('should throw on invalid option when used in parse', () => {
       expect(() => {
         parser.parse(code, options);
       }).toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`
+        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
       );
     });
 
@@ -127,7 +127,7 @@ describe('parse()', () => {
       expect(() => {
         parser.parseAndGenerateServices(code, options);
       }).not.toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`
+        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
       );
     });
 

@@ -2,7 +2,7 @@ import rule from '../../src/rules/no-angle-bracket-type-assertion';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-angle-bracket-type-assertion', rule, {
@@ -42,7 +42,7 @@ const a: A = b as A;
 const a : number = 5;
 const b : number = a as number;
         `,
-    'const a : Array<number> = [1] as Array<number>;'
+    'const a : Array<number> = [1] as Array<number>;',
   ],
   invalid: [
     {
@@ -61,20 +61,20 @@ const bar = <Foo>new Generic<int>();
         {
           messageId: 'preferAs',
           data: {
-            cast: 'Foo'
+            cast: 'Foo',
           },
           line: 9,
-          column: 13
+          column: 13,
         },
         {
           messageId: 'preferAs',
           data: {
-            cast: 'Foo'
+            cast: 'Foo',
           },
           line: 10,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: 'const a : number = <number>5',
@@ -82,12 +82,12 @@ const bar = <Foo>new Generic<int>();
         {
           messageId: 'preferAs',
           data: {
-            cast: 'number'
+            cast: 'number',
           },
           line: 1,
-          column: 20
-        }
-      ]
+          column: 20,
+        },
+      ],
     },
     {
       code: `
@@ -98,12 +98,12 @@ const b : number = <number>a;
         {
           messageId: 'preferAs',
           data: {
-            cast: 'number'
+            cast: 'number',
           },
           line: 3,
-          column: 20
-        }
-      ]
+          column: 20,
+        },
+      ],
     },
     {
       code: 'const a : Array<number> = <Array<number>>[1];',
@@ -111,12 +111,12 @@ const b : number = <number>a;
         {
           messageId: 'preferAs',
           data: {
-            cast: 'Array<number>'
+            cast: 'Array<number>',
           },
           line: 1,
-          column: 27
-        }
-      ]
+          column: 27,
+        },
+      ],
     },
     {
       code: `
@@ -130,12 +130,12 @@ const a : A = <A>b;
         {
           messageId: 'preferAs',
           data: {
-            cast: 'A'
+            cast: 'A',
           },
           line: 6,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: `
@@ -153,12 +153,12 @@ const a: A = <A>b;
         {
           messageId: 'preferAs',
           data: {
-            cast: 'A'
+            cast: 'A',
           },
           line: 10,
-          column: 14
-        }
-      ]
-    }
-  ]
+          column: 14,
+        },
+      ],
+    },
+  ],
 });

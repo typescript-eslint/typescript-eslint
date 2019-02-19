@@ -2,7 +2,7 @@ import fs from 'fs';
 import glob from 'glob';
 import {
   createSnapshotTestBlock,
-  formatSnapshotName
+  formatSnapshotName,
 } from '../tools/test-utils';
 import { ParserOptions } from '../../src/parser-options';
 
@@ -20,12 +20,12 @@ describe('Comments', () => {
     const config: ParserOptions = {
       sourceType: 'module',
       ecmaFeatures: {
-        jsx: true
-      }
+        jsx: true,
+      },
     };
     it(
       formatSnapshotName(filename, FIXTURES_DIR),
-      createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config),
     );
   });
 });

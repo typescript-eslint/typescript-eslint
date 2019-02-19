@@ -23,12 +23,12 @@ export default util.createRule<Options, MessageIds>({
         'Warns if a type assertion does not change the type of an expression',
       category: 'Best Practices',
       recommended: false,
-      tslintRuleName: 'no-unnecessary-type-assertion'
+      tslintRuleName: 'no-unnecessary-type-assertion',
     },
     fixable: 'code',
     messages: {
       unnecessaryAssertion:
-        'This assertion is unnecessary since it does not change the type of the expression.'
+        'This assertion is unnecessary since it does not change the type of the expression.',
     },
     schema: [
       {
@@ -37,13 +37,13 @@ export default util.createRule<Options, MessageIds>({
           typesToIgnore: {
             type: 'array',
             items: {
-              type: 'string'
-            }
-          }
-        }
-      }
+              type: 'string',
+            },
+          },
+        },
+      },
     ],
-    type: 'suggestion'
+    type: 'suggestion',
   },
   defaultOptions: [{}],
   create(context, [options]) {
@@ -83,7 +83,7 @@ export default util.createRule<Options, MessageIds>({
 
     function checkNonNullAssertion(
       node: TSESTree.Node,
-      checker: ts.TypeChecker
+      checker: ts.TypeChecker,
     ): void {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
         ts.NonNullExpression
@@ -97,22 +97,22 @@ export default util.createRule<Options, MessageIds>({
           fix(fixer) {
             return fixer.removeRange([
               originalNode.expression.end,
-              originalNode.end
+              originalNode.end,
             ]);
-          }
+          },
         });
       }
     }
 
     function verifyCast(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-      checker: ts.TypeChecker
+      checker: ts.TypeChecker,
     ): void {
       if (
         options &&
         options.typesToIgnore &&
         options.typesToIgnore.indexOf(
-          sourceCode.getText(node.typeAnnotation)
+          sourceCode.getText(node.typeAnnotation),
         ) !== -1
       ) {
         return;
@@ -144,13 +144,13 @@ export default util.createRule<Options, MessageIds>({
             return originalNode.kind === ts.SyntaxKind.TypeAssertionExpression
               ? fixer.removeRange([
                   originalNode.getStart(),
-                  originalNode.expression.getStart()
+                  originalNode.expression.getStart(),
                 ])
               : fixer.removeRange([
                   originalNode.expression.end,
-                  originalNode.end
+                  originalNode.end,
                 ]);
-          }
+          },
         });
       }
     }
@@ -166,7 +166,7 @@ export default util.createRule<Options, MessageIds>({
       },
       TSAsExpression(node) {
         verifyCast(node, checker);
-      }
+      },
     };
-  }
+  },
 });

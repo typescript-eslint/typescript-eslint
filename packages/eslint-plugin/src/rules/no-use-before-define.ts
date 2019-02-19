@@ -50,7 +50,7 @@ function isFunction(variable: Scope.Variable): boolean {
  */
 function isOuterClass(
   variable: Scope.Variable,
-  reference: Scope.Reference
+  reference: Scope.Reference,
 ): boolean {
   if (variable.defs[0].type !== 'ClassName') {
     return false;
@@ -71,7 +71,7 @@ function isOuterClass(
  */
 function isOuterVariable(
   variable: Scope.Variable,
-  reference: Scope.Reference
+  reference: Scope.Reference,
 ): boolean {
   if (variable.defs[0].type !== 'Variable') {
     return false;
@@ -92,7 +92,7 @@ function isOuterVariable(
  */
 function isInRange(
   node: TSESTree.Expression | null | undefined,
-  location: number
+  location: number,
 ): boolean {
   return !!node && node.range[0] <= location && location <= node.range[1];
 }
@@ -109,7 +109,7 @@ function isInRange(
  */
 function isInInitializer(
   variable: Scope.Variable,
-  reference: Scope.Reference
+  reference: Scope.Reference,
 ): boolean {
   if (variable.scope !== reference.from) {
     return false;
@@ -163,16 +163,16 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the use of variables before they are defined',
       category: 'Variables',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
-      noUseBeforeDefine: "'{{name}}' was used before it was defined."
+      noUseBeforeDefine: "'{{name}}' was used before it was defined.",
     },
     schema: [
       {
         oneOf: [
           {
-            enum: ['nofunc']
+            enum: ['nofunc'],
           },
           {
             type: 'object',
@@ -180,21 +180,21 @@ export default util.createRule<Options, MessageIds>({
               functions: { type: 'boolean' },
               classes: { type: 'boolean' },
               variables: { type: 'boolean' },
-              typedefs: { type: 'boolean' }
+              typedefs: { type: 'boolean' },
             },
-            additionalProperties: false
-          }
-        ]
-      }
-    ]
+            additionalProperties: false,
+          },
+        ],
+      },
+    ],
   },
   defaultOptions: [
     {
       functions: true,
       classes: true,
       variables: true,
-      typedefs: true
-    }
+      typedefs: true,
+    },
   ],
   create(context, optionsWithDefault) {
     const options = parseOptions(optionsWithDefault[0]);
@@ -206,7 +206,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isForbidden(
       variable: Scope.Variable,
-      reference: Scope.Reference
+      reference: Scope.Reference,
     ): boolean {
       if (isFunction(variable)) {
         return !!options.functions;
@@ -248,7 +248,7 @@ export default util.createRule<Options, MessageIds>({
         context.report({
           node: reference.identifier,
           messageId: 'noUseBeforeDefine',
-          data: reference.identifier
+          data: reference.identifier,
         });
       });
 
@@ -258,7 +258,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       Program() {
         findVariablesInScope(context.getScope());
-      }
+      },
     };
-  }
+  },
 });

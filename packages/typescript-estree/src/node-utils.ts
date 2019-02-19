@@ -23,12 +23,12 @@ const ASSIGNMENT_OPERATORS: ts.AssignmentOperator[] = [
   SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken,
   SyntaxKind.AmpersandEqualsToken,
   SyntaxKind.BarEqualsToken,
-  SyntaxKind.CaretEqualsToken
+  SyntaxKind.CaretEqualsToken,
 ];
 
 const LOGICAL_OPERATORS: ts.LogicalOperator[] = [
   SyntaxKind.BarBarToken,
-  SyntaxKind.AmpersandAmpersandToken
+  SyntaxKind.AmpersandAmpersandToken,
 ];
 
 const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
@@ -91,7 +91,7 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
   [SyntaxKind.UniqueKeyword]: 'unique',
   [SyntaxKind.KeyOfKeyword]: 'keyof',
   [SyntaxKind.NewKeyword]: 'new',
-  [SyntaxKind.ImportKeyword]: 'import'
+  [SyntaxKind.ImportKeyword]: 'import',
 };
 
 /**
@@ -100,7 +100,7 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
  * @returns is assignment
  */
 export function isAssignmentOperator(
-  operator: ts.Token<ts.AssignmentOperator>
+  operator: ts.Token<ts.AssignmentOperator>,
 ): boolean {
   return ASSIGNMENT_OPERATORS.indexOf(operator.kind) > -1;
 }
@@ -111,7 +111,7 @@ export function isAssignmentOperator(
  * @returns is a logical operator
  */
 export function isLogicalOperator(
-  operator: ts.Token<ts.LogicalOperator>
+  operator: ts.Token<ts.LogicalOperator>,
 ): boolean {
   return LOGICAL_OPERATORS.indexOf(operator.kind) > -1;
 }
@@ -142,7 +142,7 @@ export function isESTreeClassMember(node: ts.Node): boolean {
  */
 export function hasModifier(
   modifierKind: ts.KeywordSyntaxKind,
-  node: ts.Node
+  node: ts.Node,
 ): boolean {
   return (
     !!node.modifiers &&
@@ -201,7 +201,7 @@ export function isJSDocComment(node: ts.Node): boolean {
  * @returns the binary expression type
  */
 export function getBinaryExpressionType(
-  operator: ts.Token<any>
+  operator: ts.Token<any>,
 ):
   | AST_NODE_TYPES.AssignmentExpression
   | AST_NODE_TYPES.LogicalExpression
@@ -222,12 +222,12 @@ export function getBinaryExpressionType(
  */
 export function getLineAndCharacterFor(
   pos: number,
-  ast: ts.SourceFile
+  ast: ts.SourceFile,
 ): TSESTree.LineAndColumnData {
   const loc = ast.getLineAndCharacterOfPosition(pos);
   return {
     line: loc.line + 1,
-    column: loc.character
+    column: loc.character,
   };
 }
 
@@ -242,11 +242,11 @@ export function getLineAndCharacterFor(
 export function getLocFor(
   start: number,
   end: number,
-  ast: ts.SourceFile
+  ast: ts.SourceFile,
 ): TSESTree.SourceLocation {
   return {
     start: getLineAndCharacterFor(start, ast),
-    end: getLineAndCharacterFor(end, ast)
+    end: getLineAndCharacterFor(end, ast),
   };
 }
 
@@ -316,7 +316,7 @@ export function isJSXToken(node: ts.Node): boolean {
  * @returns declaration kind
  */
 export function getDeclarationKind(
-  node: ts.VariableDeclarationList
+  node: ts.VariableDeclarationList,
 ): 'let' | 'const' | 'var' {
   if (node.flags & ts.NodeFlags.Let) {
     return 'let';
@@ -333,7 +333,7 @@ export function getDeclarationKind(
  * @returns accessibility "public", "protected", "private", or null
  */
 export function getTSNodeAccessibility(
-  node: ts.Node
+  node: ts.Node,
 ): 'public' | 'protected' | 'private' | null {
   const modifiers = node.modifiers;
   if (!modifiers) {
@@ -366,7 +366,7 @@ export function getTSNodeAccessibility(
 export function findNextToken(
   previousToken: ts.TextRange,
   parent: ts.Node,
-  ast: ts.SourceFile
+  ast: ts.SourceFile,
 ): ts.Node | undefined {
   return find(parent);
 
@@ -396,7 +396,7 @@ export function findNextToken(
  */
 export function findFirstMatchingAncestor(
   node: ts.Node,
-  predicate: (node: ts.Node) => boolean
+  predicate: (node: ts.Node) => boolean,
 ): ts.Node | undefined {
   while (node) {
     if (predicate(node)) {
@@ -555,7 +555,7 @@ export function getTokenType(token: any): AST_TOKEN_TYPES {
  */
 export function convertToken(
   token: ts.Node,
-  ast: ts.SourceFile
+  ast: ts.SourceFile,
 ): TSESTree.Token {
   const start =
       token.kind === SyntaxKind.JsxText
@@ -567,13 +567,13 @@ export function convertToken(
       type: getTokenType(token),
       value,
       range: [start, end],
-      loc: getLocFor(start, end, ast)
+      loc: getLocFor(start, end, ast),
     };
 
   if (newToken.type === 'RegularExpression') {
     newToken.regex = {
       pattern: value.slice(1, value.lastIndexOf('/')),
-      flags: value.slice(value.lastIndexOf('/') + 1)
+      flags: value.slice(value.lastIndexOf('/') + 1),
     };
   }
 
@@ -622,7 +622,7 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
 export function getNodeContainer(
   ast: ts.SourceFile,
   start: number,
-  end: number
+  end: number,
 ): ts.Node {
   let container: ts.Node | null = null;
 
@@ -655,14 +655,14 @@ export function getNodeContainer(
 export function createError(
   ast: ts.SourceFile,
   start: number,
-  message: string
+  message: string,
 ) {
   const loc = ast.getLineAndCharacterOfPosition(start);
   return {
     index: start,
     lineNumber: loc.line + 1,
     column: loc.character,
-    message
+    message,
   };
 }
 
@@ -687,7 +687,7 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
  */
 export function firstDefined<T, U>(
   array: ReadonlyArray<T> | undefined,
-  callback: (element: T, index: number) => U | undefined
+  callback: (element: T, index: number) => U | undefined,
 ): U | undefined {
   if (array === undefined) {
     return undefined;

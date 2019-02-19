@@ -4,9 +4,9 @@ import { RuleTester } from '../RuleTester';
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
-    sourceType: 'module'
+    sourceType: 'module',
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('strict', rule, {
@@ -18,7 +18,7 @@ window.whatevs = {
     console.log('yep');
   }
 };
-`
+`,
   ],
   invalid: [
     {
@@ -31,15 +31,15 @@ window.whatevs = {
 };
 `,
       parserOptions: {
-        sourceType: 'script'
+        sourceType: 'script',
       },
       errors: [
         {
           message: "Use the function form of 'use strict'.",
           line: 3,
-          column: 9
-        } as any // the base rule doesn't use messageId
-      ]
-    }
-  ]
+          column: 9,
+        } as any, // the base rule doesn't use messageId
+      ],
+    },
+  ],
 });

@@ -6,7 +6,7 @@
 import {
   AST_NODE_TYPES,
   TSESTree,
-  AST_TOKEN_TYPES
+  AST_TOKEN_TYPES,
 } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -18,15 +18,15 @@ export default util.createRule({
         'Use function types instead of interfaces with call signatures',
       category: 'Best Practices',
       recommended: false,
-      tslintName: 'callable-types'
+      tslintName: 'callable-types',
     },
     fixable: 'code',
     messages: {
       functionTypeOverCallableType:
-        "{{ type }} has only a call signature - use '{{ sigSuggestion }}' instead."
+        "{{ type }} has only a call signature - use '{{ sigSuggestion }}' instead.",
     },
     schema: [],
-    type: 'suggestion'
+    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -77,14 +77,14 @@ export default util.createRule({
       call:
         | TSESTree.TSCallSignatureDeclaration
         | TSESTree.TSConstructSignatureDeclaration,
-      parent: TSESTree.Node
+      parent: TSESTree.Node,
     ) {
       const start = call.range[0];
       const colonPos = call.returnType!.range[0] - start;
       const text = sourceCode.getText().slice(start, call.range[1]);
 
       let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
-        colonPos + 1
+        colonPos + 1,
       )}`;
 
       if (shouldWrapSuggestion(parent.parent)) {
@@ -96,7 +96,7 @@ export default util.createRule({
             .getText()
             .slice(
               parent.id.range[0],
-              parent.typeParameters.range[1]
+              parent.typeParameters.range[1],
             )} = ${suggestion}`;
         }
         return `type ${parent.id.name} = ${suggestion}`;
@@ -123,7 +123,7 @@ export default util.createRule({
                 .filter(
                   token =>
                     token.type === AST_TOKEN_TYPES.Keyword &&
-                    token.value === 'interface'
+                    token.value === 'interface',
                 )[0].range[0];
 
         context.report({
@@ -134,14 +134,14 @@ export default util.createRule({
               node.type === AST_NODE_TYPES.TSTypeLiteral
                 ? 'Type literal'
                 : 'Interface',
-            sigSuggestion: suggestion
+            sigSuggestion: suggestion,
           },
           fix(fixer) {
             return fixer.replaceTextRange(
               [fixStart, node.range[1]],
-              suggestion
+              suggestion,
             );
-          }
+          },
         });
       }
     }
@@ -154,7 +154,7 @@ export default util.createRule({
       },
       'TSTypeLiteral[members.length = 1]'(node: TSESTree.TSTypeLiteral) {
         checkMember(node.members[0], node);
-      }
+      },
     };
-  }
+  },
 });

@@ -5,14 +5,14 @@ const rootDir = getFixturesRootDir();
 const parserOptions = {
   ecmaVersion: 2018,
   tsconfigRootDir: rootDir,
-  project: './tsconfig.json'
+  project: './tsconfig.json',
 };
 
 const messageId = 'missingAsync';
 
 const ruleTester = new RuleTester({
   parserOptions,
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('promise-function-async', rule, {
@@ -49,7 +49,7 @@ class Test {
     // https://github.com/typescript-eslint/typescript-eslint/issues/227
     `export function valid(n: number) { return n; }`,
     `export default function invalid(n: number) { return n; }`,
-    `class Foo { constructor() { } }`
+    `class Foo { constructor() { } }`,
   ],
   invalid: [
     {
@@ -58,9 +58,9 @@ const nonAsyncPromiseFunctionExpressionA = function(p: Promise<void>) { return p
             `,
       errors: [
         {
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -68,9 +68,9 @@ const nonAsyncPromiseFunctionExpressionB = function() { return new Promise<void>
             `,
       errors: [
         {
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -78,9 +78,9 @@ function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) { return p; }
             `,
       errors: [
         {
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -88,9 +88,9 @@ function nonAsyncPromiseFunctionDeclarationB() { return new Promise<void>(); }
             `,
       errors: [
         {
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -98,9 +98,9 @@ const nonAsyncPromiseArrowFunctionA = (p: Promise<void>) => p;
             `,
       errors: [
         {
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -108,9 +108,9 @@ const nonAsyncPromiseArrowFunctionB = () => new Promise<void>();
             `,
       errors: [
         {
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -127,13 +127,13 @@ class Test {
       errors: [
         {
           line: 3,
-          messageId
+          messageId,
         },
         {
           line: 7,
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -151,23 +151,23 @@ class Test {
 `,
       options: [
         {
-          checkArrowFunctions: false
-        }
+          checkArrowFunctions: false,
+        },
       ],
       errors: [
         {
           line: 2,
-          messageId
+          messageId,
         },
         {
           line: 4,
-          messageId
+          messageId,
         },
         {
           line: 9,
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -185,23 +185,23 @@ class Test {
 `,
       options: [
         {
-          checkFunctionDeclarations: false
-        }
+          checkFunctionDeclarations: false,
+        },
       ],
       errors: [
         {
           line: 2,
-          messageId
+          messageId,
         },
         {
           line: 6,
-          messageId
+          messageId,
         },
         {
           line: 9,
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -219,23 +219,23 @@ class Test {
 `,
       options: [
         {
-          checkFunctionExpressions: false
-        }
+          checkFunctionExpressions: false,
+        },
       ],
       errors: [
         {
           line: 4,
-          messageId
+          messageId,
         },
         {
           line: 6,
-          messageId
+          messageId,
         },
         {
           line: 9,
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -253,23 +253,23 @@ class Test {
 `,
       options: [
         {
-          checkMethodDeclarations: false
-        }
+          checkMethodDeclarations: false,
+        },
       ],
       errors: [
         {
           line: 2,
-          messageId
+          messageId,
         },
         {
           line: 4,
-          messageId
+          messageId,
         },
         {
           line: 6,
-          messageId
-        }
-      ]
+          messageId,
+        },
+      ],
     },
     {
       code: `
@@ -279,15 +279,15 @@ const returnAllowedType = () => new PromiseType();
 `,
       options: [
         {
-          allowedPromiseNames: ['PromiseType']
-        }
+          allowedPromiseNames: ['PromiseType'],
+        },
       ],
       errors: [
         {
           line: 4,
-          messageId
-        }
-      ]
-    }
-  ]
+          messageId,
+        },
+      ],
+    },
+  ],
 });

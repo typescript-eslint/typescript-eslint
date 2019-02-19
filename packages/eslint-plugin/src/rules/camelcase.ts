@@ -17,17 +17,17 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Enforce camelCase naming convention',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     {
       allow: ['^UNSAFE_'],
       ignoreDestructuring: false,
-      properties: 'never'
-    }
+      properties: 'never',
+    },
   ],
   create(context, [options]) {
     const rules = baseRule.create(context);
@@ -35,7 +35,7 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSPropertySignature,
       AST_NODE_TYPES.ClassProperty,
       AST_NODE_TYPES.TSParameterProperty,
-      AST_NODE_TYPES.TSAbstractClassProperty
+      AST_NODE_TYPES.TSAbstractClassProperty,
     ];
 
     const properties = options.properties;
@@ -59,7 +59,7 @@ export default util.createRule<Options, MessageIds>({
     function isAllowed(name: string): boolean {
       return (
         allow.findIndex(
-          entry => name === entry || name.match(new RegExp(entry)) !== null
+          entry => name === entry || name.match(new RegExp(entry)) !== null,
         ) !== -1
       );
     }
@@ -107,7 +107,7 @@ export default util.createRule<Options, MessageIds>({
             context.report({
               node,
               messageId: 'notCamelCase',
-              data: { name: node.name }
+              data: { name: node.name },
             });
           }
 
@@ -116,7 +116,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Let the base rule deal with the rest
         rules.Identifier(node);
-      }
+      },
     };
-  }
+  },
 });

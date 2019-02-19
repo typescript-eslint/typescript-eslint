@@ -4,15 +4,15 @@ import { RuleTester } from '../RuleTester';
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
-    sourceType: 'module'
+    sourceType: 'module',
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 // the base rule doesn't use a message id...
 const error: any = {
   message: 'Useless constructor.',
-  type: 'MethodDefinition'
+  type: 'MethodDefinition',
 };
 
 ruleTester.run('no-useless-constructor', rule, {
@@ -49,50 +49,50 @@ ruleTester.run('no-useless-constructor', rule, {
     'class A extends B { protected constructor(foo, bar) { super(bar); } }',
     'class A extends B { private constructor(foo, bar) { super(bar); } }',
     'class A extends B { public constructor(foo){ super(foo); } }',
-    'class A extends B { public constructor(foo){} }'
+    'class A extends B { public constructor(foo){} }',
   ],
   invalid: [
     {
       code: 'class A { constructor(){} }',
-      errors: [error]
+      errors: [error],
     },
     {
       code: "class A { 'constructor'(){} }",
-      errors: [error]
+      errors: [error],
     },
     {
       code: 'class A extends B { constructor() { super(); } }',
-      errors: [error]
+      errors: [error],
     },
     {
       code: 'class A extends B { constructor(foo){ super(foo); } }',
-      errors: [error]
+      errors: [error],
     },
     {
       code: 'class A extends B { constructor(foo, bar){ super(foo, bar); } }',
-      errors: [error]
+      errors: [error],
     },
     {
       code: 'class A extends B { constructor(...args){ super(...args); } }',
-      errors: [error]
+      errors: [error],
     },
     {
       code: 'class A extends B.C { constructor() { super(...arguments); } }',
-      errors: [error]
+      errors: [error],
     },
     {
       code:
         'class A extends B { constructor(a, b, ...c) { super(...arguments); } }',
-      errors: [error]
+      errors: [error],
     },
     {
       code:
         'class A extends B { constructor(a, b, ...c) { super(a, b, ...c); } }',
-      errors: [error]
+      errors: [error],
     },
     {
       code: 'class A { public constructor() {} }',
-      errors: [error]
-    }
-  ]
+      errors: [error],
+    },
+  ],
 });

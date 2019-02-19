@@ -15,7 +15,7 @@ declare module 'eslint-scope/lib/options' {
       rest: boolean;
       topLevel: boolean;
       assignments: TSESTree.AssignmentPattern[];
-    }
+    },
   ) => void;
 
   export interface PatternVisitorOptions {
@@ -24,7 +24,7 @@ declare module 'eslint-scope/lib/options' {
 
   export abstract class Visitor {
     visitChildren<T extends TSESTree.BaseNode | undefined | null>(
-      node?: T
+      node?: T,
     ): void;
     visit<T extends TSESTree.BaseNode | undefined | null>(node?: T): void;
   }
@@ -62,7 +62,7 @@ declare module 'eslint-scope/lib/definition' {
       node: TSESTree.Node,
       parent?: TSESTree.Node | null,
       index?: number | null,
-      kind?: string | null
+      kind?: string | null,
     );
   }
 
@@ -71,7 +71,7 @@ declare module 'eslint-scope/lib/definition' {
       name: TSESTree.Node,
       node: TSESTree.Node,
       index?: number | null,
-      rest?: boolean
+      rest?: boolean,
     );
   }
 }
@@ -82,7 +82,7 @@ declare module 'eslint-scope/lib/pattern-visitor' {
   import {
     PatternVisitorCallback,
     PatternVisitorOptions,
-    Visitor
+    Visitor,
   } from 'eslint-scope/lib/options';
 
   export default class PatternVisitor extends Visitor {
@@ -96,7 +96,7 @@ declare module 'eslint-scope/lib/pattern-visitor' {
     constructor(
       options: PatternVisitorOptions,
       rootPattern: any,
-      callback: PatternVisitorCallback
+      callback: PatternVisitorCallback,
     );
 
     Identifier(pattern: TSESTree.Node): void;
@@ -119,7 +119,7 @@ declare module 'eslint-scope/lib/referencer' {
   import {
     PatternVisitorCallback,
     PatternVisitorOptions,
-    Visitor
+    Visitor,
   } from 'eslint-scope/lib/options';
 
   export default class Referencer<SM extends ScopeManager> extends Visitor {
@@ -139,12 +139,12 @@ declare module 'eslint-scope/lib/referencer' {
       pattern: any,
       assignments: any,
       maybeImplicitGlobal: any,
-      init: boolean
+      init: boolean,
     ): void;
     visitPattern(
       node: TSESTree.Node,
       options: PatternVisitorOptions,
-      callback: PatternVisitorCallback
+      callback: PatternVisitorCallback,
     ): void;
     visitFunction(node: TSESTree.Node): void;
     visitClass(node: TSESTree.Node): void;
@@ -154,7 +154,7 @@ declare module 'eslint-scope/lib/referencer' {
       variableTargetScope: any,
       type: any,
       node: TSESTree.Node,
-      index: any
+      index: any,
     ): void;
 
     AssignmentExpression(node: TSESTree.Node): void;
@@ -232,7 +232,7 @@ declare module 'eslint-scope/lib/scope' {
       type: ScopeType,
       upperScope: Scope | null,
       block: TSESTree.Node | null,
-      isMethodDefinition: boolean
+      isMethodDefinition: boolean,
     );
 
     __shouldStaticallyClose(scopeManager: ScopeManager): boolean;
@@ -250,7 +250,7 @@ declare module 'eslint-scope/lib/scope' {
       set: any,
       variables: any,
       node: any,
-      def: Definition
+      def: Definition,
     ): void;
 
     __define(node: TSESTree.Node, def: Definition): void;
@@ -261,7 +261,7 @@ declare module 'eslint-scope/lib/scope' {
       writeExpr: TSESTree.Node,
       maybeImplicitGlobal: any,
       partial: any,
-      init: any
+      init: any,
     ): void;
 
     __detectEval(): void;
@@ -307,7 +307,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: TSESTree.Node | null
+      block: TSESTree.Node | null,
     );
   }
 
@@ -315,7 +315,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: TSESTree.Node | null
+      block: TSESTree.Node | null,
     );
   }
 
@@ -323,7 +323,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: TSESTree.Node | null
+      block: TSESTree.Node | null,
     );
   }
 
@@ -331,7 +331,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: TSESTree.Node | null
+      block: TSESTree.Node | null,
     );
   }
 
@@ -339,7 +339,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: TSESTree.Node | null
+      block: TSESTree.Node | null,
     );
   }
 
@@ -347,7 +347,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: TSESTree.Node | null
+      block: TSESTree.Node | null,
     );
   }
 
@@ -356,7 +356,7 @@ declare module 'eslint-scope/lib/scope' {
       scopeManager: ScopeManager,
       upperScope: Scope,
       block: TSESTree.Node | null,
-      isMethodDefinition: boolean
+      isMethodDefinition: boolean,
     );
   }
 
@@ -364,7 +364,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: TSESTree.Node | null
+      block: TSESTree.Node | null,
     );
   }
 
@@ -372,7 +372,7 @@ declare module 'eslint-scope/lib/scope' {
     constructor(
       scopeManager: ScopeManager,
       upperScope: Scope,
-      block: TSESTree.Node | null
+      block: TSESTree.Node | null,
     );
   }
 }
@@ -446,7 +446,7 @@ declare module 'eslint-scope/lib/scope-manager' {
     __nestBlockScope(node: TSESTree.Node): Scope;
     __nestFunctionScope(
       node: TSESTree.Node,
-      isMethodDefinition: boolean
+      isMethodDefinition: boolean,
     ): Scope;
     __nestForScope(node: TSESTree.Node): Scope;
     __nestCatchScope(node: TSESTree.Node): Scope;
@@ -487,7 +487,7 @@ declare module 'eslint-scope' {
     Variable,
     Scope,
     ScopeManager,
-    analyze
+    analyze,
   };
 }
 

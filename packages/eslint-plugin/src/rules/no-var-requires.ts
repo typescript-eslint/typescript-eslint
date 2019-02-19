@@ -18,12 +18,12 @@ export default util.createRule<Options, MessageIds>({
         'Disallows the use of require statements except in import statements',
       tslintRuleName: 'no-var-requires',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
-      noVarReqs: 'Require statement not part of import statement.'
+      noVarReqs: 'Require statement not part of import statement.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -37,10 +37,10 @@ export default util.createRule<Options, MessageIds>({
         ) {
           context.report({
             node,
-            messageId: 'noVarReqs'
+            messageId: 'noVarReqs',
           });
         }
-      }
+      },
     };
-  }
+  },
 });

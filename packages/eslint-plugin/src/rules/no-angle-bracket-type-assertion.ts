@@ -14,13 +14,13 @@ export default util.createRule({
         'Enforces the use of `as Type` assertions instead of `<Type>` assertions',
       tslintRuleName: 'no-angle-bracket-type-assertion',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       preferAs:
-        "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions."
+        "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions.",
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -31,10 +31,10 @@ export default util.createRule({
           node,
           messageId: 'preferAs',
           data: {
-            cast: sourceCode.getText(node.typeAnnotation)
-          }
+            cast: sourceCode.getText(node.typeAnnotation),
+          },
         });
-      }
+      },
     };
-  }
+  },
 });

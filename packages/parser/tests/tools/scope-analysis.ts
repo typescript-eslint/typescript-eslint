@@ -21,7 +21,7 @@ export class ReferenceResolver {
     return {
       get $ref() {
         return map.get(obj).$id;
-      }
+      },
     };
   }
 }
@@ -56,7 +56,7 @@ export function variableToJSON(variable: any, resolver: any) {
     type: d.type,
     name: nodeToJSON(d.name),
     node: nodeToJSON(d.node),
-    parent: nodeToJSON(d.parent)
+    parent: nodeToJSON(d.parent),
   }));
   const identifiers = variable.identifiers.map(nodeToJSON);
   const references = variable.references.map(resolver.ref, resolver);
@@ -68,7 +68,7 @@ export function variableToJSON(variable: any, resolver: any) {
     identifiers,
     references,
     scope,
-    eslintUsed
+    eslintUsed,
   });
 }
 
@@ -92,7 +92,7 @@ export function referenceToJSON(reference: any, resolver: any) {
     from,
     identifier,
     writeExpr,
-    resolved
+    resolved,
   });
 }
 
@@ -106,23 +106,23 @@ export function scopeToJSON(scope: any, resolver = new ReferenceResolver()) {
   const { type, functionExpressionScope, isStrict } = scope;
   const block = nodeToJSON(scope.block);
   const variables = scope.variables.map((v: any) =>
-    variableToJSON(v, resolver)
+    variableToJSON(v, resolver),
   );
   const references = scope.references.map((r: any) =>
-    referenceToJSON(r, resolver)
+    referenceToJSON(r, resolver),
   );
   const variableMap = Array.from(scope.set.entries()).reduce(
     (map: any, [name, variable]: any) => {
       map[name] = resolver.ref(variable);
       return map;
     },
-    {}
+    {},
   );
   const throughReferences = scope.through.map(resolver.ref, resolver);
   const variableScope = resolver.ref(scope.variableScope);
   const upperScope = resolver.ref(scope.upper);
   const childScopes = scope.childScopes.map((c: any) =>
-    scopeToJSON(c, resolver)
+    scopeToJSON(c, resolver),
   );
 
   return resolver.resolve(scope, {
@@ -136,7 +136,7 @@ export function scopeToJSON(scope: any, resolver = new ReferenceResolver()) {
     throughReferences,
     variableScope,
     upperScope,
-    childScopes
+    childScopes,
   });
 }
 
