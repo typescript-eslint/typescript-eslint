@@ -41,6 +41,10 @@ ruleTester.run('array-type', rule, {
       options: ['generic']
     },
     {
+      code: `let fooVar: Array;`,
+      options: ['generic']
+    },
+    {
       code: `function foo (a: Array<Bar>): Array<Bar> {}`,
       options: ['generic']
     },
@@ -619,6 +623,30 @@ let yyyy: Arr<Arr<string>[][]> = [[[["2"]]]];`,
           data: { type: 'T' },
           line: 1,
           column: 24
+        }
+      ]
+    },
+    {
+      code: `let fooVar: Array[];`,
+      options: ['array'],
+      errors: [
+        {
+          messageId: 'errorStringArray',
+          data: { type: 'any' },
+          line: 1,
+          column: 13
+        }
+      ]
+    },
+    {
+      code: `let fooVar: Array[];`,
+      options: ['array-simple'],
+      errors: [
+        {
+          messageId: 'errorStringArraySimple',
+          data: { type: 'any' },
+          line: 1,
+          column: 13
         }
       ]
     },
