@@ -10,7 +10,6 @@ import {
   canContainDirective,
   createError,
   findNextToken,
-  fixExports,
   getBinaryExpressionType,
   getDeclarationKind,
   getLastModifier,
@@ -111,27 +110,76 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    let result: TSESTree.BaseNode | null = this.convertNode(
-      node as TSNode,
-      parent || node.parent
-    );
+    let result = this.convertNode(node as TSNode, parent || node.parent);
 
-    if (result && this.options.shouldProvideParserServices) {
-      this.tsNodeToESTreeNodeMap.set(node, result);
-      if (
-        node.kind !== SyntaxKind.ParenthesizedExpression &&
-        node.kind !== SyntaxKind.ComputedPropertyName
-      ) {
-        // Parenthesized expressions and computed property names do not have individual nodes in ESTree.
-        // Therefore, result.type will never "match" node.kind if it is a ParenthesizedExpression
-        // or a ComputedPropertyName and, furthermore, will overwrite the "matching" node
-        this.esTreeNodeToTSNodeMap.set(result, node);
-      }
-    }
+    this.registerTSNodeInNodeMap(node, result);
 
     this.inTypeMode = typeMode;
     this.allowPattern = pattern;
     return result;
+  }
+
+  /**
+   * Fixes the exports of the given ts.Node
+   * @param node   the ts.Node
+   * @param result result
+   * @returns the ESTreeNode with fixed exports
+   */
+  private fixExports<T extends TSESTree.ExportDeclaration>(
+    node: ts.Node,
+    result: T
+  ): TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration | T {
+    // check for exports
+    if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
+      /**
+       * Make sure that original node is registered instead of export
+       */
+      this.registerTSNodeInNodeMap(node, result);
+
+      const exportKeyword = node.modifiers[0];
+      const nextModifier = node.modifiers[1];
+      const declarationIsDefault =
+        nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword;
+
+      const varToken = declarationIsDefault
+        ? findNextToken(nextModifier, this.ast, this.ast)
+        : findNextToken(exportKeyword, this.ast, this.ast);
+
+      result.range[0] = varToken!.getStart(this.ast);
+      result.loc = getLocFor(result.range[0], result.range[1], this.ast);
+
+      if (declarationIsDefault) {
+        return this.createNode<TSESTree.ExportDefaultDeclaration>(node, {
+          type: AST_NODE_TYPES.ExportDefaultDeclaration,
+          declaration: result,
+          range: [exportKeyword.getStart(this.ast), result.range[1]]
+        });
+      } else {
+        return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
+          declaration: result,
+          specifiers: [],
+          source: null,
+          range: [exportKeyword.getStart(this.ast), result.range[1]]
+        });
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Register specific TypeScript node into map with first ESTree node provided
+   */
+  private registerTSNodeInNodeMap(
+    node: ts.Node,
+    result: TSESTree.BaseNode | null
+  ) {
+    if (result && this.options.shouldProvideParserServices) {
+      if (!this.tsNodeToESTreeNodeMap.has(node)) {
+        this.tsNodeToESTreeNodeMap.set(node, result);
+      }
+    }
   }
 
   /**
@@ -176,6 +224,9 @@ export class Converter {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
     }
 
+    if (result && this.options.shouldProvideParserServices) {
+      this.esTreeNodeToTSNodeMap.set(result, node);
+    }
     return result as T;
   }
 
@@ -410,11 +461,7 @@ export class Converter {
         break;
     }
 
-    if (result && this.options.shouldProvideParserServices) {
-      this.tsNodeToESTreeNodeMap.set(node, result);
-      this.esTreeNodeToTSNodeMap.set(result, node);
-    }
-
+    this.registerTSNodeInNodeMap(node, result);
     return result;
   }
 
@@ -715,7 +762,7 @@ export class Converter {
         }
 
         // check for exports
-        return fixExports(node, result, this.ast);
+        return this.fixExports(node, result);
       }
 
       case SyntaxKind.VariableDeclaration: {
@@ -764,7 +811,7 @@ export class Converter {
         }
 
         // check for exports
-        return fixExports(node, result, this.ast);
+        return this.fixExports(node, result);
       }
 
       // mostly for for-of, for-in
@@ -1431,7 +1478,7 @@ export class Converter {
         }
 
         // check for exports
-        return fixExports(node, result, this.ast);
+        return this.fixExports(node, result);
       }
 
       // Modules
@@ -1596,20 +1643,17 @@ export class Converter {
             expressions: []
           });
 
-          const left = this.convertChild(node.left),
-            right = this.convertChild(node.right);
-
-          if (left.type === AST_NODE_TYPES.SequenceExpression) {
+          const left = this.convertChild(node.left);
+          if (
+            left.type === AST_NODE_TYPES.SequenceExpression &&
+            node.left.kind !== SyntaxKind.ParenthesizedExpression
+          ) {
             result.expressions = result.expressions.concat(left.expressions);
           } else {
             result.expressions.push(left);
           }
 
-          if (right.type === AST_NODE_TYPES.SequenceExpression) {
-            result.expressions = result.expressions.concat(right.expressions);
-          } else {
-            result.expressions.push(right);
-          }
+          result.expressions.push(this.convertChild(node.right));
           return result;
         } else {
           const type = getBinaryExpressionType(node.operatorToken);
@@ -2098,7 +2142,7 @@ export class Converter {
         }
 
         // check for exports
-        return fixExports(node, result, this.ast);
+        return this.fixExports(node, result);
       }
 
       case SyntaxKind.MethodSignature: {
@@ -2313,7 +2357,7 @@ export class Converter {
           result.declare = true;
         }
         // check for exports
-        return fixExports(node, result, this.ast);
+        return this.fixExports(node, result);
       }
 
       case SyntaxKind.FirstTypeNode: {
@@ -2359,7 +2403,7 @@ export class Converter {
           result.decorators = node.decorators.map(el => this.convertChild(el));
         }
         // ...then check for exports
-        return fixExports(node, result, this.ast);
+        return this.fixExports(node, result);
       }
 
       case SyntaxKind.EnumMember: {
@@ -2387,7 +2431,7 @@ export class Converter {
           result.global = true;
         }
         // ...then check for exports
-        return fixExports(node, result, this.ast);
+        return this.fixExports(node, result);
       }
 
       // TypeScript specific types
