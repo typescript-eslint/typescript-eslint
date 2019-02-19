@@ -192,12 +192,12 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSMappedType(node: TSESTree.TSMappedType) {
+      TSMappedType(node) {
         if (node.typeAnnotation) {
           checkTypeAnnotationSpacing(node.typeAnnotation);
         }
       },
-      TSTypeAnnotation(node: TSESTree.TSTypeAnnotation) {
+      TSTypeAnnotation(node) {
         checkTypeAnnotationSpacing(node.typeAnnotation);
       }
     };

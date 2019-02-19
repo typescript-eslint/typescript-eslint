@@ -147,7 +147,7 @@ export default util.createRule({
     }
 
     return {
-      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
+      TSInterfaceDeclaration(node) {
         if (!hasOneSupertype(node) && node.body.body.length === 1) {
           checkMember(node.body.body[0], node);
         }

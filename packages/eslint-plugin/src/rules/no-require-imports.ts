@@ -30,7 +30,7 @@ export default util.createRule({
           messageId: 'noRequireImports'
         });
       },
-      TSExternalModuleReference(node: TSESTree.TSExternalModuleReference) {
+      TSExternalModuleReference(node) {
         context.report({
           node,
           messageId: 'noRequireImports'

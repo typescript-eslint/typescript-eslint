@@ -61,7 +61,7 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const rules = baseRule.create(context);
     return {
-      MethodDefinition(node: TSESTree.MethodDefinition) {
+      MethodDefinition(node) {
         if (
           node.value &&
           node.value.type === AST_NODE_TYPES.FunctionExpression &&
