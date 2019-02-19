@@ -266,7 +266,7 @@ export class Converter {
    */
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
-    parent: ts.Node,
+    parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
   ): any[] {
     let allowDirectives = canContainDirective(parent);
 
