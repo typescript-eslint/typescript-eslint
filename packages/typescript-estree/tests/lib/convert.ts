@@ -149,4 +149,37 @@ describe('convert', () => {
     );
     checkMaps(ast);
   });
+
+  it('nodeMaps should contain export node', () => {
+    const ast = convertCode(`export function foo () {}`);
+
+    const instance = new Converter(ast, {
+      errorOnUnknownASTType: false,
+      useJSXTextNode: false,
+      shouldProvideParserServices: true
+    });
+    const program = instance.convertProgram();
+    const maps = instance.getASTMaps();
+
+    function checkMaps(child: any) {
+      child.forEachChild((node: any) => {
+        if (node.kind !== ts.SyntaxKind.EndOfFileToken) {
+          expect(ast).toBe(
+            maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast))
+          );
+        }
+        checkMaps(node);
+      });
+    }
+
+    expect(ast).toBe(
+      maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast))
+    );
+
+    expect(maps.esTreeNodeToTSNodeMap.get(program.body[0])).toBeDefined();
+    expect(program.body[0]).not.toBe(
+      maps.tsNodeToESTreeNodeMap.get(ast.statements[0])
+    );
+    checkMaps(ast);
+  });
 });
