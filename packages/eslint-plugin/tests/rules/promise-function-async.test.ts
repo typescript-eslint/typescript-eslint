@@ -46,6 +46,10 @@ class Test {
   }
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/227
+    `export function valid(n: number) { return n; }`,
+    `export default function invalid(n: number) { return n; }`,
+    `class Foo { constructor() { } }`,
   ],
   invalid: [
     {

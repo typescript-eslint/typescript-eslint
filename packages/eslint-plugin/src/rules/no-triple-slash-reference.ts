@@ -3,7 +3,6 @@
  * @author Danny Fritz
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 export default util.createRule({
@@ -27,7 +26,7 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
 
     return {
-      Program(program: TSESTree.Program): void {
+      Program(program): void {
         const commentsBefore = sourceCode.getCommentsBefore(program);
 
         commentsBefore.forEach(comment => {

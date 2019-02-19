@@ -3,7 +3,6 @@
  * @author Benjamin Lichtman
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 import * as util from '../util';
 
@@ -26,7 +25,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      ForInStatement(node: TSESTree.ForInStatement) {
+      ForInStatement(node) {
         const parserServices = util.getParserServices(context);
         const checker = parserServices.program.getTypeChecker();
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get<

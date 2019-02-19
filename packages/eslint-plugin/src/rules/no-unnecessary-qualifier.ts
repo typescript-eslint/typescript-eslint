@@ -90,8 +90,6 @@ export default util.createRule({
       const tsQualifier = esTreeNodeToTSNodeMap.get(qualifier);
       const tsName = esTreeNodeToTSNodeMap.get(name);
 
-      if (!(tsQualifier && tsName)) return false; // TODO: throw error?
-
       const namespaceSymbol = checker.getSymbolAtLocation(tsQualifier);
 
       if (
@@ -145,16 +143,11 @@ export default util.createRule({
     }
 
     function enterDeclaration(node: TSESTree.Node): void {
-      const tsDeclaration = esTreeNodeToTSNodeMap.get(node);
-      if (tsDeclaration) {
-        namespacesInScope.push(tsDeclaration);
-      }
+      namespacesInScope.push(esTreeNodeToTSNodeMap.get(node));
     }
 
-    function exitDeclaration(node: TSESTree.Node) {
-      if (esTreeNodeToTSNodeMap.has(node)) {
-        namespacesInScope.pop();
-      }
+    function exitDeclaration() {
+      namespacesInScope.pop();
     }
 
     function resetCurrentNamespaceExpression(node: TSESTree.Node): void {

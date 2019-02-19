@@ -3,7 +3,6 @@
  * @author Patricio Trevino
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 export default util.createRule({
@@ -27,7 +26,7 @@ export default util.createRule({
   create(context) {
     const sourceCode = context.getSourceCode();
     return {
-      TSTypeAssertion(node: TSESTree.TSTypeAssertion) {
+      TSTypeAssertion(node) {
         context.report({
           node,
           messageId: 'preferAs',

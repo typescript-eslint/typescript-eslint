@@ -92,10 +92,13 @@ export default util.createRule<Options, MessageIds>({
 
     function validateNode(node: TSESTree.Node) {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const [callSignature] = checker
+      const signatures = checker
         .getTypeAtLocation(originalNode)
         .getCallSignatures();
-      const returnType = checker.getReturnTypeOfSignature(callSignature);
+      if (!signatures.length) {
+        return;
+      }
+      const returnType = checker.getReturnTypeOfSignature(signatures[0]);
 
       if (!util.containsTypeByName(returnType, allAllowedPromiseNames)) {
         return;

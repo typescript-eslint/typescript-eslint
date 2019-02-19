@@ -158,13 +158,13 @@ export default util.createRule<Options, MessageIds>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
-      TSNonNullExpression(node: TSESTree.TSNonNullExpression) {
+      TSNonNullExpression(node) {
         checkNonNullAssertion(node, checker);
       },
-      TSTypeAssertion(node: TSESTree.TSTypeAssertion) {
+      TSTypeAssertion(node) {
         verifyCast(node, checker);
       },
-      TSAsExpression(node: TSESTree.TSAsExpression) {
+      TSAsExpression(node) {
         verifyCast(node, checker);
       },
     };

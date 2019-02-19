@@ -448,54 +448,6 @@ export function isOptional(node: {
 }
 
 /**
- * Fixes the exports of the given ts.Node
- * @param node   the ts.Node
- * @param result result
- * @param ast    the AST
- * @returns the ESTreeNode with fixed exports
- */
-export function fixExports<T extends TSESTree.BaseNode>(
-  node: ts.Node,
-  result: T,
-  ast: ts.SourceFile,
-): TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration | T {
-  // check for exports
-  if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
-    const exportKeyword = node.modifiers[0];
-    const nextModifier = node.modifiers[1];
-    const declarationIsDefault =
-      nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword;
-
-    const varToken = declarationIsDefault
-      ? findNextToken(nextModifier, ast, ast)
-      : findNextToken(exportKeyword, ast, ast);
-
-    result.range![0] = varToken!.getStart(ast);
-    result.loc = getLocFor(result.range![0], result.range![1], ast);
-
-    if (declarationIsDefault) {
-      return {
-        type: AST_NODE_TYPES.ExportDefaultDeclaration,
-        declaration: result as any,
-        range: [exportKeyword.getStart(ast), result.range![1]],
-        loc: getLocFor(exportKeyword.getStart(ast), result.range![1], ast),
-      };
-    } else {
-      return {
-        type: AST_NODE_TYPES.ExportNamedDeclaration,
-        declaration: result as any,
-        range: [exportKeyword.getStart(ast), result.range![1]],
-        loc: getLocFor(exportKeyword.getStart(ast), result.range![1], ast),
-        specifiers: [],
-        source: null,
-      };
-    }
-  }
-
-  return result;
-}
-
-/**
  * Returns the type of a given ts.Token
  * @param token the ts.Token
  * @returns the token type

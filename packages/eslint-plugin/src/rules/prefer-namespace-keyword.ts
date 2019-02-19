@@ -7,7 +7,6 @@
 import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
-  TSESTree,
 } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -34,7 +33,7 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
 
     return {
-      TSModuleDeclaration(node: TSESTree.TSModuleDeclaration) {
+      TSModuleDeclaration(node) {
         // Do nothing if the name is a string.
         if (!node.id || node.id.type === AST_NODE_TYPES.Literal) {
           return;

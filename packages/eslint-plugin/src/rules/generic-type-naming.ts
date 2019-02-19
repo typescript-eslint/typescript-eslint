@@ -2,7 +2,6 @@
  * @fileoverview Enforces naming of generic type variables.
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 type Options = [string?];
@@ -35,7 +34,7 @@ export default util.createRule<Options, MessageIds>({
     const regex = new RegExp(rule!);
 
     return {
-      TSTypeParameter(node: TSESTree.TSTypeParameter) {
+      TSTypeParameter(node) {
         const name = node.name.name;
 
         if (name && !regex.test(name)) {

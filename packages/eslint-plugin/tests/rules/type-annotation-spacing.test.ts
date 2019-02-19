@@ -84,6 +84,10 @@ type Foo = {
     greet: (name: string) => string;
 }
         `,
+    `
+const isString = (): x is string => {
+}
+    `,
     {
       code: 'let foo: string;',
       options: [{ after: true }],
