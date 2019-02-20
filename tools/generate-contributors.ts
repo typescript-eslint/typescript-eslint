@@ -6,12 +6,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import 'isomorphic-fetch';
 
-const CORE_MAINTAINERS = new Set([
-  'JamesHenry',
-  'armano2',
-  'bradzacher',
-  'j-f1',
-]);
 const IGNORED_USERS = new Set([
   'eslint[bot]',
   'greenkeeper[bot]',
@@ -92,7 +86,7 @@ async function main() {
       name: u.name,
       avatar_url: u.avatar_url, // eslint-disable-line @typescript-eslint/camelcase
       profile: u.html_url,
-      contributions: CORE_MAINTAINERS.has(u.login) ? ['maintenance'] : [],
+      contributions: [],
     }));
 
   // build + write the .all-contributorsrc
