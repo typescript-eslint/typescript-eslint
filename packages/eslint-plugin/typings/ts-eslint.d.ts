@@ -297,7 +297,9 @@ declare module 'ts-eslint' {
     replaceTextRange(range: AST.Range, text: string): RuleFix;
   }
 
-  type ReportFixFunction = (fixer: RuleFixer) => null | RuleFix | RuleFix[];
+  type ReportFixFunction = (
+    fixer: RuleFixer,
+  ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
 
   interface ReportDescriptor<TMessageIds extends string> {
     /**
@@ -678,11 +680,13 @@ declare module 'ts-eslint' {
     ReportFixFunction,
     RuleContext,
     RuleFix,
+    RuleFixer,
     RuleFunction,
     RuleListener,
     RuleMetaData,
     RuleMetaDataDocs,
     Scope,
+    SourceCode,
   };
   export default RuleModule;
 }
