@@ -1,5 +1,5 @@
-import { rules } from '../src/index';
-import { RuleTester } from 'eslint';
+import { rules } from '../src';
+import { Linter, RuleTester } from 'eslint';
 import { readFileSync } from 'fs';
 
 const ruleTester = new RuleTester({
@@ -124,4 +124,35 @@ ruleTester.run('tslint/config', rules.config, {
       ],
     },
   ],
+});
+
+describe('tslint/error', () => {
+  function testOutput(code: string, config: Linter.Config): void {
+    const linter = new Linter();
+    linter.defineRule('tslint/config', rules.config);
+
+    expect(() => linter.verify(code, config)).toThrow(
+      `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`,
+    );
+  }
+
+  it('should error on missing project', () => {
+    testOutput('foo;', {
+      rules: {
+        'tslint/config': [2, tslintRulesConfig],
+      },
+      parser: '@typescript-eslint/parser',
+    });
+  });
+
+  it('should error on default parser', () => {
+    testOutput('foo;', {
+      parserOptions: {
+        project: `${__dirname}/test-project/tsconfig.json`,
+      },
+      rules: {
+        'tslint/config': [2, tslintRulesConfig],
+      },
+    });
+  });
 });
