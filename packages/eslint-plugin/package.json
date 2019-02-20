@@ -41,8 +41,7 @@
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
-    "eslint-docs": "^0.2.6",
-    "ts-node": "^8.0.1"
+    "eslint-docs": "^0.2.6"
   },
   "peerDependencies": {
     "eslint": "^5.0.0",
