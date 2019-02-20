@@ -98,6 +98,7 @@ export default createRule({
         const arg = callNode.arguments[0];
         const evaluated = getStaticValue(arg, globalScope);
 
+        // Do not run for global flag.
         if (
           evaluated &&
           evaluated.value instanceof RegExp &&

@@ -21,6 +21,14 @@ const text = "something";
 const search = /thing/g;
 text.match(search);
 `,
+    `
+const match = (s: RegExp) => "something";
+match(/thing/);
+`,
+    `
+const a = {match : (s: RegExp) => "something"};
+a.match(/thing/);
+`,
   ],
   invalid: [
     {
@@ -43,6 +51,79 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 4,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '"212".match(2);',
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '"212".match(+2);',
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '"oNaNo".match(NaN);',
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code:
+        '"Infinity contains -Infinity and +Infinity in JavaScript.".match(Infinity);',
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code:
+        '"Infinity contains -Infinity and +Infinity in JavaScript.".match(+Infinity);',
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code:
+        '"Infinity contains -Infinity and +Infinity in JavaScript.".match(-Infinity);',
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '"void and null".match(null);',
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 1,
           column: 1,
         },
       ],
