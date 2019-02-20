@@ -56,7 +56,7 @@ userDefined.indexOf(value) >= 0;
 
 ## Options
 
-There is no option.
+There are no options.
 
 ## When Not To Use It
 
