@@ -22,11 +22,11 @@ describe('parser', () => {
       ecmaFeatures: {},
       jsx: false,
       sourceType: 'script',
-      useJSXTextNode: true
+      useJSXTextNode: true,
     });
     expect(spyScope).toHaveBeenCalledWith(expect.any(Object), {
       ecmaFeatures: {},
-      sourceType: 'script'
+      sourceType: 'script',
     });
   });
 
@@ -42,7 +42,7 @@ describe('parser', () => {
       ecmaVersion: 10,
       ecmaFeatures: {
         globalReturn: false,
-        jsx: false
+        jsx: false,
       },
       // ts-estree specific
       filePath: 'test/foo',
@@ -51,21 +51,21 @@ describe('parser', () => {
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: './',
-      extraFileExtensions: ['foo']
+      extraFileExtensions: ['foo'],
     };
     parseForESLint(code, config);
     expect(spy).toHaveBeenCalledWith(code, {
       jsx: false,
-      ...config
+      ...config,
     });
   });
 
   it('Syntax should contain a frozen object of typescriptESTree.AST_NODE_TYPES', () => {
     expect(Syntax).toEqual(typescriptESTree.AST_NODE_TYPES);
     expect(
-      () => ((Syntax as any).ArrayExpression = 'foo')
+      () => ((Syntax as any).ArrayExpression = 'foo'),
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Cannot assign to read only property 'ArrayExpression' of object '#<Object>'"`
+      `"Cannot assign to read only property 'ArrayExpression' of object '#<Object>'"`,
     );
   });
 
@@ -77,7 +77,7 @@ describe('parser', () => {
       ecmaFeatures: {},
       jsx: false,
       sourceType: 'script',
-      useJSXTextNode: true
+      useJSXTextNode: true,
     });
     parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: false });
     expect(spy).toHaveBeenCalledWith(code, {
@@ -86,7 +86,7 @@ describe('parser', () => {
       sourceType: 'script',
       useJSXTextNode: true,
       loggerFn: false,
-      warnOnUnsupportedTypeScriptVersion: false
+      warnOnUnsupportedTypeScriptVersion: false,
     });
   });
 });

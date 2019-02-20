@@ -4,7 +4,7 @@ import glob from 'glob';
 import * as parser from '../../src/parser';
 import {
   createScopeSnapshotTestBlock,
-  formatSnapshotName
+  formatSnapshotName,
 } from '../tools/test-utils';
 
 const FIXTURES_DIR = './tests/fixtures/basics';
@@ -19,7 +19,7 @@ describe('basics', () => {
     const code = fs.readFileSync(filename, 'utf8');
     it(
       formatSnapshotName(filename, FIXTURES_DIR),
-      createScopeSnapshotTestBlock(code)
+      createScopeSnapshotTestBlock(code),
     );
   });
 
@@ -31,8 +31,8 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
     const config: Linter.Config = {
       parser: '@typescript-eslint/parser',
       rules: {
-        test: 'error'
-      }
+        test: 'error',
+      },
     };
 
     linter.defineParser('@typescript-eslint/parser', parser);
@@ -44,11 +44,11 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
             context.report({
               node,
               message: 'called on {{name}}',
-              data: { name }
+              data: { name },
             });
-          }
+          },
         };
-      }
+      },
     });
 
     const messages = linter.verify(code, config, { filename: 'issue.ts' });
@@ -62,7 +62,7 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
         message: 'called on React.SFC',
         nodeType: 'TSTypeReference',
         ruleId: 'test',
-        severity: 2
+        severity: 2,
       },
       {
         column: 31,
@@ -72,8 +72,8 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
         message: 'called on PriceProps',
         nodeType: 'TSTypeReference',
         ruleId: 'test',
-        severity: 2
-      }
+        severity: 2,
+      },
     ]);
   });
 });

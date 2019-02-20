@@ -19,9 +19,9 @@ describe('TypeScript scope analysis', () => {
           tokens: true,
           sourceType: 'module',
           ecmaFeatures: {
-            jsx: path.extname(filePath) === '.tsx'
-          }
-        })
+            jsx: path.extname(filePath) === '.tsx',
+          },
+        }),
       );
     }
   });
@@ -38,9 +38,9 @@ describe('TypeScript scope analysis', () => {
           tokens: true,
           sourceType: 'script',
           ecmaFeatures: {
-            jsx: path.extname(filePath) === '.tsx'
-          }
-        })
+            jsx: path.extname(filePath) === '.tsx',
+          },
+        }),
       );
     }
   });

@@ -21,27 +21,27 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Require explicit return types on functions and class methods',
       category: 'Stylistic Issues',
-      recommended: 'warn'
+      recommended: 'warn',
     },
     messages: {
-      missingReturnType: 'Missing return type on function.'
+      missingReturnType: 'Missing return type on function.',
     },
     schema: [
       {
         type: 'object',
         properties: {
           allowExpressions: {
-            type: 'boolean'
-          }
+            type: 'boolean',
+          },
         },
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
-      allowExpressions: true
-    }
+      allowExpressions: true,
+    },
   ],
   create(context, [options]) {
     /**
@@ -73,7 +73,7 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression
+        | TSESTree.FunctionExpression,
     ): void {
       if (
         !node.returnType &&
@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
       ) {
         context.report({
           node,
-          messageId: 'missingReturnType'
+          messageId: 'missingReturnType',
         });
       }
     }
@@ -97,7 +97,7 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression
+        | TSESTree.FunctionExpression,
     ): void {
       if (
         options.allowExpressions &&
@@ -114,7 +114,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       ArrowFunctionExpression: checkFunctionExpressionReturnType,
       FunctionDeclaration: checkFunctionReturnType,
-      FunctionExpression: checkFunctionExpressionReturnType
+      FunctionExpression: checkFunctionExpressionReturnType,
     };
-  }
+  },
 });

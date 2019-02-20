@@ -167,7 +167,7 @@ export enum AST_NODE_TYPES {
   TSUnionType = 'TSUnionType',
   TSUndefinedKeyword = 'TSUndefinedKeyword',
   TSUnknownKeyword = 'TSUnknownKeyword',
-  TSVoidKeyword = 'TSVoidKeyword'
+  TSVoidKeyword = 'TSVoidKeyword',
 }
 
 export enum AST_TOKEN_TYPES {
@@ -181,5 +181,5 @@ export enum AST_TOKEN_TYPES {
   Punctuator = 'Punctuator',
   RegularExpression = 'RegularExpression',
   String = 'String',
-  Template = 'Template'
+  Template = 'Template',
 }

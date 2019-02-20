@@ -12,7 +12,7 @@ fixturesToTest.forEach(fixture => {
    */
   const typeScriptESTreeResult = parse(source, {
     parser: '@typescript-eslint/typescript-estree',
-    jsx: fixture.jsx
+    jsx: fixture.jsx,
   });
 
   /**
@@ -20,7 +20,7 @@ fixturesToTest.forEach(fixture => {
    */
   const babelParserResult = parse(source, {
     parser: '@babel/parser',
-    jsx: fixture.jsx
+    jsx: fixture.jsx,
   });
 
   /**
@@ -33,7 +33,7 @@ fixturesToTest.forEach(fixture => {
     if (!typeScriptESTreeResult.parseError) {
       it(`TEST FAIL [BABEL ERRORED, BUT TS-ESTREE DID NOT] - ${filename}`, () => {
         expect(typeScriptESTreeResult.parseError).toEqual(
-          babelParserResult.parseError
+          babelParserResult.parseError,
         );
       });
       return;
@@ -44,7 +44,7 @@ fixturesToTest.forEach(fixture => {
      */
     it(`[Both parsers error as expected] - ${filename}`, () => {
       expect(babelParserResult.parseError.name).toEqual(
-        typeScriptESTreeResult.parseError.name
+        typeScriptESTreeResult.parseError.name,
       );
     });
     return;
@@ -56,7 +56,7 @@ fixturesToTest.forEach(fixture => {
   if (typeScriptESTreeResult.parseError) {
     it(`TEST FAIL [TS-ESTREE ERRORED, BUT BABEL DID NOT] - ${filename}`, () => {
       expect(babelParserResult.parseError).toEqual(
-        typeScriptESTreeResult.parseError
+        typeScriptESTreeResult.parseError,
       );
     });
     return;
@@ -74,13 +74,13 @@ fixturesToTest.forEach(fixture => {
     expect(
       parseUtils.removeLocationDataAndSourceTypeFromProgramNode(
         parseUtils.preprocessBabylonAST(babelParserResult.ast),
-        fixture.ignoreSourceType
-      )
+        fixture.ignoreSourceType,
+      ),
     ).toEqual(
       parseUtils.removeLocationDataAndSourceTypeFromProgramNode(
         typeScriptESTreeResult.ast,
-        fixture.ignoreSourceType
-      )
+        fixture.ignoreSourceType,
+      ),
     );
   });
 });

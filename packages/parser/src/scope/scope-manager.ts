@@ -1,7 +1,7 @@
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 import EslintScopeManager, {
-  ScopeManagerOptions
+  ScopeManagerOptions,
 } from 'eslint-scope/lib/scope-manager';
 import { EmptyFunctionScope, EnumScope } from './scopes';
 import { Scope } from 'eslint-scope/lib/scope';
@@ -25,7 +25,7 @@ export class ScopeManager extends EslintScopeManager {
   /** @internal */
   __nestEmptyFunctionScope(node: TSESTree.TSDeclareFunction) {
     return this.__nestScope(
-      new EmptyFunctionScope(this, this.__currentScope, node)
+      new EmptyFunctionScope(this, this.__currentScope, node),
     );
   }
 }

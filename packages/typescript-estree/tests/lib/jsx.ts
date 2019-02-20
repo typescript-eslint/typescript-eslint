@@ -10,7 +10,7 @@ import glob from 'glob';
 import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
-  formatSnapshotName
+  formatSnapshotName,
 } from '../../tools/test-utils';
 import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
 
@@ -23,7 +23,7 @@ const JSX_FIXTURES_DIR =
 const jsxTestFiles = glob
   .sync(`${JSX_FIXTURES_DIR}/**/*.src.js`)
   .filter(filename =>
-    filesWithKnownIssues.every(fileName => !filename.includes(fileName))
+    filesWithKnownIssues.every(fileName => !filename.includes(fileName)),
   );
 
 const JSX_JSXTEXT_FIXTURES_DIR =
@@ -40,7 +40,7 @@ describe('JSX', () => {
    */
   function testFixture(
     fixturesDir: string,
-    useJSXTextNode: boolean
+    useJSXTextNode: boolean,
   ): (filename: string) => void {
     return filename => {
       const code = readFileSync(filename, 'utf8');
@@ -50,11 +50,11 @@ describe('JSX', () => {
         tokens: true,
         errorOnUnknownASTType: true,
         useJSXTextNode,
-        jsx: true
+        jsx: true,
       };
       it(
         formatSnapshotName(filename, fixturesDir),
-        createSnapshotTestBlock(code, config)
+        createSnapshotTestBlock(code, config),
       );
     };
   }

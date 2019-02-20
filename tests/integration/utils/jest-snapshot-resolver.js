@@ -15,5 +15,5 @@ module.exports = {
       .replace('/usr/linked/', '/usr/')
       .slice(0, -snapshotExtension.length);
   },
-  testPathForConsistencyCheck: '/usr/test.js'
+  testPathForConsistencyCheck: '/usr/test.js',
 };

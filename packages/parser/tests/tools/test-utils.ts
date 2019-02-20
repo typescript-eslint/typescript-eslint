@@ -9,7 +9,7 @@ const defaultConfig = {
   tokens: true,
   comment: true,
   errorOnUnknownASTType: true,
-  sourceType: 'module'
+  sourceType: 'module',
 };
 
 /**
@@ -24,7 +24,7 @@ function getRaw(ast: any) {
         return undefined;
       }
       return value;
-    })
+    }),
   );
 }
 
@@ -72,7 +72,7 @@ export function createSnapshotTestBlock(code: any, config: ParserOptions = {}) {
  */
 export function createScopeSnapshotTestBlock(
   code: string,
-  config: ParserOptions = {}
+  config: ParserOptions = {},
 ) {
   config = Object.assign({}, defaultConfig, config);
 
@@ -119,7 +119,7 @@ export function testServices(code: string, config: ParserOptions = {}) {
 export function formatSnapshotName(
   filename: any,
   fixturesDir: any,
-  fileExtension = '.js'
+  fileExtension = '.js',
 ) {
   return `fixtures/${filename
     .replace(fixturesDir + '/', '')

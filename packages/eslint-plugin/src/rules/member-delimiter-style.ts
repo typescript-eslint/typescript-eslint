@@ -36,21 +36,21 @@ const definition = {
       type: 'object',
       properties: {
         delimiter: { enum: ['none', 'semi', 'comma'] },
-        requireLast: { type: 'boolean' }
+        requireLast: { type: 'boolean' },
       },
-      additionalProperties: false
+      additionalProperties: false,
     },
     singleline: {
       type: 'object',
       properties: {
         // note can't have "none" for single line delimiter as it's invlaid syntax
         delimiter: { enum: ['semi', 'comma'] },
-        requireLast: { type: 'boolean' }
+        requireLast: { type: 'boolean' },
       },
-      additionalProperties: false
-    }
+      additionalProperties: false,
+    },
   },
-  additionalProperties: false
+  additionalProperties: false,
 };
 
 export default util.createRule<Options, MessageIds>({
@@ -61,14 +61,14 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Require a specific member delimiter style for interfaces and type literals',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     fixable: 'code',
     messages: {
       unexpectedComma: 'Unexpected separator (,).',
       unexpectedSemi: 'Unexpected separator (;).',
       expectedComma: 'Expected a comma.',
-      expectedSemi: 'Expected a semicolon.'
+      expectedSemi: 'Expected a semicolon.',
     },
     schema: [
       {
@@ -78,26 +78,26 @@ export default util.createRule<Options, MessageIds>({
             type: 'object',
             properties: {
               interface: definition,
-              typeLiteral: definition
+              typeLiteral: definition,
             },
-            additionalProperties: false
-          }
+            additionalProperties: false,
+          },
         }),
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
       multiline: {
         delimiter: 'semi',
-        requireLast: true
+        requireLast: true,
       },
       singleline: {
         delimiter: 'semi',
-        requireLast: false
-      }
-    }
+        requireLast: false,
+      },
+    },
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
@@ -107,11 +107,11 @@ export default util.createRule<Options, MessageIds>({
     const overrides = baseOptions.overrides || {};
     const interfaceOptions: BaseOptions = util.deepMerge(
       baseOptions,
-      overrides.interface
+      overrides.interface,
     );
     const typeLiteralOptions: BaseOptions = util.deepMerge(
       baseOptions,
-      overrides.typeLiteral
+      overrides.typeLiteral,
     );
 
     /**
@@ -123,7 +123,7 @@ export default util.createRule<Options, MessageIds>({
     function checkLastToken(
       member: TSESTree.TypeElement,
       opts: TypeOptions,
-      isLast: boolean
+      isLast: boolean,
     ): void {
       /**
        * Resolves the boolean value for the given setting enum value
@@ -140,7 +140,7 @@ export default util.createRule<Options, MessageIds>({
       let messageId: MessageIds | null = null;
       let missingDelimiter = false;
       const lastToken = sourceCode.getLastToken(member, {
-        includeComments: false
+        includeComments: false,
       });
       if (!lastToken) {
         return;
@@ -180,12 +180,12 @@ export default util.createRule<Options, MessageIds>({
           loc: {
             start: {
               line: lastToken.loc.end.line,
-              column: lastToken.loc.end.column
+              column: lastToken.loc.end.column,
             },
             end: {
               line: lastToken.loc.end.line,
-              column: lastToken.loc.end.column
-            }
+              column: lastToken.loc.end.column,
+            },
           },
           messageId,
           fix(fixer) {
@@ -203,7 +203,7 @@ export default util.createRule<Options, MessageIds>({
 
             // correct the current delimiter
             return fixer.replaceText(lastToken, token);
-          }
+          },
         });
       }
     }
@@ -213,7 +213,7 @@ export default util.createRule<Options, MessageIds>({
      * @param {ASTNode} node the node to be evaluated.
      */
     function checkMemberSeparatorStyle(
-      node: TSESTree.TSInterfaceBody | TSESTree.TSTypeLiteral
+      node: TSESTree.TSInterfaceBody | TSESTree.TSTypeLiteral,
     ): void {
       const isSingleLine = node.loc.start.line === node.loc.end.line;
 
@@ -233,7 +233,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       TSInterfaceBody: checkMemberSeparatorStyle,
-      TSTypeLiteral: checkMemberSeparatorStyle
+      TSTypeLiteral: checkMemberSeparatorStyle,
     };
-  }
+  },
 });

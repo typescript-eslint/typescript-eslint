@@ -3,7 +3,7 @@ import glob from 'glob';
 import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
 import {
   createScopeSnapshotTestBlock,
-  formatSnapshotName
+  formatSnapshotName,
 } from '../tools/test-utils';
 
 const JSX_FIXTURES_DIR =
@@ -11,7 +11,7 @@ const JSX_FIXTURES_DIR =
 const jsxTestFiles = glob
   .sync(`${JSX_FIXTURES_DIR}/**/*.src.js`)
   .filter(filename =>
-    filesWithKnownIssues.every(fileName => !filename.includes(fileName))
+    filesWithKnownIssues.every(fileName => !filename.includes(fileName)),
   );
 
 const JSX_JSXTEXT_FIXTURES_DIR =
@@ -32,12 +32,12 @@ describe('JSX', () => {
       const config = {
         useJSXTextNode,
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       };
       it(
         formatSnapshotName(filename, fixturesDir),
-        createScopeSnapshotTestBlock(code, config)
+        createScopeSnapshotTestBlock(code, config),
       );
     };
   }

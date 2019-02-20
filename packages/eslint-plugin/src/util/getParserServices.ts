@@ -22,7 +22,7 @@ export function getParserServices<
      * for @typescript-eslint/parser
      */
     throw new Error(
-      'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.'
+      'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.',
     );
   }
   return context.parserServices as RequiredParserServices;

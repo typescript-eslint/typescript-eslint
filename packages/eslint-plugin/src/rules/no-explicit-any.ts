@@ -14,12 +14,12 @@ export default util.createRule({
       description: 'Disallow usage of the `any` type',
       tslintRuleName: 'no-any',
       category: 'Best Practices',
-      recommended: 'warn'
+      recommended: 'warn',
     },
     messages: {
-      unexpectedAny: 'Unexpected any. Specify a different type.'
+      unexpectedAny: 'Unexpected any. Specify a different type.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -27,9 +27,9 @@ export default util.createRule({
       TSAnyKeyword(node) {
         context.report({
           node,
-          messageId: 'unexpectedAny'
+          messageId: 'unexpectedAny',
         });
-      }
+      },
     };
-  }
+  },
 });

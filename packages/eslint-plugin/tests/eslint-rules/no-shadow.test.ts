@@ -5,9 +5,9 @@ const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
-    ecmaFeatures: {}
+    ecmaFeatures: {},
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-shadow', rule, {
@@ -27,7 +27,7 @@ export class FooBar extends Foo {}
 function test(this: Foo) {
   function test2(this: Bar) {}
 }
-    `
+    `,
   ],
-  invalid: []
+  invalid: [],
 });

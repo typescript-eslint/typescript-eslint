@@ -14,12 +14,12 @@ export default util.createRule({
         'Disallows non-null assertions using the `!` postfix operator',
       tslintRuleName: 'no-non-null-assertion',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
-      noNonNull: 'Forbidden non-null assertion.'
+      noNonNull: 'Forbidden non-null assertion.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -27,9 +27,9 @@ export default util.createRule({
       TSNonNullExpression(node) {
         context.report({
           node,
-          messageId: 'noNonNull'
+          messageId: 'noNonNull',
         });
-      }
+      },
     };
-  }
+  },
 });

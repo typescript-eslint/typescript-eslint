@@ -5,9 +5,9 @@ const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
-    ecmaFeatures: {}
+    ecmaFeatures: {},
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-dupe-args', rule, {
@@ -17,7 +17,7 @@ ruleTester.run('no-dupe-args', rule, {
 function foo({ bar }: { bar: string }) {
     console.log(bar);
 }
-    `
+    `,
   ],
-  invalid: []
+  invalid: [],
 });
