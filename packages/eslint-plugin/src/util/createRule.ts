@@ -48,7 +48,7 @@ export function createRule<
       ...meta,
       docs: {
         ...meta.docs,
-        url: `https://github.com/typescript-eslint/typescript-eslint/blob/${version}/packages/eslint-plugin/docs/rules/${name}.md`,
+        url: `https://github.com/typescript-eslint/typescript-eslint/blob/v${version}/packages/eslint-plugin/docs/rules/${name}.md`,
         extraDescription: meta.docs.tslintName
           ? [`\`${meta.docs.tslintName}\` from TSLint`]
           : undefined,
