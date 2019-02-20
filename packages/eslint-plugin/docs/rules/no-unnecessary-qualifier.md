@@ -24,7 +24,7 @@ namespace A {
 ```ts
 enum A {
   B,
-  C = A.B
+  C = A.B,
 }
 ```
 
@@ -52,11 +52,11 @@ namespace Y {
 ```ts
 enum A {
   X,
-  Y
+  Y,
 }
 
 enum B {
-  Z = A.X
+  Z = A.X,
 }
 ```
 

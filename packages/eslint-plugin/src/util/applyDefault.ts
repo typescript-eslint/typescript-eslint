@@ -9,7 +9,7 @@ import { deepMerge, isObjectNotArray } from './deepMerge';
  */
 export function applyDefault<TUser extends any[], TDefault extends TUser>(
   defaultOptions: TDefault,
-  userOptions: TUser | null
+  userOptions: TUser | null,
 ): TDefault {
   // clone defaults
   const options: TDefault = JSON.parse(JSON.stringify(defaultOptions));

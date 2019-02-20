@@ -14,7 +14,7 @@ import { Extra } from './parser-options';
 export default function astConverter(
   ast: ts.SourceFile,
   extra: Extra,
-  shouldProvideParserServices: boolean
+  shouldProvideParserServices: boolean,
 ) {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
@@ -30,7 +30,7 @@ export default function astConverter(
   const instance = new Converter(ast, {
     errorOnUnknownASTType: extra.errorOnUnknownASTType || false,
     useJSXTextNode: extra.useJSXTextNode || false,
-    shouldProvideParserServices
+    shouldProvideParserServices,
   });
 
   const estree = instance.convertProgram();

@@ -8,7 +8,7 @@ function createError(message: string, line: number, column: number) {
   const error = new SyntaxError(`${message} (${line}:${column})`);
   (error as any).loc = {
     line,
-    column
+    column,
   };
   return error;
 }
@@ -24,7 +24,7 @@ function parseWithBabelParser(text: string, jsx: boolean = true) {
     'dynamicImport',
     'estree',
     'bigInt',
-    'importMeta'
+    'importMeta',
   ];
   if (jsx) {
     plugins.push('jsx');
@@ -35,7 +35,7 @@ function parseWithBabelParser(text: string, jsx: boolean = true) {
     allowImportExportEverywhere: true,
     allowReturnOutsideFunction: true,
     ranges: true,
-    plugins
+    plugins,
   });
 }
 
@@ -55,7 +55,7 @@ function parseWithTypeScriptESTree(text: string, jsx: boolean = true) {
        * forgiving.
        */
       errorOnTypeScriptSyntacticAndSemanticIssues: true,
-      jsx
+      jsx,
     });
     return result.ast;
   } catch (e) {
@@ -75,31 +75,31 @@ export function parse(text: string, opts: ASTComparisonParseOptions) {
    */
   const result: any = {
     parseError: null,
-    ast: null
+    ast: null,
   };
 
   try {
     switch (opts.parser) {
       case '@typescript-eslint/typescript-estree':
         result.ast = parseUtils.normalizeNodeTypes(
-          parseWithTypeScriptESTree(text, opts.jsx)
+          parseWithTypeScriptESTree(text, opts.jsx),
         );
         break;
       case '@babel/parser':
         result.ast = parseUtils.normalizeNodeTypes(
-          parseWithBabelParser(text, opts.jsx)
+          parseWithBabelParser(text, opts.jsx),
         );
         break;
       default:
         throw new Error(
-          'Please provide a valid parser: either "typescript-estree" or "@babel/parser"'
+          'Please provide a valid parser: either "typescript-estree" or "@babel/parser"',
         );
     }
   } catch (error) {
     const loc = error.loc;
     if (loc) {
       error.codeFrame = codeFrame(text, loc.line, loc.column + 1, {
-        highlightCode: true
+        highlightCode: true,
       });
       error.message += `\n${error.codeFrame}`;
     }

@@ -77,7 +77,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSTypeParameter,
   AST_NODE_TYPES.TSTypeParameterDeclaration,
   AST_NODE_TYPES.TSTypeReference,
-  AST_NODE_TYPES.TSUnionType
+  AST_NODE_TYPES.TSUnionType,
 ]);
 
 export default util.createRule<Options, MessageIds>({
@@ -88,11 +88,11 @@ export default util.createRule<Options, MessageIds>({
       description: 'Enforce consistent indentation',
       tslintRuleName: 'indent',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     fixable: 'whitespace',
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     // typescript docs and playground use 4 space indent
@@ -102,8 +102,8 @@ export default util.createRule<Options, MessageIds>({
       // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-1-8.html#example-4
       SwitchCase: 1,
       flatTernaryExpressions: false,
-      ignoredNodes: []
-    }
+      ignoredNodes: [],
+    },
   ],
   create(context, optionsWithDefaults) {
     // because we extend the base rule, have to update opts on the context
@@ -112,8 +112,8 @@ export default util.createRule<Options, MessageIds>({
       options: {
         writable: false,
         configurable: false,
-        value: optionsWithDefaults
-      }
+        value: optionsWithDefaults,
+      },
     });
 
     const rules = baseRule.create(contextWithDefaults);
@@ -131,7 +131,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.TypeElement,
       type:
         | AST_NODE_TYPES.ClassProperty
-        | AST_NODE_TYPES.Property = AST_NODE_TYPES.Property
+        | AST_NODE_TYPES.Property = AST_NODE_TYPES.Property,
     ): TSESTree.Node | null {
       const base = {
         // indent doesn't actually use these
@@ -148,19 +148,19 @@ export default util.createRule<Options, MessageIds>({
         // location data
         parent: node.parent,
         range: node.range,
-        loc: node.loc
+        loc: node.loc,
       };
       if (type === AST_NODE_TYPES.Property) {
         return {
           type,
-          ...base
+          ...base,
         } as TSESTree.Property;
       } else {
         return {
           type,
           static: false,
           readonly: false,
-          ...base
+          ...base,
         } as TSESTree.ClassProperty;
       }
     }
@@ -186,7 +186,7 @@ export default util.createRule<Options, MessageIds>({
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
@@ -204,8 +204,8 @@ export default util.createRule<Options, MessageIds>({
             range: [node.checkType.range[0], node.extendsType.range[1]],
             loc: {
               start: node.checkType.loc.start,
-              end: node.extendsType.loc.end
-            }
+              end: node.extendsType.loc.end,
+            },
           },
           consequent: node.trueType as any,
           alternate: node.falseType as any,
@@ -213,12 +213,12 @@ export default util.createRule<Options, MessageIds>({
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
       'TSEnumDeclaration, TSTypeLiteral'(
-        node: TSESTree.TSEnumDeclaration | TSESTree.TSTypeLiteral
+        node: TSESTree.TSEnumDeclaration | TSESTree.TSTypeLiteral,
       ) {
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
@@ -226,13 +226,14 @@ export default util.createRule<Options, MessageIds>({
           properties: (node.members as (
             | TSESTree.TSEnumMember
             | TSESTree.TypeElement)[]).map(
-            member => TSPropertySignatureToProperty(member) as TSESTree.Property
+            member =>
+              TSPropertySignatureToProperty(member) as TSESTree.Property,
           ),
 
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
@@ -250,7 +251,7 @@ export default util.createRule<Options, MessageIds>({
               range: [id.range[0], moduleReference.range[1]],
               loc: {
                 start: id.loc.start,
-                end: moduleReference.loc.end
+                end: moduleReference.loc.end,
               },
               id: id,
               init: {
@@ -260,15 +261,15 @@ export default util.createRule<Options, MessageIds>({
                   name: 'require',
                   range: [
                     moduleReference.range[0],
-                    moduleReference.range[0] + 'require'.length
+                    moduleReference.range[0] + 'require'.length,
                   ],
                   loc: {
                     start: moduleReference.loc.start,
                     end: {
                       line: moduleReference.loc.end.line,
-                      column: moduleReference.loc.start.line + 'require'.length
-                    }
-                  }
+                      column: moduleReference.loc.start.line + 'require'.length,
+                    },
+                  },
                 },
                 arguments:
                   'expression' in moduleReference
@@ -277,15 +278,15 @@ export default util.createRule<Options, MessageIds>({
 
                 // location data
                 range: moduleReference.range,
-                loc: moduleReference.loc
-              }
-            }
+                loc: moduleReference.loc,
+              },
+            },
           ],
 
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
@@ -299,7 +300,7 @@ export default util.createRule<Options, MessageIds>({
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
@@ -311,19 +312,19 @@ export default util.createRule<Options, MessageIds>({
             p =>
               TSPropertySignatureToProperty(
                 p,
-                AST_NODE_TYPES.ClassProperty
-              ) as TSESTree.ClassProperty
+                AST_NODE_TYPES.ClassProperty,
+              ) as TSESTree.ClassProperty,
           ),
 
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
       'TSInterfaceDeclaration[extends.length > 0]'(
-        node: TSESTree.TSInterfaceDeclaration
+        node: TSESTree.TSInterfaceDeclaration,
       ) {
         // transform it to a ClassDeclaration
         return rules[
@@ -338,14 +339,14 @@ export default util.createRule<Options, MessageIds>({
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
       TSMappedType(node: TSESTree.TSMappedType) {
         const sourceCode = context.getSourceCode();
         const squareBracketStart = sourceCode.getTokenBefore(
-          node.typeParameter
+          node.typeParameter,
         )!;
 
         // transform it to an ObjectExpression
@@ -362,25 +363,25 @@ export default util.createRule<Options, MessageIds>({
                 squareBracketStart.range[0],
                 node.typeAnnotation
                   ? node.typeAnnotation.range[1]
-                  : squareBracketStart.range[0]
+                  : squareBracketStart.range[0],
               ],
               loc: {
                 start: squareBracketStart.loc.start,
                 end: node.typeAnnotation
                   ? node.typeAnnotation.loc.end
-                  : squareBracketStart.loc.end
+                  : squareBracketStart.loc.end,
               },
               kind: 'init' as 'init',
               computed: false,
               method: false,
-              shorthand: false
-            }
+              shorthand: false,
+            },
           ],
 
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
@@ -393,7 +394,7 @@ export default util.createRule<Options, MessageIds>({
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
@@ -406,7 +407,7 @@ export default util.createRule<Options, MessageIds>({
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
@@ -419,7 +420,7 @@ export default util.createRule<Options, MessageIds>({
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
       },
 
@@ -437,9 +438,9 @@ export default util.createRule<Options, MessageIds>({
           // location data
           parent: node.parent,
           range: node.range,
-          loc: node.loc
+          loc: node.loc,
         });
-      }
+      },
     });
-  }
+  },
 });

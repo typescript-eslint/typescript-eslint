@@ -20,13 +20,13 @@ export function getRaw(ast: any) {
         return undefined;
       }
       return value;
-    })
+    }),
   );
 }
 
 export function parseCodeAndGenerateServices(
   code: string,
-  config: ParserOptions
+  config: ParserOptions,
 ) {
   return parser.parseAndGenerateServices(code, config);
 }
@@ -42,7 +42,7 @@ export function parseCodeAndGenerateServices(
 export function createSnapshotTestBlock(
   code: string,
   config: ParserOptions,
-  generateServices?: true
+  generateServices?: true,
 ) {
   /**
    * @returns {Object} the AST object
@@ -74,7 +74,7 @@ export function createSnapshotTestBlock(
 export function formatSnapshotName(
   filename: string,
   fixturesDir: string,
-  fileExtension = '.js'
+  fileExtension = '.js',
 ): string {
   return `fixtures/${filename
     .replace(fixturesDir + '/', '')

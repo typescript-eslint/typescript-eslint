@@ -23,7 +23,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Forbids the use of classes as namespaces',
       tslintRuleName: 'no-unnecessary-class',
       category: 'Best Practices',
-      recommended: false
+      recommended: false,
     },
     schema: [
       {
@@ -31,33 +31,33 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowConstructorOnly: {
-            type: 'boolean'
+            type: 'boolean',
           },
           allowEmpty: {
-            type: 'boolean'
+            type: 'boolean',
           },
           allowStaticOnly: {
-            type: 'boolean'
-          }
-        }
-      }
+            type: 'boolean',
+          },
+        },
+      },
     ],
     messages: {
       empty: 'Unexpected empty class.',
       onlyStatic: 'Unexpected class with only static properties.',
-      onlyConstructor: 'Unexpected class with only a constructor.'
-    }
+      onlyConstructor: 'Unexpected class with only a constructor.',
+    },
   },
   defaultOptions: [
     {
       allowConstructorOnly: false,
       allowEmpty: false,
-      allowStaticOnly: false
-    }
+      allowStaticOnly: false,
+    },
   ],
   create(context, [{ allowConstructorOnly, allowEmpty, allowStaticOnly }]) {
     return {
-      ClassBody(node: TSESTree.ClassBody) {
+      ClassBody(node) {
         const parent = node.parent as
           | TSESTree.ClassDeclaration
           | TSESTree.ClassExpression
@@ -76,7 +76,7 @@ export default util.createRule<Options, MessageIds>({
 
           context.report({
             node: reportNode,
-            messageId: 'empty'
+            messageId: 'empty',
           });
 
           return;
@@ -89,7 +89,7 @@ export default util.createRule<Options, MessageIds>({
           if ('kind' in prop && prop.kind === 'constructor') {
             if (
               prop.value.params.some(
-                param => param.type === AST_NODE_TYPES.TSParameterProperty
+                param => param.type === AST_NODE_TYPES.TSParameterProperty,
               )
             ) {
               onlyConstructor = false;
@@ -108,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
           if (!allowConstructorOnly) {
             context.report({
               node: reportNode,
-              messageId: 'onlyConstructor'
+              messageId: 'onlyConstructor',
             });
           }
           return;
@@ -116,10 +116,10 @@ export default util.createRule<Options, MessageIds>({
         if (onlyStatic && !allowStaticOnly) {
           context.report({
             node: reportNode,
-            messageId: 'onlyStatic'
+            messageId: 'onlyStatic',
           });
         }
-      }
+      },
     };
-  }
+  },
 });

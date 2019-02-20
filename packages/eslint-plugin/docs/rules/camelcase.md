@@ -68,7 +68,7 @@ function foo({ no_camelcased = 'default value' }) {
 }
 
 var obj = {
-  my_pref: 1
+  my_pref: 1,
 };
 
 var { category_id = 1 } = query;
@@ -125,7 +125,7 @@ Examples of **correct** code for this rule with the `{ "properties": "never" }` 
 /*eslint @typescript-eslint/camelcase: ["error", {properties: "never"}]*/
 
 var obj = {
-  my_pref: 1
+  my_pref: 1,
 };
 ```
 

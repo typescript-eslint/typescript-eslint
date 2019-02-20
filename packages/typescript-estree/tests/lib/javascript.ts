@@ -10,7 +10,7 @@ import glob from 'glob';
 import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
-  formatSnapshotName
+  formatSnapshotName,
 } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
@@ -32,11 +32,11 @@ describe('javascript', () => {
       loc: true,
       range: true,
       tokens: true,
-      errorOnUnknownASTType: true
+      errorOnUnknownASTType: true,
     };
     it(
       formatSnapshotName(filename, FIXTURES_DIR),
-      createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config),
     );
   });
 });

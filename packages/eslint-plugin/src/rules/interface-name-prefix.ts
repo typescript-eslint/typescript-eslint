@@ -3,7 +3,6 @@
  * @author Danny Fritz
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 type Options = ['never' | 'always'];
@@ -17,16 +16,16 @@ export default util.createRule<Options, MessageIds>({
       description: 'Require that interface names be prefixed with `I`',
       tslintRuleName: 'interface-name',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
-      noPrefix: 'Interface name must not be prefixed with "I".'
+      noPrefix: 'Interface name must not be prefixed with "I".',
     },
     schema: [
       {
-        enum: ['never', 'always']
-      }
-    ]
+        enum: ['never', 'always'],
+      },
+    ],
   },
   defaultOptions: ['never'],
   create(context, [option]) {
@@ -45,23 +44,23 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration): void {
+      TSInterfaceDeclaration(node): void {
         if (never) {
           if (isPrefixedWithI(node.id.name)) {
             context.report({
               node: node.id,
-              messageId: 'noPrefix'
+              messageId: 'noPrefix',
             });
           }
         } else {
           if (!isPrefixedWithI(node.id.name)) {
             context.report({
               node: node.id,
-              messageId: 'noPrefix'
+              messageId: 'noPrefix',
             });
           }
         }
-      }
+      },
     };
-  }
+  },
 });

@@ -8,7 +8,7 @@ import { ParserOptions } from './parser-options';
 import { visitorKeys as childVisitorKeys } from './visitor-keys';
 import {
   PatternVisitorCallback,
-  PatternVisitorOptions
+  PatternVisitorOptions,
 } from 'eslint-scope/lib/options';
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
@@ -33,7 +33,7 @@ class PatternVisitor extends OriginalPatternVisitor {
   constructor(
     options: PatternVisitorOptions,
     rootPattern: any,
-    callback: PatternVisitorCallback
+    callback: PatternVisitorCallback,
   ) {
     super(options, rootPattern, callback);
   }
@@ -103,7 +103,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
   visitPattern<T extends TSESTree.BaseNode>(
     node: T,
     options: PatternVisitorOptions,
-    callback: PatternVisitorCallback
+    callback: PatternVisitorCallback,
   ): void {
     if (!node) {
       return;
@@ -132,7 +132,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     node:
       | TSESTree.FunctionDeclaration
       | TSESTree.FunctionExpression
-      | TSESTree.ArrowFunctionExpression
+      | TSESTree.ArrowFunctionExpression,
   ): void {
     const { type, id, typeParameters, params, returnType, body } = node;
     const scopeManager = this.scopeManager;
@@ -142,7 +142,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     if (type === 'FunctionDeclaration' && id) {
       upperScope.__define(
         id,
-        new Definition('FunctionName', id, node, null, null, null)
+        new Definition('FunctionName', id, node, null, null, null),
       );
 
       // Remove overload definition to avoid confusion of no-redeclare rule.
@@ -182,11 +182,11 @@ class Referencer extends OriginalReferencer<ScopeManager> {
           ) {
             innerScope.__define(
               pattern,
-              new ParameterDefinition(pattern, node, i, info.rest)
+              new ParameterDefinition(pattern, node, i, info.rest),
             );
             this.referencingDefaultValue(pattern, info.assignments, null, true);
           }
-        }
+        },
       );
     }
 
@@ -272,7 +272,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    * @param node The MethodDefinition node to visit.
    */
   MethodDefinition(
-    node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition
+    node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition,
   ): void {
     this.visitDecorators(node.decorators);
     super.MethodDefinition(node);
@@ -283,7 +283,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    * @param node The ClassProperty node to visit.
    */
   ClassProperty(
-    node: TSESTree.ClassProperty | TSESTree.TSAbstractClassProperty
+    node: TSESTree.ClassProperty | TSESTree.TSAbstractClassProperty,
   ): void {
     const upperTypeMode = this.typeMode;
     const { computed, decorators, key, typeAnnotation, value } = node;
@@ -343,7 +343,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
       if (!existed) {
         upperScope.__define(
           id,
-          new Definition('FunctionName', id, node, null, null, null)
+          new Definition('FunctionName', id, node, null, null, null),
         );
       }
     }
@@ -363,7 +363,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
         (pattern, info) => {
           innerScope.__define(
             pattern,
-            new ParameterDefinition(pattern, node, i, info.rest)
+            new ParameterDefinition(pattern, node, i, info.rest),
           );
 
           // Set `variable.eslintUsed` to tell ESLint that the variable is used.
@@ -372,7 +372,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
             variable.eslintUsed = true;
           }
           this.referencingDefaultValue(pattern, info.assignments, null, true);
-        }
+        },
       );
     }
 
@@ -388,7 +388,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    * @param node The TSEmptyBodyFunctionExpression node to visit.
    */
   TSEmptyBodyFunctionExpression(
-    node: TSESTree.TSEmptyBodyFunctionExpression
+    node: TSESTree.TSEmptyBodyFunctionExpression,
   ): void {
     const upperTypeMode = this.typeMode;
     const { typeParameters, params, returnType } = node;
@@ -699,7 +699,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     if (id && id.type === 'Identifier') {
       scope.__define(
         id,
-        new Definition('NamespaceName', id, node, null, null, null)
+        new Definition('NamespaceName', id, node, null, null, null),
       );
     }
     this.visit(body);
@@ -737,7 +737,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     if (id && id.type === 'Identifier') {
       this.currentScope().__define(
         id,
-        new Definition('ImportBinding', id, node, null, null, null)
+        new Definition('ImportBinding', id, node, null, null, null),
       );
     }
     this.visit(moduleReference);
@@ -805,7 +805,7 @@ export function analyzeScope(ast: any, parserOptions: ParserOptions) {
     sourceType: parserOptions.sourceType,
     ecmaVersion: parserOptions.ecmaVersion || 2018,
     childVisitorKeys,
-    fallback
+    fallback,
   };
 
   const scopeManager = new ScopeManager(options);

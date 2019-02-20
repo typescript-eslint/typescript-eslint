@@ -5,9 +5,9 @@ const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
-    ecmaFeatures: {}
+    ecmaFeatures: {},
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-restricted-globals', rule, {
@@ -22,8 +22,8 @@ export default class Test {
     }
 }
       `,
-      options: ['status']
-    }
+      options: ['status'],
+    },
   ],
-  invalid: []
+  invalid: [],
 });

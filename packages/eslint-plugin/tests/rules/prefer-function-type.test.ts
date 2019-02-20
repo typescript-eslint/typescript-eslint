@@ -4,9 +4,9 @@ import { RuleTester } from '../RuleTester';
 
 var ruleTester = new RuleTester({
   parserOptions: {
-    ecmaVersion: 2015
+    ecmaVersion: 2015,
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 ruleTester.run('prefer-function-type', rule, {
   valid: [
@@ -37,7 +37,7 @@ interface Foo {
 }
 interface Bar extends Function, Foo {
   (): void;
-}`
+}`,
   ],
 
   invalid: [
@@ -49,11 +49,11 @@ interface Foo {
       errors: [
         {
           messageId: 'functionTypeOverCallableType',
-          type: AST_NODE_TYPES.TSCallSignatureDeclaration
-        }
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
       ],
       output: `
-type Foo = () => string;`
+type Foo = () => string;`,
     },
     {
       code: `
@@ -63,11 +63,11 @@ type Foo = {
       errors: [
         {
           messageId: 'functionTypeOverCallableType',
-          type: AST_NODE_TYPES.TSCallSignatureDeclaration
-        }
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
       ],
       output: `
-type Foo = () => string`
+type Foo = () => string`,
     },
     {
       code: `
@@ -77,13 +77,13 @@ function foo(bar: { (s: string): number }): number {
       errors: [
         {
           messageId: 'functionTypeOverCallableType',
-          type: AST_NODE_TYPES.TSCallSignatureDeclaration
-        }
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
       ],
       output: `
 function foo(bar: (s: string) => number): number {
   return bar("hello");
-}`
+}`,
     },
     {
       code: `
@@ -93,13 +93,13 @@ function foo(bar: { (s: string): number } | undefined): number {
       errors: [
         {
           messageId: 'functionTypeOverCallableType',
-          type: AST_NODE_TYPES.TSCallSignatureDeclaration
-        }
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
       ],
       output: `
 function foo(bar: ((s: string) => number) | undefined): number {
   return bar("hello");
-}`
+}`,
     },
     {
       code: `
@@ -109,11 +109,11 @@ interface Foo extends Function {
       errors: [
         {
           messageId: 'functionTypeOverCallableType',
-          type: AST_NODE_TYPES.TSCallSignatureDeclaration
-        }
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
       ],
       output: `
-type Foo = () => void;`
+type Foo = () => void;`,
     },
     {
       code: `
@@ -123,11 +123,11 @@ interface Foo<T> {
       errors: [
         {
           messageId: 'functionTypeOverCallableType',
-          type: AST_NODE_TYPES.TSCallSignatureDeclaration
-        }
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
       ],
       output: `
-type Foo<T> = (bar: T) => string;`
-    }
-  ]
+type Foo<T> = (bar: T) => string;`,
+    },
+  ],
 });

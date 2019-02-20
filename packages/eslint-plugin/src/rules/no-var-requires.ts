@@ -3,7 +3,7 @@
  * @author Macklin Underdown
  */
 
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 type Options = [];
@@ -18,17 +18,17 @@ export default util.createRule<Options, MessageIds>({
         'Disallows the use of require statements except in import statements',
       tslintRuleName: 'no-var-requires',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
-      noVarReqs: 'Require statement not part of import statement.'
+      noVarReqs: 'Require statement not part of import statement.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
     return {
-      CallExpression(node: TSESTree.CallExpression) {
+      CallExpression(node) {
         if (
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.callee.name === 'require' &&
@@ -37,10 +37,10 @@ export default util.createRule<Options, MessageIds>({
         ) {
           context.report({
             node,
-            messageId: 'noVarReqs'
+            messageId: 'noVarReqs',
           });
         }
-      }
+      },
     };
-  }
+  },
 });

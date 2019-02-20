@@ -12,7 +12,7 @@ import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
-  isJSXFileType
+  isJSXFileType,
 } from '../../tools/test-utils';
 
 //------------------------------------------------------------------------------
@@ -36,11 +36,11 @@ describe('typescript', () => {
       range: true,
       tokens: true,
       errorOnUnknownASTType: true,
-      jsx: isJSXFileType(fileExtension)
+      jsx: isJSXFileType(fileExtension),
     };
     it(
       formatSnapshotName(filename, FIXTURES_DIR, fileExtension),
-      createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config),
     );
   });
 });

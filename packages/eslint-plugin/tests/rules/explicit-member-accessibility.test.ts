@@ -2,7 +2,7 @@ import rule from '../../src/rules/explicit-member-accessibility';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('explicit-member-accessibility', rule, {
@@ -17,7 +17,7 @@ class Test {
     return this.x
   }
 }
-            `
+            `,
     },
     {
       filename: 'test.ts',
@@ -27,7 +27,7 @@ class Test {
   protected foo?: string
   public "foo-bar"?: string
 }
-            `
+            `,
     },
     {
       filename: 'test.js',
@@ -37,8 +37,8 @@ class Test {
     return 1;
   }
 }
-            `
-    }
+            `,
+    },
   ],
   invalid: [
     {
@@ -56,12 +56,12 @@ class Test {
           messageId: 'missingAccessibility',
           data: {
             type: 'class property',
-            name: 'x'
+            name: 'x',
           },
           line: 3,
-          column: 3
-        }
-      ]
+          column: 3,
+        },
+      ],
     },
     {
       filename: 'test.ts',
@@ -78,12 +78,12 @@ class Test {
           messageId: 'missingAccessibility',
           data: {
             type: 'method definition',
-            name: 'getX'
+            name: 'getX',
           },
           line: 4,
-          column: 3
-        }
-      ]
+          column: 3,
+        },
+      ],
     },
     {
       filename: 'test.ts',
@@ -100,21 +100,21 @@ class Test {
           messageId: 'missingAccessibility',
           data: {
             type: 'class property',
-            name: 'x'
+            name: 'x',
           },
           line: 3,
-          column: 3
+          column: 3,
         },
         {
           messageId: 'missingAccessibility',
           data: {
             type: 'method definition',
-            name: 'getX'
+            name: 'getX',
           },
           line: 4,
-          column: 3
-        }
-      ]
-    }
-  ]
+          column: 3,
+        },
+      ],
+    },
+  ],
 });

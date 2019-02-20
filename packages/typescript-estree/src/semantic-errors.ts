@@ -13,23 +13,23 @@ interface SemanticOrSyntacticError extends ts.Diagnostic {
  */
 export function getFirstSemanticOrSyntacticError(
   program: ts.Program,
-  ast: ts.SourceFile
+  ast: ts.SourceFile,
 ): SemanticOrSyntacticError | undefined {
   try {
     const supportedSyntacticDiagnostics = whitelistSupportedDiagnostics(
-      program.getSyntacticDiagnostics(ast)
+      program.getSyntacticDiagnostics(ast),
     );
     if (supportedSyntacticDiagnostics.length) {
       return convertDiagnosticToSemanticOrSyntacticError(
-        supportedSyntacticDiagnostics[0]
+        supportedSyntacticDiagnostics[0],
       );
     }
     const supportedSemanticDiagnostics = whitelistSupportedDiagnostics(
-      program.getSemanticDiagnostics(ast)
+      program.getSemanticDiagnostics(ast),
     );
     if (supportedSemanticDiagnostics.length) {
       return convertDiagnosticToSemanticOrSyntacticError(
-        supportedSemanticDiagnostics[0]
+        supportedSemanticDiagnostics[0],
       );
     }
     return undefined;
@@ -44,13 +44,15 @@ export function getFirstSemanticOrSyntacticError(
      * For our current use-cases this is undesired behavior, so we just suppress it
      * and log a a warning.
      */
+    /* istanbul ignore next */
     console.warn(`Warning From TSC: "${e.message}`);
+    /* istanbul ignore next */
     return undefined;
   }
 }
 
 function whitelistSupportedDiagnostics(
-  diagnostics: ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic>
+  diagnostics: ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic>,
 ): ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic> {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
@@ -97,13 +99,13 @@ function whitelistSupportedDiagnostics(
 }
 
 function convertDiagnosticToSemanticOrSyntacticError(
-  diagnostic: ts.Diagnostic
+  diagnostic: ts.Diagnostic,
 ): SemanticOrSyntacticError {
   return {
     ...diagnostic,
     message: ts.flattenDiagnosticMessageText(
       diagnostic.messageText,
-      ts.sys.newLine
-    )
+      ts.sys.newLine,
+    ),
   };
 }

@@ -7,9 +7,9 @@ const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
     tsconfigRootDir: rootDir,
-    project: './tsconfig.json'
+    project: './tsconfig.json',
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-for-in-array', rule, {
@@ -21,7 +21,7 @@ for (const x of [3, 4, 5]) {
     `
 for (const x in { a: 1, b: 2, c: 3 }) {
     console.log(x);
-}`
+}`,
   ],
 
   invalid: [
@@ -33,9 +33,9 @@ for (const x in [3, 4, 5]) {
       errors: [
         {
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement
-        }
-      ]
+          type: AST_NODE_TYPES.ForInStatement,
+        },
+      ],
     },
     {
       code: `
@@ -46,9 +46,9 @@ for (const x in z) {
       errors: [
         {
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement
-        }
-      ]
-    }
-  ]
+          type: AST_NODE_TYPES.ForInStatement,
+        },
+      ],
+    },
+  ],
 });

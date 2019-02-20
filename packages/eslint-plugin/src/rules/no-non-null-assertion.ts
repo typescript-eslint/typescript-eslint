@@ -3,7 +3,6 @@
  * @author Macklin Underdown
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 export default util.createRule({
@@ -15,22 +14,22 @@ export default util.createRule({
         'Disallows non-null assertions using the `!` postfix operator',
       tslintRuleName: 'no-non-null-assertion',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
-      noNonNull: 'Forbidden non-null assertion.'
+      noNonNull: 'Forbidden non-null assertion.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
     return {
-      TSNonNullExpression(node: TSESTree.TSNonNullExpression) {
+      TSNonNullExpression(node) {
         context.report({
           node,
-          messageId: 'noNonNull'
+          messageId: 'noNonNull',
         });
-      }
+      },
     };
-  }
+  },
 });

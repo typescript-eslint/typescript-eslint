@@ -7,7 +7,7 @@
 import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
-  TSESTree
+  TSESTree,
 } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -91,7 +91,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
       tslintRuleName: 'array-type',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     fixable: 'code',
     messages: {
@@ -102,13 +102,13 @@ export default util.createRule<Options, MessageIds>({
       errorStringArray:
         "Array type using 'Array<{{type}}>' is forbidden. Use '{{type}}[]' instead.",
       errorStringArraySimple:
-        "Array type using 'Array<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead."
+        "Array type using 'Array<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead.",
     },
     schema: [
       {
-        enum: ['array', 'generic', 'array-simple']
-      }
-    ]
+        enum: ['array', 'generic', 'array-simple'],
+      },
+    ],
   },
   defaultOptions: ['array'],
   create(context, [option]) {
@@ -147,7 +147,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSArrayType(node: TSESTree.TSArrayType) {
+      TSArrayType(node) {
         if (
           option === 'array' ||
           (option === 'array-simple' && isSimpleType(node.elementType))
@@ -163,13 +163,13 @@ export default util.createRule<Options, MessageIds>({
           node,
           messageId,
           data: {
-            type: getMessageType(node.elementType)
+            type: getMessageType(node.elementType),
           },
           fix(fixer) {
             const startText = requireWhitespaceBefore(node);
             const toFix = [
               fixer.replaceTextRange([node.range[1] - 2, node.range[1]], '>'),
-              fixer.insertTextBefore(node, `${startText ? ' ' : ''}Array<`)
+              fixer.insertTextBefore(node, `${startText ? ' ' : ''}Array<`),
             ];
 
             if (node.elementType.type === AST_NODE_TYPES.TSParenthesizedType) {
@@ -184,7 +184,7 @@ export default util.createRule<Options, MessageIds>({
             }
 
             return toFix;
-          }
+          },
         });
       },
       TSTypeReference(node: TSESTree.TSTypeReference) {
@@ -206,11 +206,11 @@ export default util.createRule<Options, MessageIds>({
             node,
             messageId,
             data: {
-              type: 'any'
+              type: 'any',
             },
             fix(fixer) {
               return fixer.replaceText(node, 'any[]');
-            }
+            },
           });
           return;
         }
@@ -229,22 +229,22 @@ export default util.createRule<Options, MessageIds>({
           node,
           messageId,
           data: {
-            type: getMessageType(type)
+            type: getMessageType(type),
           },
           fix(fixer) {
             return [
               fixer.replaceTextRange(
                 [node.range[0], type.range[0]],
-                parens ? '(' : ''
+                parens ? '(' : '',
               ),
               fixer.replaceTextRange(
                 [type.range[1], node.range[1]],
-                parens ? ')[]' : '[]'
-              )
+                parens ? ')[]' : '[]',
+              ),
             ];
-          }
+          },
         });
-      }
+      },
     };
-  }
+  },
 });

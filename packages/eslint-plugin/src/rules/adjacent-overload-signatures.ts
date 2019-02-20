@@ -22,12 +22,12 @@ export default util.createRule({
       description: 'Require that member overloads be consecutive',
       category: 'Best Practices',
       tslintName: 'adjacent-overload-signatures',
-      recommended: 'error'
+      recommended: 'error',
     },
     schema: [],
     messages: {
-      adjacentSignature: "All '{{name}}' signatures should be adjacent."
-    }
+      adjacentSignature: "All '{{name}}' signatures should be adjacent.",
+    },
   },
   defaultOptions: [],
   create(context) {
@@ -114,19 +114,19 @@ export default util.createRule({
           }
           const method = {
             name,
-            static: 'static' in member && !!member.static
+            static: 'static' in member && !!member.static,
           };
 
           const index = seenMethods.findIndex(seenMethod =>
-            isSameMethod(method, seenMethod)
+            isSameMethod(method, seenMethod),
           );
           if (index > -1 && !isSameMethod(method, lastMethod)) {
             context.report({
               node: member,
               messageId: 'adjacentSignature',
               data: {
-                name: (method.static ? 'static ' : '') + method.name
-              }
+                name: (method.static ? 'static ' : '') + method.name,
+              },
             });
           } else if (index === -1) {
             seenMethods.push(method);
@@ -142,7 +142,7 @@ export default util.createRule({
       Program: checkBodyForOverloadMethods,
       TSModuleBlock: checkBodyForOverloadMethods,
       TSTypeLiteral: checkBodyForOverloadMethods,
-      TSInterfaceBody: checkBodyForOverloadMethods
+      TSInterfaceBody: checkBodyForOverloadMethods,
     };
-  }
+  },
 });

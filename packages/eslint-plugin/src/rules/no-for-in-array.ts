@@ -3,7 +3,6 @@
  * @author Benjamin Lichtman
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 import * as util from '../util';
 
@@ -14,19 +13,19 @@ export default util.createRule({
       description: 'Disallow iterating over an array with a for-in loop',
       category: 'Best Practices',
       recommended: false,
-      tslintName: 'no-for-in-array'
+      tslintName: 'no-for-in-array',
     },
     messages: {
       forInViolation:
-        'For-in loops over arrays are forbidden. Use for-of or array.forEach instead.'
+        'For-in loops over arrays are forbidden. Use for-of or array.forEach instead.',
     },
     schema: [],
-    type: 'problem'
+    type: 'problem',
   },
   defaultOptions: [],
   create(context) {
     return {
-      ForInStatement(node: TSESTree.ForInStatement) {
+      ForInStatement(node) {
         const parserServices = util.getParserServices(context);
         const checker = parserServices.program.getTypeChecker();
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
@@ -42,10 +41,10 @@ export default util.createRule({
         ) {
           context.report({
             node,
-            messageId: 'forInViolation'
+            messageId: 'forInViolation',
           });
         }
-      }
+      },
     };
-  }
+  },
 });

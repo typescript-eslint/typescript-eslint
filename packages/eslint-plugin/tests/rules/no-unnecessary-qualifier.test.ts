@@ -25,8 +25,8 @@ const ruleTester = new RuleTester({
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
     sourceType: 'module',
-    ecmaVersion: 6
-  }
+    ecmaVersion: 6,
+  },
 });
 
 ruleTester.run('no-unnecessary-qualifier', rule, {
@@ -60,7 +60,7 @@ namespace X {
     `
 namespace X {
   const z = X.y;
-}`
+}`,
   ],
 
   invalid: [
@@ -73,14 +73,14 @@ namespace A {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.Identifier
-        }
+          type: AST_NODE_TYPES.Identifier,
+        },
       ],
       output: `
 namespace A {
   export type B = number;
   const x: B = 3;
-}`
+}`,
     },
     {
       code: `
@@ -91,14 +91,14 @@ namespace A {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.Identifier
-        }
+          type: AST_NODE_TYPES.Identifier,
+        },
       ],
       output: `
 namespace A {
   export const x = 3;
   export const y = x;
-}`
+}`,
     },
     {
       code: `
@@ -111,8 +111,8 @@ namespace A {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.Identifier
-        }
+          type: AST_NODE_TYPES.Identifier,
+        },
       ],
       output: `
 namespace A {
@@ -120,7 +120,7 @@ namespace A {
   export namespace B {
     const x: T = 3;
   }
-}`
+}`,
     },
     {
       code: `
@@ -133,8 +133,8 @@ namespace A {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.TSQualifiedName
-        }
+          type: AST_NODE_TYPES.TSQualifiedName,
+        },
       ],
       output: `
 namespace A {
@@ -142,7 +142,7 @@ namespace A {
     export type T = number;
     const x: T = 3;
   }
-}`
+}`,
     },
     {
       code: `
@@ -155,8 +155,8 @@ namespace A {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.MemberExpression
-        }
+          type: AST_NODE_TYPES.MemberExpression,
+        },
       ],
       output: `
 namespace A {
@@ -164,7 +164,7 @@ namespace A {
     export const x = 3;
     const y = x;
   }
-}`
+}`,
     },
     {
       code: `
@@ -175,14 +175,14 @@ enum A {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.Identifier
-        }
+          type: AST_NODE_TYPES.Identifier,
+        },
       ],
       output: `
 enum A {
   B,
   C = B
-}`
+}`,
     },
     {
       code: `
@@ -195,8 +195,8 @@ namespace Foo {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.MemberExpression
-        }
+          type: AST_NODE_TYPES.MemberExpression,
+        },
       ],
       output: `
 namespace Foo {
@@ -204,7 +204,7 @@ namespace Foo {
     B,
     C = B
   }
-}`
+}`,
     },
     {
       code: `
@@ -216,14 +216,14 @@ declare module './foo' {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.Identifier
-        }
+          type: AST_NODE_TYPES.Identifier,
+        },
       ],
       output: `
 import * as Foo from './foo';
 declare module './foo' {
   const x: T = 3;
-}`
-    }
-  ]
+}`,
+    },
+  ],
 });

@@ -2,7 +2,7 @@ import rule from '../../src/rules/no-triple-slash-reference';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-triple-slash-reference', rule, {
@@ -15,7 +15,7 @@ ruleTester.run('no-triple-slash-reference', rule, {
     `/*
 /// <reference path="Animal" />
 let a
-*/`
+*/`,
   ],
   invalid: [
     {
@@ -24,9 +24,9 @@ let a
         {
           messageId: 'tripleSlashReference',
           line: 1,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -38,9 +38,9 @@ let a
         {
           messageId: 'tripleSlashReference',
           line: 2,
-          column: 1
-        }
-      ]
-    }
-  ]
+          column: 1,
+        },
+      ],
+    },
+  ],
 });

@@ -40,7 +40,7 @@ function checkParams(node: TSESTree.MethodDefinition): boolean {
   return (
     !node.value.params ||
     !node.value.params.some(
-      param => param.type === AST_NODE_TYPES.TSParameterProperty
+      param => param.type === AST_NODE_TYPES.TSParameterProperty,
     )
   );
 }
@@ -52,16 +52,16 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow unnecessary constructors',
       category: 'Best Practices',
-      recommended: false
+      recommended: false,
     },
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
     return {
-      MethodDefinition(node: TSESTree.MethodDefinition) {
+      MethodDefinition(node) {
         if (
           node.value &&
           node.value.type === AST_NODE_TYPES.FunctionExpression &&
@@ -70,7 +70,7 @@ export default util.createRule<Options, MessageIds>({
         ) {
           rules.MethodDefinition(node);
         }
-      }
+      },
     };
-  }
+  },
 });

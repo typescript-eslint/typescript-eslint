@@ -13,7 +13,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
     'superClass',
     'superTypeParameters',
     'implements',
-    'body'
+    'body',
   ],
   ClassExpression: [
     'decorators',
@@ -22,7 +22,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
     'superClass',
     'superTypeParameters',
     'implements',
-    'body'
+    'body',
   ],
   TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
   FunctionDeclaration: ['id', 'typeParameters', 'params', 'returnType', 'body'],
@@ -63,7 +63,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
     'id',
     'typeParameters',
     'params',
-    'returnType'
+    'returnType',
   ],
   TSEnumDeclaration: ['members'],
   TSEnumMember: ['id', 'initializer'],
@@ -121,5 +121,5 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   TSUnionType: ['types'],
   TSUndefinedKeyword: [],
   TSUnknownKeyword: [],
-  TSVoidKeyword: []
+  TSVoidKeyword: [],
 });

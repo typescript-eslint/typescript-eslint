@@ -3,7 +3,6 @@
  * @author Danny Fritz
  */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 export default util.createRule({
@@ -14,12 +13,12 @@ export default util.createRule({
       description: 'Disallow `/// <reference path="" />` comments',
       tslintRuleName: 'no-reference',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     schema: [],
     messages: {
-      tripleSlashReference: 'Do not use a triple slash reference.'
-    }
+      tripleSlashReference: 'Do not use a triple slash reference.',
+    },
   },
   defaultOptions: [],
   create(context) {
@@ -27,7 +26,7 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
 
     return {
-      Program(program: TSESTree.Program): void {
+      Program(program): void {
         const commentsBefore = sourceCode.getCommentsBefore(program);
 
         commentsBefore.forEach(comment => {
@@ -37,11 +36,11 @@ export default util.createRule({
           if (referenceRegExp.test(comment.value)) {
             context.report({
               node: comment,
-              messageId: 'tripleSlashReference'
+              messageId: 'tripleSlashReference',
             });
           }
         });
-      }
+      },
     };
-  }
+  },
 });

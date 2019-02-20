@@ -8,8 +8,8 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: rootPath,
-    project: './tsconfig.json'
-  }
+    project: './tsconfig.json',
+  },
 });
 
 ruleTester.run('require-array-sort-compare', rule, {
@@ -71,7 +71,7 @@ ruleTester.run('require-array-sort-compare', rule, {
           a.sort()
         }
       }
-    `
+    `,
   ],
   invalid: [
     {
@@ -80,7 +80,7 @@ ruleTester.run('require-array-sort-compare', rule, {
           a.sort()
         }
       `,
-      errors: [{ messageId: 'requireCompare' }]
+      errors: [{ messageId: 'requireCompare' }],
     },
     {
       code: `
@@ -88,7 +88,7 @@ ruleTester.run('require-array-sort-compare', rule, {
           a.sort()
         }
       `,
-      errors: [{ messageId: 'requireCompare' }]
+      errors: [{ messageId: 'requireCompare' }],
     },
     {
       code: `
@@ -97,7 +97,7 @@ ruleTester.run('require-array-sort-compare', rule, {
             a.sort()
         }
       `,
-      errors: [{ messageId: 'requireCompare' }]
+      errors: [{ messageId: 'requireCompare' }],
     },
     {
       code: `
@@ -105,7 +105,7 @@ ruleTester.run('require-array-sort-compare', rule, {
           a.sort()
         }
       `,
-      errors: [{ messageId: 'requireCompare' }]
+      errors: [{ messageId: 'requireCompare' }],
     },
     {
       code: `
@@ -113,7 +113,7 @@ ruleTester.run('require-array-sort-compare', rule, {
           a.sort()
         }
       `,
-      errors: [{ messageId: 'requireCompare' }]
+      errors: [{ messageId: 'requireCompare' }],
     },
     {
       code: `
@@ -121,7 +121,7 @@ ruleTester.run('require-array-sort-compare', rule, {
           a.sort()
         }
       `,
-      errors: [{ messageId: 'requireCompare' }]
-    }
-  ]
+      errors: [{ messageId: 'requireCompare' }],
+    },
+  ],
 });

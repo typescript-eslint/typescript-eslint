@@ -15,13 +15,13 @@ const rulesWithoutDefault = Object.keys(rules).reduce<Record<string, any>>(
     acc[ruleName] = rules[ruleName].default;
     return acc;
   },
-  {}
+  {},
 );
 
 // import all rules in lib/rules
 export = {
   rules: rulesWithoutDefault,
   configs: {
-    recommended
-  }
+    recommended,
+  },
 };

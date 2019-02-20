@@ -4,19 +4,19 @@ import { RuleTester } from '../RuleTester';
 
 const idError = {
   messageId: 'thisAssignment' as 'thisAssignment',
-  type: AST_NODE_TYPES.Identifier
+  type: AST_NODE_TYPES.Identifier,
 };
 const destructureError = {
   messageId: 'thisDestructure' as 'thisDestructure',
-  type: AST_NODE_TYPES.ObjectPattern
+  type: AST_NODE_TYPES.ObjectPattern,
 };
 const arrayDestructureError = {
   messageId: 'thisDestructure' as 'thisDestructure',
-  type: AST_NODE_TYPES.ArrayPattern
+  type: AST_NODE_TYPES.ArrayPattern,
 };
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-this-alias', rule, {
@@ -32,24 +32,24 @@ const [foo, bar] = this;
 `,
       options: [
         {
-          allowDestructuring: true
-        }
-      ]
+          allowDestructuring: true,
+        },
+      ],
     },
     {
       code: 'const self = this;',
       options: [
         {
-          allowedNames: ['self']
-        }
-      ]
+          allowedNames: ['self'],
+        },
+      ],
     },
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/281
     `
 declare module 'foo' {
     declare const aVar: string
 }
-        `
+        `,
   ],
 
   invalid: [
@@ -57,18 +57,18 @@ declare module 'foo' {
       code: 'const self = this;',
       options: [
         {
-          allowDestructuring: true
-        }
+          allowDestructuring: true,
+        },
       ],
-      errors: [idError]
+      errors: [idError],
     },
     {
       code: 'const self = this;',
-      errors: [idError]
+      errors: [idError],
     },
     {
       code: 'const { props, state } = this;',
-      errors: [destructureError]
+      errors: [destructureError],
     },
     {
       code: `
@@ -81,7 +81,7 @@ const testLambda = () => {
     const inLambda = this;
 };
 `,
-      errors: [idError, idError, idError]
+      errors: [idError, idError, idError],
     },
     {
       code: `
@@ -111,8 +111,8 @@ class TestClass {
         destructureError,
         destructureError,
         arrayDestructureError,
-        arrayDestructureError
-      ]
-    }
-  ]
+        arrayDestructureError,
+      ],
+    },
+  ],
 });

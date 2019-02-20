@@ -4,7 +4,7 @@ import glob from 'glob';
 import * as parser from '../../src/parser';
 import {
   createScopeSnapshotTestBlock,
-  formatSnapshotName
+  formatSnapshotName,
 } from '../tools/test-utils';
 
 const FIXTURES_DIR =
@@ -21,12 +21,12 @@ describe('TSX', () => {
     const config = {
       useJSXTextNode: true,
       ecmaFeatures: {
-        jsx: true
-      }
+        jsx: true,
+      },
     };
     it(
       formatSnapshotName(filename, FIXTURES_DIR, '.tsx'),
-      createScopeSnapshotTestBlock(code, config)
+      createScopeSnapshotTestBlock(code, config),
     );
   });
 
@@ -37,7 +37,7 @@ describe('TSX', () => {
     it('filePath was not provided', () => {
       const code = 'const element = <T/>';
       const config = {
-        parser: '@typescript-eslint/parser'
+        parser: '@typescript-eslint/parser',
       };
       const messages = linter.verify(code, config);
 
@@ -48,8 +48,8 @@ describe('TSX', () => {
           line: 1,
           message: "Parsing error: '>' expected.",
           ruleId: null,
-          severity: 2
-        }
+          severity: 2,
+        },
       ]);
     });
 
@@ -59,9 +59,9 @@ describe('TSX', () => {
         parser: '@typescript-eslint/parser',
         parserOptions: {
           ecmaFeatures: {
-            jsx: true
-          }
-        }
+            jsx: true,
+          },
+        },
       };
       const messages = linter.verify(code, config);
 
@@ -71,7 +71,7 @@ describe('TSX', () => {
     it('test.ts', () => {
       const code = 'const element = <T/>';
       const config = {
-        parser: '@typescript-eslint/parser'
+        parser: '@typescript-eslint/parser',
       };
       const messages = linter.verify(code, config, { filename: 'test.ts' });
 
@@ -82,8 +82,8 @@ describe('TSX', () => {
           line: 1,
           message: "Parsing error: '>' expected.",
           ruleId: null,
-          severity: 2
-        }
+          severity: 2,
+        },
       ]);
     });
 
@@ -93,9 +93,9 @@ describe('TSX', () => {
         parser: '@typescript-eslint/parser',
         parserOptions: {
           ecmaFeatures: {
-            jsx: true
-          }
-        }
+            jsx: true,
+          },
+        },
       };
       const messages = linter.verify(code, config, { filename: 'test.ts' });
 
@@ -106,15 +106,15 @@ describe('TSX', () => {
           line: 1,
           message: "Parsing error: '>' expected.",
           ruleId: null,
-          severity: 2
-        }
+          severity: 2,
+        },
       ]);
     });
 
     it('test.tsx', () => {
       const code = 'const element = <T/>';
       const config = {
-        parser: '@typescript-eslint/parser'
+        parser: '@typescript-eslint/parser',
       };
       const messages = linter.verify(code, config, { filename: 'test.tsx' });
 
@@ -127,9 +127,9 @@ describe('TSX', () => {
         parser: '@typescript-eslint/parser',
         parserOptions: {
           ecmaFeatures: {
-            jsx: false
-          }
-        }
+            jsx: false,
+          },
+        },
       };
       const messages = linter.verify(code, config, { filename: 'test.tsx' });
 

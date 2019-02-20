@@ -2,7 +2,7 @@ import rule from '../../src/rules/class-name-casing';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('class-name-casing', rule, {
@@ -11,14 +11,14 @@ ruleTester.run('class-name-casing', rule, {
     {
       code: 'export default class {}',
       parserOptions: {
-        sourceType: 'module'
-      }
+        sourceType: 'module',
+      },
     },
     'var Foo = class {};',
     'interface SomeInterface {}',
     'class ClassNameWithDigit2 {}',
     'abstract class ClassNameWithDigit2 {}',
-    'var ba_zz = class Foo {};'
+    'var ba_zz = class Foo {};',
   ],
 
   invalid: [
@@ -29,12 +29,12 @@ ruleTester.run('class-name-casing', rule, {
           messageId: 'notPascalCased',
           data: {
             friendlyName: 'Class',
-            name: 'invalidClassName'
+            name: 'invalidClassName',
           },
           line: 1,
-          column: 7
-        }
-      ]
+          column: 7,
+        },
+      ],
     },
     {
       code: 'class Another_Invalid_Class_Name {}',
@@ -43,12 +43,12 @@ ruleTester.run('class-name-casing', rule, {
           messageId: 'notPascalCased',
           data: {
             friendlyName: 'Class',
-            name: 'Another_Invalid_Class_Name'
+            name: 'Another_Invalid_Class_Name',
           },
           line: 1,
-          column: 7
-        }
-      ]
+          column: 7,
+        },
+      ],
     },
     {
       code: 'var foo = class {};',
@@ -57,12 +57,12 @@ ruleTester.run('class-name-casing', rule, {
           messageId: 'notPascalCased',
           data: {
             friendlyName: 'Class',
-            name: 'foo'
+            name: 'foo',
           },
           line: 1,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: 'const foo = class {};',
@@ -71,12 +71,12 @@ ruleTester.run('class-name-casing', rule, {
           messageId: 'notPascalCased',
           data: {
             friendlyName: 'Class',
-            name: 'foo'
+            name: 'foo',
           },
           line: 1,
-          column: 7
-        }
-      ]
+          column: 7,
+        },
+      ],
     },
     {
       code: 'var bar = class invalidName {}',
@@ -85,12 +85,12 @@ ruleTester.run('class-name-casing', rule, {
           messageId: 'notPascalCased',
           data: {
             friendlyName: 'Class',
-            name: 'invalidName'
+            name: 'invalidName',
           },
           line: 1,
-          column: 17
-        }
-      ]
+          column: 17,
+        },
+      ],
     },
     {
       code: 'interface someInterface {}',
@@ -99,12 +99,12 @@ ruleTester.run('class-name-casing', rule, {
           messageId: 'notPascalCased',
           data: {
             friendlyName: 'Interface',
-            name: 'someInterface'
+            name: 'someInterface',
           },
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: 'abstract class invalidClassName {}',
@@ -113,12 +113,12 @@ ruleTester.run('class-name-casing', rule, {
           messageId: 'notPascalCased',
           data: {
             friendlyName: 'Abstract class',
-            name: 'invalidClassName'
+            name: 'invalidClassName',
           },
           line: 1,
-          column: 16
-        }
-      ]
+          column: 16,
+        },
+      ],
     },
     {
       code: 'declare class invalidClassName {}',
@@ -127,12 +127,12 @@ ruleTester.run('class-name-casing', rule, {
           messageId: 'notPascalCased',
           data: {
             friendlyName: 'Class',
-            name: 'invalidClassName'
+            name: 'invalidClassName',
           },
           line: 1,
-          column: 15
-        }
-      ]
-    }
-  ]
+          column: 15,
+        },
+      ],
+    },
+  ],
 });

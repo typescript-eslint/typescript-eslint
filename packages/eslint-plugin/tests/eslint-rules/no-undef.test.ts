@@ -5,9 +5,9 @@ const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
-    ecmaFeatures: {}
+    ecmaFeatures: {},
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-undef', rule, {
@@ -67,7 +67,7 @@ function eachr(subject: Object | Array<Value>): typeof subject {
     // https://github.com/typescript-eslint/typescript-eslint/issues/18
     `
 function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
-    `
+    `,
   ],
-  invalid: []
+  invalid: [],
 });
