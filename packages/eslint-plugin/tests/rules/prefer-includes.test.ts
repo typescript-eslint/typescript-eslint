@@ -8,8 +8,8 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: rootPath,
-    project: './tsconfig.json'
-  }
+    project: './tsconfig.json',
+  },
 });
 
 ruleTester.run('prefer-includes', rule, {
@@ -88,7 +88,7 @@ ruleTester.run('prefer-includes', rule, {
       function f(a: string): void {
         something.test(a)
       }
-    `
+    `,
   ],
   invalid: [
     // positive
@@ -103,7 +103,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -116,7 +116,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -129,7 +129,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -142,7 +142,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
 
     // negative
@@ -157,7 +157,7 @@ ruleTester.run('prefer-includes', rule, {
           !a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -170,7 +170,7 @@ ruleTester.run('prefer-includes', rule, {
           !a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -183,7 +183,7 @@ ruleTester.run('prefer-includes', rule, {
           !a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -196,7 +196,7 @@ ruleTester.run('prefer-includes', rule, {
           !a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
 
     // RegExp#test
@@ -211,7 +211,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes("bar")
         }
       `,
-      errors: [{ messageId: 'preferStringIncludes' }]
+      errors: [{ messageId: 'preferStringIncludes' }],
     },
     {
       code: `
@@ -226,7 +226,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes("bar")
         }
       `,
-      errors: [{ messageId: 'preferStringIncludes' }]
+      errors: [{ messageId: 'preferStringIncludes' }],
     },
     {
       code: `
@@ -241,7 +241,7 @@ ruleTester.run('prefer-includes', rule, {
           (a + b).includes("bar")
         }
       `,
-      errors: [{ messageId: 'preferStringIncludes' }]
+      errors: [{ messageId: 'preferStringIncludes' }],
     },
 
     // type variation
@@ -256,7 +256,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -269,7 +269,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -282,7 +282,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -295,7 +295,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -308,7 +308,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -321,7 +321,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -334,7 +334,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -347,7 +347,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -360,7 +360,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -373,7 +373,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -386,7 +386,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -399,7 +399,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -420,7 +420,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
+      errors: [{ messageId: 'preferIncludes' }],
     },
     {
       code: `
@@ -433,7 +433,7 @@ ruleTester.run('prefer-includes', rule, {
           a.includes(b)
         }
       `,
-      errors: [{ messageId: 'preferIncludes' }]
-    }
-  ]
+      errors: [{ messageId: 'preferIncludes' }],
+    },
+  ],
 });

@@ -18,15 +18,15 @@ export default createRule({
     docs: {
       description: 'Enforce `includes` method over `indexOf` method',
       category: 'Best Practices',
-      recommended: false
+      recommended: false,
     },
     fixable: 'code',
     messages: {
       preferIncludes: "Use 'includes()' method instead.",
       preferStringIncludes:
-        'Use `String#includes()` method with a string instead.'
+        'Use `String#includes()` method with a string instead.',
     },
-    schema: []
+    schema: [],
   },
 
   create(context) {
@@ -66,7 +66,7 @@ export default createRule({
 
     function hasSameParameters(
       nodeA: ts.Declaration,
-      nodeB: ts.Declaration
+      nodeB: ts.Declaration,
     ): boolean {
       if (!ts.isFunctionLike(nodeA) || !ts.isFunctionLike(nodeB)) {
         return false;
@@ -118,13 +118,13 @@ export default createRule({
 
       // To string.
       return String.fromCodePoint(
-        ...chars.map(c => (c as RegExpAST.Character).value)
+        ...chars.map(c => (c as RegExpAST.Character).value),
       );
     }
 
     return {
       "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]"(
-        node: TSESTree.MemberExpression
+        node: TSESTree.MemberExpression,
       ): void {
         // Check if the comparison is equivalent to `includes()`.
         const callNode = node.parent as TSESTree.CallExpression;
@@ -153,7 +153,7 @@ export default createRule({
           if (
             includesMethodSymbol == null ||
             !includesMethodSymbol.declarations.some(includesMethodDecl =>
-              hasSameParameters(includesMethodDecl, instanceofMethodDecl)
+              hasSameParameters(includesMethodDecl, instanceofMethodDecl),
             )
           ) {
             return;
@@ -170,13 +170,13 @@ export default createRule({
             }
             yield fixer.replaceText(node.property, 'includes');
             yield fixer.removeRange([callNode.range[1], compareNode.range[1]]);
-          }
+          },
         });
       },
 
       // /bar/.test(foo)
       'CallExpression > MemberExpression.callee[property.name="test"][computed=false]'(
-        node: TSESTree.MemberExpression
+        node: TSESTree.MemberExpression,
       ): void {
         const callNode = node.parent as TSESTree.CallExpression;
         const text =
@@ -204,11 +204,11 @@ export default createRule({
             }
             yield fixer.insertTextAfter(
               argNode,
-              `.includes(${JSON.stringify(text)}`
+              `.includes(${JSON.stringify(text)}`,
             );
-          }
+          },
         });
-      }
+      },
     };
-  }
+  },
 });
