@@ -11,9 +11,9 @@ const ruleTester = new RuleTester({
      * Project is needed to generate the parserServices
      * within @typescript-eslint/parser
      */
-    project: './tests/tsconfig.json'
+    project: './tests/tsconfig.json',
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 /**
@@ -21,8 +21,8 @@ const ruleTester = new RuleTester({
  */
 const tslintRulesConfig = {
   rules: {
-    semicolon: [true, 'always']
-  }
+    semicolon: [true, 'always'],
+  },
 };
 
 /**
@@ -32,36 +32,36 @@ const tslintRulesDirectoryConfig = {
   rulesDirectory: ['./tests/test-tslint-rules-directory'],
   rules: {
     'always-fail': {
-      severity: 'error'
-    }
-  }
+      severity: 'error',
+    },
+  },
 };
 
 ruleTester.run('tslint/config', rules.config, {
   valid: [
     {
       code: 'var foo = true;',
-      options: [tslintRulesConfig]
+      options: [tslintRulesConfig],
     },
     {
       filename: './tests/test-project/file-spec.ts',
       code: readFileSync('./tests/test-project/file-spec.ts', 'utf8').replace(
         /\n/g,
-        ' '
+        ' ',
       ),
       parserOptions: {
-        project: `${__dirname}/test-project/tsconfig.json`
+        project: `${__dirname}/test-project/tsconfig.json`,
       },
       options: [
         {
-          ...tslintRulesConfig
-        }
-      ]
+          ...tslintRulesConfig,
+        },
+      ],
     },
     {
       code: 'throw "should be ok because rule is not loaded";',
-      options: [tslintRulesConfig]
-    }
+      options: [tslintRulesConfig],
+    },
   ],
 
   invalid: [
@@ -71,9 +71,9 @@ ruleTester.run('tslint/config', rules.config, {
       errors: [
         {
           message:
-            'Throwing plain strings (not instances of Error) gives no stack traces (tslint:no-string-throw)'
-        }
-      ]
+            'Throwing plain strings (not instances of Error) gives no stack traces (tslint:no-string-throw)',
+        },
+      ],
     },
     {
       code: 'var foo = true // semicolon',
@@ -83,9 +83,9 @@ ruleTester.run('tslint/config', rules.config, {
         {
           message: 'Missing semicolon (tslint:semicolon)',
           line: 1,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       code: 'var foo = true // fail',
@@ -95,33 +95,33 @@ ruleTester.run('tslint/config', rules.config, {
         {
           message: 'failure (tslint:always-fail)',
           line: 1,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       filename: './tests/test-project/source.ts',
       code: readFileSync('./tests/test-project/source.ts', 'utf8').replace(
         /\n/g,
-        ' '
+        ' ',
       ),
       parserOptions: {
-        project: `${__dirname}/test-project/tsconfig.json`
+        project: `${__dirname}/test-project/tsconfig.json`,
       },
       options: [
         {
           rulesDirectory: [
-            `${__dirname}/../../../node_modules/tslint/lib/rules`
+            `${__dirname}/../../../node_modules/tslint/lib/rules`,
           ],
-          rules: { 'restrict-plus-operands': true }
-        }
+          rules: { 'restrict-plus-operands': true },
+        },
       ],
       errors: [
         {
           message:
-            "Operands of '+' operation must either be both strings or both numbers, consider using template literals (tslint:restrict-plus-operands)"
-        }
-      ]
-    }
-  ]
+            "Operands of '+' operation must either be both strings or both numbers, consider using template literals (tslint:restrict-plus-operands)",
+        },
+      ],
+    },
+  ],
 });

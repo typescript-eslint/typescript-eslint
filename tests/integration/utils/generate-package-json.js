@@ -11,8 +11,8 @@ const testPackageJSON = {
     eslint: rootPackageJSON.devDependencies.eslint,
     typescript: rootPackageJSON.devDependencies.typescript,
     tslint: rootPackageJSON.devDependencies.tslint,
-    jest: rootPackageJSON.devDependencies.jest
-  }
+    jest: rootPackageJSON.devDependencies.jest,
+  },
 };
 
 fs.writeFileSync('/usr/package.json', JSON.stringify(testPackageJSON, null, 2));

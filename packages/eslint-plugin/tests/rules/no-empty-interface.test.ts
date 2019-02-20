@@ -2,7 +2,7 @@ import rule from '../../src/rules/no-empty-interface';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-empty-interface', rule, {
@@ -32,8 +32,8 @@ interface Foo {
 
 interface Bar extends Foo {}
         `,
-      options: [{ allowSingleExtends: true }]
-    }
+      options: [{ allowSingleExtends: true }],
+    },
   ],
   invalid: [
     {
@@ -42,9 +42,9 @@ interface Bar extends Foo {}
         {
           messageId: 'noEmpty',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: 'interface Foo extends {}',
@@ -52,9 +52,9 @@ interface Bar extends Foo {}
         {
           messageId: 'noEmpty',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -69,9 +69,9 @@ interface Bar extends Foo {}
         {
           messageId: 'noEmptyWithSuper',
           line: 6,
-          column: 11
-        }
-      ]
-    }
-  ]
+          column: 11,
+        },
+      ],
+    },
+  ],
 });

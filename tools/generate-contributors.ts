@@ -10,12 +10,12 @@ const CORE_MAINTAINERS = new Set([
   'JamesHenry',
   'armano2',
   'bradzacher',
-  'j-f1'
+  'j-f1',
 ]);
 const IGNORED_USERS = new Set([
   'eslint[bot]',
   'greenkeeper[bot]',
-  'semantic-release-bot'
+  'semantic-release-bot',
 ]);
 
 const COMPLETELY_ARBITRARY_CONTRIBUTION_COUNT = 3;
@@ -45,12 +45,12 @@ async function* fetchUsers(page = 1) {
   let lastLength = 0;
   do {
     const response = await fetch(`${contributorsApiUrl}&page=${page}`, {
-      method: 'GET'
+      method: 'GET',
     });
     const contributors: Contributor[] = await response.json();
 
     const thresholdedContributors = contributors.filter(
-      user => user.contributions >= COMPLETELY_ARBITRARY_CONTRIBUTION_COUNT
+      user => user.contributions >= COMPLETELY_ARBITRARY_CONTRIBUTION_COUNT,
     );
     yield thresholdedContributors;
 
@@ -80,7 +80,7 @@ async function main() {
     githubContributors.map<Promise<User>>(async c => {
       const response = await fetch(c.url, { method: 'GET' });
       return await response.json();
-    })
+    }),
   );
 
   const contributors = users
@@ -92,7 +92,7 @@ async function main() {
       name: u.name,
       avatar_url: u.avatar_url, // eslint-disable-line @typescript-eslint/camelcase
       profile: u.html_url,
-      contributions: CORE_MAINTAINERS.has(u.login) ? ['maintenance'] : []
+      contributions: CORE_MAINTAINERS.has(u.login) ? ['maintenance'] : [],
     }));
 
   // build + write the .all-contributorsrc
@@ -105,7 +105,7 @@ async function main() {
     imageSize: 100,
     commit: false,
     contributors,
-    contributorsPerLine: 7
+    contributorsPerLine: 7,
   };
   const rcPath = path.resolve(__dirname, '../.all-contributorsrc');
   fs.writeFileSync(rcPath, JSON.stringify(allContributorsConfig, null, 2));

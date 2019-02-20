@@ -2,7 +2,7 @@ import rule from '../../src/rules/no-var-requires';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-var-requires', rule, {
@@ -14,9 +14,9 @@ ruleTester.run('no-var-requires', rule, {
         {
           messageId: 'noVarReqs',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: "const foo = require('foo')",
@@ -24,9 +24,9 @@ ruleTester.run('no-var-requires', rule, {
         {
           messageId: 'noVarReqs',
           line: 1,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       code: "let foo = require('foo')",
@@ -34,9 +34,9 @@ ruleTester.run('no-var-requires', rule, {
         {
           messageId: 'noVarReqs',
           line: 1,
-          column: 11
-        }
-      ]
-    }
-  ]
+          column: 11,
+        },
+      ],
+    },
+  ],
 });

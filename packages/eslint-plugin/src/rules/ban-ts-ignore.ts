@@ -8,13 +8,13 @@ export default util.createRule({
       description: 'Bans “// @ts-ignore” comments from being used.',
       tslintRuleName: 'ban-ts-ignore',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     schema: [],
     messages: {
       tsIgnoreComment:
-        'Do not use "// @ts-ignore" comments because they suppress compilation errors.'
-    }
+        'Do not use "// @ts-ignore" comments because they suppress compilation errors.',
+    },
   },
   defaultOptions: [],
   create(context) {
@@ -32,11 +32,11 @@ export default util.createRule({
           if (tsIgnoreRegExp.test(comment.value)) {
             context.report({
               node: comment,
-              messageId: 'tsIgnoreComment'
+              messageId: 'tsIgnoreComment',
             });
           }
         });
-      }
+      },
     };
-  }
+  },
 });

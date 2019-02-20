@@ -8,14 +8,14 @@ export default util.createRule({
       description: 'Disallow iterating over an array with a for-in loop',
       category: 'Best Practices',
       recommended: false,
-      tslintName: 'no-for-in-array'
+      tslintName: 'no-for-in-array',
     },
     messages: {
       forInViolation:
-        'For-in loops over arrays are forbidden. Use for-of or array.forEach instead.'
+        'For-in loops over arrays are forbidden. Use for-of or array.forEach instead.',
     },
     schema: [],
-    type: 'problem'
+    type: 'problem',
   },
   defaultOptions: [],
   create(context) {
@@ -36,10 +36,10 @@ export default util.createRule({
         ) {
           context.report({
             node,
-            messageId: 'forInViolation'
+            messageId: 'forInViolation',
           });
         }
-      }
+      },
     };
-  }
+  },
 });

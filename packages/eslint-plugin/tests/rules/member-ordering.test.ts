@@ -2,7 +2,7 @@ import rule from '../../src/rules/member-ordering';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('member-ordering', rule, {
@@ -44,7 +44,7 @@ interface Foo {
     L();
 }
             `,
-      options: [{ default: 'never' }]
+      options: [{ default: 'never' }],
     },
     {
       code: `
@@ -65,7 +65,7 @@ interface Foo {
     L();
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }]
+      options: [{ default: ['field', 'constructor', 'method'] }],
     },
 
     {
@@ -87,7 +87,7 @@ interface Foo {
     L();
 }
             `,
-      options: [{ interfaces: 'never' }]
+      options: [{ interfaces: 'never' }],
     },
     {
       code: `
@@ -108,7 +108,7 @@ interface Foo {
     F: string;
 }
             `,
-      options: [{ interfaces: ['method', 'constructor', 'field'] }]
+      options: [{ interfaces: ['method', 'constructor', 'field'] }],
     },
     {
       code: `
@@ -132,9 +132,9 @@ interface Foo {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          interfaces: ['method', 'constructor', 'field']
-        }
-      ]
+          interfaces: ['method', 'constructor', 'field'],
+        },
+      ],
     },
     {
       code: `
@@ -161,10 +161,10 @@ interface Foo {
           default: [
             'private-instance-method',
             'public-constructor',
-            'protected-static-field'
-          ]
-        }
-      ]
+            'protected-static-field',
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -187,9 +187,9 @@ interface Foo {
             `,
       options: [
         {
-          default: ['method', 'public-constructor', 'protected-static-field']
-        }
-      ]
+          default: ['method', 'public-constructor', 'protected-static-field'],
+        },
+      ],
     },
     `
 // no accessibility === public
@@ -227,7 +227,7 @@ type Foo = {
     L();
 }
             `,
-      options: [{ default: 'never' }]
+      options: [{ default: 'never' }],
     },
     {
       code: `
@@ -247,7 +247,7 @@ type Foo = {
     L();
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }]
+      options: [{ default: ['field', 'constructor', 'method'] }],
     },
     {
       code: `
@@ -268,7 +268,7 @@ type Foo = {
     L();
 }
             `,
-      options: [{ default: ['field', 'method'] }]
+      options: [{ default: ['field', 'method'] }],
     },
     {
       code: `
@@ -288,7 +288,7 @@ type Foo = {
     F: string;
 }
             `,
-      options: [{ typeLiterals: 'never' }]
+      options: [{ typeLiterals: 'never' }],
     },
     {
       code: `
@@ -308,7 +308,7 @@ type Foo = {
     F: string;
 }
             `,
-      options: [{ typeLiterals: ['method', 'field'] }]
+      options: [{ typeLiterals: ['method', 'field'] }],
     },
     {
       code: `
@@ -328,7 +328,7 @@ type Foo = {
     F: string;
 }
             `,
-      options: [{ typeLiterals: ['method', 'constructor', 'field'] }]
+      options: [{ typeLiterals: ['method', 'constructor', 'field'] }],
     },
     {
       code: `
@@ -351,9 +351,9 @@ type Foo = {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          typeLiterals: ['method', 'constructor', 'field']
-        }
-      ]
+          typeLiterals: ['method', 'constructor', 'field'],
+        },
+      ],
     },
     {
       code: `
@@ -378,11 +378,11 @@ type Foo = {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field'
+            'protected-static-field',
           ],
-          typeLiterals: ['field', 'method']
-        }
-      ]
+          typeLiterals: ['field', 'method'],
+        },
+      ],
     },
     `
 class Foo {
@@ -419,7 +419,7 @@ class Foo {
     private L() {}
 }
             `,
-      options: [{ default: 'never' }]
+      options: [{ default: 'never' }],
     },
     {
       code: `
@@ -439,7 +439,7 @@ class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }]
+      options: [{ default: ['field', 'constructor', 'method'] }],
     },
     {
       code: `
@@ -459,7 +459,7 @@ class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'method'] }]
+      options: [{ default: ['field', 'method'] }],
     },
     {
       code: `
@@ -479,7 +479,7 @@ class Foo {
     private F: string = "";
 }
             `,
-      options: [{ classes: 'never' }]
+      options: [{ classes: 'never' }],
     },
     {
       code: `
@@ -499,7 +499,7 @@ class Foo {
     constructor() {}
 }
             `,
-      options: [{ classes: ['method', 'field'] }]
+      options: [{ classes: ['method', 'field'] }],
     },
     {
       code: `
@@ -519,7 +519,7 @@ class Foo {
     private F: string = "";
 }
             `,
-      options: [{ classes: ['method', 'constructor', 'field'] }]
+      options: [{ classes: ['method', 'constructor', 'field'] }],
     },
     {
       code: `
@@ -534,7 +534,7 @@ class Foo {
     }
 }
             `,
-      options: [{ classes: ['field', 'constructor', 'method'] }]
+      options: [{ classes: ['field', 'constructor', 'method'] }],
     },
     {
       code: `
@@ -557,9 +557,9 @@ class Foo {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          classes: ['method', 'constructor', 'field']
-        }
-      ]
+          classes: ['method', 'constructor', 'field'],
+        },
+      ],
     },
     {
       code: `
@@ -586,10 +586,10 @@ class Foo {
             'constructor',
             'public-field',
             'private-field',
-            'protected-field'
-          ]
-        }
-      ]
+            'protected-field',
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -619,10 +619,10 @@ class Foo {
             'constructor',
             'public-field',
             'protected-field',
-            'private-field'
-          ]
-        }
-      ]
+            'private-field',
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -649,10 +649,10 @@ class Foo {
             'public-field',
             'constructor',
             'method',
-            'field'
-          ]
-        }
-      ]
+            'field',
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -681,10 +681,10 @@ class Foo {
             'protected-instance-method',
             'private-instance-method',
             'constructor',
-            'field'
-          ]
-        }
-      ]
+            'field',
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -707,9 +707,9 @@ class Foo {
             `,
       options: [
         {
-          classes: ['private-instance-method', 'protected-static-field']
-        }
-      ]
+          classes: ['private-instance-method', 'protected-static-field'],
+        },
+      ],
     },
     {
       code: `
@@ -732,9 +732,9 @@ class Foo {
             `,
       options: [
         {
-          default: ['public-instance-method', 'protected-static-field']
-        }
-      ]
+          default: ['public-instance-method', 'protected-static-field'],
+        },
+      ],
     },
     {
       code: `
@@ -757,9 +757,9 @@ class Foo {
             `,
       options: [
         {
-          classes: ['public-instance-method', 'protected-static-field']
-        }
-      ]
+          classes: ['public-instance-method', 'protected-static-field'],
+        },
+      ],
     },
     {
       code: `
@@ -784,15 +784,15 @@ class Foo {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field'
+            'protected-static-field',
           ],
           classes: [
             'public-instance-field',
             'private-constructor',
-            'protected-instance-method'
-          ]
-        }
-      ]
+            'protected-instance-method',
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -817,15 +817,15 @@ class Foo {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field'
+            'protected-static-field',
           ],
           classes: [
             'public-instance-field',
             'private-constructor',
-            'protected-instance-method'
-          ]
-        }
-      ]
+            'protected-instance-method',
+          ],
+        },
+      ],
     },
     `
 const foo = class Foo {
@@ -862,7 +862,7 @@ const foo = class Foo {
     private L() {}
 }
             `,
-      options: [{ default: 'never' }]
+      options: [{ default: 'never' }],
     },
     {
       code: `
@@ -882,7 +882,7 @@ const foo = class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }]
+      options: [{ default: ['field', 'constructor', 'method'] }],
     },
     {
       code: `
@@ -902,7 +902,7 @@ const foo = class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'method'] }]
+      options: [{ default: ['field', 'method'] }],
     },
     {
       code: `
@@ -922,7 +922,7 @@ const foo = class Foo {
     private F: string = "";
 }
             `,
-      options: [{ classExpressions: 'never' }]
+      options: [{ classExpressions: 'never' }],
     },
     {
       code: `
@@ -942,7 +942,7 @@ const foo = class Foo {
     constructor() {}
 }
             `,
-      options: [{ classExpressions: ['method', 'field'] }]
+      options: [{ classExpressions: ['method', 'field'] }],
     },
     {
       code: `
@@ -962,7 +962,7 @@ const foo = class Foo {
     private F: string = "";
 }
             `,
-      options: [{ classExpressions: ['method', 'constructor', 'field'] }]
+      options: [{ classExpressions: ['method', 'constructor', 'field'] }],
     },
     {
       code: `
@@ -985,9 +985,9 @@ const foo = class Foo {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          classExpressions: ['method', 'constructor', 'field']
-        }
-      ]
+          classExpressions: ['method', 'constructor', 'field'],
+        },
+      ],
     },
     {
       code: `
@@ -1012,10 +1012,10 @@ const foo = class Foo {
         {
           classExpressions: [
             'private-instance-method',
-            'protected-static-field'
-          ]
-        }
-      ]
+            'protected-static-field',
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1038,9 +1038,9 @@ const foo = class Foo {
             `,
       options: [
         {
-          default: ['public-instance-method', 'protected-static-field']
-        }
-      ]
+          default: ['public-instance-method', 'protected-static-field'],
+        },
+      ],
     },
     {
       code: `
@@ -1063,9 +1063,12 @@ const foo = class Foo {
             `,
       options: [
         {
-          classExpressions: ['public-instance-method', 'protected-static-field']
-        }
-      ]
+          classExpressions: [
+            'public-instance-method',
+            'protected-static-field',
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1090,20 +1093,20 @@ const foo = class Foo {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field'
+            'protected-static-field',
           ],
           classes: [
             'public-instance-method',
             'protected-constructor',
-            'protected-static-method'
+            'protected-static-method',
           ],
           classExpressions: [
             'public-instance-field',
             'private-constructor',
-            'protected-instance-method'
-          ]
-        }
-      ]
+            'protected-instance-method',
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1128,20 +1131,20 @@ const foo = class Foo {
           default: [
             'public-instance-method',
             'public-constructor',
-            'protected-static-field'
+            'protected-static-field',
           ],
           classes: [
             'public-instance-method',
             'protected-constructor',
-            'protected-static-method'
+            'protected-static-method',
           ],
           classExpressions: [
             'public-instance-field',
             'private-constructor',
-            'protected-instance-method'
-          ]
-        }
-      ]
+            'protected-instance-method',
+          ],
+        },
+      ],
     },
     `
 class Foo {
@@ -1160,7 +1163,7 @@ class Foo {
     A: string;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }]
+      options: [{ default: ['method', 'constructor', 'field'] }],
     },
     {
       code: `
@@ -1172,7 +1175,7 @@ class Foo {
     L: () => {}
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }]
+      options: [{ default: ['method', 'constructor', 'field'] }],
     },
     `
 interface Foo {
@@ -1189,7 +1192,7 @@ interface Foo {
     A: string;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }]
+      options: [{ default: ['method', 'constructor', 'field'] }],
     },
     `
 type Foo = {
@@ -1206,8 +1209,8 @@ type Foo = {
     A: string;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }]
-    }
+      options: [{ default: ['method', 'constructor', 'field'] }],
+    },
   ],
   invalid: [
     {
@@ -1234,12 +1237,12 @@ interface Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'new',
-            rank: 'method'
+            rank: 'method',
           },
           line: 16,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1266,66 +1269,66 @@ interface Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 10,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'field'
+            rank: 'field',
           },
           line: 11,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 12,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 14,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 15,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'new',
-            rank: 'field'
+            rank: 'field',
           },
           line: 16,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1352,66 +1355,66 @@ interface Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 10,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'field'
+            rank: 'field',
           },
           line: 11,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 12,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 14,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 15,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'new',
-            rank: 'field'
+            rank: 'field',
           },
           line: 16,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1435,74 +1438,74 @@ interface Foo {
       options: [
         {
           default: ['field', 'method', 'constructor'],
-          interfaces: ['method', 'constructor', 'field']
-        }
+          interfaces: ['method', 'constructor', 'field'],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 10,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'field'
+            rank: 'field',
           },
           line: 11,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 12,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 14,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 15,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'new',
-            rank: 'field'
+            rank: 'field',
           },
           line: 16,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1525,56 +1528,56 @@ interface Foo {
             `,
       options: [
         {
-          interfaces: ['constructor', 'field', 'method']
-        }
+          interfaces: ['constructor', 'field', 'method'],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'B',
-            rank: 'method'
+            rank: 'method',
           },
           line: 7,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'C',
-            rank: 'method'
+            rank: 'method',
           },
           line: 9,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'D',
-            rank: 'method'
+            rank: 'method',
           },
           line: 11,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'E',
-            rank: 'method'
+            rank: 'method',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'F',
-            rank: 'method'
+            rank: 'method',
           },
           line: 15,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1600,12 +1603,12 @@ type Foo = {
           messageId: 'incorrectOrder',
           data: {
             name: 'new',
-            rank: 'method'
+            rank: 'method',
           },
           line: 16,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1632,66 +1635,66 @@ type Foo = {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 10,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'field'
+            rank: 'field',
           },
           line: 11,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 12,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 14,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 15,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'new',
-            rank: 'field'
+            rank: 'field',
           },
           line: 16,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1718,66 +1721,66 @@ type Foo = {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 10,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'field'
+            rank: 'field',
           },
           line: 11,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 12,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 14,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 15,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'new',
-            rank: 'field'
+            rank: 'field',
           },
           line: 16,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1801,74 +1804,74 @@ type Foo = {
       options: [
         {
           default: ['field', 'method', 'constructor'],
-          typeLiterals: ['method', 'constructor', 'field']
-        }
+          typeLiterals: ['method', 'constructor', 'field'],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 10,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'field'
+            rank: 'field',
           },
           line: 11,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 12,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 14,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 15,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'new',
-            rank: 'field'
+            rank: 'field',
           },
           line: 16,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1891,56 +1894,56 @@ type Foo = {
             `,
       options: [
         {
-          typeLiterals: ['constructor', 'field', 'method']
-        }
+          typeLiterals: ['constructor', 'field', 'method'],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'B',
-            rank: 'method'
+            rank: 'method',
           },
           line: 7,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'C',
-            rank: 'method'
+            rank: 'method',
           },
           line: 9,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'D',
-            rank: 'method'
+            rank: 'method',
           },
           line: 11,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'E',
-            rank: 'method'
+            rank: 'method',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'F',
-            rank: 'method'
+            rank: 'method',
           },
           line: 15,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -1965,30 +1968,30 @@ class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 14,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 15,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2014,57 +2017,57 @@ class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 4,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'B',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 5,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'C',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 6,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'D',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 7,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'E',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 8,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'F',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 9,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2090,12 +2093,12 @@ class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'method'
+            rank: 'method',
           },
           line: 10,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2121,12 +2124,12 @@ class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 9,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2152,48 +2155,48 @@ class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 6,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 7,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 8,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 9,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
-            rank: 'field'
+            rank: 'field',
           },
           line: 11,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2216,74 +2219,74 @@ class Foo {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          classes: ['method', 'constructor', 'field']
-        }
+          classes: ['method', 'constructor', 'field'],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 4,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'field'
+            rank: 'field',
           },
           line: 5,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 6,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 7,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 8,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 9,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
-            rank: 'field'
+            rank: 'field',
           },
           line: 10,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2312,30 +2315,30 @@ class Foo {
             'constructor',
             'public-field',
             'private-field',
-            'protected-field'
-          ]
-        }
+            'protected-field',
+          ],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'private field'
+            rank: 'private field',
           },
           line: 12,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'F',
-            rank: 'protected field'
+            rank: 'protected field',
           },
           line: 15,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2365,30 +2368,30 @@ class Foo {
             'constructor',
             'public-field',
             'protected-field',
-            'private-field'
-          ]
-        }
+            'private-field',
+          ],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 6,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
-            rank: 'public field'
+            rank: 'public field',
           },
           line: 10,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2415,21 +2418,21 @@ class Foo {
             'public-field',
             'constructor',
             'method',
-            'field'
-          ]
-        }
+            'field',
+          ],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
-            rank: 'method'
+            rank: 'method',
           },
           line: 8,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2458,30 +2461,30 @@ class Foo {
             'protected-instance-method',
             'private-instance-method',
             'constructor',
-            'field'
-          ]
-        }
+            'field',
+          ],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'private static method'
+            rank: 'private static method',
           },
           line: 5,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'private static method'
+            rank: 'private static method',
           },
           line: 6,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2503,20 +2506,20 @@ class Foo {
             `,
       options: [
         {
-          classes: ['private-instance-method', 'protected-static-field']
-        }
+          classes: ['private-instance-method', 'protected-static-field'],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'protected static field'
+            rank: 'protected static field',
           },
           line: 10,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2539,20 +2542,20 @@ class Foo {
             `,
       options: [
         {
-          default: ['public-instance-method', 'protected-static-field']
-        }
+          default: ['public-instance-method', 'protected-static-field'],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'protected static field'
+            rank: 'protected static field',
           },
           line: 8,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2577,30 +2580,30 @@ const foo = class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 13,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 14,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 15,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2626,57 +2629,57 @@ const foo = class {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 4,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'B',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 5,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'C',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 6,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'D',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 7,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'E',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 8,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'F',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 9,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2702,12 +2705,12 @@ const foo = class {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'method'
+            rank: 'method',
           },
           line: 10,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2733,12 +2736,12 @@ const foo = class {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 9,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2764,48 +2767,48 @@ const foo = class {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 6,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 7,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 8,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 9,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
-            rank: 'field'
+            rank: 'field',
           },
           line: 11,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2828,74 +2831,74 @@ const foo = class {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          classExpressions: ['method', 'constructor', 'field']
-        }
+          classExpressions: ['method', 'constructor', 'field'],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'field'
+            rank: 'field',
           },
           line: 4,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'field'
+            rank: 'field',
           },
           line: 5,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'I',
-            rank: 'field'
+            rank: 'field',
           },
           line: 6,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 7,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'field'
+            rank: 'field',
           },
           line: 8,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'field'
+            rank: 'field',
           },
           line: 9,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
-            rank: 'field'
+            rank: 'field',
           },
           line: 10,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2924,30 +2927,30 @@ const foo = class {
             'constructor',
             'public-field',
             'private-field',
-            'protected-field'
-          ]
-        }
+            'protected-field',
+          ],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'private field'
+            rank: 'private field',
           },
           line: 12,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'F',
-            rank: 'protected field'
+            rank: 'protected field',
           },
           line: 15,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -2977,30 +2980,30 @@ const foo = class {
             'constructor',
             'public-field',
             'protected-field',
-            'private-field'
-          ]
-        }
+            'private-field',
+          ],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 6,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
-            rank: 'public field'
+            rank: 'public field',
           },
           line: 10,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -3027,21 +3030,21 @@ const foo = class {
             'public-field',
             'constructor',
             'method',
-            'field'
-          ]
-        }
+            'field',
+          ],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
-            rank: 'method'
+            rank: 'method',
           },
           line: 8,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -3070,30 +3073,30 @@ const foo = class {
             'protected-instance-method',
             'private-instance-method',
             'constructor',
-            'field'
-          ]
-        }
+            'field',
+          ],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'G',
-            rank: 'private static method'
+            rank: 'private static method',
           },
           line: 5,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'H',
-            rank: 'private static method'
+            rank: 'private static method',
           },
           line: 6,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -3118,21 +3121,21 @@ const foo = class {
         {
           classExpressions: [
             'private-instance-method',
-            'protected-static-field'
-          ]
-        }
+            'protected-static-field',
+          ],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'L',
-            rank: 'protected static field'
+            rank: 'protected static field',
           },
           line: 10,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -3155,20 +3158,20 @@ const foo = class {
             `,
       options: [
         {
-          default: ['public-instance-method', 'protected-static-field']
-        }
+          default: ['public-instance-method', 'protected-static-field'],
+        },
       ],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'protected static field'
+            rank: 'protected static field',
           },
           line: 8,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
 
     {
@@ -3185,21 +3188,21 @@ class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 4,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'constructor',
-            rank: 'public instance method'
+            rank: 'public instance method',
           },
           line: 5,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -3216,12 +3219,12 @@ class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 5,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -3239,12 +3242,12 @@ class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'K',
-            rank: 'constructor'
+            rank: 'constructor',
           },
           line: 5,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -3259,12 +3262,12 @@ interface Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'method'
+            rank: 'method',
           },
           line: 5,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -3279,12 +3282,12 @@ type Foo = {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'method'
+            rank: 'method',
           },
           line: 5,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -3300,12 +3303,12 @@ type Foo = {
           messageId: 'incorrectOrder',
           data: {
             name: 'J',
-            rank: 'field'
+            rank: 'field',
           },
           line: 5,
-          column: 5
-        }
-      ]
-    }
-  ]
+          column: 5,
+        },
+      ],
+    },
+  ],
 });

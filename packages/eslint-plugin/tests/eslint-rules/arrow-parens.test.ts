@@ -2,7 +2,7 @@ import rule from 'eslint/lib/rules/arrow-parens';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('arrow-parens', rule, {
@@ -15,24 +15,24 @@ ruleTester.run('arrow-parens', rule, {
     'const foo = function <T>(t: T) {};',
     {
       code: 'const foo = t => {};',
-      options: ['as-needed']
+      options: ['as-needed'],
     },
     {
       code: 'const foo = <T>(t) => {};',
-      options: ['as-needed']
+      options: ['as-needed'],
     },
     {
       code: 'const foo = (t: T) => {};',
-      options: ['as-needed']
+      options: ['as-needed'],
     },
     {
       code: 'const foo = <T>(t: T) => {};',
-      options: ['as-needed']
+      options: ['as-needed'],
     },
     {
       code: 'const foo = <T>(t: T) => ({});',
-      options: ['as-needed', { requireForBlockBody: true }]
-    }
+      options: ['as-needed', { requireForBlockBody: true }],
+    },
   ],
-  invalid: []
+  invalid: [],
 });

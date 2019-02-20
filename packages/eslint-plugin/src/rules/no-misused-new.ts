@@ -9,13 +9,13 @@ export default util.createRule({
       description: 'Enforce valid definition of `new` and `constructor`.',
       tslintRuleName: 'no-misused-new',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     schema: [],
     messages: {
       errorMessageInterface: 'Interfaces cannot be constructed, only classes.',
-      errorMessageClass: 'Class cannon have method named `new`.'
-    }
+      errorMessageClass: 'Class cannon have method named `new`.',
+    },
   },
   defaultOptions: [],
   create(context) {
@@ -28,7 +28,7 @@ export default util.createRule({
         | TSESTree.TSTypeAnnotation
         | TSESTree.TypeNode
         | TSESTree.EntityName
-        | undefined
+        | undefined,
     ): string | null {
       if (node) {
         switch (node.type) {
@@ -51,7 +51,7 @@ export default util.createRule({
      */
     function isMatchingParentType(
       parent: undefined | TSESTree.Node,
-      returnType: TSESTree.TSTypeAnnotation | undefined
+      returnType: TSESTree.TSTypeAnnotation | undefined,
     ): boolean {
       if (
         parent &&
@@ -66,31 +66,31 @@ export default util.createRule({
 
     return {
       'TSInterfaceBody > TSConstructSignatureDeclaration'(
-        node: TSESTree.TSConstructSignatureDeclaration
+        node: TSESTree.TSConstructSignatureDeclaration,
       ) {
         if (
           isMatchingParentType(
             node.parent!.parent as TSESTree.TSInterfaceDeclaration,
-            node.returnType
+            node.returnType,
           )
         ) {
           // constructor
           context.report({
             node,
-            messageId: 'errorMessageInterface'
+            messageId: 'errorMessageInterface',
           });
         }
       },
       "TSMethodSignature[key.name='constructor']"(
-        node: TSESTree.TSMethodSignature
+        node: TSESTree.TSMethodSignature,
       ) {
         context.report({
           node,
-          messageId: 'errorMessageInterface'
+          messageId: 'errorMessageInterface',
         });
       },
       "ClassBody > MethodDefinition[key.name='new']"(
-        node: TSESTree.MethodDefinition
+        node: TSESTree.MethodDefinition,
       ) {
         if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
           if (
@@ -99,11 +99,11 @@ export default util.createRule({
           ) {
             context.report({
               node,
-              messageId: 'errorMessageClass'
+              messageId: 'errorMessageClass',
             });
           }
         }
-      }
+      },
     };
-  }
+  },
 });

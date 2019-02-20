@@ -11,15 +11,15 @@ export default util.createRule({
         'When adding two variables, operands must both be of type number or of type string.',
       tslintRuleName: 'restrict-plus-operands',
       category: 'Best Practices',
-      recommended: false
+      recommended: false,
     },
     messages: {
       notNumbers:
         "Operands of '+' operation must either be both strings or both numbers.",
       notStrings:
-        "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal."
+        "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal.",
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -79,16 +79,16 @@ export default util.createRule({
           if (leftType === 'string' || rightType === 'string') {
             context.report({
               node,
-              messageId: 'notStrings'
+              messageId: 'notStrings',
             });
           } else {
             context.report({
               node,
-              messageId: 'notNumbers'
+              messageId: 'notNumbers',
             });
           }
         }
-      }
+      },
     };
-  }
+  },
 });

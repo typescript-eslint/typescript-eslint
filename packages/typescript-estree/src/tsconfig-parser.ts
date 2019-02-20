@@ -11,7 +11,7 @@ import { Extra } from './parser-options';
  */
 const defaultCompilerOptions: ts.CompilerOptions = {
   allowNonTsExtensions: true,
-  allowJs: true
+  allowJs: true,
 };
 
 /**
@@ -33,7 +33,7 @@ const watchCallbackTrackingMap = new Map<string, ts.FileWatcherCallback>();
  */
 const currentLintOperationState = {
   code: '',
-  filePath: ''
+  filePath: '',
 };
 
 /**
@@ -42,7 +42,7 @@ const currentLintOperationState = {
  */
 function diagnosticReporter(diagnostic: ts.Diagnostic): void {
   throw new Error(
-    ts.flattenDiagnosticMessageText(diagnostic.messageText, ts.sys.newLine)
+    ts.flattenDiagnosticMessageText(diagnostic.messageText, ts.sys.newLine),
   );
 }
 
@@ -59,7 +59,7 @@ const noopFileWatcher = { close: () => {} };
 export function calculateProjectParserOptions(
   code: string,
   filePath: string,
-  extra: Extra
+  extra: Extra,
 ): ts.Program[] {
   const results = [];
   const tsconfigRootDir = extra.tsconfigRootDir;
@@ -96,7 +96,7 @@ export function calculateProjectParserOptions(
       ts.sys,
       ts.createSemanticDiagnosticsBuilderProgram,
       diagnosticReporter,
-      /*reportWatchStatus*/ () => {}
+      /*reportWatchStatus*/ () => {},
     );
 
     // ensure readFile reads the code being linted instead of the copy on disk
@@ -117,7 +117,8 @@ export function calculateProjectParserOptions(
         .getConfigFileParsingDiagnostics()
         .filter(
           diag =>
-            diag.category === ts.DiagnosticCategory.Error && diag.code !== 18003
+            diag.category === ts.DiagnosticCategory.Error &&
+            diag.code !== 18003,
         );
       if (configFileDiagnostics.length > 0) {
         diagnosticReporter(configFileDiagnostics[0]);
@@ -131,7 +132,7 @@ export function calculateProjectParserOptions(
       return {
         close: () => {
           watchCallbackTrackingMap.delete(normalizedFileName);
-        }
+        },
       };
     };
 
@@ -142,7 +143,7 @@ export function calculateProjectParserOptions(
     const oldOnDirectoryStructureHostCreate = (watchCompilerHost as any)
       .onCachedDirectoryStructureHostCreate;
     (watchCompilerHost as any).onCachedDirectoryStructureHostCreate = (
-      host: any
+      host: any,
     ) => {
       const oldReadDirectory = host.readDirectory;
       host.readDirectory = (
@@ -150,7 +151,7 @@ export function calculateProjectParserOptions(
         extensions?: ReadonlyArray<string>,
         exclude?: ReadonlyArray<string>,
         include?: ReadonlyArray<string>,
-        depth?: number
+        depth?: number,
       ) =>
         oldReadDirectory(
           path,
@@ -159,7 +160,7 @@ export function calculateProjectParserOptions(
             : extensions.concat(extra.extraFileExtensions),
           exclude,
           include,
-          depth
+          depth,
         );
       oldOnDirectoryStructureHostCreate(host);
     };
@@ -199,7 +200,7 @@ export function createProgram(code: string, filePath: string, extra: Extra) {
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,
     defaultCompilerOptions,
-    { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} }
+    { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} },
   );
 
   if (!commandLine) {

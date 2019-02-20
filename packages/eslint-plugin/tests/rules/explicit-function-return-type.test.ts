@@ -2,7 +2,7 @@ import rule from '../../src/rules/explicit-function-return-type';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('explicit-function-return-type', rule, {
@@ -13,7 +13,7 @@ ruleTester.run('explicit-function-return-type', rule, {
 function test(): void {
     return;
 }
-            `
+            `,
     },
     {
       filename: 'test.ts',
@@ -21,13 +21,13 @@ function test(): void {
 var fn = function(): number {
     return 1;
 };
-            `
+            `,
     },
     {
       filename: 'test.ts',
       code: `
 var arrowFn = (): string => 'test';
-            `
+            `,
     },
     {
       filename: 'test.ts',
@@ -42,7 +42,7 @@ class Test {
     return;
   }
 }
-            `
+            `,
     },
     {
       filename: 'test.js',
@@ -50,48 +50,48 @@ class Test {
 function test() {
     return;
 }
-            `
+            `,
     },
     {
       code: `fn(() => {});`,
       options: [
         {
-          allowExpressions: true
-        }
-      ]
+          allowExpressions: true,
+        },
+      ],
     },
     {
       code: `fn(function() {});`,
       options: [
         {
-          allowExpressions: true
-        }
-      ]
+          allowExpressions: true,
+        },
+      ],
     },
     {
       code: `[function() {}, () => {}]`,
       options: [
         {
-          allowExpressions: true
-        }
-      ]
+          allowExpressions: true,
+        },
+      ],
     },
     {
       code: `(function() {});`,
       options: [
         {
-          allowExpressions: true
-        }
-      ]
+          allowExpressions: true,
+        },
+      ],
     },
     {
       code: `(() => {})();`,
       options: [
         {
-          allowExpressions: true
-        }
-      ]
-    }
+          allowExpressions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -105,9 +105,9 @@ function test() {
         {
           messageId: 'missingReturnType',
           line: 2,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       filename: 'test.ts',
@@ -120,9 +120,9 @@ var fn = function() {
         {
           messageId: 'missingReturnType',
           line: 2,
-          column: 10
-        }
-      ]
+          column: 10,
+        },
+      ],
     },
     {
       filename: 'test.ts',
@@ -133,9 +133,9 @@ var arrowFn = () => 'test';
         {
           messageId: 'missingReturnType',
           line: 2,
-          column: 15
-        }
-      ]
+          column: 15,
+        },
+      ],
     },
     {
       filename: 'test.ts',
@@ -155,14 +155,14 @@ class Test {
         {
           messageId: 'missingReturnType',
           line: 4,
-          column: 11
+          column: 11,
         },
         {
           messageId: 'missingReturnType',
           line: 8,
-          column: 9
-        }
-      ]
+          column: 9,
+        },
+      ],
     },
     {
       filename: 'test.ts',
@@ -172,9 +172,9 @@ class Test {
         {
           messageId: 'missingReturnType',
           line: 1,
-          column: 13
-        }
-      ]
+          column: 13,
+        },
+      ],
     },
     {
       filename: 'test.ts',
@@ -184,9 +184,9 @@ class Test {
         {
           messageId: 'missingReturnType',
           line: 1,
-          column: 13
-        }
-      ]
-    }
-  ]
+          column: 13,
+        },
+      ],
+    },
+  ],
 });

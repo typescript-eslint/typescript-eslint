@@ -31,7 +31,7 @@ const schemaOptions = ['field', 'method', 'constructor'].reduce<string[]>(
 
     return options;
   },
-  []
+  [],
 );
 
 export default util.createRule<Options, MessageIds>({
@@ -42,11 +42,11 @@ export default util.createRule<Options, MessageIds>({
       description: 'Require a consistent member declaration order',
       tslintRuleName: 'member-ordering',
       category: 'Stylistic Issues',
-      recommended: false
+      recommended: false,
     },
     messages: {
       incorrectOrder:
-        'Member {{name}} should be declared before all {{rank}} definitions.'
+        'Member {{name}} should be declared before all {{rank}} definitions.',
     },
     schema: [
       {
@@ -55,72 +55,72 @@ export default util.createRule<Options, MessageIds>({
           default: {
             oneOf: [
               {
-                enum: ['never']
+                enum: ['never'],
               },
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions
-                }
-              }
-            ]
+                  enum: schemaOptions,
+                },
+              },
+            ],
           },
           classes: {
             oneOf: [
               {
-                enum: ['never']
+                enum: ['never'],
               },
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions
-                }
-              }
-            ]
+                  enum: schemaOptions,
+                },
+              },
+            ],
           },
           classExpressions: {
             oneOf: [
               {
-                enum: ['never']
+                enum: ['never'],
               },
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions
-                }
-              }
-            ]
+                  enum: schemaOptions,
+                },
+              },
+            ],
           },
           interfaces: {
             oneOf: [
               {
-                enum: ['never']
+                enum: ['never'],
               },
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor']
-                }
-              }
-            ]
+                  enum: ['field', 'method', 'constructor'],
+                },
+              },
+            ],
           },
           typeLiterals: {
             oneOf: [
               {
-                enum: ['never']
+                enum: ['never'],
               },
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor']
-                }
-              }
-            ]
-          }
+                  enum: ['field', 'method', 'constructor'],
+                },
+              },
+            ],
+          },
         },
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
@@ -159,14 +159,14 @@ export default util.createRule<Options, MessageIds>({
         'static-method',
         'instance-method',
 
-        'method'
-      ]
-    }
+        'method',
+      ],
+    },
   ],
   create(context, [options]) {
     const functionExpressions = [
       AST_NODE_TYPES.FunctionExpression,
-      AST_NODE_TYPES.ArrowFunctionExpression
+      AST_NODE_TYPES.ArrowFunctionExpression,
     ];
 
     /**
@@ -174,7 +174,7 @@ export default util.createRule<Options, MessageIds>({
      * @param node the node to be evaluated.
      */
     function getNodeType(
-      node: TSESTree.ClassElement | TSESTree.TypeElement
+      node: TSESTree.ClassElement | TSESTree.TypeElement,
     ): string | null {
       // TODO: add missing TSCallSignatureDeclaration
       switch (node.type) {
@@ -200,7 +200,7 @@ export default util.createRule<Options, MessageIds>({
      * @param node the node to be evaluated.
      */
     function getMemberName(
-      node: TSESTree.ClassElement | TSESTree.TypeElement
+      node: TSESTree.ClassElement | TSESTree.TypeElement,
     ): string | null {
       switch (node.type) {
         case AST_NODE_TYPES.TSPropertySignature:
@@ -248,7 +248,7 @@ export default util.createRule<Options, MessageIds>({
     function getRank(
       node: TSESTree.ClassElement | TSESTree.TypeElement,
       order: string[],
-      supportsModifiers: boolean
+      supportsModifiers: boolean,
     ): number {
       const type = getNodeType(node);
       if (type === null) {
@@ -299,7 +299,7 @@ export default util.createRule<Options, MessageIds>({
     function getLowestRank(
       ranks: number[],
       target: number,
-      order: string[]
+      order: string[],
     ): string {
       let lowest = ranks[ranks.length - 1];
 
@@ -321,7 +321,7 @@ export default util.createRule<Options, MessageIds>({
     function validateMembers(
       members: (TSESTree.ClassElement | TSESTree.TypeElement)[],
       order: OrderConfig,
-      supportsModifiers: boolean
+      supportsModifiers: boolean,
     ): void {
       if (members && order !== 'never') {
         const previousRanks: number[] = [];
@@ -336,8 +336,8 @@ export default util.createRule<Options, MessageIds>({
                 messageId: 'incorrectOrder',
                 data: {
                   name: getMemberName(member),
-                  rank: getLowestRank(previousRanks, rank, order)
-                }
+                  rank: getLowestRank(previousRanks, rank, order),
+                },
               });
             } else {
               previousRanks.push(rank);
@@ -352,30 +352,30 @@ export default util.createRule<Options, MessageIds>({
         validateMembers(
           node.body.body,
           options.classes || options.default!,
-          true
+          true,
         );
       },
       ClassExpression(node) {
         validateMembers(
           node.body.body,
           options.classExpressions || options.default!,
-          true
+          true,
         );
       },
       TSInterfaceDeclaration(node) {
         validateMembers(
           node.body.body,
           options.interfaces || options.default!,
-          false
+          false,
         );
       },
       TSTypeLiteral(node) {
         validateMembers(
           node.members,
           options.typeLiterals || options.default!,
-          false
+          false,
         );
-      }
+      },
     };
-  }
+  },
 });

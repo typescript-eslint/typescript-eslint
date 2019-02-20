@@ -25,11 +25,11 @@ export default util.createRule<Options, MessageIds>({
       description: 'Enforces that types will not to be used',
       tslintRuleName: 'ban-types',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     fixable: 'code',
     messages: {
-      bannedTypeMessage: "Don't use '{{name}}' as a type.{{customMessage}}"
+      bannedTypeMessage: "Don't use '{{name}}' as a type.{{customMessage}}",
     },
     schema: [
       {
@@ -45,43 +45,43 @@ export default util.createRule<Options, MessageIds>({
                   type: 'object',
                   properties: {
                     message: { type: 'string' },
-                    fixWith: { type: 'string' }
+                    fixWith: { type: 'string' },
                   },
-                  additionalProperties: false
-                }
-              ]
-            }
-          }
+                  additionalProperties: false,
+                },
+              ],
+            },
+          },
         },
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
       types: {
         String: {
           message: 'Use string instead',
-          fixWith: 'string'
+          fixWith: 'string',
         },
         Boolean: {
           message: 'Use boolean instead',
-          fixWith: 'boolean'
+          fixWith: 'boolean',
         },
         Number: {
           message: 'Use number instead',
-          fixWith: 'number'
+          fixWith: 'number',
         },
         Object: {
           message: 'Use Record<string, any> instead',
-          fixWith: 'Record<string, any>'
+          fixWith: 'Record<string, any>',
         },
         Symbol: {
           message: 'Use symbol instead',
-          fixWith: 'symbol'
-        }
-      }
-    }
+          fixWith: 'symbol',
+        },
+      },
+    },
   ],
   create(context, [{ types: bannedTypes }]) {
     return {
@@ -113,13 +113,13 @@ export default util.createRule<Options, MessageIds>({
               messageId: 'bannedTypeMessage',
               data: {
                 name: node.name,
-                customMessage
+                customMessage,
               },
-              fix
+              fix,
             });
           }
         }
-      }
+      },
     };
-  }
+  },
 });

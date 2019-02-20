@@ -22,14 +22,14 @@ describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" 
       tokens: true,
       errorOnUnknownASTType: true,
       errorOnTypeScriptSyntacticAndSemanticIssues: true,
-      jsx: isJSXFileType(fileExtension)
+      jsx: isJSXFileType(fileExtension),
     };
     it(formatSnapshotName(filename, FIXTURES_DIR, fileExtension), () => {
       expect.assertions(1);
       try {
         parser.parseAndGenerateServices(code, config);
         expect(
-          'TEST OUTPUT: No semantic or syntactic issues found'
+          'TEST OUTPUT: No semantic or syntactic issues found',
         ).toMatchSnapshot();
       } catch (err) {
         expect(err).toMatchSnapshot();

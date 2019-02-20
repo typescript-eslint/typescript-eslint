@@ -5,14 +5,14 @@ const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
-    ecmaFeatures: {}
+    ecmaFeatures: {},
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 // the base rule doesn't have messageIds
 function error(
-  messages: { message: string; line: number; column: number }[]
+  messages: { message: string; line: number; column: number }[],
 ): any[] {
   return messages;
 }
@@ -560,9 +560,9 @@ export const a = <GenericComponent<TypeA> />;
       `,
       parserOptions: {
         ecmaFeatures: {
-          jsx: true
-        }
-      }
+          jsx: true,
+        },
+      },
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/160
@@ -576,7 +576,7 @@ export function Foo() {
     </div>
   );
 }
-      `
+      `,
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/535
     `
@@ -606,7 +606,7 @@ export default class Foo {
     prop()
   }
 }
-    `
+    `,
   ],
 
   invalid: [
@@ -619,9 +619,9 @@ export class Foo {}
         {
           message: "'ClassDecoratorFactory' is defined but never used.",
           line: 2,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -633,9 +633,9 @@ baz<Bar>()
         {
           message: "'Foo' is defined but never used.",
           line: 2,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -647,9 +647,9 @@ console.log(a);
         {
           message: "'Nullable' is defined but never used.",
           line: 2,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -662,9 +662,9 @@ console.log(a);
         {
           message: "'SomeOther' is defined but never used.",
           line: 3,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
 
     {
@@ -680,9 +680,9 @@ new A();
         {
           message: "'Another' is defined but never used.",
           line: 3,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -697,9 +697,9 @@ new A();
         {
           message: "'Another' is defined but never used.",
           line: 3,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -714,9 +714,9 @@ new A();
         {
           message: "'Another' is defined but never used.",
           line: 3,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -730,9 +730,9 @@ interface A {
         {
           message: "'Another' is defined but never used.",
           line: 3,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -746,9 +746,9 @@ interface A {
         {
           message: "'Another' is defined but never used.",
           line: 3,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -760,9 +760,9 @@ foo();
         {
           message: "'Nullable' is defined but never used.",
           line: 2,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -774,9 +774,9 @@ foo();
         {
           message: "'Nullable' is defined but never used.",
           line: 2,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -792,9 +792,9 @@ new A();
         {
           message: "'SomeOther' is defined but never used.",
           line: 3,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -810,9 +810,9 @@ new A();
         {
           message: "'SomeOther' is defined but never used.",
           line: 3,
-          column: 10
-        }
-      ])
+          column: 10,
+        },
+      ]),
     },
     {
       code: `
@@ -825,9 +825,9 @@ enum FormFieldIds {
         {
           message: "'FormFieldIds' is defined but never used.",
           line: 2,
-          column: 6
-        }
-      ])
+          column: 6,
+        },
+      ]),
     },
     {
       code: `
@@ -839,9 +839,9 @@ export interface Bar extends baz.test {}
         {
           message: "'test' is defined but never used.",
           line: 2,
-          column: 8
-        }
-      ])
+          column: 8,
+        },
+      ]),
     },
     {
       code: `
@@ -853,9 +853,9 @@ export interface Bar extends baz().test {}
         {
           message: "'test' is defined but never used.",
           line: 2,
-          column: 8
-        }
-      ])
+          column: 8,
+        },
+      ]),
     },
     {
       code: `
@@ -867,9 +867,9 @@ export class Bar implements baz.test {}
         {
           message: "'test' is defined but never used.",
           line: 2,
-          column: 8
-        }
-      ])
+          column: 8,
+        },
+      ]),
     },
     {
       code: `
@@ -881,9 +881,9 @@ export class Bar implements baz().test {}
         {
           message: "'test' is defined but never used.",
           line: 2,
-          column: 8
-        }
-      ])
-    }
-  ]
+          column: 8,
+        },
+      ]),
+    },
+  ],
 });

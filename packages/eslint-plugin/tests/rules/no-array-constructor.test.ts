@@ -3,7 +3,7 @@ import rule from '../../src/rules/no-array-constructor';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 const messageId = 'useLiteral' as 'useLiteral';
@@ -23,7 +23,7 @@ ruleTester.run('no-array-constructor', rule, {
     'new Array<Foo>(1, 2, 3)',
     'new Array<Foo>()',
     'Array<Foo>(1, 2, 3)',
-    'Array<Foo>()'
+    'Array<Foo>()',
   ],
 
   invalid: [
@@ -33,9 +33,9 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.NewExpression
-        }
-      ]
+          type: AST_NODE_TYPES.NewExpression,
+        },
+      ],
     },
     {
       code: 'Array()',
@@ -43,9 +43,9 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.CallExpression
-        }
-      ]
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
     },
     {
       code: 'new Array',
@@ -53,9 +53,9 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.NewExpression
-        }
-      ]
+          type: AST_NODE_TYPES.NewExpression,
+        },
+      ],
     },
     {
       code: 'new Array(x, y)',
@@ -63,9 +63,9 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.NewExpression
-        }
-      ]
+          type: AST_NODE_TYPES.NewExpression,
+        },
+      ],
     },
     {
       code: 'Array(x, y)',
@@ -73,9 +73,9 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.CallExpression
-        }
-      ]
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
     },
     {
       code: 'new Array(0, 1, 2)',
@@ -83,9 +83,9 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.NewExpression
-        }
-      ]
+          type: AST_NODE_TYPES.NewExpression,
+        },
+      ],
     },
     {
       code: 'Array(0, 1, 2)',
@@ -93,9 +93,9 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.CallExpression
-        }
-      ]
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
     },
     {
       code: `new Array(
@@ -111,9 +111,9 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId,
-          type: AST_NODE_TYPES.NewExpression
-        }
-      ]
-    }
-  ]
+          type: AST_NODE_TYPES.NewExpression,
+        },
+      ],
+    },
+  ],
 });

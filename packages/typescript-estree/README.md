@@ -77,7 +77,7 @@ const parser = require('@typescript-eslint/typescript-estree');
 const code = `const hello: string = 'world';`;
 const ast = parser.parse(code, {
   range: true,
-  loc: true
+  loc: true,
 });
 ```
 

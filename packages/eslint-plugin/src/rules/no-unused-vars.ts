@@ -10,10 +10,10 @@ export default util.createRule({
       description: 'Disallow unused variables',
       tslintRuleName: 'no-unused-variable',
       category: 'Variables',
-      recommended: 'warn'
+      recommended: 'warn',
     },
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [],
   create(context) {
@@ -68,7 +68,7 @@ export default util.createRule({
             superVar.eslintUsed = true;
           }
         }
-      }
+      },
     });
-  }
+  },
 });

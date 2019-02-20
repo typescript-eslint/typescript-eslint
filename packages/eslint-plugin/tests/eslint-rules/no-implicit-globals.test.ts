@@ -4,9 +4,9 @@ import { RuleTester } from '../RuleTester';
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
-    sourceType: 'module'
+    sourceType: 'module',
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-implicit-globals', rule, {
@@ -18,7 +18,7 @@ function foo() {
 }
 
 module.exports = foo;
-    `
+    `,
   ],
-  invalid: []
+  invalid: [],
 });

@@ -1,3 +1,4 @@
+
 const Lint = require('tslint');
 
 class Rule extends Lint.Rules.AbstractRule {

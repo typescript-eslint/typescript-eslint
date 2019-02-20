@@ -3,17 +3,17 @@ import rule from '../../src/rules/no-extraneous-class';
 import { RuleTester } from '../RuleTester';
 
 const empty = {
-  messageId: 'empty' as 'empty'
+  messageId: 'empty' as 'empty',
 };
 const onlyStatic = {
-  messageId: 'onlyStatic' as 'onlyStatic'
+  messageId: 'onlyStatic' as 'onlyStatic',
 };
 const onlyConstructor = {
-  messageId: 'onlyConstructor' as 'onlyConstructor'
+  messageId: 'onlyConstructor' as 'onlyConstructor',
 };
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-extraneous-class', rule, {
@@ -42,7 +42,7 @@ class Foo {
 `,
     {
       code: 'class Foo {}',
-      options: [{ allowEmpty: true }]
+      options: [{ allowEmpty: true }],
     },
     {
       code: `
@@ -50,7 +50,7 @@ class Foo {
     constructor() {}
 }
 `,
-      options: [{ allowConstructorOnly: true }]
+      options: [{ allowConstructorOnly: true }],
     },
     {
       code: `
@@ -61,16 +61,16 @@ export class Bar {
     }
 }
 `,
-      options: [{ allowStaticOnly: true }]
+      options: [{ allowStaticOnly: true }],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/170
-    'export default class { hello() { return "I am foo!"; } }'
+    'export default class { hello() { return "I am foo!"; } }',
   ],
 
   invalid: [
     {
       code: 'class Foo {}',
-      errors: [empty]
+      errors: [empty],
     },
     {
       code: `
@@ -89,7 +89,7 @@ export class Bar {
     }
 }
 `,
-      errors: [onlyStatic, onlyStatic]
+      errors: [onlyStatic, onlyStatic],
     },
     {
       code: `
@@ -97,7 +97,7 @@ class Foo {
     constructor() {}
 }
 `,
-      errors: [onlyConstructor]
+      errors: [onlyConstructor],
     },
     {
       code: `
@@ -113,7 +113,7 @@ export class AClass {
 }
 
 `,
-      errors: [onlyStatic, empty]
+      errors: [onlyStatic, empty],
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/170
@@ -121,9 +121,9 @@ export class AClass {
       errors: [
         {
           ...onlyStatic,
-          type: AST_NODE_TYPES.ClassDeclaration
-        }
-      ]
-    }
-  ]
+          type: AST_NODE_TYPES.ClassDeclaration,
+        },
+      ],
+    },
+  ],
 });

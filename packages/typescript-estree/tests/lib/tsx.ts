@@ -5,7 +5,7 @@ import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
-  isJSXFileType
+  isJSXFileType,
 } from '../../tools/test-utils';
 
 const FIXTURES_DIR =
@@ -22,11 +22,11 @@ describe('TSX', () => {
       tokens: true,
       errorOnUnknownASTType: true,
       useJSXTextNode: true,
-      jsx: isJSXFileType(fileExtension)
+      jsx: isJSXFileType(fileExtension),
     };
     it(
       formatSnapshotName(filename, FIXTURES_DIR, fileExtension),
-      createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config),
     );
   });
 });
