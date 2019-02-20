@@ -155,4 +155,28 @@ describe('tslint/error', () => {
       },
     });
   });
+
+  it('should not crash if there is no tslint rules specified', () => {
+    const linter = new Linter();
+    jest.spyOn(console, 'warn').mockImplementation();
+    linter.defineRule('tslint/config', rules.config);
+    expect(() =>
+      linter.verify('foo;', {
+        parserOptions: {
+          project: `${__dirname}/test-project/tsconfig.json`,
+        },
+        rules: {
+          'tslint/config': [2, {}],
+        },
+        parser: '@typescript-eslint/parser',
+      }),
+    ).not.toThrow();
+
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'No valid rules have been specified for TypeScript files',
+      ),
+    );
+    jest.resetAllMocks();
+  });
 });
