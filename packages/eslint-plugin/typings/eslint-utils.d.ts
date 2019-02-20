@@ -7,14 +7,14 @@ declare module 'eslint-utils' {
       | TSESTree.FunctionDeclaration
       | TSESTree.FunctionExpression
       | TSESTree.ArrowFunctionExpression,
-    sourceCode: SourceCode
+    sourceCode: SourceCode,
   ): TSESTree.SourceLocation;
 
   export function getFunctionNameWithKind(
     node:
       | TSESTree.FunctionDeclaration
       | TSESTree.FunctionExpression
-      | TSESTree.ArrowFunctionExpression
+      | TSESTree.ArrowFunctionExpression,
   ): string;
 
   export function getPropertyName(
@@ -22,17 +22,17 @@ declare module 'eslint-utils' {
       | TSESTree.MemberExpression
       | TSESTree.Property
       | TSESTree.MethodDefinition,
-    initialScope?: Scope.Scope
+    initialScope?: Scope.Scope,
   ): string | null;
 
   export function getStaticValue(
     node: TSESTree.Node,
-    initialScope?: Scope.Scope
+    initialScope?: Scope.Scope,
   ): { value: any } | null;
 
   export function getStringIfConstant(
     node: TSESTree.Node,
-    initialScope?: Scope.Scope
+    initialScope?: Scope.Scope,
   ): string | null;
 
   export function hasSideEffect(
@@ -41,12 +41,12 @@ declare module 'eslint-utils' {
     options?: {
       considerGetters?: boolean;
       considerImplicitTypeConversion?: boolean;
-    }
+    },
   ): boolean;
 
   export function isParenthesized(
     node: TSESTree.Node,
-    sourceCode: SourceCode
+    sourceCode: SourceCode,
   ): boolean;
 
   export class PatternMatcher {
@@ -57,12 +57,12 @@ declare module 'eslint-utils' {
 
   export function findVariable(
     initialScope: Scope.Scope,
-    name: string
+    name: string,
   ): Scope.Variable | null;
 
   export function getInnermostScope(
     initialScope: Scope.Scope,
-    node: TSESTree.Node
+    node: TSESTree.Node,
   ): Scope.Scope;
 
   export class ReferenceTracker {
@@ -75,17 +75,17 @@ declare module 'eslint-utils' {
       options?: {
         mode: 'strict' | 'legacy';
         globalObjectNames: ReadonlyArray<string>;
-      }
+      },
     );
 
     iterateGlobalReferences<T>(
-      traceMap: ReferenceTracker.TraceMap<T>
+      traceMap: ReferenceTracker.TraceMap<T>,
     ): IterableIterator<ReferenceTracker.FoundReference<T>>;
     iterateCjsReferences<T>(
-      traceMap: ReferenceTracker.TraceMap<T>
+      traceMap: ReferenceTracker.TraceMap<T>,
     ): IterableIterator<ReferenceTracker.FoundReference<T>>;
     iterateEsmReferences<T>(
-      traceMap: ReferenceTracker.TraceMap<T>
+      traceMap: ReferenceTracker.TraceMap<T>,
     ): IterableIterator<ReferenceTracker.FoundReference<T>>;
   }
 
@@ -110,69 +110,69 @@ declare module 'eslint-utils' {
   }
 
   export function isArrowToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotArrowToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isClosingBraceToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotClosingBraceToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isClosingBracketToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotClosingBracketToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isClosingParenToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotClosingParenToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isColonToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotColonToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isCommaToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotCommaToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isCommentToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotCommentToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isOpeningBraceToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotOpeningBraceToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isOpeningBracketToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotOpeningBracketToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isOpeningParenToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotOpeningParenToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isSemicolonToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isNotSemicolonToken(
-    token: TSESTree.Token | TSESTree.Comment
+    token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
 }

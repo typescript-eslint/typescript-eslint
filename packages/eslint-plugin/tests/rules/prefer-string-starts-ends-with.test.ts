@@ -8,8 +8,8 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: rootPath,
-    project: './tsconfig.json'
-  }
+    project: './tsconfig.json',
+  },
 });
 
 ruleTester.run('prefer-string-starts-ends-with', rule, {
@@ -223,7 +223,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       function f(x: { test(): void }, s: string) {
         x.test(s)
       }
-    `
+    `,
   ],
   invalid: [
     // String indexing.
@@ -238,7 +238,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -251,7 +251,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -264,7 +264,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -277,7 +277,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -290,7 +290,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("あ")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -299,7 +299,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         }
       `,
       output: null,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -308,7 +308,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         }
       `,
       output: null,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -321,7 +321,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -334,7 +334,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           (s).startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
 
     // String#charAt
@@ -349,7 +349,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -362,7 +362,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -375,7 +375,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -388,7 +388,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -401,7 +401,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("あ")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -410,7 +410,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         }
       `,
       output: null,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -419,7 +419,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         }
       `,
       output: null,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -432,7 +432,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -445,7 +445,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           (s).startsWith("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
 
     // String#indexOf
@@ -460,7 +460,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -473,7 +473,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -486,7 +486,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -499,7 +499,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
 
     // String#lastIndexOf
@@ -514,7 +514,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -527,7 +527,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -540,7 +540,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -553,7 +553,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -566,7 +566,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -579,7 +579,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
 
     // String#match
@@ -594,7 +594,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -607,7 +607,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -620,7 +620,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -633,7 +633,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -646,7 +646,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -659,7 +659,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -672,7 +672,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -685,7 +685,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -700,7 +700,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -715,7 +715,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -730,7 +730,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("\\"quoted\\"")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
 
     // String#slice
@@ -745,7 +745,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -758,7 +758,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -771,7 +771,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -784,7 +784,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -797,7 +797,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -806,7 +806,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         }
       `,
       output: null,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -815,7 +815,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         }
       `,
       output: null,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -828,7 +828,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -841,7 +841,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           !s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -854,7 +854,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -867,7 +867,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -876,7 +876,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         }
       `,
       output: null,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -889,7 +889,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -898,7 +898,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         }
       `,
       output: null,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -911,7 +911,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
 
     // RegExp#test
@@ -926,7 +926,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -939,7 +939,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }]
+      errors: [{ messageId: 'preferEndsWith' }],
     },
     {
       code: `
@@ -954,7 +954,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -969,7 +969,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -984,7 +984,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith("\\"quoted\\"")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -997,7 +997,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           (a + b).startsWith("bar")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
 
     // Test for variation of string types.
@@ -1012,7 +1012,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -1025,7 +1025,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
+      errors: [{ messageId: 'preferStartsWith' }],
     },
     {
       code: `
@@ -1040,7 +1040,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }]
-    }
-  ]
+      errors: [{ messageId: 'preferStartsWith' }],
+    },
+  ],
 });
