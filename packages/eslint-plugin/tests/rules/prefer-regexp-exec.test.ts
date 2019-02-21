@@ -147,5 +147,34 @@ function f(s: 'a' | 'b') {
         },
       ],
     },
+    {
+      code: `
+type SafeString = string & {__HTML_ESCAPED__: void}
+function f(s: SafeString) {
+  s.match(/thing/);
+}
+`,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends "a" | "b">(s: T) {
+  s.match(/thing/);
+}
+    `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
   ],
 });
