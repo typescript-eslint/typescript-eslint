@@ -182,6 +182,9 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.ClassElement | TSESTree.TypeElement,
     ): string | null {
       // TODO: add missing TSCallSignatureDeclaration
+      // TODO: add missing TSIndexSignature
+      // TODO: add missing TSAbstractClassProperty
+      // TODO: add missing TSAbstractMethodDefinition
       switch (node.type) {
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind;
@@ -258,7 +261,7 @@ export default util.createRule<Options, MessageIds>({
       const type = getNodeType(node);
       if (type === null) {
         // shouldn't happen but just in case, put it on the end
-        return Number.MAX_SAFE_INTEGER;
+        return order.length - 1;
       }
 
       const scope = 'static' in node && node.static ? 'static' : 'instance';
