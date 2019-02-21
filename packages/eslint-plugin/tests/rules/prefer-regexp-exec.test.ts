@@ -29,6 +29,11 @@ match(/thing/);
 const a = {match : (s: RegExp) => "something"};
 a.match(/thing/);
 `,
+    `
+function f(s: string | string[]) {
+  s.match(/e/);
+}
+`,
   ],
   invalid: [
     {
@@ -46,7 +51,7 @@ a.match(/thing/);
 const text = "something";
 const search = /thing/;
 text.match(search);
-      `,
+`,
       errors: [
         {
           messageId: 'regExpExecOverStringMatch',
@@ -125,6 +130,20 @@ text.match(search);
           messageId: 'regExpExecOverStringMatch',
           line: 1,
           column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+function f(s: 'a' | 'b') {
+  s.match('a');
+}
+`,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 3,
+          column: 3,
         },
       ],
     },
