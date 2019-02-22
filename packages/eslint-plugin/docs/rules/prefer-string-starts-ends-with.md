@@ -6,7 +6,7 @@ Since ES2015 has added `String#startsWith` and `String#endsWith`, this rule repo
 
 ## Rule Details
 
-This rule is aimed at enforcing the consistent way that checks a string starts or ends with a specific string.
+This rule is aimed at enforcing a consistent way to check whether a string starts or ends with a specific string.
 
 Examples of **incorrect** code for this rule:
 
