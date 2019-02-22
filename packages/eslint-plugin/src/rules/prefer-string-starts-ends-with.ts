@@ -31,7 +31,7 @@ export default createRule({
     },
     messages: {
       preferStartsWith: "Use 'String#startsWith' method instead.",
-      preferEndsWith: "Use 'String#endsWith' method instead.",
+      preferEndsWith: "Use the 'String#endsWith' method instead.",
     },
     schema: [],
     fixable: 'code',
