@@ -25,7 +25,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description:
-        'enforce to use `String#startsWith` and `String#endsWith` over other options',
+        'enforce the use of `String#startsWith` and `String#endsWith` over other options',
       category: 'Best Practices',
       recommended: false,
     },
