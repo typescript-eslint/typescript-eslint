@@ -1,6 +1,6 @@
 # Enforce to use `String#startsWith` and `String#endsWith` over other options (prefer-string-starts-ends-with)
 
-There are multiple ways to verify if a string starts or ends with a specific string, auch as `foo.indexOf('bar') === 0`.
+There are multiple ways to verify if a string starts or ends with a specific string, such as `foo.indexOf('bar') === 0`.
 
 Since ES2015 has added `String#startsWith` and `String#endsWith`, this rule reports other ways to be consistent.
 
