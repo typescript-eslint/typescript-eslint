@@ -1,5 +1,5 @@
 /**
- * @fileoverview Prefer RegExp#exec() over String#match()
+ * @fileoverview Prefer RegExp#exec() over String#match() if no global flag is provided.
  * @author Ricky Lippmann <https://github.com/ldrick>
  */
 
@@ -21,7 +21,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      regExpExecOverStringMatch: 'Use RegExp#exec() method instead.',
+      regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',
     },
     schema: [],
   },
@@ -98,7 +98,7 @@ export default createRule({
         const arg = callNode.arguments[0];
         const evaluated = getStaticValue(arg, globalScope);
 
-        // Do not run for global flag.
+        // Don't report regular expressions with global flag.
         if (
           evaluated &&
           evaluated.value instanceof RegExp &&
