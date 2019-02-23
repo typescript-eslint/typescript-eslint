@@ -53,7 +53,7 @@ export default util.createRule<Options, MessageIds>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
-      MemberExpression(node) {
+      [AST_NODE_TYPES.MemberExpression](node: TSESTree.MemberExpression) {
         if (isSafeUse(node)) {
           return;
         }
