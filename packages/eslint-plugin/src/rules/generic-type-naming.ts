@@ -1,7 +1,3 @@
-/**
- * @fileoverview Enforces naming of generic type variables.
- */
-
 import * as util from '../util';
 
 type Options = [string?];

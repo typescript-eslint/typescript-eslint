@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows invocation of `require()`.
- * @author Kanitkorn Sujautra
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforce giving `compare` argument to `Array#sort`
- * @author Toru Nagashima <https://github.com/mysticatea>
- */
-
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';

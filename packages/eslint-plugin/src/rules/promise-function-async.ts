@@ -1,14 +1,5 @@
-/**
- * @fileoverview Requires any function or method that returns a Promise to be marked async
- * @author Josh Goldberg <https://github.com/joshuakgoldberg>
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
