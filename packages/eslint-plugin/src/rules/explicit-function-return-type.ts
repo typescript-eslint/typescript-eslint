@@ -45,34 +45,36 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     /**
-     * Checks if the parent of a function expression is a constructor.
-     * @param parent The parent of a function expression node
+     * Checks if a node is a constructor.
+     * @param node The node to check
      */
-    function isConstructor(parent: TSESTree.Node): boolean {
+    function isConstructor(node: TSESTree.Node): boolean {
       return (
-        parent.type === AST_NODE_TYPES.MethodDefinition &&
-        parent.kind === 'constructor'
+        node.type === AST_NODE_TYPES.MethodDefinition &&
+        node.kind === 'constructor'
       );
     }
 
     /**
-     * Checks if the parent of a function expression is a setter.
-     * @param parent The parent of a function expression node
+     * Checks if a node is a setter.
+     * @param parent The node to check
      */
-    function isSetter(parent: TSESTree.Node): boolean {
+    function isSetter(node: TSESTree.Node): boolean {
       return (
-        parent.type === AST_NODE_TYPES.MethodDefinition && parent.kind === 'set'
+        node.type === AST_NODE_TYPES.MethodDefinition && node.kind === 'set'
       );
     }
 
     /**
-     * Checks if the parent of a function expression has a type annotation.
-     * @param parent The parent of a function expression node
+     * Checks if a node is a variable declarator with a type annotation.
+     * @param node The node to check
      */
-    function hasTypeAnnotation(parent: TSESTree.Node): boolean {
+    function isVariableDeclaratorWithTypeAnnotation(
+      node: TSESTree.Node,
+    ): boolean {
       return (
-        parent.type === AST_NODE_TYPES.VariableDeclarator &&
-        !!parent.id.typeAnnotation
+        node.type === AST_NODE_TYPES.VariableDeclarator &&
+        !!node.id.typeAnnotation
       );
     }
 
@@ -122,7 +124,7 @@ export default util.createRule<Options, MessageIds>({
       if (
         options.allowTypedFunctionExpressions &&
         node.parent &&
-        hasTypeAnnotation(node.parent)
+        isVariableDeclaratorWithTypeAnnotation(node.parent)
       ) {
         return;
       }
