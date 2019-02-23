@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces triple slash references are not used.
- * @author Danny Fritz
- */
-
 import * as util from '../util';
 
 export default util.createRule({

@@ -1,10 +1,3 @@
-/**
- * @fileoverview Parser that converts TypeScript into ESTree format.
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import {
   calculateProjectParserOptions,
   createProgram,
@@ -276,7 +269,7 @@ type AST<T extends ParserOptions> = TSESTree.Program &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
 
-interface ParseAndGenerateServicesResult<T extends ParserOptions> {
+export interface ParseAndGenerateServicesResult<T extends ParserOptions> {
   ast: AST<T>;
   services: ParserServices;
 }

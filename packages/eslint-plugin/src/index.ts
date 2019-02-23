@@ -1,8 +1,3 @@
-/**
- * @fileoverview TypeScript plugin for ESLint
- * @author Nicholas C. Zakas
- */
-
 import requireIndex from 'requireindex';
 import path from 'path';
 

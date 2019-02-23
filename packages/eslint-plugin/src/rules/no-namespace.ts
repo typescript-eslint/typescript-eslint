@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows the use of custom TypeScript modules and namespaces.
- * @author Patricio Trevino
- */
-
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces interface names are prefixed with "I".
- * @author Danny Fritz
- */
-
 import * as util from '../util';
 
 type Options = ['never' | 'always'];

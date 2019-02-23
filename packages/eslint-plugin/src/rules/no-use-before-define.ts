@@ -1,9 +1,3 @@
-/**
- * @fileoverview Rule to flag use of variables before they are defined
- * @author Ilya Volodin
- * @author Jed Fox
- */
-
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import { Scope } from 'ts-eslint';
 import * as util from '../util';

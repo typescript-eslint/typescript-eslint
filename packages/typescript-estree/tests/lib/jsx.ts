@@ -1,10 +1,3 @@
-/**
- * @fileoverview Tests for JSX
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { ParserOptions } from '../../src/parser-options';
@@ -13,10 +6,6 @@ import {
   formatSnapshotName,
 } from '../../tools/test-utils';
 import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
-
-//------------------------------------------------------------------------------
-// Setup
-//------------------------------------------------------------------------------
 
 const JSX_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx';
@@ -29,10 +18,6 @@ const jsxTestFiles = glob
 const JSX_JSXTEXT_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx-useJSXTextNode';
 const jsxTextTestFiles = glob.sync(`${JSX_JSXTEXT_FIXTURES_DIR}/**/*.src.js`);
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 describe('JSX', () => {
   /**
