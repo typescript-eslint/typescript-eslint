@@ -1,8 +1,3 @@
-/**
- * @fileoverview Use function types instead of interfaces with call signatures
- * @author Benjamin Lichtman
- */
-
 import {
   AST_NODE_TYPES,
   TSESTree,

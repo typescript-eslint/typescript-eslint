@@ -1,5 +1,3 @@
-'use strict';
-
 import path from 'path';
 import ts from 'typescript';
 import { Extra } from './parser-options';

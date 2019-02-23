@@ -1,8 +1,3 @@
-/**
- * @fileoverview Bans “// @ts-ignore” comments from being used.
- * @author Ricky Lippmann <https://github.com/ldrick>
- */
-
 import * as util from '../util';
 
 export default util.createRule({
