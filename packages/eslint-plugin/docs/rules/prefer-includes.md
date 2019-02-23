@@ -24,7 +24,7 @@ let readonlyArray: ReadonlyArray<any>;
 let typedArray: UInt8Array;
 let userDefined: {
   indexOf(x: any): number;
-  includes(x: any): boolean
+  includes(x: any): boolean;
 };
 
 str.indexOf(value) !== -1;
@@ -45,7 +45,7 @@ let readonlyArray: ReadonlyArray<any>;
 let typedArray: UInt8Array;
 let userDefined: {
   indexOf(x: any): number;
-  includes(x: any): boolean
+  includes(x: any): boolean;
 };
 let mismatchExample: {
   indexOf(x: any, fromIndex?: number): number;
