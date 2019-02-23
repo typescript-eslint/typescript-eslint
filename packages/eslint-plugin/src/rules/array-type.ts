@@ -1,9 +1,3 @@
-/**
- * @fileoverview Requires using either `T[]` or `Array<T>` for arrays.
- * @author Mackie Underdown
- * @author Armano <https://github.com/armano2>
- */
-
 import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,

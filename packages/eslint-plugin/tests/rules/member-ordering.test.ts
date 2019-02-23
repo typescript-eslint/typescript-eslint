@@ -1211,6 +1211,12 @@ type Foo = {
             `,
       options: [{ default: ['method', 'constructor', 'field'] }],
     },
+    `
+abstract class Foo {
+    B: string;
+    abstract A: () => {}
+}
+    `,
   ],
   invalid: [
     {
@@ -3306,6 +3312,25 @@ type Foo = {
             rank: 'field',
           },
           line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    abstract A: () => {}
+    B: string;
+}
+          `,
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'B',
+            rank: 'method',
+          },
+          line: 4,
           column: 5,
         },
       ],
