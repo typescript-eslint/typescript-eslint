@@ -1,8 +1,3 @@
-/**
- * @fileoverview Forbids an object literal to appear in a type assertion expression
- * @author Armano <https://github.com/armano2>
- */
-
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -22,11 +17,11 @@ export default util.createRule<Options, MessageIds>({
         'Forbids an object literal to appear in a type assertion expression',
       tslintRuleName: 'no-object-literal-type-assertion',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       unexpectedTypeAssertion:
-        'Type assertion on object literals is forbidden, use a type annotation instead.'
+        'Type assertion on object literals is forbidden, use a type annotation instead.',
     },
     schema: [
       {
@@ -34,16 +29,16 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowAsParameter: {
-            type: 'boolean'
-          }
-        }
-      }
-    ]
+            type: 'boolean',
+          },
+        },
+      },
+    ],
   },
   defaultOptions: [
     {
-      allowAsParameter: false
-    }
+      allowAsParameter: false,
+    },
   ],
   create(context, [{ allowAsParameter }]) {
     /**
@@ -62,7 +57,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       'TSTypeAssertion, TSAsExpression'(
-        node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression
+        node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
       ) {
         if (
           allowAsParameter &&
@@ -79,10 +74,10 @@ export default util.createRule<Options, MessageIds>({
         ) {
           context.report({
             node,
-            messageId: 'unexpectedTypeAssertion'
+            messageId: 'unexpectedTypeAssertion',
           });
         }
-      }
+      },
     };
-  }
+  },
 });

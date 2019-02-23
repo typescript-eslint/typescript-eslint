@@ -1,9 +1,3 @@
-/**
- * @fileoverview Enforces spacing around type annotations.
- * @author Nicholas C. Zakas
- * @author Patricio Trevino
- */
-
 import * as util from '../util';
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 
@@ -33,9 +27,9 @@ const definition = {
   type: 'object',
   properties: {
     before: { type: 'boolean' },
-    after: { type: 'boolean' }
+    after: { type: 'boolean' },
   },
-  additionalProperties: false
+  additionalProperties: false,
 };
 
 export default util.createRule<Options, MessageIds>({
@@ -46,14 +40,14 @@ export default util.createRule<Options, MessageIds>({
       description: 'Require consistent spacing around type annotations',
       tslintRuleName: 'typedef-whitespace',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     fixable: 'whitespace',
     messages: {
       expectedSpaceAfter: "Expected a space after the '{{type}}'.",
       expectedSpaceBefore: "Expected a space before the '{{type}}'.",
       unexpectedSpaceAfter: "Unexpected a space after the '{{type}}'.",
-      unexpectedSpaceBefore: "Unexpected a space before the '{{type}}'."
+      unexpectedSpaceBefore: "Unexpected a space before the '{{type}}'.",
     },
     schema: [
       {
@@ -65,19 +59,19 @@ export default util.createRule<Options, MessageIds>({
             type: 'object',
             properties: {
               colon: definition,
-              arrow: definition
+              arrow: definition,
             },
-            additionalProperties: false
-          }
+            additionalProperties: false,
+          },
         },
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     // technically there is a default, but the overrides mean
     // that if we apply them here, it will break the no override case.
-    {}
+    {},
   ],
   create(context, [options]) {
     const punctuators = [':', '=>'];
@@ -89,13 +83,13 @@ export default util.createRule<Options, MessageIds>({
       {},
       { before: false, after: true },
       options,
-      overrides.colon
+      overrides.colon,
     );
     const arrowOptions = Object.assign(
       {},
       { before: true, after: true },
       options,
-      overrides.arrow
+      overrides.arrow,
     );
 
     /**
@@ -103,7 +97,7 @@ export default util.createRule<Options, MessageIds>({
      * before colon, one space after).
      */
     function checkTypeAnnotationSpacing(
-      typeAnnotation: TSESTree.TypeNode
+      typeAnnotation: TSESTree.TypeNode,
     ): void {
       const nextToken = typeAnnotation;
       const punctuatorTokenEnd = sourceCode.getTokenBefore(nextToken)!;
@@ -141,25 +135,25 @@ export default util.createRule<Options, MessageIds>({
           node: punctuatorTokenEnd,
           messageId: 'expectedSpaceAfter',
           data: {
-            type
+            type,
           },
           fix(fixer) {
             return fixer.insertTextAfter(punctuatorTokenEnd, ' ');
-          }
+          },
         });
       } else if (!after && nextDelta > 0) {
         context.report({
           node: punctuatorTokenEnd,
           messageId: 'unexpectedSpaceAfter',
           data: {
-            type
+            type,
           },
           fix(fixer) {
             return fixer.removeRange([
               punctuatorTokenEnd.range[1],
-              nextToken.range[0]
+              nextToken.range[0],
             ]);
-          }
+          },
         });
       }
 
@@ -168,38 +162,38 @@ export default util.createRule<Options, MessageIds>({
           node: punctuatorTokenStart,
           messageId: 'expectedSpaceBefore',
           data: {
-            type
+            type,
           },
           fix(fixer) {
             return fixer.insertTextAfter(previousToken, ' ');
-          }
+          },
         });
       } else if (!before && previousDelta > 0) {
         context.report({
           node: punctuatorTokenStart,
           messageId: 'unexpectedSpaceBefore',
           data: {
-            type
+            type,
           },
           fix(fixer) {
             return fixer.removeRange([
               previousToken.range[1],
-              punctuatorTokenStart.range[0]
+              punctuatorTokenStart.range[0],
             ]);
-          }
+          },
         });
       }
     }
 
     return {
-      TSMappedType(node: TSESTree.TSMappedType) {
+      TSMappedType(node) {
         if (node.typeAnnotation) {
           checkTypeAnnotationSpacing(node.typeAnnotation);
         }
       },
-      TSTypeAnnotation(node: TSESTree.TSTypeAnnotation) {
+      TSTypeAnnotation(node) {
         checkTypeAnnotationSpacing(node.typeAnnotation);
-      }
+      },
     };
-  }
+  },
 });

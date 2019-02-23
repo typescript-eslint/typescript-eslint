@@ -7,6 +7,7 @@
   },
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "rules": {
+    "comma-dangle": ["error", "always-multiline"],
     "no-mixed-operators": "error",
     "no-console": "off",
     "no-undef": "off",
@@ -53,7 +54,10 @@
       }
     },
     {
-      "files": ["packages/eslint-plugin/test/**/*.ts"],
+      "files": [
+        "packages/eslint-plugin/test/**/*.ts",
+        "packages/eslint-plugin-tslint/tests/**/*.spec.ts"
+      ],
       "rules": {
         "eslint-plugin/no-identical-tests": "error"
       }

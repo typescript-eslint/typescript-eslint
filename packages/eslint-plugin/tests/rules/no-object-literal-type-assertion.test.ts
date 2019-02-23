@@ -7,9 +7,9 @@ const ruleTester = new RuleTester({
     ecmaVersion: 6,
     sourceType: 'module',
     ecmaFeatures: {
-      jsx: false
-    }
-  }
+      jsx: false,
+    },
+  },
 });
 
 ruleTester.run('no-object-literal-type-assertion', rule, {
@@ -30,18 +30,18 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
       code: `print({ bar: 5 } as Foo)`,
       options: [
         {
-          allowAsParameter: true
-        }
-      ]
+          allowAsParameter: true,
+        },
+      ],
     },
     {
       code: `new print({ bar: 5 } as Foo)`,
       options: [
         {
-          allowAsParameter: true
-        }
-      ]
-    }
+          allowAsParameter: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -50,9 +50,9 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
         {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `({}) as T;`,
@@ -60,9 +60,9 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
         {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `const x = {} as T;`,
@@ -70,9 +70,9 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
         {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `print({ bar: 5 } as Foo)`,
@@ -80,9 +80,9 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
         {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
-          column: 7
-        }
-      ]
+          column: 7,
+        },
+      ],
     },
     {
       code: `new print({ bar: 5 } as Foo)`,
@@ -90,9 +90,9 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
         {
           messageId: 'unexpectedTypeAssertion',
           line: 1,
-          column: 11
-        }
-      ]
-    }
-  ]
+          column: 11,
+        },
+      ],
+    },
+  ],
 });

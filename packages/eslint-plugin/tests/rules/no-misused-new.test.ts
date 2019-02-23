@@ -2,7 +2,7 @@ import rule from '../../src/rules/no-misused-new';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-misused-new', rule, {
@@ -47,7 +47,7 @@ type T = {
 export default class {
     constructor();
 }
-        `
+        `,
   ],
   invalid: [
     {
@@ -61,14 +61,14 @@ interface I {
         {
           messageId: 'errorMessageInterface',
           line: 3,
-          column: 5
+          column: 5,
         },
         {
           messageId: 'errorMessageInterface',
           line: 4,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     // Works for generic type.
     {
@@ -81,9 +81,9 @@ interface G {
         {
           messageId: 'errorMessageInterface',
           line: 3,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     // 'constructor' flagged.
     {
@@ -96,9 +96,9 @@ type T = {
         {
           messageId: 'errorMessageInterface',
           line: 3,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -110,9 +110,9 @@ class C {
         {
           messageId: 'errorMessageClass',
           line: 3,
-          column: 5
-        }
-      ]
+          column: 5,
+        },
+      ],
     },
     {
       code: `
@@ -124,9 +124,9 @@ declare abstract class C {
         {
           messageId: 'errorMessageClass',
           line: 3,
-          column: 5
-        }
-      ]
-    }
-  ]
+          column: 5,
+        },
+      ],
+    },
+  ],
 });

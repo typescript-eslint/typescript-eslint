@@ -1,10 +1,3 @@
-/**
- * @fileoverview Converts TypeScript AST into ESTree format.
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import { convertError, Converter } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
@@ -14,7 +7,7 @@ import { Extra } from './parser-options';
 export default function astConverter(
   ast: ts.SourceFile,
   extra: Extra,
-  shouldProvideParserServices: boolean
+  shouldProvideParserServices: boolean,
 ) {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
@@ -30,7 +23,7 @@ export default function astConverter(
   const instance = new Converter(ast, {
     errorOnUnknownASTType: extra.errorOnUnknownASTType || false,
     useJSXTextNode: extra.useJSXTextNode || false,
-    shouldProvideParserServices
+    shouldProvideParserServices,
   });
 
   const estree = instance.convertProgram();

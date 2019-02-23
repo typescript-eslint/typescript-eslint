@@ -1,9 +1,3 @@
-/**
- * @fileoverview Enforces the use of `as Type` assertions instead of `<Type>` assertions.
- * @author Patricio Trevino
- */
-
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 export default util.createRule({
@@ -15,27 +9,27 @@ export default util.createRule({
         'Enforces the use of `as Type` assertions instead of `<Type>` assertions',
       tslintRuleName: 'no-angle-bracket-type-assertion',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       preferAs:
-        "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions."
+        "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions.",
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
     return {
-      TSTypeAssertion(node: TSESTree.TSTypeAssertion) {
+      TSTypeAssertion(node) {
         context.report({
           node,
           messageId: 'preferAs',
           data: {
-            cast: sourceCode.getText(node.typeAnnotation)
-          }
+            cast: sourceCode.getText(node.typeAnnotation),
+          },
         });
-      }
+      },
     };
-  }
+  },
 });

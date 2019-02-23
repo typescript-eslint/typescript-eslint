@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces explicit accessibility modifier for class members
- * @author Danny Fritz
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -15,13 +10,13 @@ export default util.createRule({
         'Require explicit accessibility modifiers on class properties and methods',
       tslintRuleName: 'member-access',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       missingAccessibility:
-        'Missing accessibility modifier on {{type}} {{name}}.'
+        'Missing accessibility modifier on {{type}} {{name}}.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -30,7 +25,7 @@ export default util.createRule({
      * @param methodDefinition The node representing a MethodDefinition.
      */
     function checkMethodAccessibilityModifier(
-      methodDefinition: TSESTree.MethodDefinition
+      methodDefinition: TSESTree.MethodDefinition,
     ): void {
       if (
         !methodDefinition.accessibility &&
@@ -41,8 +36,8 @@ export default util.createRule({
           messageId: 'missingAccessibility',
           data: {
             type: 'method definition',
-            name: util.getNameFromPropertyName(methodDefinition.key)
-          }
+            name: util.getNameFromPropertyName(methodDefinition.key),
+          },
         });
       }
     }
@@ -52,7 +47,7 @@ export default util.createRule({
      * @param classProperty The node representing a ClassProperty.
      */
     function checkPropertyAccessibilityModifier(
-      classProperty: TSESTree.ClassProperty
+      classProperty: TSESTree.ClassProperty,
     ): void {
       if (
         !classProperty.accessibility &&
@@ -63,15 +58,15 @@ export default util.createRule({
           messageId: 'missingAccessibility',
           data: {
             type: 'class property',
-            name: util.getNameFromPropertyName(classProperty.key)
-          }
+            name: util.getNameFromPropertyName(classProperty.key),
+          },
         });
       }
     }
 
     return {
       ClassProperty: checkPropertyAccessibilityModifier,
-      MethodDefinition: checkMethodAccessibilityModifier
+      MethodDefinition: checkMethodAccessibilityModifier,
     };
-  }
+  },
 });

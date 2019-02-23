@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforce giving `compare` argument to `Array#sort`
- * @author Toru Nagashima <https://github.com/mysticatea>
- */
-
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
@@ -16,12 +11,12 @@ export default util.createRule({
     docs: {
       description: 'Enforce giving `compare` argument to `Array#sort`',
       category: 'Best Practices',
-      recommended: false
+      recommended: false,
     },
     messages: {
-      requireCompare: "Require 'compare' argument."
+      requireCompare: "Require 'compare' argument.",
     },
-    schema: []
+    schema: [],
   },
 
   create(context) {
@@ -30,7 +25,7 @@ export default util.createRule({
 
     return {
       "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
-        node: TSESTree.MemberExpression
+        node: TSESTree.MemberExpression,
       ) {
         // Get the symbol of the `sort` method.
         const tsNode = service.esTreeNodeToTSNodeMap.get(node);
@@ -51,7 +46,7 @@ export default util.createRule({
             return;
           }
         }
-      }
+      },
     };
-  }
+  },
 });

@@ -1,14 +1,5 @@
-/**
- * @fileoverview Requires any function or method that returns a Promise to be marked async
- * @author Josh Goldberg <https://github.com/joshuakgoldberg>
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 type Options = [
   {
@@ -30,10 +21,10 @@ export default util.createRule<Options, MessageIds>({
         'Requires any function or method that returns a Promise to be marked async.',
       tslintName: 'promise-function-async',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
-      missingAsync: 'Functions that return promises must be async.'
+      missingAsync: 'Functions that return promises must be async.',
     },
     schema: [
       {
@@ -42,25 +33,25 @@ export default util.createRule<Options, MessageIds>({
           allowedPromiseNames: {
             type: 'array',
             items: {
-              type: 'string'
-            }
+              type: 'string',
+            },
           },
           checkArrowFunctions: {
-            type: 'boolean'
+            type: 'boolean',
           },
           checkFunctionDeclarations: {
-            type: 'boolean'
+            type: 'boolean',
           },
           checkFunctionExpressions: {
-            type: 'boolean'
+            type: 'boolean',
           },
           checkMethodDeclarations: {
-            type: 'boolean'
-          }
+            type: 'boolean',
+          },
         },
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
@@ -68,8 +59,8 @@ export default util.createRule<Options, MessageIds>({
       checkArrowFunctions: true,
       checkFunctionDeclarations: true,
       checkFunctionExpressions: true,
-      checkMethodDeclarations: true
-    }
+      checkMethodDeclarations: true,
+    },
   ],
   create(
     context,
@@ -79,23 +70,26 @@ export default util.createRule<Options, MessageIds>({
         checkArrowFunctions,
         checkFunctionDeclarations,
         checkFunctionExpressions,
-        checkMethodDeclarations
-      }
-    ]
+        checkMethodDeclarations,
+      },
+    ],
   ) {
     const allAllowedPromiseNames = new Set([
       'Promise',
-      ...allowedPromiseNames!
+      ...allowedPromiseNames!,
     ]);
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
     function validateNode(node: TSESTree.Node) {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const [callSignature] = checker
+      const signatures = checker
         .getTypeAtLocation(originalNode)
         .getCallSignatures();
-      const returnType = checker.getReturnTypeOfSignature(callSignature);
+      if (!signatures.length) {
+        return;
+      }
+      const returnType = checker.getReturnTypeOfSignature(signatures[0]);
 
       if (!util.containsTypeByName(returnType, allAllowedPromiseNames)) {
         return;
@@ -103,13 +97,13 @@ export default util.createRule<Options, MessageIds>({
 
       context.report({
         messageId: 'missingAsync',
-        node
+        node,
       });
     }
 
     return {
       'ArrowFunctionExpression[async = false]'(
-        node: TSESTree.ArrowFunctionExpression
+        node: TSESTree.ArrowFunctionExpression,
       ) {
         if (checkArrowFunctions) {
           validateNode(node);
@@ -132,7 +126,7 @@ export default util.createRule<Options, MessageIds>({
         } else if (checkFunctionExpressions) {
           validateNode(node);
         }
-      }
+      },
     };
-  }
+  },
 });

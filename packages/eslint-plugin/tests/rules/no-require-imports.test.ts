@@ -3,9 +3,9 @@ import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
-    sourceType: 'module'
+    sourceType: 'module',
   },
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-require-imports', rule, {
@@ -15,7 +15,7 @@ ruleTester.run('no-require-imports', rule, {
     'var lib4 = lib2.subImport',
     'var lib7 = 700',
     'import lib9 = lib2.anotherSubImport',
-    "import lib10 from 'lib10'"
+    "import lib10 from 'lib10'",
   ],
   invalid: [
     {
@@ -24,9 +24,9 @@ ruleTester.run('no-require-imports', rule, {
         {
           messageId: 'noRequireImports',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: "let lib2 = require('lib2')",
@@ -34,9 +34,9 @@ ruleTester.run('no-require-imports', rule, {
         {
           messageId: 'noRequireImports',
           line: 1,
-          column: 12
-        }
-      ]
+          column: 12,
+        },
+      ],
     },
     {
       code: "var lib5 = require('lib5'), lib6 = require('lib6')",
@@ -44,14 +44,14 @@ ruleTester.run('no-require-imports', rule, {
         {
           messageId: 'noRequireImports',
           line: 1,
-          column: 12
+          column: 12,
         },
         {
           messageId: 'noRequireImports',
           line: 1,
-          column: 36
-        }
-      ]
+          column: 36,
+        },
+      ],
     },
     {
       code: "import lib8 = require('lib8')",
@@ -59,9 +59,9 @@ ruleTester.run('no-require-imports', rule, {
         {
           messageId: 'noRequireImports',
           line: 1,
-          column: 15
-        }
-      ]
-    }
-  ]
+          column: 15,
+        },
+      ],
+    },
+  ],
 });

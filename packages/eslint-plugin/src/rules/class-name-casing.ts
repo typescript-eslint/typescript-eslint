@@ -1,9 +1,3 @@
-/**
- * @fileoverview Enforces PascalCased class and interface names.
- * @author Jed Fox
- * @author Armano <https://github.com/armano2>
- */
-
 import * as util from '../util';
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
@@ -15,12 +9,12 @@ export default util.createRule({
       description: 'Require PascalCased class and interface names',
       tslintRuleName: 'class-name',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
-      notPascalCased: "{{friendlyName}} '{{name}}' must be PascalCased."
+      notPascalCased: "{{friendlyName}} '{{name}}' must be PascalCased.",
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -57,8 +51,8 @@ export default util.createRule({
         messageId: 'notPascalCased',
         data: {
           friendlyName,
-          name: id.name
-        }
+          name: id.name,
+        },
       });
     }
 
@@ -67,7 +61,7 @@ export default util.createRule({
         node:
           | TSESTree.ClassDeclaration
           | TSESTree.TSInterfaceDeclaration
-          | TSESTree.ClassExpression
+          | TSESTree.ClassExpression,
       ) {
         // class expressions (i.e. export default class {}) are OK
         if (node.id && !isPascalCase(node.id.name)) {
@@ -75,7 +69,7 @@ export default util.createRule({
         }
       },
       "VariableDeclarator[init.type='ClassExpression']"(
-        node: TSESTree.VariableDeclarator
+        node: TSESTree.VariableDeclarator,
       ) {
         if (
           node.id.type === AST_NODE_TYPES.ArrayPattern ||
@@ -96,7 +90,7 @@ export default util.createRule({
             report(nodeInit, id);
           }
         }
-      }
+      },
     };
-  }
+  },
 });

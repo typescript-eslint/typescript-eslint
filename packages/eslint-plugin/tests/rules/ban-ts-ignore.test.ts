@@ -2,7 +2,7 @@ import rule from '../../src/rules/ban-ts-ignore';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('ban-ts-ignore', rule, {
@@ -12,7 +12,7 @@ ruleTester.run('ban-ts-ignore', rule, {
     `/** @ts-ignore */`,
     `/*
 // @ts-ignore in a block
-*/`
+*/`,
   ],
   invalid: [
     {
@@ -21,9 +21,9 @@ ruleTester.run('ban-ts-ignore', rule, {
         {
           messageId: 'tsIgnoreComment',
           line: 1,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: '// @ts-ignore: Suppress next line',
@@ -31,9 +31,9 @@ ruleTester.run('ban-ts-ignore', rule, {
         {
           messageId: 'tsIgnoreComment',
           line: 1,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: '/////@ts-ignore: Suppress next line',
@@ -41,9 +41,9 @@ ruleTester.run('ban-ts-ignore', rule, {
         {
           messageId: 'tsIgnoreComment',
           line: 1,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -57,9 +57,9 @@ if (false) {
         {
           messageId: 'tsIgnoreComment',
           line: 3,
-          column: 3
-        }
-      ]
-    }
-  ]
+          column: 3,
+        },
+      ],
+    },
+  ],
 });

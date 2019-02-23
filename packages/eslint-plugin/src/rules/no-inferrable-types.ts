@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows explicit type declarations for inferrable types
- * @author James Garbutt <https://github.com/43081j>
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -23,33 +18,33 @@ export default util.createRule<Options, MessageIds>({
         'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.',
       tslintRuleName: 'no-inferrable-types',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     fixable: 'code',
     messages: {
       noInferrableType:
-        'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.'
+        'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.',
     },
     schema: [
       {
         type: 'object',
         properties: {
           ignoreParameters: {
-            type: 'boolean'
+            type: 'boolean',
           },
           ignoreProperties: {
-            type: 'boolean'
-          }
+            type: 'boolean',
+          },
         },
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
       ignoreParameters: true,
-      ignoreProperties: true
-    }
+      ignoreProperties: true,
+    },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
     /**
@@ -59,7 +54,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isInferrable(
       node: TSESTree.TSTypeAnnotation,
-      init: TSESTree.Expression
+      init: TSESTree.Expression,
     ): boolean {
       if (
         node.type !== AST_NODE_TYPES.TSTypeAnnotation ||
@@ -113,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.Parameter
         | TSESTree.ClassProperty,
       typeNode: TSESTree.TSTypeAnnotation | undefined,
-      initNode: TSESTree.Expression | null | undefined
+      initNode: TSESTree.Expression | null | undefined,
     ): void {
       if (!typeNode || !initNode || !typeNode.typeAnnotation) {
         return;
@@ -143,14 +138,14 @@ export default util.createRule<Options, MessageIds>({
         node,
         messageId: 'noInferrableType',
         data: {
-          type
+          type,
         },
-        fix: fixer => fixer.remove(typeNode)
+        fix: fixer => fixer.remove(typeNode),
       });
     }
 
     function inferrableVariableVisitor(
-      node: TSESTree.VariableDeclarator
+      node: TSESTree.VariableDeclarator,
     ): void {
       if (!node.id) {
         return;
@@ -162,7 +157,7 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.FunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.ArrowFunctionExpression
+        | TSESTree.ArrowFunctionExpression,
     ): void {
       if (ignoreParameters || !node.params) {
         return;
@@ -171,7 +166,7 @@ export default util.createRule<Options, MessageIds>({
         param =>
           param.type === AST_NODE_TYPES.AssignmentPattern &&
           param.left &&
-          param.right
+          param.right,
       ) as TSESTree.AssignmentPattern[]).forEach(param => {
         reportInferrableType(param, param.left.typeAnnotation, param.right);
       });
@@ -193,7 +188,7 @@ export default util.createRule<Options, MessageIds>({
       FunctionExpression: inferrableParameterVisitor,
       FunctionDeclaration: inferrableParameterVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
-      ClassProperty: inferrablePropertyVisitor
+      ClassProperty: inferrablePropertyVisitor,
     };
-  }
+  },
 });

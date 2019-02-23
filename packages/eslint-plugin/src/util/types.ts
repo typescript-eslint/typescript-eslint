@@ -8,7 +8,7 @@ import ts from 'typescript';
  */
 export function containsTypeByName(
   type: ts.Type,
-  allowedNames: Set<string>
+  allowedNames: Set<string>,
 ): boolean {
   if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
     return true;

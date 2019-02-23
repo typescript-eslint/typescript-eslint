@@ -1,13 +1,6 @@
-/**
- * @fileoverview Enforces the use of the keyword `namespace` over `module` to declare custom TypeScript modules.
- * @author Patricio Trevino
- * @author Armano <https://github.com/armano2>
- */
-
 import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
-  TSESTree
 } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -20,21 +13,21 @@ export default util.createRule({
         'Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules.',
       tslintRuleName: 'no-internal-module',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     fixable: 'code',
     messages: {
       useNamespace:
-        "Use 'namespace' instead of 'module' to declare custom TypeScript modules."
+        "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
 
     return {
-      TSModuleDeclaration(node: TSESTree.TSModuleDeclaration) {
+      TSModuleDeclaration(node) {
         // Do nothing if the name is a string.
         if (!node.id || node.id.type === AST_NODE_TYPES.Literal) {
           return;
@@ -52,10 +45,10 @@ export default util.createRule({
             messageId: 'useNamespace',
             fix(fixer) {
               return fixer.replaceText(moduleType, 'namespace');
-            }
+            },
           });
         }
-      }
+      },
     };
-  }
+  },
 });

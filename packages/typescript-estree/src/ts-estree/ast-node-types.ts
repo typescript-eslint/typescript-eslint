@@ -1,10 +1,3 @@
-/**
- * @fileoverview The AST node types produced by the parser.
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 export enum AST_NODE_TYPES {
   ArrayExpression = 'ArrayExpression',
   ArrayPattern = 'ArrayPattern',
@@ -167,7 +160,7 @@ export enum AST_NODE_TYPES {
   TSUnionType = 'TSUnionType',
   TSUndefinedKeyword = 'TSUndefinedKeyword',
   TSUnknownKeyword = 'TSUnknownKeyword',
-  TSVoidKeyword = 'TSVoidKeyword'
+  TSVoidKeyword = 'TSVoidKeyword',
 }
 
 export enum AST_TOKEN_TYPES {
@@ -181,5 +174,5 @@ export enum AST_TOKEN_TYPES {
   Punctuator = 'Punctuator',
   RegularExpression = 'RegularExpression',
   String = 'String',
-  Template = 'Template'
+  Template = 'Template',
 }

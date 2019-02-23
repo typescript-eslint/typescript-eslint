@@ -1,9 +1,3 @@
-/**
- * @fileoverview Enforces the any type is not used.
- * @author Danny Fritz
- * @author Patricio Trevino
- */
-
 import * as util from '../util';
 
 export default util.createRule({
@@ -14,12 +8,12 @@ export default util.createRule({
       description: 'Disallow usage of the `any` type',
       tslintRuleName: 'no-any',
       category: 'Best Practices',
-      recommended: 'warn'
+      recommended: 'warn',
     },
     messages: {
-      unexpectedAny: 'Unexpected any. Specify a different type.'
+      unexpectedAny: 'Unexpected any. Specify a different type.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -27,9 +21,9 @@ export default util.createRule({
       TSAnyKeyword(node) {
         context.report({
           node,
-          messageId: 'unexpectedAny'
+          messageId: 'unexpectedAny',
         });
-      }
+      },
     };
-  }
+  },
 });

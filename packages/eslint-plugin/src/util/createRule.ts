@@ -2,7 +2,7 @@ import RuleModule, {
   RuleListener,
   RuleMetaData,
   RuleMetaDataDocs,
-  RuleContext
+  RuleContext,
 } from 'ts-eslint';
 import { applyDefault } from './applyDefault';
 
@@ -33,14 +33,14 @@ export function createRule<
   name,
   meta,
   defaultOptions,
-  create
+  create,
 }: {
   name: string;
   meta: CreateRuleMeta<TMessageIds>;
   defaultOptions: TOptions;
   create: (
     context: RuleContext<TMessageIds, TOptions>,
-    optionsWithDefault: TOptions
+    optionsWithDefault: TOptions,
   ) => TRuleListener;
 }): RuleModule<TMessageIds, TOptions, TRuleListener> {
   return {
@@ -48,15 +48,15 @@ export function createRule<
       ...meta,
       docs: {
         ...meta.docs,
-        url: `https://github.com/typescript-eslint/typescript-eslint/blob/${version}/packages/eslint-plugin/docs/rules/${name}.md`,
+        url: `https://github.com/typescript-eslint/typescript-eslint/blob/v${version}/packages/eslint-plugin/docs/rules/${name}.md`,
         extraDescription: meta.docs.tslintName
           ? [`\`${meta.docs.tslintName}\` from TSLint`]
-          : undefined
-      }
+          : undefined,
+      },
     },
     create(context) {
       const optionsWithDefault = applyDefault(defaultOptions, context.options);
       return create(context, optionsWithDefault);
-    }
+    },
   };
 }

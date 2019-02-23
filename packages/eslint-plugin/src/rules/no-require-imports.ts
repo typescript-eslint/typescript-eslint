@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows invocation of `require()`.
- * @author Kanitkorn Sujautra
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -14,12 +9,12 @@ export default util.createRule({
       description: 'Disallows invocation of `require()`.',
       tslintName: 'no-require-imports',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     schema: [],
     messages: {
-      noRequireImports: 'A `require()` style import is forbidden.'
-    }
+      noRequireImports: 'A `require()` style import is forbidden.',
+    },
   },
   defaultOptions: [],
   create(context) {
@@ -27,15 +22,15 @@ export default util.createRule({
       'CallExpression > Identifier[name="require"]'(node: TSESTree.Identifier) {
         context.report({
           node: node.parent!,
-          messageId: 'noRequireImports'
+          messageId: 'noRequireImports',
         });
       },
-      TSExternalModuleReference(node: TSESTree.TSExternalModuleReference) {
+      TSExternalModuleReference(node) {
         context.report({
           node,
-          messageId: 'noRequireImports'
+          messageId: 'noRequireImports',
         });
-      }
+      },
     };
-  }
+  },
 });

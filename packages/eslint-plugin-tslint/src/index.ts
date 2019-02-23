@@ -30,20 +30,20 @@ const tslintConfig = memoize(
   (
     lintFile: string,
     tslintRules: RawRulesConfig,
-    tslintRulesDirectory: string[]
+    tslintRulesDirectory: string[],
   ) => {
     if (lintFile != null) {
       return Configuration.loadConfigurationFromPath(lintFile);
     }
     return Configuration.parseConfigFile({
       rules: tslintRules || {},
-      rulesDirectory: tslintRulesDirectory || []
+      rulesDirectory: tslintRulesDirectory || [],
     });
   },
   (lintFile: string | undefined, tslintRules = {}, tslintRulesDirectory = []) =>
     `${lintFile}_${Object.keys(tslintRules).join(',')}_${
       tslintRulesDirectory.length
-    }`
+    }`,
 );
 
 export const rules = {
@@ -56,7 +56,7 @@ export const rules = {
       docs: {
         description:
           'Wraps a TSLint configuration and lints the whole source using TSLint',
-        category: 'TSLint'
+        category: 'TSLint',
       },
       schema: [
         {
@@ -67,23 +67,23 @@ export const rules = {
               /**
                * No fixed schema properties for rules, as this would be a permanently moving target
                */
-              additionalProperties: true
+              additionalProperties: true,
             },
             rulesDirectory: {
               type: 'array',
               items: {
-                type: 'string'
-              }
+                type: 'string',
+              },
             },
             lintFile: {
-              type: 'string'
-            }
+              type: 'string',
+            },
           },
-          additionalProperties: false
-        }
-      ]
+          additionalProperties: false,
+        },
+      ],
     },
-    create: function(context: Rule.RuleContext) {
+    create(context: Rule.RuleContext) {
       const fileName = context.getFilename();
       const sourceCode = context.getSourceCode().text;
       const parserServices: ParserServices | undefined = context.parserServices;
@@ -94,7 +94,7 @@ export const rules = {
        */
       if (!parserServices || !parserServices.program) {
         throw new Error(
-          `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`
+          `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`,
         );
       }
 
@@ -104,7 +104,7 @@ export const rules = {
       const {
         rules: tslintRules,
         rulesDirectory: tslintRulesDirectory,
-        lintFile
+        lintFile,
       } = context.options[0];
 
       const program: Program = parserServices.program;
@@ -116,13 +116,13 @@ export const rules = {
        */
       const tslintOptions = {
         formatter: 'json',
-        fix: false
+        fix: false,
       };
       const tslint = new CustomLinter(tslintOptions, program);
       const configuration = tslintConfig(
         lintFile,
         tslintRules,
-        tslintRulesDirectory
+        tslintRulesDirectory,
       );
       tslint.lint(fileName, sourceCode, configuration);
 
@@ -140,13 +140,13 @@ export const rules = {
             loc: {
               start: {
                 line: start.line + 1,
-                column: start.character
+                column: start.character,
               },
               end: {
                 line: end.line + 1,
-                column: end.character
-              }
-            }
+                column: end.character,
+              },
+            },
           });
         });
       }
@@ -155,6 +155,6 @@ export const rules = {
        * Return an empty object for the ESLint rule
        */
       return {};
-    }
-  }
+    },
+  },
 };

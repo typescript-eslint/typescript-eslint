@@ -1,8 +1,3 @@
-/**
- * @fileoverview Prevent TypeScript-specific variables being falsely marked as unused
- * @author James Henry
- */
-
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import baseRule from 'eslint/lib/rules/no-unused-vars';
 import * as util from '../util';
@@ -15,10 +10,10 @@ export default util.createRule({
       description: 'Disallow unused variables',
       tslintRuleName: 'no-unused-variable',
       category: 'Variables',
-      recommended: 'warn'
+      recommended: 'warn',
     },
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [],
   create(context) {
@@ -73,7 +68,7 @@ export default util.createRule({
             superVar.eslintUsed = true;
           }
         }
-      }
+      },
     });
-  }
+  },
 });

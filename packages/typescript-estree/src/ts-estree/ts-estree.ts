@@ -127,6 +127,7 @@ export type Node =
   | JSXOpeningFragment
   | JSXSpreadAttribute
   | JSXSpreadChild
+  | JSXMemberExpression
   | JSXText
   | LabeledStatement
   | Literal
@@ -273,7 +274,7 @@ export type ExportDeclaration =
   | TSInterfaceDeclaration
   | TSModuleDeclaration
   | TSTypeAliasDeclaration
-  | VariableDeclarator;
+  | VariableDeclaration;
 export type Expression =
   | ArrowFunctionExpression
   | AssignmentExpression

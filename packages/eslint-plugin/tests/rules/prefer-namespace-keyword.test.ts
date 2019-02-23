@@ -2,7 +2,7 @@ import rule from '../../src/rules/prefer-namespace-keyword';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser'
+  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('prefer-namespace-keyword', rule, {
@@ -11,7 +11,7 @@ ruleTester.run('prefer-namespace-keyword', rule, {
     "declare module 'foo' { }",
     'namespace foo { }',
     'declare namespace foo { }',
-    'declare global { }'
+    'declare global { }',
   ],
   invalid: [
     {
@@ -21,9 +21,9 @@ ruleTester.run('prefer-namespace-keyword', rule, {
         {
           messageId: 'useNamespace',
           line: 1,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: 'declare module foo { }',
@@ -32,9 +32,9 @@ ruleTester.run('prefer-namespace-keyword', rule, {
         {
           messageId: 'useNamespace',
           line: 1,
-          column: 1
-        }
-      ]
+          column: 1,
+        },
+      ],
     },
     {
       code: `
@@ -51,14 +51,14 @@ declare namespace foo {
         {
           messageId: 'useNamespace',
           line: 2,
-          column: 1
+          column: 1,
         },
         {
           messageId: 'useNamespace',
           line: 3,
-          column: 5
-        }
-      ]
-    }
-  ]
+          column: 5,
+        },
+      ],
+    },
+  ],
 });

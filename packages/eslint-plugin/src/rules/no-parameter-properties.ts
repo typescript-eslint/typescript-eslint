@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows parameter properties in class constructors.
- * @author Patricio Trevino
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -30,11 +25,11 @@ export default util.createRule<Options, MessageIds>({
         'Disallow the use of parameter properties in class constructors.',
       tslintRuleName: 'no-parameter-properties',
       category: 'Stylistic Issues',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       noParamProp:
-        'Property {{parameter}} cannot be declared in the constructor.'
+        'Property {{parameter}} cannot be declared in the constructor.',
     },
     schema: [
       {
@@ -50,20 +45,20 @@ export default util.createRule<Options, MessageIds>({
                 'public',
                 'private readonly',
                 'protected readonly',
-                'public readonly'
-              ]
+                'public readonly',
+              ],
             },
-            minItems: 1
-          }
+            minItems: 1,
+          },
         },
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
-      allows: []
-    }
+      allows: [],
+    },
   ],
   create(context, [{ allows }]) {
     /**
@@ -84,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSParameterProperty(node: TSESTree.TSParameterProperty) {
+      TSParameterProperty(node) {
         const modifiers = getModifiers(node);
 
         if (allows.indexOf(modifiers) === -1) {
@@ -106,11 +101,11 @@ export default util.createRule<Options, MessageIds>({
             node,
             messageId: 'noParamProp',
             data: {
-              parameter: name
-            }
+              parameter: name,
+            },
           });
         }
-      }
+      },
     };
-  }
+  },
 });

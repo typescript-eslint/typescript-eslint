@@ -4,7 +4,7 @@ import glob from 'glob';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
-  testServices
+  testServices,
 } from '../tools/test-utils';
 
 //------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ function createConfig(filename: string): object {
     filePath: filename,
     generateServices: true,
     project: './tsconfig.json',
-    tsconfigRootDir: path.resolve(FIXTURES_DIR)
+    tsconfigRootDir: path.resolve(FIXTURES_DIR),
   };
 }
 
@@ -33,7 +33,7 @@ describe('services', () => {
     const config = createConfig(filename);
     it(
       formatSnapshotName(filename, FIXTURES_DIR, '.ts'),
-      createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config),
     );
     it(`${formatSnapshotName(filename, FIXTURES_DIR, '.ts')} services`, () => {
       testServices(code, config);

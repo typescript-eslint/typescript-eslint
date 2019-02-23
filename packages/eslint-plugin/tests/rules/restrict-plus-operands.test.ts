@@ -8,8 +8,8 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: rootPath,
-    project: './tsconfig.json'
-  }
+    project: './tsconfig.json',
+  },
 });
 
 ruleTester.run('restrict-plus-operands', rule, {
@@ -22,6 +22,7 @@ ruleTester.run('restrict-plus-operands', rule, {
     `var foo = "5.5" + "10";`,
     `var foo = parseInt("5.5", 10) + 10;`,
     `var foo = parseFloat("5.5", 10) + 10;`,
+    `var foo = 1n + 1n;`,
     `
 function test () : number { return 2; }
 var foo = test("5.5", 10) + 10;
@@ -56,7 +57,7 @@ var foo = ("5.5" as string) + pair.second;
             `,
     `const foo = 'hello' + (someBoolean ? 'a' : 'b') + (() => someBoolean ? 'c' : 'd')() + 'e';`,
     `const balls = true;`,
-    `balls === true;`
+    `balls === true;`,
   ],
   invalid: [
     {
@@ -65,9 +66,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notStrings',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: 'var foo = [] + {};',
@@ -75,9 +76,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notNumbers',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `var foo = 5 + "10";`,
@@ -85,9 +86,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notStrings',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `var foo = [] + 5;`,
@@ -95,9 +96,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notNumbers',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `var foo = [] + {};`,
@@ -105,9 +106,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notNumbers',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `var foo = [] + [];`,
@@ -115,9 +116,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notNumbers',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `var foo = 5 + [];`,
@@ -125,9 +126,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notNumbers',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `var foo = "5" + {};`,
@@ -135,9 +136,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notStrings',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `var foo = 5.5 + "5";`,
@@ -145,9 +146,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notStrings',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `var foo = "5.5" + 5;`,
@@ -155,9 +156,9 @@ var foo = ("5.5" as string) + pair.second;
         {
           messageId: 'notStrings',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -169,9 +170,9 @@ var foo = x + y;
         {
           messageId: 'notStrings',
           line: 4,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -183,9 +184,9 @@ var foo = y + x;
         {
           messageId: 'notStrings',
           line: 4,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -196,9 +197,9 @@ var foo = x + {};
         {
           messageId: 'notNumbers',
           line: 3,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -209,9 +210,9 @@ var foo = [] + y;
         {
           messageId: 'notStrings',
           line: 3,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -222,9 +223,9 @@ var foo = pair.first + "10";
         {
           messageId: 'notStrings',
           line: 3,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -235,9 +236,9 @@ var foo = 5 + pair.second;
         {
           messageId: 'notStrings',
           line: 3,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `var foo = parseInt("5.5", 10) + "10";`,
@@ -245,9 +246,9 @@ var foo = 5 + pair.second;
         {
           messageId: 'notStrings',
           line: 1,
-          column: 11
-        }
-      ]
+          column: 11,
+        },
+      ],
     },
     {
       code: `
@@ -258,9 +259,29 @@ var foo = pair + pair;
         {
           messageId: 'notNumbers',
           line: 3,
-          column: 11
-        }
-      ]
-    }
-  ]
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `var foo = 1n + 1`,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 1,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `var foo = 1 + 1n`,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 1,
+          column: 11,
+        },
+      ],
+    },
+  ],
 });

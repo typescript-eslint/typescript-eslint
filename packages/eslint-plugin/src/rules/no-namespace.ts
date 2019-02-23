@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows the use of custom TypeScript modules and namespaces.
- * @author Patricio Trevino
- */
-
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -23,39 +18,39 @@ export default util.createRule<Options, MessageIds>({
         'Disallow the use of custom TypeScript modules and namespaces',
       tslintRuleName: 'no-namespace',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       moduleSyntaxIsPreferred:
-        'ES2015 module syntax is preferred over custom TypeScript modules and namespaces.'
+        'ES2015 module syntax is preferred over custom TypeScript modules and namespaces.',
     },
     schema: [
       {
         type: 'object',
         properties: {
           allowDeclarations: {
-            type: 'boolean'
+            type: 'boolean',
           },
           allowDefinitionFiles: {
-            type: 'boolean'
-          }
+            type: 'boolean',
+          },
         },
-        additionalProperties: false
-      }
-    ]
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
       allowDeclarations: false,
-      allowDefinitionFiles: true
-    }
+      allowDefinitionFiles: true,
+    },
   ],
   create(context, [{ allowDeclarations, allowDefinitionFiles }]) {
     const filename = context.getFilename();
 
     return {
       "TSModuleDeclaration[global!=true][id.type='Identifier']"(
-        node: TSESTree.TSModuleDeclaration
+        node: TSESTree.TSModuleDeclaration,
       ) {
         if (
           (node.parent &&
@@ -68,9 +63,9 @@ export default util.createRule<Options, MessageIds>({
 
         context.report({
           node,
-          messageId: 'moduleSyntaxIsPreferred'
+          messageId: 'moduleSyntaxIsPreferred',
         });
-      }
+      },
     };
-  }
+  },
 });

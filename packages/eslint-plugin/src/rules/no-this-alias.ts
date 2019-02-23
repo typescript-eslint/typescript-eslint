@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallow aliasing `this`
- * @author Jed Fox
- */
-
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -22,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow aliasing `this`',
       tslintRuleName: 'no-this-assignment',
       category: 'Best Practices',
-      recommended: false
+      recommended: false,
     },
     schema: [
       {
@@ -30,33 +25,33 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowDestructuring: {
-            type: 'boolean'
+            type: 'boolean',
           },
           allowedNames: {
             type: 'array',
             items: {
-              type: 'string'
-            }
-          }
-        }
-      }
+              type: 'string',
+            },
+          },
+        },
+      },
     ],
     messages: {
       thisAssignment: "Unexpected aliasing of 'this' to local variable.",
       thisDestructure:
-        "Unexpected aliasing of members of 'this' to local variables."
-    }
+        "Unexpected aliasing of members of 'this' to local variables.",
+    },
   },
   defaultOptions: [
     {
       allowDestructuring: false,
-      allowedNames: []
-    }
+      allowedNames: [],
+    },
   ],
   create(context, [{ allowDestructuring, allowedNames }]) {
     return {
       "VariableDeclarator[init.type='ThisExpression']"(
-        node: TSESTree.VariableDeclarator
+        node: TSESTree.VariableDeclarator,
       ) {
         const { id } = node;
 
@@ -74,10 +69,10 @@ export default util.createRule<Options, MessageIds>({
             messageId:
               id.type === AST_NODE_TYPES.Identifier
                 ? 'thisAssignment'
-                : 'thisDestructure'
+                : 'thisDestructure',
           });
         }
-      }
+      },
     };
-  }
+  },
 });

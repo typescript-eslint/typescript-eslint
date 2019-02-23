@@ -1,9 +1,3 @@
-/**
- * @fileoverview When adding two variables, operands must both be of type number or of type string.
- * @author James Henry
- * @author Armano <https://github.com/armano2>
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 import * as util from '../util';
@@ -17,15 +11,16 @@ export default util.createRule({
         'When adding two variables, operands must both be of type number or of type string.',
       tslintRuleName: 'restrict-plus-operands',
       category: 'Best Practices',
-      recommended: false
+      recommended: false,
     },
     messages: {
       notNumbers:
         "Operands of '+' operation must either be both strings or both numbers.",
       notStrings:
-        "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal."
+        "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal.",
+      notBigInts: "Operands of '+' operation must be both bigints.",
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -33,7 +28,7 @@ export default util.createRule({
 
     const typeChecker = service.program.getTypeChecker();
 
-    type BaseLiteral = 'string' | 'number' | 'invalid';
+    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid';
 
     /**
      * Helper function to get base type of node
@@ -46,6 +41,10 @@ export default util.createRule({
       }
       if (type.isStringLiteral()) {
         return 'string';
+      }
+      // is BigIntLiteral
+      if (type.flags & ts.TypeFlags.BigIntLiteral) {
+        return 'bigint';
       }
       if (type.isUnion()) {
         const types = type.types.map(getBaseTypeOfLiteralType);
@@ -85,16 +84,21 @@ export default util.createRule({
           if (leftType === 'string' || rightType === 'string') {
             context.report({
               node,
-              messageId: 'notStrings'
+              messageId: 'notStrings',
+            });
+          } else if (leftType === 'bigint' || rightType === 'bigint') {
+            context.report({
+              node,
+              messageId: 'notBigInts',
             });
           } else {
             context.report({
               node,
-              messageId: 'notNumbers'
+              messageId: 'notNumbers',
             });
           }
         }
-      }
+      },
     };
-  }
+  },
 });

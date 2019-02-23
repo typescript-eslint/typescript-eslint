@@ -1,10 +1,3 @@
-/**
- * @fileoverview Convert comment using TypeScript token scanner
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
-
 import ts from 'typescript';
 import { getLocFor, getNodeContainer } from './node-utils';
 import { TSESTree } from './ts-estree';
@@ -26,11 +19,11 @@ function convertTypeScriptCommentToEsprimaComment(
   start: number,
   end: number,
   startLoc: TSESTree.LineAndColumnData,
-  endLoc: TSESTree.LineAndColumnData
+  endLoc: TSESTree.LineAndColumnData,
 ): TSESTree.Comment {
   const comment: TSESTree.OptionalRangeAndLoc<TSESTree.Comment> = {
     type: block ? 'Block' : 'Line',
-    value: text
+    value: text,
   };
 
   if (typeof start === 'number') {
@@ -40,7 +33,7 @@ function convertTypeScriptCommentToEsprimaComment(
   if (typeof startLoc === 'object') {
     comment.loc = {
       start: startLoc,
-      end: endLoc
+      end: endLoc,
     };
   }
 
@@ -58,14 +51,14 @@ function convertTypeScriptCommentToEsprimaComment(
 function getCommentFromTriviaScanner(
   triviaScanner: ts.Scanner,
   ast: ts.SourceFile,
-  code: string
+  code: string,
 ): TSESTree.Comment {
   const kind = triviaScanner.getToken();
   const isBlock = kind === ts.SyntaxKind.MultiLineCommentTrivia;
   const range = {
     pos: triviaScanner.getTokenPos(),
     end: triviaScanner.getTextPos(),
-    kind: triviaScanner.getToken()
+    kind: triviaScanner.getToken(),
   };
 
   const comment = code.substring(range.pos, range.end);
@@ -80,7 +73,7 @@ function getCommentFromTriviaScanner(
     range.pos,
     range.end,
     loc.start,
-    loc.end
+    loc.end,
   );
 }
 
@@ -93,7 +86,7 @@ function getCommentFromTriviaScanner(
  */
 export function convertComments(
   ast: ts.SourceFile,
-  code: string
+  code: string,
 ): TSESTree.Comment[] {
   const comments: TSESTree.Comment[] = [];
 
@@ -105,7 +98,7 @@ export function convertComments(
     ast.languageVersion,
     false,
     ast.languageVariant,
-    code
+    code,
   );
 
   let kind = triviaScanner.scan();

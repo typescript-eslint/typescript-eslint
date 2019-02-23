@@ -1,16 +1,7 @@
-/**
- * @fileoverview Warns when a namespace qualifier is unnecessary.
- * @author Benjamin Lichtman
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 export default util.createRule({
   name: 'no-unnecessary-qualifier',
@@ -19,15 +10,15 @@ export default util.createRule({
       category: 'Best Practices',
       description: 'Warns when a namespace qualifier is unnecessary.',
       recommended: false,
-      tslintName: 'no-unnecessary-qualifier'
+      tslintName: 'no-unnecessary-qualifier',
     },
     fixable: 'code',
     messages: {
       unnecessaryQualifier:
-        "Qualifier is unnecessary since '{{ name }}' is in scope."
+        "Qualifier is unnecessary since '{{ name }}' is in scope.",
     },
     schema: [],
-    type: 'suggestion'
+    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -39,13 +30,9 @@ export default util.createRule({
     const checker = program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
-
     function tryGetAliasedSymbol(
       symbol: ts.Symbol,
-      checker: ts.TypeChecker
+      checker: ts.TypeChecker,
     ): ts.Symbol | null {
       return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
         ? checker.getAliasedSymbol(symbol)
@@ -57,7 +44,7 @@ export default util.createRule({
 
       if (
         symbolDeclarations.some(decl =>
-          namespacesInScope.some(ns => ns === decl)
+          namespacesInScope.some(ns => ns === decl),
         )
       ) {
         return true;
@@ -71,7 +58,7 @@ export default util.createRule({
     function getSymbolInScope(
       node: ts.Node,
       flags: ts.SymbolFlags,
-      name: string
+      name: string,
     ): ts.Symbol | undefined {
       // TODO:PERF `getSymbolsInScope` gets a long list. Is there a better way?
       const scope = checker.getSymbolsInScope(node, flags);
@@ -85,12 +72,10 @@ export default util.createRule({
 
     function qualifierIsUnnecessary(
       qualifier: TSESTree.Node,
-      name: TSESTree.Identifier
+      name: TSESTree.Identifier,
     ): boolean {
       const tsQualifier = esTreeNodeToTSNodeMap.get(qualifier);
       const tsName = esTreeNodeToTSNodeMap.get(name);
-
-      if (!(tsQualifier && tsName)) return false; // TODO: throw error?
 
       const namespaceSymbol = checker.getSymbolAtLocation(tsQualifier);
 
@@ -111,7 +96,7 @@ export default util.createRule({
       const fromScope = getSymbolInScope(
         tsQualifier,
         accessedSymbol.flags,
-        sourceCode.getText(name)
+        sourceCode.getText(name),
       );
 
       return (
@@ -123,7 +108,7 @@ export default util.createRule({
     function visitNamespaceAccess(
       node: TSESTree.Node,
       qualifier: TSESTree.Node,
-      name: TSESTree.Identifier
+      name: TSESTree.Identifier,
     ): void {
       // Only look for nested qualifier errors if we didn't already fail on the outer qualifier.
       if (
@@ -135,26 +120,21 @@ export default util.createRule({
           node: qualifier,
           messageId: 'unnecessaryQualifier',
           data: {
-            name: sourceCode.getText(name)
+            name: sourceCode.getText(name),
           },
           fix(fixer) {
             return fixer.removeRange([qualifier.range[0], name.range[0]]);
-          }
+          },
         });
       }
     }
 
     function enterDeclaration(node: TSESTree.Node): void {
-      const tsDeclaration = esTreeNodeToTSNodeMap.get(node);
-      if (tsDeclaration) {
-        namespacesInScope.push(tsDeclaration);
-      }
+      namespacesInScope.push(esTreeNodeToTSNodeMap.get(node));
     }
 
-    function exitDeclaration(node: TSESTree.Node) {
-      if (esTreeNodeToTSNodeMap.has(node)) {
-        namespacesInScope.pop();
-      }
+    function exitDeclaration() {
+      namespacesInScope.pop();
     }
 
     function resetCurrentNamespaceExpression(node: TSESTree.Node): void {
@@ -164,7 +144,7 @@ export default util.createRule({
     }
 
     function isPropertyAccessExpression(
-      node: TSESTree.Node
+      node: TSESTree.Node,
     ): node is TSESTree.MemberExpression {
       return node.type === 'MemberExpression' && !node.computed;
     }
@@ -176,10 +156,6 @@ export default util.createRule({
           isEntityNameExpression(node.object))
       );
     }
-
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
 
     return {
       TSModuleDeclaration: enterDeclaration,
@@ -194,7 +170,7 @@ export default util.createRule({
         visitNamespaceAccess(node, node.left, node.right);
       },
       'MemberExpression[computed=false]': function(
-        node: TSESTree.MemberExpression
+        node: TSESTree.MemberExpression,
       ): void {
         const property = node.property as TSESTree.Identifier;
         if (isEntityNameExpression(node.object)) {
@@ -202,7 +178,7 @@ export default util.createRule({
         }
       },
       'TSQualifiedName:exit': resetCurrentNamespaceExpression,
-      'MemberExpression:exit': resetCurrentNamespaceExpression
+      'MemberExpression:exit': resetCurrentNamespaceExpression,
     };
-  }
+  },
 });

@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces naming conventions for class members by visibility.
- * @author Ian MacLeod
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -23,11 +18,11 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Enforces naming conventions for class members by visibility.',
       category: 'Stylistic Issues',
-      recommended: false
+      recommended: false,
     },
     messages: {
       incorrectName:
-        '{{accessibility}} property {{name}} should match {{convention}}.'
+        '{{accessibility}} property {{name}} should match {{convention}}.',
     },
     schema: [
       {
@@ -36,23 +31,23 @@ export default util.createRule<Options, MessageIds>({
           public: {
             type: 'string',
             minLength: 1,
-            format: 'regex'
+            format: 'regex',
           },
           protected: {
             type: 'string',
             minLength: 1,
-            format: 'regex'
+            format: 'regex',
           },
           private: {
             type: 'string',
             minLength: 1,
-            format: 'regex'
-          }
+            format: 'regex',
+          },
         },
         additionalProperties: false,
-        minProperties: 1
-      }
-    ]
+        minProperties: 1,
+      },
+    ],
   },
   defaultOptions: [{}],
   create(context, [config]) {
@@ -72,7 +67,7 @@ export default util.createRule<Options, MessageIds>({
      * @private
      */
     function validateName(
-      node: TSESTree.MethodDefinition | TSESTree.ClassProperty
+      node: TSESTree.MethodDefinition | TSESTree.ClassProperty,
     ): void {
       const name = util.getNameFromPropertyName(node.key);
       const accessibility: Modifiers = node.accessibility || 'public';
@@ -83,13 +78,13 @@ export default util.createRule<Options, MessageIds>({
       context.report({
         node: node.key,
         messageId: 'incorrectName',
-        data: { accessibility, name, convention }
+        data: { accessibility, name, convention },
       });
     }
 
     return {
       MethodDefinition: validateName,
-      ClassProperty: validateName
+      ClassProperty: validateName,
     };
-  }
+  },
 });

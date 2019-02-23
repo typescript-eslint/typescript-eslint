@@ -1,9 +1,3 @@
-/**
- * @fileoverview Disallows the declaration of empty interfaces.
- * @author Patricio Trevino
- */
-
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 type Options = [
@@ -21,12 +15,12 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow the declaration of empty interfaces',
       tslintRuleName: 'no-empty-interface',
       category: 'Best Practices',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       noEmpty: 'An empty interface is equivalent to `{}`.',
       noEmptyWithSuper:
-        'An interface declaring no members is equivalent to its supertype.'
+        'An interface declaring no members is equivalent to its supertype.',
     },
     schema: [
       {
@@ -34,20 +28,20 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowSingleExtends: {
-            type: 'boolean'
-          }
-        }
-      }
-    ]
+            type: 'boolean',
+          },
+        },
+      },
+    ],
   },
   defaultOptions: [
     {
-      allowSingleExtends: false
-    }
+      allowSingleExtends: false,
+    },
   ],
   create(context, [{ allowSingleExtends }]) {
     return {
-      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
+      TSInterfaceDeclaration(node) {
         if (node.body.body.length !== 0) {
           // interface contains members --> Nothing to report
           return;
@@ -56,7 +50,7 @@ export default util.createRule<Options, MessageIds>({
         if (!node.extends || node.extends.length === 0) {
           context.report({
             node: node.id,
-            messageId: 'noEmpty'
+            messageId: 'noEmpty',
           });
         } else if (node.extends.length === 1) {
           // interface extends exactly 1 interface --> Report depending on rule setting
@@ -65,11 +59,11 @@ export default util.createRule<Options, MessageIds>({
           } else {
             context.report({
               node: node.id,
-              messageId: 'noEmptyWithSuper'
+              messageId: 'noEmptyWithSuper',
             });
           }
         }
-      }
+      },
     };
-  }
+  },
 });

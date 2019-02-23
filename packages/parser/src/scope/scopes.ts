@@ -7,7 +7,7 @@ export class EnumScope extends Scope {
   constructor(
     scopeManager: ScopeManager,
     upperScope: Scope,
-    block: TSESTree.TSEnumDeclaration | null
+    block: TSESTree.TSEnumDeclaration | null,
   ) {
     super(scopeManager, 'enum', upperScope, block, false);
   }
@@ -18,7 +18,7 @@ export class EmptyFunctionScope extends Scope {
   constructor(
     scopeManager: ScopeManager,
     upperScope: Scope,
-    block: TSESTree.TSDeclareFunction | null
+    block: TSESTree.TSDeclareFunction | null,
   ) {
     super(scopeManager, 'empty-function', upperScope, block, false);
   }
