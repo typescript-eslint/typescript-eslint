@@ -83,7 +83,7 @@ export const rules = {
         },
       ],
     },
-    create: function(context: Rule.RuleContext) {
+    create(context: Rule.RuleContext) {
       const fileName = context.getFilename();
       const sourceCode = context.getSourceCode().text;
       const parserServices: ParserServices | undefined = context.parserServices;
