@@ -4,12 +4,14 @@ Examples of **correct** code:
 
 ```ts
 var foo = parseInt('5.5', 10) + 10;
+var foo = 1n + 1n;
 ```
 
 Examples of **incorrect** code:
 
 ```ts
 var foo = '5.5' + 5;
+var foo = 1n + 1;
 ```
 
 ## Options
