@@ -13,7 +13,6 @@ export class CustomLinter extends TSLintLinter {
   }
 
   getSourceFile(fileName: string) {
-    const result = this.program.getSourceFile(fileName);
-    return result;
+    return this.program.getSourceFile(fileName);
   }
 }
