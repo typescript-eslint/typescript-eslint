@@ -22,7 +22,10 @@ let str: string;
 let array: any[];
 let readonlyArray: ReadonlyArray<any>;
 let typedArray: UInt8Array;
-let userDefined: { indexOf(x: any): number; includes(x: any): boolean };
+let userDefined: {
+  indexOf(x: any): number;
+  includes(x: any): boolean
+};
 
 str.indexOf(value) !== -1;
 array.indexOf(value) !== -1;
@@ -41,6 +44,10 @@ let array: any[];
 let readonlyArray: ReadonlyArray<any>;
 let typedArray: UInt8Array;
 let userDefined: {
+  indexOf(x: any): number;
+  includes(x: any): boolean
+};
+let mismatchExample: {
   indexOf(x: any, fromIndex?: number): number;
   includes(x: any): boolean;
 };
@@ -49,9 +56,10 @@ str.includes(value);
 array.includes(value);
 readonlyArray.includes(value);
 typedArray.includes(value);
+userDefined.includes(value);
 
 // the two methods have different parameters.
-userDefined.indexOf(value) >= 0;
+mismatchExample.indexOf(value) >= 0;
 ```
 
 ## Options
