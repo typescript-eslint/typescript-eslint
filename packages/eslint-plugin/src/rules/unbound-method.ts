@@ -1,10 +1,4 @@
-/**
- * @fileoverview Enforces unbound methods are called with their expected scope.
- * @author Josh Goldberg <https://github.com/joshuakgoldberg>
- */
-'use strict';
-
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -22,9 +16,6 @@ type Options = [Config];
 
 type MessageIds = 'unbound';
 
-/**
- * @type {import("eslint").Rule.RuleModule}
- */
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
@@ -99,32 +90,32 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
   return false;
 }
 
-function isSafeUse(node: TSESTree.BaseNode): boolean {
+function isSafeUse(node: TSESTree.Node): boolean {
   const parent = node.parent!;
 
   switch (parent.type) {
-    case 'IfStatement':
-    case 'ForStatement':
-    case 'MemberExpression':
-    case 'UpdateExpression':
-    case 'WhileStatement':
+    case AST_NODE_TYPES.IfStatement:
+    case AST_NODE_TYPES.ForStatement:
+    case AST_NODE_TYPES.MemberExpression:
+    case AST_NODE_TYPES.UpdateExpression:
+    case AST_NODE_TYPES.WhileStatement:
       return true;
 
-    case 'CallExpression':
+    case AST_NODE_TYPES.CallExpression:
       return parent.callee === node;
 
-    case 'ConditionalExpression':
+    case AST_NODE_TYPES.ConditionalExpression:
       return parent.test === node;
 
-    case 'LogicalExpression':
+    case AST_NODE_TYPES.LogicalExpression:
       return parent.operator !== '||';
 
-    case 'TaggedTemplateExpression':
+    case AST_NODE_TYPES.TaggedTemplateExpression:
       return parent.tag === node;
 
-    case 'TSNonNullExpression':
-    case 'TSAsExpression':
-    case 'TSTypeAssertion':
+    case AST_NODE_TYPES.TSNonNullExpression:
+    case AST_NODE_TYPES.TSAsExpression:
+    case AST_NODE_TYPES.TSTypeAssertion:
       return isSafeUse(parent);
   }
 
