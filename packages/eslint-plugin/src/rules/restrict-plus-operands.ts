@@ -24,6 +24,7 @@ export default util.createRule({
         "Operands of '+' operation must either be both strings or both numbers.",
       notStrings:
         "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal.",
+      notBigInts: "Operands of '+' operation must be both bigints.",
     },
     schema: [],
   },
@@ -33,7 +34,7 @@ export default util.createRule({
 
     const typeChecker = service.program.getTypeChecker();
 
-    type BaseLiteral = 'string' | 'number' | 'invalid';
+    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid';
 
     /**
      * Helper function to get base type of node
@@ -46,6 +47,10 @@ export default util.createRule({
       }
       if (type.isStringLiteral()) {
         return 'string';
+      }
+      // is BigIntLiteral
+      if (type.flags & ts.TypeFlags.BigIntLiteral) {
+        return 'bigint';
       }
       if (type.isUnion()) {
         const types = type.types.map(getBaseTypeOfLiteralType);
@@ -86,6 +91,11 @@ export default util.createRule({
             context.report({
               node,
               messageId: 'notStrings',
+            });
+          } else if (leftType === 'bigint' || rightType === 'bigint') {
+            context.report({
+              node,
+              messageId: 'notBigInts',
             });
           } else {
             context.report({
