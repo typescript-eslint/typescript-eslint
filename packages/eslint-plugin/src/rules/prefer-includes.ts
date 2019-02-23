@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforce `includes` method over `indexOf` method.
- * @author Toru Nagashima <https://github.com/mysticatea>
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { getStaticValue } from 'eslint-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
