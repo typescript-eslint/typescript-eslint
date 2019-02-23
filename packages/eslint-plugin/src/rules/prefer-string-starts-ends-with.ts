@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforce to use `String#startsWith` and `String#endsWith` over other options.
- * @author Toru Nagashima <https://github.com/mysticatea>
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import {
   isNotClosingParenToken,
