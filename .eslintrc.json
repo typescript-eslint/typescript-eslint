@@ -54,7 +54,10 @@
       }
     },
     {
-      "files": ["packages/eslint-plugin/test/**/*.ts"],
+      "files": [
+        "packages/eslint-plugin/test/**/*.ts",
+        "packages/eslint-plugin-tslint/tests/**/*.spec.ts"
+      ],
       "rules": {
         "eslint-plugin/no-identical-tests": "error"
       }
