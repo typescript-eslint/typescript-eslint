@@ -24,29 +24,29 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Enforces unbound methods are called with their expected scope.',
       tslintName: 'no-unbound-method',
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       unbound:
-        'Avoid referencing unbound methods which may cause unintentional scoping of `this`.'
+        'Avoid referencing unbound methods which may cause unintentional scoping of `this`.',
     },
     schema: [
       {
         type: 'object',
         properties: {
           ignoreStatic: {
-            type: 'boolean'
-          }
+            type: 'boolean',
+          },
         },
-        additionalProperties: false
-      }
+        additionalProperties: false,
+      },
     ],
-    type: 'problem'
+    type: 'problem',
   },
   defaultOptions: [
     {
-      ignoreStatic: false
-    }
+      ignoreStatic: false,
+    },
   ],
   create(context, [{ ignoreStatic }]) {
     const parserServices = util.getParserServices(context);
@@ -64,12 +64,12 @@ export default util.createRule<Options, MessageIds>({
         if (symbol && isDangerousMethod(symbol, ignoreStatic)) {
           context.report({
             messageId: 'unbound',
-            node
+            node,
           });
         }
-      }
+      },
     };
-  }
+  },
 });
 
 function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
@@ -82,7 +82,7 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
         ignoreStatic &&
         tsutils.hasModifier(
           valueDeclaration.modifiers,
-          ts.SyntaxKind.StaticKeyword
+          ts.SyntaxKind.StaticKeyword,
         )
       );
   }
