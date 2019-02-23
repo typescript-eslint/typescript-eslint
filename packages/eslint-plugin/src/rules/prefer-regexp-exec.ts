@@ -1,8 +1,3 @@
-/**
- * @fileoverview Prefer RegExp#exec() over String#match() if no global flag is provided.
- * @author Ricky Lippmann <https://github.com/ldrick>
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 import { createRule, getParserServices } from '../util';
