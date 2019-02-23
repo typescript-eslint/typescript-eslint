@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces that types will not to be used
- * @author Armano <https://github.com/armano2>
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { ReportFixFunction } from 'ts-eslint';
 import * as util from '../util';

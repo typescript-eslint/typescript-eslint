@@ -1,9 +1,3 @@
-/**
- * @fileoverview Disallow generic `Array` constructors
- * @author Jed Fox
- * @author Matt DuVall <http://www.mattduvall.com/>
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

@@ -1,20 +1,7 @@
-/**
- * @fileoverview Warns when a namespace qualifier is unnecessary.
- * @author Benjamin Lichtman
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import path from 'path';
 import rule from '../../src/rules/no-unnecessary-qualifier';
 import { RuleTester } from '../RuleTester';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const messageId = 'unnecessaryQualifier';
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');

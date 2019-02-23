@@ -1,9 +1,3 @@
-/**
- * @fileoverview Enforces spacing around type annotations.
- * @author Nicholas C. Zakas
- * @author Patricio Trevino
- */
-
 import * as util from '../util';
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 

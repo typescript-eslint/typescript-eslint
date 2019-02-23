@@ -1,8 +1,3 @@
-/**
- * @fileoverview Rule to flag non-camelcased identifiers
- * @author Patricio Trevino
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import baseRule from 'eslint/lib/rules/camelcase';
 import * as util from '../util';

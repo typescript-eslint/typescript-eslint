@@ -1,8 +1,3 @@
-/**
- * @fileoverview Rule to warn if a type assertion does not change the type of an expression
- * @author Benjamin Lichtman
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as tsutils from 'tsutils';
 import ts from 'typescript';
