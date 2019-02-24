@@ -40,6 +40,14 @@ function sameObject<T>(a: any, b: any): boolean {
   return a === b;
 }`,
     `
+function sameObject<T>(a: any, b: number): boolean {
+  return a === b;
+}`,
+    `
+function sameObject<T>(a: number, b: any): boolean {
+  return a === b;
+}`,
+    `
 type myNumber = number;
 const a1: myNumber = 1
 const a2: myNumber = 2
