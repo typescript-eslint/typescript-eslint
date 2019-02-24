@@ -236,17 +236,6 @@ export default util.createRule<Options, MessageIds>({
               },
             });
           } else {
-            function reportInvalidTypeForOperator() {
-              context.report({
-                node,
-                messageId: 'invalidTypeForOperator',
-                data: {
-                  comparator: node.operator,
-                  type: typeNames[operandKind as TypeKind],
-                },
-              });
-            }
-
             const isEquality = isEqualityOperator(node.operator);
             if (isEquality) {
               // Check !=, ==, !==, ===
@@ -262,10 +251,25 @@ export default util.createRule<Options, MessageIds>({
                   if (allowObjectEqualComparison) {
                     break;
                   }
-                  reportInvalidTypeForOperator();
+                  context.report({
+                    node,
+                    messageId: 'invalidTypeForOperator',
+                    data: {
+                      comparator: node.operator,
+                      type: typeNames[operandKind],
+                    },
+                  });
+
                   break;
                 default:
-                  reportInvalidTypeForOperator();
+                  context.report({
+                    node,
+                    messageId: 'invalidTypeForOperator',
+                    data: {
+                      comparator: node.operator,
+                      type: typeNames[operandKind],
+                    },
+                  });
               }
             } else {
               // Check >, <, >=, <=
@@ -277,10 +281,25 @@ export default util.createRule<Options, MessageIds>({
                   if (allowStringOrderComparison) {
                     break;
                   }
-                  reportInvalidTypeForOperator();
+                  context.report({
+                    node,
+                    messageId: 'invalidTypeForOperator',
+                    data: {
+                      comparator: node.operator,
+                      type: typeNames[operandKind],
+                    },
+                  });
+
                   break;
                 default:
-                  reportInvalidTypeForOperator();
+                  context.report({
+                    node,
+                    messageId: 'invalidTypeForOperator',
+                    data: {
+                      comparator: node.operator,
+                      type: typeNames[operandKind],
+                    },
+                  });
               }
             }
           }
