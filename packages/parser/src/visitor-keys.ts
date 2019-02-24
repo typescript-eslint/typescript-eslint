@@ -4,7 +4,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   // Additional estree nodes.
   Import: [],
   // Additional Properties.
-  ArrayPattern: ['elements', 'typeAnnotation'],
+  ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
   ArrowFunctionExpression: ['typeParameters', 'params', 'returnType', 'body'],
   ClassDeclaration: [
     'decorators',
@@ -13,7 +13,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
     'superClass',
     'superTypeParameters',
     'implements',
-    'body'
+    'body',
   ],
   ClassExpression: [
     'decorators',
@@ -22,14 +22,15 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
     'superClass',
     'superTypeParameters',
     'implements',
-    'body'
+    'body',
   ],
+  TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
   FunctionDeclaration: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   FunctionExpression: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   Identifier: ['decorators', 'typeAnnotation'],
   MethodDefinition: ['decorators', 'key', 'value'],
-  ObjectPattern: ['properties', 'typeAnnotation'],
-  RestElement: ['argument', 'typeAnnotation'],
+  ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
+  RestElement: ['decorators', 'argument', 'typeAnnotation'],
   NewExpression: ['callee', 'typeParameters', 'arguments'],
   CallExpression: ['callee', 'typeParameters', 'arguments'],
   // JSX
@@ -56,13 +57,13 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   TSConditionalType: ['checkType', 'extendsType', 'trueType', 'falseType'],
   TSConstructSignatureDeclaration: ['typeParameters', 'params', 'returnType'],
   TSConstructorType: ['typeParameters', 'params', 'returnType'],
-  TSDeclareFunction: ['id', 'typeParameters', 'params', 'returnType'],
+  TSDeclareFunction: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   TSDeclareKeyword: [],
   TSEmptyBodyFunctionExpression: [
     'id',
     'typeParameters',
     'params',
-    'returnType'
+    'returnType',
   ],
   TSEnumDeclaration: ['members'],
   TSEnumMember: ['id', 'initializer'],
@@ -91,7 +92,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   TSNumberKeyword: [],
   TSObjectKeyword: [],
   TSOptionalType: ['typeAnnotation'],
-  TSParameterProperty: ['parameter'],
+  TSParameterProperty: ['decorators', 'parameter'],
   TSParenthesizedType: ['typeAnnotation'],
   TSPrivateKeyword: [],
   TSPropertySignature: ['typeAnnotation', 'key', 'initializer'],
@@ -120,5 +121,5 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   TSUnionType: ['types'],
   TSUndefinedKeyword: [],
   TSUnknownKeyword: [],
-  TSVoidKeyword: []
+  TSVoidKeyword: [],
 });

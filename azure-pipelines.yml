@@ -18,6 +18,12 @@ jobs:
           yarn --ignore-engines --frozen-lockfile
 
       - script: |
+          # Note that this command *also* typechecks tests/tools,
+          # whereas the build only checks src files
+          yarn typecheck
+        displayName: 'Typecheck all packages'
+
+      - script: |
           yarn check-format
         displayName: 'Check code formatting'
 

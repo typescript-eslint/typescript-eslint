@@ -3,12 +3,13 @@ import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
   ParserOptions as ParserOptionsTsESTree,
-  ParserServices
+  ParserServices,
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
 
+// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const packageJSON = require('../package.json');
 
 interface ParseForESLintResult {
@@ -20,7 +21,7 @@ interface ParseForESLintResult {
 
 function validateBoolean(
   value: boolean | undefined,
-  fallback: boolean = false
+  fallback: boolean = false,
 ): boolean {
   if (typeof value !== 'boolean') {
     return fallback;
@@ -42,7 +43,7 @@ export function parse(code: string, options?: ParserOptions) {
 
 export function parseForESLint(
   code: string,
-  options?: ParserOptions | null
+  options?: ParserOptions | null,
 ): ParseForESLintResult {
   if (!options || typeof options !== 'object') {
     options = {};
@@ -59,7 +60,7 @@ export function parseForESLint(
   const parserOptions: ParserOptionsTsESTree = {};
   Object.assign(parserOptions, options, {
     useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
-    jsx: validateBoolean(options.ecmaFeatures.jsx)
+    jsx: validateBoolean(options.ecmaFeatures.jsx),
   });
 
   if (typeof options.filePath === 'string') {
@@ -75,7 +76,7 @@ export function parseForESLint(
    */
   const warnOnUnsupportedTypeScriptVersion = validateBoolean(
     options.warnOnUnsupportedTypeScriptVersion,
-    true
+    true,
   );
   if (!warnOnUnsupportedTypeScriptVersion) {
     parserOptions.loggerFn = false;
@@ -95,9 +96,11 @@ export function parseForESLint(
           break;
         // no default
       }
-    }
+    },
   });
 
   const scopeManager = analyzeScope(ast, options);
   return { ast, services, scopeManager, visitorKeys };
 }
+
+export { ParserServices, ParserOptions };

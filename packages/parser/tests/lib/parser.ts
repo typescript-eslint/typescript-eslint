@@ -22,27 +22,27 @@ describe('parser', () => {
       ecmaFeatures: {},
       jsx: false,
       sourceType: 'script',
-      useJSXTextNode: true
+      useJSXTextNode: true,
     });
     expect(spyScope).toHaveBeenCalledWith(expect.any(Object), {
       ecmaFeatures: {},
-      sourceType: 'script'
+      sourceType: 'script',
     });
   });
 
   it('parseAndGenerateServices() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
-    parseForESLint(code, {
+    const config = {
       loc: false,
       comment: false,
       range: false,
       tokens: false,
-      sourceType: 'module',
+      sourceType: 'module' as 'module',
       ecmaVersion: 10,
       ecmaFeatures: {
         globalReturn: false,
-        jsx: false
+        jsx: false,
       },
       // ts-estree specific
       filePath: 'test/foo',
@@ -50,38 +50,22 @@ describe('parser', () => {
       useJSXTextNode: false,
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      tsconfigRootDir: '../../',
-      extraFileExtensions: ['foo']
-    });
+      tsconfigRootDir: './',
+      extraFileExtensions: ['foo'],
+    };
+    parseForESLint(code, config);
     expect(spy).toHaveBeenCalledWith(code, {
       jsx: false,
-      loc: false,
-      comment: false,
-      range: false,
-      tokens: false,
-      sourceType: 'module',
-      ecmaVersion: 10,
-      ecmaFeatures: {
-        globalReturn: false,
-        jsx: false
-      },
-      // ts-estree specific
-      filePath: 'test/foo',
-      project: 'tsconfig.json',
-      useJSXTextNode: false,
-      errorOnUnknownASTType: false,
-      errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      tsconfigRootDir: '../../',
-      extraFileExtensions: ['foo']
+      ...config,
     });
   });
 
   it('Syntax should contain a frozen object of typescriptESTree.AST_NODE_TYPES', () => {
     expect(Syntax).toEqual(typescriptESTree.AST_NODE_TYPES);
     expect(
-      () => ((Syntax as any).ArrayExpression = 'foo')
+      () => ((Syntax as any).ArrayExpression = 'foo'),
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Cannot assign to read only property 'ArrayExpression' of object '#<Object>'"`
+      `"Cannot assign to read only property 'ArrayExpression' of object '#<Object>'"`,
     );
   });
 
@@ -93,7 +77,7 @@ describe('parser', () => {
       ecmaFeatures: {},
       jsx: false,
       sourceType: 'script',
-      useJSXTextNode: true
+      useJSXTextNode: true,
     });
     parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: false });
     expect(spy).toHaveBeenCalledWith(code, {
@@ -102,7 +86,7 @@ describe('parser', () => {
       sourceType: 'script',
       useJSXTextNode: true,
       loggerFn: false,
-      warnOnUnsupportedTypeScriptVersion: false
+      warnOnUnsupportedTypeScriptVersion: false,
     });
   });
 });

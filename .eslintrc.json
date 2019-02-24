@@ -7,6 +7,7 @@
   },
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "rules": {
+    "comma-dangle": ["error", "always-multiline"],
     "no-mixed-operators": "error",
     "no-console": "off",
     "no-undef": "off",
@@ -30,7 +31,7 @@
     {
       "files": [
         "packages/eslint-plugin-tslint/tests/**/*.ts",
-        "packages/eslint-plugin/tests/**/*.js",
+        "packages/eslint-plugin/tests/**/*.test.ts",
         "packages/parser/tests/**/*.ts",
         "packages/typescript-estree/tests/**/*.ts"
       ],
@@ -53,22 +54,12 @@
       }
     },
     {
-      "files": ["packages/eslint-plugin/**/*.js"],
+      "files": [
+        "packages/eslint-plugin/test/**/*.ts",
+        "packages/eslint-plugin-tslint/tests/**/*.spec.ts"
+      ],
       "rules": {
-        "eslint-plugin/fixer-return": "error",
-        "eslint-plugin/no-identical-tests": "error",
-        "eslint-plugin/no-missing-placeholders": "error",
-        "eslint-plugin/no-unused-placeholders": "error",
-        "eslint-plugin/no-useless-token-range": "error",
-        "eslint-plugin/require-meta-fixable": "error",
-        "eslint-plugin/prefer-placeholders": "error",
-        "eslint-plugin/prefer-replace-text": "error",
-        "eslint-plugin/no-deprecated-report-api": "error",
-        "eslint-plugin/report-message-format": ["error", "^[A-Z'{].*[\\.}]$"],
-        "eslint-plugin/no-deprecated-context-methods": "error",
-        "eslint-plugin/prefer-output-null": "error",
-        "eslint-plugin/test-case-shorthand-strings": "error",
-        "eslint-plugin/require-meta-type": "error"
+        "eslint-plugin/no-identical-tests": "error"
       }
     }
   ]

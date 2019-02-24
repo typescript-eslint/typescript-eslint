@@ -1,6 +1,9 @@
 import fs from 'fs';
 import glob from 'glob';
-import * as testUtils from '../../tools/test-utils';
+import {
+  createScopeSnapshotTestBlock,
+  formatSnapshotName,
+} from '../tools/test-utils';
 
 const FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/typescript';
@@ -14,8 +17,8 @@ describe('typescript', () => {
   testFiles.forEach(filename => {
     const code = fs.readFileSync(filename, 'utf8');
     it(
-      testUtils.formatSnapshotName(filename, FIXTURES_DIR, '.ts'),
-      testUtils.createSnapshotTestBlock(code)
+      formatSnapshotName(filename, FIXTURES_DIR, '.ts'),
+      createScopeSnapshotTestBlock(code),
     );
   });
 });
