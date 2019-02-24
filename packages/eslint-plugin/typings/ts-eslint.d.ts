@@ -404,8 +404,10 @@ declare module 'ts-eslint' {
     ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
     ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
     ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
+    AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
     AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
     AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
+    BinaryExpression?: RuleFunction<TSESTree.BinaryExpression>;
     BlockStatement?: RuleFunction<TSESTree.BlockStatement>;
     BreakStatement?: RuleFunction<TSESTree.BreakStatement>;
     CallExpression?: RuleFunction<TSESTree.CallExpression>;
