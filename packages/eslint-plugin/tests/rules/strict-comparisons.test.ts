@@ -99,8 +99,20 @@ if (h1 === h2) {}
 if (h2 === h1) {}
 		`,
     `
-const a: any = 5;
+const a: any = 5 as any;
 const b: number = 2;
+if (a < a) {}
+if (b > b) {}
+if (a <= a) {}
+if (b >= b) {}
+if (a == a) {}
+if (b != b) {}
+if (a === a) {}
+if (b !== b) {}
+		`,
+    `
+const b: any = 5 as any;
+const a: number = 2;
 if (a < a) {}
 if (b > b) {}
 if (a <= a) {}
@@ -176,6 +188,19 @@ if (h2 === h1) {}
     `,
       options: [
         { allowObjectEqualComparison: false, allowStringOrderComparison: true },
+      ],
+    },
+    {
+      code: `
+const a = {};
+const b = {};
+if (a == a) {}
+if (b != b) {}
+if (a === a) {}
+if (b !== b) {}
+    `,
+      options: [
+        { allowObjectEqualComparison: true, allowStringOrderComparison: false },
       ],
     },
   ],
