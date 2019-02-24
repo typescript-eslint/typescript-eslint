@@ -98,6 +98,18 @@ const h2: string | number = Math.random() > 0.5 ? 'test' : 2;
 if (h1 === h2) {}
 if (h2 === h1) {}
 		`,
+    `
+const a: any = 5;
+const b: number = 2;
+if (a < a) {}
+if (b > b) {}
+if (a <= a) {}
+if (b >= b) {}
+if (a == a) {}
+if (b != b) {}
+if (a === a) {}
+if (b !== b) {}
+		`,
     {
       code: `if ('' > '') {}`,
       options: [
@@ -308,6 +320,242 @@ if (h2 === h1) {}
           data: {
             comparator: '<=',
             type: 'string',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} > {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '>',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} > {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '>',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} >= {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '>=',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} <= {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '<=',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} == {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '==',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} === {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '===',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} != {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '!=',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} !== {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '!==',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ([] === []) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '===',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ('' > '' || 2 > 1 || {} > {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '>',
+            type: 'string',
+          },
+        },
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '>',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ('' > '' && 2 > 1 && {} > {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '>',
+            type: 'string',
+          },
+        },
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '>',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} === null) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '===',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if (null === {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '===',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if ({} === undefined) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '===',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `if (undefined === {}) {}`,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '===',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function sameObject<T>(a: T, b: T): boolean {
+  return a === b;
+}
+      `,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '===',
+            type: 'object',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type myObject = Object;
+const c1: myObject = {}
+const c2: myObject = {}
+
+if (c1 === c2) {}
+if (c2 === c1) {}
+      `,
+      errors: [
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '===',
+            type: 'object',
+          },
+        },
+        {
+          messageId: 'invalidTypeForOperator',
+          data: {
+            comparator: '===',
+            type: 'object',
           },
         },
       ],
