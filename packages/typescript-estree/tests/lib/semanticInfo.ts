@@ -48,6 +48,21 @@ describe('semanticInfo', () => {
     );
   });
 
+  it(`should cache the created ts.program`, () => {
+    const filename = testFiles[0];
+    const code = readFileSync(filename, 'utf8');
+    const options = createOptions(filename);
+    const optionsProjectString = {
+      ...options,
+      project: './tsconfig.json',
+    };
+    expect(
+      parseAndGenerateServices(code, optionsProjectString).services.program,
+    ).toBe(
+      parseAndGenerateServices(code, optionsProjectString).services.program,
+    );
+  });
+
   it(`should handle "project": "./tsconfig.json" and "project": ["./tsconfig.json"] the same`, () => {
     const filename = testFiles[0];
     const code = readFileSync(filename, 'utf8');
@@ -62,6 +77,38 @@ describe('semanticInfo', () => {
     };
     expect(parseAndGenerateServices(code, optionsProjectString)).toEqual(
       parseAndGenerateServices(code, optionsProjectArray),
+    );
+  });
+
+  it(`should resolve absolute and relative tsconfig paths the same`, () => {
+    const filename = testFiles[0];
+    const code = readFileSync(filename, 'utf8');
+    const options = createOptions(filename);
+    const optionsAbsolutePath = {
+      ...options,
+      project: `${__dirname}/../fixtures/semanticInfo/tsconfig.json`,
+    };
+    const optionsRelativePath = {
+      ...options,
+      project: `./tsconfig.json`,
+    };
+    const absolutePathResult = parseAndGenerateServices(
+      code,
+      optionsAbsolutePath,
+    );
+    const relativePathResult = parseAndGenerateServices(
+      code,
+      optionsRelativePath,
+    );
+    if (absolutePathResult.services.program === undefined) {
+      throw new Error('Unable to create ts.program for absolute tsconfig');
+    } else if (relativePathResult.services.program === undefined) {
+      throw new Error('Unable to create ts.program for relative tsconfig');
+    }
+    expect(
+      absolutePathResult.services.program.getResolvedProjectReferences(),
+    ).toEqual(
+      relativePathResult.services.program.getResolvedProjectReferences(),
     );
   });
 
@@ -190,7 +237,7 @@ describe('semanticInfo', () => {
     badConfig.project = './tsconfigs.json';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
-    ).toThrow(/File .+tsconfigs\.json' not found/);
+    ).toThrow(/The specified path does not exist: .+tsconfigs\.json'/);
   });
 
   it('fail to read project file', () => {
@@ -199,7 +246,7 @@ describe('semanticInfo', () => {
     badConfig.project = '.';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
-    ).toThrow(/File .+semanticInfo' not found/);
+    ).toThrow(/The specified path does not exist: .+semanticInfo'/);
   });
 
   it('malformed project file', () => {

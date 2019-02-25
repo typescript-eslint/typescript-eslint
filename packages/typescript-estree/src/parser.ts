@@ -6,7 +6,6 @@ import semver from 'semver';
 import ts from 'typescript';
 import convert from './ast-converter';
 import { convertError } from './convert';
-import { firstDefined } from './node-utils';
 import { TSESTree } from './ts-estree';
 import { Extra, ParserOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
@@ -65,20 +64,15 @@ function resetExtra(): void {
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTFromProject(code: string, options: ParserOptions) {
-  return firstDefined(
-    calculateProjectParserOptions(
-      code,
-      options.filePath || getFileName(options),
-      extra,
-    ),
-    currentProgram => {
-      const ast = currentProgram.getSourceFile(
-        options.filePath || getFileName(options),
-      );
-      return ast && { ast, program: currentProgram };
-    },
-  );
+function getASTFromProject(options: ParserOptions) {
+  const filePath = options.filePath || getFileName(options);
+  for (const program of calculateProjectParserOptions(extra)) {
+    const ast = program.getSourceFile(filePath);
+    if (ast !== undefined) {
+      return { ast, program };
+    }
+  }
+  return undefined;
 }
 
 /**
@@ -162,7 +156,7 @@ function getProgramAndAST(
   shouldProvideParserServices: boolean,
 ) {
   return (
-    (shouldProvideParserServices && getASTFromProject(code, options)) ||
+    (shouldProvideParserServices && getASTFromProject(options)) ||
     (shouldProvideParserServices && getASTAndDefaultProject(code, options)) ||
     createNewProgram(code)
   );
