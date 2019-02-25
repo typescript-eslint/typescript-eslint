@@ -24,7 +24,7 @@ export default util.createRule<Options, MessageIds>({
 
     return Object.assign({}, rules, {
       MemberExpression(node: TSESTree.MemberExpression) {
-        if ((node.object as any).type !== AST_NODE_TYPES.TSAsExpression) {
+        if (node.object.type !== AST_NODE_TYPES.TSAsExpression) {
           return rules.MemberExpression(node);
         }
       },
