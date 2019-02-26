@@ -1,6 +1,9 @@
 import fs from 'fs';
 import glob from 'glob';
-import * as testUtils from '../../tools/test-utils';
+import {
+  createSnapshotTestBlock,
+  formatSnapshotName,
+} from '../tools/test-utils';
 import { ParserOptions } from '../../src/parser-options';
 
 const FIXTURES_DIR =
@@ -17,12 +20,12 @@ describe('Comments', () => {
     const config: ParserOptions = {
       sourceType: 'module',
       ecmaFeatures: {
-        jsx: true
-      }
+        jsx: true,
+      },
     };
     it(
-      testUtils.formatSnapshotName(filename, FIXTURES_DIR),
-      testUtils.createSnapshotTestBlock(code, config)
+      formatSnapshotName(filename, FIXTURES_DIR),
+      createSnapshotTestBlock(code, config),
     );
   });
 });

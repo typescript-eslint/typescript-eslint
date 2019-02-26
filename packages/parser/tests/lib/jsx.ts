@@ -1,14 +1,17 @@
 import fs from 'fs';
 import glob from 'glob';
 import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
-import * as testUtils from '../../tools/test-utils';
+import {
+  createScopeSnapshotTestBlock,
+  formatSnapshotName,
+} from '../tools/test-utils';
 
 const JSX_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx';
 const jsxTestFiles = glob
   .sync(`${JSX_FIXTURES_DIR}/**/*.src.js`)
   .filter(filename =>
-    filesWithKnownIssues.every(fileName => !filename.includes(fileName))
+    filesWithKnownIssues.every(fileName => !filename.includes(fileName)),
   );
 
 const JSX_JSXTEXT_FIXTURES_DIR =
@@ -29,12 +32,12 @@ describe('JSX', () => {
       const config = {
         useJSXTextNode,
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       };
       it(
-        testUtils.formatSnapshotName(filename, fixturesDir),
-        testUtils.createSnapshotTestBlock(code, config)
+        formatSnapshotName(filename, fixturesDir),
+        createScopeSnapshotTestBlock(code, config),
       );
     };
   }

@@ -1,7 +1,11 @@
 import path from 'path';
 import fs from 'fs';
 import glob from 'glob';
-import * as testUtils from '../../tools/test-utils';
+import {
+  createSnapshotTestBlock,
+  formatSnapshotName,
+  testServices,
+} from '../tools/test-utils';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -15,7 +19,7 @@ function createConfig(filename: string): object {
     filePath: filename,
     generateServices: true,
     project: './tsconfig.json',
-    tsconfigRootDir: path.resolve(FIXTURES_DIR)
+    tsconfigRootDir: path.resolve(FIXTURES_DIR),
   };
 }
 
@@ -28,15 +32,11 @@ describe('services', () => {
     const code = fs.readFileSync(filename, 'utf8');
     const config = createConfig(filename);
     it(
-      testUtils.formatSnapshotName(filename, FIXTURES_DIR, '.ts'),
-      testUtils.createSnapshotTestBlock(code, config)
+      formatSnapshotName(filename, FIXTURES_DIR, '.ts'),
+      createSnapshotTestBlock(code, config),
     );
-    it(`${testUtils.formatSnapshotName(
-      filename,
-      FIXTURES_DIR,
-      '.ts'
-    )} services`, () => {
-      testUtils.testServices(code, config);
+    it(`${formatSnapshotName(filename, FIXTURES_DIR, '.ts')} services`, () => {
+      testServices(code, config);
     });
   });
 });

@@ -1,27 +1,19 @@
-/**
- * @fileoverview Tests for semantic information
- * @author Benjamin Lichtman
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
 import ts from 'typescript';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
-  parseCodeAndGenerateServices
+  parseCodeAndGenerateServices,
 } from '../../tools/test-utils';
 import { parseAndGenerateServices } from '../../src/parser';
-
-//------------------------------------------------------------------------------
-// Setup
-//------------------------------------------------------------------------------
+import {
+  VariableDeclaration,
+  ClassDeclaration,
+  ClassProperty,
+} from '../../src/ts-estree/ts-estree';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
@@ -38,13 +30,9 @@ function createOptions(fileName: string): ParserOptions & { cwd?: string } {
     filePath: fileName,
     tsconfigRootDir: join(process.cwd(), FIXTURES_DIR),
     project: './tsconfig.json',
-    loggerFn: false
+    loggerFn: false,
   };
 }
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 describe('semanticInfo', () => {
   // test all AST snapshots
@@ -55,8 +43,8 @@ describe('semanticInfo', () => {
       createSnapshotTestBlock(
         code,
         createOptions(filename),
-        /*generateServices*/ true
-      )
+        /*generateServices*/ true,
+      ),
     );
   });
 
@@ -66,14 +54,14 @@ describe('semanticInfo', () => {
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
-      project: './tsconfig.json'
+      project: './tsconfig.json',
     };
     const optionsProjectArray = {
       ...options,
-      project: ['./tsconfig.json']
+      project: ['./tsconfig.json'],
     };
     expect(parseAndGenerateServices(code, optionsProjectString)).toEqual(
-      parseAndGenerateServices(code, optionsProjectArray)
+      parseAndGenerateServices(code, optionsProjectArray),
     );
   });
 
@@ -82,7 +70,7 @@ describe('semanticInfo', () => {
     const fileName = resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const parseResult = parseCodeAndGenerateServices(
       readFileSync(fileName, 'utf8'),
-      createOptions(fileName)
+      createOptions(fileName),
     );
 
     testIsolatedFile(parseResult);
@@ -94,18 +82,41 @@ describe('semanticInfo', () => {
       readFileSync(fileName, 'utf8'),
       {
         ...createOptions(fileName),
-        extraFileExtensions: ['.vue']
-      }
+        extraFileExtensions: ['.vue'],
+      },
     );
 
     testIsolatedFile(parseResult);
+  });
+
+  it('non-existent-estree-nodes tests', () => {
+    const fileName = resolve(FIXTURES_DIR, 'non-existent-estree-nodes.src.ts');
+    const parseResult = parseCodeAndGenerateServices(
+      readFileSync(fileName, 'utf8'),
+      createOptions(fileName),
+    );
+
+    expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
+    const binaryExpression = (parseResult.ast.body[0] as VariableDeclaration)
+      .declarations[0].init!;
+    const tsBinaryExpression = parseResult.services.esTreeNodeToTSNodeMap!.get(
+      binaryExpression,
+    );
+    expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
+
+    const computedPropertyString = ((parseResult.ast
+      .body[1] as ClassDeclaration).body.body[0] as ClassProperty).key;
+    const tsComputedPropertyString = parseResult.services.esTreeNodeToTSNodeMap!.get(
+      computedPropertyString,
+    );
+    expect(tsComputedPropertyString.kind).toEqual(ts.SyntaxKind.StringLiteral);
   });
 
   it('imported-file tests', () => {
     const fileName = resolve(FIXTURES_DIR, 'import-file.src.ts');
     const parseResult = parseCodeAndGenerateServices(
       readFileSync(fileName, 'utf8'),
-      createOptions(fileName)
+      createOptions(fileName),
     );
 
     // get type checker
@@ -120,20 +131,20 @@ describe('semanticInfo', () => {
 
     expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
     const tsArrayBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
-      arrayBoundName
+      arrayBoundName,
     );
     expect(tsArrayBoundName).toBeDefined();
-    checkNumberArrayType(checker, tsArrayBoundName);
+    checkNumberArrayType(checker, tsArrayBoundName!);
 
     expect(
-      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName)
+      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName!),
     ).toBe(arrayBoundName);
   });
 
   it('non-existent file tests', () => {
     const parseResult = parseCodeAndGenerateServices(
       `const x = [parseInt("5")];`,
-      createOptions('<input>')
+      createOptions('<input>'),
     );
 
     // get type checker
@@ -145,31 +156,31 @@ describe('semanticInfo', () => {
     expect(boundName.name).toBe('x');
 
     const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
-      boundName
+      boundName,
     );
     expect(tsBoundName).toBeDefined();
 
-    checkNumberArrayType(checker, tsBoundName);
+    checkNumberArrayType(checker, tsBoundName!);
 
-    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName)).toBe(
-      boundName
+    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName!)).toBe(
+      boundName,
     );
   });
 
   it('non-existent file should provide parents nodes', () => {
     const parseResult = parseCodeAndGenerateServices(
       `function M() { return Base }`,
-      createOptions('<input>')
+      createOptions('<input>'),
     );
 
     // https://github.com/JamesHenry/typescript-estree/issues/77
     expect(parseResult.services.program).toBeDefined();
     expect(
-      parseResult.services.program!.getSourceFile('<input>')
+      parseResult.services.program!.getSourceFile('<input>'),
     ).toBeDefined();
     expect(
       parseResult.services.program!.getSourceFile('<input>')!.statements[0]
-        .parent
+        .parent,
     ).toBeDefined();
   });
 
@@ -178,8 +189,8 @@ describe('semanticInfo', () => {
     const badConfig = createOptions(fileName);
     badConfig.project = './tsconfigs.json';
     expect(() =>
-      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+tsconfigs\.json' not found/);
+      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
+    ).toThrow(/File .+tsconfigs\.json' not found/);
   });
 
   it('fail to read project file', () => {
@@ -187,8 +198,8 @@ describe('semanticInfo', () => {
     const badConfig = createOptions(fileName);
     badConfig.project = '.';
     expect(() =>
-      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
-    ).toThrowError(/File .+semanticInfo' not found/);
+      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
+    ).toThrow(/File .+semanticInfo' not found/);
   });
 
   it('malformed project file', () => {
@@ -196,7 +207,7 @@ describe('semanticInfo', () => {
     const badConfig = createOptions(fileName);
     badConfig.project = './badTSConfig/tsconfig.json';
     expect(() =>
-      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig)
+      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
     ).toThrowErrorMatchingSnapshot();
   });
 });
@@ -213,7 +224,7 @@ function testIsolatedFile(parseResult: any) {
 
   // get corresponding TS node
   const tsArrayMember = parseResult.services.esTreeNodeToTSNodeMap!.get(
-    arrayMember
+    arrayMember,
   );
   expect(tsArrayMember).toBeDefined();
   expect(tsArrayMember.kind).toBe(ts.SyntaxKind.NumericLiteral);
@@ -227,19 +238,19 @@ function testIsolatedFile(parseResult: any) {
   // make sure it maps back to original ESTree node
   expect(parseResult).toHaveProperty('services.tsNodeToESTreeNodeMap');
   expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayMember)).toBe(
-    arrayMember
+    arrayMember,
   );
 
   // get bound name
   const boundName = (parseResult.ast as any).body[0].declarations[0].id;
   expect(boundName.name).toBe('x');
   const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
-    boundName
+    boundName,
   );
   expect(tsBoundName).toBeDefined();
   checkNumberArrayType(checker, tsBoundName);
   expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName)).toBe(
-    boundName
+    boundName,
   );
 }
 
@@ -252,10 +263,10 @@ function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node) {
   const nodeType = checker.getTypeAtLocation(tsNode);
   expect(nodeType.flags).toBe(ts.TypeFlags.Object);
   expect((nodeType as ts.ObjectType).objectFlags).toBe(
-    ts.ObjectFlags.Reference
+    ts.ObjectFlags.Reference,
   );
   expect((nodeType as ts.TypeReference).typeArguments).toHaveLength(1);
   expect((nodeType as ts.TypeReference).typeArguments![0].flags).toBe(
-    ts.TypeFlags.Number
+    ts.TypeFlags.Number,
   );
 }

@@ -1,12 +1,5 @@
-/**
- * @fileoverview Tools for running test cases
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import * as parser from '../src/parser';
-import { ParserOptions } from '../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../src/parser-options';
 
 /**
  * Returns a raw copy of the given AST
@@ -20,13 +13,13 @@ export function getRaw(ast: any) {
         return undefined;
       }
       return value;
-    })
+    }),
   );
 }
 
 export function parseCodeAndGenerateServices(
   code: string,
-  config: ParserOptions
+  config: ParserOptions,
 ) {
   return parser.parseAndGenerateServices(code, config);
 }
@@ -42,7 +35,7 @@ export function parseCodeAndGenerateServices(
 export function createSnapshotTestBlock(
   code: string,
   config: ParserOptions,
-  generateServices?: true
+  generateServices?: true,
 ) {
   /**
    * @returns {Object} the AST object
@@ -74,9 +67,20 @@ export function createSnapshotTestBlock(
 export function formatSnapshotName(
   filename: string,
   fixturesDir: string,
-  fileExtension = '.js'
+  fileExtension = '.js',
 ): string {
   return `fixtures/${filename
     .replace(fixturesDir + '/', '')
     .replace(fileExtension, '')}`;
+}
+
+/**
+ * Check if file extension is one used for jsx
+ * @param fileType
+ */
+export function isJSXFileType(fileType: string): boolean {
+  if (fileType.startsWith('.')) {
+    fileType = fileType.slice(1);
+  }
+  return fileType === 'js' || fileType === 'jsx' || fileType === 'tsx';
 }

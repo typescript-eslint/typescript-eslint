@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-tslint",
-  "version": "1.2.0",
+  "version": "1.4.2",
   "main": "dist/index.js",
   "typings": "src/index.ts",
   "description": "TSLint wrapper plugin for ESLint",
@@ -21,8 +21,9 @@
   "scripts": {
     "test": "jest --coverage",
     "prebuild": "npm run clean",
-    "build": "tsc",
-    "clean": "rimraf dist/"
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rimraf dist/",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "lodash.memoize": "^4.1.2"
@@ -34,6 +35,6 @@
   "devDependencies": {
     "@types/eslint": "^4.16.3",
     "@types/lodash.memoize": "^4.1.4",
-    "@typescript-eslint/parser": "1.2.0"
+    "@typescript-eslint/parser": "1.4.2"
   }
 }

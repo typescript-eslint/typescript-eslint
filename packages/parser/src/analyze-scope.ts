@@ -1,17 +1,16 @@
-import { ScopeManager } from 'eslint-scope';
+import { ScopeManager } from './scope/scope-manager';
 import { Definition, ParameterDefinition } from 'eslint-scope/lib/definition';
 import OriginalPatternVisitor from 'eslint-scope/lib/pattern-visitor';
 import Reference from 'eslint-scope/lib/reference';
 import OriginalReferencer from 'eslint-scope/lib/referencer';
-import { Scope } from 'eslint-scope/lib/scope';
 import { getKeys as fallback } from 'eslint-visitor-keys';
 import { ParserOptions } from './parser-options';
 import { visitorKeys as childVisitorKeys } from './visitor-keys';
 import {
   PatternVisitorCallback,
-  PatternVisitorOptions
+  PatternVisitorOptions,
 } from 'eslint-scope/lib/options';
-import { Node } from 'estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -30,28 +29,16 @@ function overrideDefine(define: any) {
   };
 }
 
-/** The scope class for enum. */
-class EnumScope extends Scope {
-  constructor(
-    scopeManager: ScopeManager,
-    upperScope: Scope,
-    block: Node | null
-  ) {
-    // @ts-ignore
-    super(scopeManager, 'enum', upperScope, block, false);
-  }
-}
-
 class PatternVisitor extends OriginalPatternVisitor {
   constructor(
     options: PatternVisitorOptions,
     rootPattern: any,
-    callback: PatternVisitorCallback
+    callback: PatternVisitorCallback,
   ) {
     super(options, rootPattern, callback);
   }
 
-  Identifier(node: any) {
+  Identifier(node: TSESTree.Identifier): void {
     super.Identifier(node);
     if (node.decorators) {
       this.rightHandNodes.push(...node.decorators);
@@ -61,7 +48,7 @@ class PatternVisitor extends OriginalPatternVisitor {
     }
   }
 
-  ArrayPattern(node: any) {
+  ArrayPattern(node: TSESTree.ArrayPattern): void {
     node.elements.forEach(this.visit, this);
     if (node.decorators) {
       this.rightHandNodes.push(...node.decorators);
@@ -71,7 +58,7 @@ class PatternVisitor extends OriginalPatternVisitor {
     }
   }
 
-  ObjectPattern(node: any) {
+  ObjectPattern(node: TSESTree.ObjectPattern): void {
     node.properties.forEach(this.visit, this);
     if (node.decorators) {
       this.rightHandNodes.push(...node.decorators);
@@ -81,15 +68,25 @@ class PatternVisitor extends OriginalPatternVisitor {
     }
   }
 
-  RestElement(node: any) {
+  RestElement(node: TSESTree.RestElement): void {
     super.RestElement(node);
+    if (node.decorators) {
+      this.rightHandNodes.push(...node.decorators);
+    }
     if (node.typeAnnotation) {
       this.rightHandNodes.push(node.typeAnnotation);
     }
   }
+
+  TSParameterProperty(node: TSESTree.TSParameterProperty): void {
+    this.visit(node.parameter);
+    if (node.decorators) {
+      this.rightHandNodes.push(...node.decorators);
+    }
+  }
 }
 
-class Referencer extends OriginalReferencer {
+class Referencer extends OriginalReferencer<ScopeManager> {
   protected typeMode: boolean;
 
   constructor(options: any, scopeManager: ScopeManager) {
@@ -99,16 +96,15 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Override to use PatternVisitor we overrode.
-   * @param {Identifier} node The Identifier node to visit.
-   * @param {Object} [options] The flag to visit right-hand side nodes.
-   * @param {Function} callback The callback function for left-hand side nodes.
-   * @returns {void}
+   * @param node The Identifier node to visit.
+   * @param [options] The flag to visit right-hand side nodes.
+   * @param callback The callback function for left-hand side nodes.
    */
-  visitPattern(
-    node: any,
+  visitPattern<T extends TSESTree.BaseNode>(
+    node: T,
     options: PatternVisitorOptions,
-    callback: PatternVisitorCallback
-  ) {
+    callback: PatternVisitorCallback,
+  ): void {
     if (!node) {
       return;
     }
@@ -130,10 +126,14 @@ class Referencer extends OriginalReferencer {
   /**
    * Override.
    * Visit `node.typeParameters` and `node.returnType` additionally to find `typeof` expressions.
-   * @param {FunctionDeclaration|FunctionExpression|ArrowFunctionExpression} node The function node to visit.
-   * @returns {void}
+   * @param node The function node to visit.
    */
-  visitFunction(node: any) {
+  visitFunction(
+    node:
+      | TSESTree.FunctionDeclaration
+      | TSESTree.FunctionExpression
+      | TSESTree.ArrowFunctionExpression,
+  ): void {
     const { type, id, typeParameters, params, returnType, body } = node;
     const scopeManager = this.scopeManager;
     const upperScope = this.currentScope();
@@ -142,7 +142,7 @@ class Referencer extends OriginalReferencer {
     if (type === 'FunctionDeclaration' && id) {
       upperScope.__define(
         id,
-        new Definition('FunctionName', id, node, null, null, null)
+        new Definition('FunctionName', id, node, null, null, null),
       );
 
       // Remove overload definition to avoid confusion of no-redeclare rule.
@@ -163,12 +163,12 @@ class Referencer extends OriginalReferencer {
       scopeManager.__nestFunctionExpressionNameScope(node);
     }
 
-    // Process the type parameters
-    this.visit(typeParameters);
-
     // Open the function scope.
     scopeManager.__nestFunctionScope(node, this.isInnerMethodDefinition);
     const innerScope = this.currentScope();
+
+    // Process the type parameters
+    this.visit(typeParameters);
 
     // Process parameter declarations.
     for (let i = 0; i < params.length; ++i) {
@@ -176,12 +176,17 @@ class Referencer extends OriginalReferencer {
         params[i],
         { processRightHandNodes: true },
         (pattern, info) => {
-          innerScope.__define(
-            pattern,
-            new ParameterDefinition(pattern, node, i, info.rest)
-          );
-          this.referencingDefaultValue(pattern, info.assignments, null, true);
-        }
+          if (
+            pattern.type !== AST_NODE_TYPES.Identifier ||
+            pattern.name !== 'this'
+          ) {
+            innerScope.__define(
+              pattern,
+              new ParameterDefinition(pattern, node, i, info.rest),
+            );
+            this.referencingDefaultValue(pattern, info.assignments, null, true);
+          }
+        },
       );
     }
 
@@ -189,7 +194,7 @@ class Referencer extends OriginalReferencer {
     this.visit(returnType);
 
     // Process the body.
-    if (body.type === 'BlockStatement') {
+    if (body && body.type === 'BlockStatement') {
       this.visitChildren(body);
     } else {
       this.visit(body);
@@ -202,10 +207,9 @@ class Referencer extends OriginalReferencer {
   /**
    * Override.
    * Visit decorators.
-   * @param {ClassDeclaration|ClassExpression} node The class node to visit.
-   * @returns {void}
+   * @param node The class node to visit.
    */
-  visitClass(node: any) {
+  visitClass(node: TSESTree.ClassDeclaration | TSESTree.ClassExpression): void {
     this.visitDecorators(node.decorators);
 
     const upperTypeMode = this.typeMode;
@@ -214,7 +218,7 @@ class Referencer extends OriginalReferencer {
       this.visit(node.superTypeParameters);
     }
     if (node.implements) {
-      this.visit(node.implements);
+      node.implements.forEach(this.visit, this);
     }
     this.typeMode = upperTypeMode;
 
@@ -223,10 +227,13 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Visit typeParameters.
-   * @param {*} node The node to visit.
-   * @returns {void}
+   * @param node The node to visit.
    */
-  visitTypeParameters(node: any) {
+  visitTypeParameters(node: {
+    typeParameters?:
+      | TSESTree.TSTypeParameterDeclaration
+      | TSESTree.TSTypeParameterInstantiation;
+  }): void {
     if (node.typeParameters) {
       const upperTypeMode = this.typeMode;
       this.typeMode = true;
@@ -238,7 +245,7 @@ class Referencer extends OriginalReferencer {
   /**
    * Override.
    */
-  JSXOpeningElement(node: any) {
+  JSXOpeningElement(node: TSESTree.JSXOpeningElement): void {
     this.visit(node.name);
     this.visitTypeParameters(node);
     node.attributes.forEach(this.visit, this);
@@ -247,10 +254,9 @@ class Referencer extends OriginalReferencer {
   /**
    * Override.
    * Don't create the reference object in the type mode.
-   * @param {Identifier} node The Identifier node to visit.
-   * @returns {void}
+   * @param node The Identifier node to visit.
    */
-  Identifier(node: any) {
+  Identifier(node: TSESTree.Identifier): void {
     this.visitDecorators(node.decorators);
 
     if (!this.typeMode) {
@@ -263,20 +269,22 @@ class Referencer extends OriginalReferencer {
   /**
    * Override.
    * Visit decorators.
-   * @param {MethodDefinition} node The MethodDefinition node to visit.
-   * @returns {void}
+   * @param node The MethodDefinition node to visit.
    */
-  MethodDefinition(node: any) {
+  MethodDefinition(
+    node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition,
+  ): void {
     this.visitDecorators(node.decorators);
     super.MethodDefinition(node);
   }
 
   /**
    * Don't create the reference object for the key if not computed.
-   * @param {ClassProperty} node The ClassProperty node to visit.
-   * @returns {void}
+   * @param node The ClassProperty node to visit.
    */
-  ClassProperty(node: any) {
+  ClassProperty(
+    node: TSESTree.ClassProperty | TSESTree.TSAbstractClassProperty,
+  ): void {
     const upperTypeMode = this.typeMode;
     const { computed, decorators, key, typeAnnotation, value } = node;
 
@@ -295,70 +303,93 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Visit new expression.
-   * @param {NewExpression} node The NewExpression node to visit.
-   * @returns {void}
+   * @param node The NewExpression node to visit.
    */
-  NewExpression(node: any) {
+  NewExpression(node: TSESTree.NewExpression): void {
     this.visitTypeParameters(node);
     this.visit(node.callee);
-    if (node.arguments) {
-      node.arguments.forEach(this.visit, this);
-    }
+
+    node.arguments.forEach(this.visit, this);
   }
 
   /**
    * Override.
    * Visit call expression.
-   * @param {CallExpression} node The CallExpression node to visit.
-   * @returns {void}
+   * @param node The CallExpression node to visit.
    */
-  CallExpression(node: any) {
+  CallExpression(node: TSESTree.CallExpression): void {
     this.visitTypeParameters(node);
 
     this.visit(node.callee);
-    if (node.arguments) {
-      node.arguments.forEach(this.visit, this);
-    }
+
+    node.arguments.forEach(this.visit, this);
   }
 
   /**
    * Define the variable of this function declaration only once.
    * Because to avoid confusion of `no-redeclare` rule by overloading.
-   * @param {TSDeclareFunction} node The TSDeclareFunction node to visit.
-   * @returns {void}
+   * @param node The TSDeclareFunction node to visit.
    */
-  TSDeclareFunction(node: any) {
-    const upperTypeMode = this.typeMode;
-    const scope = this.currentScope();
+  TSDeclareFunction(node: TSESTree.TSDeclareFunction): void {
+    const scopeManager = this.scopeManager;
+    const upperScope = this.currentScope();
     const { id, typeParameters, params, returnType } = node;
 
     // Ignore this if other overloadings have already existed.
     if (id) {
-      const variable = scope.set.get(id.name);
+      const variable = upperScope.set.get(id.name);
       const defs = variable && variable.defs;
       const existed = defs && defs.some(d => d.type === 'FunctionName');
       if (!existed) {
-        scope.__define(
+        upperScope.__define(
           id,
-          new Definition('FunctionName', id, node, null, null, null)
+          new Definition('FunctionName', id, node, null, null, null),
         );
       }
     }
 
-    // Find `typeof` expressions.
-    this.typeMode = true;
+    // Open the function scope.
+    scopeManager.__nestEmptyFunctionScope(node);
+    const innerScope = this.currentScope();
+
+    // Process the type parameters
     this.visit(typeParameters);
-    params.forEach(this.visit, this);
+
+    // Process parameter declarations.
+    for (let i = 0; i < params.length; ++i) {
+      this.visitPattern(
+        params[i],
+        { processRightHandNodes: true },
+        (pattern, info) => {
+          innerScope.__define(
+            pattern,
+            new ParameterDefinition(pattern, node, i, info.rest),
+          );
+
+          // Set `variable.eslintUsed` to tell ESLint that the variable is used.
+          const variable = innerScope.set.get(pattern.name);
+          if (variable) {
+            variable.eslintUsed = true;
+          }
+          this.referencingDefaultValue(pattern, info.assignments, null, true);
+        },
+      );
+    }
+
+    // Process the return type.
     this.visit(returnType);
-    this.typeMode = upperTypeMode;
+
+    // Close the function scope.
+    this.close(node);
   }
 
   /**
    * Create reference objects for the references in parameters and return type.
-   * @param {TSEmptyBodyFunctionExpression} node The TSEmptyBodyFunctionExpression node to visit.
-   * @returns {void}
+   * @param node The TSEmptyBodyFunctionExpression node to visit.
    */
-  TSEmptyBodyFunctionExpression(node: any) {
+  TSEmptyBodyFunctionExpression(
+    node: TSESTree.TSEmptyBodyFunctionExpression,
+  ): void {
     const upperTypeMode = this.typeMode;
     const { typeParameters, params, returnType } = node;
 
@@ -372,39 +403,35 @@ class Referencer extends OriginalReferencer {
   /**
    * Don't make variable because it declares only types.
    * Switch to the type mode and visit child nodes to find `typeof x` expression in type declarations.
-   * @param {TSInterfaceDeclaration} node The TSInterfaceDeclaration node to visit.
-   * @returns {void}
+   * @param node The TSInterfaceDeclaration node to visit.
    */
-  TSInterfaceDeclaration(node: any) {
+  TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration): void {
     this.visitTypeNodes(node);
   }
 
   /**
    * Don't make variable because it declares only types.
    * Switch to the type mode and visit child nodes to find `typeof x` expression in type declarations.
-   * @param {TSClassImplements} node The TSClassImplements node to visit.
-   * @returns {void}
+   * @param node The TSClassImplements node to visit.
    */
-  TSClassImplements(node: any) {
+  TSClassImplements(node: TSESTree.TSClassImplements): void {
     this.visitTypeNodes(node);
   }
 
   /**
    * Don't make variable because it declares only types.
    * Switch to the type mode and visit child nodes to find `typeof x` expression in type declarations.
-   * @param {TSIndexSignature} node The TSIndexSignature node to visit.
-   * @returns {void}
+   * @param node The TSIndexSignature node to visit.
    */
-  TSIndexSignature(node: any) {
+  TSIndexSignature(node: TSESTree.TSIndexSignature): void {
     this.visitTypeNodes(node);
   }
 
   /**
    * Visit type assertion.
-   * @param {TSTypeAssertion} node The TSTypeAssertion node to visit.
-   * @returns {void}
+   * @param node The TSTypeAssertion node to visit.
    */
-  TSTypeAssertion(node: any) {
+  TSTypeAssertion(node: TSESTree.TSTypeAssertion): void {
     if (this.typeMode) {
       this.visit(node.typeAnnotation);
     } else {
@@ -418,10 +445,9 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Visit as expression.
-   * @param {TSAsExpression} node The TSAsExpression node to visit.
-   * @returns {void}
+   * @param node The TSAsExpression node to visit.
    */
-  TSAsExpression(node: any) {
+  TSAsExpression(node: TSESTree.TSAsExpression): void {
     this.visit(node.expression);
 
     if (this.typeMode) {
@@ -435,28 +461,25 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Switch to the type mode and visit child nodes to find `typeof x` expression in type declarations.
-   * @param {TSTypeAnnotation} node The TSTypeAnnotation node to visit.
-   * @returns {void}
+   * @param node The TSTypeAnnotation node to visit.
    */
-  TSTypeAnnotation(node: any) {
+  TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {
     this.visitTypeNodes(node);
   }
 
   /**
    * Switch to the type mode and visit child nodes to find `typeof x` expression in type declarations.
-   * @param {TSTypeParameterDeclaration} node The TSTypeParameterDeclaration node to visit.
-   * @returns {void}
+   * @param node The TSTypeParameterDeclaration node to visit.
    */
-  TSTypeParameterDeclaration(node: any) {
+  TSTypeParameterDeclaration(node: TSESTree.TSTypeParameterDeclaration): void {
     this.visitTypeNodes(node);
   }
 
   /**
    * Create reference objects for the references in `typeof` expression.
-   * @param {TSTypeQuery} node The TSTypeQuery node to visit.
-   * @returns {void}
+   * @param node The TSTypeQuery node to visit.
    */
-  TSTypeQuery(node: any) {
+  TSTypeQuery(node: TSESTree.TSTypeQuery): void {
     if (this.typeMode) {
       this.typeMode = false;
       this.visitChildren(node);
@@ -467,124 +490,109 @@ class Referencer extends OriginalReferencer {
   }
 
   /**
-   * @param {TSTypeParameter} node The TSTypeParameter node to visit.
-   * @returns {void}
+   * @param node The TSTypeParameter node to visit.
    */
-  TSTypeParameter(node: any) {
+  TSTypeParameter(node: TSESTree.TSTypeParameter): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSInferType} node The TSInferType node to visit.
-   * @returns {void}
+   * @param node The TSInferType node to visit.
    */
-  TSInferType(node: any) {
+  TSInferType(node: TSESTree.TSInferType): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSTypeReference} node The TSTypeReference node to visit.
-   * @returns {void}
+   * @param node The TSTypeReference node to visit.
    */
-  TSTypeReference(node: any) {
+  TSTypeReference(node: TSESTree.TSTypeReference): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSTypeLiteral} node The TSTypeLiteral node to visit.
-   * @returns {void}
+   * @param node The TSTypeLiteral node to visit.
    */
-  TSTypeLiteral(node: any) {
+  TSTypeLiteral(node: TSESTree.TSTypeLiteral): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSLiteralType} node The TSLiteralType node to visit.
-   * @returns {void}
+   * @param node The TSLiteralType node to visit.
    */
-  TSLiteralType(node: any) {
+  TSLiteralType(node: TSESTree.TSLiteralType): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSIntersectionType} node The TSIntersectionType node to visit.
-   * @returns {void}
+   * @param node The TSIntersectionType node to visit.
    */
-  TSIntersectionType(node: any) {
+  TSIntersectionType(node: TSESTree.TSIntersectionType): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSConditionalType} node The TSConditionalType node to visit.
-   * @returns {void}
+   * @param node The TSConditionalType node to visit.
    */
-  TSConditionalType(node: any) {
+  TSConditionalType(node: TSESTree.TSConditionalType): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSIndexedAccessType} node The TSIndexedAccessType node to visit.
-   * @returns {void}
+   * @param node The TSIndexedAccessType node to visit.
    */
-  TSIndexedAccessType(node: any) {
+  TSIndexedAccessType(node: TSESTree.TSIndexedAccessType): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSMappedType} node The TSMappedType node to visit.
-   * @returns {void}
+   * @param node The TSMappedType node to visit.
    */
-  TSMappedType(node: any) {
+  TSMappedType(node: TSESTree.TSMappedType): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSOptionalType} node The TSOptionalType node to visit.
-   * @returns {void}
+   * @param node The TSOptionalType node to visit.
    */
-  TSOptionalType(node: any) {
+  TSOptionalType(node: TSESTree.TSOptionalType): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSParenthesizedType} node The TSParenthesizedType node to visit.
-   * @returns {void}
+   * @param node The TSParenthesizedType node to visit.
    */
-  TSParenthesizedType(node: any) {
+  TSParenthesizedType(node: TSESTree.TSParenthesizedType): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSRestType} node The TSRestType node to visit.
-   * @returns {void}
+   * @param node The TSRestType node to visit.
    */
-  TSRestType(node: any) {
+  TSRestType(node: TSESTree.TSRestType): void {
     this.visitTypeNodes(node);
   }
 
   /**
-   * @param {TSTupleType} node The TSTupleType node to visit.
-   * @returns {void}
+   * @param node The TSTupleType node to visit.
    */
-  TSTupleType(node: any) {
+  TSTupleType(node: TSESTree.TSTupleType): void {
     this.visitTypeNodes(node);
   }
 
   /**
    * Create reference objects for the object part. (This is `obj.prop`)
-   * @param {TSQualifiedName} node The TSQualifiedName node to visit.
-   * @returns {void}
+   * @param node The TSQualifiedName node to visit.
    */
-  TSQualifiedName(node: any) {
+  TSQualifiedName(node: TSESTree.TSQualifiedName): void {
     this.visit(node.left);
   }
 
   /**
    * Create reference objects for the references in computed keys.
-   * @param {TSPropertySignature} node The TSPropertySignature node to visit.
-   * @returns {void}
+   * @param node The TSPropertySignature node to visit.
    */
-  TSPropertySignature(node: any) {
+  TSPropertySignature(node: TSESTree.TSPropertySignature): void {
     const upperTypeMode = this.typeMode;
     const { computed, key, typeAnnotation, initializer } = node;
 
@@ -604,10 +612,9 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Create reference objects for the references in computed keys.
-   * @param {TSMethodSignature} node The TSMethodSignature node to visit.
-   * @returns {void}
+   * @param node The TSMethodSignature node to visit.
    */
-  TSMethodSignature(node: any) {
+  TSMethodSignature(node: TSESTree.TSMethodSignature): void {
     const upperTypeMode = this.typeMode;
     const { computed, key, typeParameters, params, returnType } = node;
 
@@ -641,10 +648,9 @@ class Referencer extends OriginalReferencer {
    *   A = a // a is above constant.
    * }
    *
-   * @param {TSEnumDeclaration} node The TSEnumDeclaration node to visit.
-   * @returns {void}
+   * @param node The TSEnumDeclaration node to visit.
    */
-  TSEnumDeclaration(node: any) {
+  TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
     const { id, members } = node;
     const scopeManager = this.scopeManager;
     const scope = this.currentScope();
@@ -653,7 +659,7 @@ class Referencer extends OriginalReferencer {
       scope.__define(id, new Definition('EnumName', id, node));
     }
 
-    scopeManager.__nestScope(new EnumScope(scopeManager, scope, node));
+    scopeManager.__nestEnumScope(node);
     for (const member of members) {
       this.visit(member);
     }
@@ -664,10 +670,9 @@ class Referencer extends OriginalReferencer {
    * Create variable object for the enum member and create reference object for the initializer.
    * And visit the initializer.
    *
-   * @param {TSEnumMember} node The TSEnumMember node to visit.
-   * @returns {void}
+   * @param node The TSEnumMember node to visit.
    */
-  TSEnumMember(node: any) {
+  TSEnumMember(node: TSESTree.TSEnumMember): void {
     const { id, initializer } = node;
     const scope = this.currentScope();
 
@@ -680,10 +685,9 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Create the variable object for the module name, and visit children.
-   * @param {TSModuleDeclaration} node The TSModuleDeclaration node to visit.
-   * @returns {void}
+   * @param node The TSModuleDeclaration node to visit.
    */
-  TSModuleDeclaration(node: any) {
+  TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
     const scope = this.currentScope();
     const { id, body } = node;
 
@@ -695,13 +699,13 @@ class Referencer extends OriginalReferencer {
     if (id && id.type === 'Identifier') {
       scope.__define(
         id,
-        new Definition('NamespaceName', id, node, null, null, null)
+        new Definition('NamespaceName', id, node, null, null, null),
       );
     }
     this.visit(body);
   }
 
-  TSTypeAliasDeclaration(node: any) {
+  TSTypeAliasDeclaration(node: TSESTree.TSTypeAliasDeclaration): void {
     this.typeMode = true;
     this.visitChildren(node);
     this.typeMode = false;
@@ -709,33 +713,31 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Process the module block.
-   * @param {TSModuleBlock} node The TSModuleBlock node to visit.
-   * @returns {void}
+   * @param node The TSModuleBlock node to visit.
    */
-  TSModuleBlock(node: any) {
+  TSModuleBlock(node: TSESTree.TSModuleBlock): void {
     this.scopeManager.__nestBlockScope(node);
     this.visitChildren(node);
     this.close(node);
   }
 
-  TSAbstractClassProperty(node: any) {
+  TSAbstractClassProperty(node: TSESTree.TSAbstractClassProperty): void {
     this.ClassProperty(node);
   }
-  TSAbstractMethodDefinition(node: any) {
+  TSAbstractMethodDefinition(node: TSESTree.TSAbstractMethodDefinition): void {
     this.MethodDefinition(node);
   }
 
   /**
    * Process import equal declaration
-   * @param {TSImportEqualsDeclaration} node The TSImportEqualsDeclaration node to visit.
-   * @returns {void}
+   * @param node The TSImportEqualsDeclaration node to visit.
    */
-  TSImportEqualsDeclaration(node: any) {
+  TSImportEqualsDeclaration(node: TSESTree.TSImportEqualsDeclaration): void {
     const { id, moduleReference } = node;
     if (id && id.type === 'Identifier') {
       this.currentScope().__define(
         id,
-        new Definition('ImportBinding', id, node, null, null, null)
+        new Definition('ImportBinding', id, node, null, null, null),
       );
     }
     this.visit(moduleReference);
@@ -745,10 +747,9 @@ class Referencer extends OriginalReferencer {
    * Process the global augmentation.
    * 1. Set the global scope as the current scope.
    * 2. Configure the global scope to set `variable.eslintUsed = true` for all defined variables. This means `no-unused-vars` doesn't warn those.
-   * @param {TSModuleDeclaration} node The TSModuleDeclaration node to visit.
-   * @returns {void}
+   * @param node The TSModuleDeclaration node to visit.
    */
-  visitGlobalAugmentation(node: any) {
+  visitGlobalAugmentation(node: TSESTree.TSModuleDeclaration): void {
     const scopeManager = this.scopeManager;
     const currentScope = this.currentScope();
     const globalScope = scopeManager.globalScope;
@@ -758,8 +759,8 @@ class Referencer extends OriginalReferencer {
     scopeManager.__currentScope = globalScope;
 
     // Skip TSModuleBlock to avoid to create that block scope.
-    for (const moduleItem of node.body.body) {
-      this.visit(moduleItem);
+    if (node.body && node.body.type === 'TSModuleBlock') {
+      node.body.body.forEach(this.visit, this);
     }
 
     scopeManager.__currentScope = currentScope;
@@ -768,10 +769,9 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Process decorators.
-   * @param {Decorator[]|undefined} decorators The decorator nodes to visit.
-   * @returns {void}
+   * @param decorators The decorator nodes to visit.
    */
-  visitDecorators(decorators?: any[]) {
+  visitDecorators(decorators?: TSESTree.Decorator[]): void {
     if (decorators) {
       decorators.forEach(this.visit, this);
     }
@@ -779,10 +779,9 @@ class Referencer extends OriginalReferencer {
 
   /**
    * Process all child of type nodes
-   * @param {any} node node to be processed
-   * @returns {void}
+   * @param node node to be processed
    */
-  visitTypeNodes(node: any) {
+  visitTypeNodes(node: TSESTree.Node): void {
     if (this.typeMode) {
       this.visitChildren(node);
     } else {
@@ -806,7 +805,7 @@ export function analyzeScope(ast: any, parserOptions: ParserOptions) {
     sourceType: parserOptions.sourceType,
     ecmaVersion: parserOptions.ecmaVersion || 2018,
     childVisitorKeys,
-    fallback
+    fallback,
   };
 
   const scopeManager = new ScopeManager(options);

@@ -1,35 +1,25 @@
-/**
- * @fileoverview Parser that converts TypeScript into ESTree format.
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import {
   calculateProjectParserOptions,
-  createProgram
+  createProgram,
 } from './tsconfig-parser';
 import semver from 'semver';
 import ts from 'typescript';
 import convert from './ast-converter';
 import { convertError } from './convert';
-import { Program } from './estree/spec';
 import { firstDefined } from './node-utils';
-import {
-  ESTreeComment,
-  ESTreeToken,
-  Extra,
-  ParserOptions
-} from './temp-types-based-on-js-source';
+import { TSESTree } from './ts-estree';
+import { Extra, ParserOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 
-const packageJSON = require('../package.json');
-
-const SUPPORTED_TYPESCRIPT_VERSIONS = packageJSON.devDependencies.typescript;
+/**
+ * This needs to be kept in sync with the top-level README.md in the
+ * typescript-eslint monorepo
+ */
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.2.1 <3.4.0';
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
-  SUPPORTED_TYPESCRIPT_VERSIONS
+  SUPPORTED_TYPESCRIPT_VERSIONS,
 );
 
 let extra: Extra;
@@ -49,7 +39,6 @@ function getFileName({ jsx }: { jsx?: boolean }) {
 
 /**
  * Resets the extra config object
- * @returns {void}
  */
 function resetExtra(): void {
   extra = {
@@ -67,35 +56,35 @@ function resetExtra(): void {
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     code: '',
     tsconfigRootDir: process.cwd(),
-    extraFileExtensions: []
+    extraFileExtensions: [],
   };
 }
 
 /**
- * @param {string} code The code of the file being linted
- * @param {Object} options The config object
- * @returns {{ast: ts.SourceFile, program: ts.Program} | undefined} If found, returns the source file corresponding to the code and the containing program
+ * @param code The code of the file being linted
+ * @param options The config object
+ * @returns If found, returns the source file corresponding to the code and the containing program
  */
 function getASTFromProject(code: string, options: ParserOptions) {
   return firstDefined(
     calculateProjectParserOptions(
       code,
       options.filePath || getFileName(options),
-      extra
+      extra,
     ),
     currentProgram => {
       const ast = currentProgram.getSourceFile(
-        options.filePath || getFileName(options)
+        options.filePath || getFileName(options),
       );
       return ast && { ast, program: currentProgram };
-    }
+    },
   );
 }
 
 /**
- * @param {string} code The code of the file being linted
- * @param {Object} options The config object
- * @returns {{ast: ts.SourceFile, program: ts.Program} | undefined} If found, returns the source file corresponding to the code and the containing program
+ * @param code The code of the file being linted
+ * @param options The config object
+ * @returns If found, returns the source file corresponding to the code and the containing program
  */
 function getASTAndDefaultProject(code: string, options: ParserOptions) {
   const fileName = options.filePath || getFileName(options);
@@ -105,13 +94,13 @@ function getASTAndDefaultProject(code: string, options: ParserOptions) {
 }
 
 /**
- * @param {string} code The code of the file being linted
- * @returns {{ast: ts.SourceFile, program: ts.Program}} Returns a new source file and program corresponding to the linted code
+ * @param code The code of the file being linted
+ * @returns Returns a new source file and program corresponding to the linted code
  */
 function createNewProgram(code: string) {
   const FILENAME = getFileName(extra);
 
-  const compilerHost = {
+  const compilerHost: ts.CompilerHost = {
     fileExists() {
       return true;
     },
@@ -143,7 +132,7 @@ function createNewProgram(code: string) {
     },
     writeFile() {
       return null;
-    }
+    },
   };
 
   const program = ts.createProgram(
@@ -151,9 +140,9 @@ function createNewProgram(code: string) {
     {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
-      jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined
+      jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined,
     },
-    compilerHost
+    compilerHost,
   );
 
   const ast = program.getSourceFile(FILENAME)!;
@@ -162,15 +151,15 @@ function createNewProgram(code: string) {
 }
 
 /**
- * @param {string} code The code of the file being linted
- * @param {Object} options The config object
- * @param {boolean} shouldProvideParserServices True iff the program should be attempted to be calculated from provided tsconfig files
- * @returns {{ast: ts.SourceFile, program: ts.Program}} Returns a source file and program corresponding to the linted code
+ * @param code The code of the file being linted
+ * @param options The config object
+ * @param shouldProvideParserServices True iff the program should be attempted to be calculated from provided tsconfig files
+ * @returns Returns a source file and program corresponding to the linted code
  */
 function getProgramAndAST(
   code: string,
   options: ParserOptions,
-  shouldProvideParserServices: boolean
+  shouldProvideParserServices: boolean,
 ) {
   return (
     (shouldProvideParserServices && getASTFromProject(code, options)) ||
@@ -264,7 +253,7 @@ function warnAboutTSVersion(): void {
       `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
       `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
       'Please only submit bug reports when using the officially supported version.',
-      border
+      border,
     ];
     extra.log(versionWarning.join('\n\n'));
     warnedAboutTSVersion = true;
@@ -275,29 +264,25 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
-type AST<T extends ParserOptions> = Program &
+type AST<T extends ParserOptions> = TSESTree.Program &
   (T['range'] extends true ? { range: [number, number] } : {}) &
-  (T['tokens'] extends true ? { tokens: ESTreeToken[] } : {}) &
-  (T['comment'] extends true ? { comments: ESTreeComment[] } : {});
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
 
-interface ParseAndGenerateServicesResult<T extends ParserOptions> {
+export interface ParseAndGenerateServicesResult<T extends ParserOptions> {
   ast: AST<T>;
-  services: {
-    program: ts.Program | undefined;
-    esTreeNodeToTSNodeMap: WeakMap<object, any> | undefined;
-    tsNodeToESTreeNodeMap: WeakMap<object, any> | undefined;
-  };
+  services: ParserServices;
 }
 
 //------------------------------------------------------------------------------
 // Public
 //------------------------------------------------------------------------------
 
-export const version: string = packageJSON.version;
+export const version: string = require('../package.json').version;
 
 export function parse<T extends ParserOptions = ParserOptions>(
   code: string,
-  options?: T
+  options?: T,
 ): AST<T> {
   /**
    * Reset the parse configuration
@@ -308,7 +293,7 @@ export function parse<T extends ParserOptions = ParserOptions>(
    */
   if (options && options.errorOnTypeScriptSyntacticAndSemanticIssues) {
     throw new Error(
-      `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`
+      `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
     );
   }
   /**
@@ -336,13 +321,13 @@ export function parse<T extends ParserOptions = ParserOptions>(
     getFileName(extra),
     code,
     ts.ScriptTarget.Latest,
-    /* setParentNodes */ true
+    /* setParentNodes */ true,
   );
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
    */
   const { estree } = convert(ast, extra, false);
-  return estree;
+  return estree as AST<T>;
 }
 
 export function parseAndGenerateServices<
@@ -385,7 +370,7 @@ export function parseAndGenerateServices<
   const { ast, program } = getProgramAndAST(
     code,
     options,
-    shouldProvideParserServices
+    shouldProvideParserServices,
   );
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
@@ -406,7 +391,7 @@ export function parseAndGenerateServices<
    * Return the converted AST and additional parser services
    */
   return {
-    ast: estree,
+    ast: estree as AST<T>,
     services: {
       program: shouldProvideParserServices ? program : undefined,
       esTreeNodeToTSNodeMap:
@@ -416,10 +401,10 @@ export function parseAndGenerateServices<
       tsNodeToESTreeNodeMap:
         shouldProvideParserServices && astMaps
           ? astMaps.tsNodeToESTreeNodeMap
-          : undefined
-    }
+          : undefined,
+    },
   };
 }
 
-export { AST_NODE_TYPES } from './ast-node-types';
-export { ParserOptions };
+export { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+export { ParserOptions, ParserServices };

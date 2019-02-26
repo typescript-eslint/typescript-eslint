@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "1.2.0",
+  "version": "1.4.2",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -11,29 +11,40 @@
   "engines": {
     "node": "^6.14.0 || ^8.10.0 || >=9.10.0"
   },
+  "files": [
+    "dist",
+    "docs",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
     "test": "jest --coverage",
-    "recommended:update": "node tools/update-recommended.js"
+    "recommended:update": "ts-node tools/update-recommended.ts",
+    "prebuild": "npm run clean",
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rimraf dist/",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "1.2.0",
+    "@typescript-eslint/parser": "1.4.2",
+    "@typescript-eslint/typescript-estree": "1.4.2",
     "requireindex": "^1.2.0",
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
-    "eslint": "^5.9.0",
     "eslint-docs": "^0.2.6"
   },
   "peerDependencies": {
     "eslint": "^5.0.0",
-    "typescript": "~3.2.1"
+    "typescript": "*"
   }
 }

@@ -54,6 +54,8 @@ The following additional configuration options are available by specifying them 
 
 - **`extraFileExtensions`** - default `undefined`. This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation. E.g. a `.vue` file
 
+- **`warnOnUnsupportedTypeScriptVersion`** - default `true`. This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported
+
 ### .eslintrc.json
 
 ```json

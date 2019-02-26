@@ -1,18 +1,7 @@
-/**
- * @fileoverview Tests for tokenize().
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
-import { ParserOptions } from '../../src/temp-types-based-on-js-source';
+import { ParserOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 describe('parse()', () => {
   describe('basic functionality', () => {
@@ -38,12 +27,12 @@ describe('parse()', () => {
       comment: true,
       tokens: true,
       range: true,
-      loc: true
+      loc: true,
     };
 
     it(
       'output tokens, comments, locs, and ranges when called with those options',
-      createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config),
     );
   });
 
@@ -53,17 +42,17 @@ describe('parse()', () => {
       comment: true,
       tokens: true,
       range: true,
-      loc: true
+      loc: true,
     };
 
     it(
       'should correctly convert code to a string for parse()',
-      createSnapshotTestBlock(code, config)
+      createSnapshotTestBlock(code, config),
     );
 
     it(
       'should correctly convert code to a string for parseAndGenerateServices()',
-      createSnapshotTestBlock(code, config, true)
+      createSnapshotTestBlock(code, config, true),
     );
   });
 
@@ -78,11 +67,11 @@ describe('parse()', () => {
         comment: true,
         tokens: true,
         range: true,
-        loc: true
+        loc: true,
       });
 
       expect(spy).toHaveBeenCalledWith(
-        jasmine.any(Object),
+        expect.any(Object),
         {
           code: 'let foo = bar;',
           comment: true,
@@ -96,12 +85,45 @@ describe('parse()', () => {
           projects: [],
           range: true,
           strict: false,
-          tokens: jasmine.any(Array),
-          tsconfigRootDir: jasmine.any(String),
-          useJSXTextNode: false
+          tokens: expect.any(Array),
+          tsconfigRootDir: expect.any(String),
+          useJSXTextNode: false,
         },
-        false
+        false,
       );
+    });
+  });
+
+  describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
+    const code = '@test const foo = 2';
+    const options: ParserOptions = {
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true,
+      errorOnTypeScriptSyntacticAndSemanticIssues: true,
+    };
+
+    it('should throw on invalid option when used in parse', () => {
+      expect(() => {
+        parser.parse(code, options);
+      }).toThrow(
+        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
+      );
+    });
+
+    it('should not throw when used in parseAndGenerateServices', () => {
+      expect(() => {
+        parser.parseAndGenerateServices(code, options);
+      }).not.toThrow(
+        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
+      );
+    });
+
+    it('should error on invalid code', () => {
+      expect(() => {
+        parser.parseAndGenerateServices(code, options);
+      }).toThrow('Decorators are not valid here.');
     });
   });
 });

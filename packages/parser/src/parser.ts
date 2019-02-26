@@ -2,20 +2,15 @@ import traverser from 'eslint/lib/util/traverser';
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
-  ParserOptions as ParserOptionsTsESTree
+  ParserOptions as ParserOptionsTsESTree,
+  ParserServices,
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
-import { Program } from 'typescript';
 
+// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const packageJSON = require('../package.json');
-
-interface ParserServices {
-  program: Program | undefined;
-  esTreeNodeToTSNodeMap: WeakMap<object, any> | undefined;
-  tsNodeToESTreeNodeMap: WeakMap<object, any> | undefined;
-}
 
 interface ParseForESLintResult {
   ast: any;
@@ -26,7 +21,7 @@ interface ParseForESLintResult {
 
 function validateBoolean(
   value: boolean | undefined,
-  fallback: boolean = false
+  fallback: boolean = false,
 ): boolean {
   if (typeof value !== 'boolean') {
     return fallback;
@@ -48,7 +43,7 @@ export function parse(code: string, options?: ParserOptions) {
 
 export function parseForESLint(
   code: string,
-  options?: ParserOptions | null
+  options?: ParserOptions | null,
 ): ParseForESLintResult {
   if (!options || typeof options !== 'object') {
     options = {};
@@ -65,7 +60,7 @@ export function parseForESLint(
   const parserOptions: ParserOptionsTsESTree = {};
   Object.assign(parserOptions, options, {
     useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
-    jsx: validateBoolean(options.ecmaFeatures.jsx)
+    jsx: validateBoolean(options.ecmaFeatures.jsx),
   });
 
   if (typeof options.filePath === 'string') {
@@ -73,6 +68,18 @@ export function parseForESLint(
     if (tsx || options.filePath.endsWith('.ts')) {
       parserOptions.jsx = tsx;
     }
+  }
+
+  /**
+   * Allow the user to suppress the warning from typescript-estree if they are using an unsupported
+   * version of TypeScript
+   */
+  const warnOnUnsupportedTypeScriptVersion = validateBoolean(
+    options.warnOnUnsupportedTypeScriptVersion,
+    true,
+  );
+  if (!warnOnUnsupportedTypeScriptVersion) {
+    parserOptions.loggerFn = false;
   }
 
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
@@ -89,9 +96,11 @@ export function parseForESLint(
           break;
         // no default
       }
-    }
+    },
   });
 
   const scopeManager = analyzeScope(ast, options);
   return { ast, services, scopeManager, visitorKeys };
 }
+
+export { ParserServices, ParserOptions };

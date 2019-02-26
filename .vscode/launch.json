@@ -11,9 +11,10 @@
           "cwd": "${workspaceFolder}/packages/eslint-plugin/",
           "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
           "args": [
-              "--colors",
-              "${workspaceFolder}/packages/eslint-plugin/tests/lib/rules/${fileBasename}"
+              "--runInBand",
+              "tests/rules/${fileBasenameNoExtension}"
           ],
+          "sourceMaps": true,
           "console": "integratedTerminal",
           "internalConsoleOptions": "neverOpen"
       }

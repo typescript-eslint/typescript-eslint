@@ -1,8 +1,6 @@
-'use strict';
-
 import path from 'path';
 import ts from 'typescript';
-import { Extra } from './temp-types-based-on-js-source';
+import { Extra } from './parser-options';
 
 //------------------------------------------------------------------------------
 // Environment calculation
@@ -10,16 +8,14 @@ import { Extra } from './temp-types-based-on-js-source';
 
 /**
  * Default compiler options for program generation from single root file
- * @type {ts.CompilerOptions}
  */
 const defaultCompilerOptions: ts.CompilerOptions = {
   allowNonTsExtensions: true,
-  allowJs: true
+  allowJs: true,
 };
 
 /**
  * Maps tsconfig paths to their corresponding file contents and resulting watches
- * @type {Map<string, ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>>}
  */
 const knownWatchProgramMap = new Map<
   string,
@@ -29,27 +25,24 @@ const knownWatchProgramMap = new Map<
 /**
  * Maps file paths to their set of corresponding watch callbacks
  * There may be more than one per file if a file is shared between projects
- * @type {Map<string, ts.FileWatcherCallback>}
  */
 const watchCallbackTrackingMap = new Map<string, ts.FileWatcherCallback>();
 
 /**
  * Holds information about the file currently being linted
- * @type {{code: string, filePath: string}}
  */
 const currentLintOperationState = {
   code: '',
-  filePath: ''
+  filePath: '',
 };
 
 /**
  * Appropriately report issues found when reading a config file
- * @param {ts.Diagnostic} diagnostic The diagnostic raised when creating a program
- * @returns {void}
+ * @param diagnostic The diagnostic raised when creating a program
  */
 function diagnosticReporter(diagnostic: ts.Diagnostic): void {
   throw new Error(
-    ts.flattenDiagnosticMessageText(diagnostic.messageText, ts.sys.newLine)
+    ts.flattenDiagnosticMessageText(diagnostic.messageText, ts.sys.newLine),
   );
 }
 
@@ -57,16 +50,16 @@ const noopFileWatcher = { close: () => {} };
 
 /**
  * Calculate project environments using options provided by consumer and paths from config
- * @param {string} code The code being linted
- * @param {string} filePath The path of the file being parsed
- * @param {string} extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param {string[]} extra.project Provided tsconfig paths
- * @returns {ts.Program[]} The programs corresponding to the supplied tsconfig paths
+ * @param code The code being linted
+ * @param filePath The path of the file being parsed
+ * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
+ * @param extra.project Provided tsconfig paths
+ * @returns The programs corresponding to the supplied tsconfig paths
  */
 export function calculateProjectParserOptions(
   code: string,
   filePath: string,
-  extra: Extra
+  extra: Extra,
 ): ts.Program[] {
   const results = [];
   const tsconfigRootDir = extra.tsconfigRootDir;
@@ -103,7 +96,7 @@ export function calculateProjectParserOptions(
       ts.sys,
       ts.createSemanticDiagnosticsBuilderProgram,
       diagnosticReporter,
-      /*reportWatchStatus*/ () => {}
+      /*reportWatchStatus*/ () => {},
     );
 
     // ensure readFile reads the code being linted instead of the copy on disk
@@ -124,7 +117,8 @@ export function calculateProjectParserOptions(
         .getConfigFileParsingDiagnostics()
         .filter(
           diag =>
-            diag.category === ts.DiagnosticCategory.Error && diag.code !== 18003
+            diag.category === ts.DiagnosticCategory.Error &&
+            diag.code !== 18003,
         );
       if (configFileDiagnostics.length > 0) {
         diagnosticReporter(configFileDiagnostics[0]);
@@ -138,7 +132,7 @@ export function calculateProjectParserOptions(
       return {
         close: () => {
           watchCallbackTrackingMap.delete(normalizedFileName);
-        }
+        },
       };
     };
 
@@ -149,7 +143,7 @@ export function calculateProjectParserOptions(
     const oldOnDirectoryStructureHostCreate = (watchCompilerHost as any)
       .onCachedDirectoryStructureHostCreate;
     (watchCompilerHost as any).onCachedDirectoryStructureHostCreate = (
-      host: any
+      host: any,
     ) => {
       const oldReadDirectory = host.readDirectory;
       host.readDirectory = (
@@ -157,7 +151,7 @@ export function calculateProjectParserOptions(
         extensions?: ReadonlyArray<string>,
         exclude?: ReadonlyArray<string>,
         include?: ReadonlyArray<string>,
-        depth?: number
+        depth?: number,
       ) =>
         oldReadDirectory(
           path,
@@ -166,7 +160,7 @@ export function calculateProjectParserOptions(
             : extensions.concat(extra.extraFileExtensions),
           exclude,
           include,
-          depth
+          depth,
         );
       oldOnDirectoryStructureHostCreate(host);
     };
@@ -187,9 +181,9 @@ export function calculateProjectParserOptions(
  * Create program from single root file. Requires a single tsconfig to be specified.
  * @param code The code being linted
  * @param filePath The file being linted
- * @param {string} extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param {string[]} extra.project Provided tsconfig paths
- * @returns {ts.Program} The program containing just the file being linted and associated library files
+ * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
+ * @param extra.project Provided tsconfig paths
+ * @returns The program containing just the file being linted and associated library files
  */
 export function createProgram(code: string, filePath: string, extra: Extra) {
   if (!extra.projects || extra.projects.length !== 1) {
@@ -206,7 +200,7 @@ export function createProgram(code: string, filePath: string, extra: Extra) {
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,
     defaultCompilerOptions,
-    { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} }
+    { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} },
   );
 
   if (!commandLine) {

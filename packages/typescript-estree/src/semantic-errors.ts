@@ -13,23 +13,23 @@ interface SemanticOrSyntacticError extends ts.Diagnostic {
  */
 export function getFirstSemanticOrSyntacticError(
   program: ts.Program,
-  ast: ts.SourceFile
+  ast: ts.SourceFile,
 ): SemanticOrSyntacticError | undefined {
   try {
     const supportedSyntacticDiagnostics = whitelistSupportedDiagnostics(
-      program.getSyntacticDiagnostics(ast)
+      program.getSyntacticDiagnostics(ast),
     );
     if (supportedSyntacticDiagnostics.length) {
       return convertDiagnosticToSemanticOrSyntacticError(
-        supportedSyntacticDiagnostics[0]
+        supportedSyntacticDiagnostics[0],
       );
     }
     const supportedSemanticDiagnostics = whitelistSupportedDiagnostics(
-      program.getSemanticDiagnostics(ast)
+      program.getSemanticDiagnostics(ast),
     );
     if (supportedSemanticDiagnostics.length) {
       return convertDiagnosticToSemanticOrSyntacticError(
-        supportedSemanticDiagnostics[0]
+        supportedSemanticDiagnostics[0],
       );
     }
     return undefined;
@@ -44,13 +44,15 @@ export function getFirstSemanticOrSyntacticError(
      * For our current use-cases this is undesired behavior, so we just suppress it
      * and log a a warning.
      */
+    /* istanbul ignore next */
     console.warn(`Warning From TSC: "${e.message}`);
+    /* istanbul ignore next */
     return undefined;
   }
 }
 
 function whitelistSupportedDiagnostics(
-  diagnostics: ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic>
+  diagnostics: ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic>,
 ): ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic> {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
@@ -66,6 +68,8 @@ function whitelistSupportedDiagnostics(
       case 1090: // ts 3.2 "'{0}' modifier cannot appear on a parameter."
       case 1096: // ts 3.2 "An index signature must have exactly one parameter."
       case 1097: // ts 3.2 "'{0}' list cannot be empty."
+      case 1098: // ts 3.3 "Type parameter list cannot be empty."
+      case 1099: // ts 3.3 "Type argument list cannot be empty."
       case 1117: // ts 3.2 "An object literal cannot have multiple properties with the same name in strict mode."
       case 1121: // ts 3.2 "Octal literals are not allowed in strict mode."
       case 1123: // ts 3.2: "Variable declaration list cannot be empty."
@@ -95,13 +99,13 @@ function whitelistSupportedDiagnostics(
 }
 
 function convertDiagnosticToSemanticOrSyntacticError(
-  diagnostic: ts.Diagnostic
+  diagnostic: ts.Diagnostic,
 ): SemanticOrSyntacticError {
   return {
     ...diagnostic,
     message: ts.flattenDiagnosticMessageText(
       diagnostic.messageText,
-      ts.sys.newLine
-    )
+      ts.sys.newLine,
+    ),
   };
 }

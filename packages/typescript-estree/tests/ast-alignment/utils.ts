@@ -1,5 +1,5 @@
 import isPlainObject from 'lodash.isplainobject';
-import { AST_NODE_TYPES } from '../../src/ast-node-types';
+import { AST_NODE_TYPES } from '../../src/ts-estree';
 
 /**
  * By default, pretty-format (within Jest matchers) retains the names/types of nodes from the babylon AST,
@@ -23,12 +23,12 @@ export function normalizeNodeTypes(ast: any): any {
 export function omitDeep(
   root: any,
   keysToOmit: { key: string; predicate: Function }[],
-  nodes: Record<string, (node: any, parent: any) => void> = {}
+  nodes: Record<string, (node: any, parent: any) => void> = {},
 ) {
   function shouldOmit(keyName: string, val: any): boolean {
     if (keysToOmit && keysToOmit.length) {
       return keysToOmit.some(
-        keyConfig => keyConfig.key === keyName && keyConfig.predicate(val)
+        keyConfig => keyConfig.key === keyName && keyConfig.predicate(val),
       );
     }
     return false;
@@ -88,41 +88,41 @@ export function preprocessBabylonAST(ast: any): any {
       {
         key: 'start',
         // only remove the "start" number (not the "start" object within loc)
-        predicate: ifNumber
+        predicate: ifNumber,
       },
       {
         key: 'end',
         // only remove the "end" number (not the "end" object within loc)
-        predicate: ifNumber
+        predicate: ifNumber,
       },
       {
         key: 'identifierName',
-        predicate: always
+        predicate: always,
       },
       {
         key: 'extra',
-        predicate: always
+        predicate: always,
       },
       {
         key: 'innerComments',
-        predicate: always
+        predicate: always,
       },
       {
         key: 'leadingComments',
-        predicate: always
+        predicate: always,
       },
       {
         key: 'trailingComments',
-        predicate: always
+        predicate: always,
       },
       {
         key: 'guardedHandlers',
-        predicate: always
+        predicate: always,
       },
       {
         key: 'interpreter',
-        predicate: always
-      }
+        predicate: always,
+      },
     ],
     {
       /**
@@ -219,16 +219,16 @@ export function preprocessBabylonAST(ast: any): any {
             loc: {
               start: {
                 column: node.loc.start.column,
-                line: node.loc.start.line
+                line: node.loc.start.line,
               },
               end: {
                 column: node.loc.start.column + node.name.length,
-                line: node.loc.start.line
-              }
+                line: node.loc.start.line,
+              },
             },
             name: node.name,
             range: [node.range[0], node.range[0] + node.name.length],
-            type: AST_NODE_TYPES.Identifier
+            type: AST_NODE_TYPES.Identifier,
           };
         }
       },
@@ -251,8 +251,26 @@ export function preprocessBabylonAST(ast: any): any {
         ) {
           node.type = 'TSClassImplements';
         }
-      }
-    }
+      },
+      // https://github.com/prettier/prettier/issues/5817
+      FunctionExpression(node: any, parent: any) {
+        if (parent.typeParameters && parent.type === 'Property') {
+          node.typeParameters = parent.typeParameters;
+          delete parent.typeParameters;
+        }
+
+        /**
+         * babel issue: ranges of typeParameters are not included in FunctionExpression range
+         */
+        if (
+          node.typeParameters &&
+          node.typeParameters.range[0] < node.range[0]
+        ) {
+          node.range[0] = node.typeParameters.range[0];
+          node.loc.start = Object.assign({}, node.typeParameters.loc.start);
+        }
+      },
+    },
   );
 }
 
@@ -269,7 +287,7 @@ export function preprocessBabylonAST(ast: any): any {
  */
 export function removeLocationDataAndSourceTypeFromProgramNode(
   ast: any,
-  ignoreSourceType: boolean
+  ignoreSourceType: boolean,
 ) {
   delete ast.loc;
   delete ast.range;
