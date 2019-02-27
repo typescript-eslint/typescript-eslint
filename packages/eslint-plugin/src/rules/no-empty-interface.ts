@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows the declaration of empty interfaces.
- * @author Patricio Trevino
- */
-
 import * as util from '../util';
 
 type Options = [

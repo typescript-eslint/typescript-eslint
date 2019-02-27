@@ -1,9 +1,3 @@
-/**
- * @fileoverview Enforces accessibility modifier rules for class members
- * @author Danny Fritz
- * @author Gavin Barron
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

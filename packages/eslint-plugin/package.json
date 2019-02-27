@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -35,14 +35,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "1.4.0",
-    "@typescript-eslint/typescript-estree": "1.4.0",
+    "@typescript-eslint/parser": "1.4.2",
+    "@typescript-eslint/typescript-estree": "1.4.2",
     "requireindex": "^1.2.0",
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
-    "eslint-docs": "^0.2.6",
-    "ts-node": "^8.0.1"
+    "eslint-docs": "^0.2.6"
   },
   "peerDependencies": {
     "eslint": "^5.0.0",
