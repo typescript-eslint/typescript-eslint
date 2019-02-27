@@ -7,24 +7,9 @@ import requireIndex from 'requireindex';
 const MAX_RULE_NAME_LENGTH = 33 + 'typescript-eslint/'.length;
 const RULE_NAME_PREFIX = '@typescript-eslint';
 
-const all = Object.entries(
+const allRules = Object.entries(
   requireIndex(path.resolve(__dirname, '../dist/rules')),
 );
-
-const baseConfig = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-  },
-  plugins: ['@typescript-eslint'],
-};
-
-const bannedRules = new Set([
-  'camelcase',
-  'indent',
-  'no-array-constructor',
-  'no-unused-vars',
-]);
 
 /**
  * Helper function reduces records to key - value pairs.
@@ -41,11 +26,6 @@ const reducer = (
   const setting = value.default.meta.docs.recommended;
   const usedSetting = !setting ? 'warn' : setting;
 
-  // having this here is just for output niceness (the keys will be ordered)
-  if (bannedRules.has(key)) {
-    console.log(key.padEnd(MAX_RULE_NAME_LENGTH), '= off');
-    config[key] = 'off';
-  }
   console.log(ruleName.padEnd(MAX_RULE_NAME_LENGTH), '=', usedSetting);
   config[ruleName] = usedSetting;
 
@@ -59,7 +39,7 @@ function checkValidSettings(): boolean {
   const validSettings = ['error', 'warn', false];
   let result = true;
 
-  all.forEach(entry => {
+  allRules.forEach(entry => {
     const key = entry[0];
     const value = entry[1];
     const setting = value.default.meta.docs.recommended;
@@ -77,7 +57,7 @@ function checkValidSettings(): boolean {
  * Helper function generates configuration.
  */
 function generate(rules: Record<string, string>, filePath: string): void {
-  const config = Object.assign({}, baseConfig, { rules });
+  const config = Object.assign({ extends: './base.json' }, { rules });
 
   fs.writeFileSync(filePath, `${JSON.stringify(config, null, 2)}\n`);
 }
@@ -85,14 +65,14 @@ function generate(rules: Record<string, string>, filePath: string): void {
 if (checkValidSettings()) {
   console.log('------------------------- all.json -------------------------');
   generate(
-    all.reduce(reducer, {}),
+    allRules.reduce(reducer, {}),
     path.resolve(__dirname, '../src/configs/all.json'),
   );
 
   console.log('--------------------- recommended.json ---------------------');
   const recommendedSettings = ['error', 'warn'];
   generate(
-    all
+    allRules
       .filter(entry =>
         recommendedSettings.includes(entry[1].default.meta.docs.recommended),
       )

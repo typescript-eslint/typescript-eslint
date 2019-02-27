@@ -9,7 +9,7 @@ export default util.createRule({
       description: 'Disallows invocation of `require()`.',
       tslintName: 'no-require-imports',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
     },
     schema: [],
     messages: {

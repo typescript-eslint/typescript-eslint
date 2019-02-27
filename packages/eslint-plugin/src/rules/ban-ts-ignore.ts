@@ -8,7 +8,7 @@ export default util.createRule({
       description: 'Bans “// @ts-ignore” comments from being used.',
       tslintRuleName: 'ban-ts-ignore',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
     },
     schema: [],
     messages: {

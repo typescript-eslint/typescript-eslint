@@ -21,7 +21,7 @@ export default util.createRule<Options, MessageIds>({
         'Requires any function or method that returns a Promise to be marked async.',
       tslintName: 'promise-function-async',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
     },
     messages: {
       missingAsync: 'Functions that return promises must be async.',
