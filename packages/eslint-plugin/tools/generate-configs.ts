@@ -57,7 +57,7 @@ function checkValidSettings(): boolean {
  * Helper function generates configuration.
  */
 function generate(rules: Record<string, string>, filePath: string): void {
-  const config = Object.assign({ extends: './base.json' }, { rules });
+  const config = Object.assign({ extends: './configs/base.json' }, { rules });
 
   fs.writeFileSync(filePath, `${JSON.stringify(config, null, 2)}\n`);
 }
