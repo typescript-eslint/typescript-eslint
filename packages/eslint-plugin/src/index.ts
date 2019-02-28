@@ -1,6 +1,8 @@
 import requireIndex from 'requireindex';
 import path from 'path';
 
+import all from './configs/all.json';
+import base from './configs/base.json';
 import recommended from './configs/recommended.json';
 
 const rules = requireIndex(path.join(__dirname, 'rules'));
@@ -17,6 +19,8 @@ const rulesWithoutDefault = Object.keys(rules).reduce<Record<string, any>>(
 export = {
   rules: rulesWithoutDefault,
   configs: {
+    all,
+    base,
     recommended,
   },
 };
