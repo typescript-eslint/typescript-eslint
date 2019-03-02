@@ -11,8 +11,6 @@ describe('all.json config', () => {
     key => configRules[key],
   );
 
-  Object.values(allConfig.rules);
-
   it('contains all available rule modules', () => {
     expect(ruleNames).toEqual(
       expect.arrayContaining(Object.keys(allConfig.rules)),
