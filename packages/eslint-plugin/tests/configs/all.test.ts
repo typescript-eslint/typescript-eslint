@@ -5,6 +5,13 @@ describe('all.json config', () => {
   const ruleNames = Object.keys(rules).map(
     name => `@typescript-eslint/${name}`,
   );
+  // with end of Node.js 6 support, we can use Object.values(allConfig.rules) here
+  const configRules: Record<string, any> = allConfig.rules;
+  const configRuleValues = Object.keys(configRules).map(
+    key => configRules[key],
+  );
+
+  Object.values(allConfig.rules);
 
   it('contains all available rule modules', () => {
     expect(ruleNames).toEqual(
@@ -13,8 +20,6 @@ describe('all.json config', () => {
   });
 
   it('has all rules enabled either with "warn" or "error"', () => {
-    expect(['warn', 'error']).toEqual(
-      expect.arrayContaining(Object.values(allConfig.rules)),
-    );
+    expect(['warn', 'error']).toEqual(expect.arrayContaining(configRuleValues));
   });
 });
