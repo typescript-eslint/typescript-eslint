@@ -37,7 +37,6 @@
   "dependencies": {
     "@typescript-eslint/parser": "1.4.2",
     "@typescript-eslint/typescript-estree": "1.4.2",
-    "requireindex": "^1.2.0",
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
