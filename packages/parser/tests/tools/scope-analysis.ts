@@ -4,6 +4,7 @@ import {
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import { ScopeManager } from '../../src/scope/scope-manager';
+import { Scope } from '../../src/scope/scopes';
 
 /** Reference resolver. */
 export class ReferenceResolver<TKey = unknown> {
@@ -114,6 +115,19 @@ export function referenceToJSON(
   });
 }
 
+function mapToJSON(
+  data: Map<string, TSESLintScope.Variable>,
+  resolver: ReferenceResolver,
+): Record<string, unknown> {
+  return Array.from(data.entries()).reduce<Record<string, unknown>>(
+    (map, [name, variable]) => {
+      map[name] = resolver.ref(variable);
+      return map;
+    },
+    {},
+  );
+}
+
 /**
  * Convert a given scope object to JSON object.
  * @param scope The eslint-scope's scope object.
@@ -121,29 +135,21 @@ export function referenceToJSON(
  * @returns {Object} The object that can be used for JSON.stringify.
  */
 export function scopeToJSON(
-  scope: TSESLintScope.Scope,
+  scope: Scope,
   resolver = new ReferenceResolver(),
 ): unknown {
   const { type, functionExpressionScope, isStrict } = scope;
   const block = nodeToJSON(scope.block);
   const variables = scope.variables.map(v => variableToJSON(v, resolver));
   const references = scope.references.map(r => referenceToJSON(r, resolver));
-  const variableMap = Array.from(scope.set.entries()).reduce<
-    Record<string, unknown>
-  >((map, [name, variable]) => {
-    map[name] = resolver.ref(variable);
-    return map;
-  }, {});
-  const typeMap = Array.from(scope.setTypes.entries()).reduce<
-    Record<string, { $ref: number }>
-  >((map, [name, variable]) => {
-    map[name] = resolver.ref(variable);
-    return map;
-  }, {});
+  const variableMap = mapToJSON(scope.set, resolver);
+  const typeMap = mapToJSON(scope.setTypes, resolver);
   const throughReferences = scope.through.map(resolver.ref, resolver);
   const variableScope = resolver.ref(scope.variableScope);
   const upperScope = resolver.ref(scope.upper);
-  const childScopes = scope.childScopes.map(c => scopeToJSON(c, resolver));
+  const childScopes = scope.childScopes.map(c =>
+    scopeToJSON(c as Scope, resolver),
+  );
 
   return resolver.resolve(scope, {
     type,

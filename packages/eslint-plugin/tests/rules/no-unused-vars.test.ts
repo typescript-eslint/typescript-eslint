@@ -489,7 +489,7 @@ export function authenticated(cb: (user: User | null) => void): void {
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/33
     `
 import { Foo } from './types';
-export class Bar<T extends Foo> { 
+export class Bar<T extends Foo> {
   test() { new test<T>(); }
 }
     `,
@@ -989,7 +989,7 @@ new test<foo>();
       `,
       errors: error([
         {
-          message: "'foo' is defined but never used.",
+          message: "'foo' is assigned a value but never used.",
           line: 2,
           column: 7,
         },
@@ -1008,7 +1008,7 @@ class bar<test> {};
           column: 6,
         },
         {
-          message: "'test' is defined but never used.",
+          message: "'test' is assigned a value but never used.",
           line: 3,
           column: 7,
         },

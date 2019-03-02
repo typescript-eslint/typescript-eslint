@@ -652,7 +652,17 @@ class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
    * @param node The TSPropertySignature node to visit.
    */
   TSPropertySignature(node: TSESTree.TSPropertySignature): void {
-    this.visitTypeProperty(node);
+    const upperTypeMode = this.typeMode;
+    this.typeMode = true;
+
+    if (node.computed) {
+      this.visit(node.key);
+    }
+
+    this.visit(node.typeAnnotation);
+    this.visit(node.initializer);
+
+    this.typeMode = upperTypeMode;
   }
 
   /**
@@ -911,19 +921,6 @@ class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
     this.visit(node.typeParameters);
     node.params.forEach(this.visit, this);
     this.visit(node.returnType);
-
-    this.typeMode = upperTypeMode;
-  }
-
-  visitTypeProperty(node: TSESTree.TSPropertySignature): void {
-    const upperTypeMode = this.typeMode;
-
-    if (node.computed) {
-      this.visit(node.key);
-    }
-
-    this.visit(node.typeAnnotation);
-    this.visit(node.initializer);
 
     this.typeMode = upperTypeMode;
   }

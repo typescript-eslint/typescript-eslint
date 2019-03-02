@@ -907,7 +907,22 @@ enum Foo {
       ],
       errors: [
         {
+          line: 3,
+          column: 13,
           messageId: 'noUseBeforeDefine',
+          data: { name: 'foo' },
+        },
+        {
+          line: 3,
+          column: 19,
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'foo' },
+        },
+        {
+          line: 4,
+          column: 12,
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'foo' },
         },
       ],
     },
@@ -928,7 +943,16 @@ enum Foo {
       ],
       errors: [
         {
+          line: 2,
+          column: 17,
           messageId: 'noUseBeforeDefine',
+          data: { name: 'foo' },
+        },
+        {
+          line: 3,
+          column: 10,
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'foo' },
         },
       ],
     },
@@ -963,7 +987,6 @@ type Foo = string | number
           data: {
             name: 'Foo',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
