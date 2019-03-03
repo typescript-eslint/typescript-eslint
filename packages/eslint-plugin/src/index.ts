@@ -5,7 +5,7 @@ import base from './configs/base.json';
 import recommended from './configs/recommended.json';
 
 export = {
-  rules: rules,
+  rules,
   configs: {
     all,
     base,
