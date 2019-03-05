@@ -62,6 +62,14 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  public x: number
+  public getX () {
+    return this.x
+  }
+}
+            `,
     },
     {
       filename: 'test.ts',
@@ -84,6 +92,14 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  private x: number
+  public getX () {
+    return this.x
+  }
+}
+            `,
     },
     {
       filename: 'test.ts',
@@ -115,6 +131,14 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  public x?: number
+  public getX? () {
+    return this.x
+  }
+}
+            `,
     },
   ],
 });

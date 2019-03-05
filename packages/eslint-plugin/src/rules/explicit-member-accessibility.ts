@@ -12,6 +12,7 @@ export default util.createRule({
       category: 'Best Practices',
       recommended: 'error',
     },
+    fixable: 'code',
     messages: {
       missingAccessibility:
         'Missing accessibility modifier on {{type}} {{name}}.',
@@ -38,6 +39,9 @@ export default util.createRule({
             type: 'method definition',
             name: util.getNameFromPropertyName(methodDefinition.key),
           },
+          fix(fixer) {
+            return [fixer.insertTextBefore(methodDefinition, 'public ')];
+          },
         });
       }
     }
@@ -59,6 +63,9 @@ export default util.createRule({
           data: {
             type: 'class property',
             name: util.getNameFromPropertyName(classProperty.key),
+          },
+          fix(fixer) {
+            return [fixer.insertTextBefore(classProperty, 'public ')];
           },
         });
       }
