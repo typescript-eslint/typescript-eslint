@@ -39,6 +39,19 @@ class Test {
 }
             `,
     },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  protected readonly name: string
+  private readonly x: number
+  public readonly b: boolean
+  public getX () {
+    return this.x
+  }
+}
+            `,
+    },
   ],
   invalid: [
     {
@@ -135,6 +148,36 @@ class Test {
 class Test {
   public x?: number
   public getX? () {
+    return this.x
+  }
+}
+            `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  readonly x: number
+  public getX () {
+    return this.x
+  }
+}
+            `,
+      errors: [
+        {
+          messageId: 'missingAccessibility',
+          data: {
+            type: 'class property',
+            name: 'x',
+          },
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+class Test {
+  public readonly x: number
+  public getX () {
     return this.x
   }
 }
