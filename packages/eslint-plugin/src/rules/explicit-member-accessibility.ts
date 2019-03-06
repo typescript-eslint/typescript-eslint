@@ -40,7 +40,7 @@ export default util.createRule({
             name: util.getNameFromPropertyName(methodDefinition.key),
           },
           fix(fixer) {
-            return [fixer.insertTextBefore(methodDefinition, 'public ')];
+            return fixer.insertTextBefore(methodDefinition, 'public ');
           },
         });
       }
@@ -65,7 +65,7 @@ export default util.createRule({
             name: util.getNameFromPropertyName(classProperty.key),
           },
           fix(fixer) {
-            return [fixer.insertTextBefore(classProperty, 'public ')];
+            return fixer.insertTextBefore(classProperty, 'public ');
           },
         });
       }
