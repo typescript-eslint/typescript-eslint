@@ -126,6 +126,42 @@ class Test {
       `,
       options: [{ overrides: { methods: false } }],
     },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  constructor(private x: number){}
+}
+      `,
+      options: [{ noPublic: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  constructor(public x: number){}
+}
+      `,
+      options: [
+        {
+          noPublic: true,
+          overrides: { parameterProperties: { noPublic: false } },
+        },
+      ],
+    },
+    {
+      filename: 'test.js',
+      code: `
+class Test {
+  constructor(public x: number){}
+}
+      `,
+      options: [
+        {
+          noPublic: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -374,6 +410,74 @@ class Test {
         },
       ],
       options: [{ overrides: { constructors: true } }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  constructor(public x: number){}
+}
+      `,
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 15,
+        },
+      ],
+      options: [
+        {
+          noPublic: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  constructor(public x: number){}
+  public foo(): string {
+    return 'foo';
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAccessibility',
+          line: 3,
+          column: 3,
+        },
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 15,
+        },
+      ],
+      options: [
+        {
+          overrides: { parameterProperties: { noPublic: true } },
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  constructor(public x: number){}
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      options: [
+        {
+          overrides: { parameterProperties: { noPublic: false } },
+        },
+      ],
     },
   ],
 });

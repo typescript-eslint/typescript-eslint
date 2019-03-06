@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
 enum Check {
@@ -30,6 +30,7 @@ interface Config {
     constructors?: Override;
     methods?: Override;
     properties?: Override;
+    parameterProperties?: Override;
   };
 }
 type Options = [Config];
@@ -75,6 +76,7 @@ export default util.createRule<Options, MessageIds>({
               accessors: override,
               constructors: override,
               methods: override,
+              properties: override,
               parameterProperties: override,
             },
           },
@@ -109,8 +111,12 @@ export default util.createRule<Options, MessageIds>({
     ): Check {
       let result: Check = defaultCheck;
       if (typeof overrideToCheck !== 'undefined') {
-        if (isNoPublic(overrideToCheck) && overrideToCheck.noPublic) {
-          result = Check.NoPublic;
+        if (isNoPublic(overrideToCheck)) {
+          if (overrideToCheck.noPublic) {
+            result = Check.NoPublic;
+          } else {
+            result = Check.Yes;
+          }
         } else if (!overrideToCheck) {
           result = Check.No;
         }
@@ -126,11 +132,16 @@ export default util.createRule<Options, MessageIds>({
     let accessorCheck: Check = baseCheck;
     let methodCheck: Check = baseCheck;
     let propCheck: Check = baseCheck;
+    let paramPropCheck: Check = baseCheck;
     if (option.overrides) {
       ctorCheck = parseOverride(baseCheck, option.overrides.constructors);
       accessorCheck = parseOverride(baseCheck, option.overrides.accessors);
       methodCheck = parseOverride(baseCheck, option.overrides.methods);
       propCheck = parseOverride(baseCheck, option.overrides.properties);
+      paramPropCheck = parseOverride(
+        baseCheck,
+        option.overrides.parameterProperties,
+      );
     }
 
     /**
@@ -143,14 +154,18 @@ export default util.createRule<Options, MessageIds>({
     function reportIssue(
       messageId: MessageIds,
       nodeType: string,
-      node: TSESTree.MethodDefinition | TSESTree.ClassProperty,
+      node:
+        | TSESTree.MethodDefinition
+        | TSESTree.ClassProperty
+        | TSESTree.TSParameterProperty,
+      nodeName: string,
     ) {
       context.report({
         node: node,
         messageId: messageId,
         data: {
           type: nodeType,
-          name: util.getNameFromPropertyName(node.key),
+          name: nodeName,
         },
       });
     }
@@ -176,15 +191,13 @@ export default util.createRule<Options, MessageIds>({
           check = accessorCheck;
           nodeType = `${methodDefinition.kind} property accessor`;
           break;
-        default:
-          check = baseCheck;
-          break;
       }
       if (check == Check.No) {
         return;
       }
 
       if (util.isTypeScriptFile(context.getFilename())) {
+        const methodName = util.getNameFromPropertyName(methodDefinition.key);
         if (
           check === Check.NoPublic &&
           methodDefinition.accessibility === 'public'
@@ -193,9 +206,15 @@ export default util.createRule<Options, MessageIds>({
             'unwantedPublicAccessibility',
             nodeType,
             methodDefinition,
+            methodName,
           );
         } else if (check === Check.Yes && !methodDefinition.accessibility) {
-          reportIssue('missingAccessibility', nodeType, methodDefinition);
+          reportIssue(
+            'missingAccessibility',
+            nodeType,
+            methodDefinition,
+            methodName,
+          );
         }
       }
     }
@@ -210,18 +229,64 @@ export default util.createRule<Options, MessageIds>({
       const nodeType = 'class property';
 
       if (util.isTypeScriptFile(context.getFilename())) {
+        const propertyName = util.getNameFromPropertyName(classProperty.key);
         if (
           propCheck === Check.NoPublic &&
           classProperty.accessibility === 'public'
         ) {
-          reportIssue('unwantedPublicAccessibility', nodeType, classProperty);
+          reportIssue(
+            'unwantedPublicAccessibility',
+            nodeType,
+            classProperty,
+            propertyName,
+          );
         } else if (propCheck === Check.Yes && !classProperty.accessibility) {
-          reportIssue('missingAccessibility', nodeType, classProperty);
+          reportIssue(
+            'missingAccessibility',
+            nodeType,
+            classProperty,
+            propertyName,
+          );
+        }
+      }
+    }
+
+    /**
+     * Checks that the parameter property has accessiblity modifiers set.
+     *
+     * @param {TSESTree.TSParameterProperty} node
+     * @returns
+     */
+    function checkParameterPropertyAccessibilityModifier(
+      node: TSESTree.TSParameterProperty,
+    ) {
+      const nodeType = 'parameter property';
+      if (util.isTypeScriptFile(context.getFilename())) {
+        // HAS to be an identifier or assignment or TSC will throw
+        if (
+          node.parameter.type !== AST_NODE_TYPES.Identifier &&
+          node.parameter.type !== AST_NODE_TYPES.AssignmentPattern
+        ) {
+          return;
+        }
+
+        const nodeName =
+          node.parameter.type === AST_NODE_TYPES.Identifier
+            ? node.parameter.name
+            : // has to be an Identifier or TSC will throw an error
+              (node.parameter.left as TSESTree.Identifier).name;
+
+        if (
+          paramPropCheck === Check.NoPublic &&
+          node.accessibility === 'public'
+        ) {
+          reportIssue('unwantedPublicAccessibility', nodeType, node, nodeName);
         }
       }
     }
 
     return {
+      TSParameterProperty: checkParameterPropertyAccessibilityModifier,
       ClassProperty: checkPropertyAccessibilityModifier,
       MethodDefinition: checkMethodAccessibilityModifier,
     };
