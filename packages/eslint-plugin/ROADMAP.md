@@ -30,7 +30,7 @@
 | [`no-unnecessary-type-assertion`] | ✅  | [`@typescript-eslint/no-unnecessary-type-assertion`] |
 | [`no-var-requires`]               | ✅  | [`@typescript-eslint/no-var-requires`]               |
 | [`only-arrow-functions`]          | 🔌  | [`prefer-arrow/prefer-arrow-functions`]              |
-| [`prefer-for-of`]                 | 🛑  | N/A                                                  |
+| [`prefer-for-of`]                 | ✅  | [`@typescript-eslint/prefer-for-of`]                 |
 | [`promise-function-async`]        | ✅  | [`@typescript-eslint/promise-function-async`]        |
 | [`typedef`]                       | 🛑  | N/A                                                  |
 | [`typedef-whitespace`]            | ✅  | [`@typescript-eslint/type-annotation-spacing`]       |
