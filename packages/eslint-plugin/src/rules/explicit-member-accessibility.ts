@@ -1,50 +1,27 @@
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
-enum Check {
-  Yes,
-  No,
-  NoPublic,
-}
-
-interface NoPublic {
-  noPublic?: boolean;
-}
-
-type Override = boolean | NoPublic;
-
-/**
- * Type guard to ease checking on which kind of override is being supplied
- *
- * @param {Override} [option]
- * @returns {option is NoPublic}
- */
-function isNoPublic(option?: Override): option is NoPublic {
-  return typeof option !== 'boolean';
-}
+type AccessibilityLevel =
+  | 'explicit' // require an accessor (including public)
+  | 'no-public' // don't require public
+  | 'off'; // don't check
 
 interface Config {
-  noPublic?: boolean;
+  accessibility?: AccessibilityLevel;
   overrides?: {
-    accessors?: Override;
-    constructors?: Override;
-    methods?: Override;
-    properties?: Override;
-    parameterProperties?: Override;
+    accessors?: AccessibilityLevel;
+    constructors?: AccessibilityLevel;
+    methods?: AccessibilityLevel;
+    properties?: AccessibilityLevel;
+    parameterProperties?: AccessibilityLevel;
   };
 }
+
 type Options = [Config];
 
 type MessageIds = 'unwantedPublicAccessibility' | 'missingAccessibility';
 
-const override = {
-  type: ['object', 'boolean'],
-  properties: {
-    noPublic: {
-      type: 'boolean',
-    },
-  },
-};
+const accessibilityLevel = { enum: ['explicit', 'no-public', 'off'] };
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
@@ -67,17 +44,15 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          noPublic: {
-            type: 'boolean',
-          },
+          accessibility: accessibilityLevel,
           overrides: {
             type: 'object',
             properties: {
-              accessors: override,
-              constructors: override,
-              methods: override,
-              properties: override,
-              parameterProperties: override,
+              accessors: accessibilityLevel,
+              constructors: accessibilityLevel,
+              methods: accessibilityLevel,
+              properties: accessibilityLevel,
+              parameterProperties: accessibilityLevel,
             },
           },
         },
@@ -85,54 +60,30 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   },
-  defaultOptions: [
-    // technically there is a default, but the overrides mean
-    // that if we apply them here, it will break the no override case.
-    {},
-  ],
-  create(context) {
-    const option: Config = util.applyDefault([{}], context.options)[0];
-
-    /**
-     * @param defaultCheck
-     * @param overrideToCheck
-     */
-
+  defaultOptions: [{ accessibility: 'explicit' }],
+  create(context, [option]) {
     /**
      * Reads the value set on the Override and returns a Check value
-     * Check value is used to control what, if any accessiblity modifiers are required or banned
-     * @param {Check} defaultCheck
-     * @param {Override} [overrideToCheck]
-     * @returns {Check}
+     * Check value is used to control what, if any accessibility modifiers are required or banned
      */
     function parseOverride(
-      defaultCheck: Check,
-      overrideToCheck?: Override,
-    ): Check {
-      let result: Check = defaultCheck;
-      if (typeof overrideToCheck !== 'undefined') {
-        if (isNoPublic(overrideToCheck)) {
-          if (overrideToCheck.noPublic) {
-            result = Check.NoPublic;
-          } else {
-            result = Check.Yes;
-          }
-        } else if (!overrideToCheck) {
-          result = Check.No;
-        }
-      }
-      return result;
+      defaultCheck: AccessibilityLevel,
+      overrideToCheck?: AccessibilityLevel,
+    ): AccessibilityLevel {
+      return typeof overrideToCheck === 'undefined'
+        ? defaultCheck
+        : overrideToCheck;
     }
 
-    let baseCheck = Check.Yes;
-    if (option.noPublic) {
-      baseCheck = Check.NoPublic;
+    let baseCheck: AccessibilityLevel = 'explicit';
+    if (option.accessibility) {
+      baseCheck = option.accessibility;
     }
-    let ctorCheck: Check = baseCheck;
-    let accessorCheck: Check = baseCheck;
-    let methodCheck: Check = baseCheck;
-    let propCheck: Check = baseCheck;
-    let paramPropCheck: Check = baseCheck;
+    let ctorCheck = baseCheck;
+    let accessorCheck = baseCheck;
+    let methodCheck = baseCheck;
+    let propCheck = baseCheck;
+    let paramPropCheck = baseCheck;
     if (option.overrides) {
       ctorCheck = parseOverride(baseCheck, option.overrides.constructors);
       accessorCheck = parseOverride(baseCheck, option.overrides.accessors);
@@ -145,11 +96,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     *Generates the report for rule violations
-     *
-     * @param {MessageIds} messageId
-     * @param {string} nodeType
-     * @param {(TSESTree.MethodDefinition | TSESTree.ClassProperty)} node
+     * Generates the report for rule violations
      */
     function reportIssue(
       messageId: MessageIds,
@@ -178,7 +125,7 @@ export default util.createRule<Options, MessageIds>({
       methodDefinition: TSESTree.MethodDefinition,
     ): void {
       let nodeType = 'method definition';
-      let check: Check = baseCheck;
+      let check = baseCheck;
       switch (methodDefinition.kind) {
         case 'method':
           check = methodCheck;
@@ -192,14 +139,14 @@ export default util.createRule<Options, MessageIds>({
           nodeType = `${methodDefinition.kind} property accessor`;
           break;
       }
-      if (check == Check.No) {
+      if (check === 'off') {
         return;
       }
 
       if (util.isTypeScriptFile(context.getFilename())) {
         const methodName = util.getNameFromPropertyName(methodDefinition.key);
         if (
-          check === Check.NoPublic &&
+          check === 'no-public' &&
           methodDefinition.accessibility === 'public'
         ) {
           reportIssue(
@@ -208,7 +155,7 @@ export default util.createRule<Options, MessageIds>({
             methodDefinition,
             methodName,
           );
-        } else if (check === Check.Yes && !methodDefinition.accessibility) {
+        } else if (check === 'explicit' && !methodDefinition.accessibility) {
           reportIssue(
             'missingAccessibility',
             nodeType,
@@ -231,7 +178,7 @@ export default util.createRule<Options, MessageIds>({
       if (util.isTypeScriptFile(context.getFilename())) {
         const propertyName = util.getNameFromPropertyName(classProperty.key);
         if (
-          propCheck === Check.NoPublic &&
+          propCheck === 'no-public' &&
           classProperty.accessibility === 'public'
         ) {
           reportIssue(
@@ -240,7 +187,7 @@ export default util.createRule<Options, MessageIds>({
             classProperty,
             propertyName,
           );
-        } else if (propCheck === Check.Yes && !classProperty.accessibility) {
+        } else if (propCheck === 'explicit' && !classProperty.accessibility) {
           reportIssue(
             'missingAccessibility',
             nodeType,
@@ -252,10 +199,8 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Checks that the parameter property has accessiblity modifiers set.
-     *
-     * @param {TSESTree.TSParameterProperty} node
-     * @returns
+     * Checks that the parameter property has the desired accessibility modifiers set.
+     * @param {TSESTree.TSParameterProperty} node The node representing a Parameter Property
      */
     function checkParameterPropertyAccessibilityModifier(
       node: TSESTree.TSParameterProperty,
@@ -276,10 +221,7 @@ export default util.createRule<Options, MessageIds>({
             : // has to be an Identifier or TSC will throw an error
               (node.parameter.left as TSESTree.Identifier).name;
 
-        if (
-          paramPropCheck === Check.NoPublic &&
-          node.accessibility === 'public'
-        ) {
+        if (paramPropCheck === 'no-public' && node.accessibility === 'public') {
           reportIssue('unwantedPublicAccessibility', nodeType, node, nodeName);
         }
       }

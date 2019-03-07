@@ -12,37 +12,44 @@ which properties.
 
 ## Options
 
+```ts
+type AccessibilityLevel =
+  | 'explicit' // require an accessor (including public)
+  | 'no-public' // don't require public
+  | 'off'; // don't check
+
+interface Config {
+  accessibility?: AccessibilityLevel;
+  overrides?: {
+    accessors?: AccessibilityLevel;
+    constructors?: AccessibilityLevel;
+    methods?: AccessibilityLevel;
+    properties?: AccessibilityLevel;
+    parameterProperties?: AccessibilityLevel;
+  };
+}
+```
+
+Default config:
+
+```JSON
+{ "accessibility": "explicit" }
+```
+
 This rule in it's default state requires no configuration and will enforce that every class member has an accessibility modifier. If you would like to allow for some implicit public members then you have the following options:
-
-- `noPublic`: optional boolean value to prevent the use of the public accessibility modifier
-- `overrides`: configuration object allowing for granular application of the noPublic option or simply disabling the rule for these kinds of class members:
-  - `accessors`
-  - `constructors`
-  - `methods`
-  - `properties`
-  - `parameterProperties`
-
-Default options are: `[{}]`
-
-A possible, but not useful configuration could be
+A possible configuration could be:
 
 ```ts
-[{
-  noPublic: false,
+{
+  accessibility: 'explicit',
   overrides {
-    accessors: {
-      noPublic: false
-    },
-    constructors: false,
-    methods: {
-      noPublic: true
-    },
-    properties: true,
-    parameterProperties: {
-      noPublic: true
-    }
+    accessors: 'explicit',
+    constructors: 'no-public',
+    methods: 'explicit',
+    properties: 'off',
+    parameterProperties: 'explicit'
   }
-}]
+}
 ```
 
 The following patterns are considered incorrect code if no options are provided:
@@ -68,11 +75,11 @@ class Animal {
 }
 ```
 
-The following patterns are considered correct with the default options `[{}]`:
+The following patterns are considered correct with the default options `{ accessibility: 'explicit' }`:
 
 ```ts
 class Animal {
-  constructor(public breed, animalName) {
+  public constructor(public breed, animalName) {
     // Parameter property and constructor
     this.animalName = name;
   }
@@ -91,7 +98,7 @@ class Animal {
 }
 ```
 
-The following patterns are considered incorrect with the root noPublic flag set `[{ noPublic: true }]`:
+The following patterns are considered incorrect with the accessibility set to **no-public** `[{ accessibility: 'no-public' }]`:
 
 ```ts
 class Animal {
@@ -114,7 +121,7 @@ class Animal {
 }
 ```
 
-The following patterns are considered correct with the root noPublic flag set `[{ noPublic: true }]`:
+The following patterns are considered correct with the accessibility set to **no-public** `[{ accessibility: 'no-public' }]`:
 
 ```ts
 class Animal {
@@ -147,7 +154,7 @@ There are three ways in which an override can be used.
 
 #### Disallow the use of public on a given member
 
-e.g. `[ { overrides: { constructor: { noPublic: true } } } ]`
+e.g. `[ { overrides: { constructor: 'no-public' } } ]`
 
 The following patterns are considered incorrect with the example override
 
@@ -173,7 +180,7 @@ class Animal {
 
 #### Require explicit accessibility for a given member
 
-e.g. `[ { noPublic: true, overrides: { properties: { noPublic: false } } } ]`
+e.g. `[ { accessibility: 'no-public', overrides: { properties: 'explicit' } } ]`
 
 The following patterns are considered incorrect with the example override
 
@@ -209,7 +216,7 @@ class Animal {
 
 #### Disable any checks on given member type
 
-e.g. `[{ overrides: { accessors : false } } ]`
+e.g. `[{ overrides: { accessors : 'off' } } ]`
 
 As no checks on the overridden member type are performed all permutations of visibility are permitted for that member type
 
@@ -243,7 +250,7 @@ class Animal {
 
 ## When Not To Use It
 
-If you think defaulting to public is a good default, then you should consider using the `noPublic` option. If you don't want to mix implicit and explicit public members then disable this rule.
+If you think defaulting to public is a good default, then you should consider using the `no-public` setting. If you want to mix implicit and explicit public members then disable this rule.
 
 ## Further Reading
 

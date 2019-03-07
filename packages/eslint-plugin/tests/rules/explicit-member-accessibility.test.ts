@@ -50,7 +50,7 @@ class Test {
   }
 }
             `,
-      options: [{ noPublic: false }],
+      options: [{ accessibility: 'explicit' }],
     },
     {
       filename: 'test.ts',
@@ -63,7 +63,7 @@ class Test {
   }
 }
             `,
-      options: [{ noPublic: true }],
+      options: [{ accessibility: 'no-public' }],
     },
     {
       filename: 'test.ts',
@@ -79,7 +79,7 @@ class Test {
   }
 }
             `,
-      options: [{ noPublic: true }],
+      options: [{ accessibility: 'no-public' }],
     },
     {
       filename: 'test.ts',
@@ -100,7 +100,7 @@ class Test {
   }
 }
       `,
-      options: [{ overrides: { constructors: false, accessors: false } }],
+      options: [{ overrides: { constructors: 'off', accessors: 'off' } }],
     },
     {
       filename: 'test.ts',
@@ -124,7 +124,7 @@ class Test {
   }
 }
       `,
-      options: [{ overrides: { methods: false } }],
+      options: [{ overrides: { methods: 'off' } }],
     },
     {
       filename: 'test.ts',
@@ -133,7 +133,7 @@ class Test {
   constructor(private x: number){}
 }
       `,
-      options: [{ noPublic: true }],
+      options: [{ accessibility: 'no-public' }],
     },
     {
       filename: 'test.ts',
@@ -144,8 +144,8 @@ class Test {
       `,
       options: [
         {
-          noPublic: true,
-          overrides: { parameterProperties: { noPublic: false } },
+          accessibility: 'no-public',
+          overrides: { parameterProperties: 'off' },
         },
       ],
     },
@@ -158,7 +158,7 @@ class Test {
       `,
       options: [
         {
-          noPublic: true,
+          accessibility: 'no-public',
         },
       ],
     },
@@ -250,7 +250,7 @@ class Test {
   }
 }
             `,
-      options: [{ noPublic: true }],
+      options: [{ accessibility: 'no-public' }],
       errors: [
         {
           messageId: 'unwantedPublicAccessibility',
@@ -274,7 +274,7 @@ class Test {
   }
 }
             `,
-      options: [{ noPublic: true }],
+      options: [{ accessibility: 'no-public' }],
       errors: [
         {
           messageId: 'unwantedPublicAccessibility',
@@ -309,7 +309,7 @@ class Test {
           column: 3,
         },
       ],
-      options: [{ noPublic: true }],
+      options: [{ accessibility: 'no-public' }],
     },
     {
       filename: 'test.ts',
@@ -339,42 +339,7 @@ class Test {
           column: 3,
         },
       ],
-      options: [{ overrides: { constructors: { noPublic: true } } }],
-    },
-    {
-      filename: 'test.ts',
-      code: `
-class Test {
-  private x: number;
-  constructor (x: number) {
-    this.x = x;
-  }
-  get internalValue() {
-    return this.x;
-  }
-  set internalValue(value: number) {
-    this.x = value;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'missingAccessibility',
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'missingAccessibility',
-          line: 7,
-          column: 3,
-        },
-        {
-          messageId: 'missingAccessibility',
-          line: 10,
-          column: 3,
-        },
-      ],
-      options: [{ overrides: { constructors: { noPublic: false } } }],
+      options: [{ overrides: { constructors: 'no-public' } }],
     },
     {
       filename: 'test.ts',
@@ -409,7 +374,6 @@ class Test {
           column: 3,
         },
       ],
-      options: [{ overrides: { constructors: true } }],
     },
     {
       filename: 'test.ts',
@@ -427,7 +391,7 @@ class Test {
       ],
       options: [
         {
-          noPublic: true,
+          accessibility: 'no-public',
         },
       ],
     },
@@ -455,7 +419,7 @@ class Test {
       ],
       options: [
         {
-          overrides: { parameterProperties: { noPublic: true } },
+          overrides: { parameterProperties: 'no-public' },
         },
       ],
     },
@@ -471,11 +435,6 @@ class Test {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
-        },
-      ],
-      options: [
-        {
-          overrides: { parameterProperties: { noPublic: false } },
         },
       ],
     },
