@@ -77,7 +77,7 @@ interface Animal {
       options: ['always'],
       errors: [
         {
-          messageId: 'noPrefix',
+          messageId: 'alwaysPrefix',
           line: 2,
           column: 11,
         },
@@ -92,7 +92,7 @@ interface Iguana {
       options: ['always'],
       errors: [
         {
-          messageId: 'noPrefix',
+          messageId: 'alwaysPrefix',
           line: 2,
           column: 11,
         },
