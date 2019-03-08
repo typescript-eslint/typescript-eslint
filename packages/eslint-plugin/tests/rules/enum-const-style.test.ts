@@ -41,6 +41,7 @@ ruleTester.run('enum-style', rule, {
           column: 1,
         },
       ],
+      options: [],
     },
     {
       code: 'const enum Foo {}',
