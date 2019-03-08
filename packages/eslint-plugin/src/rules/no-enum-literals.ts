@@ -14,14 +14,9 @@ export default util.createRule({
     messages: {
       noLiterals: 'Do not use literal values instead of enums',
     },
-    schema: [
-      {
-        type: 'object',
-        additionalProperties: false,
-      },
-    ],
+    schema: [],
   },
-  defaultOptions: [{}],
+  defaultOptions: [],
   create(context) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
