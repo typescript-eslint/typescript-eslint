@@ -54,6 +54,7 @@ export default util.createRule<Options, MessageIds>({
               properties: accessibilityLevel,
               parameterProperties: accessibilityLevel,
             },
+            additionalProperties: false,
           },
         },
         additionalProperties: false,
@@ -62,38 +63,13 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
-    /**
-     * Reads the value set on the Override and returns a Check value
-     * Check value is used to control what, if any accessibility modifiers are required or banned
-     */
-    function parseOverride(
-      defaultCheck: AccessibilityLevel,
-      overrideToCheck?: AccessibilityLevel,
-    ): AccessibilityLevel {
-      return typeof overrideToCheck === 'undefined'
-        ? defaultCheck
-        : overrideToCheck;
-    }
-
-    let baseCheck: AccessibilityLevel = 'explicit';
-    if (option.accessibility) {
-      baseCheck = option.accessibility;
-    }
-    let ctorCheck = baseCheck;
-    let accessorCheck = baseCheck;
-    let methodCheck = baseCheck;
-    let propCheck = baseCheck;
-    let paramPropCheck = baseCheck;
-    if (option.overrides) {
-      ctorCheck = parseOverride(baseCheck, option.overrides.constructors);
-      accessorCheck = parseOverride(baseCheck, option.overrides.accessors);
-      methodCheck = parseOverride(baseCheck, option.overrides.methods);
-      propCheck = parseOverride(baseCheck, option.overrides.properties);
-      paramPropCheck = parseOverride(
-        baseCheck,
-        option.overrides.parameterProperties,
-      );
-    }
+    const baseCheck: AccessibilityLevel = option.accessibility || 'explicit';
+    const overrides = option.overrides || {};
+    const ctorCheck = overrides.constructors || baseCheck;
+    const accessorCheck = overrides.accessors || baseCheck;
+    const methodCheck = overrides.methods || baseCheck;
+    const propCheck = overrides.properties || baseCheck;
+    const paramPropCheck = overrides.parameterProperties || baseCheck;
 
     /**
      * Generates the report for rule violations
@@ -101,10 +77,7 @@ export default util.createRule<Options, MessageIds>({
     function reportIssue(
       messageId: MessageIds,
       nodeType: string,
-      node:
-        | TSESTree.MethodDefinition
-        | TSESTree.ClassProperty
-        | TSESTree.TSParameterProperty,
+      node: TSESTree.Node,
       nodeName: string,
     ) {
       context.report({
