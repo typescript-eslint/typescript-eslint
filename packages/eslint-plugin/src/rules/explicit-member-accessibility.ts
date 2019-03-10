@@ -63,6 +63,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
+    const sourceCode = context.getSourceCode();
     const baseCheck: AccessibilityLevel = option.accessibility || 'explicit';
     const overrides = option.overrides || {};
     const ctorCheck = overrides.constructors || baseCheck;
@@ -117,7 +118,11 @@ export default util.createRule<Options, MessageIds>({
       }
 
       if (util.isTypeScriptFile(context.getFilename())) {
-        const methodName = util.getNameFromPropertyName(methodDefinition.key);
+        // const methodName = util.getNameFromPropertyName(methodDefinition.key);
+        const methodName = util.getNameFromClassMember(
+          methodDefinition,
+          sourceCode,
+        );
         if (
           check === 'no-public' &&
           methodDefinition.accessibility === 'public'

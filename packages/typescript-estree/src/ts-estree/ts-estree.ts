@@ -500,7 +500,7 @@ interface LiteralBase extends BaseNode {
 }
 
 interface MethodDefinitionBase extends BaseNode {
-  key: PropertyName;
+  key: Expression;
   value: FunctionExpression | TSEmptyBodyFunctionExpression;
   computed: boolean;
   static: boolean;
