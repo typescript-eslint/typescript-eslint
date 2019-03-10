@@ -1,7 +1,7 @@
 import * as util from '../util';
 
 type Options = ['never' | 'always'];
-type MessageIds = 'noPrefix';
+type MessageIds = 'noPrefix' | 'alwaysPrefix';
 
 export default util.createRule<Options, MessageIds>({
   name: 'interface-name-prefix',
@@ -15,6 +15,7 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       noPrefix: 'Interface name must not be prefixed with "I".',
+      alwaysPrefix: 'Interface name must be prefixed with "I".',
     },
     schema: [
       {
@@ -51,7 +52,7 @@ export default util.createRule<Options, MessageIds>({
           if (!isPrefixedWithI(node.id.name)) {
             context.report({
               node: node.id,
-              messageId: 'noPrefix',
+              messageId: 'alwaysPrefix',
             });
           }
         }
