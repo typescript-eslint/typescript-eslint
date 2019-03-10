@@ -164,6 +164,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
+    const sourceCode = context.getSourceCode();
+
     const functionExpressions = [
       AST_NODE_TYPES.FunctionExpression,
       AST_NODE_TYPES.ArrowFunctionExpression,
@@ -213,7 +215,7 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind === 'constructor'
             ? 'constructor'
-            : util.getNameFromPropertyName(node.key);
+            : util.getNameFromClassMember(node, sourceCode);
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
         default:
