@@ -4,6 +4,7 @@
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import RuleModule from 'ts-eslint';
+import { SourceCode } from 'ts-eslint';
 
 /**
  * Check if the context file name is *.ts or *.tsx
@@ -78,5 +79,33 @@ export function arraysAreEqual<T>(
       b !== undefined &&
       a.length === b.length &&
       a.every((x, idx) => eq(x, b[idx])))
+  );
+}
+
+/**
+ * Gets a string name representation of the name of the given MethodDefinition
+ * or ClassProperty node, with handling for computed property names.
+ */
+export function getNameFromClassMember(
+  methodDefinition: TSESTree.MethodDefinition | TSESTree.ClassProperty,
+  sourceCode: SourceCode,
+): string {
+  if (keyCanBeReadAsPropertyName(methodDefinition.key)) {
+    return getNameFromPropertyName(methodDefinition.key);
+  }
+
+  return sourceCode.text.slice(...methodDefinition.key.range);
+}
+
+/**
+ * This covers both actual property names, as well as computed properties that are either
+ * an identifier or a literal at the top level.
+ */
+function keyCanBeReadAsPropertyName(
+  node: TSESTree.Expression,
+): node is TSESTree.PropertyName {
+  return (
+    node.type === AST_NODE_TYPES.Literal ||
+    node.type === AST_NODE_TYPES.Identifier
   );
 }

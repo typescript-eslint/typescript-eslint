@@ -687,6 +687,7 @@ declare module 'ts-eslint' {
     RuleMetaData,
     RuleMetaDataDocs,
     Scope,
+    SourceCode,
   };
   export default RuleModule;
 }
