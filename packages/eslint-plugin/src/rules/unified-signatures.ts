@@ -478,11 +478,12 @@ function getOverloadInfo(
         return undefined;
       }
 
+      const { value } = key;
+
       switch (key.type) {
         case Syntax.Identifier:
           return key.name;
         case Syntax.Property:
-          const { value } = key;
           return tsutils.isLiteralExpression(value)
             ? value.text
             : { name: value.getText(), computed: true };
