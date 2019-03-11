@@ -473,6 +473,9 @@ declare module 'ts-eslint' {
     Token?: RuleFunction<TSESTree.Token>;
     TryStatement?: RuleFunction<TSESTree.TryStatement>;
     TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
+    TSAbstractMethodDefinition?: RuleFunction<
+      TSESTree.TSAbstractMethodDefinition
+    >;
     TSAnyKeyword?: RuleFunction<TSESTree.TSAnyKeyword>;
     TSArrayType?: RuleFunction<TSESTree.TSArrayType>;
     TSAsExpression?: RuleFunction<TSESTree.TSAsExpression>;
@@ -481,6 +484,7 @@ declare module 'ts-eslint' {
     TSBooleanKeyword?: RuleFunction<TSESTree.TSBooleanKeyword>;
     TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
     TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
+    TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
     TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
     TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
     TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;

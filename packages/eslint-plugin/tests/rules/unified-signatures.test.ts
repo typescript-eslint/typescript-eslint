@@ -1,15 +1,5 @@
-/**
- * @fileoverview Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter.
- * @author Armando Aguirre
- */
-'use strict';
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-var rule = require('../../../lib/rules/unified-signatures'),
-  RuleTester = require('eslint').RuleTester;
+import rule from '../../src/rules/unified-signatures';
+import { RuleTester } from '../RuleTester';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -102,7 +92,7 @@ interface Generic<T> {
     x(): void;
     x(x: T[]): void;
 }
-`
+`,
   ],
   invalid: [
     {
@@ -115,14 +105,17 @@ function f(x: any): any {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature taking `number | string`.',
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
           line: 3,
           column: 12,
-          endLine: 3,
-          endColumn: 21
-        }
-      ]
+        },
+      ],
     },
     {
       code: `
@@ -132,14 +125,15 @@ function opt(...args: any[]) {}
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature with an optional parameter.',
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           line: 3,
           column: 28,
-          endLine: 3,
-          endColumn: 37
-        }
-      ]
+        },
+      ],
     },
     {
       // For 3 or more overloads, mentions the line.
@@ -152,14 +146,15 @@ interface I {
 `,
       errors: [
         {
-          message:
-            'This overload and the one on line 3 can be combined into one signature with an optional parameter.',
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'This overload and the one on line 3 can be combined into one signature',
+          },
           line: 5,
           column: 8,
-          endLine: 5,
-          endColumn: 17
-        }
-      ]
+        },
+      ],
     },
     {
       // Error for extra parameter.
@@ -171,14 +166,15 @@ interface I {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature with an optional parameter.',
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           line: 4,
           column: 8,
-          endLine: 4,
-          endColumn: 17
-        }
-      ]
+        },
+      ],
     },
     {
       // Error for arity difference greater than 1 if the additional parameters are all optional/rest.
@@ -190,14 +186,15 @@ interface I {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature with a rest parameter.',
+          messageId: 'omittingRestParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           line: 4,
           column: 31,
-          endLine: 4,
-          endColumn: 45
-        }
-      ]
+        },
+      ],
     },
     {
       // Error if only one defines a rest parameter.
@@ -209,14 +206,15 @@ interface I {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature with a rest parameter.',
+          messageId: 'omittingRestParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           line: 4,
           column: 7,
-          endLine: 4,
-          endColumn: 21
-        }
-      ]
+        },
+      ],
     },
     {
       // Error if only one defines an optional parameter.
@@ -228,14 +226,15 @@ interface I {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature with an optional parameter.',
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           line: 4,
           column: 7,
-          endLine: 4,
-          endColumn: 17
-        }
-      ]
+        },
+      ],
     },
     {
       // Error if both are optional.
@@ -247,33 +246,39 @@ interface I {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature taking `number | string`.',
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
           line: 4,
           column: 8,
-          endLine: 4,
-          endColumn: 18
-        }
-      ]
+        },
+      ],
     },
     {
       // Error for different types (could be a union)
       code: `
 interface I {
-    d(x: string): void;
     d(x: number): void;
+    d(x: string): void;
 }
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature taking `string | number`.',
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
           line: 4,
           column: 7,
-          endLine: 4,
-          endColumn: 16
-        }
-      ]
+        },
+      ],
     },
     {
       // Works for type literal and call signature too.
@@ -285,14 +290,15 @@ type T = {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature with an optional parameter.',
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           line: 4,
           column: 6,
-          endLine: 4,
-          endColumn: 15
-        }
-      ]
+        },
+      ],
     },
     {
       // Works for constructor.
@@ -304,14 +310,15 @@ declare class C {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature with an optional parameter.',
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           line: 4,
           column: 17,
-          endLine: 4,
-          endColumn: 26
-        }
-      ]
+        },
+      ],
     },
     {
       // Works with unions.
@@ -323,14 +330,17 @@ interface I {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature taking `number | string | boolean`.',
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string | boolean',
+          },
           line: 4,
           column: 7,
-          endLine: 4,
-          endColumn: 26
-        }
-      ]
+        },
+      ],
     },
     {
       // Works with tuples.
@@ -342,14 +352,17 @@ interface I {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature taking `number | [string, boolean]`.',
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: '[string, boolean]',
+          },
           line: 4,
           column: 7,
-          endLine: 4,
-          endColumn: 27
-        }
-      ]
+        },
+      ],
     },
     {
       code: `
@@ -360,14 +373,17 @@ interface Generic<T> {
 `,
       errors: [
         {
-          message:
-            'These overloads can be combined into one signature taking `T[] | T`.',
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'T[]',
+            type2: 'T',
+          },
           line: 4,
           column: 7,
-          endLine: 4,
-          endColumn: 11
-        }
-      ]
-    }
-  ]
+        },
+      ],
+    },
+  ],
 });
