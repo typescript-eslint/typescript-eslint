@@ -1,16 +1,19 @@
 # Require a consistent member declaration order (`member-ordering`)
 
-A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class
-expressions easier to read, navigate and edit.
+A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate and edit.
 
 ## Rule Details
 
-This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured.
+This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured and ordered.
 
-It allows to group members by their type (e.g. `public-static-field`, `protected-static-field`, `private-static-field`, `public-instance-field`, ...). By default, their order is the same inside `classes`, `classExpressions`, `interfaces` and `typeLiterals` (note: not all member types apply to `interfaces` and `typeLiterals`). It is possible to define the order for any of those individually or to change the default order for all of them by setting the `default` option.
+### Grouping and sorting member groups
+It allows to group members by their type (e.g. `public-static-field`, `protected-static-field`, `private-static-field`, `public-instance-field`, ...) and enforce a certain order for these groups. By default, their order is the same inside `classes`, `classExpressions`, `interfaces` and `typeLiterals` (note: not all member types apply to `interfaces` and `typeLiterals`). It is possible to define the order for any of those individually or to change the default order for all of them by setting the `default` option.
+
+### Sorting members
+Besides grouping the members and sorting their groups, this rule also allows to sort the members themselves. You have 2 options: Sort all of them while ignoring their type or sort them inside of the member types (e.g. sort all fields in an interface alphabetically).
 
 ## Options
-
+These options allow to specify how to group the members and sort their groups.
 ```ts
 {
   default?: Array<MemberType> | never
@@ -19,6 +22,18 @@ It allows to group members by their type (e.g. `public-static-field`, `protected
 
   interfaces?: ['signature' | 'field' | 'method' | 'constructor'] | never
   typeLiterals?: ['signature' | 'field' | 'method' | 'constructor'] | never
+}
+```
+
+If you want to enforce an alphabetic order, you have to use this form
+```ts
+{
+  default?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
+  classes?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
+  classExpressions?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
+
+  interfaces?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
+  typeLiterals?: { memberTypes?: Array<MemberType>, order?: 'alphabetically' } | never
 }
 ```
 
@@ -193,6 +208,8 @@ The default configuration looks as follows:
 ```
 
 Note: The default configuration contains member group types which contain other member types (see above). This is intentional to provide better error messages.
+
+Note: By default, the members are not sorted. If you want to sort them alphabetically, you have to provide a custom configuration.
 
 ## Examples
 
