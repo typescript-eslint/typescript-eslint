@@ -100,6 +100,11 @@ interface I {
   f(x1:boolean, x2?: number): void;
 }
 `,
+    // AllowType parameters that are not equal
+    `
+function f<T extends number>(x: T[]): void;
+function f<T extends string>(x: T): void;
+ `,
   ],
   invalid: [
     {
@@ -389,6 +394,90 @@ interface Generic<T> {
           },
           line: 4,
           column: 7,
+        },
+      ],
+    },
+    {
+      // Check type parameters when equal
+      code: `
+function f<T>(x: T[]): void;
+function f<T>(x: T): void;
+`,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'T[]',
+            type2: 'T',
+          },
+          line: 3,
+          column: 15,
+        },
+      ],
+    },
+    {
+      // Verifies type parameters and constraints
+      code: `
+function f<T extends number>(x: T[]): void;
+function f<T extends number>(x: T): void;
+`,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'T[]',
+            type2: 'T',
+          },
+          line: 3,
+          column: 30,
+        },
+      ],
+    },
+    {
+      // Works with abstract
+      code: `
+abstract class Foo {
+    public abstract f(x: number): void;
+    public abstract f(x: string): void;
+}
+`,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
+          line: 4,
+          column: 23,
+        },
+      ],
+    },
+    {
+      // Works with literals
+      code: `
+interface Foo {
+    "f"(x: string): void;
+    "f"(x: number): void;
+}
+`,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'string',
+            type2: 'number',
+          },
+          line: 4,
+          column: 9,
         },
       ],
     },

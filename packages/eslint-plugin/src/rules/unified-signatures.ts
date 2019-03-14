@@ -1,4 +1,3 @@
-import * as tsutils from 'tsutils';
 import * as util from '../util';
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
@@ -357,10 +356,6 @@ export default util.createRule({
       );
     }
 
-    function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
-      return node.type === AST_NODE_TYPES.Identifier;
-    }
-
     function parametersAreEqual(
       a: TSESTree.Parameter,
       b: TSESTree.Parameter,
@@ -446,19 +441,15 @@ export default util.createRule({
     }
 
     /** Calls `action` for every pair of values in `values`. */
-    function forEachPair<T, Out>(
+    function forEachPair<T>(
       values: ReadonlyArray<T>,
-      action: (a: T, b: T) => Out | undefined,
-    ): Out | undefined {
+      action: (a: T, b: T) => void,
+    ): void {
       for (let i = 0; i < values.length; i++) {
         for (let j = i + 1; j < values.length; j++) {
-          const result = action(values[i], values[j]);
-          if (result !== undefined) {
-            return result;
-          }
+          action(values[i], values[j]);
         }
       }
-      return undefined;
     }
 
     interface Scope {
@@ -563,32 +554,19 @@ function getOverloadKey(node: OverloadNode): string | undefined {
   );
 }
 
-function getOverloadInfo(
-  node: OverloadNode,
-): string | { name: string; computed?: boolean } | undefined {
+function getOverloadInfo(node: OverloadNode): string {
   switch (node.type) {
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
       return '()';
-    default: {
-      const { key } = node as any; // TODO: FIgure out the type
-      if (key === undefined) {
-        return undefined;
-      }
+    default:
+      const { key } = node as MethodDefinition;
 
-      const { value } = key as any; // TODO: FIgure out the type
-
-      switch (key.type) {
-        case AST_NODE_TYPES.Identifier:
-          return key.name;
-        case AST_NODE_TYPES.Property:
-          return tsutils.isLiteralExpression(value)
-            ? value.text
-            : { name: value.getText(), computed: true };
-        default:
-          return tsutils.isLiteralExpression(key) ? value.text : undefined;
-      }
-    }
+      return isIdentifier(key) ? key.name : (key as TSESTree.Literal).raw;
   }
+}
+
+function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
+  return node.type === AST_NODE_TYPES.Identifier;
 }
