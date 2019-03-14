@@ -20,7 +20,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       category: 'Best Practices',
       description: 'Only allow comparisons between primitive types.',
-      tslintRuleName: 'object-comparison',
+      tslintRuleName: 'strict-comparisons',
       recommended: 'error',
     },
     messages: {
@@ -94,7 +94,6 @@ export default util.createRule<Options, MessageIds>({
      */
 
     function getKind(type: ts.Type): TypeKind {
-      // tslint:disable:no-bitwise
       return is(ts.TypeFlags.String | ts.TypeFlags.StringLiteral)
         ? TypeKind.String
         : is(ts.TypeFlags.Number | ts.TypeFlags.NumberLiteral)
@@ -106,7 +105,6 @@ export default util.createRule<Options, MessageIds>({
         : is(ts.TypeFlags.Any)
         ? TypeKind.Any
         : TypeKind.Object;
-      // tslint:enable:no-bitwise
 
       function is(flags: ts.TypeFlags) {
         return isTypeFlagSet(type, flags);
@@ -167,7 +165,6 @@ export default util.createRule<Options, MessageIds>({
      * @param types array of TypeKinds
      */
     function getStrictestKind(types: TypeKind[]): TypeKind {
-      // tslint:disable-next-line:no-unsafe-any
       return Math.max.apply(Math, types);
     }
 
