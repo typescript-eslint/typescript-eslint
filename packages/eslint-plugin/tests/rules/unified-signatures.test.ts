@@ -93,6 +93,13 @@ interface Generic<T> {
     x(x: T[]): void;
 }
 `,
+    // Allow signatures if the type is not equal.
+    `
+interface I {
+  f(x1:number): void;
+  f(x1:boolean, x2?: number): void;
+}
+`,
   ],
   invalid: [
     {

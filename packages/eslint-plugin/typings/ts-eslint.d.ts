@@ -482,7 +482,13 @@ declare module 'ts-eslint' {
     TSAsyncKeyword?: RuleFunction<TSESTree.TSAsyncKeyword>;
     TSBigIntKeyword?: RuleFunction<TSESTree.TSBigIntKeyword>;
     TSBooleanKeyword?: RuleFunction<TSESTree.TSBooleanKeyword>;
+    TSCallSignatureDeclaration?: RuleFunction<
+      TSESTree.TSCallSignatureDeclaration
+    >;
     TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
+    TSConstructSignatureDeclaration?: RuleFunction<
+      TSESTree.TSConstructSignatureDeclaration
+    >;
     TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
     TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
     TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;

@@ -1,21 +1,22 @@
 import * as tsutils from 'tsutils';
 import * as util from '../util';
-import { Syntax } from '@typescript-eslint/parser';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 interface Failure {
   unify: Unify;
   only2: boolean;
 }
+
 type Unify =
   | {
       kind: 'single-parameter-difference';
-      p0: any;
-      p1: any;
+      p0: TSESTree.Parameter;
+      p1: TSESTree.Parameter;
     }
   | {
       kind: 'extra-parameter';
-      extraParameter: any;
-      otherSignature: any;
+      extraParameter: TSESTree.Parameter;
+      otherSignature: SignatureDefinition;
     };
 
 /**
@@ -23,6 +24,27 @@ type Unify =
  * In: `interface I<T> { m<U>(x: U): T }`, only `T` is an outer type parameter.
  */
 type IsTypeParameter = (typeName: string) => boolean;
+
+type ScopeNode =
+  | TSESTree.Program
+  | TSESTree.TSModuleBlock
+  | TSESTree.TSInterfaceBody
+  | TSESTree.ClassBody
+  | TSESTree.TSTypeLiteral;
+
+type OverloadNode = MethodDefinition | SignatureDefinition;
+
+type SignatureDefinition =
+  | TSESTree.FunctionExpression
+  | TSESTree.TSCallSignatureDeclaration
+  | TSESTree.TSConstructSignatureDeclaration
+  | TSESTree.TSDeclareFunction
+  | TSESTree.TSEmptyBodyFunctionExpression
+  | TSESTree.TSMethodSignature;
+
+type MethodDefinition =
+  | TSESTree.MethodDefinition
+  | TSESTree.TSAbstractMethodDefinition;
 
 export default util.createRule({
   name: 'unified-signatures',
@@ -68,13 +90,25 @@ export default util.createRule({
           case 'single-parameter-difference': {
             const { p0, p1 } = unify;
             const lineOfOtherOverload = only2 ? undefined : p0.loc.start.line;
+
+            const typeAnnotation0 = !isTSParameterProperty(p0)
+              ? p0.typeAnnotation
+              : undefined;
+            const typeAnnotation1 = !isTSParameterProperty(p1)
+              ? p1.typeAnnotation
+              : undefined;
+
             context.report({
               loc: p1.loc,
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: sourceCode.getText(p0.typeAnnotation.typeAnnotation),
-                type2: sourceCode.getText(p1.typeAnnotation.typeAnnotation),
+                type1: sourceCode.getText(
+                  typeAnnotation0 && typeAnnotation0.typeAnnotation,
+                ),
+                type2: sourceCode.getText(
+                  typeAnnotation1 && typeAnnotation1.typeAnnotation,
+                ),
               },
               node: p1,
             });
@@ -89,7 +123,7 @@ export default util.createRule({
             context.report({
               loc: extraParameter.loc,
               messageId:
-                extraParameter.type === Syntax.RestElement
+                extraParameter.type === AST_NODE_TYPES.RestElement
                   ? 'omittingRestParameter'
                   : 'omittingSingleParameter',
               data: {
@@ -103,16 +137,17 @@ export default util.createRule({
     }
 
     function checkOverloads(
-      signatures: ReadonlyArray<any[]>,
-      typeParameters: ReadonlyArray<any> | undefined,
+      signatures: ReadonlyArray<OverloadNode[]>,
+      typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): Failure[] {
       const result: Failure[] = [];
       const isTypeParameter = getIsTypeParameter(typeParameters);
       for (const overloads of signatures) {
         if (overloads.length === 2) {
-          // Classes returns parameters on its value property
-          const signature0 = overloads[0].value || overloads[0];
-          const signature1 = overloads[1].value || overloads[1];
+          const signature0 =
+            (overloads[0] as MethodDefinition).value || overloads[0];
+          const signature1 =
+            (overloads[1] as MethodDefinition).value || overloads[1];
 
           const unify = compareSignatures(
             signature0,
@@ -124,7 +159,14 @@ export default util.createRule({
           }
         } else {
           forEachPair(overloads, (a, b) => {
-            const unify = compareSignatures(a, b, isTypeParameter);
+            const signature0 = (a as MethodDefinition).value || a;
+            const signature1 = (b as MethodDefinition).value || b;
+
+            const unify = compareSignatures(
+              signature0,
+              signature1,
+              isTypeParameter,
+            );
             if (unify !== undefined) {
               result.push({ unify, only2: false });
             }
@@ -135,8 +177,8 @@ export default util.createRule({
     }
 
     function compareSignatures(
-      a: any,
-      b: any,
+      a: SignatureDefinition,
+      b: SignatureDefinition,
       isTypeParameter: IsTypeParameter,
     ): Unify | undefined {
       if (!signaturesCanBeUnified(a, b, isTypeParameter)) {
@@ -149,8 +191,8 @@ export default util.createRule({
     }
 
     function signaturesCanBeUnified(
-      a: any,
-      b: any,
+      a: SignatureDefinition,
+      b: SignatureDefinition,
       isTypeParameter: IsTypeParameter,
     ): boolean {
       // Must return the same type.
@@ -172,8 +214,8 @@ export default util.createRule({
 
     /** Detect `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`. */
     function signaturesDifferBySingleParameter(
-      types1: ReadonlyArray<any>,
-      types2: ReadonlyArray<any>,
+      types1: ReadonlyArray<TSESTree.Parameter>,
+      types2: ReadonlyArray<TSESTree.Parameter>,
     ): Unify | undefined {
       const index = getIndexOfFirstDifference(
         types1,
@@ -199,7 +241,8 @@ export default util.createRule({
       const b = types2[index];
       // Can unify `a?: string` and `b?: number`. Can't unify `...args: string[]` and `...args: number[]`.
       // See https://github.com/Microsoft/TypeScript/issues/5077
-      return parametersHaveEqualSigils(a, b) && a.type !== Syntax.RestElement
+      return parametersHaveEqualSigils(a, b) &&
+        a.type !== AST_NODE_TYPES.RestElement
         ? { kind: 'single-parameter-difference', p0: a, p1: b }
         : undefined;
     }
@@ -209,8 +252,8 @@ export default util.createRule({
      * Returns the parameter declaration (`x: number` in this example) that should be optional/rest, and overload it's a part of.
      */
     function signaturesDifferByOptionalOrRestParameter(
-      a: any,
-      b: any,
+      a: SignatureDefinition,
+      b: SignatureDefinition,
     ): Unify | undefined {
       const sig1 = a.params;
       const sig2 = b.params;
@@ -230,12 +273,24 @@ export default util.createRule({
       }
 
       for (let i = 0; i < minLength; i++) {
-        if (!typesAreEqual(sig1[i].typeAnnotation, sig2[i].typeAnnotation)) {
+        const sig1i = sig1[i];
+        const sig2i = sig2[i];
+        const typeAnnotation1 = !isTSParameterProperty(sig1i)
+          ? sig1i.typeAnnotation
+          : undefined;
+        const typeAnnotation2 = !isTSParameterProperty(sig2i)
+          ? sig2i.typeAnnotation
+          : undefined;
+
+        if (!typesAreEqual(typeAnnotation1, typeAnnotation2)) {
           return undefined;
         }
       }
 
-      if (minLength > 0 && shorter[minLength - 1].type === Syntax.RestElement) {
+      if (
+        minLength > 0 &&
+        shorter[minLength - 1].type === AST_NODE_TYPES.RestElement
+      ) {
         return undefined;
       }
 
@@ -247,7 +302,9 @@ export default util.createRule({
     }
 
     /** Given type parameters, returns a function to test whether a type is one of those parameters. */
-    function getIsTypeParameter(typeParameters: any): IsTypeParameter {
+    function getIsTypeParameter(
+      typeParameters?: TSESTree.TSTypeParameterDeclaration,
+    ): IsTypeParameter {
       if (typeParameters === undefined) {
         return () => false;
       }
@@ -261,62 +318,102 @@ export default util.createRule({
 
     /** True if any of the outer type parameters are used in a signature. */
     function signatureUsesTypeParameter(
-      sig: any,
+      sig: SignatureDefinition,
       isTypeParameter: IsTypeParameter,
     ): boolean {
       return sig.params.some(
-        (p: any) => typeContainsTypeParameter(p.typeAnnotation) === true,
+        (p: TSESTree.Parameter) =>
+          !isTSParameterProperty(p) &&
+          typeContainsTypeParameter(p.typeAnnotation),
       );
 
-      function typeContainsTypeParameter(type: any): boolean | undefined {
+      function typeContainsTypeParameter(
+        type?: TSESTree.TSTypeAnnotation | TSESTree.TypeNode,
+      ): boolean {
         if (!type) {
           return false;
         }
 
-        if (type.type === Syntax.TSTypeReference) {
+        if (type.type === AST_NODE_TYPES.TSTypeReference) {
           const typeName = type.typeName;
-          if (
-            typeName.type === Syntax.Identifier &&
-            isTypeParameter(typeName.name)
-          ) {
+          if (isIdentifier(typeName) && isTypeParameter(typeName.name)) {
             return true;
           }
         }
 
         return typeContainsTypeParameter(
-          type.typeAnnotation || type.elementType,
+          (type as TSESTree.TSTypeAnnotation).typeAnnotation ||
+            (type as TSESTree.TSArrayType).elementType,
         );
       }
     }
 
-    function parametersAreEqual(a: any, b: any): boolean {
+    function isTSParameterProperty(
+      node: TSESTree.Node,
+    ): node is TSESTree.TSParameterProperty {
+      return (
+        (node as TSESTree.TSParameterProperty).type ===
+        AST_NODE_TYPES.TSParameterProperty
+      );
+    }
+
+    function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
+      return node.type === AST_NODE_TYPES.Identifier;
+    }
+
+    function parametersAreEqual(
+      a: TSESTree.Parameter,
+      b: TSESTree.Parameter,
+    ): boolean {
+      const typeAnnotationA = !isTSParameterProperty(a)
+        ? a.typeAnnotation
+        : undefined;
+      const typeAnnotationB = !isTSParameterProperty(b)
+        ? b.typeAnnotation
+        : undefined;
+
       return (
         parametersHaveEqualSigils(a, b) &&
-        typesAreEqual(a.typeAnnotation, b.typeAnnotation)
+        typesAreEqual(typeAnnotationA, typeAnnotationB)
       );
     }
 
     /** True for optional/rest parameters. */
-    function parameterMayBeMissing(p: any): boolean {
-      return p.type === Syntax.RestElement || p.optional;
+    function parameterMayBeMissing(p: TSESTree.Parameter): boolean | undefined {
+      const optional = !isTSParameterProperty(p) ? p.optional : undefined;
+
+      return p.type === AST_NODE_TYPES.RestElement || optional;
     }
 
     /** False if one is optional and the other isn't, or one is a rest parameter and the other isn't. */
-    function parametersHaveEqualSigils(a: any, b: any): boolean {
+    function parametersHaveEqualSigils(
+      a: TSESTree.Parameter,
+      b: TSESTree.Parameter,
+    ): boolean {
+      const optionalA = !isTSParameterProperty(a) ? a.optional : undefined;
+      const optionalB = !isTSParameterProperty(b) ? b.optional : undefined;
+
       return (
-        (a.type === Syntax.RestElement) === (b.type === Syntax.RestElement) &&
-        (a.optional !== undefined) === (b.optional !== undefined)
+        (a.type === AST_NODE_TYPES.RestElement) ===
+          (b.type === AST_NODE_TYPES.RestElement) &&
+        (optionalA !== undefined) === (optionalB !== undefined)
       );
     }
 
-    function typeParametersAreEqual(a: any, b: any): boolean {
+    function typeParametersAreEqual(
+      a: TSESTree.TSTypeParameter,
+      b: TSESTree.TSTypeParameter,
+    ): boolean {
       return (
         a.name.name === b.name.name &&
         constraintsAreEqual(a.constraint, b.constraint)
       );
     }
 
-    function typesAreEqual(a: any, b: any): boolean {
+    function typesAreEqual(
+      a: TSESTree.TSTypeAnnotation | undefined,
+      b: TSESTree.TSTypeAnnotation | undefined,
+    ): boolean {
       return (
         a === b ||
         (a !== undefined &&
@@ -325,7 +422,10 @@ export default util.createRule({
       );
     }
 
-    function constraintsAreEqual(a: any, b: any): boolean {
+    function constraintsAreEqual(
+      a: TSESTree.TypeNode | undefined,
+      b: TSESTree.TypeNode | undefined,
+    ): boolean {
       return (
         a === b || (a !== undefined && b !== undefined && a.type === b.type)
       );
@@ -362,19 +462,20 @@ export default util.createRule({
     }
 
     interface Scope {
-      overloads: Map<string, any>;
-      parent: any;
-      typeParameters: ReadonlyArray<any> | undefined;
+      overloads: Map<string, OverloadNode[]>;
+      parent?: ScopeNode;
+      typeParameters?: TSESTree.TSTypeParameterDeclaration;
     }
 
     const scopes: Scope[] = [];
     let currentScope: Scope | undefined = {
       overloads: new Map(),
-      parent: undefined,
-      typeParameters: undefined,
     };
 
-    function createScope(parent: any, typeParameters: any = undefined) {
+    function createScope(
+      parent: ScopeNode,
+      typeParameters?: TSESTree.TSTypeParameterDeclaration,
+    ) {
       currentScope && scopes.push(currentScope);
       currentScope = {
         overloads: new Map(),
@@ -394,7 +495,7 @@ export default util.createRule({
       currentScope = scopes.pop();
     }
 
-    function addOverload(signature: any, key?: string) {
+    function addOverload(signature: OverloadNode, key?: string) {
       key = key || getOverloadKey(signature);
       if (currentScope && signature.parent === currentScope.parent && key) {
         const overloads = currentScope.overloads.get(key);
@@ -411,21 +512,15 @@ export default util.createRule({
     //----------------------------------------------------------------------
 
     return {
-      Program(node) {
-        createScope(node);
-      },
-      TSModuleBlock(node) {
-        createScope(node);
-      },
+      Program: createScope,
+      TSModuleBlock: createScope,
       TSInterfaceDeclaration(node) {
         createScope(node.body, node.typeParameters);
       },
       ClassDeclaration(node) {
         createScope(node.body, node.typeParameters);
       },
-      TSTypeLiteral(node) {
-        createScope(node);
-      },
+      TSTypeLiteral: createScope,
       // collect overloads
       TSDeclareFunction(node) {
         if (node.id && !node.body) {
@@ -455,35 +550,39 @@ export default util.createRule({
   },
 });
 
-function getOverloadKey(node: any): string | undefined {
+function getOverloadKey(node: OverloadNode): string | undefined {
   const info = getOverloadInfo(node);
   if (info === undefined) {
     return undefined;
   }
 
-  return (node.computed ? '0' : '1') + (node.static ? '0' : '1') + info;
+  return (
+    ((node as MethodDefinition).computed ? '0' : '1') +
+    ((node as MethodDefinition).static ? '0' : '1') +
+    info
+  );
 }
 
 function getOverloadInfo(
-  node: any,
+  node: OverloadNode,
 ): string | { name: string; computed?: boolean } | undefined {
   switch (node.type) {
-    case Syntax.TSConstructSignatureDeclaration:
+    case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
-    case Syntax.TSCallSignatureDeclaration:
+    case AST_NODE_TYPES.TSCallSignatureDeclaration:
       return '()';
     default: {
-      const { key } = node;
+      const { key } = node as any; // TODO: FIgure out the type
       if (key === undefined) {
         return undefined;
       }
 
-      const { value } = key;
+      const { value } = key as any; // TODO: FIgure out the type
 
       switch (key.type) {
-        case Syntax.Identifier:
+        case AST_NODE_TYPES.Identifier:
           return key.name;
-        case Syntax.Property:
+        case AST_NODE_TYPES.Property:
           return tsutils.isLiteralExpression(value)
             ? value.text
             : { name: value.getText(), computed: true };
