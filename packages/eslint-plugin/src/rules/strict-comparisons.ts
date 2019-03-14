@@ -25,9 +25,9 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       nonComparableTypes:
-        "cannot compare type '{{ typesLeft }}' to type '{{ typesRight }}'",
+        "Cannot compare type '{{ typesLeft }}' to type '{{ typesRight }}'.",
       invalidTypeForOperator:
-        "cannot use '{{ comparator }}' comparator for type '{{ type }}'",
+        "Cannot use '{{ comparator }}' comparator for type '{{ type }}'.",
     },
     schema: [
       {
@@ -64,8 +64,9 @@ export default util.createRule<Options, MessageIds>({
       Enum = 2,
       String = 3,
       Boolean = 4,
-      NullOrUndefined = 5,
-      Object = 6,
+      Null = 5,
+      Undefined = 6,
+      Object = 7,
     }
 
     const typeNames = {
@@ -74,7 +75,8 @@ export default util.createRule<Options, MessageIds>({
       [TypeKind.Enum]: 'enum',
       [TypeKind.String]: 'string',
       [TypeKind.Boolean]: 'boolean',
-      [TypeKind.NullOrUndefined]: 'null | undefined',
+      [TypeKind.Null]: 'null',
+      [TypeKind.Undefined]: 'undefined',
       [TypeKind.Object]: 'object',
     };
 
@@ -94,17 +96,21 @@ export default util.createRule<Options, MessageIds>({
      */
 
     function getKind(type: ts.Type): TypeKind {
-      return is(ts.TypeFlags.String | ts.TypeFlags.StringLiteral)
-        ? TypeKind.String
-        : is(ts.TypeFlags.Number | ts.TypeFlags.NumberLiteral)
-        ? TypeKind.Number
-        : is(ts.TypeFlags.BooleanLike)
-        ? TypeKind.Boolean
-        : is(ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Void)
-        ? TypeKind.NullOrUndefined
-        : is(ts.TypeFlags.Any)
-        ? TypeKind.Any
-        : TypeKind.Object;
+      if (is(ts.TypeFlags.String | ts.TypeFlags.StringLiteral)) {
+        return TypeKind.String;
+      } else if (is(ts.TypeFlags.Number | ts.TypeFlags.NumberLiteral)) {
+        return TypeKind.Number;
+      } else if (is(ts.TypeFlags.BooleanLike)) {
+        return TypeKind.Boolean;
+      } else if (is(ts.TypeFlags.Null)) {
+        return TypeKind.Null;
+      } else if (is(ts.TypeFlags.Undefined)) {
+        return TypeKind.Undefined;
+      } else if (is(ts.TypeFlags.Any)) {
+        return TypeKind.Any;
+      } else {
+        return TypeKind.Object;
+      }
 
       function is(flags: ts.TypeFlags) {
         return isTypeFlagSet(type, flags);
@@ -128,19 +134,19 @@ export default util.createRule<Options, MessageIds>({
         return getStrictestKind(overlappingTypes);
       } else {
         // In case one of the types is "any", get the strictest type of the other array
-        if (arrayContainsKind(typesLeft, TypeKind.Any)) {
+        if (arrayContainsKind(typesLeft, [TypeKind.Any])) {
           return getStrictestKind(typesRight);
         }
-        if (arrayContainsKind(typesRight, TypeKind.Any)) {
+        if (arrayContainsKind(typesRight, [TypeKind.Any])) {
           return getStrictestKind(typesLeft);
         }
 
-        // In case one array contains NullOrUndefined and the other an Object, return Object
+        // In case one array contains Null or Undefined and the other an Object, return Object
         if (
-          (arrayContainsKind(typesLeft, TypeKind.NullOrUndefined) &&
-            arrayContainsKind(typesRight, TypeKind.Object)) ||
-          (arrayContainsKind(typesRight, TypeKind.NullOrUndefined) &&
-            arrayContainsKind(typesLeft, TypeKind.Object))
+          (arrayContainsKind(typesLeft, [TypeKind.Null, TypeKind.Undefined]) &&
+            arrayContainsKind(typesRight, [TypeKind.Object])) ||
+          (arrayContainsKind(typesRight, [TypeKind.Null, TypeKind.Undefined]) &&
+            arrayContainsKind(typesLeft, [TypeKind.Object]))
         ) {
           return TypeKind.Object;
         }
@@ -155,9 +161,9 @@ export default util.createRule<Options, MessageIds>({
      */
     function arrayContainsKind(
       types: TypeKind[],
-      typeToCheck: TypeKind,
+      typeToCheck: TypeKind[],
     ): boolean {
-      return types.some(type => type === typeToCheck);
+      return types.some(type => typeToCheck.includes(type));
     }
 
     /**
@@ -243,7 +249,8 @@ export default util.createRule<Options, MessageIds>({
                 case TypeKind.String:
                 case TypeKind.Boolean:
                   break;
-                case TypeKind.NullOrUndefined:
+                case TypeKind.Null:
+                case TypeKind.Undefined:
                 case TypeKind.Object:
                   if (allowObjectEqualComparison) {
                     break;

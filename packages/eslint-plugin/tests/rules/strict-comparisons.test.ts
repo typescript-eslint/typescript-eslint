@@ -220,7 +220,7 @@ if (b !== b) {}
           messageId: 'nonComparableTypes',
           data: {
             typesLeft: 'number',
-            typesRight: 'null | undefined',
+            typesRight: 'undefined',
           },
         },
       ],
@@ -231,7 +231,7 @@ if (b !== b) {}
         {
           messageId: 'nonComparableTypes',
           data: {
-            typesLeft: 'null | undefined',
+            typesLeft: 'undefined',
             typesRight: 'number',
           },
         },
@@ -244,7 +244,7 @@ if (b !== b) {}
           messageId: 'nonComparableTypes',
           data: {
             typesLeft: 'number',
-            typesRight: 'null | undefined',
+            typesRight: 'undefined',
           },
         },
       ],
@@ -255,7 +255,7 @@ if (b !== b) {}
         {
           messageId: 'nonComparableTypes',
           data: {
-            typesLeft: 'null | undefined',
+            typesLeft: 'undefined',
             typesRight: 'number',
           },
         },
