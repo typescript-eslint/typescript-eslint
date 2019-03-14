@@ -560,10 +560,11 @@ function getOverloadInfo(node: OverloadNode): string {
       return 'constructor';
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
       return '()';
-    default:
+    default: {
       const { key } = node as MethodDefinition;
 
       return isIdentifier(key) ? key.name : (key as TSESTree.Literal).raw;
+    }
   }
 }
 
