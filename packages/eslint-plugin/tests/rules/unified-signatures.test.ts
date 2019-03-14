@@ -481,5 +481,27 @@ interface Foo {
         },
       ],
     },
+    {
+      // Works with new constructor
+      code: `
+interface Foo {
+    new(x: string): Foo;
+    new(x: number): Foo;
+}
+`,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'string',
+            type2: 'number',
+          },
+          line: 4,
+          column: 9,
+        },
+      ],
+    },
   ],
 });

@@ -543,9 +543,6 @@ export default util.createRule({
 
 function getOverloadKey(node: OverloadNode): string | undefined {
   const info = getOverloadInfo(node);
-  if (info === undefined) {
-    return undefined;
-  }
 
   return (
     ((node as MethodDefinition).computed ? '0' : '1') +
