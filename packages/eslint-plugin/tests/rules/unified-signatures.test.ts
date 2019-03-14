@@ -503,5 +503,93 @@ interface Foo {
         },
       ],
     },
+    {
+      // Works with new computed properties
+      code: `
+enum Enum {
+    Func = "function",
+}
+
+interface IFoo {
+    [Enum.Func](x: string): void;
+    [Enum.Func](x: number): void;
+}
+`,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'string',
+            type2: 'number',
+          },
+          line: 8,
+          column: 17,
+        },
+      ],
+    },
+    {
+      // Works with parameter properties. Note that this is invalid TypeScript syntax.
+      code: `
+class Foo {
+    constructor(readonly x: number);
+    constructor(readonly x: string);
+}
+    `,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
+          line: 4,
+          column: 17,
+        },
+      ],
+    },
+    {
+      // Works with parameter properties. Note that this is invalid TypeScript syntax.
+      code: `
+class Foo {
+    constructor(readonly x: number);
+    constructor(readonly x: number, readonly y: string);
+}
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 4,
+          column: 37,
+        },
+      ],
+    },
+    {
+      // Works with parameter properties. Note that this is invalid TypeScript syntax.
+      code: `
+class Foo {
+    constructor(readonly x: number);
+    constructor(readonly x: number, readonly y?: string, readonly z?: string);
+}
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 4,
+          column: 58,
+        },
+      ],
+    },
   ],
 });

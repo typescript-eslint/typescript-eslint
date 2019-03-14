@@ -90,12 +90,12 @@ export default util.createRule({
             const { p0, p1 } = unify;
             const lineOfOtherOverload = only2 ? undefined : p0.loc.start.line;
 
-            const typeAnnotation0 = !isTSParameterProperty(p0)
-              ? p0.typeAnnotation
-              : undefined;
-            const typeAnnotation1 = !isTSParameterProperty(p1)
-              ? p1.typeAnnotation
-              : undefined;
+            const typeAnnotation0 = isTSParameterProperty(p0)
+              ? p0.parameter.typeAnnotation
+              : p0.typeAnnotation;
+            const typeAnnotation1 = isTSParameterProperty(p1)
+              ? p1.parameter.typeAnnotation
+              : p1.typeAnnotation;
 
             context.report({
               loc: p1.loc,
@@ -274,12 +274,12 @@ export default util.createRule({
       for (let i = 0; i < minLength; i++) {
         const sig1i = sig1[i];
         const sig2i = sig2[i];
-        const typeAnnotation1 = !isTSParameterProperty(sig1i)
-          ? sig1i.typeAnnotation
-          : undefined;
-        const typeAnnotation2 = !isTSParameterProperty(sig2i)
-          ? sig2i.typeAnnotation
-          : undefined;
+        const typeAnnotation1 = isTSParameterProperty(sig1i)
+          ? sig1i.parameter.typeAnnotation
+          : sig1i.typeAnnotation;
+        const typeAnnotation2 = isTSParameterProperty(sig2i)
+          ? sig2i.parameter.typeAnnotation
+          : sig2i.typeAnnotation;
 
         if (!typesAreEqual(typeAnnotation1, typeAnnotation2)) {
           return undefined;
@@ -320,10 +320,12 @@ export default util.createRule({
       sig: SignatureDefinition,
       isTypeParameter: IsTypeParameter,
     ): boolean {
-      return sig.params.some(
-        (p: TSESTree.Parameter) =>
-          !isTSParameterProperty(p) &&
-          typeContainsTypeParameter(p.typeAnnotation),
+      return sig.params.some((p: TSESTree.Parameter) =>
+        typeContainsTypeParameter(
+          isTSParameterProperty(p)
+            ? p.parameter.typeAnnotation
+            : p.typeAnnotation,
+        ),
       );
 
       function typeContainsTypeParameter(
@@ -360,12 +362,12 @@ export default util.createRule({
       a: TSESTree.Parameter,
       b: TSESTree.Parameter,
     ): boolean {
-      const typeAnnotationA = !isTSParameterProperty(a)
-        ? a.typeAnnotation
-        : undefined;
-      const typeAnnotationB = !isTSParameterProperty(b)
-        ? b.typeAnnotation
-        : undefined;
+      const typeAnnotationA = isTSParameterProperty(a)
+        ? a.parameter.typeAnnotation
+        : a.typeAnnotation;
+      const typeAnnotationB = isTSParameterProperty(b)
+        ? b.parameter.typeAnnotation
+        : b.typeAnnotation;
 
       return (
         parametersHaveEqualSigils(a, b) &&
@@ -375,7 +377,9 @@ export default util.createRule({
 
     /** True for optional/rest parameters. */
     function parameterMayBeMissing(p: TSESTree.Parameter): boolean | undefined {
-      const optional = !isTSParameterProperty(p) ? p.optional : undefined;
+      const optional = isTSParameterProperty(p)
+        ? p.parameter.optional
+        : p.optional;
 
       return p.type === AST_NODE_TYPES.RestElement || optional;
     }
@@ -385,8 +389,12 @@ export default util.createRule({
       a: TSESTree.Parameter,
       b: TSESTree.Parameter,
     ): boolean {
-      const optionalA = !isTSParameterProperty(a) ? a.optional : undefined;
-      const optionalB = !isTSParameterProperty(b) ? b.optional : undefined;
+      const optionalA = isTSParameterProperty(a)
+        ? a.parameter.optional
+        : a.optional;
+      const optionalB = isTSParameterProperty(b)
+        ? b.parameter.optional
+        : b.optional;
 
       return (
         (a.type === AST_NODE_TYPES.RestElement) ===
@@ -459,7 +467,7 @@ export default util.createRule({
     }
 
     const scopes: Scope[] = [];
-    let currentScope: Scope | undefined = {
+    let currentScope: Scope = {
       overloads: new Map(),
     };
 
@@ -476,14 +484,12 @@ export default util.createRule({
     }
 
     function checkScope() {
-      const failures = currentScope
-        ? checkOverloads(
-            Array.from(currentScope.overloads.values()),
-            currentScope.typeParameters,
-          )
-        : [];
+      const failures = checkOverloads(
+        Array.from(currentScope.overloads.values()),
+        currentScope.typeParameters,
+      );
       addFailures(failures);
-      currentScope = scopes.pop();
+      currentScope = scopes.pop()!;
     }
 
     function addOverload(signature: OverloadNode, key?: string) {
