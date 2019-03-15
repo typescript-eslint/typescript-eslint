@@ -37,7 +37,6 @@
     "@typescript-eslint/no-var-requires": "error",
     "@typescript-eslint/prefer-interface": "error",
     "@typescript-eslint/prefer-namespace-keyword": "error",
-    "@typescript-eslint/promise-function-async": "error",
     "@typescript-eslint/type-annotation-spacing": "error"
   }
 }

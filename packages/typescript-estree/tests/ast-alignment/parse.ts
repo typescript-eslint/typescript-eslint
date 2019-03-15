@@ -14,6 +14,7 @@ function createError(message: string, line: number, column: number) {
 }
 
 function parseWithBabelParser(text: string, jsx: boolean = true) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const babel = require('@babel/parser');
   const plugins: ParserPlugin[] = [
     'typescript',

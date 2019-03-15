@@ -7,6 +7,7 @@ import RuleModule, {
 import { applyDefault } from './applyDefault';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const version = require('../../package.json').version;
 
 // Utility type to remove a list of properties from an object
