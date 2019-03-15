@@ -118,7 +118,6 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     visitor.visit(node);
 
     if (options.processRightHandNodes) {
-      // @ts-ignore
       visitor.rightHandNodes.forEach(this.visit, this);
     }
   }
@@ -151,7 +150,6 @@ class Referencer extends OriginalReferencer<ScopeManager> {
         const def = defs[i];
         if (
           def.type === 'FunctionName' &&
-          // @ts-ignore
           def.node.type === 'TSDeclareFunction'
         ) {
           defs.splice(i, 1);
