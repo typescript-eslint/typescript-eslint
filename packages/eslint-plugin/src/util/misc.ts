@@ -77,7 +77,9 @@ export function getNameFromClassMember(
     return getNameFromPropertyName(methodDefinition.key);
   }
 
-  return sourceCode.text.slice(...methodDefinition.key.range);
+  return sourceCode.text.slice(
+    ...(methodDefinition.key as TSESTree.Expression).range,
+  );
 }
 
 /**

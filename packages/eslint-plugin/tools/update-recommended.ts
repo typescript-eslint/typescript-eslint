@@ -3,6 +3,7 @@
 import path from 'path';
 import fs from 'fs';
 import requireIndex from 'requireindex';
+import RuleModule from 'ts-eslint';
 
 const bannedRecommendedRules = new Set([
   'camelcase',
@@ -10,7 +11,7 @@ const bannedRecommendedRules = new Set([
   'no-array-constructor',
   'no-unused-vars',
 ]);
-const MAX_RULE_NAME_LENGTH = 32 + 'typescript/'.length;
+const MAX_RULE_NAME_LENGTH = 40 + 'typescript/'.length;
 
 function padEnd(str: string, length: number): string {
   while (str.length < length) {
@@ -24,29 +25,28 @@ function padEnd(str: string, length: number): string {
  */
 function generate(): void {
   // replace this with Object.entries when node > 8
-  const allRules = requireIndex(path.resolve(__dirname, '../dist/lib/rules'));
+  const allRules: Record<
+    string,
+    { default: RuleModule<any, any> }
+  > = requireIndex(path.resolve(__dirname, '../dist/rules'));
 
   const rules = Object.keys(allRules)
-    .filter(key => !!allRules[key].meta.docs.recommended)
-    .reduce<Record<string, string>>((config, key) => {
+    .map(key => ({ ...allRules[key].default, name: key }))
+    .filter(rule => {
+      return !!rule.meta.docs.recommended;
+    })
+    .reduce<Record<string, string>>((config, rule) => {
       // having this here is just for output niceness (the keys will be ordered)
-      if (bannedRecommendedRules.has(key)) {
-        console.log(padEnd(key, MAX_RULE_NAME_LENGTH), '= off');
-        config[key] = 'off';
+      if (bannedRecommendedRules.has(rule.name)) {
+        console.log(padEnd(rule.name, MAX_RULE_NAME_LENGTH), '= off');
+        config[rule.name] = 'off';
       }
 
-      const ruleName = `@typescript-eslint/${key}`;
-      const setting = allRules[key].meta.docs.recommended;
+      const ruleName = `@typescript-eslint/${rule.name}`;
+      const setting = rule.meta.docs.recommended as string;
 
-      if (!['error', 'warn'].includes(setting)) {
-        console.log(`ERR! Invalid level for rule ${key}: "${setting}"`);
-        // Don't want to throw an error since ^ explains what happened.
-        // eslint-disable-next-line no-process-exit
-        process.exit(1);
-      }
-
-      console.log(padEnd(ruleName, MAX_RULE_NAME_LENGTH), '=', setting);
       config[ruleName] = setting;
+      console.log(padEnd(ruleName, MAX_RULE_NAME_LENGTH), '=', setting);
 
       return config;
     }, {});
