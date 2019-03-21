@@ -28,6 +28,8 @@ const knownWatchProgramMap = new Map<
  */
 const watchCallbackTrackingMap = new Map<string, ts.FileWatcherCallback>();
 
+const parsedFilesSeen = new Set<string>();
+
 /**
  * Holds information about the file currently being linted
  */
@@ -71,7 +73,7 @@ export function calculateProjectParserOptions(
   // Update file version if necessary
   // TODO: only update when necessary, currently marks as changed on every lint
   const watchCallback = watchCallbackTrackingMap.get(filePath);
-  if (typeof watchCallback !== 'undefined') {
+  if (parsedFilesSeen.has(filePath) && typeof watchCallback !== 'undefined') {
     watchCallback(filePath, ts.FileWatcherEventKind.Changed);
   }
 
@@ -174,6 +176,7 @@ export function calculateProjectParserOptions(
     results.push(program);
   }
 
+  parsedFilesSeen.add(filePath);
   return results;
 }
 
