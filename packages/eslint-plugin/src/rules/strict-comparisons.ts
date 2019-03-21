@@ -132,26 +132,26 @@ export default util.createRule<Options, MessageIds>({
 
       if (overlappingTypes.length > 0) {
         return getStrictestKind(overlappingTypes);
-      } else {
-        // In case one of the types is "any", get the strictest type of the other array
-        if (arrayContainsKind(typesLeft, [TypeKind.Any])) {
-          return getStrictestKind(typesRight);
-        }
-        if (arrayContainsKind(typesRight, [TypeKind.Any])) {
-          return getStrictestKind(typesLeft);
-        }
-
-        // In case one array contains Null or Undefined and the other an Object, return Object
-        if (
-          (arrayContainsKind(typesLeft, [TypeKind.Null, TypeKind.Undefined]) &&
-            arrayContainsKind(typesRight, [TypeKind.Object])) ||
-          (arrayContainsKind(typesRight, [TypeKind.Null, TypeKind.Undefined]) &&
-            arrayContainsKind(typesLeft, [TypeKind.Object]))
-        ) {
-          return TypeKind.Object;
-        }
-        return undefined;
       }
+
+      // In case one of the types is "any", get the strictest type of the other array
+      if (arrayContainsKind(typesLeft, TypeKind.Any)) {
+        return getStrictestKind(typesRight);
+      }
+      if (arrayContainsKind(typesRight, TypeKind.Any)) {
+        return getStrictestKind(typesLeft);
+      }
+
+      // In case one array contains Null or Undefined and the other an Object, return Object
+      if (
+        (arrayContainsKind(typesLeft, TypeKind.Null, TypeKind.Undefined) &&
+          arrayContainsKind(typesRight, TypeKind.Object)) ||
+        (arrayContainsKind(typesRight, TypeKind.Null, TypeKind.Undefined) &&
+          arrayContainsKind(typesLeft, TypeKind.Object))
+      ) {
+        return TypeKind.Object;
+      }
+      return undefined;
     }
 
     /**
@@ -161,7 +161,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function arrayContainsKind(
       types: TypeKind[],
-      typeToCheck: TypeKind[],
+      ...typeToCheck: TypeKind[]
     ): boolean {
       return types.some(type => typeToCheck.includes(type));
     }
@@ -219,13 +219,13 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      BinaryExpression(node: TSESTree.BinaryExpression) {
+      BinaryExpression(node) {
         if (isComparisonOperator(node.operator)) {
           const leftType = getNodeType(node.left);
           const rightType = getNodeType(node.right);
 
-          const leftKinds: TypeKind[] = getKinds(leftType);
-          const rightKinds: TypeKind[] = getKinds(rightType);
+          const leftKinds = getKinds(leftType);
+          const rightKinds = getKinds(rightType);
 
           const operandKind = getStrictestComparableType(leftKinds, rightKinds);
 

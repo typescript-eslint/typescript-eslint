@@ -2,7 +2,7 @@
 
 This rule disallows comparisons between any non-primitive types. It also disables ordering comparisons between strings.
 
-Using \`>\` \`<\` \`>=\` \`<=\` to compare strings is often a mistake, but can be allowed using the `allowStringOrderComparison` option.
+Using `>` `<` `>=` `<=` to compare strings is often a mistake, but can be allowed using the `allowStringOrderComparison` option.
 
 By default, any comparisons between objects are not allowed. Objects are compared by reference, and in many cases this is not what
 the developer wanted. This can be allowed by using the `allowObjectEqualComparison` option.
@@ -39,8 +39,8 @@ This rule aims to enforce typesafe comparisons.
 
 This rule has an object option:
 
-- `"allowObjectEqualComparison": false`, allows \`!=\` \`==\` \`!==\` \`===\` comparison between objects.
-- `"allowStringOrderComparison": false`, allows \`>\` \`<\` \`>=\` \`<=\` comparison between strings.
+- `"allowObjectEqualComparison": false`, allows `!=` `==` `!==` `===` comparison between objects.
+- `"allowStringOrderComparison": false`, allows `>` `<` `>=` `<=` comparison between strings.
 
 ### defaults
 
