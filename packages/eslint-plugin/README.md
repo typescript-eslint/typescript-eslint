@@ -152,5 +152,6 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/promise-function-async`](./docs/rules/promise-function-async.md)                     | Requires any function or method that returns a Promise to be marked async. (`promise-function-async` from TSLint)                                   |                    |          |
 | [`@typescript-eslint/restrict-plus-operands`](./docs/rules/restrict-plus-operands.md)                     | When adding two variables, operands must both be of type number or of type string. (`restrict-plus-operands` from TSLint)                           |                    |          |
 | [`@typescript-eslint/type-annotation-spacing`](./docs/rules/type-annotation-spacing.md)                   | Require consistent spacing around type annotations (`typedef-whitespace` from TSLint)                                                               | :heavy_check_mark: | :wrench: |
+| [`@typescript-eslint/unified-signatures`](./docs/rules/unified-signatures.md)                             | Warns for any two overloads that could be unified into one. (`unified-signatures` from TSLint)     |    |   |
 
 <!-- end rule list -->

@@ -41,6 +41,7 @@ import promiseFunctionAsync from './promise-function-async';
 import requireArraySortCompare from './require-array-sort-compare';
 import restrictPlusOperands from './restrict-plus-operands';
 import typeAnnotationSpacing from './type-annotation-spacing';
+import unifiedSignatures from './unified-signatures';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -86,4 +87,5 @@ export default {
   'require-array-sort-compare': requireArraySortCompare,
   'restrict-plus-operands': restrictPlusOperands,
   'type-annotation-spacing': typeAnnotationSpacing,
+  'unified-signatures': unifiedSignatures,
 };
