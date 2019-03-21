@@ -84,6 +84,20 @@ node.addEventListener('click', function() {});
 const foo = arr.map(i => i * i);
 ```
 
+### allowTypedFunctionExpressions
+
+Examples of additional **correct** code for this rule with `{ allowTypedFunctionExpressions: true }`:
+
+```ts
+type FuncType = () => string;
+
+let arrowFn: FuncType = () => 'test';
+
+let funcExpr: FuncType = function() {
+  return 'test';
+};
+```
+
 ## When Not To Use It
 
 If you don't wish to prevent calling code from using function return values in unexpected ways, then
