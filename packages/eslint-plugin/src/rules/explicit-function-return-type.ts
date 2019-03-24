@@ -4,6 +4,7 @@ import * as util from '../util';
 type Options = [
   {
     allowExpressions?: boolean;
+    allowTypedFunctionExpressions?: boolean;
   }
 ];
 type MessageIds = 'missingReturnType';
@@ -28,6 +29,9 @@ export default util.createRule<Options, MessageIds>({
           allowExpressions: {
             type: 'boolean',
           },
+          allowTypedFunctionExpressions: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -36,27 +40,41 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowExpressions: true,
+      allowTypedFunctionExpressions: false,
     },
   ],
   create(context, [options]) {
     /**
-     * Checks if the parent of a function expression is a constructor.
-     * @param parent The parent of a function expression node
+     * Checks if a node is a constructor.
+     * @param node The node to check
      */
-    function isConstructor(parent: TSESTree.Node): boolean {
+    function isConstructor(node: TSESTree.Node): boolean {
       return (
-        parent.type === AST_NODE_TYPES.MethodDefinition &&
-        parent.kind === 'constructor'
+        node.type === AST_NODE_TYPES.MethodDefinition &&
+        node.kind === 'constructor'
       );
     }
 
     /**
-     * Checks if the parent of a function expression is a setter.
-     * @param parent The parent of a function expression node
+     * Checks if a node is a setter.
+     * @param parent The node to check
      */
-    function isSetter(parent: TSESTree.Node): boolean {
+    function isSetter(node: TSESTree.Node): boolean {
       return (
-        parent.type === AST_NODE_TYPES.MethodDefinition && parent.kind === 'set'
+        node.type === AST_NODE_TYPES.MethodDefinition && node.kind === 'set'
+      );
+    }
+
+    /**
+     * Checks if a node is a variable declarator with a type annotation.
+     * @param node The node to check
+     */
+    function isVariableDeclaratorWithTypeAnnotation(
+      node: TSESTree.Node,
+    ): boolean {
+      return (
+        node.type === AST_NODE_TYPES.VariableDeclarator &&
+        !!node.id.typeAnnotation
       );
     }
 
@@ -99,6 +117,14 @@ export default util.createRule<Options, MessageIds>({
         node.parent &&
         node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
         node.parent.type !== AST_NODE_TYPES.MethodDefinition
+      ) {
+        return;
+      }
+
+      if (
+        options.allowTypedFunctionExpressions &&
+        node.parent &&
+        isVariableDeclaratorWithTypeAnnotation(node.parent)
       ) {
         return;
       }
