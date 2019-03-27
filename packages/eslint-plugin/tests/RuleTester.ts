@@ -1,5 +1,5 @@
 import { ParserOptions } from '@typescript-eslint/parser';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/util';
 import { RuleTester as ESLintRuleTester } from 'eslint';
 import * as path from 'path';
 import RuleModule from 'ts-eslint';

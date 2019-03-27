@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES, TSESTree, TSNode } from '@typescript-eslint/util';
 import ts from 'typescript';
 import {
   canContainDirective,
@@ -18,8 +19,6 @@ import {
   isOptional,
   unescapeStringLiteralText,
 } from './node-utils';
-import { AST_NODE_TYPES, TSESTree } from './ts-estree';
-import { TSNode } from './ts-nodes';
 
 const SyntaxKind = ts.SyntaxKind;
 

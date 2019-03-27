@@ -6,7 +6,7 @@
 // }
 
 declare module 'eslint/lib/rules/arrow-parens' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -28,7 +28,7 @@ declare module 'eslint/lib/rules/arrow-parens' {
 }
 
 declare module 'eslint/lib/rules/camelcase' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -48,7 +48,7 @@ declare module 'eslint/lib/rules/camelcase' {
 }
 
 declare module 'eslint/lib/rules/indent' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   type Listener = (node: TSESTree.Node) => void;
@@ -146,7 +146,7 @@ declare module 'eslint/lib/rules/indent' {
 }
 
 declare module 'eslint/lib/rules/no-dupe-args' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -161,7 +161,7 @@ declare module 'eslint/lib/rules/no-dupe-args' {
 }
 
 declare module 'eslint/lib/rules/no-implicit-globals' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -175,7 +175,7 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
 }
 
 declare module 'eslint/lib/rules/no-redeclare' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -193,7 +193,7 @@ declare module 'eslint/lib/rules/no-redeclare' {
 }
 
 declare module 'eslint/lib/rules/no-restricted-globals' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -212,7 +212,7 @@ declare module 'eslint/lib/rules/no-restricted-globals' {
 }
 
 declare module 'eslint/lib/rules/no-shadow' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -232,7 +232,7 @@ declare module 'eslint/lib/rules/no-shadow' {
 }
 
 declare module 'eslint/lib/rules/no-undef' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -250,7 +250,7 @@ declare module 'eslint/lib/rules/no-undef' {
 }
 
 declare module 'eslint/lib/rules/no-unused-vars' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -275,7 +275,7 @@ declare module 'eslint/lib/rules/no-unused-vars' {
 }
 
 declare module 'eslint/lib/rules/no-use-before-define' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -295,7 +295,7 @@ declare module 'eslint/lib/rules/no-use-before-define' {
 }
 
 declare module 'eslint/lib/rules/strict' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<
@@ -318,7 +318,7 @@ declare module 'eslint/lib/rules/strict' {
 }
 
 declare module 'eslint/lib/rules/no-useless-constructor' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import RuleModule from 'ts-eslint';
 
   const rule: RuleModule<

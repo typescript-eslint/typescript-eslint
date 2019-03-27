@@ -1,6 +1,6 @@
+import { TSESTree } from '@typescript-eslint/util';
 import ts from 'typescript';
 import { getLocFor, getNodeContainer } from './node-utils';
-import { TSESTree } from './ts-estree';
 
 /**
  * Converts a TypeScript comment to an Esprima comment.

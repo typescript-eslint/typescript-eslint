@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/util';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
 import { parse, parseForESLint, Syntax } from '../../src/parser';
 import * as scope from '../../src/analyze-scope';
@@ -60,8 +61,8 @@ describe('parser', () => {
     });
   });
 
-  it('Syntax should contain a frozen object of typescriptESTree.AST_NODE_TYPES', () => {
-    expect(Syntax).toEqual(typescriptESTree.AST_NODE_TYPES);
+  it('Syntax should contain a frozen object of AST_NODE_TYPES', () => {
+    expect(Syntax).toEqual(AST_NODE_TYPES);
     expect(
       () => ((Syntax as any).ArrayExpression = 'foo'),
     ).toThrowErrorMatchingInlineSnapshot(

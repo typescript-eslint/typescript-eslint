@@ -1,10 +1,9 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
-
+import { TSESTree } from '@typescript-eslint/util';
 import EslintScopeManager, {
   ScopeManagerOptions,
 } from 'eslint-scope/lib/scope-manager';
-import { EmptyFunctionScope, EnumScope } from './scopes';
 import { Scope } from 'eslint-scope/lib/scope';
+import { EmptyFunctionScope, EnumScope } from './scopes';
 
 /**
  * based on eslint-scope

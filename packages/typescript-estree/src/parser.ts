@@ -1,15 +1,15 @@
-import {
-  calculateProjectParserOptions,
-  createProgram,
-} from './tsconfig-parser';
+import { TSESTree } from '@typescript-eslint/util';
 import semver from 'semver';
 import ts from 'typescript';
 import convert from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
-import { TSESTree } from './ts-estree';
 import { Extra, ParserOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
+import {
+  calculateProjectParserOptions,
+  createProgram,
+} from './tsconfig-parser';
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
@@ -406,5 +406,4 @@ export function parseAndGenerateServices<
   };
 }
 
-export { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 export { ParserOptions, ParserServices };

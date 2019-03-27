@@ -1,7 +1,7 @@
 import path from 'path';
 import rule from '../../src/rules/no-unnecessary-qualifier';
 import { RuleTester } from '../RuleTester';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/util';
 
 const messageId = 'unnecessaryQualifier';
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');

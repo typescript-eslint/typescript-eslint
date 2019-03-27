@@ -1,6 +1,6 @@
+import { TSESTree } from '@typescript-eslint/util';
 import { Scope } from 'eslint-scope/lib/scope';
 import { ScopeManager } from './scope-manager';
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 /** The scope class for enum. */
 export class EnumScope extends Scope {

@@ -4,7 +4,7 @@
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
 
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/util';
 import baseRule from 'eslint/lib/rules/indent';
 import * as util from '../util';
 

@@ -1,6 +1,10 @@
-import ts from 'typescript';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  TSESTree,
+} from '@typescript-eslint/util';
 import unescape from 'lodash.unescape';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+import ts from 'typescript';
 
 const SyntaxKind = ts.SyntaxKind;
 

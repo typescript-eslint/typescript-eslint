@@ -8,7 +8,7 @@ The def is wrapped up in a fake module so that it can be used in eslint-rules.d.
 */
 
 declare module 'ts-eslint' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/util';
   import { ParserServices } from '@typescript-eslint/parser';
   import { AST, Linter, Rule } from 'eslint';
   import { JSONSchema4 } from 'json-schema';

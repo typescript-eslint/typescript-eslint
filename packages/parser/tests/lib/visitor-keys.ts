@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/util';
 import { visitorKeys } from '../../src/visitor-keys';
 
 //------------------------------------------------------------------------------

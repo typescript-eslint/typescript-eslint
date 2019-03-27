@@ -1,5 +1,5 @@
 import * as util from '../util';
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/util';
 
 export default util.createRule({
   name: 'class-name-casing',

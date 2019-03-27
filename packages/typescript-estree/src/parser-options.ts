@@ -1,17 +1,16 @@
+import { TSESTree, TSNode } from '@typescript-eslint/util';
 import { Program } from 'typescript';
-import { Token, Comment, Node } from './ts-estree/ts-estree';
-import { TSNode } from './ts-nodes';
 
 export interface Extra {
   errorOnUnknownASTType: boolean;
   errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
   useJSXTextNode: boolean;
-  tokens: null | Token[];
+  tokens: null | TSESTree.Token[];
   comment: boolean;
   code: string;
   range: boolean;
   loc: boolean;
-  comments: Comment[];
+  comments: TSESTree.Comment[];
   strict: boolean;
   jsx: boolean;
   log: Function;
@@ -43,6 +42,6 @@ export interface ParserWeakMap<TKey, TValueBase> {
 
 export interface ParserServices {
   program: Program | undefined;
-  esTreeNodeToTSNodeMap: ParserWeakMap<Node, TSNode> | undefined;
-  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, Node> | undefined;
+  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, TSNode> | undefined;
+  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node> | undefined;
 }

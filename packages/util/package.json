@@ -1,19 +1,17 @@
 {
-  "name": "@typescript-eslint/eslint-plugin",
+  "name": "@typescript-eslint/util",
   "version": "1.4.2",
-  "description": "TypeScript plugin for ESLint",
+  "description": "Utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
-    "eslintplugin",
-    "eslint-plugin",
-    "typescript"
+    "typescript",
+    "estree"
   ],
   "engines": {
     "node": "^6.14.0 || ^8.10.0 || >=9.10.0"
   },
   "files": [
     "dist",
-    "docs",
     "package.json",
     "README.md",
     "LICENSE"
@@ -24,27 +22,19 @@
   },
   "license": "MIT",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "docs": "eslint-docs",
-    "docs:check": "eslint-docs check",
     "test": "jest --coverage",
-    "recommended:update": "ts-node tools/update-recommended.ts",
     "prebuild": "npm run clean",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "1.4.2",
-    "@typescript-eslint/util": "1.4.2",
-    "requireindex": "^1.2.0",
-    "tsutils": "^3.7.0"
   },
   "devDependencies": {
-    "eslint-docs": "^0.2.6"
   },
   "peerDependencies": {
-    "eslint": "^5.0.0",
     "typescript": "*"
   }
 }

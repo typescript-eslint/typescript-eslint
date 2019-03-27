@@ -2,7 +2,7 @@
  * @fileoverview Really small utility functions that didn't deserve their own files
  */
 
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/util';
 import RuleModule from 'ts-eslint';
 import { SourceCode } from 'ts-eslint';
 

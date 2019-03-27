@@ -1,4 +1,4 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/util';
 import { ReportFixFunction } from 'ts-eslint';
 import * as util from '../util';
 

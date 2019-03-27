@@ -37,7 +37,8 @@
   },
   "dependencies": {
     "lodash.unescape": "4.0.1",
-    "semver": "5.5.0"
+    "semver": "5.5.0",
+    "@typescript-eslint/util": "1.4.2"
   },
   "peerDependencies": {
     "typescript": "*"
