@@ -4,7 +4,9 @@ It can be helpful to enforce naming conventions for `private` (and sometimes `pr
 
 ## Rule Details
 
-This rule allows you to enforce conventions for class property names by their visibility. By default, it enforces nothing.
+This rule allows you to enforce conventions for class property and method names by their visibility. By default, it enforces nothing.
+
+> Note: constructors are explicitly ignored regardless of the the regular expression options provided
 
 ## Options
 
