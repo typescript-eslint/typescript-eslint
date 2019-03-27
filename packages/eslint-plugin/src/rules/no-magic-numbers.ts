@@ -11,15 +11,13 @@ import { JSONSchema4 } from 'json-schema';
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-// Original schema properties from the base rule
-const { properties } = (baseRule.meta.schema as JSONSchema4[])[0];
-
 // Extend base schema with additional property to ignore TS numeric literal types
-if (properties) {
-  properties.ignoreNumericLiteralTypes = {
+const properties = {
+  ...(baseRule.meta.schema as JSONSchema4[])[0].properties,
+  ignoreNumericLiteralTypes: {
     type: 'boolean',
-  };
-}
+  },
+};
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-magic-numbers',
@@ -30,7 +28,7 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       recommended: false,
     },
-    schema: baseRule.meta.schema,
+    schema: { ...baseRule.meta.schema, ...properties },
     messages: baseRule.meta.messages,
   },
   defaultOptions: [
@@ -62,7 +60,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isGrandparentTSTypeAliasDeclaration(node: TSESTree.Node): boolean {
       return node.parent && node.parent.parent
-        ? AST_NODE_TYPES.TSTypeAliasDeclaration === node.parent.parent.type
+        ? node.parent.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration
         : false;
     }
 
@@ -76,7 +74,7 @@ export default util.createRule<Options, MessageIds>({
       if (
         node.parent &&
         node.parent.parent &&
-        AST_NODE_TYPES.TSUnionType === node.parent.parent.type
+        node.parent.parent.type === AST_NODE_TYPES.TSUnionType
       ) {
         return isGrandparentTSTypeAliasDeclaration(node.parent);
       }
@@ -92,7 +90,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isParentTSLiteralType(node: TSESTree.Node): boolean {
       return node.parent
-        ? AST_NODE_TYPES.TSLiteralType === node.parent.type
+        ? node.parent.type === AST_NODE_TYPES.TSLiteralType
         : false;
     }
 
