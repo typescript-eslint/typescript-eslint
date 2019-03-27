@@ -41,6 +41,7 @@ class Test {
   method(): void {
     return;
   }
+  arrow = (): string => 'arrow';
 }
             `,
     },
@@ -171,6 +172,7 @@ class Test {
   method() {
     return;
   }
+  arrow = () => 'arrow';
 }
             `,
       errors: [
@@ -183,6 +185,11 @@ class Test {
           messageId: 'missingReturnType',
           line: 8,
           column: 9,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 11,
+          column: 11,
         },
       ],
     },

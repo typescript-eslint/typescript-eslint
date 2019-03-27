@@ -114,6 +114,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       if (
         options.allowExpressions &&
+        node.type !== AST_NODE_TYPES.ArrowFunctionExpression &&
         node.parent &&
         node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
         node.parent.type !== AST_NODE_TYPES.MethodDefinition
