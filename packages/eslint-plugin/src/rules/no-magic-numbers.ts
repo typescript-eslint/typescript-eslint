@@ -11,13 +11,7 @@ import { JSONSchema4 } from 'json-schema';
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-// Extend base schema with additional property to ignore TS numeric literal types
-const properties = {
-  ...(baseRule.meta.schema as JSONSchema4[])[0].properties,
-  ignoreNumericLiteralTypes: {
-    type: 'boolean',
-  },
-};
+const baseRuleSchema = (baseRule.meta.schema as JSONSchema4[])[0];
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-magic-numbers',
@@ -28,7 +22,16 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       recommended: false,
     },
-    schema: { ...baseRule.meta.schema, ...properties },
+    // Extend base schema with additional property to ignore TS numeric literal types
+    schema: [{
+      ...baseRuleSchema,
+      properties: {
+        ...baseRuleSchema.properties,
+        ignoreNumericLiteralTypes: {
+          type: 'boolean',
+        },
+      },
+    }],
     messages: baseRule.meta.messages,
   },
   defaultOptions: [
