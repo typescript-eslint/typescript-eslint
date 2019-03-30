@@ -54,6 +54,7 @@ function test() {
             `,
     },
     {
+      filename: 'test.ts',
       code: `fn(() => {});`,
       options: [
         {
@@ -62,6 +63,7 @@ function test() {
       ],
     },
     {
+      filename: 'test.ts',
       code: `fn(function() {});`,
       options: [
         {
@@ -70,6 +72,7 @@ function test() {
       ],
     },
     {
+      filename: 'test.ts',
       code: `[function() {}, () => {}]`,
       options: [
         {
@@ -78,6 +81,7 @@ function test() {
       ],
     },
     {
+      filename: 'test.ts',
       code: `(function() {});`,
       options: [
         {
@@ -86,6 +90,7 @@ function test() {
       ],
     },
     {
+      filename: 'test.ts',
       code: `(() => {})();`,
       options: [
         {
@@ -190,6 +195,20 @@ class Test {
           messageId: 'missingReturnType',
           line: 11,
           column: 11,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `function test() {
+        return;
+      }`,
+      options: [{ allowExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          column: 1,
         },
       ],
     },
