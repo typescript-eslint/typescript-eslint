@@ -65,7 +65,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
     'params',
     'returnType',
   ],
-  TSEnumDeclaration: ['members'],
+  TSEnumDeclaration: ['id', 'members'],
   TSEnumMember: ['id', 'initializer'],
   TSExportAssignment: ['expression'],
   TSExportKeyword: [],
