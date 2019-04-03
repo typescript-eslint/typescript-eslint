@@ -1,6 +1,6 @@
 # Disallows awaiting a value that is not a Promise (await-thenable)
 
-This rule disallows awaiting a value that is not a "Thenable" (commonly, a Promise).
+This rule disallows awaiting a value that is not a "Thenable" (an object which has `then` method, such as a Promise).
 While it is valid JavaScript to await a non-`Promise`-like value (it will resolve immediately), this pattern is often a programmer error, such as forgetting to add parenthesis to call a function that returns a Promise.
 
 ## Rule Details
@@ -19,7 +19,7 @@ Examples of **correct** code for this rule:
 ```ts
 await Promise.resolve('value');
 
-const createValue = (async () => 'value');
+const createValue = async () => 'value';
 await createValue();
 ```
 

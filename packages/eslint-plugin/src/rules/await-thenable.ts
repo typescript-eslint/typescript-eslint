@@ -13,7 +13,7 @@ export default util.createRule({
       tslintName: 'await-thenable',
     },
     messages: {
-      await: 'Invalid `await` of a non-Promise (non-"Thenable") value.',
+      await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
     },
     schema: [],
     type: 'problem',
