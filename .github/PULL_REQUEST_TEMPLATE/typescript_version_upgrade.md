@@ -14,5 +14,5 @@ TypeScript version added by this PR: `{{ INSERT_TYPESCRIPT_VERSION }}`
 - [ ] I have updated the range value in `packages/typescript-estree/src/parser.ts`
 - [ ] I have run the existing tests to make sure they still pass, or made any required updates
 - [ ] I have added new tests for the features introduced in this newer version of TypeScript
-  - New features tests added:
-    -
+- New feature tests added:
+  - ...
