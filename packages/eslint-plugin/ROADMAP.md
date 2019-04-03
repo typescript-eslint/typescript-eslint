@@ -40,7 +40,7 @@
 
 | TSLint rule                          |     | ESLint rule                                                           |
 | ------------------------------------ | :-: | --------------------------------------------------------------------- |
-| [`await-promise`]                    | ✅  | [`await-promise`][await-promise]                                      |
+| [`await-promise`]                    | ✅  | [`@typescript-eslint/await-thenable`]                                      |
 | [`ban-comma-operator`]               | 🌟  | [`no-sequences`][no-sequences]                                        |
 | [`ban`]                              | 🌟  | [`no-restricted-properties`][no-restricted-properties]                |
 | [`curly`]                            | 🌟  | [`curly`][curly]                                                      |
