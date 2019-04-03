@@ -19,7 +19,7 @@ Examples of **correct** code for this rule:
 ```ts
 await Promise.resolve('value');
 
-const createValue = (async() = 'value');
+const createValue = (async () => 'value');
 await createValue();
 ```
 
