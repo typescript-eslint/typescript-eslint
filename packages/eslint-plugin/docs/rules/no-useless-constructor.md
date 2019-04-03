@@ -23,7 +23,7 @@ This rule flags class constructors that can be safely removed without changing h
 Examples of **incorrect** code for this rule:
 
 ```js
-/*eslint no-useless-constructor: "error"*/
+/*eslint @typescript-eslint/no-useless-constructor: "error"*/
 
 class A {
   constructor() {}
@@ -39,7 +39,7 @@ class A extends B {
 Examples of **correct** code for this rule:
 
 ```js
-/*eslint no-useless-constructor: "error"*/
+/*eslint @typescript-eslint/no-useless-constructor: "error"*/
 
 class A {}
 

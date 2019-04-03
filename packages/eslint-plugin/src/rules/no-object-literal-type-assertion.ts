@@ -9,7 +9,7 @@ type Options = [
 type MessageIds = 'unexpectedTypeAssertion';
 
 export default util.createRule<Options, MessageIds>({
-  name: 'no-object-literal-type-assertions',
+  name: 'no-object-literal-type-assertion',
   meta: {
     type: 'problem',
     docs: {
