@@ -1,6 +1,6 @@
 ---
-name: 'Default'
-about: Default Pull Request Template
+name: 'Standard'
+about: Standard Pull Request Template
 title: ''
 labels: ''
 assignees: ''

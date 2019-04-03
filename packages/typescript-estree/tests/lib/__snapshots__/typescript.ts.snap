@@ -64533,6 +64533,7 @@ Object {
                   "line": 6,
                 },
               },
+              "operator": "readonly",
               "range": Array [
                 126,
                 143,
@@ -65857,6 +65858,7 @@ Object {
                   "line": 1,
                 },
               },
+              "operator": "readonly",
               "range": Array [
                 19,
                 44,
