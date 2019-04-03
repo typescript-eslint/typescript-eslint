@@ -30,4 +30,4 @@ function f(x?: ...number[]): void;
 
 ## Related to
 
-- TSLint: ['unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)
+- TSLint: [`unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)
