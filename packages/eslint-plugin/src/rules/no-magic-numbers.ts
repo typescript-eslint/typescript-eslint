@@ -23,15 +23,17 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
     },
     // Extend base schema with additional property to ignore TS numeric literal types
-    schema: [{
-      ...baseRuleSchema,
-      properties: {
-        ...baseRuleSchema.properties,
-        ignoreNumericLiteralTypes: {
-          type: 'boolean',
+    schema: [
+      {
+        ...baseRuleSchema,
+        properties: {
+          ...baseRuleSchema.properties,
+          ignoreNumericLiteralTypes: {
+            type: 'boolean',
+          },
         },
       },
-    }],
+    ],
     messages: baseRule.meta.messages,
   },
   defaultOptions: [
