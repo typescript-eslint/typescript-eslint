@@ -62,9 +62,11 @@ class Test {
 The rule accepts an options object with the following properties:
 
 - `allowExpressions` if true, only functions which are part of a declaration will be checked
+- `allowTypedFunctionExpressions` if true, type annotations are also allowed on the variable
+  of a function expression rather than on the function directly.
 
-By default, `allowExpressions: false` is used, meaning all declarations and
-expressions _must_ have a return type.
+By default, `allowExpressions: false` and `allowTypedFunctionExpressions: false` are used,
+meaning all declarations and expressions _must_ have a return type.
 
 ### allowExpressions
 
@@ -82,6 +84,20 @@ node.addEventListener('click', () => {});
 node.addEventListener('click', function() {});
 
 const foo = arr.map(i => i * i);
+```
+
+### allowTypedFunctionExpressions
+
+Examples of additional **correct** code for this rule with `{ allowTypedFunctionExpressions: true }`:
+
+```ts
+type FuncType = () => string;
+
+let arrowFn: FuncType = () => 'test';
+
+let funcExpr: FuncType = function() {
+  return 'test';
+};
 ```
 
 ## When Not To Use It
