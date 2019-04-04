@@ -742,6 +742,17 @@ const foo : Foo = {
             `,
       options: [4, { VariableDeclarator: { const: 3 } }],
     },
+    {
+      code: `
+const div: JQuery<HTMLElement> = $('<div>')
+        .addClass('some-class')
+        .appendTo($('body')),
+      button: JQuery<HTMLElement> = $('<button>')
+        .text('Cancel')
+        .appendTo(div);
+      `,
+      options: [2, { VariableDeclarator: { const: 3 } }],
+    },
   ],
   invalid: [
     ...individualNodeTests.invalid,
