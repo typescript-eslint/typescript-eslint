@@ -157,18 +157,18 @@ declare module 'eslint/lib/rules/semi' {
       ]
     | ['always', { omitLastInOneLineBlock?: boolean }?],
     {
-      VariableDeclaration(node: TSESTree.Node): void;
-      ExpressionStatement(node: TSESTree.Node): void;
-      ReturnStatement(node: TSESTree.Node): void;
-      ThrowStatement(node: TSESTree.Node): void;
-      DoWhileStatement(node: TSESTree.Node): void;
-      DebuggerStatement(node: TSESTree.Node): void;
-      BreakStatement(node: TSESTree.Node): void;
-      ContinueStatement(node: TSESTree.Node): void;
-      ImportDeclaration(node: TSESTree.Node): void;
-      ExportAllDeclaration(node: TSESTree.Node): void;
-      ExportNamedDeclaration(node: TSESTree.Node): void;
-      ExportDefaultDeclaration(node: TSESTree.Node): void;
+      VariableDeclaration(node: TSESTree.VariableDeclaration): void;
+      ExpressionStatement(node: TSESTree.ExpressionStatement): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      ThrowStatement(node: TSESTree.ThrowStatement): void;
+      DoWhileStatement(node: TSESTree.DoWhileStatement): void;
+      DebuggerStatement(node: TSESTree.DebuggerStatement): void;
+      BreakStatement(node: TSESTree.BreakStatement): void;
+      ContinueStatement(node: TSESTree.ContinueStatement): void;
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
+      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+      ExportDefaultDeclaration(node: TSESTree.ExportDefaultDeclaration): void;
     }
   >;
   export = rule;

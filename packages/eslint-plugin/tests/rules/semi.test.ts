@@ -4,7 +4,6 @@ import {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -31,7 +30,7 @@ ruleTester.run<MessageIds, Options>('semi', rule, {
   valid: [
     // https://github.com/typescript-eslint/typescript-eslint/issues/366
     { code: 'type Foo = {}', options: ['never'] },
-    { code: 'type Foo = {};' },
+    'type Foo = {};',
     // https://github.com/typescript-eslint/typescript-eslint/issues/409
     {
       code: `
@@ -48,21 +47,19 @@ class PanCamera extends FreeCamera {
 `,
       options: ['never'],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/123
+    'export default interface test {}',
   ],
   invalid: [
     // https://github.com/typescript-eslint/typescript-eslint/issues/366
     {
       code: 'type Foo = {};',
       options: ['never'] as Options,
-      errors: [
-        { ...extraSemicolon, type: AST_NODE_TYPES.TSTypeAliasDeclaration },
-      ],
+      errors: [extraSemicolon],
     },
     {
       code: 'type Foo = {}',
-      errors: [
-        { ...missingError, type: AST_NODE_TYPES.TSTypeAliasDeclaration },
-      ],
+      errors: [missingError],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/409
     {
@@ -71,7 +68,7 @@ class PanCamera extends FreeCamera {
   public invertY: boolean = false
 }
 `,
-      errors: [{ ...missingError, type: AST_NODE_TYPES.ClassProperty }],
+      errors: [missingError],
     },
     {
       code: `
@@ -80,7 +77,7 @@ class PanCamera extends FreeCamera {
 }
 `,
       options: ['never'],
-      errors: [{ ...extraSemicolon, type: AST_NODE_TYPES.ClassProperty }],
+      errors: [extraSemicolon],
     },
   ],
 });

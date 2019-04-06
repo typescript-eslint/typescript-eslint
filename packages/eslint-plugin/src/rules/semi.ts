@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import baseRule from 'eslint/lib/rules/semi';
 import * as util from '../util';
 
@@ -35,10 +35,29 @@ export default util.createRule<Options, MessageIds>({
 
     return Object.assign({}, rules, {
       TSTypeAliasDeclaration(node: TSESTree.TSTypeAliasDeclaration) {
-        return rules.VariableDeclaration(node);
+        return rules.VariableDeclaration({
+          ...node,
+          type: AST_NODE_TYPES.VariableDeclaration,
+          kind: 'const' as 'const',
+          declarations: [],
+        });
       },
       ClassProperty(node: TSESTree.ClassProperty) {
-        return rules.VariableDeclaration(node);
+        return rules.VariableDeclaration({
+          ...node,
+          type: AST_NODE_TYPES.VariableDeclaration,
+          kind: 'const' as 'const',
+          declarations: [],
+        });
+      },
+      ExportDefaultDeclaration(node: TSESTree.ExportDefaultDeclaration) {
+        if (
+          !/(?:Class|Function|TSInterface)Declaration/.test(
+            node.declaration.type,
+          )
+        ) {
+          rules.ExportDefaultDeclaration(node);
+        }
       },
     });
   },
