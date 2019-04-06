@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
-import { Scope, RuleContext } from 'ts-eslint';
+import { Scope } from 'ts-eslint';
 
 export default util.createRule({
   name: 'prefer-for-of',
@@ -51,7 +51,6 @@ export default util.createRule({
       node: TSESTree.Node | null,
       name: string,
     ): TSESTree.Expression | null {
-      let arrayExpression: TSESTree.Expression | null = null;
       if (
         node !== null &&
         node.type === AST_NODE_TYPES.BinaryExpression &&
@@ -60,9 +59,9 @@ export default util.createRule({
         node.right.type === AST_NODE_TYPES.MemberExpression &&
         isMatchingIdentifier(node.right.property, 'length')
       ) {
-        arrayExpression = node.right.object;
+        return node.right.object;
       }
-      return arrayExpression;
+      return null;
     }
 
     function isIncrement(node: TSESTree.Node | null, name: string): boolean {
@@ -108,32 +107,57 @@ export default util.createRule({
       if (!parent) {
         return false;
       }
-      return (
-        // a[i] = 1, a[i] += 1, etc.
-        (parent.type === AST_NODE_TYPES.AssignmentExpression &&
-          parent.left === node) ||
-        // delete a[i]
-        (parent.type === AST_NODE_TYPES.UnaryExpression &&
-          parent.operator === 'delete' &&
-          parent.argument === node) ||
-        // a[i]++, --a[i], etc.
-        (parent.type === AST_NODE_TYPES.UpdateExpression &&
-          parent.argument === node) ||
-        // [a[i]] = [0]
-        parent.type === AST_NODE_TYPES.ArrayPattern ||
-        // [...a[i]] = [0]
-        parent.type === AST_NODE_TYPES.RestElement ||
-        // ({ foo: a[i] }) = { foo: 0 }
-        (parent.type === AST_NODE_TYPES.Property &&
-          parent.parent !== undefined &&
-          parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
-          parent.value === node &&
-          isAssignee(parent.parent))
-      );
+
+      // a[i] = 1, a[i] += 1, etc.
+      if (
+        parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        parent.left === node
+      ) {
+        return true;
+      }
+
+      // delete a[i]
+      if (
+        parent.type === AST_NODE_TYPES.UnaryExpression &&
+        parent.operator === 'delete' &&
+        parent.argument === node
+      ) {
+        return true;
+      }
+
+      // a[i]++, --a[i], etc.
+      if (
+        parent.type === AST_NODE_TYPES.UpdateExpression &&
+        parent.argument === node
+      ) {
+        return true;
+      }
+
+      // [a[i]] = [0]
+      if (parent.type === AST_NODE_TYPES.ArrayPattern) {
+        return true;
+      }
+
+      // [...a[i]] = [0]
+      if (parent.type === AST_NODE_TYPES.RestElement) {
+        return true;
+      }
+
+      // ({ foo: a[i] }) = { foo: 0 }
+      if (
+        parent.type === AST_NODE_TYPES.Property &&
+        parent.parent !== undefined &&
+        parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
+        parent.value === node &&
+        isAssignee(parent.parent)
+      ) {
+        return true;
+      }
+
+      return false;
     }
 
     function isIndexOnlyUsedWithArray(
-      context: RuleContext<'preferForOf', never[]>,
       body: TSESTree.Statement,
       indexVar: Scope.Variable,
       arrayExpression: TSESTree.Expression,
@@ -180,12 +204,7 @@ export default util.createRule({
         const [indexVar] = context.getDeclaredVariables(node.init);
         if (
           isIncrement(node.update, indexName) &&
-          isIndexOnlyUsedWithArray(
-            context,
-            node.body,
-            indexVar,
-            arrayExpression,
-          )
+          isIndexOnlyUsedWithArray(node.body, indexVar, arrayExpression)
         ) {
           context.report({
             node,
