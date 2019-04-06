@@ -254,6 +254,7 @@ export type ClassElement =
 export type DeclarationStatement =
   | ClassDeclaration
   | ClassExpression
+  | ExportDefaultDeclaration
   | ExportAllDeclaration
   | ExportNamedDeclaration
   | FunctionDeclaration
@@ -500,7 +501,7 @@ interface LiteralBase extends BaseNode {
 }
 
 interface MethodDefinitionBase extends BaseNode {
-  key: PropertyName;
+  key: Expression;
   value: FunctionExpression | TSEmptyBodyFunctionExpression;
   computed: boolean;
   static: boolean;
