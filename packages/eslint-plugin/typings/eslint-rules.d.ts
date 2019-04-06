@@ -144,6 +144,35 @@ declare module 'eslint/lib/rules/indent' {
   >;
   export = rule;
 }
+declare module 'eslint/lib/rules/semi' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    never,
+    | []
+    | [
+        'never',
+        { beforeStatementContinuationChars?: 'always' | 'any' | 'never' }?
+      ]
+    | ['always', { omitLastInOneLineBlock?: boolean }?],
+    {
+      VariableDeclaration(node: TSESTree.Node): void;
+      ExpressionStatement(node: TSESTree.Node): void;
+      ReturnStatement(node: TSESTree.Node): void;
+      ThrowStatement(node: TSESTree.Node): void;
+      DoWhileStatement(node: TSESTree.Node): void;
+      DebuggerStatement(node: TSESTree.Node): void;
+      BreakStatement(node: TSESTree.Node): void;
+      ContinueStatement(node: TSESTree.Node): void;
+      ImportDeclaration(node: TSESTree.Node): void;
+      ExportAllDeclaration(node: TSESTree.Node): void;
+      ExportNamedDeclaration(node: TSESTree.Node): void;
+      ExportDefaultDeclaration(node: TSESTree.Node): void;
+    }
+  >;
+  export = rule;
+}
 
 declare module 'eslint/lib/rules/no-dupe-args' {
   import { TSESTree } from '@typescript-eslint/typescript-estree';
