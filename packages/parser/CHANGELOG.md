@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v1.5.0...v1.6.0) (2019-04-03)
+
+### Bug Fixes
+
+- **parser:** Make eslint traverse enum id ([#383](https://github.com/typescript-eslint/typescript-eslint/issues/383)) ([492b737](https://github.com/typescript-eslint/typescript-eslint/commit/492b737))
+
+### Features
+
+- change TypeScript version range to >=3.2.1 <3.5.0 ([#399](https://github.com/typescript-eslint/typescript-eslint/issues/399)) ([a4f95d3](https://github.com/typescript-eslint/typescript-eslint/commit/a4f95d3))
+
 # [1.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v1.4.2...v1.5.0) (2019-03-20)
 
 **Note:** Version bump only for package @typescript-eslint/parser
