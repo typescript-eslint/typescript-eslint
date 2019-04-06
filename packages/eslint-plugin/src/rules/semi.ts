@@ -37,6 +37,9 @@ export default util.createRule<Options, MessageIds>({
       TSTypeAliasDeclaration(node: TSESTree.TSTypeAliasDeclaration) {
         return rules.VariableDeclaration(node);
       },
+      ClassProperty(node: TSESTree.ClassProperty) {
+        return rules.VariableDeclaration(node);
+      },
     });
   },
 });

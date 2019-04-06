@@ -21,12 +21,10 @@ const ruleTester = new RuleTester({
 // the base rule doesn't use a message id...
 const missingError: any = {
   message: 'Missing semicolon.',
-  type: AST_NODE_TYPES.TSTypeAliasDeclaration,
 };
 
 const extraSemicolon: any = {
   message: 'Extra semicolon.',
-  type: AST_NODE_TYPES.TSTypeAliasDeclaration,
 };
 
 ruleTester.run<MessageIds, Options>('semi', rule, {
@@ -34,17 +32,55 @@ ruleTester.run<MessageIds, Options>('semi', rule, {
     // https://github.com/typescript-eslint/typescript-eslint/issues/366
     { code: 'type Foo = {}', options: ['never'] },
     { code: 'type Foo = {};' },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/409
+    {
+      code: `
+class PanCamera extends FreeCamera {
+  public invertY: boolean = false;
+}
+`,
+    },
+    {
+      code: `
+class PanCamera extends FreeCamera {
+  public invertY: boolean = false
+}
+`,
+      options: ['never'],
+    },
   ],
   invalid: [
     // https://github.com/typescript-eslint/typescript-eslint/issues/366
     {
       code: 'type Foo = {};',
       options: ['never'] as Options,
-      errors: [extraSemicolon],
+      errors: [
+        { ...extraSemicolon, type: AST_NODE_TYPES.TSTypeAliasDeclaration },
+      ],
     },
     {
       code: 'type Foo = {}',
-      errors: [missingError],
+      errors: [
+        { ...missingError, type: AST_NODE_TYPES.TSTypeAliasDeclaration },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/409
+    {
+      code: `
+class PanCamera extends FreeCamera {
+  public invertY: boolean = false
+}
+`,
+      errors: [{ ...missingError, type: AST_NODE_TYPES.ClassProperty }],
+    },
+    {
+      code: `
+class PanCamera extends FreeCamera {
+  public invertY: boolean = false;
+}
+`,
+      options: ['never'],
+      errors: [{ ...extraSemicolon, type: AST_NODE_TYPES.ClassProperty }],
     },
   ],
 });
