@@ -25,7 +25,8 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": false
-    }
+    },
+    "project": "./tsconfig.base.json"
   },
   "overrides": [
     {

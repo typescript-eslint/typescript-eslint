@@ -86,6 +86,7 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
   [SyntaxKind.KeyOfKeyword]: 'keyof',
   [SyntaxKind.NewKeyword]: 'new',
   [SyntaxKind.ImportKeyword]: 'import',
+  [SyntaxKind.ReadonlyKeyword]: 'readonly',
 };
 
 /**

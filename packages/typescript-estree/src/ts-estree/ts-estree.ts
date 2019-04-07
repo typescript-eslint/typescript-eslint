@@ -254,6 +254,7 @@ export type ClassElement =
 export type DeclarationStatement =
   | ClassDeclaration
   | ClassExpression
+  | ExportDefaultDeclaration
   | ExportAllDeclaration
   | ExportNamedDeclaration
   | FunctionDeclaration
