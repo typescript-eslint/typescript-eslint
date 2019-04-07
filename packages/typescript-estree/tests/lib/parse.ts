@@ -1,18 +1,7 @@
-/**
- * @fileoverview Tests for tokenize().
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
 import { ParserOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 describe('parse()', () => {
   describe('basic functionality', () => {

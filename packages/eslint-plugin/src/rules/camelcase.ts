@@ -1,8 +1,3 @@
-/**
- * @fileoverview Rule to flag non-camelcased identifiers
- * @author Patricio Trevino
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import baseRule from 'eslint/lib/rules/camelcase';
 import * as util from '../util';
@@ -11,7 +6,7 @@ type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default util.createRule<Options, MessageIds>({
-  name: 'ban-types',
+  name: 'camelcase',
   meta: {
     type: 'suggestion',
     docs: {

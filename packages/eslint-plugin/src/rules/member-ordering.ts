@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces a standard member declaration order.
- * @author Patricio Trevino
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -18,23 +13,26 @@ type Options = [
   }
 ];
 
-const schemaOptions = ['field', 'method', 'constructor'].reduce<string[]>(
-  (options, type) => {
-    options.push(type);
+const allMemberTypes = ['field', 'method', 'constructor'].reduce<string[]>(
+  (all, type) => {
+    all.push(type);
 
     ['public', 'protected', 'private'].forEach(accessibility => {
-      options.push(`${accessibility}-${type}`);
+      all.push(`${accessibility}-${type}`); // e.g. `public-field`
+
       if (type !== 'constructor') {
+        // There is no `static-constructor` or `instance-constructor
         ['static', 'instance'].forEach(scope => {
-          if (options.indexOf(`${scope}-${type}`) === -1) {
-            options.push(`${scope}-${type}`);
+          if (all.indexOf(`${scope}-${type}`) === -1) {
+            all.push(`${scope}-${type}`);
           }
-          options.push(`${accessibility}-${scope}-${type}`);
+
+          all.push(`${accessibility}-${scope}-${type}`);
         });
       }
     });
 
-    return options;
+    return all;
   },
   [],
 );
@@ -65,7 +63,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions,
+                  enum: allMemberTypes,
                 },
               },
             ],
@@ -78,7 +76,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions,
+                  enum: allMemberTypes,
                 },
               },
             ],
@@ -91,7 +89,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions,
+                  enum: allMemberTypes,
                 },
               },
             ],
@@ -169,6 +167,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
+    const sourceCode = context.getSourceCode();
+
     const functionExpressions = [
       AST_NODE_TYPES.FunctionExpression,
       AST_NODE_TYPES.ArrowFunctionExpression,
@@ -182,6 +182,9 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.ClassElement | TSESTree.TypeElement,
     ): string | null {
       // TODO: add missing TSCallSignatureDeclaration
+      // TODO: add missing TSIndexSignature
+      // TODO: add missing TSAbstractClassProperty
+      // TODO: add missing TSAbstractMethodDefinition
       switch (node.type) {
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind;
@@ -215,7 +218,7 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind === 'constructor'
             ? 'constructor'
-            : util.getNameFromPropertyName(node.key);
+            : util.getNameFromClassMember(node, sourceCode);
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
         default:
@@ -230,12 +233,14 @@ export default util.createRule<Options, MessageIds>({
      * - If there is no order for accessibility-scope-type, then strip out the accessibility.
      * - If there is no order for scope-type, then strip out the scope.
      * - If there is no order for type, then return -1
-     * @param names the valid names to be validated.
+     * @param memberTypes the valid names to be validated.
      * @param order the current order to be validated.
+     *
+     * @return Index of the matching member type in the order configuration.
      */
-    function getRankOrder(names: string[], order: string[]): number {
+    function getRankOrder(memberTypes: string[], order: string[]): number {
       let rank = -1;
-      const stack = names.slice();
+      const stack = memberTypes.slice(); // Get a copy of the member types
 
       while (stack.length > 0 && rank === -1) {
         rank = order.indexOf(stack.shift()!);
@@ -248,7 +253,7 @@ export default util.createRule<Options, MessageIds>({
      * Gets the rank of the node given the order.
      * @param node the node to be evaluated.
      * @param order the current order to be validated.
-     * @param supportsModifiers a flag indicating whether the type supports modifiers or not.
+     * @param supportsModifiers a flag indicating whether the type supports modifiers (scope or accessibility) or not.
      */
     function getRank(
       node: TSESTree.ClassElement | TSESTree.TypeElement,
@@ -258,7 +263,7 @@ export default util.createRule<Options, MessageIds>({
       const type = getNodeType(node);
       if (type === null) {
         // shouldn't happen but just in case, put it on the end
-        return Number.MAX_SAFE_INTEGER;
+        return order.length - 1;
       }
 
       const scope = 'static' in node && node.static ? 'static' : 'instance';
@@ -267,19 +272,21 @@ export default util.createRule<Options, MessageIds>({
           ? node.accessibility
           : 'public';
 
-      const names = [];
+      const memberTypes = [];
 
       if (supportsModifiers) {
         if (type !== 'constructor') {
-          names.push(`${accessibility}-${scope}-${type}`);
-          names.push(`${scope}-${type}`);
+          // Constructors have no scope
+          memberTypes.push(`${accessibility}-${scope}-${type}`);
+          memberTypes.push(`${scope}-${type}`);
         }
-        names.push(`${accessibility}-${type}`);
+
+        memberTypes.push(`${accessibility}-${type}`);
       }
 
-      names.push(type);
+      memberTypes.push(type);
 
-      return getRankOrder(names, order);
+      return getRankOrder(memberTypes, order);
     }
 
     /**
@@ -318,12 +325,13 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Validates each member rank.
-     * @param members the members to be validated.
-     * @param order the current order to be validated.
-     * @param supportsModifiers a flag indicating whether the type supports modifiers or not.
+     * Validates if all members are correctly sorted.
+     *
+     * @param members Members to be validated.
+     * @param order Current order to be validated.
+     * @param supportsModifiers A flag indicating whether the type supports modifiers (scope or accessibility) or not.
      */
-    function validateMembers(
+    function validateMembersOrder(
       members: (TSESTree.ClassElement | TSESTree.TypeElement)[],
       order: OrderConfig,
       supportsModifiers: boolean,
@@ -331,6 +339,7 @@ export default util.createRule<Options, MessageIds>({
       if (members && order !== 'never') {
         const previousRanks: number[] = [];
 
+        // Find first member which isn't correctly sorted
         members.forEach(member => {
           const rank = getRank(member, order, supportsModifiers);
 
@@ -354,28 +363,28 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       ClassDeclaration(node) {
-        validateMembers(
+        validateMembersOrder(
           node.body.body,
           options.classes || options.default!,
           true,
         );
       },
       ClassExpression(node) {
-        validateMembers(
+        validateMembersOrder(
           node.body.body,
           options.classExpressions || options.default!,
           true,
         );
       },
       TSInterfaceDeclaration(node) {
-        validateMembers(
+        validateMembersOrder(
           node.body.body,
           options.interfaces || options.default!,
           false,
         );
       },
       TSTypeLiteral(node) {
-        validateMembers(
+        validateMembersOrder(
           node.members,
           options.typeLiterals || options.default!,
           false,

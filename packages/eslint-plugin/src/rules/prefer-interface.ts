@@ -1,8 +1,3 @@
-/**
- * @fileoverview Prefer an interface declaration over a type literal (type T = { ... })
- * @author Armano <https://github.com/armano2>
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { RuleFix } from 'ts-eslint';
 import * as util from '../util';

@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallow aliasing `this`
- * @author Jed Fox
- */
-
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

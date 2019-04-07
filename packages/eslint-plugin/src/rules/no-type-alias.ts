@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows the use of type aliases.
- * @author Patricio Trevino
- */
-
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import { ReportDescriptor } from 'ts-eslint';
 import * as util from '../util';
@@ -113,6 +108,7 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSArrayType,
       AST_NODE_TYPES.TSTypeReference,
       AST_NODE_TYPES.TSLiteralType,
+      AST_NODE_TYPES.TSTypeQuery,
     ];
 
     type CompositionType = TSESTree.TSUnionType | TSESTree.TSIntersectionType;

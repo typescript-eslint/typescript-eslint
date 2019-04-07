@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows the use of require statements except in import statements.
- * @author Macklin Underdown
- */
-
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 

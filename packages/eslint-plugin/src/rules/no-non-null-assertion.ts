@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows non-null assertions using the `!` postfix operator.
- * @author Macklin Underdown
- */
-
 import * as util from '../util';
 
 export default util.createRule({

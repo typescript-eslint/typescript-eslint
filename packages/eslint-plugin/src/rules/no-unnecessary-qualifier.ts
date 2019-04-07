@@ -1,16 +1,7 @@
-/**
- * @fileoverview Warns when a namespace qualifier is unnecessary.
- * @author Benjamin Lichtman
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
-
-//------------------------------------------------------------------------------
-// Rule Definition
-//------------------------------------------------------------------------------
 
 export default util.createRule({
   name: 'no-unnecessary-qualifier',
@@ -38,10 +29,6 @@ export default util.createRule({
     const program = parserServices.program;
     const checker = program.getTypeChecker();
     const sourceCode = context.getSourceCode();
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
 
     function tryGetAliasedSymbol(
       symbol: ts.Symbol,
@@ -169,10 +156,6 @@ export default util.createRule({
           isEntityNameExpression(node.object))
       );
     }
-
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
 
     return {
       TSModuleDeclaration: enterDeclaration,

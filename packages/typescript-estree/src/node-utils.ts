@@ -1,9 +1,3 @@
-/**
- * @fileoverview Utilities for finding and converting ts.Nodes into ESTreeNodes
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import ts from 'typescript';
 import unescape from 'lodash.unescape';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
@@ -92,6 +86,7 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
   [SyntaxKind.KeyOfKeyword]: 'keyof',
   [SyntaxKind.NewKeyword]: 'new',
   [SyntaxKind.ImportKeyword]: 'import',
+  [SyntaxKind.ReadonlyKeyword]: 'readonly',
 };
 
 /**

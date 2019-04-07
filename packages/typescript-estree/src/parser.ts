@@ -1,10 +1,3 @@
-/**
- * @fileoverview Parser that converts TypeScript into ESTree format.
- * @author Nicholas C. Zakas
- * @author James Henry <https://github.com/JamesHenry>
- * @copyright jQuery Foundation and other contributors, https://jquery.org/
- * MIT License
- */
 import {
   calculateProjectParserOptions,
   createProgram,
@@ -22,7 +15,7 @@ import { getFirstSemanticOrSyntacticError } from './semantic-errors';
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.2.1 <3.4.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.2.1 <3.5.0';
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
@@ -276,7 +269,7 @@ type AST<T extends ParserOptions> = TSESTree.Program &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
 
-interface ParseAndGenerateServicesResult<T extends ParserOptions> {
+export interface ParseAndGenerateServicesResult<T extends ParserOptions> {
   ast: AST<T>;
   services: ParserServices;
 }

@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces explicit accessibility modifier for class members
- * @author Danny Fritz
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -25,6 +20,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
+    const sourceCode = context.getSourceCode();
     /**
      * Checks if a method declaration has an accessibility modifier.
      * @param methodDefinition The node representing a MethodDefinition.
@@ -41,7 +37,7 @@ export default util.createRule({
           messageId: 'missingAccessibility',
           data: {
             type: 'method definition',
-            name: util.getNameFromPropertyName(methodDefinition.key),
+            name: util.getNameFromClassMember(methodDefinition, sourceCode),
           },
         });
       }

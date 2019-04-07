@@ -44,7 +44,7 @@ The `canary` (latest master) version is:
 
 We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
 
-**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.4.0`.**
+**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.5.0`.**
 
 This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
@@ -52,10 +52,14 @@ If you use a non-supported version of TypeScript, the parser will log a warning 
 
 **Please ensure that you are using a supported version before submitting any issues/bug reports.**
 
-## Contributing
-
-COMING SOON!
-
 ## License
 
-TypeScript ESLint inherits from the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
+TypeScript ESLint inherits from the the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
+
+## Contributors
+
+Thanks goes to the wonderful people listed in [`CONTRIBUTORS.md`](./CONTRIBUTORS.md).
+
+## Contributing Guide
+
+COMING SOON!

@@ -1,8 +1,3 @@
-/**
- * @fileoverview Enforces member overloads to be consecutive.
- * @author Patricio Trevino
- */
-
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -31,6 +26,8 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
+    const sourceCode = context.getSourceCode();
+
     /**
      * Gets the name of the member being processed.
      * @param member the member being processed.
@@ -62,7 +59,7 @@ export default util.createRule({
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
         case AST_NODE_TYPES.MethodDefinition:
-          return util.getNameFromPropertyName(member.key);
+          return util.getNameFromClassMember(member, sourceCode);
       }
 
       return null;
