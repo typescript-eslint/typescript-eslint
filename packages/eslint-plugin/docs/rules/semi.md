@@ -2,6 +2,7 @@
 
 JavaScript is unique amongst the C-like languages in that it doesn't require semicolons at the end of each statement. In many cases, the JavaScript engine can determine that a semicolon should be in a certain spot and will automatically add it. This feature is known as **automatic semicolon insertion (ASI)** and is considered one of the more controversial features of JavaScript. For example, the following lines are both valid:
 
+<!-- prettier-ignore -->
 ```ts
 var name = 'ESLint';
 var website = 'eslint.org';
@@ -13,19 +14,21 @@ In the debate over ASI, there are generally two schools of thought. The first is
 
 However, the ASI mechanism can sometimes be tricky to people who are using semicolons. For example, consider this code:
 
+<!-- prettier-ignore -->
 ```ts
-return;
+return
 {
-  name: 'ESLint';
-}
+  name: "ESLint"
+};
 ```
 
 This may look like a `return` statement that returns an object literal, however, the JavaScript engine will interpret this code as:
 
+<!-- prettier-ignore -->
 ```ts
 return;
 {
-  name: 'ESLint';
+  name: "ESLint";
 }
 ```
 
@@ -33,13 +36,16 @@ Effectively, a semicolon is inserted after the `return` statement, causing the c
 
 On the other side of the argument are those who say that since semicolons are inserted automatically, they are optional and do not need to be inserted manually. However, the ASI mechanism can also be tricky to people who don't use semicolons. For example, consider this code:
 
+<!-- prettier-ignore -->
 ```ts
-var globalCounter = {}(function() {
-  var n = 0;
-  globalCounter.increment = function() {
-    return ++n;
-  };
-})();
+var globalCounter = { }
+
+(function () {
+  var n = 0
+  globalCounter.increment = function () {
+    return ++n
+  }
+})()
 ```
 
 In this example, a semicolon will not be inserted after the first line, causing a run-time error (because an empty object is called as if it's a function).
@@ -78,6 +84,7 @@ Object option (when `"never"`):
 
 Examples of **incorrect** code for this rule with the default `"always"` option:
 
+<!-- prettier-ignore -->
 ```ts
 /*eslint @typescript-eslint/semi: "error"*/
 
@@ -101,6 +108,7 @@ import a from 'a'
 
 Examples of **correct** code for this rule with the default `"always"` option:
 
+<!-- prettier-ignore -->
 ```ts
 /*eslint @typescript-eslint/semi: "error"*/
 
@@ -126,6 +134,7 @@ import a from 'a';
 
 Examples of **incorrect** code for this rule with the `"never"` option:
 
+<!-- prettier-ignore -->
 ```ts
 /*eslint @typescript-eslint/semi: ["error", "never"]*/
 
@@ -149,6 +158,7 @@ import a from 'a';
 
 Examples of **correct** code for this rule with the `"never"` option:
 
+<!-- prettier-ignore -->
 ```ts
 /*eslint @typescript-eslint/semi: ["error", "never"]*/
 
@@ -174,6 +184,7 @@ import a from 'a'
 
 Examples of additional **incorrect** code for this rule with the `"always", { "omitLastInOneLineBlock": true }` options:
 
+<!-- prettier-ignore -->
 ```ts
 /*eslint @typescript-eslint/semi: ["error", "always", { "omitLastInOneLineBlock": true}] */
 
@@ -184,6 +195,7 @@ if (foo) { bar(); baz(); }
 
 Examples of additional **correct** code for this rule with the `"always", { "omitLastInOneLineBlock": true }` options:
 
+<!-- prettier-ignore -->
 ```ts
 /*eslint @typescript-eslint/semi: ["error", "always", { "omitLastInOneLineBlock": true}] */
 
@@ -196,6 +208,7 @@ if (foo) { bar(); baz() }
 
 Examples of additional **incorrect** code for this rule with the `"never", { "beforeStatementContinuationChars": "always" }` options:
 
+<!-- prettier-ignore -->
 ```ts
 /*eslint @typescript-eslint/semi: ["error", "never", { "beforeStatementContinuationChars": "always"}] */
 import a from "a"
@@ -207,6 +220,7 @@ import a from "a"
 
 Examples of additional **incorrect** code for this rule with the `"never", { "beforeStatementContinuationChars": "never" }` options:
 
+<!-- prettier-ignore -->
 ```ts
 /*eslint @typescript-eslint/semi: ["error", "never", { "beforeStatementContinuationChars": "never"}] */
 import a from "a"
