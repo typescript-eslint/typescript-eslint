@@ -19,7 +19,7 @@ export default util.createRule<Options, MessageIds>({
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
   },
-  defaultOptions: ['always'],
+  defaultOptions: ['always', { omitLastInOneLineBlock: false }] as Options,
   create(context, optionsWithDefaults) {
     // because we extend the base rule, have to update opts on the context
     // the context defines options as readonly though...

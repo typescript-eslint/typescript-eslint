@@ -34,21 +34,38 @@ ruleTester.run<MessageIds, Options>('semi', rule, {
     // https://github.com/typescript-eslint/typescript-eslint/issues/409
     {
       code: `
-class PanCamera extends FreeCamera {
-  public invertY: boolean = false;
-}
-`,
+    class PanCamera extends FreeCamera {
+      public invertY: boolean = false;
+    }
+    `,
     },
     {
       code: `
-class PanCamera extends FreeCamera {
-  public invertY: boolean = false
-}
-`,
+    class PanCamera extends FreeCamera {
+      public invertY: boolean = false
+    }
+    `,
       options: ['never'],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/123
     'export default interface test {}',
+    // ESLint
+    {
+      code: 'if (foo) { bar(); }',
+      options: ['always', { omitLastInOneLineBlock: false }],
+    },
+    {
+      code: 'if (foo) { bar(); baz(); }',
+      options: ['always', { omitLastInOneLineBlock: false }],
+    },
+    {
+      code: 'if (foo) { bar() }',
+      options: ['always', { omitLastInOneLineBlock: true }],
+    },
+    {
+      code: 'if (foo) { bar(); baz() }',
+      options: ['always', { omitLastInOneLineBlock: true }],
+    },
   ],
   invalid: [
     // https://github.com/typescript-eslint/typescript-eslint/issues/366
@@ -64,19 +81,68 @@ class PanCamera extends FreeCamera {
     // https://github.com/typescript-eslint/typescript-eslint/issues/409
     {
       code: `
-class PanCamera extends FreeCamera {
-  public invertY: boolean = false
-}
-`,
+    class PanCamera extends FreeCamera {
+      public invertY: boolean = false
+    }
+    `,
       errors: [missingError],
     },
     {
       code: `
-class PanCamera extends FreeCamera {
-  public invertY: boolean = false;
-}
+    class PanCamera extends FreeCamera {
+      public invertY: boolean = false;
+    }
+    `,
+      options: ['never'] as Options,
+      errors: [extraSemicolon],
+    },
+    // ESLint
+    {
+      code: 'if (foo) { bar() }',
+      options: ['always', { omitLastInOneLineBlock: false }] as Options,
+      errors: [missingError],
+    },
+    {
+      code: 'if (foo) { bar(); baz() }',
+      options: ['always', { omitLastInOneLineBlock: false }] as Options,
+      errors: [missingError],
+    },
+    {
+      code: 'if (foo) { bar(); }',
+      options: ['always', { omitLastInOneLineBlock: true }] as Options,
+      errors: [extraSemicolon],
+    },
+    {
+      code: 'if (foo) { bar(); baz(); }',
+      options: ['always', { omitLastInOneLineBlock: true }] as Options,
+      errors: [extraSemicolon],
+    },
+    {
+      code: `
+import a from "a"
+
+(function() {
+    // ...
+})()
 `,
-      options: ['never'],
+      options: [
+        'never',
+        { beforeStatementContinuationChars: 'always' },
+      ] as Options,
+      errors: [missingError],
+    },
+    {
+      code: `
+import a from "a"
+
+;(function() {
+    // ...
+})()
+`,
+      options: [
+        'never',
+        { beforeStatementContinuationChars: 'never' },
+      ] as Options,
       errors: [extraSemicolon],
     },
   ],
