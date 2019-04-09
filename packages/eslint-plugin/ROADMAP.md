@@ -82,7 +82,7 @@
 | [`no-unsafe-any`]                    | 🛑  | N/A                                                                   |
 | [`no-unsafe-finally`]                | 🌟  | [`no-unsafe-finally`][no-unsafe-finally]                              |
 | [`no-unused-expression`]             | 🌟  | [`no-unused-expression`][no-unused-expressions]                       |
-| [`no-unused-variable`]               | 🌓  | [`no-unused-vars`][no-unused-vars] <sup>[2]</sup>                     |
+| [`no-unused-variable`]               | 🌓  | [`@typescript-eslint/no-unused-vars`]                                 |
 | [`no-use-before-declare`]            | ✅  | [`@typescript-eslint/no-use-before-define`]                           |
 | [`no-var-keyword`]                   | 🌟  | [`no-var`][no-var]                                                    |
 | [`no-void-expression`]               | 🌟  | [`no-void`][no-void]                                                  |
@@ -100,7 +100,6 @@
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                              |
 
 <sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)<br>
-<sup>[2]</sup> Missing private class member support. [`@typescript-eslint/no-unused-vars`] adds support for some TS-specific features.
 
 ### Maintainability
 
@@ -508,7 +507,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-fallthrough]: https://eslint.org/docs/rules/no-fallthrough
 [no-unsafe-finally]: https://eslint.org/docs/rules/no-unsafe-finally
 [no-unused-expressions]: https://eslint.org/docs/rules/no-unused-expressions
-[no-unused-vars]: https://eslint.org/docs/rules/no-unused-vars
 [no-var]: https://eslint.org/docs/rules/no-var
 [no-void]: https://eslint.org/docs/rules/no-void
 [prefer-object-spread]: https://eslint.org/docs/rules/prefer-object-spread
