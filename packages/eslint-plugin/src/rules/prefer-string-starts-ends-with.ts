@@ -367,11 +367,10 @@ export default createRule({
       // foo.charAt(0) === "a"
       // foo[foo.length - 1] === "a"
       // foo.charAt(foo.length - 1) === "a"
-      // @ts-ignore
-      [[
+      [String([
         'BinaryExpression > MemberExpression.left[computed=true]',
         'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="charAt"][computed=false]',
-      ]](node: TSESTree.MemberExpression): void {
+      ])](node: TSESTree.MemberExpression): void {
         let parentNode = node.parent!;
         let indexNode: TSESTree.Node | null = null;
         if (parentNode.type === 'CallExpression') {
@@ -532,11 +531,10 @@ export default createRule({
       // foo.substring(0, 3) === 'bar'
       // foo.substring(foo.length - 3) === 'bar'
       // foo.substring(foo.length - 3, foo.length) === 'bar'
-      // @ts-ignore
-      [[
+      [String([
         'CallExpression > MemberExpression.callee[property.name=slice][computed=false]',
         'CallExpression > MemberExpression.callee[property.name=substring][computed=false]',
-      ]](node: TSESTree.MemberExpression): void {
+      ])](node: TSESTree.MemberExpression): void {
         const callNode = node.parent! as TSESTree.CallExpression;
         const parentNode = callNode.parent!;
         if (
