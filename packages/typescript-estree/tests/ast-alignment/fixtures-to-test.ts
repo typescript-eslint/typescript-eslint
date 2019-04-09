@@ -389,6 +389,12 @@ tester.addFixturePatternConfig('typescript/basics', {
      * TODO: remove me in next babel > 7.3.2
      */
     'arrow-function-with-optional-parameter',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     */
+    'const-assertions',
+    'readonly-arrays',
+    'readonly-tuples',
   ],
   ignoreSourceType: [
     /**

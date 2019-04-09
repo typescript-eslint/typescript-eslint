@@ -51,6 +51,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [config]) {
+    const sourceCode = context.getSourceCode();
+
     const conventions = (Object.keys(config) as Modifiers[]).reduce<
       Config<RegExp>
     >((acc, accessibility) => {
@@ -69,9 +71,12 @@ export default util.createRule<Options, MessageIds>({
     function validateName(
       node: TSESTree.MethodDefinition | TSESTree.ClassProperty,
     ): void {
-      const name = util.getNameFromPropertyName(node.key);
+      const name = util.getNameFromClassMember(node, sourceCode);
       const accessibility: Modifiers = node.accessibility || 'public';
       const convention = conventions[accessibility];
+
+      const method = node as TSESTree.MethodDefinition;
+      if (method.kind === 'constructor') return;
 
       if (!convention || convention.test(name)) return;
 
