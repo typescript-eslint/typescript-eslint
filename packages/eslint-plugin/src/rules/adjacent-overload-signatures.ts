@@ -26,6 +26,8 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
+    const sourceCode = context.getSourceCode();
+
     /**
      * Gets the name of the member being processed.
      * @param member the member being processed.
@@ -57,7 +59,7 @@ export default util.createRule({
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
         case AST_NODE_TYPES.MethodDefinition:
-          return util.getNameFromPropertyName(member.key);
+          return util.getNameFromClassMember(member, sourceCode);
       }
 
       return null;
