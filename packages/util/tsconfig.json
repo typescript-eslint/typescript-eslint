@@ -1,9 +1,4 @@
 {
   "extends": "./tsconfig.build.json",
-  "include": [
-    "src",
-    "typings",
-    "tests",
-    "tools"
-  ]
+  "include": ["src", "typings", "tests", "tools"]
 }

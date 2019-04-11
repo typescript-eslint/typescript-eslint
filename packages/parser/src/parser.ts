@@ -4,9 +4,7 @@ import {
   ParserOptions as ParserOptionsTsESTree,
   ParserServices,
 } from '@typescript-eslint/typescript-estree';
-import {
-  TSESLint,
-} from '@typescript-eslint/util';
+import { TSESLint } from '@typescript-eslint/util';
 import traverser from 'eslint/lib/util/traverser';
 import { analyzeScope } from './analyze-scope';
 import { visitorKeys } from './visitor-keys';

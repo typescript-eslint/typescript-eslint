@@ -33,8 +33,7 @@
   "dependencies": {
     "@typescript-eslint/typescript-estree": "1.6.0"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "peerDependencies": {
     "typescript": "*"
   }

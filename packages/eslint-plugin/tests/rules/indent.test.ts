@@ -650,7 +650,8 @@ type Foo = string | {
             };
           })
           .filter(
-            (error): error is TSESLint.TestCaseError<MessageIds> => error !== null,
+            (error): error is TSESLint.TestCaseError<MessageIds> =>
+              error !== null,
           ),
       });
     });

@@ -1,6 +1,4 @@
-import {
-  AST_NODE_TYPES,
-} from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { ParserOptions } from './ParserOptions';
 import { RuleModule } from './Rule';
 
@@ -65,4 +63,11 @@ interface RuleTester {
   ): void;
 }
 
-export { InvalidTestCase, RuleTester, RuleTesterConfig, RunTests, TestCaseError, ValidTestCase };
+export {
+  InvalidTestCase,
+  RuleTester,
+  RuleTesterConfig,
+  RunTests,
+  TestCaseError,
+  ValidTestCase,
+};

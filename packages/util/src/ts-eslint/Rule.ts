@@ -300,12 +300,8 @@ interface RuleListener {
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
   TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
   TSExportKeyword?: RuleFunction<TSESTree.TSExportKeyword>;
-  TSExternalModuleReference?: RuleFunction<
-    TSESTree.TSExternalModuleReference
-  >;
-  TSImportEqualsDeclaration?: RuleFunction<
-    TSESTree.TSImportEqualsDeclaration
-  >;
+  TSExternalModuleReference?: RuleFunction<TSESTree.TSExternalModuleReference>;
+  TSImportEqualsDeclaration?: RuleFunction<TSESTree.TSImportEqualsDeclaration>;
   TSImportType?: RuleFunction<TSESTree.TSImportType>;
   TSIndexedAccessType?: RuleFunction<TSESTree.TSIndexedAccessType>;
   TSIndexSignature?: RuleFunction<TSESTree.TSIndexSignature>;

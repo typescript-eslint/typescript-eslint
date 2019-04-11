@@ -1,4 +1,10 @@
-import { RuleMetaData, RuleMetaDataDocs, RuleListener, RuleContext, RuleModule } from '../ts-eslint/Rule';
+import {
+  RuleMetaData,
+  RuleMetaDataDocs,
+  RuleListener,
+  RuleContext,
+  RuleModule,
+} from '../ts-eslint/Rule';
 import { applyDefault } from './applyDefault';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
