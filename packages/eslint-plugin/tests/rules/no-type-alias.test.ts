@@ -364,6 +364,14 @@ type Foo<T> = {
         },
       ],
     },
+    {
+      code: 'type Foo = typeof bar;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = typeof bar | typeof baz;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
   ],
   invalid: [
     {

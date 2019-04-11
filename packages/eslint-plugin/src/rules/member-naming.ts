@@ -75,6 +75,9 @@ export default util.createRule<Options, MessageIds>({
       const accessibility: Modifiers = node.accessibility || 'public';
       const convention = conventions[accessibility];
 
+      const method = node as TSESTree.MethodDefinition;
+      if (method.kind === 'constructor') return;
+
       if (!convention || convention.test(name)) return;
 
       context.report({

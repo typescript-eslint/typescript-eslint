@@ -1,7 +1,7 @@
 import {
   AST_NODE_TYPES,
-  TSESTree,
   AST_TOKEN_TYPES,
+  TSESTree,
 } from '@typescript-eslint/util';
 import * as util from '../util';
 

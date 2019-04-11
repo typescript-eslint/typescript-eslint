@@ -107,6 +107,7 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSArrayType,
       AST_NODE_TYPES.TSTypeReference,
       AST_NODE_TYPES.TSLiteralType,
+      AST_NODE_TYPES.TSTypeQuery,
     ];
 
     type CompositionType = TSESTree.TSUnionType | TSESTree.TSIntersectionType;

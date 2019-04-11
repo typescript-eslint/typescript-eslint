@@ -63,6 +63,23 @@ export function getNameFromPropertyName(
   return `${propertyName.value}`;
 }
 
+/** Return true if both parameters are equal. */
+export type Equal<T> = (a: T, b: T) => boolean;
+
+export function arraysAreEqual<T>(
+  a: T[] | undefined,
+  b: T[] | undefined,
+  eq: (a: T, b: T) => boolean,
+): boolean {
+  return (
+    a === b ||
+    (a !== undefined &&
+      b !== undefined &&
+      a.length === b.length &&
+      a.every((x, idx) => eq(x, b[idx])))
+  );
+}
+
 /**
  * Gets a string name representation of the name of the given MethodDefinition
  * or ClassProperty node, with handling for computed property names.

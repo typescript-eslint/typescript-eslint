@@ -1,7 +1,4 @@
-import {
-  ParserServices,
-  TSESTree,
-} from '@typescript-eslint/typescript-estree';
+import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
 import { AST, Linter } from 'eslint';
 import { JSONSchema4 } from 'json-schema';
 import { Scope } from './Scope';
@@ -11,7 +8,11 @@ interface RuleMetaDataDocs {
   /**
    * The general category the rule falls within
    */
-  category: 'Best Practices' | 'Stylistic Issues' | 'Variables';
+  category:
+    | 'Best Practices'
+    | 'Stylistic Issues'
+    | 'Variables'
+    | 'Possible Errors';
   /**
    * Concise description of the rule
    */
@@ -99,7 +100,9 @@ interface RuleFixer {
   replaceTextRange(range: AST.Range, text: string): RuleFix;
 }
 
-type ReportFixFunction = (fixer: RuleFixer) => null | RuleFix | RuleFix[];
+type ReportFixFunction = (
+  fixer: RuleFixer,
+) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
 
 interface ReportDescriptor<TMessageIds extends string> {
   /**
@@ -275,20 +278,34 @@ interface RuleListener {
   Token?: RuleFunction<TSESTree.Token>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
+  TSAbstractMethodDefinition?: RuleFunction<
+    TSESTree.TSAbstractMethodDefinition
+  >;
   TSAnyKeyword?: RuleFunction<TSESTree.TSAnyKeyword>;
   TSArrayType?: RuleFunction<TSESTree.TSArrayType>;
   TSAsExpression?: RuleFunction<TSESTree.TSAsExpression>;
   TSAsyncKeyword?: RuleFunction<TSESTree.TSAsyncKeyword>;
   TSBigIntKeyword?: RuleFunction<TSESTree.TSBigIntKeyword>;
   TSBooleanKeyword?: RuleFunction<TSESTree.TSBooleanKeyword>;
+  TSCallSignatureDeclaration?: RuleFunction<
+    TSESTree.TSCallSignatureDeclaration
+  >;
   TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
+  TSConstructSignatureDeclaration?: RuleFunction<
+    TSESTree.TSConstructSignatureDeclaration
+  >;
   TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
+  TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
   TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
   TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
   TSExportKeyword?: RuleFunction<TSESTree.TSExportKeyword>;
-  TSExternalModuleReference?: RuleFunction<TSESTree.TSExternalModuleReference>;
-  TSImportEqualsDeclaration?: RuleFunction<TSESTree.TSImportEqualsDeclaration>;
+  TSExternalModuleReference?: RuleFunction<
+    TSESTree.TSExternalModuleReference
+  >;
+  TSImportEqualsDeclaration?: RuleFunction<
+    TSESTree.TSImportEqualsDeclaration
+  >;
   TSImportType?: RuleFunction<TSESTree.TSImportType>;
   TSIndexedAccessType?: RuleFunction<TSESTree.TSIndexedAccessType>;
   TSIndexSignature?: RuleFunction<TSESTree.TSIndexSignature>;

@@ -22,7 +22,7 @@ interface InvalidTestCase<
   TOptions extends Readonly<any[]>
 > extends ValidTestCase<TOptions> {
   errors: TestCaseError<TMessageIds>[];
-  output?: string;
+  output?: string | null;
 }
 
 interface TestCaseError<TMessageIds extends string> {
@@ -31,6 +31,15 @@ interface TestCaseError<TMessageIds extends string> {
   type?: AST_NODE_TYPES;
   line?: number;
   column?: number;
+}
+
+interface RunTests<
+  TMessageIds extends string,
+  TOptions extends Readonly<any[]>
+> {
+  // RuleTester.run also accepts strings for valid cases
+  valid: (ValidTestCase<TOptions> | string)[];
+  invalid: InvalidTestCase<TMessageIds, TOptions>[];
 }
 
 interface RunTests<

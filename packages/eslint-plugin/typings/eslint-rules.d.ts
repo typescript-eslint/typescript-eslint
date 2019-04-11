@@ -316,3 +316,25 @@ declare module 'eslint/lib/rules/no-useless-constructor' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/no-extra-parens' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/util';
+
+  const rule: TSESLint.RuleModule<
+    'unexpected',
+    (
+      | 'all'
+      | 'functions'
+      | {
+          conditionalAssign?: boolean;
+          returnAssign?: boolean;
+          nestedBinaryExpressions?: boolean;
+          ignoreJSX?: 'none' | 'all' | 'multi-line' | 'single-line';
+          enforceForArrowConditionals?: boolean;
+        })[],
+    {
+      MemberExpression(node: TSESTree.MemberExpression): void;
+    }
+  >;
+  export = rule;
+}

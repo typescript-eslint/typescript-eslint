@@ -9,7 +9,7 @@ type Options = [
 type MessageIds = 'unexpectedTypeAssertion';
 
 export default util.createRule<Options, MessageIds>({
-  name: 'no-object-literal-type-assertions',
+  name: 'no-object-literal-type-assertion',
   meta: {
     type: 'problem',
     docs: {
@@ -50,6 +50,12 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSAnyKeyword:
         case AST_NODE_TYPES.TSUnknownKeyword:
           return false;
+        case AST_NODE_TYPES.TSTypeReference:
+          // Ignore `as const` and `<const>` (#166)
+          return (
+            node.typeName.type === AST_NODE_TYPES.Identifier &&
+            node.typeName.name !== 'const'
+          );
         default:
           return true;
       }

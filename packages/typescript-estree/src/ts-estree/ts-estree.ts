@@ -254,6 +254,7 @@ export type ClassElement =
 export type DeclarationStatement =
   | ClassDeclaration
   | ClassExpression
+  | ExportDefaultDeclaration
   | ExportAllDeclaration
   | ExportNamedDeclaration
   | FunctionDeclaration
@@ -322,7 +323,8 @@ export type LeftHandSideExpression =
   | MemberExpression
   | PrimaryExpression
   | TaggedTemplateExpression
-  | TSNonNullExpression;
+  | TSNonNullExpression
+  | TSAsExpression;
 export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
 export type Modifier =
   | TSAbstractKeyword

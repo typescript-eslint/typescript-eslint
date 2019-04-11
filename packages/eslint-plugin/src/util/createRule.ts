@@ -21,7 +21,7 @@ type CreateRuleMeta<TMessageIds extends string> = {
 // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349
 // TODO - when the above rule lands; add type checking for the context.report `data` property
 export function createRule<
-  TOptions extends Readonly<any[]>,
+  TOptions extends any[],
   TMessageIds extends string,
   TRuleListener extends TSESLint.RuleListener = TSESLint.RuleListener
 >({

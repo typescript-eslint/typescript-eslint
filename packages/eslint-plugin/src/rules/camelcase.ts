@@ -6,7 +6,7 @@ type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default util.createRule<Options, MessageIds>({
-  name: 'ban-types',
+  name: 'camelcase',
   meta: {
     type: 'suggestion',
     docs: {
