@@ -1,5 +1,5 @@
-import * as util from '../util';
 import { TSESTree } from '@typescript-eslint/util';
+import * as util from '../util';
 
 type Options = [
   {

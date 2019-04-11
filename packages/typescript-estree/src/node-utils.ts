@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESTree,
-} from '@typescript-eslint/util';
+} from './ts-estree';
 import unescape from 'lodash.unescape';
 import ts from 'typescript';
 

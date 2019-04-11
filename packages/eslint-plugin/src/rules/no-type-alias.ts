@@ -1,5 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/util';
-import { ReportDescriptor } from 'ts-eslint';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/util';
 import * as util from '../util';
 
 type Options = [
@@ -193,7 +192,7 @@ export default util.createRule<Options, MessageIds>({
       compositionType: string | undefined,
       isRoot: boolean,
       type?: string,
-    ): ReportDescriptor<MessageIds> {
+    ): TSESLint.ReportDescriptor<MessageIds> {
       if (isRoot) {
         return {
           node,

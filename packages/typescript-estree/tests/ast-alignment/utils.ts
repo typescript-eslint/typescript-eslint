@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/util';
+import { AST_NODE_TYPES } from '../../src/ts-estree';
 import isPlainObject from 'lodash.isplainobject';
 
 /**

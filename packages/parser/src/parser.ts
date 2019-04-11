@@ -1,13 +1,17 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/util';
 import {
+  AST_NODE_TYPES,
   parseAndGenerateServices,
   ParserOptions as ParserOptionsTsESTree,
   ParserServices,
 } from '@typescript-eslint/typescript-estree';
+import {
+  TSESLint,
+} from '@typescript-eslint/util';
 import traverser from 'eslint/lib/util/traverser';
 import { analyzeScope } from './analyze-scope';
-import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
+
+type ParserOptions = TSESLint.ParserOptions;
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const packageJSON = require('../package.json');

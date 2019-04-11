@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/util';
+import { TSESTree } from './ts-estree';
 import ts from 'typescript';
 import { getLocFor, getNodeContainer } from './node-utils';
 

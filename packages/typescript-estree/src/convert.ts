@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree, TSNode } from '@typescript-eslint/util';
+import { AST_NODE_TYPES, TSESTree, TSNode } from './ts-estree';
 import ts from 'typescript';
 import {
   canContainDirective,

@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/util';
+import { TSESTree } from './ts-estree';
 import semver from 'semver';
 import ts from 'typescript';
 import convert from './ast-converter';
@@ -407,3 +407,4 @@ export function parseAndGenerateServices<
 }
 
 export { ParserOptions, ParserServices };
+export * from './ts-estree';

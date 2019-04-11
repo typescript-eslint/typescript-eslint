@@ -1,7 +1,8 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/util';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
 import { parse, parseForESLint, Syntax } from '../../src/parser';
 import * as scope from '../../src/analyze-scope';
+
+const { AST_NODE_TYPES } = typescriptESTree;
 
 describe('parser', () => {
   it('parse() should return just the AST from parseForESLint()', () => {

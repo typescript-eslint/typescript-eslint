@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/util';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { Scope } from 'eslint-scope/lib/scope';
 import { ScopeManager } from './scope-manager';
 

@@ -1,5 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/util';
-import { Scope } from 'ts-eslint';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/util';
 import * as util from '../util';
 
 const SENTINEL_TYPE = /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
@@ -28,14 +27,14 @@ function parseOptions(options: string | Config | null): Required<Config> {
 /**
  * Checks whether or not a given scope is a top level scope.
  */
-function isTopLevelScope(scope: Scope.Scope): boolean {
+function isTopLevelScope(scope: TSESLint.Scope.Scope): boolean {
   return scope.type === 'module' || scope.type === 'global';
 }
 
 /**
  * Checks whether or not a given variable is a function declaration.
  */
-function isFunction(variable: Scope.Variable): boolean {
+function isFunction(variable: TSESLint.Scope.Variable): boolean {
   return variable.defs[0].type === 'FunctionName';
 }
 
@@ -43,8 +42,8 @@ function isFunction(variable: Scope.Variable): boolean {
  * Checks whether or not a given variable is a class declaration in an upper function scope.
  */
 function isOuterClass(
-  variable: Scope.Variable,
-  reference: Scope.Reference,
+  variable: TSESLint.Scope.Variable,
+  reference: TSESLint.Scope.Reference,
 ): boolean {
   if (variable.defs[0].type !== 'ClassName') {
     return false;
@@ -64,8 +63,8 @@ function isOuterClass(
  * Checks whether or not a given variable is a variable declaration in an upper function scope.
  */
 function isOuterVariable(
-  variable: Scope.Variable,
-  reference: Scope.Reference,
+  variable: TSESLint.Scope.Variable,
+  reference: TSESLint.Scope.Reference,
 ): boolean {
   if (variable.defs[0].type !== 'Variable') {
     return false;
@@ -102,8 +101,8 @@ function isInRange(
  * - for (var a of a) {}
  */
 function isInInitializer(
-  variable: Scope.Variable,
-  reference: Scope.Reference,
+  variable: TSESLint.Scope.Variable,
+  reference: TSESLint.Scope.Reference,
 ): boolean {
   if (variable.scope !== reference.from) {
     return false;
@@ -199,8 +198,8 @@ export default util.createRule<Options, MessageIds>({
      * @param reference The reference to the variable
      */
     function isForbidden(
-      variable: Scope.Variable,
-      reference: Scope.Reference,
+      variable: TSESLint.Scope.Variable,
+      reference: TSESLint.Scope.Reference,
     ): boolean {
       if (isFunction(variable)) {
         return !!options.functions;
@@ -217,7 +216,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Finds and validates all variables in a given scope.
      */
-    function findVariablesInScope(scope: Scope.Scope): void {
+    function findVariablesInScope(scope: TSESLint.Scope.Scope): void {
       scope.references.forEach(reference => {
         const variable = reference.resolved;
 

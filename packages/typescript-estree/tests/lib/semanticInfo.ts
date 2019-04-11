@@ -9,7 +9,7 @@ import {
   parseCodeAndGenerateServices,
 } from '../../tools/test-utils';
 import { parseAndGenerateServices } from '../../src/parser';
-import { TSESTree } from '@typescript-eslint/util';
+import { TSESTree } from '../../src/ts-estree';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);

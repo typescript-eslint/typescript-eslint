@@ -1,4 +1,4 @@
-import { TSESTree, TSNode } from '@typescript-eslint/util';
+import { TSESTree, TSNode } from './ts-estree';
 import { Program } from 'typescript';
 
 export interface Extra {

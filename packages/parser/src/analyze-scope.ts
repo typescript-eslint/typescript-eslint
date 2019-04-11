@@ -1,4 +1,4 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/util';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { Definition, ParameterDefinition } from 'eslint-scope/lib/definition';
 import {
   PatternVisitorCallback,
