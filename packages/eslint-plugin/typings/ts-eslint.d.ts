@@ -299,7 +299,7 @@ declare module 'ts-eslint' {
 
   type ReportFixFunction = (
     fixer: RuleFixer,
-  ) => null | RuleFix | Iterable<RuleFix>;
+  ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
 
   interface ReportDescriptor<TMessageIds extends string> {
     /**
@@ -690,6 +690,7 @@ declare module 'ts-eslint' {
     ReportFixFunction,
     RuleContext,
     RuleFix,
+    RuleFixer,
     RuleFunction,
     RuleListener,
     RuleMetaData,
