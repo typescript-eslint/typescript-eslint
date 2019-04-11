@@ -23,6 +23,8 @@ ruleTester.run('restrict-plus-operands', rule, {
     `var foo = parseInt("5.5", 10) + 10;`,
     `var foo = parseFloat("5.5", 10) + 10;`,
     `var foo = 1n + 1n;`,
+    `var foo = BigInt(1) + 1n`,
+    `var foo = 1n; foo + 2n`,
     `
 function test () : number { return 2; }
 var foo = test("5.5", 10) + 10;
@@ -280,6 +282,26 @@ var foo = pair + pair;
           messageId: 'notBigInts',
           line: 1,
           column: 11,
+        },
+      ],
+    },
+    {
+      code: `var foo = 1n; foo + 1`,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 1,
+          column: 15,
+        },
+      ],
+    },
+    {
+      code: `var foo = 1; foo + 1n`,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 1,
+          column: 14,
         },
       ],
     },
