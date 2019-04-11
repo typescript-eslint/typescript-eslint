@@ -1,5 +1,5 @@
-import { TSESTree, TSNode } from './ts-estree';
 import { Program } from 'typescript';
+import { TSESTree, TSNode } from './ts-estree';
 
 export interface Extra {
   errorOnUnknownASTType: boolean;

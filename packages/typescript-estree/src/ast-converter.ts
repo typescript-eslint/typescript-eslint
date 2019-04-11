@@ -1,11 +1,11 @@
-import ts from 'typescript';
+import { SourceFile } from 'typescript';
 import { convertError, Converter } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
 import { Extra } from './parser-options';
 
 export default function astConverter(
-  ast: ts.SourceFile,
+  ast: SourceFile,
   extra: Extra,
   shouldProvideParserServices: boolean,
 ) {

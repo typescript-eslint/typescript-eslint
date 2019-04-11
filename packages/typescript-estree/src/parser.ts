@@ -1,11 +1,11 @@
-import { TSESTree } from './ts-estree';
 import semver from 'semver';
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import convert from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
 import { Extra, ParserOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
+import { TSESTree } from './ts-estree';
 import {
   calculateProjectParserOptions,
   createProgram,

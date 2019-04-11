@@ -1,6 +1,6 @@
-import { TSESTree } from './ts-estree';
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { getLocFor, getNodeContainer } from './node-utils';
+import { TSESTree } from './ts-estree';
 
 /**
  * Converts a TypeScript comment to an Esprima comment.
