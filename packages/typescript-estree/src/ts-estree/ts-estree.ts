@@ -323,7 +323,8 @@ export type LeftHandSideExpression =
   | MemberExpression
   | PrimaryExpression
   | TaggedTemplateExpression
-  | TSNonNullExpression;
+  | TSNonNullExpression
+  | TSAsExpression;
 export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
 export type Modifier =
   | TSAbstractKeyword
