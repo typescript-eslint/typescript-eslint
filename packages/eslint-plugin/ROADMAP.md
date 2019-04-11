@@ -177,7 +177,7 @@
 | [`prefer-while`]                    | 🛑  | N/A                                                                                 |
 | [`quotemark`]                       | 🌟  | [`quotes`][quotes]                                                                  |
 | [`return-undefined`]                | 🛑  | N/A                                                                                 |
-| [`semicolon`]                       | 🌟  | [`semi`][semi]                                                                      |
+| [`semicolon`]                       | 🌓  | [`@typescript-eslint/semi`]                                                         |
 | [`space-before-function-paren`]     | 🌟  | [`space-before-function-paren`][space-after-function-paren]                         |
 | [`space-within-parens`]             | 🌟  | [`space-in-parens`][space-in-parens]                                                |
 | [`switch-final-break`]              | 🛑  | N/A                                                                                 |
@@ -611,6 +611,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/prefer-function-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-function-type.md
 [`@typescript-eslint/no-for-in-array`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-for-in-array.md
 [`@typescript-eslint/no-unnecessary-qualifier`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md
+[`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
 
 <!-- eslint-plugin-import -->
 
