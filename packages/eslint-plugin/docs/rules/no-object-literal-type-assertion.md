@@ -1,6 +1,6 @@
 # Forbids an object literal to appear in a type assertion expression (no-object-literal-type-assertion)
 
-Always prefer `const x: T = { ... };` to `const x = { ... } as T;`. Casting to `any` and `unknown` is still allowed.
+Always prefer `const x: T = { ... };` to `const x = { ... } as T;`. Casting to `any` and `unknown` is still allowed, and const assertions (`as const`) are still allowed.
 
 ## Rule Details
 
