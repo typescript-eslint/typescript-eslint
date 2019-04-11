@@ -301,7 +301,9 @@ declare module 'ts-eslint' {
     replaceTextRange(range: AST.Range, text: string): RuleFix;
   }
 
-  type ReportFixFunction = (fixer: RuleFixer) => null | RuleFix | RuleFix[];
+  type ReportFixFunction = (
+    fixer: RuleFixer,
+  ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
 
   interface ReportDescriptor<TMessageIds extends string> {
     /**
@@ -477,14 +479,24 @@ declare module 'ts-eslint' {
     Token?: RuleFunction<TSESTree.Token>;
     TryStatement?: RuleFunction<TSESTree.TryStatement>;
     TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
+    TSAbstractMethodDefinition?: RuleFunction<
+      TSESTree.TSAbstractMethodDefinition
+    >;
     TSAnyKeyword?: RuleFunction<TSESTree.TSAnyKeyword>;
     TSArrayType?: RuleFunction<TSESTree.TSArrayType>;
     TSAsExpression?: RuleFunction<TSESTree.TSAsExpression>;
     TSAsyncKeyword?: RuleFunction<TSESTree.TSAsyncKeyword>;
     TSBigIntKeyword?: RuleFunction<TSESTree.TSBigIntKeyword>;
     TSBooleanKeyword?: RuleFunction<TSESTree.TSBooleanKeyword>;
+    TSCallSignatureDeclaration?: RuleFunction<
+      TSESTree.TSCallSignatureDeclaration
+    >;
     TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
+    TSConstructSignatureDeclaration?: RuleFunction<
+      TSESTree.TSConstructSignatureDeclaration
+    >;
     TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
+    TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
     TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
     TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
     TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
@@ -682,6 +694,7 @@ declare module 'ts-eslint' {
     ReportFixFunction,
     RuleContext,
     RuleFix,
+    RuleFixer,
     RuleFunction,
     RuleListener,
     RuleMetaData,

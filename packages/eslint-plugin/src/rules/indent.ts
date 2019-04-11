@@ -74,6 +74,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSTypeOperator,
   AST_NODE_TYPES.TSTypeParameter,
   AST_NODE_TYPES.TSTypeParameterDeclaration,
+  AST_NODE_TYPES.TSTypeParameterInstantiation,
   AST_NODE_TYPES.TSTypeReference,
   AST_NODE_TYPES.TSUnionType,
 ]);
