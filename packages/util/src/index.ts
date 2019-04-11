@@ -1,6 +1,7 @@
+import * as ESLintUtils from './eslint-utils';
 import * as TSESLint from './ts-eslint';
 
-export { TSESLint };
+export { ESLintUtils, TSESLint };
 
 // for convenience's sake - export the types directly from here so consumers
 // don't need to reference/install both packages in their code

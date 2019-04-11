@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/util';
+import { RuleMetaData, RuleMetaDataDocs, RuleListener, RuleContext, RuleModule } from '../ts-eslint/Rule';
 import { applyDefault } from './applyDefault';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
@@ -11,19 +11,19 @@ type RemoveProps<
 > = Pick<TObj, Exclude<keyof TObj, TKeys>>;
 
 // we'll automatically add the url + tslint description for people.
-type CreateRuleMetaDocs = RemoveProps<TSESLint.RuleMetaDataDocs, 'url'> & {
+type CreateRuleMetaDocs = RemoveProps<RuleMetaDataDocs, 'url'> & {
   tslintName?: string;
 };
 type CreateRuleMeta<TMessageIds extends string> = {
   docs: CreateRuleMetaDocs;
-} & RemoveProps<TSESLint.RuleMetaData<TMessageIds>, 'docs'>;
+} & RemoveProps<RuleMetaData<TMessageIds>, 'docs'>;
 
 // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349
-// TODO - when the above rule lands; add type checking for the context.report `data` property
+// TODO - when the above PR lands; add type checking for the context.report `data` property
 export function createRule<
   TOptions extends any[],
   TMessageIds extends string,
-  TRuleListener extends TSESLint.RuleListener = TSESLint.RuleListener
+  TRuleListener extends RuleListener = RuleListener
 >({
   name,
   meta,
@@ -34,10 +34,10 @@ export function createRule<
   meta: CreateRuleMeta<TMessageIds>;
   defaultOptions: TOptions;
   create: (
-    context: TSESLint.RuleContext<TMessageIds, TOptions>,
+    context: RuleContext<TMessageIds, TOptions>,
     optionsWithDefault: TOptions,
   ) => TRuleListener;
-}): TSESLint.RuleModule<TMessageIds, TOptions, TRuleListener> {
+}): RuleModule<TMessageIds, TOptions, TRuleListener> {
   return {
     meta: {
       ...meta,

@@ -35,6 +35,8 @@ export interface ParserOptions {
   extraFileExtensions?: string[];
 }
 
+// This lets us use generics to type the return value, and removes the need to
+// handle the undefined type in the get method
 export interface ParserWeakMap<TKey, TValueBase> {
   get<TValue extends TValueBase>(key: TKey): TValue;
   has(key: any): boolean;
