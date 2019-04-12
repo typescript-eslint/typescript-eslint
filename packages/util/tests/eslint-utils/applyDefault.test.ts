@@ -56,4 +56,3 @@ describe('applyDefault', () => {
     assert.notStrictEqual(result, user);
   });
 });
-
