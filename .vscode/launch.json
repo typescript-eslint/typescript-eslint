@@ -12,7 +12,8 @@
           "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
           "args": [
               "--runInBand",
-              "tests/rules/${fileBasenameNoExtension}"
+              // needs the '' around it so that the () are properly handled
+              "'tests/(.+/)?${fileBasenameNoExtension}'"
           ],
           "sourceMaps": true,
           "console": "integratedTerminal",
