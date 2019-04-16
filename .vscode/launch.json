@@ -12,7 +12,7 @@
           "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
           "args": [
               "--runInBand",
-              "tests/rules/${fileBasenameNoExtension}"
+              "'tests/(.+?/)?${fileBasenameNoExtension}'"
           ],
           "sourceMaps": true,
           "console": "integratedTerminal",
