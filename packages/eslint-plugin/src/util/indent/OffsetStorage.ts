@@ -1,3 +1,6 @@
+// The following code is adapted from the the code in eslint.
+// License: https://github.com/eslint/eslint/blob/48700fc8408f394887cdedd071b22b757700fdcb/LICENSE
+
 import { TokenInfo } from './TokenInfo';
 import { BinarySearchTree, TokenOrComment } from './BinarySearchTree';
 import { TSESTree } from '@typescript-eslint/typescript-estree';
@@ -148,7 +151,7 @@ export class OffsetStorage {
   public setDesiredOffsets(
     range: [number, number],
     fromToken: TokenOrComment | null,
-    offset: number,
+    offset: number = 0,
     force: boolean = false,
   ): void {
     /*
@@ -170,6 +173,15 @@ export class OffsetStorage {
 
     const descriptorAfterRange = this.tree.findLe(range[1]).value;
 
+    const fromTokenIsInRange =
+      fromToken &&
+      fromToken.range[0] >= range[0] &&
+      fromToken.range[1] <= range[1];
+    // this has to be before the delete + insert below or else you'll get into a cycle
+    const fromTokenDescriptor = fromTokenIsInRange
+      ? this.getOffsetDescriptor(fromToken!)
+      : null;
+
     // First, remove any existing nodes in the range from the tree.
     this.tree.deleteRange(range[0] + 1, range[1]);
 
@@ -180,13 +192,9 @@ export class OffsetStorage {
      * To avoid circular offset dependencies, keep the `fromToken` token mapped to whatever it was mapped to previously,
      * even if it's in the current range.
      */
-    if (
-      fromToken &&
-      fromToken.range[0] >= range[0] &&
-      fromToken.range[1] <= range[1]
-    ) {
-      this.tree.insert(fromToken.range[0], this.getOffsetDescriptor(fromToken));
-      this.tree.insert(fromToken.range[1], descriptorToInsert);
+    if (fromTokenIsInRange) {
+      this.tree.insert(fromToken!.range[0], fromTokenDescriptor!);
+      this.tree.insert(fromToken!.range[1], descriptorToInsert);
     }
 
     /*
@@ -230,7 +238,6 @@ export class OffsetStorage {
       } else {
         const offsetInfo = this.getOffsetDescriptor(token);
         const offset =
-          'from' in offsetInfo &&
           offsetInfo.from &&
           offsetInfo.from.loc.start.line === token.loc.start.line &&
           !/^\s*?\n/u.test(token.value) &&

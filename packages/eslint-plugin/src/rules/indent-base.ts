@@ -106,6 +106,72 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.ImportSpecifier,
   AST_NODE_TYPES.ImportDefaultSpecifier,
   AST_NODE_TYPES.ImportNamespaceSpecifier,
+
+  // Class properties aren't yet supported by eslint...
+  AST_NODE_TYPES.ClassProperty,
+
+  // ts keywords
+  AST_NODE_TYPES.TSAbstractKeyword,
+  AST_NODE_TYPES.TSAnyKeyword,
+  AST_NODE_TYPES.TSBooleanKeyword,
+  AST_NODE_TYPES.TSNeverKeyword,
+  AST_NODE_TYPES.TSNumberKeyword,
+  AST_NODE_TYPES.TSStringKeyword,
+  AST_NODE_TYPES.TSSymbolKeyword,
+  AST_NODE_TYPES.TSUndefinedKeyword,
+  AST_NODE_TYPES.TSUnknownKeyword,
+  AST_NODE_TYPES.TSVoidKeyword,
+  AST_NODE_TYPES.TSNullKeyword,
+
+  // ts specific nodes we want to support
+  AST_NODE_TYPES.TSAbstractClassProperty,
+  AST_NODE_TYPES.TSAbstractMethodDefinition,
+  AST_NODE_TYPES.TSArrayType,
+  AST_NODE_TYPES.TSAsExpression,
+  AST_NODE_TYPES.TSCallSignatureDeclaration,
+  AST_NODE_TYPES.TSConditionalType,
+  AST_NODE_TYPES.TSConstructorType,
+  AST_NODE_TYPES.TSConstructSignatureDeclaration,
+  AST_NODE_TYPES.TSDeclareFunction,
+  AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+  AST_NODE_TYPES.TSEnumDeclaration,
+  AST_NODE_TYPES.TSEnumMember,
+  AST_NODE_TYPES.TSExportAssignment,
+  AST_NODE_TYPES.TSExternalModuleReference,
+  AST_NODE_TYPES.TSFunctionType,
+  AST_NODE_TYPES.TSImportType,
+  AST_NODE_TYPES.TSIndexedAccessType,
+  AST_NODE_TYPES.TSIndexSignature,
+  AST_NODE_TYPES.TSInferType,
+  AST_NODE_TYPES.TSInterfaceBody,
+  AST_NODE_TYPES.TSInterfaceDeclaration,
+  AST_NODE_TYPES.TSInterfaceHeritage,
+  AST_NODE_TYPES.TSIntersectionType,
+  AST_NODE_TYPES.TSImportEqualsDeclaration,
+  AST_NODE_TYPES.TSLiteralType,
+  AST_NODE_TYPES.TSMappedType,
+  AST_NODE_TYPES.TSMethodSignature,
+  'TSMinusToken',
+  AST_NODE_TYPES.TSModuleBlock,
+  AST_NODE_TYPES.TSModuleDeclaration,
+  AST_NODE_TYPES.TSNonNullExpression,
+  AST_NODE_TYPES.TSParameterProperty,
+  AST_NODE_TYPES.TSParenthesizedType,
+  'TSPlusToken',
+  AST_NODE_TYPES.TSPropertySignature,
+  AST_NODE_TYPES.TSQualifiedName,
+  AST_NODE_TYPES.TSQuestionToken,
+  AST_NODE_TYPES.TSRestType,
+  AST_NODE_TYPES.TSThisType,
+  AST_NODE_TYPES.TSTupleType,
+  AST_NODE_TYPES.TSTypeAnnotation,
+  AST_NODE_TYPES.TSTypeLiteral,
+  AST_NODE_TYPES.TSTypeOperator,
+  AST_NODE_TYPES.TSTypeParameter,
+  AST_NODE_TYPES.TSTypeParameterDeclaration,
+  AST_NODE_TYPES.TSTypeParameterInstantiation,
+  AST_NODE_TYPES.TSTypeReference,
+  AST_NODE_TYPES.TSUnionType,
 ]);
 const STATEMENT_LIST_PARENTS = new Set([
   AST_NODE_TYPES.Program,
@@ -147,36 +213,34 @@ interface VariableDeclaratorObj {
   const?: ElementList;
 }
 type ElementList = number | 'first' | 'off';
-type Options = [
-  'tab' | number,
-  {
-    SwitchCase?: number;
-    VariableDeclarator?: ElementList | VariableDeclaratorObj;
-    outerIIFEBody?: number;
-    MemberExpression?: number | 'off';
-    FunctionDeclaration?: {
-      parameters?: ElementList;
-      body?: number;
-    };
-    FunctionExpression?: {
-      parameters?: ElementList;
-      body?: number;
-    };
-    CallExpression?: {
-      arguments?: ElementList;
-    };
-    ArrayExpression?: ElementList;
-    ObjectExpression?: ElementList;
-    ImportDeclaration?: ElementList;
-    flatTernaryExpressions?: boolean;
-    ignoredNodes?: string[];
-    ignoreComments?: boolean;
-  }
-];
+interface IndentConfig {
+  SwitchCase?: number;
+  VariableDeclarator?: ElementList | VariableDeclaratorObj;
+  outerIIFEBody?: number;
+  MemberExpression?: number | 'off';
+  FunctionDeclaration?: {
+    parameters?: ElementList;
+    body?: number;
+  };
+  FunctionExpression?: {
+    parameters?: ElementList;
+    body?: number;
+  };
+  CallExpression?: {
+    arguments?: ElementList;
+  };
+  ArrayExpression?: ElementList;
+  ObjectExpression?: ElementList;
+  ImportDeclaration?: ElementList;
+  flatTernaryExpressions?: boolean;
+  ignoredNodes?: string[];
+  ignoreComments?: boolean;
+}
+type Options = [('tab' | number)?, IndentConfig?];
 type MessageIds = 'wrongIndentation';
 
 type AppliedOptions = ExcludeKeys<
-  RequireKeys<Options[1], keyof Options[1]>,
+  RequireKeys<IndentConfig, keyof IndentConfig>,
   'VariableDeclarator'
 > & {
   VariableDeclarator: 'off' | VariableDeclaratorObj;
@@ -334,18 +398,18 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [userIndent, userOptions]) {
     const indentType = userIndent === 'tab' ? 'tab' : 'space';
-    const indentSize = userIndent === 'tab' ? 1 : userIndent;
+    const indentSize = userIndent === 'tab' ? 1 : userIndent!;
 
     const options = userOptions as AppliedOptions;
     if (
-      typeof userOptions.VariableDeclarator === 'number' ||
-      userOptions.VariableDeclarator === 'first'
+      typeof userOptions!.VariableDeclarator === 'number' ||
+      userOptions!.VariableDeclarator === 'first'
     ) {
       // typescript doesn't narrow the type for some reason
       options.VariableDeclarator = {
-        var: userOptions.VariableDeclarator as number | 'first',
-        let: userOptions.VariableDeclarator as number | 'first',
-        const: userOptions.VariableDeclarator as number | 'first',
+        var: userOptions!.VariableDeclarator as number | 'first',
+        let: userOptions!.VariableDeclarator as number | 'first',
+        const: userOptions!.VariableDeclarator as number | 'first',
       };
     }
 
@@ -528,7 +592,7 @@ export default createRule<Options, MessageIds>({
         while (isOpeningParenToken(token) && token !== startToken) {
           token = sourceCode.getTokenBefore(token)!;
         }
-        return sourceCode.getTokenAfter(token!)!;
+        return sourceCode.getTokenAfter(token)!;
       }
 
       // Run through all the tokens in the list, and offset them by one indent level (mainly for comments, other things will end up overridden)
@@ -570,11 +634,10 @@ export default createRule<Options, MessageIds>({
           const firstTokenOfPreviousElement =
             previousElement && getFirstToken(previousElement);
           const previousElementLastToken =
-            previousElement && sourceCode.getLastToken(previousElement);
+            previousElement && sourceCode.getLastToken(previousElement)!;
 
           if (
             previousElement &&
-            previousElementLastToken &&
             previousElementLastToken.loc.end.line -
               countTrailingLinebreaks(previousElementLastToken.value) >
               startToken.loc.end.line
@@ -798,25 +861,6 @@ export default createRule<Options, MessageIds>({
           openingBracket,
           closingBracket,
           options.ArrayExpression,
-        );
-      },
-
-      'ObjectExpression, ObjectPattern'(
-        node: TSESTree.ObjectExpression | TSESTree.ObjectPattern,
-      ) {
-        const openingCurly = sourceCode.getFirstToken(node)!;
-        const closingCurly = sourceCode.getTokenAfter(
-          node.properties.length
-            ? node.properties[node.properties.length - 1]
-            : openingCurly,
-          isClosingBraceToken,
-        )!;
-
-        addElementListIndent(
-          node.properties,
-          openingCurly,
-          closingCurly,
-          options.ObjectExpression,
         );
       },
 
@@ -1147,6 +1191,7 @@ export default createRule<Options, MessageIds>({
       ) {
         const object =
           node.type === AST_NODE_TYPES.MetaProperty ? node.meta : node.object;
+        const isComputed = 'computed' in node && node.computed;
         const firstNonObjectToken = sourceCode.getFirstTokenBetween(
           object,
           node.property,
@@ -1165,12 +1210,11 @@ export default createRule<Options, MessageIds>({
           ? sourceCode.getTokenBefore(object, { skip: objectParenCount - 1 })!
           : sourceCode.getFirstToken(object)!;
         const lastObjectToken = sourceCode.getTokenBefore(firstNonObjectToken)!;
-        const firstPropertyToken =
-          'computed' in node && node.computed
-            ? firstNonObjectToken
-            : secondNonObjectToken;
+        const firstPropertyToken = isComputed
+          ? firstNonObjectToken
+          : secondNonObjectToken;
 
-        if ('computed' in node && node.computed) {
+        if (isComputed) {
           // For computed MemberExpressions, match the closing bracket with the opening bracket.
           offsets.setDesiredOffset(
             sourceCode.getLastToken(node)!,
@@ -1212,9 +1256,7 @@ export default createRule<Options, MessageIds>({
            */
           offsets.setDesiredOffset(
             secondNonObjectToken,
-            'computed' in node && node.computed
-              ? firstNonObjectToken
-              : offsetBase,
+            isComputed ? firstNonObjectToken : offsetBase,
             options.MemberExpression,
           );
         } else {
@@ -1241,6 +1283,25 @@ export default createRule<Options, MessageIds>({
         ) {
           addFunctionCallIndent(node);
         }
+      },
+
+      'ObjectExpression, ObjectPattern'(
+        node: TSESTree.ObjectExpression | TSESTree.ObjectPattern,
+      ) {
+        const openingCurly = sourceCode.getFirstToken(node)!;
+        const closingCurly = sourceCode.getTokenAfter(
+          node.properties.length
+            ? node.properties[node.properties.length - 1]
+            : openingCurly,
+          isClosingBraceToken,
+        )!;
+
+        addElementListIndent(
+          node.properties,
+          openingCurly,
+          closingCurly,
+          options.ObjectExpression,
+        );
       },
 
       Property(node) {
@@ -1451,8 +1512,7 @@ export default createRule<Options, MessageIds>({
         }
         offsets.setDesiredOffsets(
           node.name.range,
-          sourceCode.getFirstToken(node),
-          0,
+          sourceCode.getFirstToken(node)!,
         );
         addElementListIndent(node.attributes, firstToken, closingToken, 1);
       },
