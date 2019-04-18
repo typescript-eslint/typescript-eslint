@@ -8,9 +8,6 @@ import {
   AST_TOKEN_TYPES,
 } from '@typescript-eslint/typescript-estree';
 import { createGlobalLinebreakMatcher } from 'eslint/lib/util/ast-utils';
-import { RuleListener, RuleFunction } from 'ts-eslint';
-import { createRule, ExcludeKeys, RequireKeys } from '../util';
-import { TokenInfo, OffsetStorage, TokenOrComment } from '../util/indent';
 import {
   isOpeningParenToken,
   isClosingParenToken,
@@ -23,6 +20,11 @@ import {
   isColonToken,
   isCommentToken,
 } from 'eslint-utils';
+import { RuleListener, RuleFunction } from 'ts-eslint';
+import { TokenOrComment } from './BinarySearchTree';
+import { OffsetStorage } from './OffsetStorage';
+import { TokenInfo } from './TokenInfo';
+import { createRule, ExcludeKeys, RequireKeys } from '../../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
