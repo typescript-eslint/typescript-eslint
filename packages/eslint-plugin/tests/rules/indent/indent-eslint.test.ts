@@ -10,7 +10,7 @@ import {
 } from '@typescript-eslint/typescript-estree';
 import fs from 'fs';
 import path from 'path';
-import rule from '../../../src/rules/indent-base';
+import rule from '../../../src/rules/indent-new-do-not-use';
 import { RuleTester } from '../../RuleTester';
 import { expectedErrors, unIndent } from './utils';
 
