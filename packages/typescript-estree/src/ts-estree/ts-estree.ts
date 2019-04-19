@@ -288,6 +288,7 @@ export type Expression =
   | JSXOpeningFragment
   | JSXSpreadChild
   | LogicalExpression
+  | NewExpression
   | RestElement
   | SequenceExpression
   | SpreadElement
