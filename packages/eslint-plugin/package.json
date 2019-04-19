@@ -46,7 +46,6 @@
     "eslint-docs": "^0.2.6"
   },
   "peerDependencies": {
-    "eslint": "^5.0.0",
-    "typescript": "*"
+    "eslint": "^5.0.0"
   }
 }

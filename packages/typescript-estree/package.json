@@ -39,9 +39,6 @@
     "lodash.unescape": "4.0.1",
     "semver": "5.5.0"
   },
-  "peerDependencies": {
-    "typescript": "*"
-  },
   "devDependencies": {
     "@babel/types": "^7.3.2",
     "@typescript-eslint/shared-fixtures": "1.6.0"
