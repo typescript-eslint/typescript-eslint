@@ -33,8 +33,7 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "eslint": "^5.0.0",
-    "typescript": "*"
+    "eslint": "^5.0.0"
   },
   "dependencies": {
     "@typescript-eslint/typescript-estree": "1.7.0",
