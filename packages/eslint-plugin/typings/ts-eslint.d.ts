@@ -325,7 +325,7 @@ declare module 'ts-eslint' {
     /**
      * An override of the location of the report
      */
-    loc?: TSESTree.SourceLocation;
+    loc?: TSESTree.SourceLocation | TSESTree.LineAndColumnData;
   }
 
   interface RuleContext<
