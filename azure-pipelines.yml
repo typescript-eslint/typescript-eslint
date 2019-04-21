@@ -24,7 +24,7 @@ jobs:
         displayName: 'Typecheck all packages'
 
       - script: |
-          yarn check-format
+          yarn format-check
         displayName: 'Check code formatting'
 
       - script: |
