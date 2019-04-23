@@ -54,7 +54,11 @@ export default util.createRule({
 
       const stringType = typeChecker.typeToString(type);
 
-      if (stringType === 'number' || stringType === 'string') {
+      if (
+        stringType === 'number' ||
+        stringType === 'string' ||
+        stringType === 'bigint'
+      ) {
         return stringType;
       }
       return 'invalid';

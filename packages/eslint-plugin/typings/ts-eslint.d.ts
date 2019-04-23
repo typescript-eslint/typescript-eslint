@@ -209,7 +209,11 @@ declare module 'ts-eslint' {
     /**
      * The general category the rule falls within
      */
-    category: 'Best Practices' | 'Stylistic Issues' | 'Variables';
+    category:
+      | 'Best Practices'
+      | 'Stylistic Issues'
+      | 'Variables'
+      | 'Possible Errors';
     /**
      * Concise description of the rule
      */

@@ -330,3 +330,26 @@ declare module 'eslint/lib/rules/no-useless-constructor' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/no-extra-parens' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    'unexpected',
+    (
+      | 'all'
+      | 'functions'
+      | {
+          conditionalAssign?: boolean;
+          returnAssign?: boolean;
+          nestedBinaryExpressions?: boolean;
+          ignoreJSX?: 'none' | 'all' | 'multi-line' | 'single-line';
+          enforceForArrowConditionals?: boolean;
+        })[],
+    {
+      MemberExpression(node: TSESTree.MemberExpression): void;
+    }
+  >;
+  export = rule;
+}

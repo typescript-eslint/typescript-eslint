@@ -12,6 +12,14 @@ ruleTester.run('member-naming', rule, {
       options: [{ public: '^_' }],
     },
     {
+      code: `class Class { private constructor(); _fooBar() {} }`,
+      options: [{ private: '^_' }],
+    },
+    {
+      code: `class Class { constructor() {}; _fooBar() {} }`,
+      options: [{ public: '^_' }],
+    },
+    {
       code: `class Class { public _fooBar() {} }`,
       options: [{ public: '^_' }],
     },

@@ -39,7 +39,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowExpressions: true,
+      allowExpressions: false,
       allowTypedFunctionExpressions: false,
     },
   ],
@@ -89,6 +89,16 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression,
     ): void {
       if (
+        options.allowExpressions &&
+        node.type !== AST_NODE_TYPES.FunctionDeclaration &&
+        node.parent &&
+        node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
+        node.parent.type !== AST_NODE_TYPES.MethodDefinition
+      ) {
+        return;
+      }
+
+      if (
         !node.returnType &&
         node.parent &&
         !isConstructor(node.parent) &&
@@ -112,15 +122,6 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      if (
-        options.allowExpressions &&
-        node.parent &&
-        node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
-        node.parent.type !== AST_NODE_TYPES.MethodDefinition
-      ) {
-        return;
-      }
-
       if (
         options.allowTypedFunctionExpressions &&
         node.parent &&
