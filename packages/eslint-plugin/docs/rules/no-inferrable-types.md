@@ -20,7 +20,7 @@ interface Options {
 
 ### Default
 
-With the default options are:
+The default options are:
 
 ```JSON
 {
@@ -29,7 +29,7 @@ With the default options are:
 }
 ```
 
-With the default options, the following patterns are valid:
+With these options, the following patterns are valid:
 
 ```ts
 const a = 10n;
