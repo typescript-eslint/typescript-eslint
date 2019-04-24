@@ -98,6 +98,23 @@ let arrowFn: FuncType = () => 'test';
 let funcExpr: FuncType = function() {
   return 'test';
 };
+
+let asTyped = (() => '') as () => string;
+
+interface ObjectType {
+  foo(): number;
+}
+let objectProp: ObjectType = {
+  foo: () => 1,
+};
+
+interface ObjectType {
+  foo(): number;
+}
+
+let asObjectProp = {
+  foo: () => 1,
+} as ObjectType;
 ```
 
 ## When Not To Use It

@@ -419,6 +419,7 @@ declare module 'ts-eslint' {
     ClassBody?: RuleFunction<TSESTree.ClassBody>;
     ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
     ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
+    ClassProperty?: RuleFunction<TSESTree.ClassProperty>;
     Comment?: RuleFunction<TSESTree.Comment>;
     ConditionalExpression?: RuleFunction<TSESTree.ConditionalExpression>;
     ContinueStatement?: RuleFunction<TSESTree.ContinueStatement>;
