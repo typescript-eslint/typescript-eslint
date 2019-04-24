@@ -10,15 +10,15 @@ TODO when all config is added.
 
 The recommended set is an **_opinionated_** set of rules that we think you should use because:
 
-1. They help you adhere to Typescript best practices.
+1. They help you adhere to TypeScript best practices.
 2. They help catch probable issue vectors in your code.
 
 That being said, it is not the only way to use `@typescript-eslint/eslint-plugin`, nor is it the way that will necesasrily work 100% for your project/company. It has been built based off of two main things:
 
-1. Typescript best practices collected and collated from places like:
-   - [Typescript repo](https://github.com/Microsoft/TypeScript).
-   - [Typescript documentation](https://www.typescriptlang.org/docs/home.html).
-   - The style used by many OSS Typescript projects.
+1. TypeScript best practices collected and collated from places like:
+   - [TypeScript repo](https://github.com/Microsoft/TypeScript).
+   - [TypeScript documentation](https://www.typescriptlang.org/docs/home.html).
+   - The style used by many OSS TypeScript projects.
 2. The combined state of community contributed rulesets at the time of creation.
 
 We will not add new rules to the recommended set unless we release a major package version (i.e. it is seen as a breaking change).
