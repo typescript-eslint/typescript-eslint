@@ -57,7 +57,6 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks if a node is a setter.
-     * @param parent The node to check
      */
     function isSetter(node: TSESTree.Node): boolean {
       return (
@@ -67,7 +66,6 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks if a node is a variable declarator with a type annotation.
-     * @param node The node to check
      */
     function isVariableDeclaratorWithTypeAnnotation(
       node: TSESTree.Node,
@@ -76,6 +74,38 @@ export default util.createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.VariableDeclarator &&
         !!node.id.typeAnnotation
       );
+    }
+
+    /**
+     * Checks if a node belongs to:
+     * const x: Foo = { prop: () => {} }
+     */
+    function isPropertyOfObjectVariableDeclaratorWithTypeAnnotation(
+      node: TSESTree.Node,
+    ): boolean {
+      let parent = node.parent;
+      if (!parent || parent.type !== AST_NODE_TYPES.Property) {
+        return false;
+      }
+      parent = parent.parent;
+      if (!parent || parent.type !== AST_NODE_TYPES.ObjectExpression) {
+        return false;
+      }
+      parent = parent.parent;
+      return !!parent && isVariableDeclaratorWithTypeAnnotation(parent);
+    }
+
+    function isPropertyOfObjectInAsExpression(node: TSESTree.Node): boolean {
+      let parent = node.parent;
+      if (!parent || parent.type !== AST_NODE_TYPES.Property) {
+        return false;
+      }
+      parent = parent.parent;
+      if (!parent || parent.type !== AST_NODE_TYPES.ObjectExpression) {
+        return false;
+      }
+      parent = parent.parent;
+      return !!parent && parent.type === AST_NODE_TYPES.TSAsExpression;
     }
 
     /**
@@ -117,15 +147,15 @@ export default util.createRule<Options, MessageIds>({
      * @param {ASTNode} node The node representing a function.
      */
     function checkFunctionExpressionReturnType(
-      node:
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
+      node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): void {
       if (
         options.allowTypedFunctionExpressions &&
         node.parent &&
-        isVariableDeclaratorWithTypeAnnotation(node.parent)
+        (isVariableDeclaratorWithTypeAnnotation(node.parent) ||
+          isPropertyOfObjectVariableDeclaratorWithTypeAnnotation(node) ||
+          node.parent.type === AST_NODE_TYPES.TSAsExpression ||
+          isPropertyOfObjectInAsExpression(node))
       ) {
         return;
       }
