@@ -28,7 +28,7 @@
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
     "test": "jest --coverage",
-    "create:config": "ts-node --files tools/create-config.ts",
+    "recommended:update": "ts-node tools/update-recommended.ts",
     "prebuild": "npm run clean",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/",

@@ -7,7 +7,6 @@
   "rules": {
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/array-type": "error",
-    "@typescript-eslint/ban-ts-ignore": "error",
     "@typescript-eslint/ban-types": "error",
     "camelcase": "off",
     "@typescript-eslint/camelcase": "error",
@@ -29,7 +28,6 @@
     "@typescript-eslint/no-non-null-assertion": "error",
     "@typescript-eslint/no-object-literal-type-assertion": "error",
     "@typescript-eslint/no-parameter-properties": "error",
-    "@typescript-eslint/no-require-imports": "error",
     "@typescript-eslint/no-triple-slash-reference": "error",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",
@@ -37,7 +35,6 @@
     "@typescript-eslint/no-var-requires": "error",
     "@typescript-eslint/prefer-interface": "error",
     "@typescript-eslint/prefer-namespace-keyword": "error",
-    "@typescript-eslint/promise-function-async": "error",
     "@typescript-eslint/type-annotation-spacing": "error"
   }
 }
