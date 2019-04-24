@@ -28,7 +28,7 @@ If you are ready to get started you can jump to the package READMEs from here: [
 
 - Behind the scenes it uses a parser to turn your source code into a data format called an Abstract Syntax Tree (AST). This data format is then used by plugins to create assertions called lint rules around what your code should look or behave like.
 
-**TypeScript** is awesome static code analyzer for JavaScript code, and some additional syntax that it provides on top of the underlying JavaScript language.
+**TypeScript** is an awesome static code analyzer for JavaScript code, and some additional syntax that it provides on top of the underlying JavaScript language.
 
 - Behind the scenes it uses a parser to turn your source code into a data format called an Abstract Syntax Tree (AST). This data format is then used by other parts of the TypeScript Compiler to do things like give you feedback on issues, allow you to refactor easily etc.
 

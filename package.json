@@ -71,7 +71,7 @@
     "lerna": "^3.10.5",
     "lint-staged": "8.1.0",
     "lodash.isplainobject": "4.0.6",
-    "prettier": "^1.14.3",
+    "prettier": "^1.17.0",
     "rimraf": "^2.6.3",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.1",
