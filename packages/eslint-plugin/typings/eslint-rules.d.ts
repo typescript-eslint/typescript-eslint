@@ -353,3 +353,34 @@ declare module 'eslint/lib/rules/no-extra-parens' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/semi' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    never,
+    [
+      'always' | 'never',
+      {
+        beforeStatementContinuationChars?: 'always' | 'any' | 'never';
+        omitLastInOneLineBlock?: boolean;
+      }?
+    ],
+    {
+      VariableDeclaration(node: TSESTree.VariableDeclaration): void;
+      ExpressionStatement(node: TSESTree.ExpressionStatement): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      ThrowStatement(node: TSESTree.ThrowStatement): void;
+      DoWhileStatement(node: TSESTree.DoWhileStatement): void;
+      DebuggerStatement(node: TSESTree.DebuggerStatement): void;
+      BreakStatement(node: TSESTree.BreakStatement): void;
+      ContinueStatement(node: TSESTree.ContinueStatement): void;
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
+      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+      ExportDefaultDeclaration(node: TSESTree.ExportDefaultDeclaration): void;
+    }
+  >;
+  export = rule;
+}
