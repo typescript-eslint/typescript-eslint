@@ -124,6 +124,7 @@ typeof (a);
 () => (1 as 1);
 x = a as b;
 const x = (1 as 1) | 2;
+const x = 1 | (2 as 2);
 const x = await (foo as Promise<void>);
 const res2 = (fn as foo)();
 (x as boolean) ? 1 : 0;
@@ -139,11 +140,13 @@ for (;;(1 as 1)) {}
 if (1 as 1) {}
 const x = (1 as 1).toString();
 new (1 as 1)();
-const x = { ...(1 as 1) };
+const x = { ...(1 as 1), ...{} };
 throw (1 as 1);
+throw 1;
 const x = !(1 as 1);
 const x = (1 as 1)++;
-function *x() { yield (1 as 1); }
+function *x() { yield (1 as 1); yield 1; }
+switch (foo) { case 1: case (2 as 2): }
       `,
       options: [
         'all',
