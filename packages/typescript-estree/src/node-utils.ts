@@ -86,6 +86,7 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
   [SyntaxKind.KeyOfKeyword]: 'keyof',
   [SyntaxKind.NewKeyword]: 'new',
   [SyntaxKind.ImportKeyword]: 'import',
+  [SyntaxKind.ReadonlyKeyword]: 'readonly',
 };
 
 /**
@@ -677,7 +678,7 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
  * @param callback
  */
 export function firstDefined<T, U>(
-  array: ReadonlyArray<T> | undefined,
+  array: readonly T[] | undefined,
   callback: (element: T, index: number) => U | undefined,
 ): U | undefined {
   if (array === undefined) {

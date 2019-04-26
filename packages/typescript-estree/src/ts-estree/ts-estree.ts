@@ -254,6 +254,7 @@ export type ClassElement =
 export type DeclarationStatement =
   | ClassDeclaration
   | ClassExpression
+  | ExportDefaultDeclaration
   | ExportAllDeclaration
   | ExportNamedDeclaration
   | FunctionDeclaration
@@ -322,7 +323,8 @@ export type LeftHandSideExpression =
   | MemberExpression
   | PrimaryExpression
   | TaggedTemplateExpression
-  | TSNonNullExpression;
+  | TSNonNullExpression
+  | TSAsExpression;
 export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
 export type Modifier =
   | TSAbstractKeyword
@@ -1318,7 +1320,7 @@ export interface TSTypeLiteral extends BaseNode {
 
 export interface TSTypeOperator extends BaseNode {
   type: AST_NODE_TYPES.TSTypeOperator;
-  operator: 'keyof' | 'unique';
+  operator: 'keyof' | 'unique' | 'readonly';
   typeAnnotation?: TSTypeAnnotation;
 }
 

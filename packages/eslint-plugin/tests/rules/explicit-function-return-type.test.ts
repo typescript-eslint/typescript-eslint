@@ -41,6 +41,7 @@ class Test {
   method(): void {
     return;
   }
+  arrow = (): string => 'arrow';
 }
             `,
     },
@@ -53,6 +54,7 @@ function test() {
             `,
     },
     {
+      filename: 'test.ts',
       code: `fn(() => {});`,
       options: [
         {
@@ -61,6 +63,7 @@ function test() {
       ],
     },
     {
+      filename: 'test.ts',
       code: `fn(function() {});`,
       options: [
         {
@@ -69,6 +72,7 @@ function test() {
       ],
     },
     {
+      filename: 'test.ts',
       code: `[function() {}, () => {}]`,
       options: [
         {
@@ -77,6 +81,7 @@ function test() {
       ],
     },
     {
+      filename: 'test.ts',
       code: `(function() {});`,
       options: [
         {
@@ -85,6 +90,7 @@ function test() {
       ],
     },
     {
+      filename: 'test.ts',
       code: `(() => {})();`,
       options: [
         {
@@ -113,6 +119,29 @@ var funcExpr: Foo = function() { return 'test'; };
           allowTypedFunctionExpressions: true,
         },
       ],
+    },
+    {
+      filename: 'test.ts',
+      code: `const x = (() => {}) as Foo`,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const x = {
+  foo: () => {},
+} as Foo
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const x: Foo = {
+  foo: () => {},
+}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
     },
   ],
   invalid: [
@@ -171,6 +200,7 @@ class Test {
   method() {
     return;
   }
+  arrow = () => 'arrow';
 }
             `,
       errors: [
@@ -183,6 +213,25 @@ class Test {
           messageId: 'missingReturnType',
           line: 8,
           column: 9,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 11,
+          column: 11,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `function test() {
+        return;
+      }`,
+      options: [{ allowExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          column: 1,
         },
       ],
     },
@@ -231,6 +280,50 @@ class Test {
           messageId: 'missingReturnType',
           line: 1,
           column: 16,
+        },
+      ],
+    },
+
+    {
+      filename: 'test.ts',
+      code: `const x = (() => {}) as Foo`,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+interface Foo {}
+const x = {
+  foo: () => {},
+} as Foo
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+interface Foo {}
+const x: Foo = {
+  foo: () => {},
+}
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
         },
       ],
     },

@@ -50,6 +50,12 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
 
 const noopFileWatcher = { close: () => {} };
 
+function getTsconfigPath(tsconfigPath: string, extra: Extra): string {
+  return path.isAbsolute(tsconfigPath)
+    ? tsconfigPath
+    : path.join(extra.tsconfigRootDir || process.cwd(), tsconfigPath);
+}
+
 /**
  * Calculate project environments using options provided by consumer and paths from config
  * @param code The code being linted
@@ -64,7 +70,6 @@ export function calculateProjectParserOptions(
   extra: Extra,
 ): ts.Program[] {
   const results = [];
-  const tsconfigRootDir = extra.tsconfigRootDir;
 
   // preserve reference to code and file being linted
   currentLintOperationState.code = code;
@@ -77,11 +82,8 @@ export function calculateProjectParserOptions(
     watchCallback(filePath, ts.FileWatcherEventKind.Changed);
   }
 
-  for (let tsconfigPath of extra.projects) {
-    // if absolute paths aren't provided, make relative to tsconfigRootDir
-    if (!path.isAbsolute(tsconfigPath)) {
-      tsconfigPath = path.join(tsconfigRootDir, tsconfigPath);
-    }
+  for (let rawTsconfigPath of extra.projects) {
+    const tsconfigPath = getTsconfigPath(rawTsconfigPath, extra);
 
     const existingWatch = knownWatchProgramMap.get(tsconfigPath);
 
@@ -150,9 +152,9 @@ export function calculateProjectParserOptions(
       const oldReadDirectory = host.readDirectory;
       host.readDirectory = (
         path: string,
-        extensions?: ReadonlyArray<string>,
-        exclude?: ReadonlyArray<string>,
-        include?: ReadonlyArray<string>,
+        extensions?: readonly string[],
+        exclude?: readonly string[],
+        include?: readonly string[],
         depth?: number,
       ) =>
         oldReadDirectory(
@@ -193,12 +195,7 @@ export function createProgram(code: string, filePath: string, extra: Extra) {
     return undefined;
   }
 
-  let tsconfigPath = extra.projects[0];
-
-  // if absolute paths aren't provided, make relative to tsconfigRootDir
-  if (!path.isAbsolute(tsconfigPath)) {
-    tsconfigPath = path.join(extra.tsconfigRootDir, tsconfigPath);
-  }
+  const tsconfigPath = getTsconfigPath(extra.projects[0], extra);
 
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,

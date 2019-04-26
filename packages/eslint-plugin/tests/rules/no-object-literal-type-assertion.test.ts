@@ -26,6 +26,8 @@ ruleTester.run('no-object-literal-type-assertion', rule, {
     // Allow cast to 'unknown'
     `const foo = {} as unknown;`,
     `const foo = <unknown> {};`,
+    `const foo = {} as const;`,
+    `const foo = <const> {};`,
     {
       code: `print({ bar: 5 } as Foo)`,
       options: [

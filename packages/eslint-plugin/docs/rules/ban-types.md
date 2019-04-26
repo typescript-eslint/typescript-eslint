@@ -46,7 +46,7 @@ class Foo<F = string> extends Bar<string> implements Baz<string> {
                 "fixWith": "string"
             }
         }
-    }
+    }]
 }
 ```
 
