@@ -8,6 +8,7 @@ import { Linter } from 'eslint';
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const MAX_RULE_NAME_LENGTH = 32 + RULE_NAME_PREFIX.length;
+const DEFAULT_RULE_SETTING = 'warn';
 
 const ruleEntries = Object.entries(rules);
 
@@ -28,12 +29,18 @@ interface LinterConfig extends Linter.Config {
 const reducer = <TMessageIds extends string>(
   config: LinterConfigRules,
   entry: [string, RuleModule<TMessageIds, any, any>],
+  setting?: 'error' | 'warn',
 ) => {
   const key = entry[0];
   const value = entry[1];
   const ruleName = `${RULE_NAME_PREFIX}${key}`;
-  const setting = value.meta.docs.recommended;
-  const usedSetting = !setting ? 'warn' : setting;
+
+  const recommendation = value.meta.docs.recommended;
+  const usedSetting = setting
+    ? setting
+    : !recommendation
+    ? DEFAULT_RULE_SETTING
+    : recommendation;
 
   console.log(ruleName.padEnd(MAX_RULE_NAME_LENGTH), '=', usedSetting);
   config[ruleName] = usedSetting;
@@ -67,7 +74,10 @@ writeConfig(baseConfig, path.resolve(__dirname, '../src/configs/base.json'));
 console.log('------------------------- all.json -------------------------');
 const allConfig: LinterConfig = {
   extends: './configs/base.json',
-  rules: ruleEntries.reduce(reducer, {}) as LinterConfigRules,
+  rules: ruleEntries.reduce(
+    (config, entry) => reducer(config, entry, 'error'),
+    {},
+  ) as LinterConfigRules,
 };
 writeConfig(allConfig, path.resolve(__dirname, '../src/configs/all.json'));
 
@@ -76,7 +86,7 @@ const recommendedConfig: LinterConfig = {
   extends: './configs/base.json',
   rules: ruleEntries
     .filter(entry => !!entry[1].meta.docs.recommended)
-    .reduce(reducer, {}) as LinterConfigRules,
+    .reduce((config, entry) => reducer(config, entry), {}) as LinterConfigRules,
 };
 writeConfig(
   recommendedConfig,

@@ -17,7 +17,7 @@ describe('all.json config', () => {
     );
   });
 
-  it('has all rules enabled either with "warn" or "error"', () => {
-    expect(['warn', 'error']).toEqual(expect.arrayContaining(configRuleValues));
+  it('has all rules enabled with "error"', () => {
+    expect(['error']).toEqual(expect.arrayContaining(configRuleValues));
   });
 });
