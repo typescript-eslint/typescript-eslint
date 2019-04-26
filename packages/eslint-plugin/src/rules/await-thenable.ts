@@ -9,7 +9,7 @@ export default util.createRule({
     docs: {
       description: 'Disallows awaiting a value that is not a Thenable',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
       tslintName: 'await-thenable',
     },
     messages: {
