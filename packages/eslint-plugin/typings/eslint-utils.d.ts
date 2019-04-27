@@ -73,7 +73,7 @@ declare module 'eslint-utils' {
       globalScope: TSESLint.Scope.Scope,
       options?: {
         mode: 'strict' | 'legacy';
-        globalObjectNames: ReadonlyArray<string>;
+        globalObjectNames: readonly string[];
       },
     );
 
@@ -102,7 +102,7 @@ declare module 'eslint-utils' {
     }
     export interface FoundReference<T = any> {
       node: TSESTree.Node;
-      path: ReadonlyArray<string>;
+      path: readonly string[];
       type: ReferenceType;
       entry: T;
     }

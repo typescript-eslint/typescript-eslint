@@ -1,9 +1,11 @@
 import { ESLintUtils } from '@typescript-eslint/util';
 
+export * from './astUtils';
+export * from './createRule';
 export * from './getParserServices';
 export * from './misc';
 export * from './types';
 
 // this is done for convenience - saves migrating all of the old rules
-const { applyDefault, createRule, deepMerge, isObjectNotArray } = ESLintUtils;
-export { applyDefault, createRule, deepMerge, isObjectNotArray };
+const { applyDefault, deepMerge, isObjectNotArray } = ESLintUtils;
+export { applyDefault, deepMerge, isObjectNotArray };

@@ -17,19 +17,21 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "scripts": {
-    "postinstall": "lerna bootstrap && yarn build && lerna link",
-    "test": "lerna run test --parallel",
     "build": "lerna run build",
     "clean": "lerna clean && lerna run clean",
-    "typecheck": "lerna run typecheck",
-    "lint": "eslint . --ext .js,.ts",
-    "lint-fix": "eslint . --ext .js,.ts --fix",
     "cz": "git-cz",
-    "check-format": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
+    "generate-contributors": "yarn ts-node ./tools/generate-contributors.ts && yarn all-contributors generate",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
+    "format-check": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
     "integration-tests": "docker-compose -f tests/integration/docker-compose.yml up",
     "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
-    "generate-contributors": "yarn ts-node ./tools/generate-contributors.ts && yarn all-contributors generate"
+    "lint": "eslint . --ext .js,.ts",
+    "lint-fix": "eslint . --ext .js,.ts --fix",
+    "pre-commit": "yarn lint-staged",
+    "pre-push": "yarn lint && yarn typecheck && yarn format-check",
+    "postinstall": "lerna bootstrap && yarn build && lerna link",
+    "test": "lerna run test --parallel",
+    "typecheck": "lerna run typecheck"
   },
   "config": {
     "commitizen": {
@@ -69,7 +71,7 @@
     "lerna": "^3.10.5",
     "lint-staged": "8.1.0",
     "lodash.isplainobject": "4.0.6",
-    "prettier": "^1.14.3",
+    "prettier": "^1.17.0",
     "rimraf": "^2.6.3",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.1",

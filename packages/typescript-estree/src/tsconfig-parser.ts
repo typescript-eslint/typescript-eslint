@@ -152,9 +152,9 @@ export function calculateProjectParserOptions(
       const oldReadDirectory = host.readDirectory;
       host.readDirectory = (
         path: string,
-        extensions?: ReadonlyArray<string>,
-        exclude?: ReadonlyArray<string>,
-        include?: ReadonlyArray<string>,
+        extensions?: readonly string[],
+        exclude?: readonly string[],
+        include?: readonly string[],
         depth?: number,
       ) =>
         oldReadDirectory(

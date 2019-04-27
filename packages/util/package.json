@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/util",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -31,7 +31,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "1.6.0"
+    "@typescript-eslint/typescript-estree": "1.7.0"
   },
   "devDependencies": {},
   "peerDependencies": {

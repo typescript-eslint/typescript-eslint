@@ -678,7 +678,7 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
  * @param callback
  */
 export function firstDefined<T, U>(
-  array: ReadonlyArray<T> | undefined,
+  array: readonly T[] | undefined,
   callback: (element: T, index: number) => U | undefined,
 ): U | undefined {
   if (array === undefined) {

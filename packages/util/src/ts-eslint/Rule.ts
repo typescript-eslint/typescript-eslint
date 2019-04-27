@@ -1,6 +1,7 @@
 import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
-import { AST, Linter } from 'eslint';
 import { JSONSchema4 } from 'json-schema';
+import { AST } from './AST';
+import { Linter } from './Linter';
 import { Scope } from './Scope';
 import { SourceCode } from './SourceCode';
 
@@ -124,7 +125,7 @@ interface ReportDescriptor<TMessageIds extends string> {
   /**
    * An override of the location of the report
    */
-  loc?: TSESTree.SourceLocation;
+  loc?: TSESTree.SourceLocation | TSESTree.LineAndColumnData;
 }
 
 interface RuleContext<
@@ -218,6 +219,7 @@ interface RuleListener {
   ClassBody?: RuleFunction<TSESTree.ClassBody>;
   ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
   ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
+  ClassProperty?: RuleFunction<TSESTree.ClassProperty>;
   Comment?: RuleFunction<TSESTree.Comment>;
   ConditionalExpression?: RuleFunction<TSESTree.ConditionalExpression>;
   ContinueStatement?: RuleFunction<TSESTree.ContinueStatement>;

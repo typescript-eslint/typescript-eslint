@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('array-type', rule, {
   valid: [
     {
-      code: 'let a = []',
+      code: 'let a: readonly any[] = []',
       options: ['array'],
     },
     {
@@ -826,31 +826,87 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
         },
       ],
     },
+
+    // readonly tests
+    {
+      code: 'const x: readonly number[] = [];',
+      output: 'const x: ReadonlyArray<number> = [];',
+      options: ['generic'],
+      errors: [
+        {
+          messageId: 'errorStringGeneric',
+          data: { type: 'number' },
+          line: 1,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: 'const x: readonly (number | string | boolean)[] = [];',
+      output: 'const x: ReadonlyArray<number | string | boolean> = [];',
+      options: ['generic'],
+      errors: [
+        {
+          messageId: 'errorStringGeneric',
+          data: { type: 'T' },
+          line: 1,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: 'const x: ReadonlyArray<number> = [];',
+      output: 'const x: readonly number[] = [];',
+      options: ['array'],
+      errors: [
+        {
+          messageId: 'errorStringArray',
+          data: { type: 'number' },
+          line: 1,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: 'const x: ReadonlyArray<number | string | boolean> = [];',
+      output: 'const x: readonly (number | string | boolean)[] = [];',
+      options: ['array'],
+      errors: [
+        {
+          messageId: 'errorStringArray',
+          data: { type: 'T' },
+          line: 1,
+          column: 10,
+        },
+      ],
+    },
   ],
 });
 
 // eslint rule tester is not working with multi-pass
 // https://github.com/eslint/eslint/issues/11187
 describe('array-type (nested)', () => {
-  it('should fix correctly', () => {
+  describe('should deeply fix correctly', () => {
     function testOutput(option: string, code: string, output: string): void {
-      const linter = new Linter();
+      it(code, () => {
+        const linter = new Linter();
 
-      linter.defineRule('array-type', Object.assign({}, rule) as any);
-      const result = linter.verifyAndFix(
-        code,
-        {
-          rules: {
-            'array-type': [2, option],
+        linter.defineRule('array-type', Object.assign({}, rule) as any);
+        const result = linter.verifyAndFix(
+          code,
+          {
+            rules: {
+              'array-type': [2, option],
+            },
+            parser: '@typescript-eslint/parser',
           },
-          parser: '@typescript-eslint/parser',
-        },
-        {
-          fix: true,
-        },
-      );
+          {
+            fix: true,
+          },
+        );
 
-      expect(output).toBe(result.output);
+        expect(result.output).toBe(output);
+      });
     }
 
     testOutput(
@@ -893,6 +949,33 @@ class Foo<T = Bar[][]> extends Bar<T, T[]> implements Baz<T[]> {
       'generic',
       `let yy: number[][] = [[4, 5], [6]];`,
       `let yy: Array<Array<number>> = [[4, 5], [6]];`,
+    );
+
+    // readonly
+    testOutput(
+      'generic',
+      `let x: readonly number[][]`,
+      `let x: ReadonlyArray<Array<number>>`,
+    );
+    testOutput(
+      'generic',
+      `let x: readonly (readonly number[])[]`,
+      `let x: ReadonlyArray<ReadonlyArray<number>>`,
+    );
+    testOutput(
+      'array',
+      `let x: ReadonlyArray<Array<number>>`,
+      `let x: readonly number[][]`,
+    );
+    testOutput(
+      'array',
+      `let x: ReadonlyArray<ReadonlyArray<number>>`,
+      `let x: readonly (readonly number[])[]`,
+    );
+    testOutput(
+      'array',
+      `let x: ReadonlyArray<readonly number[]>`,
+      `let x: readonly (readonly number[])[]`,
     );
   });
 });

@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace, no-redeclare */
 
 import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
-import { AST } from 'eslint';
 import { Scope } from './Scope';
 
 namespace SourceCode {
   export interface Config {
     text: string;
-    ast: AST.Program;
+    ast: TSESTree.Program;
     parserServices?: ParserServices;
     scopeManager?: Scope.ScopeManager;
     visitorKeys?: VisitorKeys;
@@ -42,15 +41,14 @@ namespace SourceCode {
 
 declare class SourceCode {
   text: string;
-  ast: AST.Program;
+  ast: TSESTree.Program;
   lines: string[];
   hasBOM: boolean;
   parserServices: ParserServices;
   scopeManager: Scope.ScopeManager;
   visitorKeys: SourceCode.VisitorKeys;
 
-  constructor(text: string, ast: AST.Program);
-  // eslint-disable-next-line no-dupe-class-members
+  constructor(text: string, ast: TSESTree.Program);
   constructor(config: SourceCode.Config);
 
   static splitLines(text: string): string[];
@@ -165,7 +163,6 @@ declare class SourceCode {
     beforeCount?: number,
     afterCount?: number,
   ): TSESTree.Token[];
-  // eslint-disable-next-line no-dupe-class-members
   getTokens(
     node: TSESTree.Node,
     options: SourceCode.FilterPredicate | SourceCode.CursorWithCountOptions,

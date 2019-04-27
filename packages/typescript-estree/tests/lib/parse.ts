@@ -1,6 +1,6 @@
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
-import { ParserOptions } from '../../src/parser-options';
+import { TSEStreeOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 describe('parse()', () => {
@@ -23,7 +23,7 @@ describe('parse()', () => {
 
   describe('general', () => {
     const code = 'let foo = bar;';
-    const config: ParserOptions = {
+    const config: TSEStreeOptions = {
       comment: true,
       tokens: true,
       range: true,
@@ -38,7 +38,7 @@ describe('parse()', () => {
 
   describe('non string code', () => {
     const code = (12345 as any) as string;
-    const config: ParserOptions = {
+    const config: TSEStreeOptions = {
       comment: true,
       tokens: true,
       range: true,
@@ -96,7 +96,7 @@ describe('parse()', () => {
 
   describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
     const code = '@test const foo = 2';
-    const options: ParserOptions = {
+    const options: TSEStreeOptions = {
       comment: true,
       tokens: true,
       range: true,

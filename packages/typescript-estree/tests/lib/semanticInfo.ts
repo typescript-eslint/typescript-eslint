@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
 import ts from 'typescript';
-import { ParserOptions } from '../../src/parser-options';
+import { TSEStreeOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
@@ -14,7 +14,7 @@ import { TSESTree } from '../../src/ts-estree';
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
 
-function createOptions(fileName: string): ParserOptions & { cwd?: string } {
+function createOptions(fileName: string): TSEStreeOptions & { cwd?: string } {
   return {
     loc: true,
     range: true,

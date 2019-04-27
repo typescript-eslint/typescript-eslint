@@ -19,7 +19,7 @@ export interface Extra {
   extraFileExtensions: string[];
 }
 
-export interface ParserOptions {
+export interface TSEStreeOptions {
   range?: boolean;
   loc?: boolean;
   tokens?: boolean;

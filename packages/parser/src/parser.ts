@@ -1,7 +1,7 @@
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
-  ParserOptions as ParserOptionsTsESTree,
+  TSEStreeOptions,
   ParserServices,
 } from '@typescript-eslint/typescript-estree';
 import { TSESLint } from '@typescript-eslint/util';
@@ -59,7 +59,7 @@ export function parseForESLint(
     options.ecmaFeatures = {};
   }
 
-  const parserOptions: ParserOptionsTsESTree = {};
+  const parserOptions: TSEStreeOptions = {};
   Object.assign(parserOptions, options, {
     useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
     jsx: validateBoolean(options.ecmaFeatures.jsx),

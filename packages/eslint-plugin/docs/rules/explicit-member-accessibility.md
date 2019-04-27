@@ -42,7 +42,7 @@ A possible configuration could be:
 ```ts
 {
   accessibility: 'explicit',
-  overrides {
+  overrides: {
     accessors: 'explicit',
     constructors: 'no-public',
     methods: 'explicit',

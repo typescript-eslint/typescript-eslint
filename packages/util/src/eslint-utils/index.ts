@@ -1,3 +1,3 @@
 export * from './applyDefault';
-export * from './createRule';
+export * from './RuleCreator';
 export * from './deepMerge';

@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import glob from 'glob';
-import { ParserOptions } from '../../src/parser-options';
+import { TSEStreeOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
@@ -29,7 +29,7 @@ describe('JSX', () => {
   ): (filename: string) => void {
     return filename => {
       const code = readFileSync(filename, 'utf8');
-      const config: ParserOptions = {
+      const config: TSEStreeOptions = {
         loc: true,
         range: true,
         tokens: true,

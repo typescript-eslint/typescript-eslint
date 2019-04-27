@@ -8,8 +8,6 @@ export { ESLintUtils, TSESLint };
 export {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
-  ParserOptions,
   ParserServices,
   TSESTree,
-  TSNode,
 } from '@typescript-eslint/typescript-estree';

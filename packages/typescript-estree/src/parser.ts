@@ -3,7 +3,7 @@ import * as ts from 'typescript'; // leave this as * as ts so people using util 
 import convert from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
-import { Extra, ParserOptions, ParserServices } from './parser-options';
+import { Extra, TSEStreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 import { TSESTree } from './ts-estree';
 import {
@@ -65,7 +65,7 @@ function resetExtra(): void {
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTFromProject(code: string, options: ParserOptions) {
+function getASTFromProject(code: string, options: TSEStreeOptions) {
   return firstDefined(
     calculateProjectParserOptions(
       code,
@@ -86,7 +86,7 @@ function getASTFromProject(code: string, options: ParserOptions) {
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTAndDefaultProject(code: string, options: ParserOptions) {
+function getASTAndDefaultProject(code: string, options: TSEStreeOptions) {
   const fileName = options.filePath || getFileName(options);
   const program = createProgram(code, fileName, extra);
   const ast = program && program.getSourceFile(fileName);
@@ -158,7 +158,7 @@ function createNewProgram(code: string) {
  */
 function getProgramAndAST(
   code: string,
-  options: ParserOptions,
+  options: TSEStreeOptions,
   shouldProvideParserServices: boolean,
 ) {
   return (
@@ -168,7 +168,7 @@ function getProgramAndAST(
   );
 }
 
-function applyParserOptionsToExtra(options: ParserOptions): void {
+function applyParserOptionsToExtra(options: TSEStreeOptions): void {
   /**
    * Track range information in the AST
    */
@@ -264,12 +264,12 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
-type AST<T extends ParserOptions> = TSESTree.Program &
+type AST<T extends TSEStreeOptions> = TSESTree.Program &
   (T['range'] extends true ? { range: [number, number] } : {}) &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
 
-export interface ParseAndGenerateServicesResult<T extends ParserOptions> {
+export interface ParseAndGenerateServicesResult<T extends TSEStreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
@@ -280,7 +280,7 @@ export interface ParseAndGenerateServicesResult<T extends ParserOptions> {
 
 export const version: string = require('../package.json').version;
 
-export function parse<T extends ParserOptions = ParserOptions>(
+export function parse<T extends TSEStreeOptions = TSEStreeOptions>(
   code: string,
   options?: T,
 ): AST<T> {
@@ -331,7 +331,7 @@ export function parse<T extends ParserOptions = ParserOptions>(
 }
 
 export function parseAndGenerateServices<
-  T extends ParserOptions = ParserOptions
+  T extends TSEStreeOptions = TSEStreeOptions
 >(code: string, options: T): ParseAndGenerateServicesResult<T> {
   /**
    * Reset the parse configuration
@@ -406,5 +406,5 @@ export function parseAndGenerateServices<
   };
 }
 
-export { ParserOptions, ParserServices };
+export { TSEStreeOptions, ParserServices };
 export * from './ts-estree';

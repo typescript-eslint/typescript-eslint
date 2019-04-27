@@ -1,5 +1,5 @@
 import * as parser from '../src/parser';
-import { ParserOptions } from '../src/parser-options';
+import { TSEStreeOptions } from '../src/parser-options';
 
 /**
  * Returns a raw copy of the given AST
@@ -19,7 +19,7 @@ export function getRaw(ast: any) {
 
 export function parseCodeAndGenerateServices(
   code: string,
-  config: ParserOptions,
+  config: TSEStreeOptions,
 ) {
   return parser.parseAndGenerateServices(code, config);
 }
@@ -28,13 +28,13 @@ export function parseCodeAndGenerateServices(
  * Returns a function which can be used as the callback of a Jest test() block,
  * and which performs an assertion on the snapshot for the given code and config.
  * @param {string} code The source code to parse
- * @param {ParserOptions} config the parser configuration
+ * @param {TSEStreeOptions} config the parser configuration
  * @param {boolean} generateServices Flag determining whether to generate ast maps and program or not
  * @returns {jest.ProvidesCallback} callback for Jest it() block
  */
 export function createSnapshotTestBlock(
   code: string,
-  config: ParserOptions,
+  config: TSEStreeOptions,
   generateServices?: true,
 ) {
   /**
