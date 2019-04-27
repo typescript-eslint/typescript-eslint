@@ -19,7 +19,7 @@ export default util.createRule({
     },
     schema: [],
     deprecated: true,
-    replacedBy: 'consistent-type-definisions',
+    replacedBy: ['consistent-type-definisions'],
   },
   defaultOptions: [],
   create(context) {
