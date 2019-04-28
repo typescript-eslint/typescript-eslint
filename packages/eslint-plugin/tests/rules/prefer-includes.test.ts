@@ -89,6 +89,31 @@ ruleTester.run('prefer-includes', rule, {
         something.test(a)
       }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/471
+    `
+      class MyList<T> {
+        indexOf(value: T): number {
+          return -1;
+        }
+
+        includes(value: T): boolean {
+          return this.indexOf(value) !== -1
+        }
+      }
+    `,
+    `
+    class Wrapper {
+      includes(value: T): boolean {
+        class MyList<T> {
+          indexOf(value: T): number {
+            return -1;
+          }
+        }
+
+        return true;
+      }
+    }
+    `,
   ],
   invalid: [
     // positive

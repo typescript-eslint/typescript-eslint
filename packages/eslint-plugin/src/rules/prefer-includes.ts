@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { getStaticValue } from 'eslint-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
 import ts from 'typescript';
@@ -153,6 +153,21 @@ export default createRule({
           ) {
             return;
           }
+        }
+
+        // Check if `indexOf` is used as part of `includes` method declaration
+        let parent = node.parent;
+        while (parent) {
+          if (
+            (parent.type === AST_NODE_TYPES.MethodDefinition &&
+              parent.key.type === 'Identifier' &&
+              parent.key.name === 'includes') ||
+            // to handle a case where a class is declared inside `includes` method
+            parent.type === AST_NODE_TYPES.ClassDeclaration
+          ) {
+            return;
+          }
+          parent = parent.parent;
         }
 
         // Report it.
