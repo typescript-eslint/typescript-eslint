@@ -98,6 +98,20 @@ instane.boundStatic && 0;
 ContainsMethods.boundStatic ? 1 : 0;
 ContainsMethods.unboundStatic ? 1 : 0;
 `,
+    `interface RecordA {
+  readonly type: "A"
+  readonly a: {}
+}
+interface RecordB {
+  readonly type: "B"
+  readonly b: {}
+}
+type AnyRecord = RecordA | RecordB
+
+function test(obj: AnyRecord) {
+  switch (obj.type) {
+  }
+}`,
   ],
   invalid: [
     {
