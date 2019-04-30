@@ -16,6 +16,16 @@ If you ignore it, we're just going to respond asking you to fill it out, which w
 The more relevant information you can include, the faster we can find the issue and fix it without asking you for more info.
 -->
 
+<!--
+Are you opening an issue because the rule you're trying to use is not found?
+🚨 STOP 🚨 𝗦𝗧𝗢𝗣 🚨 𝑺𝑻𝑶𝑷 🚨
+1) Check the releases log: https://github.com/typescript-eslint/typescript-eslint/releases
+    -  If the rule isn't listed there, then chances are it hasn't been released to the main npm tag yet.
+2) Try installing the `canary` tag: `npm i @typescript-eslint/eslint-plugin@canary`.
+    - The canary tag is built for every commit to master, so it contains the bleeding edge build. 
+3) If ESLint still can't find the rule, then consider reporting an issue.
+-->
+
 **Repro**
 
 <!--
