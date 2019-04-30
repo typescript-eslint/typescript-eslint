@@ -20,7 +20,7 @@ type Record<T, U> = {
   ],
   invalid: [
     {
-      code: `type T = { x: number; }`,
+      code: `type T = { x: number; };`,
       output: `interface T { x: number; }`,
       errors: [
         {
@@ -31,7 +31,7 @@ type Record<T, U> = {
       ],
     },
     {
-      code: `type T={ x: number; }`,
+      code: `type T={ x: number; };`,
       output: `interface T { x: number; }`,
       errors: [
         {
@@ -42,7 +42,7 @@ type Record<T, U> = {
       ],
     },
     {
-      code: `type T=                         { x: number; }`,
+      code: `type T=                         { x: number; };`,
       output: `interface T { x: number; }`,
       errors: [
         {
