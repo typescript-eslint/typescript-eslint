@@ -1,10 +1,9 @@
 ---
-name: "@typescript-eslint/eslint-plugin"
+name: '@typescript-eslint/eslint-plugin'
 about: Report an issue with the '@typescript-eslint/eslint-plugin' package
-title: "[rulename] <issue title>"
+title: '[rulename] <issue title>'
 labels: 'package: eslint-plugin, triage'
 assignees: ''
-
 ---
 
 <!--
