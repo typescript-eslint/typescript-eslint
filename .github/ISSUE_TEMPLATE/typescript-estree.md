@@ -1,9 +1,10 @@
 ---
-name: '@typescript-eslint/typescript-estree'
+name: "@typescript-eslint/typescript-estree"
 about: Report an issue with the `@typescript-eslint/typescript-estree` package
 title: ''
 labels: 'package: typescript-estree, triage'
 assignees: ''
+
 ---
 
 **What code were you trying to parse?**
