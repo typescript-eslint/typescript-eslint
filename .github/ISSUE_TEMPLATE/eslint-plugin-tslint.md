@@ -1,10 +1,9 @@
 ---
-name: "@typescript-eslint/eslint-plugin-tslint"
+name: '@typescript-eslint/eslint-plugin-tslint'
 about: Report an issue with the '@typescript-eslint/eslint-plugin-tslint' package
 title: ''
-labels: triage
+labels: 'package: @typescript-eslint/eslint-plugin-tslint, triage'
 assignees: ''
-
 ---
 
 **What code were you trying to parse?**
