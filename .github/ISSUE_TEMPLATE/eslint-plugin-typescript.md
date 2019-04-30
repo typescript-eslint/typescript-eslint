@@ -1,7 +1,7 @@
 ---
 name: '@typescript-eslint/eslint-plugin'
 about: Report an issue with the '@typescript-eslint/eslint-plugin' package
-title: ''
+title: '[rulename] <issue title>'
 labels: 'package: eslint-plugin, triage'
 assignees: ''
 ---
@@ -9,19 +9,24 @@ assignees: ''
 <!--
 If you have a problem with a specific rule, please begin your issue title with [rulename] to make it easier to search for.
 I.e. "[no-unused-vars] False positive when fooing the bar"
+
+Please don't ignore this template.
+
+If you ignore it, we're just going to respond asking you to fill it out, which wastes everyone's time.
+The more relevant information you can include, the faster we can find the issue and fix it without asking you for more info.
 -->
 
 **Repro**
 
 <!--
-Include a minimal reproduction case.
-Please try to avoid code that isn't directly related to the bug, as it makes it harder to investigate.
+Include a ***minimal*** reproduction case.
+The more irrelevant code/config you give, the harder it is for us to investigate.
 -->
 
 ```JSON
 {
   "rules": {
-    "typescript/<rule>": "<setting>"
+    "typescript/<rule>": ["<setting>"]
   }
 }
 ```
@@ -35,6 +40,13 @@ Please try to avoid code that isn't directly related to the bug, as it makes it 
 **Actual Result**
 
 **Additional Info**
+
+<!--
+Did eslint throw an exception?
+
+Please run your lint again with the --debug flag, and dump the output below.
+i.e. eslint --ext ".ts,.js" src --debug
+-->
 
 **Versions**
 
