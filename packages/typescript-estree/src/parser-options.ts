@@ -18,6 +18,7 @@ export interface Extra {
   projects: string[];
   tsconfigRootDir: string;
   extraFileExtensions: string[];
+  preserveNodeMaps?: boolean;
 }
 
 export interface ParserOptions {
@@ -34,6 +35,7 @@ export interface ParserOptions {
   filePath?: string;
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
+  preserveNodeMaps?: boolean;
 }
 
 export interface ParserWeakMap<TKey, TValueBase> {
