@@ -16668,7 +16668,7 @@ Object {
           },
           "childScopes": Array [],
           "functionExpressionScope": false,
-          "isStrict": true,
+          "isStrict": false,
           "references": Array [],
           "throughReferences": Array [],
           "type": "function",
