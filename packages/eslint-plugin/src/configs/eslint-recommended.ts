@@ -6,47 +6,44 @@
  * 2. Typescript allows for more modern Javascript code that can thus be
  *    enabled.
  */
-module.exports = {
-  "overrides": [
+export default {
+  overrides: [
     {
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
-      "rules": {
+      files: ['*.ts', '*.tsx'],
+      rules: {
         /**
-          * 1. Disable things that are checked by Typescript
-          */
+         * 1. Disable things that are checked by Typescript
+         */
         //Checked by Typescript - ts(2378)
-        "getter-return": false,
+        'getter-return': false,
         // Checked by Typescript - ts(2300)
-        "no-dupe-args": false,
+        'no-dupe-args': false,
         // Checked by Typescript - ts(1117)
-        "no-dupe-keys": false,
+        'no-dupe-keys': false,
         // Checked by Typescript - ts(7027)
-        "no-unreachable": false,
+        'no-unreachable': false,
         // Checked by Typescript - ts(2367)
-        "valid-typeof": false,
+        'valid-typeof': false,
         // Checked by Typescript - ts(2588)
-        "no-const-assign": false,
+        'no-const-assign': false,
         // Checked by Typescript - ts(2588)
-        "no-new-symbol": false,
+        'no-new-symbol': false,
         // Checked by Typescript - ts(2376)
-        "no-this-before-super": false,
+        'no-this-before-super': false,
         // This is checked by Typescript using the option `strictNullChecks`.
-        "no-undef": false,
+        'no-undef': false,
         /**
          * 2. Enable more ideomatic code
          */
         // Typescript allows const and let instead of var.
-        "no-var": "error",
-        "prefer-const": "error",
+        'no-var': 'error',
+        'prefer-const': 'error',
         // The spread operator/rest parameters should be prefered in Typescript.
-        "prefer-rest-params": "error",
-        "prefer-spread": "error",
+        'prefer-rest-params': 'error',
+        'prefer-spread': 'error',
         // This is already checked by Typescript.
-        "no-dupe-class-members": "error"
-      }
-    }
-  ]
+        'no-dupe-class-members': 'error',
+      },
+    },
+  ],
 };
