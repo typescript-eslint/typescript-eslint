@@ -81,7 +81,7 @@
 | [`no-unnecessary-class`]             | ✅  | [`@typescript-eslint/no-extraneous-class`]                            |
 | [`no-unsafe-any`]                    | 🛑  | N/A                                                                   |
 | [`no-unsafe-finally`]                | 🌟  | [`no-unsafe-finally`][no-unsafe-finally]                              |
-| [`no-unused-expression`]             | 🌟  | [`no-unused-expression`][no-unused-expressions]                       |
+| [`no-unused-expression`]             | 🌟  | [`no-unused-expressions`][no-unused-expressions]                      |
 | [`no-unused-variable`]               | 🌓  | [`@typescript-eslint/no-unused-vars`]                                 |
 | [`no-use-before-declare`]            | ✅  | [`@typescript-eslint/no-use-before-define`]                           |
 | [`no-var-keyword`]                   | 🌟  | [`no-var`][no-var]                                                    |

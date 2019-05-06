@@ -26,7 +26,7 @@ const SyntaxKind = ts.SyntaxKind;
 interface ConverterOptions {
   errorOnUnknownASTType: boolean;
   useJSXTextNode: boolean;
-  shouldProvideParserServices: boolean;
+  shouldPreserveNodeMaps: boolean;
 }
 
 /**
@@ -168,7 +168,7 @@ export class Converter {
     node: ts.Node,
     result: TSESTree.BaseNode | null,
   ) {
-    if (result && this.options.shouldProvideParserServices) {
+    if (result && this.options.shouldPreserveNodeMaps) {
       if (!this.tsNodeToESTreeNodeMap.has(node)) {
         this.tsNodeToESTreeNodeMap.set(node, result);
       }
@@ -217,7 +217,7 @@ export class Converter {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
     }
 
-    if (result && this.options.shouldProvideParserServices) {
+    if (result && this.options.shouldPreserveNodeMaps) {
       this.esTreeNodeToTSNodeMap.set(result, node);
     }
     return result as T;
