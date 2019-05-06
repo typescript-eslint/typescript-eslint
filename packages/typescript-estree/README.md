@@ -66,7 +66,19 @@ Parses the given string of code with the options provided and returns an ESTree-
    * When value is `false`, no logging will occur.
    * When value is not provided, `console.log()` will be used.
    */
-  loggerFn: undefined
+  loggerFn: undefined,
+
+  /**
+   * Allows the user to control whether or not two-way AST node maps are preserved
+   * during the AST conversion process.
+   *
+   * By default: the AST node maps are NOT preserved, unless `project` has been specified,
+   * in which case the maps are made available on the returned `parserServices`.
+   *
+   * NOTE: If `preserveNodeMaps` is explicitly set by the user, it will be respected,
+   * regardless of whether or not `project` is in use.
+   */
+  preserveNodeMaps: undefined
 }
 ```
 
