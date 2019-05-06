@@ -57,6 +57,7 @@ function resetExtra(): void {
     code: '',
     tsconfigRootDir: process.cwd(),
     extraFileExtensions: [],
+    preserveNodeMaps: undefined,
   };
 }
 
@@ -241,6 +242,18 @@ function applyParserOptionsToExtra(options: ParserOptions): void {
   ) {
     extra.extraFileExtensions = options.extraFileExtensions;
   }
+  /**
+   * Allow the user to enable or disable the preservation of the AST node maps
+   * during the conversion process.
+   *
+   * NOTE: For backwards compatibility we also preserve node maps in the case where `project` is set,
+   * and `preserveNodeMaps` is not explicitly set to anything.
+   */
+  extra.preserveNodeMaps =
+    typeof options.preserveNodeMaps === 'boolean' && options.preserveNodeMaps;
+  if (options.preserveNodeMaps === undefined && extra.projects.length > 0) {
+    extra.preserveNodeMaps = true;
+  }
 }
 
 function warnAboutTSVersion(): void {
@@ -373,10 +386,18 @@ export function parseAndGenerateServices<
     shouldProvideParserServices,
   );
   /**
+   * Determine whether or not two-way maps of converted AST nodes should be preserved
+   * during the conversion process
+   */
+  const shouldPreserveNodeMaps =
+    extra.preserveNodeMaps !== undefined
+      ? extra.preserveNodeMaps
+      : shouldProvideParserServices;
+  /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
    * mappings between converted and original AST nodes
    */
-  const { estree, astMaps } = convert(ast, extra, shouldProvideParserServices);
+  const { estree, astMaps } = convert(ast, extra, shouldPreserveNodeMaps);
   /**
    * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
    * there may be other syntactic or semantic issues in the code that we can optionally report on.
@@ -395,11 +416,11 @@ export function parseAndGenerateServices<
     services: {
       program: shouldProvideParserServices ? program : undefined,
       esTreeNodeToTSNodeMap:
-        shouldProvideParserServices && astMaps
+        shouldPreserveNodeMaps && astMaps
           ? astMaps.esTreeNodeToTSNodeMap
           : undefined,
       tsNodeToESTreeNodeMap:
-        shouldProvideParserServices && astMaps
+        shouldPreserveNodeMaps && astMaps
           ? astMaps.tsNodeToESTreeNodeMap
           : undefined,
     },
