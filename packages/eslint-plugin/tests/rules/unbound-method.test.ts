@@ -97,7 +97,7 @@ instane.boundStatic && 0;
 
 ContainsMethods.boundStatic ? 1 : 0;
 ContainsMethods.unboundStatic ? 1 : 0;
-`,
+    `,
     `interface RecordA {
   readonly type: "A"
   readonly a: {}
@@ -111,7 +111,20 @@ type AnyRecord = RecordA | RecordB
 function test(obj: AnyRecord) {
   switch (obj.type) {
   }
-}`,
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/496
+    `
+class CommunicationError {
+	constructor() {
+    const x = CommunicationError.prototype;
+	}
+}
+    `,
+    `
+class CommunicationError {}
+const x = CommunicationError.prototype;
+    `,
   ],
   invalid: [
     {
@@ -279,6 +292,21 @@ ContainsMethods.unboundStatic;
       errors: [
         {
           line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/496
+    {
+      code: `
+class CommunicationError {
+  foo() {}
+}
+const x = CommunicationError.prototype.foo;
+      `,
+      errors: [
+        {
+          line: 5,
           messageId: 'unbound',
         },
       ],
