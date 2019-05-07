@@ -88,6 +88,7 @@ describe('parse()', () => {
           tokens: expect.any(Array),
           tsconfigRootDir: expect.any(String),
           useJSXTextNode: false,
+          preserveNodeMaps: false,
         },
         false,
       );
@@ -124,6 +125,106 @@ describe('parse()', () => {
       expect(() => {
         parser.parseAndGenerateServices(code, options);
       }).toThrow('Decorators are not valid here.');
+    });
+  });
+
+  describe('preserveNodeMaps', () => {
+    const code = 'var a = true';
+    const baseConfig: TSEStreeOptions = {
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true,
+    };
+
+    it('should not impact the use of parse()', () => {
+      const resultWithNoOptionSet = parser.parse(code, baseConfig);
+      const resultWithOptionSetToTrue = parser.parse(code, {
+        ...baseConfig,
+        preserveNodeMaps: true,
+      });
+      const resultWithOptionSetToFalse = parser.parse(code, {
+        ...baseConfig,
+        preserveNodeMaps: false,
+      });
+      const resultWithOptionSetExplicitlyToUndefined = parser.parse(code, {
+        ...baseConfig,
+        preserveNodeMaps: undefined,
+      });
+
+      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
+      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
+      expect(resultWithNoOptionSet).toMatchObject(
+        resultWithOptionSetExplicitlyToUndefined,
+      );
+    });
+
+    it('should not preserve node maps by default for parseAndGenerateServices(), unless `project` is set', () => {
+      const noOptionSet = parser.parseAndGenerateServices(code, baseConfig);
+
+      expect(noOptionSet.services.esTreeNodeToTSNodeMap).toBeUndefined();
+      expect(noOptionSet.services.tsNodeToESTreeNodeMap).toBeUndefined();
+
+      const withProjectNoOptionSet = parser.parseAndGenerateServices(code, {
+        ...baseConfig,
+        project: './tsconfig.json',
+      });
+
+      expect(withProjectNoOptionSet.services.esTreeNodeToTSNodeMap).toEqual(
+        expect.any(WeakMap),
+      );
+      expect(withProjectNoOptionSet.services.tsNodeToESTreeNodeMap).toEqual(
+        expect.any(WeakMap),
+      );
+    });
+
+    it('should preserve node maps for parseAndGenerateServices() when option is `true`, regardless of `project` config', () => {
+      const optionSetToTrue = parser.parseAndGenerateServices(code, {
+        ...baseConfig,
+        preserveNodeMaps: true,
+      });
+
+      expect(optionSetToTrue.services.esTreeNodeToTSNodeMap).toEqual(
+        expect.any(WeakMap),
+      );
+      expect(optionSetToTrue.services.tsNodeToESTreeNodeMap).toEqual(
+        expect.any(WeakMap),
+      );
+
+      const withProjectOptionSetToTrue = parser.parseAndGenerateServices(code, {
+        ...baseConfig,
+        preserveNodeMaps: true,
+        project: './tsconfig.json',
+      });
+
+      expect(withProjectOptionSetToTrue.services.esTreeNodeToTSNodeMap).toEqual(
+        expect.any(WeakMap),
+      );
+      expect(withProjectOptionSetToTrue.services.tsNodeToESTreeNodeMap).toEqual(
+        expect.any(WeakMap),
+      );
+    });
+
+    it('should not preserve node maps for parseAndGenerateServices() when option is `false`, regardless of `project` config', () => {
+      const optionSetToFalse = parser.parseAndGenerateServices(code, {
+        ...baseConfig,
+        preserveNodeMaps: false,
+      });
+
+      expect(optionSetToFalse.services.esTreeNodeToTSNodeMap).toBeUndefined();
+      expect(optionSetToFalse.services.tsNodeToESTreeNodeMap).toBeUndefined();
+
+      const withProjectOptionSetToFalse = parser.parseAndGenerateServices(
+        code,
+        { ...baseConfig, preserveNodeMaps: false, project: './tsconfig.json' },
+      );
+
+      expect(
+        withProjectOptionSetToFalse.services.esTreeNodeToTSNodeMap,
+      ).toBeUndefined();
+      expect(
+        withProjectOptionSetToFalse.services.tsNodeToESTreeNodeMap,
+      ).toBeUndefined();
     });
   });
 });

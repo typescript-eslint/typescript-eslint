@@ -96,6 +96,7 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.IfStatement:
     case AST_NODE_TYPES.ForStatement:
     case AST_NODE_TYPES.MemberExpression:
+    case AST_NODE_TYPES.SwitchStatement:
     case AST_NODE_TYPES.UpdateExpression:
     case AST_NODE_TYPES.WhileStatement:
       return true;

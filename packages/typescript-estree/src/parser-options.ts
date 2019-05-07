@@ -17,6 +17,7 @@ export interface Extra {
   projects: string[];
   tsconfigRootDir: string;
   extraFileExtensions: string[];
+  preserveNodeMaps?: boolean;
 }
 
 export interface TSEStreeOptions {
@@ -33,6 +34,7 @@ export interface TSEStreeOptions {
   filePath?: string;
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
+  preserveNodeMaps?: boolean;
 }
 
 // This lets us use generics to type the return value, and removes the need to
