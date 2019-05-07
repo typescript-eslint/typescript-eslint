@@ -15,23 +15,23 @@ export default {
          * 1. Disable things that are checked by Typescript
          */
         //Checked by Typescript - ts(2378)
-        'getter-return': false,
+        'getter-return': 'off',
         // Checked by Typescript - ts(2300)
-        'no-dupe-args': false,
+        'no-dupe-args': 'off',
         // Checked by Typescript - ts(1117)
-        'no-dupe-keys': false,
+        'no-dupe-keys': 'off',
         // Checked by Typescript - ts(7027)
-        'no-unreachable': false,
+        'no-unreachable': 'off',
         // Checked by Typescript - ts(2367)
-        'valid-typeof': false,
+        'valid-typeof': 'off',
         // Checked by Typescript - ts(2588)
-        'no-const-assign': false,
+        'no-const-assign': 'off',
         // Checked by Typescript - ts(2588)
-        'no-new-symbol': false,
+        'no-new-symbol': 'off',
         // Checked by Typescript - ts(2376)
-        'no-this-before-super': false,
+        'no-this-before-super': 'off',
         // This is checked by Typescript using the option `strictNullChecks`.
-        'no-undef': false,
+        'no-undef': 'off',
         /**
          * 2. Enable more ideomatic code
          */
