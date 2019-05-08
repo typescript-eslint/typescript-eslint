@@ -117,11 +117,13 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
       parent = parent.parent;
+      /* istanbul ignore if */// this shouldn't happen, checking just in case
       if (!parent || parent.type !== AST_NODE_TYPES.ObjectExpression) {
         return false;
       }
 
       parent = parent.parent;
+      /* istanbul ignore if */// this shouldn't happen, checking just in case
       if (!parent) {
         return false;
       }
