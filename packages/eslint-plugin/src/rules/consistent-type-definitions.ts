@@ -66,7 +66,7 @@ export default util.createRule({
           });
         }
       },
-      TSInterfaceDeclaration: node => {
+      TSInterfaceDeclaration(node) {
         if (option === 'type') {
           context.report({
             node: node.id,
