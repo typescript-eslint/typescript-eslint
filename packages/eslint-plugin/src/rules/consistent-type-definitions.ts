@@ -3,7 +3,7 @@ import { RuleFix } from 'ts-eslint';
 import * as util from '../util';
 
 export default util.createRule({
-  name: 'consistent-type-definisions',
+  name: 'consistent-type-definitions',
   meta: {
     type: 'suggestion',
     docs: {
@@ -11,7 +11,7 @@ export default util.createRule({
         'Consistent with type definition either `interface` or `type`',
       category: 'Stylistic Issues',
       recommended: 'error',
-      tslintName: 'consistent-type-definisions',
+      tslintName: 'consistent-type-definitions',
     },
     messages: {
       interfaceOverType: 'Use an `interface` instead of a `type`',

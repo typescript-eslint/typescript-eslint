@@ -1,11 +1,11 @@
-import rule from '../../src/rules/consistent-type-definisions';
+import rule from '../../src/rules/consistent-type-definitions';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('consistent-type-definisions', rule, {
+ruleTester.run('consistent-type-definitions', rule, {
   valid: [
     `var foo = { };`,
     `interface A {}`,
