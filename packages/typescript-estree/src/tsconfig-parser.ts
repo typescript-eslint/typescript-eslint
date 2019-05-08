@@ -89,7 +89,10 @@ export function calculateProjectParserOptions(
 
     if (typeof existingWatch !== 'undefined') {
       // get new program (updated if necessary)
-      results.push(existingWatch.getProgram().getProgram());
+      const updatedProgram = existingWatch.getProgram().getProgram();
+      updatedProgram.getTypeChecker(); // sets parent pointers in source files
+      results.push(updatedProgram);
+
       continue;
     }
 
