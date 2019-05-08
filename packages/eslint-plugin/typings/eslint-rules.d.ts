@@ -168,6 +168,27 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-magic-numbers' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/util';
+
+  const rule: TSESLint.RuleModule<
+    'noMagic',
+    [
+      {
+        ignore?: string[];
+        ignoreArrayIndexes?: boolean;
+        enforceConst?: boolean;
+        detectObjects?: boolean;
+        ignoreNumericLiteralTypes?: boolean;
+      }
+    ],
+    {
+      Literal(node: TSESTree.Literal): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-redeclare' {
   import { TSESLint, TSESTree } from '@typescript-eslint/util';
 
