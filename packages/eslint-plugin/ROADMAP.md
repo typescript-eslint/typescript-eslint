@@ -40,7 +40,7 @@
 
 | TSLint rule                          |     | ESLint rule                                                           |
 | ------------------------------------ | :-: | --------------------------------------------------------------------- |
-| [`await-promise`]                    | 🛑  | N/A                                                                   |
+| [`await-promise`]                    | ✅  | [`@typescript-eslint/await-thenable`]                                 |
 | [`ban-comma-operator`]               | 🌟  | [`no-sequences`][no-sequences]                                        |
 | [`ban`]                              | 🌟  | [`no-restricted-properties`][no-restricted-properties]                |
 | [`curly`]                            | 🌟  | [`curly`][curly]                                                      |
@@ -81,8 +81,8 @@
 | [`no-unnecessary-class`]             | ✅  | [`@typescript-eslint/no-extraneous-class`]                            |
 | [`no-unsafe-any`]                    | 🛑  | N/A                                                                   |
 | [`no-unsafe-finally`]                | 🌟  | [`no-unsafe-finally`][no-unsafe-finally]                              |
-| [`no-unused-expression`]             | 🌟  | [`no-unused-expression`][no-unused-expressions]                       |
-| [`no-unused-variable`]               | 🌓  | [`no-unused-vars`][no-unused-vars] <sup>[2]</sup>                     |
+| [`no-unused-expression`]             | 🌟  | [`no-unused-expressions`][no-unused-expressions]                      |
+| [`no-unused-variable`]               | 🌓  | [`@typescript-eslint/no-unused-vars`]                                 |
 | [`no-use-before-declare`]            | ✅  | [`@typescript-eslint/no-use-before-define`]                           |
 | [`no-var-keyword`]                   | 🌟  | [`no-var`][no-var]                                                    |
 | [`no-void-expression`]               | 🌟  | [`no-void`][no-void]                                                  |
@@ -100,7 +100,6 @@
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                              |
 
 <sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)<br>
-<sup>[2]</sup> Missing private class member support. [`@typescript-eslint/no-unused-vars`] adds support for some TS-specific features.
 
 ### Maintainability
 
@@ -177,7 +176,7 @@
 | [`prefer-while`]                    | 🛑  | N/A                                                                                 |
 | [`quotemark`]                       | 🌟  | [`quotes`][quotes]                                                                  |
 | [`return-undefined`]                | 🛑  | N/A                                                                                 |
-| [`semicolon`]                       | 🌟  | [`semi`][semi]                                                                      |
+| [`semicolon`]                       | 🌓  | [`@typescript-eslint/semi`]                                                         |
 | [`space-before-function-paren`]     | 🌟  | [`space-before-function-paren`][space-after-function-paren]                         |
 | [`space-within-parens`]             | 🌟  | [`space-in-parens`][space-in-parens]                                                |
 | [`switch-final-break`]              | 🛑  | N/A                                                                                 |
@@ -508,7 +507,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-fallthrough]: https://eslint.org/docs/rules/no-fallthrough
 [no-unsafe-finally]: https://eslint.org/docs/rules/no-unsafe-finally
 [no-unused-expressions]: https://eslint.org/docs/rules/no-unused-expressions
-[no-unused-vars]: https://eslint.org/docs/rules/no-unused-vars
 [no-var]: https://eslint.org/docs/rules/no-var
 [no-void]: https://eslint.org/docs/rules/no-void
 [prefer-object-spread]: https://eslint.org/docs/rules/prefer-object-spread
@@ -574,6 +572,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 <!-- @typescript-eslint/eslint-plugin -->
 
 [`@typescript-eslint/adjacent-overload-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/adjacent-overload-signatures.md
+[`@typescript-eslint/await-thenable`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/await-thenable.md
 [`@typescript-eslint/ban-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-types.md
 [`@typescript-eslint/ban-ts-ignore`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-ts-ignore.md
 [`@typescript-eslint/explicit-member-accessibility`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
@@ -612,6 +611,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/prefer-function-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-function-type.md
 [`@typescript-eslint/no-for-in-array`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-for-in-array.md
 [`@typescript-eslint/no-unnecessary-qualifier`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md
+[`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
 
 <!-- eslint-plugin-import -->
 

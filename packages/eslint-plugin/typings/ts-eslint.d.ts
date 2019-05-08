@@ -209,7 +209,11 @@ declare module 'ts-eslint' {
     /**
      * The general category the rule falls within
      */
-    category: 'Best Practices' | 'Stylistic Issues' | 'Variables';
+    category:
+      | 'Best Practices'
+      | 'Stylistic Issues'
+      | 'Variables'
+      | 'Possible Errors';
     /**
      * Concise description of the rule
      */
@@ -297,7 +301,9 @@ declare module 'ts-eslint' {
     replaceTextRange(range: AST.Range, text: string): RuleFix;
   }
 
-  type ReportFixFunction = (fixer: RuleFixer) => null | RuleFix | RuleFix[];
+  type ReportFixFunction = (
+    fixer: RuleFixer,
+  ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
 
   interface ReportDescriptor<TMessageIds extends string> {
     /**
@@ -319,7 +325,7 @@ declare module 'ts-eslint' {
     /**
      * An override of the location of the report
      */
-    loc?: TSESTree.SourceLocation;
+    loc?: TSESTree.SourceLocation | TSESTree.LineAndColumnData;
   }
 
   interface RuleContext<
@@ -413,6 +419,7 @@ declare module 'ts-eslint' {
     ClassBody?: RuleFunction<TSESTree.ClassBody>;
     ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
     ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
+    ClassProperty?: RuleFunction<TSESTree.ClassProperty>;
     Comment?: RuleFunction<TSESTree.Comment>;
     ConditionalExpression?: RuleFunction<TSESTree.ConditionalExpression>;
     ContinueStatement?: RuleFunction<TSESTree.ContinueStatement>;
@@ -688,6 +695,7 @@ declare module 'ts-eslint' {
     ReportFixFunction,
     RuleContext,
     RuleFix,
+    RuleFixer,
     RuleFunction,
     RuleListener,
     RuleMetaData,

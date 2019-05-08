@@ -89,7 +89,10 @@ export function calculateProjectParserOptions(
 
     if (typeof existingWatch !== 'undefined') {
       // get new program (updated if necessary)
-      results.push(existingWatch.getProgram().getProgram());
+      const updatedProgram = existingWatch.getProgram().getProgram();
+      updatedProgram.getTypeChecker(); // sets parent pointers in source files
+      results.push(updatedProgram);
+
       continue;
     }
 
@@ -152,9 +155,9 @@ export function calculateProjectParserOptions(
       const oldReadDirectory = host.readDirectory;
       host.readDirectory = (
         path: string,
-        extensions?: ReadonlyArray<string>,
-        exclude?: ReadonlyArray<string>,
-        include?: ReadonlyArray<string>,
+        extensions?: readonly string[],
+        exclude?: readonly string[],
+        include?: readonly string[],
         depth?: number,
       ) =>
         oldReadDirectory(
