@@ -116,15 +116,16 @@ export default util.createRule<Options, MessageIds>({
       if (!parent || parent.type !== AST_NODE_TYPES.Property) {
         return false;
       }
-      parent = parent.parent;
-      /* istanbul ignore if */// this shouldn't happen, checking just in case
-      if (!parent || parent.type !== AST_NODE_TYPES.ObjectExpression) {
+      parent = parent.parent; // this shouldn't happen, checking just in case
+      /* istanbul ignore if */ if (
+        !parent ||
+        parent.type !== AST_NODE_TYPES.ObjectExpression
+      ) {
         return false;
       }
 
-      parent = parent.parent;
-      /* istanbul ignore if */// this shouldn't happen, checking just in case
-      if (!parent) {
+      parent = parent.parent; // this shouldn't happen, checking just in case
+      /* istanbul ignore if */ if (!parent) {
         return false;
       }
 
