@@ -2,6 +2,7 @@ import requireIndex from 'requireindex';
 import path from 'path';
 
 import recommended from './configs/recommended.json';
+import eslintRecommended from './configs/eslint-recommended';
 
 const rules = requireIndex(path.join(__dirname, 'rules'));
 // eslint expects the rule to be on rules[name], not rules[name].default
@@ -18,5 +19,6 @@ export = {
   rules: rulesWithoutDefault,
   configs: {
     recommended,
+    eslintRecommended,
   },
 };
