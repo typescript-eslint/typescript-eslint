@@ -174,6 +174,28 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-magic-numbers' {
+  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import RuleModule from 'ts-eslint';
+
+  const rule: RuleModule<
+    'noMagic',
+    [
+      {
+        ignore?: string[];
+        ignoreArrayIndexes?: boolean;
+        enforceConst?: boolean;
+        detectObjects?: boolean;
+        ignoreNumericLiteralTypes?: boolean;
+      }
+    ],
+    {
+      Literal(node: TSESTree.Literal): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-redeclare' {
   import { TSESTree } from '@typescript-eslint/typescript-estree';
   import RuleModule from 'ts-eslint';
