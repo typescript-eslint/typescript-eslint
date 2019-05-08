@@ -7,21 +7,72 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('consistent-type-definitions', rule, {
   valid: [
-    `var foo = { };`,
-    `interface A {}`,
-    `interface A extends B { x: number; }`,
-    `type U = string;`,
-    `type V = { x: number; } | { y: string; };`,
-    `
+    {
+      code: `var foo = { };`,
+      options: ['interface'],
+    },
+    {
+      code: `interface A {}`,
+      options: ['interface'],
+    },
+    {
+      code: `interface A extends B { x: number; }`,
+      options: ['interface'],
+    },
+    {
+      code: `type U = string;`,
+      options: ['interface'],
+    },
+    {
+      code: `type V = { x: number; } | { y: string; };`,
+      options: ['interface'],
+    },
+    {
+      code: `
 type Record<T, U> = {
     [K in T]: U;
 }
 `,
+      options: ['interface'],
+    },
+    {
+      code: `type V = { x: number; } | { y: string; };`,
+      options: ['interface'],
+    },
+    {
+      code: `type T = { x: number; }`,
+      options: ['type'],
+    },
+    {
+      code: `type T = { x: number; }`,
+      options: ['type'],
+    },
+    {
+      code: `type T = { x: number; }`,
+      options: ['type'],
+    },
+    {
+      code: `type A = { x: number; } & B & C;`,
+      options: ['type'],
+    },
+    {
+      code: `type A = { x: number; } & B<T1> & C<T2>;`,
+      options: ['type'],
+    },
+    {
+      code: `
+export type W<T> = {
+    x: T,
+};
+`,
+      options: ['type'],
+    },
   ],
   invalid: [
     {
       code: `type T = { x: number; };`,
       output: `interface T { x: number; }`,
+      options: ['interface'],
       errors: [
         {
           messageId: 'interfaceOverType',
@@ -33,6 +84,7 @@ type Record<T, U> = {
     {
       code: `type T={ x: number; };`,
       output: `interface T { x: number; }`,
+      options: ['interface'],
       errors: [
         {
           messageId: 'interfaceOverType',
@@ -44,6 +96,7 @@ type Record<T, U> = {
     {
       code: `type T=                         { x: number; };`,
       output: `interface T { x: number; }`,
+      options: ['interface'],
       errors: [
         {
           messageId: 'interfaceOverType',
@@ -63,6 +116,7 @@ export interface W<T> {
     x: T,
 }
 `,
+      options: ['interface'],
       errors: [
         {
           messageId: 'interfaceOverType',
