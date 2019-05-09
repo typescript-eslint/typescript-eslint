@@ -25,13 +25,14 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "docs": "eslint-docs",
-    "docs:check": "eslint-docs check",
-    "test": "jest --coverage",
-    "recommended:update": "ts-node tools/update-recommended.ts",
-    "prebuild": "npm run clean",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/",
+    "docs": "eslint-docs",
+    "docs:check": "eslint-docs check",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "prebuild": "npm run clean",
+    "recommended:update": "ts-node tools/update-recommended.ts",
+    "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
