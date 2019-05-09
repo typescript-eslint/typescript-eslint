@@ -99,7 +99,9 @@ export default util.createRule<Options, MessageIds>({
               onlyStatic = false;
             }
           }
-          if (!(onlyStatic || onlyConstructor)) break;
+          if (!(onlyStatic || onlyConstructor)) {
+            break;
+          }
         }
 
         if (onlyConstructor) {

@@ -56,6 +56,4 @@ function batchedSingleLineTests<
     });
 }
 
-export {
-  batchedSingleLineTests,
-}
+export { batchedSingleLineTests };
