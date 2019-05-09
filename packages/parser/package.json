@@ -26,9 +26,10 @@
     "eslint"
   ],
   "scripts": {
-    "prebuild": "npm run clean",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "prebuild": "npm run clean",
     "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },

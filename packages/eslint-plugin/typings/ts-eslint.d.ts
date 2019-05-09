@@ -562,6 +562,8 @@ declare module 'ts-eslint' {
     TSUnionType?: RuleFunction<TSESTree.TSUnionType>;
     TSUnknownKeyword?: RuleFunction<TSESTree.TSUnknownKeyword>;
     TSVoidKeyword?: RuleFunction<TSESTree.TSVoidKeyword>;
+    UnaryExpression?: RuleFunction<TSESTree.UnaryExpression>;
+    UpdateExpression?: RuleFunction<TSESTree.UpdateExpression>;
     VariableDeclaration?: RuleFunction<TSESTree.VariableDeclaration>;
     VariableDeclarator?: RuleFunction<TSESTree.VariableDeclarator>;
     WhileStatement?: RuleFunction<TSESTree.WhileStatement>;
