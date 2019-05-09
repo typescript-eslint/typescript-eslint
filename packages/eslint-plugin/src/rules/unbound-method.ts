@@ -74,6 +74,10 @@ export default util.createRule<Options, MessageIds>({
 
 function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
   const { valueDeclaration } = symbol;
+  if (!valueDeclaration) {
+    // working around https://github.com/microsoft/TypeScript/issues/31294
+    return false;
+  }
 
   switch (valueDeclaration.kind) {
     case ts.SyntaxKind.MethodDeclaration:
@@ -97,6 +101,7 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.IfStatement:
     case AST_NODE_TYPES.ForStatement:
     case AST_NODE_TYPES.MemberExpression:
+    case AST_NODE_TYPES.SwitchStatement:
     case AST_NODE_TYPES.UpdateExpression:
     case AST_NODE_TYPES.WhileStatement:
       return true;

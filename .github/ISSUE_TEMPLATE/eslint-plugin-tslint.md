@@ -2,7 +2,7 @@
 name: '@typescript-eslint/eslint-plugin-tslint'
 about: Report an issue with the '@typescript-eslint/eslint-plugin-tslint' package
 title: ''
-labels: 'package: @typescript-eslint/eslint-plugin-tslint, triage'
+labels: 'package: eslint-plugin-tslint, triage'
 assignees: ''
 ---
 

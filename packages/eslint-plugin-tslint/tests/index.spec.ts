@@ -119,7 +119,7 @@ ruleTester.run('tslint/config', rules.config, {
       errors: [
         {
           message:
-            "Operands of '+' operation must either be both strings or both numbers, consider using template literals (tslint:restrict-plus-operands)",
+            'Operands of \'+\' operation must either be both strings or both numbers, but found 1 + "2". Consider using template literals. (tslint:restrict-plus-operands)',
         },
       ],
     },
@@ -174,7 +174,7 @@ describe('tslint/error', () => {
 
     expect(console.warn).toHaveBeenCalledWith(
       expect.stringContaining(
-        'No valid rules have been specified for TypeScript files',
+        'Tried to lint <input> but found no valid, enabled rules for this file type and file path in the resolved configuration.',
       ),
     );
     jest.resetAllMocks();
