@@ -43,7 +43,7 @@ interface T {
 }
 ```
 
-Examples of **correct** code with `interface` option.
+Examples of **correct** code with `type` option.
 
 ```ts
 type T = { x: number };
@@ -56,7 +56,7 @@ This rule has two options:
 ```CJSON
 {
     // Consistent with type definition by `interface`
-    "@typescript-eslint/ban-types": ["error", "interface"]
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"]
 }
 ```
 
@@ -65,7 +65,7 @@ Or for tabbed indentation:
 ```CJSON
 {
     // Consistent with type definition by `type`
-    "@typescript-eslint/ban-types": ["error", "type"]
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"]
 }
 ```
 
