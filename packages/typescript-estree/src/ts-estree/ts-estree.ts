@@ -964,7 +964,7 @@ export interface ThisExpression extends BaseNode {
 
 export interface ThrowStatement extends BaseNode {
   type: AST_NODE_TYPES.ThrowStatement;
-  argument: Statement | null;
+  argument: Statement | TSAsExpression | null;
 }
 
 export interface TryStatement extends BaseNode {

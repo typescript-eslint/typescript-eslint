@@ -76,6 +76,10 @@ export default util.createRule<Options, MessageIds>({
 
 function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
   const { valueDeclaration } = symbol;
+  if (!valueDeclaration) {
+    // working around https://github.com/microsoft/TypeScript/issues/31294
+    return false;
+  }
 
   switch (valueDeclaration.kind) {
     case ts.SyntaxKind.MethodDeclaration:

@@ -343,18 +343,48 @@ declare module 'eslint/lib/rules/no-extra-parens' {
 
   const rule: TSESLint.RuleModule<
     'unexpected',
-    (
-      | 'all'
-      | 'functions'
-      | {
-          conditionalAssign?: boolean;
-          returnAssign?: boolean;
-          nestedBinaryExpressions?: boolean;
-          ignoreJSX?: 'none' | 'all' | 'multi-line' | 'single-line';
-          enforceForArrowConditionals?: boolean;
-        })[],
+    [
+      'all' | 'functions',
+      {
+        conditionalAssign?: boolean;
+        returnAssign?: boolean;
+        nestedBinaryExpressions?: boolean;
+        ignoreJSX?: 'none' | 'all' | 'multi-line' | 'single-line';
+        enforceForArrowConditionals?: boolean;
+      }?
+    ],
     {
+      ArrayExpression(node: TSESTree.ArrayExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      AssignmentExpression(node: TSESTree.AssignmentExpression): void;
+      AwaitExpression(node: TSESTree.AwaitExpression): void;
+      BinaryExpression(node: TSESTree.BinaryExpression): void;
+      CallExpression(node: TSESTree.CallExpression): void;
+      ClassDeclaration(node: TSESTree.ClassDeclaration): void;
+      ClassExpression(node: TSESTree.ClassExpression): void;
+      ConditionalExpression(node: TSESTree.ConditionalExpression): void;
+      DoWhileStatement(node: TSESTree.DoWhileStatement): void;
+      'ForInStatement, ForOfStatement'(
+        node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
+      ): void;
+      ForStatement(node: TSESTree.ForStatement): void;
+      IfStatement(node: TSESTree.IfStatement): void;
+      LogicalExpression(node: TSESTree.LogicalExpression): void;
       MemberExpression(node: TSESTree.MemberExpression): void;
+      NewExpression(node: TSESTree.NewExpression): void;
+      ObjectExpression(node: TSESTree.ObjectExpression): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      SequenceExpression(node: TSESTree.SequenceExpression): void;
+      SpreadElement(node: TSESTree.SpreadElement): void;
+      SwitchCase(node: TSESTree.SwitchCase): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
+      ThrowStatement(node: TSESTree.ThrowStatement): void;
+      UnaryExpression(node: TSESTree.UnaryExpression): void;
+      UpdateExpression(node: TSESTree.UpdateExpression): void;
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+      WhileStatement(node: TSESTree.WhileStatement): void;
+      WithStatement(node: TSESTree.WithStatement): void;
+      YieldExpression(node: TSESTree.YieldExpression): void;
     }
   >;
   export = rule;

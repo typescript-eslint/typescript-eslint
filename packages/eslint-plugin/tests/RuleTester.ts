@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint, ESLintUtils } from '@typescript-eslint/experimental-utils';
 import { RuleTester as ESLintRuleTester } from 'eslint';
 import * as path from 'path';
 
@@ -8,4 +8,6 @@ function getFixturesRootDir() {
   return path.join(process.cwd(), 'tests/fixtures/');
 }
 
-export { RuleTester, getFixturesRootDir };
+const { batchedSingleLineTests } = ESLintUtils;
+
+export { RuleTester, getFixturesRootDir, batchedSingleLineTests };
