@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-tslint",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "main": "dist/index.js",
   "typings": "src/index.ts",
   "description": "TSLint wrapper plugin for ESLint",
@@ -19,10 +19,11 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "jest --coverage",
-    "prebuild": "npm run clean",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "prebuild": "npm run clean",
+    "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -35,6 +36,6 @@
   "devDependencies": {
     "@types/eslint": "^4.16.3",
     "@types/lodash.memoize": "^4.1.4",
-    "@typescript-eslint/parser": "1.6.0"
+    "@typescript-eslint/parser": "1.7.0"
   }
 }
