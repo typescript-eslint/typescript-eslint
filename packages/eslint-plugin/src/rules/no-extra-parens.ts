@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import { RuleListener } from 'ts-eslint';
 import baseRule from 'eslint/lib/rules/no-extra-parens';
 import * as util from '../util';
 
@@ -84,7 +85,7 @@ export default util.createRule<Options, MessageIds>({
       return rule(node);
     }
 
-    return Object.assign({}, rules, {
+    const overrides: RuleListener = {
       // ArrayExpression
       ArrowFunctionExpression(node) {
         if (node.body.type !== AST_NODE_TYPES.TSAsExpression) {
@@ -222,6 +223,7 @@ export default util.createRule<Options, MessageIds>({
           return rules.YieldExpression(node);
         }
       },
-    });
+    };
+    return Object.assign({}, rules, overrides);
   },
 });
