@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/util';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule, { MessageIds, Options } from '../../src/rules/func-call-spacing';
 import { RuleTester } from '../RuleTester';
 

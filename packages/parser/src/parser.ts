@@ -1,10 +1,10 @@
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
-  TSEStreeOptions,
+  TSESTreeOptions,
   ParserServices,
 } from '@typescript-eslint/typescript-estree';
-import { TSESLint } from '@typescript-eslint/util';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import traverser from 'eslint/lib/util/traverser';
 import { analyzeScope } from './analyze-scope';
 import { visitorKeys } from './visitor-keys';
@@ -59,7 +59,7 @@ export function parseForESLint(
     options.ecmaFeatures = {};
   }
 
-  const parserOptions: TSEStreeOptions = {};
+  const parserOptions: TSESTreeOptions = {};
   Object.assign(parserOptions, options, {
     useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
     jsx: validateBoolean(options.ecmaFeatures.jsx),

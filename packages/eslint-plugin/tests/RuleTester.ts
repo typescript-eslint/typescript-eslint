@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/util';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import { RuleTester as ESLintRuleTester } from 'eslint';
 import * as path from 'path';
 

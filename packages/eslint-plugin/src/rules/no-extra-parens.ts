@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/util';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-extra-parens';
 import * as util from '../util';
 

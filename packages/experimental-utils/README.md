@@ -1,8 +1,18 @@
-# @typescript-eslint/util
+# @typescript-eslint/experimental-utils
 
-Utilities for working with TypeScript + ESLint together
+(Experimental) Utilities for working with TypeScript + ESLint together.
 
-Exports:
+## Note
+
+This package has inherited its version number from the @typescript-eslint project.
+Meaning that even though this package is `1.x.y`, you shouldn't expect 100% stability between minor version bumps.
+i.e. treat it as a `0.x.y` package.
+
+Feel free to use it now, and let us know what utilities you need or send us PRs with utilities you build on top of it.
+
+Once it is stable, it will be renamed to `@typescript-eslint/util` for a `2.0.0` release.
+
+## Exports
 
 | Name                        | Description                                                                                    |
 | --------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -13,8 +23,6 @@ Exports:
 | [`ESLintUtils`]             | Tools for creating eslint rules with TypeScript.                                               |
 | [`ESLintUtils.RuleCreator`] | A function for creating strictly typed eslint rules with TypeScript.                           |
 | [`ParserServices`]          | The parser services provided when parsing a file using `@typescript-eslint/typescript-estree`. |
-
-## ESLintUtils
 
 [`AST_NODE_TYPES`](../packages/typescript-estree/src/ts-estree/ast-node-types.ts)
 [`AST_TOKEN_TYPES`](../packages/typescript-estree/src/ts-estree/ast-node-types.ts)

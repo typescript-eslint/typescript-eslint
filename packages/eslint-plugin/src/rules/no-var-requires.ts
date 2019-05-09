@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/util';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [];

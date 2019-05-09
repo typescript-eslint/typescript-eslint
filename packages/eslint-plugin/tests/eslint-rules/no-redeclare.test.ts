@@ -1,5 +1,5 @@
 import rule from 'eslint/lib/rules/no-redeclare';
-import { AST_NODE_TYPES } from '@typescript-eslint/util';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({

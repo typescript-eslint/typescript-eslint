@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/util';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import { RuleTester } from '../RuleTester';
 import rule from '../../src/rules/type-annotation-spacing';
 import {

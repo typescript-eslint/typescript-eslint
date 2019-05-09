@@ -20,7 +20,7 @@ export interface Extra {
   preserveNodeMaps?: boolean;
 }
 
-export interface TSEStreeOptions {
+export interface TSESTreeOptions {
   range?: boolean;
   loc?: boolean;
   tokens?: boolean;

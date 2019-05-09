@@ -1,4 +1,8 @@
-import { TSESLint, TSESTree, AST_NODE_TYPES } from '@typescript-eslint/util';
+import {
+  TSESLint,
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [

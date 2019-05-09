@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/util';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import ts from 'typescript';
 import * as util from '../util';

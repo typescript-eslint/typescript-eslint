@@ -1,7 +1,7 @@
 {
-  "name": "@typescript-eslint/util",
+  "name": "@typescript-eslint/experimental-utils",
   "version": "1.7.0",
-  "description": "Utilities for working with TypeScript + ESLint together",
+  "description": "(Experimental) Utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
     "typescript",

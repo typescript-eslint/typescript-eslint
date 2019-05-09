@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname } from 'path';
-import { TSEStreeOptions } from '../../src/parser-options';
+import { TSESTreeOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
@@ -16,7 +16,7 @@ describe('Comments', () => {
   testFiles.forEach(filename => {
     const code = readFileSync(filename, 'utf8');
     const fileExtension = extname(filename);
-    const config: TSEStreeOptions = {
+    const config: TSESTreeOptions = {
       loc: true,
       range: true,
       tokens: true,

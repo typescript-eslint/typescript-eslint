@@ -1,5 +1,5 @@
 declare module 'eslint-utils' {
-  import { TSESLint, TSESTree } from '@typescript-eslint/util';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   export function getFunctionHeadLocation(
     node:

@@ -1,4 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/util';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type AccessibilityLevel =

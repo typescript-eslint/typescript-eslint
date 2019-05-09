@@ -1,4 +1,8 @@
-import { TSESTree, TSESLint, AST_NODE_TYPES } from '@typescript-eslint/util';
+import {
+  TSESTree,
+  TSESLint,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/semi';
 import * as util from '../util';
 
