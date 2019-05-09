@@ -1,33 +1,18 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_TOKEN_TYPES,
+} from '@typescript-eslint/typescript-estree';
 
 namespace AST {
-  export type TokenType =
-    | 'Boolean'
-    | 'Null'
-    | 'Identifier'
-    | 'Keyword'
-    | 'Punctuator'
-    | 'JSXIdentifier'
-    | 'JSXText'
-    | 'Numeric'
-    | 'String'
-    | 'RegularExpression';
+  export type TokenType = AST_TOKEN_TYPES;
 
-  export interface Token {
-    type: TokenType;
-    value: string;
-    range: Range;
-    loc: SourceLocation;
-  }
+  export type Token = TSESTree.Token;
 
-  export interface SourceLocation {
-    start: TSESTree.LineAndColumnData;
-    end: TSESTree.LineAndColumnData;
-  }
+  export type SourceLocation = TSESTree.SourceLocation;
 
-  export type Range = [number, number];
+  export type Range = TSESTree.Range;
 }
 
 export { AST };

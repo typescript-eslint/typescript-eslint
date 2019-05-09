@@ -1,10 +1,10 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import { RuleTester } from '../RuleTester';
-import rule from '../../src/rules/indent';
+import { RuleTester } from '../../RuleTester';
+import rule from '../../../src/rules/indent';
 import {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
-} from '../../src/util';
+} from '../../../src/util';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;

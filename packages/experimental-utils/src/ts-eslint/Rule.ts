@@ -211,6 +211,7 @@ interface RuleListener {
   ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
   ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
   AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
+  AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
   AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
   BlockStatement?: RuleFunction<TSESTree.BlockStatement>;
   BreakStatement?: RuleFunction<TSESTree.BreakStatement>;

@@ -52,8 +52,8 @@ declare module 'eslint/lib/rules/indent' {
   const rule: TSESLint.RuleModule<
     'wrongIndentation',
     [
-      'tab' | number,
-      {
+      ('tab' | number)?,
+      ({
         SwitchCase?: number;
         VariableDeclarator?:
           | ElementList
@@ -81,7 +81,7 @@ declare module 'eslint/lib/rules/indent' {
         flatTernaryExpressions?: boolean;
         ignoredNodes?: string[];
         ignoreComments?: boolean;
-      }
+      })?
     ],
     {
       '*:exit'(node: TSESTree.Node): void;

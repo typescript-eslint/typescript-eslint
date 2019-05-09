@@ -111,3 +111,12 @@ function keyCanBeReadAsPropertyName(
     node.type === AST_NODE_TYPES.Identifier
   );
 }
+
+export type ExcludeKeys<
+  TObj extends Record<string, any>,
+  TKeys extends keyof TObj
+> = { [k in Exclude<keyof TObj, TKeys>]: TObj[k] };
+export type RequireKeys<
+  TObj extends Record<string, any>,
+  TKeys extends keyof TObj
+> = ExcludeKeys<TObj, TKeys> & { [k in TKeys]-?: Exclude<TObj[k], undefined> };

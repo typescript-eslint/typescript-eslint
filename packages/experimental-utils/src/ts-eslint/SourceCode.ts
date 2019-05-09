@@ -4,9 +4,14 @@ import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
 import { Scope } from './Scope';
 
 namespace SourceCode {
+  export interface Program extends TSESTree.Program {
+    comments: TSESTree.Comment[];
+    tokens: TSESTree.Token[];
+  }
+
   export interface Config {
     text: string;
-    ast: TSESTree.Program;
+    ast: Program;
     parserServices?: ParserServices;
     scopeManager?: Scope.ScopeManager;
     visitorKeys?: VisitorKeys;
@@ -41,14 +46,15 @@ namespace SourceCode {
 
 declare class SourceCode {
   text: string;
-  ast: TSESTree.Program;
+  ast: SourceCode.Program;
   lines: string[];
   hasBOM: boolean;
   parserServices: ParserServices;
   scopeManager: Scope.ScopeManager;
   visitorKeys: SourceCode.VisitorKeys;
+  tokensAndComments: (TSESTree.Comment | TSESTree.Token)[];
 
-  constructor(text: string, ast: TSESTree.Program);
+  constructor(text: string, ast: SourceCode.Program);
   constructor(config: SourceCode.Config);
 
   static splitLines(text: string): string[];

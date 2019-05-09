@@ -9,6 +9,7 @@
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
     "curly": ["error", "all"],
+    "no-dupe-class-members": "off",
     "no-mixed-operators": "error",
     "no-console": "off",
     "no-dupe-class-members": "off",

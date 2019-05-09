@@ -62,7 +62,10 @@ const testCases = [
 const validTestCases = flatten(
   testCases.map(c => c.code.map(code => `const a = ${code}`)),
 );
-const invalidTestCases: TSESLint.InvalidTestCase<MessageIds, Options>[] = flatten(
+const invalidTestCases: TSESLint.InvalidTestCase<
+  MessageIds,
+  Options
+>[] = flatten(
   testCases.map(cas =>
     cas.code.map(code => ({
       code: `const a: ${cas.type} = ${code}`,
