@@ -2,17 +2,33 @@
 
 There are two ways to define a type.
 
-```js
+```ts
 // type alias
 type T1 = {
-  a: string,
-  b: number,
+  a: string;
+  b: number;
 };
 
-// interface
+// interface keyword
 interface T2 {
   a: string;
   b: number;
+}
+```
+
+### Options
+
+This rule accepts one string option:
+
+- `"interface"`: enforce using `interface`s for object type definitions.
+- `"type"`: enforce using `type`s for object type definitions.
+
+For example:
+
+```CJSON
+{
+    // Use type for object definitions
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"]
 }
 ```
 
@@ -47,26 +63,6 @@ Examples of **correct** code with `type` option.
 
 ```ts
 type T = { x: number };
-```
-
-## Options
-
-This rule has two options:
-
-```CJSON
-{
-    // Consistent with type definition by `interface`
-    "@typescript-eslint/consistent-type-definitions": ["error", "interface"]
-}
-```
-
-Or for tabbed indentation:
-
-```CJSON
-{
-    // Consistent with type definition by `type`
-    "@typescript-eslint/consistent-type-definitions": ["error", "type"]
-}
 ```
 
 ## When Not To Use It
