@@ -175,4 +175,8 @@ export enum AST_TOKEN_TYPES {
   RegularExpression = 'RegularExpression',
   String = 'String',
   Template = 'Template',
+
+  // comment types
+  Block = 'Block',
+  Line = 'Line',
 }
