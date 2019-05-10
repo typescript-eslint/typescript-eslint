@@ -22,6 +22,7 @@ import noExtraParens from './no-extra-parens';
 import noExtraneousClass from './no-extraneous-class';
 import noForInArray from './no-for-in-array';
 import noInferrableTypes from './no-inferrable-types';
+import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noNamespace from './no-namespace';
 import noNonNullAssertion from './no-non-null-assertion';
@@ -76,6 +77,7 @@ export default {
   'no-extraneous-class': noExtraneousClass,
   'no-for-in-array': noForInArray,
   'no-inferrable-types': noInferrableTypes,
+  'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
   'no-namespace': noNamespace,
   'no-non-null-assertion': noNonNullAssertion,
