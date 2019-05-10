@@ -1,4 +1,9 @@
-import * as tsutils from 'tsutils';
+import {
+  isTypeFlagSet,
+  isTypeReference,
+  isUnionOrIntersectionType,
+  unionTypeParts,
+} from 'tsutils';
 import ts from 'typescript';
 
 /**
@@ -10,11 +15,11 @@ export function containsTypeByName(
   type: ts.Type,
   allowedNames: Set<string>,
 ): boolean {
-  if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+  if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
     return true;
   }
 
-  if (tsutils.isTypeReference(type)) {
+  if (isTypeReference(type)) {
     type = type.target;
   }
 
@@ -25,7 +30,7 @@ export function containsTypeByName(
     return true;
   }
 
-  if (tsutils.isUnionOrIntersectionType(type)) {
+  if (isUnionOrIntersectionType(type)) {
     return type.types.some(t => containsTypeByName(t, allowedNames));
   }
 
@@ -91,4 +96,45 @@ export function getTypeName(
   }
 
   return typeChecker.typeToString(type);
+}
+
+/**
+ * Resolves the given node's type. Will resolve to the type's generic constraint, if it has one.
+ */
+export function getConstrainedTypeAtLocation(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+): ts.Type {
+  const nodeType = checker.getTypeAtLocation(node);
+  const constrained = checker.getBaseConstraintOfType(nodeType);
+
+  return constrained || nodeType;
+}
+
+/**
+ * Checks if the given type is (or accepts) nullable
+ * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
+ */
+export function isNullableType(type: ts.Type, isReceiver?: boolean): boolean {
+  let flags: ts.TypeFlags = 0;
+  for (const t of unionTypeParts(type)) {
+    flags |= t.flags;
+  }
+
+  flags =
+    isReceiver && flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)
+      ? -1
+      : flags;
+
+  return (flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
+}
+
+/**
+ * Gets the declaration for the given variable
+ */
+export function getDeclaration(
+  checker: ts.TypeChecker,
+  node: ts.Expression,
+): ts.Declaration {
+  return checker.getSymbolAtLocation(node)!.declarations![0];
 }

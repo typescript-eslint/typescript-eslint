@@ -127,6 +127,11 @@ var funcExpr: Foo = function() { return 'test'; };
     },
     {
       filename: 'test.ts',
+      code: `const x = <Foo>(() => {})`,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
       code: `
 const x = {
   foo: () => {},
@@ -137,8 +142,29 @@ const x = {
     {
       filename: 'test.ts',
       code: `
+const x = <Foo>{
+  foo: () => {},
+}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
 const x: Foo = {
   foo: () => {},
+}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/484
+    {
+      filename: 'test.ts',
+      code: `
+type MethodType = () => void;
+
+class App {
+  private method: MethodType = () => {}
 }
       `,
       options: [{ allowTypedFunctionExpressions: true }],
