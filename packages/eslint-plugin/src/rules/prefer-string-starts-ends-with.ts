@@ -5,8 +5,7 @@ import {
   getStaticValue,
 } from 'eslint-utils';
 import { RegExpParser, AST as RegExpAST } from 'regexpp';
-import ts from 'typescript';
-import { createRule, getParserServices } from '../util';
+import { createRule, getParserServices, getTypeName } from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
 const regexpp = new RegExpParser();
@@ -35,65 +34,17 @@ export default createRule({
     const globalScope = context.getScope();
     const sourceCode = context.getSourceCode();
     const service = getParserServices(context);
-    const types = service.program.getTypeChecker();
-
-    /**
-     * Get the type name of a given type.
-     * @param type The type to get.
-     */
-    function getTypeName(type: ts.Type): string {
-      // It handles `string` and string literal types as string.
-      if ((type.flags & ts.TypeFlags.StringLike) !== 0) {
-        return 'string';
-      }
-
-      // If the type is a type parameter which extends primitive string types,
-      // but it was not recognized as a string like. So check the constraint
-      // type of the type parameter.
-      if ((type.flags & ts.TypeFlags.TypeParameter) !== 0) {
-        // `type.getConstraint()` method doesn't return the constraint type of
-        // the type parameter for some reason. So this gets the constraint type
-        // via AST.
-        const node = type.symbol.declarations[0] as ts.TypeParameterDeclaration;
-        if (node.constraint != null) {
-          return getTypeName(types.getTypeFromTypeNode(node.constraint));
-        }
-      }
-
-      // If the type is a union and all types in the union are string like,
-      // return `string`. For example:
-      // - `"a" | "b"` is string.
-      // - `string | string[]` is not string.
-      if (
-        type.isUnion() &&
-        type.types.map(getTypeName).every(t => t === 'string')
-      ) {
-        return 'string';
-      }
-
-      // If the type is an intersection and a type in the intersection is string
-      // like, return `string`. For example: `string & {__htmlEscaped: void}`
-      if (
-        type.isIntersection() &&
-        type.types.map(getTypeName).some(t => t === 'string')
-      ) {
-        return 'string';
-      }
-
-      return types.typeToString(type);
-    }
+    const typeChecker = service.program.getTypeChecker();
 
     /**
      * Check if a given node is a string.
      * @param node The node to check.
      */
     function isStringType(node: TSESTree.Node): boolean {
-      const objectType = types.getTypeAtLocation(
+      const objectType = typeChecker.getTypeAtLocation(
         service.esTreeNodeToTSNodeMap.get(node),
       );
-      const typeName = getTypeName(objectType);
-
-      return typeName === 'string';
+      return getTypeName(typeChecker, objectType) === 'string';
     }
 
     /**
