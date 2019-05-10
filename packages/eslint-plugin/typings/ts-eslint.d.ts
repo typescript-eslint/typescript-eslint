@@ -10,15 +10,22 @@ The def is wrapped up in a fake module so that it can be used in eslint-rules.d.
 declare module 'ts-eslint' {
   import { TSESTree } from '@typescript-eslint/typescript-estree';
   import { ParserServices } from '@typescript-eslint/parser';
-  import { AST, Linter, Rule } from 'eslint';
+  import { Linter } from 'eslint';
   import { JSONSchema4 } from 'json-schema';
 
   //#region SourceCode
 
+  interface Program extends TSESTree.Program {
+    comments: TSESTree.Comment[];
+    tokens: TSESTree.Token[];
+    loc: TSESTree.SourceLocation;
+    range: TSESTree.Range;
+  }
+
   namespace SourceCode {
     export interface Config {
       text: string;
-      ast: AST.Program;
+      ast: Program;
       parserServices?: ParserServices;
       scopeManager?: Scope.ScopeManager;
       visitorKeys?: VisitorKeys;
@@ -53,15 +60,15 @@ declare module 'ts-eslint' {
 
   class SourceCode {
     text: string;
-    ast: AST.Program;
+    ast: Program;
     lines: string[];
     hasBOM: boolean;
     parserServices: ParserServices;
     scopeManager: Scope.ScopeManager;
     visitorKeys: SourceCode.VisitorKeys;
+    tokensAndComments: (TSESTree.Comment | TSESTree.Token)[];
 
-    constructor(text: string, ast: AST.Program);
-    // eslint-disable-next-line no-dupe-class-members
+    constructor(text: string, ast: Program);
     constructor(config: SourceCode.Config);
 
     static splitLines(text: string): string[];
@@ -179,7 +186,6 @@ declare module 'ts-eslint' {
       beforeCount?: number,
       afterCount?: number,
     ): TSESTree.Token[];
-    // eslint-disable-next-line no-dupe-class-members
     getTokens(
       node: TSESTree.Node,
       options: SourceCode.FilterPredicate | SourceCode.CursorWithCountOptions,
@@ -270,7 +276,7 @@ declare module 'ts-eslint' {
   }
 
   interface RuleFix {
-    range: AST.Range;
+    range: TSESTree.Range;
     text: string;
   }
 
@@ -280,25 +286,25 @@ declare module 'ts-eslint' {
       text: string,
     ): RuleFix;
 
-    insertTextAfterRange(range: AST.Range, text: string): RuleFix;
+    insertTextAfterRange(range: TSESTree.Range, text: string): RuleFix;
 
     insertTextBefore(
       nodeOrToken: TSESTree.Node | TSESTree.Token,
       text: string,
     ): RuleFix;
 
-    insertTextBeforeRange(range: AST.Range, text: string): RuleFix;
+    insertTextBeforeRange(range: TSESTree.Range, text: string): RuleFix;
 
     remove(nodeOrToken: TSESTree.Node | TSESTree.Token): RuleFix;
 
-    removeRange(range: AST.Range): RuleFix;
+    removeRange(range: TSESTree.Range): RuleFix;
 
     replaceText(
       nodeOrToken: TSESTree.Node | TSESTree.Token,
       text: string,
     ): RuleFix;
 
-    replaceTextRange(range: AST.Range, text: string): RuleFix;
+    replaceTextRange(range: TSESTree.Range, text: string): RuleFix;
   }
 
   type ReportFixFunction = (
@@ -411,6 +417,7 @@ declare module 'ts-eslint' {
     ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
     ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
     AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
+    AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
     AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
     BlockStatement?: RuleFunction<TSESTree.BlockStatement>;
     BreakStatement?: RuleFunction<TSESTree.BreakStatement>;
@@ -562,6 +569,8 @@ declare module 'ts-eslint' {
     TSUnionType?: RuleFunction<TSESTree.TSUnionType>;
     TSUnknownKeyword?: RuleFunction<TSESTree.TSUnknownKeyword>;
     TSVoidKeyword?: RuleFunction<TSESTree.TSVoidKeyword>;
+    UnaryExpression?: RuleFunction<TSESTree.UnaryExpression>;
+    UpdateExpression?: RuleFunction<TSESTree.UpdateExpression>;
     VariableDeclaration?: RuleFunction<TSESTree.VariableDeclaration>;
     VariableDeclarator?: RuleFunction<TSESTree.VariableDeclarator>;
     WhileStatement?: RuleFunction<TSESTree.WhileStatement>;

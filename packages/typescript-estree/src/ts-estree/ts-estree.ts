@@ -20,6 +20,7 @@ export interface SourceLocation {
    */
   end: LineAndColumnData;
 }
+export type Range = [number, number];
 
 export interface BaseNode {
   /**
@@ -31,7 +32,7 @@ export interface BaseNode {
    * Both numbers are a 0-based index which is the position in the array of source code characters.
    * The first is the start position of the node, the second is the end position of the node.
    */
-  range: [number, number];
+  range: Range;
   /**
    * The parent node of the current node
    */
@@ -288,6 +289,7 @@ export type Expression =
   | JSXOpeningFragment
   | JSXSpreadChild
   | LogicalExpression
+  | NewExpression
   | RestElement
   | SequenceExpression
   | SpreadElement
@@ -964,7 +966,7 @@ export interface ThisExpression extends BaseNode {
 
 export interface ThrowStatement extends BaseNode {
   type: AST_NODE_TYPES.ThrowStatement;
-  argument: Statement | null;
+  argument: Statement | TSAsExpression | null;
 }
 
 export interface TryStatement extends BaseNode {

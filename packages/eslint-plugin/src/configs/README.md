@@ -6,6 +6,19 @@ These configs exist for your convenience. They contain configuration intended to
 
 TODO when all config is added.
 
+## eslint-recommended
+
+The `eslint-recommended` ruleset is meant to be used after extending `eslint:recommended`. It disables rules that are already checked by the Typescript compiler and enables rules that promote using more the more modern constructs Typescript allows for.
+
+```cjson
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended"
+  ]
+}
+```
+
 ## Recommended
 
 The recommended set is an **_opinionated_** set of rules that we think you should use because:

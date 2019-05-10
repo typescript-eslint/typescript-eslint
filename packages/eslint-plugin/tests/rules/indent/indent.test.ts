@@ -1,9 +1,9 @@
-import rule from '../../src/rules/indent';
-import { RuleTester, RunTests, TestCaseError } from '../RuleTester';
+import rule from '../../../src/rules/indent';
+import { RuleTester, RunTests, TestCaseError } from '../../RuleTester';
 import {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
-} from '../../src/util';
+} from '../../../src/util';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;

@@ -3,6 +3,7 @@ import rules from './rules';
 import all from './configs/all.json';
 import base from './configs/base.json';
 import recommended from './configs/recommended.json';
+import eslintRecommended from './configs/eslint-recommended';
 
 export = {
   rules,
@@ -10,5 +11,6 @@ export = {
     all,
     base,
     recommended,
+    eslintRecommended,
   },
 };

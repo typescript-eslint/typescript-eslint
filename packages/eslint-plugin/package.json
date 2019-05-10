@@ -25,13 +25,15 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rimraf dist/",
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
     "test": "jest --coverage",
     "generate:configs": "ts-node --files tools/generate-configs.ts",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "prebuild": "npm run clean",
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist/",
+    "recommended:update": "ts-node tools/update-recommended.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
