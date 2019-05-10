@@ -16,7 +16,7 @@ describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" 
   testFiles.forEach(filename => {
     const code = readFileSync(filename, 'utf8');
     const fileExtension = extname(filename);
-    const config: parser.ParserOptions = {
+    const config: parser.TSESTreeOptions = {
       loc: true,
       range: true,
       tokens: true,

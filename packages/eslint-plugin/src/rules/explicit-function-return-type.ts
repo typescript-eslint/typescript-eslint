@@ -1,11 +1,13 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
   {
     allowExpressions?: boolean;
     allowTypedFunctionExpressions?: boolean;
-    allowUntypedSetters?: boolean;
   }
 ];
 type MessageIds = 'missingReturnType';
@@ -42,7 +44,6 @@ export default util.createRule<Options, MessageIds>({
     {
       allowExpressions: false,
       allowTypedFunctionExpressions: false,
-      allowUntypedSetters: true,
     },
   ],
   create(context, [options]) {

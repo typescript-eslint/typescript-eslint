@@ -6,7 +6,8 @@ import {
   AST_NODE_TYPES,
   TSESTree,
   AST_TOKEN_TYPES,
-} from '@typescript-eslint/typescript-estree';
+  TSESLint,
+} from '@typescript-eslint/experimental-utils';
 import { createGlobalLinebreakMatcher } from 'eslint/lib/util/ast-utils';
 import {
   isOpeningParenToken,
@@ -20,7 +21,6 @@ import {
   isColonToken,
   isCommentToken,
 } from 'eslint-utils';
-import { RuleListener, RuleFunction } from 'ts-eslint';
 import { TokenOrComment } from './BinarySearchTree';
 import { OffsetStorage } from './OffsetStorage';
 import { TokenInfo } from './TokenInfo';
@@ -848,7 +848,7 @@ export default createRule<Options, MessageIds>({
 
     const ignoredNodeFirstTokens = new Set();
 
-    const baseOffsetListeners: RuleListener = {
+    const baseOffsetListeners: TSESLint.RuleListener = {
       'ArrayExpression, ArrayPattern'(
         node: TSESTree.ArrayExpression | TSESTree.ArrayPattern,
       ) {
@@ -1547,7 +1547,7 @@ export default createRule<Options, MessageIds>({
     };
 
     const listenerCallQueue: {
-      listener: RuleFunction<TSESTree.Node>;
+      listener: TSESLint.RuleFunction<TSESTree.Node>;
       node: TSESTree.Node;
     }[] = [];
 
@@ -1558,7 +1558,7 @@ export default createRule<Options, MessageIds>({
      * 3. Call `ignoreNode` on the node sometime after exiting it and before validating offsets.
      */
     const offsetListeners = Object.keys(baseOffsetListeners).reduce<
-      RuleListener
+      TSESLint.RuleListener
     >(
       /*
        * Offset listener calls are deferred until traversal is finished, and are called as
@@ -1577,7 +1577,7 @@ export default createRule<Options, MessageIds>({
        * ignored nodes are known.
        */
       (acc, key) => {
-        const listener = baseOffsetListeners[key] as RuleFunction<
+        const listener = baseOffsetListeners[key] as TSESLint.RuleFunction<
           TSESTree.Node
         >;
         acc[key] = node => listenerCallQueue.push({ listener, node });

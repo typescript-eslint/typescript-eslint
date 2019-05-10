@@ -3,7 +3,10 @@
  * @author Scott O'Hara
  */
 
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-magic-numbers';
 import * as util from '../util';
 import { JSONSchema4 } from 'json-schema';
