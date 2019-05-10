@@ -1,13 +1,15 @@
-import traverser from 'eslint/lib/util/traverser';
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
-  ParserOptions as ParserOptionsTsESTree,
+  TSESTreeOptions,
   ParserServices,
 } from '@typescript-eslint/typescript-estree';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import traverser from 'eslint/lib/util/traverser';
 import { analyzeScope } from './analyze-scope';
-import { ParserOptions } from './parser-options';
 import { visitorKeys } from './visitor-keys';
+
+type ParserOptions = TSESLint.ParserOptions;
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const packageJSON = require('../package.json');
@@ -57,7 +59,7 @@ export function parseForESLint(
     options.ecmaFeatures = {};
   }
 
-  const parserOptions: ParserOptionsTsESTree = {};
+  const parserOptions: TSESTreeOptions = {};
   Object.assign(parserOptions, options, {
     useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
     jsx: validateBoolean(options.ecmaFeatures.jsx),

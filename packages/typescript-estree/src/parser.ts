@@ -1,15 +1,15 @@
+import semver from 'semver';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import convert from './ast-converter';
+import { convertError } from './convert';
+import { firstDefined } from './node-utils';
+import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
+import { getFirstSemanticOrSyntacticError } from './semantic-errors';
+import { TSESTree } from './ts-estree';
 import {
   calculateProjectParserOptions,
   createProgram,
 } from './tsconfig-parser';
-import semver from 'semver';
-import ts from 'typescript';
-import convert from './ast-converter';
-import { convertError } from './convert';
-import { firstDefined } from './node-utils';
-import { TSESTree } from './ts-estree';
-import { Extra, ParserOptions, ParserServices } from './parser-options';
-import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
@@ -66,7 +66,7 @@ function resetExtra(): void {
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTFromProject(code: string, options: ParserOptions) {
+function getASTFromProject(code: string, options: TSESTreeOptions) {
   return firstDefined(
     calculateProjectParserOptions(
       code,
@@ -87,7 +87,7 @@ function getASTFromProject(code: string, options: ParserOptions) {
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTAndDefaultProject(code: string, options: ParserOptions) {
+function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
   const fileName = options.filePath || getFileName(options);
   const program = createProgram(code, fileName, extra);
   const ast = program && program.getSourceFile(fileName);
@@ -159,7 +159,7 @@ function createNewProgram(code: string) {
  */
 function getProgramAndAST(
   code: string,
-  options: ParserOptions,
+  options: TSESTreeOptions,
   shouldProvideParserServices: boolean,
 ) {
   return (
@@ -169,7 +169,7 @@ function getProgramAndAST(
   );
 }
 
-function applyParserOptionsToExtra(options: ParserOptions): void {
+function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   /**
    * Track range information in the AST
    */
@@ -277,12 +277,12 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
-type AST<T extends ParserOptions> = TSESTree.Program &
+type AST<T extends TSESTreeOptions> = TSESTree.Program &
   (T['range'] extends true ? { range: [number, number] } : {}) &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
 
-export interface ParseAndGenerateServicesResult<T extends ParserOptions> {
+export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
@@ -293,7 +293,7 @@ export interface ParseAndGenerateServicesResult<T extends ParserOptions> {
 
 export const version: string = require('../package.json').version;
 
-export function parse<T extends ParserOptions = ParserOptions>(
+export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options?: T,
 ): AST<T> {
@@ -344,7 +344,7 @@ export function parse<T extends ParserOptions = ParserOptions>(
 }
 
 export function parseAndGenerateServices<
-  T extends ParserOptions = ParserOptions
+  T extends TSESTreeOptions = TSESTreeOptions
 >(code: string, options: T): ParseAndGenerateServicesResult<T> {
   /**
    * Reset the parse configuration
@@ -427,5 +427,5 @@ export function parseAndGenerateServices<
   };
 }
 
-export { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
-export { ParserOptions, ParserServices };
+export { TSESTreeOptions, ParserServices };
+export * from './ts-estree';

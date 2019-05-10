@@ -1,6 +1,9 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { Scope } from 'ts-eslint';
 
 export default util.createRule({
   name: 'prefer-for-of',
@@ -159,7 +162,7 @@ export default util.createRule({
 
     function isIndexOnlyUsedWithArray(
       body: TSESTree.Statement,
-      indexVar: Scope.Variable,
+      indexVar: TSESLint.Scope.Variable,
       arrayExpression: TSESTree.Expression,
     ): boolean {
       const sourceCode = context.getSourceCode();

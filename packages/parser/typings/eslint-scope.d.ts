@@ -8,7 +8,7 @@
 //-----------------------------------------------------------------------
 
 declare module 'eslint-scope/lib/options' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/experimental-utils';
   export type PatternVisitorCallback = (
     pattern: TSESTree.Identifier,
     info: {
@@ -31,7 +31,7 @@ declare module 'eslint-scope/lib/options' {
 }
 
 declare module 'eslint-scope/lib/variable' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/experimental-utils';
   import Reference from 'eslint-scope/lib/reference';
   import { Definition } from 'eslint-scope/lib/definition';
 
@@ -45,7 +45,7 @@ declare module 'eslint-scope/lib/variable' {
 }
 
 declare module 'eslint-scope/lib/definition' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/experimental-utils';
 
   export class Definition {
     type: string;
@@ -78,7 +78,7 @@ declare module 'eslint-scope/lib/definition' {
 
 declare module 'eslint-scope/lib/pattern-visitor' {
   import ScopeManager from 'eslint-scope/lib/scope-manager';
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/experimental-utils';
   import {
     PatternVisitorCallback,
     PatternVisitorOptions,
@@ -115,7 +115,7 @@ declare module 'eslint-scope/lib/pattern-visitor' {
 declare module 'eslint-scope/lib/referencer' {
   import { Scope } from 'eslint-scope/lib/scope';
   import ScopeManager from 'eslint-scope/lib/scope-manager';
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/experimental-utils';
   import {
     PatternVisitorCallback,
     PatternVisitorOptions,
@@ -192,7 +192,7 @@ declare module 'eslint-scope/lib/referencer' {
 }
 
 declare module 'eslint-scope/lib/scope' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/experimental-utils';
   import Reference from 'eslint-scope/lib/reference';
   import Variable from 'eslint-scope/lib/variable';
   import ScopeManager from 'eslint-scope/lib/scope-manager';
@@ -378,7 +378,7 @@ declare module 'eslint-scope/lib/scope' {
 }
 
 declare module 'eslint-scope/lib/reference' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/experimental-utils';
   import { Scope } from 'eslint-scope/lib/scope';
   import Variable from 'eslint-scope/lib/variable';
 
@@ -402,7 +402,7 @@ declare module 'eslint-scope/lib/reference' {
 }
 
 declare module 'eslint-scope/lib/scope-manager' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
+  import { TSESTree } from '@typescript-eslint/experimental-utils';
   import { Scope } from 'eslint-scope/lib/scope';
   import Variable from 'eslint-scope/lib/variable';
 

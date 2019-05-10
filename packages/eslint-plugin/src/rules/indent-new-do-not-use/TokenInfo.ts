@@ -1,18 +1,17 @@
 // The following code is adapted from the the code in eslint.
 // License: https://github.com/eslint/eslint/blob/48700fc8408f394887cdedd071b22b757700fdcb/LICENSE
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
-import { SourceCode } from 'ts-eslint';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { TokenOrComment } from './BinarySearchTree';
 
 /**
  * A helper class to get token-based info related to indentation
  */
 export class TokenInfo {
-  private sourceCode: SourceCode;
+  private sourceCode: TSESLint.SourceCode;
   public firstTokensByLineNumber: Map<number, TSESTree.Token>;
 
-  constructor(sourceCode: SourceCode) {
+  constructor(sourceCode: TSESLint.SourceCode) {
     this.sourceCode = sourceCode;
     this.firstTokensByLineNumber = sourceCode.tokensAndComments.reduce(
       (map, token) => {

@@ -1,9 +1,9 @@
 // The following code is adapted from the the code in eslint.
 // License: https://github.com/eslint/eslint/blob/48700fc8408f394887cdedd071b22b757700fdcb/LICENSE
 
-import { TokenInfo } from './TokenInfo';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { BinarySearchTree, TokenOrComment } from './BinarySearchTree';
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TokenInfo } from './TokenInfo';
 
 /**
  * A class to store information on desired offsets of tokens from each other

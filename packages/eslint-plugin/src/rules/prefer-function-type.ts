@@ -1,8 +1,8 @@
 import {
   AST_NODE_TYPES,
-  TSESTree,
   AST_TOKEN_TYPES,
-} from '@typescript-eslint/typescript-estree';
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({

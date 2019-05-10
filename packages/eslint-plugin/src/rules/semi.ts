@@ -1,6 +1,9 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  TSESLint,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/semi';
-import { RuleListener, RuleFunction } from 'ts-eslint';
 import * as util from '../util';
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
@@ -28,7 +31,7 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context) {
     const rules = baseRule.create(context);
-    const checkForSemicolon = rules.ExpressionStatement as RuleFunction<
+    const checkForSemicolon = rules.ExpressionStatement as TSESLint.RuleFunction<
       TSESTree.Node
     >;
 
@@ -48,7 +51,7 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSExportAssignment,
       AST_NODE_TYPES.TSImportEqualsDeclaration,
       AST_NODE_TYPES.TSTypeAliasDeclaration,
-    ].reduce<RuleListener>((acc, node) => {
+    ].reduce<TSESLint.RuleListener>((acc, node) => {
       acc[node] = checkForSemicolon;
       return acc;
     }, {});

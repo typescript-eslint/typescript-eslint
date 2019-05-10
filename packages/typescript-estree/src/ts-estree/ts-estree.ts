@@ -70,7 +70,7 @@ export type OptionalRangeAndLoc<T> = Pick<
   T,
   Exclude<keyof T, 'range' | 'loc'>
 > & {
-  range?: [number, number];
+  range?: Range;
   loc?: SourceLocation;
 };
 

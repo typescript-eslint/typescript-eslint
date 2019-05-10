@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import {
   canContainDirective,
   createError,
@@ -18,8 +18,7 @@ import {
   isOptional,
   unescapeStringLiteralText,
 } from './node-utils';
-import { AST_NODE_TYPES, TSESTree } from './ts-estree';
-import { TSNode } from './ts-nodes';
+import { AST_NODE_TYPES, TSESTree, TSNode } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 

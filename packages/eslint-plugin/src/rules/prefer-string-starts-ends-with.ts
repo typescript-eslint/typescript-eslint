@@ -1,11 +1,10 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   isNotClosingParenToken,
   getPropertyName,
   getStaticValue,
 } from 'eslint-utils';
 import { RegExpParser, AST as RegExpAST } from 'regexpp';
-import { RuleFixer, RuleFix } from 'ts-eslint';
 import ts from 'typescript';
 import { createRule, getParserServices } from '../util';
 
@@ -314,11 +313,11 @@ export default createRule({
      * @param negative The flag to fix to negative condition.
      */
     function* fixWithRightOperand(
-      fixer: RuleFixer,
+      fixer: TSESLint.RuleFixer,
       node: TSESTree.BinaryExpression,
       kind: 'start' | 'end',
       negative: boolean,
-    ): IterableIterator<RuleFix> {
+    ): IterableIterator<TSESLint.RuleFix> {
       // left is CallExpression or MemberExpression.
       const leftNode = (node.left.type === 'CallExpression'
         ? node.left.callee
@@ -344,11 +343,11 @@ export default createRule({
      * @param negative The flag to fix to negative condition.
      */
     function* fixWithArgument(
-      fixer: RuleFixer,
+      fixer: TSESLint.RuleFixer,
       node: TSESTree.BinaryExpression,
       kind: 'start' | 'end',
       negative: boolean,
-    ): IterableIterator<RuleFix> {
+    ): IterableIterator<TSESLint.RuleFix> {
       const callNode = node.left as TSESTree.CallExpression;
       const calleeNode = callNode.callee as TSESTree.MemberExpression;
 

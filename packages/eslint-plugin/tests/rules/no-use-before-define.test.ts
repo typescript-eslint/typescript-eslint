@@ -1,6 +1,6 @@
 import rule from '../../src/rules/no-use-before-define';
 import { RuleTester } from '../RuleTester';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

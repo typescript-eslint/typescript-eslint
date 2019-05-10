@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 
 export type TSNode = ts.Node &
   (
