@@ -1,0 +1,17 @@
+{
+  "name": "@typescript-eslint/eslint-plugin-internal-repo-rules",
+  "version": "1.8.0",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "prebuild": "npm run clean",
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rimraf dist/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@typescript-eslint/experimental-utils": "1.8.0",
+    "requireindex": "^1.2.0"
+  }
+}

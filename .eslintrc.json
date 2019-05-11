@@ -1,6 +1,11 @@
 {
   "root": true,
-  "plugins": ["eslint-plugin", "@typescript-eslint", "jest"],
+  "plugins": [
+    "eslint-plugin",
+    "@typescript-eslint",
+    "jest",
+    "@typescript-eslint/internal-repo-rules"
+  ],
   "env": {
     "es6": true,
     "node": true
@@ -9,10 +14,9 @@
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
     "curly": ["error", "all"],
-    "no-dupe-class-members": "off",
-    "no-mixed-operators": "error",
     "no-console": "off",
     "no-dupe-class-members": "off",
+    "no-mixed-operators": "error",
     "no-undef": "off",
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -64,6 +68,12 @@
       ],
       "rules": {
         "eslint-plugin/no-identical-tests": "error"
+      }
+    },
+    {
+      "files": ["packages/eslint-plugin/src/rules/**/*.ts"],
+      "rules": {
+        "@typescript-eslint/internal-repo-rules/no-ts-estree-import": "error"
       }
     }
   ]

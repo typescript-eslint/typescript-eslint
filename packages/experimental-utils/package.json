@@ -22,7 +22,6 @@
   },
   "license": "MIT",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --coverage",
     "prebuild": "npm run clean",

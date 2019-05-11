@@ -36,24 +36,26 @@ function batchedSingleLineTests<
 ): (ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>)[] {
   // eslint counts lines from 1
   const lineOffset = options.code[0] === '\n' ? 2 : 1;
-  return options.code
-    .trim()
-    .split('\n')
-    .map((code, i) => {
-      const lineNum = i + lineOffset;
-      const errors =
-        'errors' in options
-          ? options.errors.filter(e => e.line === lineNum)
-          : [];
-      return {
-        ...options,
-        code,
-        errors: errors.map(e => ({
-          ...e,
-          line: 1,
-        })),
-      };
-    });
+  const splitCode = options.code.trim().split('\n');
+  const splitOutput =
+    'output' in options && options.output
+      ? options.output.trim().split('\n')
+      : [];
+
+  return splitCode.map((code, i) => {
+    const lineNum = i + lineOffset;
+    const errors =
+      'errors' in options ? options.errors.filter(e => e.line === lineNum) : [];
+    return {
+      ...options,
+      code,
+      output: splitOutput[i],
+      errors: errors.map(e => ({
+        ...e,
+        line: 1,
+      })),
+    };
+  });
 }
 
 export { batchedSingleLineTests };
