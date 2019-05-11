@@ -19,6 +19,6 @@ export = {
   rules: rulesWithoutDefault,
   configs: {
     recommended,
-    eslintRecommended,
+    'eslint-recommended': eslintRecommended,
   },
 };
