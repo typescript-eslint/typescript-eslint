@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/experimental-utils",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "(Experimental) Utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -31,7 +31,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "1.8.0"
+    "@typescript-eslint/typescript-estree": "1.9.0"
   },
   "peerDependencies": {
     "typescript": "*"
