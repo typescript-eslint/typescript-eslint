@@ -32,6 +32,8 @@ interface TestCaseError<TMessageIds extends string> {
   type?: AST_NODE_TYPES | AST_TOKEN_TYPES;
   line?: number;
   column?: number;
+  endLine?: number;
+  endColumn?: number;
 }
 
 interface RunTests<
