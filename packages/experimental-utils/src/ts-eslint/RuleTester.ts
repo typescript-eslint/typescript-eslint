@@ -22,7 +22,7 @@ interface InvalidTestCase<
   TMessageIds extends string,
   TOptions extends Readonly<any[]>
 > extends ValidTestCase<TOptions> {
-  errors: TestCaseError<TMessageIds>[];
+  errors: ReadonlyArray<TestCaseError<TMessageIds>>;
   output?: string | null;
 }
 
@@ -39,8 +39,8 @@ interface RunTests<
   TOptions extends Readonly<any[]>
 > {
   // RuleTester.run also accepts strings for valid cases
-  valid: (ValidTestCase<TOptions> | string)[];
-  invalid: InvalidTestCase<TMessageIds, TOptions>[];
+  valid: ReadonlyArray<(ValidTestCase<TOptions> | string)>;
+  invalid: ReadonlyArray<InvalidTestCase<TMessageIds, TOptions>>;
 }
 
 interface RunTests<
@@ -48,8 +48,8 @@ interface RunTests<
   TOptions extends Readonly<any[]>
 > {
   // RuleTester.run also accepts strings for valid cases
-  valid: (ValidTestCase<TOptions> | string)[];
-  invalid: InvalidTestCase<TMessageIds, TOptions>[];
+  valid: ReadonlyArray<(ValidTestCase<TOptions> | string)>;
+  invalid: ReadonlyArray<InvalidTestCase<TMessageIds, TOptions>>;
 }
 interface RuleTesterConfig {
   parser: '@typescript-eslint/parser';
