@@ -1,16 +1,17 @@
-import { ScopeManager } from './scope/scope-manager';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { Definition, ParameterDefinition } from 'eslint-scope/lib/definition';
-import OriginalPatternVisitor from 'eslint-scope/lib/pattern-visitor';
-import Reference from 'eslint-scope/lib/reference';
-import OriginalReferencer from 'eslint-scope/lib/referencer';
-import { getKeys as fallback } from 'eslint-visitor-keys';
-import { ParserOptions } from './parser-options';
-import { visitorKeys as childVisitorKeys } from './visitor-keys';
 import {
   PatternVisitorCallback,
   PatternVisitorOptions,
 } from 'eslint-scope/lib/options';
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import OriginalPatternVisitor from 'eslint-scope/lib/pattern-visitor';
+import Reference from 'eslint-scope/lib/reference';
+import OriginalReferencer from 'eslint-scope/lib/referencer';
+import { getKeys as fallback } from 'eslint-visitor-keys';
+
+import { ParserOptions } from './parser-options';
+import { ScopeManager } from './scope/scope-manager';
+import { visitorKeys as childVisitorKeys } from './visitor-keys';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.

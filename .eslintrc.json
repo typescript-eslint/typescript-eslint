@@ -12,6 +12,7 @@
     "no-dupe-class-members": "off",
     "no-mixed-operators": "error",
     "no-console": "off",
+    "no-dupe-class-members": "off",
     "no-undef": "off",
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/no-explicit-any": "off",

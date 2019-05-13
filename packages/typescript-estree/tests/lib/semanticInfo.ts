@@ -2,23 +2,19 @@ import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
 import ts from 'typescript';
-import { ParserOptions } from '../../src/parser-options';
+import { TSESTreeOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
   parseCodeAndGenerateServices,
 } from '../../tools/test-utils';
 import { parseAndGenerateServices } from '../../src/parser';
-import {
-  VariableDeclaration,
-  ClassDeclaration,
-  ClassProperty,
-} from '../../src/ts-estree/ts-estree';
+import { TSESTree } from '../../src/ts-estree';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
 
-function createOptions(fileName: string): ParserOptions & { cwd?: string } {
+function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
   return {
     loc: true,
     range: true,
@@ -144,15 +140,16 @@ describe('semanticInfo', () => {
     );
 
     expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
-    const binaryExpression = (parseResult.ast.body[0] as VariableDeclaration)
-      .declarations[0].init!;
+    const binaryExpression = (parseResult.ast
+      .body[0] as TSESTree.VariableDeclaration).declarations[0].init!;
     const tsBinaryExpression = parseResult.services.esTreeNodeToTSNodeMap!.get(
       binaryExpression,
     );
     expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
 
     const computedPropertyString = ((parseResult.ast
-      .body[1] as ClassDeclaration).body.body[0] as ClassProperty).key;
+      .body[1] as TSESTree.ClassDeclaration).body
+      .body[0] as TSESTree.ClassProperty).key;
     const tsComputedPropertyString = parseResult.services.esTreeNodeToTSNodeMap!.get(
       computedPropertyString,
     );

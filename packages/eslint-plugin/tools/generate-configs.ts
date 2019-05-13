@@ -3,7 +3,7 @@
 import path from 'path';
 import fs from 'fs';
 import rules from '../src/rules';
-import RuleModule from 'ts-eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import { Linter } from 'eslint';
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
@@ -28,7 +28,7 @@ interface LinterConfig extends Linter.Config {
  */
 const reducer = <TMessageIds extends string>(
   config: LinterConfigRules,
-  entry: [string, RuleModule<TMessageIds, any, any>],
+  entry: [string, TSESLint.RuleModule<TMessageIds, any, any>],
   setting?: 'error' | 'warn',
 ) => {
   const key = entry[0];

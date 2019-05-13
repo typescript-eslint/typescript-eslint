@@ -5,5 +5,4 @@ fixtures
 shared-fixtures
 coverage
 
-packages/typescript-estree/src/estree
 packages/eslint-plugin-tslint/tests

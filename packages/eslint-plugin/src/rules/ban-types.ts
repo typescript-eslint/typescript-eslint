@@ -1,5 +1,8 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import { ReportFixFunction } from 'ts-eslint';
+import {
+  TSESLint,
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -94,7 +97,7 @@ export default util.createRule<Options, MessageIds>({
             let customMessage = '';
             const bannedCfgValue = bannedTypes[node.name];
 
-            let fix: ReportFixFunction | null = null;
+            let fix: TSESLint.ReportFixFunction | null = null;
 
             if (typeof bannedCfgValue === 'string') {
               customMessage += ` ${bannedCfgValue}`;

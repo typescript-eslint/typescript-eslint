@@ -4,8 +4,8 @@
 import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
-} from '@typescript-eslint/typescript-estree';
-import { TestCaseError } from '../../RuleTester';
+  TSESLint,
+} from '@typescript-eslint/experimental-utils';
 import rule from '../../../src/rules/indent';
 import { InferMessageIdsTypeFromRule } from '../../../src/util';
 
@@ -54,7 +54,7 @@ function is2DProvidedErrorArr(
  */
 export function expectedErrors(
   providedErrors: ProvidedError | ProvidedError[],
-): TestCaseError<MessageIds>[];
+): TSESLint.TestCaseError<MessageIds>[];
 /**
  * Create error message object for failure cases with a single 'found' indentation type
  * @param providedIndentType indent type of string or tab
@@ -64,11 +64,11 @@ export function expectedErrors(
 export function expectedErrors(
   providedIndentType: string,
   providedErrors: ProvidedError | ProvidedError[],
-): TestCaseError<MessageIds>[];
+): TSESLint.TestCaseError<MessageIds>[];
 export function expectedErrors(
   providedIndentType: string | ProvidedError | ProvidedError[],
   providedErrors?: ProvidedError | ProvidedError[],
-): TestCaseError<MessageIds>[] {
+): TSESLint.TestCaseError<MessageIds>[] {
   let indentType: string;
   let errors: ProvidedError[];
 

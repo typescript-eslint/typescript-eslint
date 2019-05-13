@@ -11,6 +11,6 @@ export = {
     all,
     base,
     recommended,
-    eslintRecommended,
+    'eslint-recommended': eslintRecommended,
   },
 };

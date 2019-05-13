@@ -1,7 +1,9 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
-
+import ts from 'typescript';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------

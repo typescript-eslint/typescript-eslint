@@ -70,7 +70,7 @@ export type OptionalRangeAndLoc<T> = Pick<
   T,
   Exclude<keyof T, 'range' | 'loc'>
 > & {
-  range?: [number, number];
+  range?: Range;
   loc?: SourceLocation;
 };
 
@@ -928,7 +928,7 @@ export interface Super extends BaseNode {
 
 export interface SwitchCase extends BaseNode {
   type: AST_NODE_TYPES.SwitchCase;
-  test: Expression;
+  test: Expression | null;
   consequent: Statement[];
 }
 
