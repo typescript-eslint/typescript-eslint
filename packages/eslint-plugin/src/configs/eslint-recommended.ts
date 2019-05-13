@@ -32,6 +32,8 @@ export default {
         'no-this-before-super': 'off',
         // This is checked by Typescript using the option `strictNullChecks`.
         'no-undef': 'off',
+        // This is already checked by Typescript.
+        'no-dupe-class-members': 'off',
         /**
          * 2. Enable more ideomatic code
          */
@@ -41,8 +43,6 @@ export default {
         // The spread operator/rest parameters should be prefered in Typescript.
         'prefer-rest-params': 'error',
         'prefer-spread': 'error',
-        // This is already checked by Typescript.
-        'no-dupe-class-members': 'error',
       },
     },
   ],
