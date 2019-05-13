@@ -169,6 +169,17 @@ class App {
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/525
+    {
+      filename: 'test.ts',
+      code: `
+const myObj = {
+  set myProp(val) {
+    this.myProp = val;
+  },
+};
+      `,
+    },
   ],
   invalid: [
     {
