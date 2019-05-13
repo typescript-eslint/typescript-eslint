@@ -200,7 +200,7 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       SwitchCase(node) {
-        if (node.test.type !== AST_NODE_TYPES.TSAsExpression) {
+        if (node.test && node.test.type !== AST_NODE_TYPES.TSAsExpression) {
           return rules.SwitchCase(node);
         }
       },
