@@ -65,7 +65,8 @@ export default util.createRule<Options, MessageIds>({
     function isSetter(node: TSESTree.Node | undefined): boolean {
       return (
         !!node &&
-        node.type === AST_NODE_TYPES.MethodDefinition &&
+        (node.type === AST_NODE_TYPES.MethodDefinition ||
+          node.type === AST_NODE_TYPES.Property) &&
         node.kind === 'set'
       );
     }

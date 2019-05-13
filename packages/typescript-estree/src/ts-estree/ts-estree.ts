@@ -895,7 +895,7 @@ export interface Property extends BaseNode {
   computed: boolean;
   method: boolean;
   shorthand: boolean;
-  kind: 'init';
+  kind: 'init' | 'get' | 'set';
 }
 
 export interface RestElement extends BaseNode {
