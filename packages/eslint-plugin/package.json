@@ -44,11 +44,11 @@
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "1.9.0",
     "eslint-docs": "^0.2.6",
     "typescript": "*"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "1.9.0",
     "eslint": "^5.0.0"
   }
 }

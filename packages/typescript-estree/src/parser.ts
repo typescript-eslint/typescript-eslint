@@ -50,7 +50,7 @@ function resetExtra(): void {
     strict: false,
     jsx: false,
     useJSXTextNode: false,
-    log: console.log,
+    log: console.log, // eslint-disable-line no-console
     projects: [],
     errorOnUnknownASTType: false,
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
