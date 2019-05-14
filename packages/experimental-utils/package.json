@@ -28,10 +28,12 @@
     "prebuild": "npm run clean",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "1.9.0"
+    "@typescript-eslint/typescript-estree": "1.9.0",
+    "eslint-scope": "^4.0.0"
   },
   "peerDependencies": {
     "eslint": "*",
