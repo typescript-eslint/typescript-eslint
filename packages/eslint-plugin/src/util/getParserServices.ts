@@ -1,5 +1,7 @@
-import { ParserServices } from '@typescript-eslint/parser';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import {
+  ParserServices,
+  TSESLint,
+} from '@typescript-eslint/experimental-utils';
 
 type RequiredParserServices = {
   [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>
