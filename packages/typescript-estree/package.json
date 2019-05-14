@@ -41,7 +41,18 @@
     "semver": "5.5.0"
   },
   "devDependencies": {
+    "@babel/code-frame": "7.0.0",
+    "@babel/parser": "7.3.2",
     "@babel/types": "^7.3.2",
-    "@typescript-eslint/shared-fixtures": "1.9.0"
+    "@types/glob": "^7.1.1",
+    "@types/babel-code-frame": "^6.20.1",
+    "@types/lodash.unescape": "^4.0.4",
+    "@types/lodash.isplainobject": "^4.0.4",
+    "@types/semver": "^5.5.0",
+    "@typescript-eslint/shared-fixtures": "1.9.0",
+    "babel-code-frame": "^6.26.0",
+    "lodash.isplainobject": "4.0.6",
+    "typescript": "*",
+    "glob": "^7.1.4"
   }
 }

@@ -32,7 +32,8 @@
   },
   "peerDependencies": {
     "eslint": "^5.0.0",
-    "tslint": "^5.0.0"
+    "tslint": "^5.0.0",
+    "typescript": "*"
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.3",

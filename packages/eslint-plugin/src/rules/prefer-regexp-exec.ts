@@ -1,6 +1,6 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
-import { createRule, getParserServices, getTypeName } from '../util';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { getStaticValue } from 'eslint-utils';
+import { createRule, getParserServices, getTypeName } from '../util';
 
 export default createRule({
   name: 'prefer-regexp-exec',

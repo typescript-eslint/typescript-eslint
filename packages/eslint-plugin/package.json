@@ -44,7 +44,8 @@
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
-    "eslint-docs": "^0.2.6"
+    "eslint-docs": "^0.2.6",
+    "typescript": "*"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "1.9.0",
