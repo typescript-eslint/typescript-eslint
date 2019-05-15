@@ -8,7 +8,6 @@ export default util.createRule({
     docs: {
       description:
         'Prefer an interface declaration over a type literal (type T = { ... })',
-      tslintRuleName: 'interface-over-type-literal',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

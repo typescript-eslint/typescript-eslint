@@ -24,8 +24,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       category: 'Best Practices',
       description:
-        'Enforces unbound methods are called with their expected scope.',
-      tslintName: 'no-unbound-method',
+        'Enforces unbound methods are called with their expected scope',
       recommended: 'error',
     },
     messages: {

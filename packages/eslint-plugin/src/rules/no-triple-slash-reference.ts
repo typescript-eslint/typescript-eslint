@@ -6,7 +6,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow `/// <reference path="" />` comments',
-      tslintRuleName: 'no-reference',
       category: 'Best Practices',
       recommended: 'error',
     },

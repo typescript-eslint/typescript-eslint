@@ -88,7 +88,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation',
-      tslintRuleName: 'indent',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

@@ -14,9 +14,7 @@ type RemoveProps<
 > = Pick<TObj, Exclude<keyof TObj, TKeys>>;
 
 // we'll automatically add the url + tslint description for people.
-type CreateRuleMetaDocs = RemoveProps<RuleMetaDataDocs, 'url'> & {
-  tslintName?: string;
-};
+type CreateRuleMetaDocs = RemoveProps<RuleMetaDataDocs, 'url'>;
 type CreateRuleMeta<TMessageIds extends string> = {
   docs: CreateRuleMetaDocs;
 } & RemoveProps<RuleMetaData<TMessageIds>, 'docs'>;
@@ -48,9 +46,6 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
         docs: {
           ...meta.docs,
           url: urlCreator(name),
-          extraDescription: meta.docs.tslintName
-            ? [`\`${meta.docs.tslintName}\` from TSLint`]
-            : undefined,
         },
       },
       create(context) {

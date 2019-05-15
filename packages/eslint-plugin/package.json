@@ -28,7 +28,7 @@
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/",
     "docs": "eslint-docs",
-    "docs:check": "eslint-docs check",
+    "docs:check": "ts-node --files ./tools/validate-docs/index.ts",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "prebuild": "npm run clean",
     "recommended:update": "ts-node tools/update-recommended.ts",
@@ -45,7 +45,9 @@
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
-    "eslint-docs": "^0.2.6"
+    "@types/marked": "^0.6.5",
+    "chalk": "^2.4.2",
+    "marked": "^0.6.2"
   },
   "peerDependencies": {
     "eslint": "^5.0.0"

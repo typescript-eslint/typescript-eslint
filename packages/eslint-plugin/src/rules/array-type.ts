@@ -85,7 +85,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
-      tslintRuleName: 'array-type',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

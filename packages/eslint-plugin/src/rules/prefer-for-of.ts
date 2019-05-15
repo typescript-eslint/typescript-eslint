@@ -11,10 +11,9 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated.',
+        'Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated',
       category: 'Stylistic Issues',
       recommended: false,
-      tslintName: 'prefer-for-of',
     },
     messages: {
       preferForOf:

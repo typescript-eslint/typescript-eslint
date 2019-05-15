@@ -10,8 +10,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules.',
-      tslintRuleName: 'no-internal-module',
+        'Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules',
       category: 'Best Practices',
       recommended: 'error',
     },

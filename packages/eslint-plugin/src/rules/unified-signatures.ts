@@ -53,10 +53,9 @@ export default util.createRule({
   meta: {
     docs: {
       description:
-        'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter.',
+        'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter',
       category: 'Variables',
       recommended: false,
-      tslintName: 'unified-signatures',
     },
     type: 'suggestion',
     messages: {

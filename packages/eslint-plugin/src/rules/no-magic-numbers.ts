@@ -21,7 +21,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow magic numbers',
+      description: 'Disallows magic numbers',
       category: 'Best Practices',
       recommended: false,
     },
