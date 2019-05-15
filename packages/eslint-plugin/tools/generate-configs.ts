@@ -1,25 +1,32 @@
 /* eslint-disable no-console */
 
-import path from 'path';
-import fs from 'fs';
-import rules from '../src/rules';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
 import { Linter } from 'eslint';
-
-const RULE_NAME_PREFIX = '@typescript-eslint/';
-const MAX_RULE_NAME_LENGTH = 32 + RULE_NAME_PREFIX.length;
-const DEFAULT_RULE_SETTING = 'warn';
-
-const ruleEntries = Object.entries(rules);
+import fs from 'fs';
+import path from 'path';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import rules from '../src/rules';
 
 interface LinterConfigRules {
-  [name: string]: Linter.RuleLevel;
+  [name: string]: Linter.RuleLevel | Linter.RuleLevelAndOptions;
 }
 
 interface LinterConfig extends Linter.Config {
   extends?: string | string[];
   plugins?: string[];
 }
+
+const RULE_NAME_PREFIX = '@typescript-eslint/';
+const MAX_RULE_NAME_LENGTH = 32 + RULE_NAME_PREFIX.length;
+const DEFAULT_RULE_SETTING = 'warn';
+const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
+  'camelcase',
+  'indent',
+  'no-array-constructor',
+  'no-unused-vars',
+  'no-useless-constructor',
+]);
+
+const ruleEntries = Object.entries(rules);
 
 /**
  * Helper function reduces records to key - value pairs.
@@ -29,19 +36,30 @@ interface LinterConfig extends Linter.Config {
 const reducer = <TMessageIds extends string>(
   config: LinterConfigRules,
   entry: [string, TSESLint.RuleModule<TMessageIds, any, any>],
-  setting?: 'error' | 'warn',
+  settings: {
+    errorLevel?: 'error' | 'warn';
+    filterDeprecated: boolean;
+  },
 ) => {
   const key = entry[0];
   const value = entry[1];
-  const ruleName = `${RULE_NAME_PREFIX}${key}`;
 
+  if (settings.filterDeprecated && value.meta.deprecated) {
+    return config;
+  }
+
+  const ruleName = `${RULE_NAME_PREFIX}${key}`;
   const recommendation = value.meta.docs.recommended;
-  const usedSetting = setting
-    ? setting
+  const usedSetting = settings.errorLevel
+    ? settings.errorLevel
     : !recommendation
     ? DEFAULT_RULE_SETTING
     : recommendation;
 
+  if (BASE_RULES_TO_BE_OVERRIDDEN.has(key)) {
+    console.log(key.padEnd(MAX_RULE_NAME_LENGTH), '=', 'off');
+    config[key] = 'off';
+  }
   console.log(ruleName.padEnd(MAX_RULE_NAME_LENGTH), '=', usedSetting);
   config[ruleName] = usedSetting;
 
@@ -61,23 +79,17 @@ const baseConfig: LinterConfig = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint'],
-  rules: {
-    camelcase: 'off',
-    indent: 'off',
-    'no-array-constructor': 'off',
-    'no-unused-vars': 'off',
-    'no-useless-constructor': 'off',
-  },
 };
 writeConfig(baseConfig, path.resolve(__dirname, '../src/configs/base.json'));
 
 console.log('------------------------- all.json -------------------------');
 const allConfig: LinterConfig = {
   extends: './configs/base.json',
-  rules: ruleEntries.reduce(
-    (config, entry) => reducer(config, entry, 'error'),
+  rules: ruleEntries.reduce<LinterConfigRules>(
+    (config, entry) =>
+      reducer(config, entry, { errorLevel: 'error', filterDeprecated: true }),
     {},
-  ) as LinterConfigRules,
+  ),
 };
 writeConfig(allConfig, path.resolve(__dirname, '../src/configs/all.json'));
 
@@ -86,7 +98,10 @@ const recommendedConfig: LinterConfig = {
   extends: './configs/base.json',
   rules: ruleEntries
     .filter(entry => !!entry[1].meta.docs.recommended)
-    .reduce((config, entry) => reducer(config, entry), {}) as LinterConfigRules,
+    .reduce<LinterConfigRules>(
+      (config, entry) => reducer(config, entry, { filterDeprecated: true }),
+      {},
+    ),
 };
 writeConfig(
   recommendedConfig,

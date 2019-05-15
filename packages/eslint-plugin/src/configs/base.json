@@ -3,12 +3,5 @@
   "parserOptions": {
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
-  "rules": {
-    "camelcase": "off",
-    "indent": "off",
-    "no-array-constructor": "off",
-    "no-unused-vars": "off",
-    "no-useless-constructor": "off"
-  }
+  "plugins": ["@typescript-eslint"]
 }
