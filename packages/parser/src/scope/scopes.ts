@@ -1,12 +1,11 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
-import { Scope } from 'eslint-scope/lib/scope';
+import { TSESTree, TSESLintScope } from '@typescript-eslint/experimental-utils';
 import { ScopeManager } from './scope-manager';
 
 /** The scope class for enum. */
-export class EnumScope extends Scope {
+export class EnumScope extends TSESLintScope.Scope {
   constructor(
     scopeManager: ScopeManager,
-    upperScope: Scope,
+    upperScope: TSESLintScope.Scope,
     block: TSESTree.TSEnumDeclaration | null,
   ) {
     super(scopeManager, 'enum', upperScope, block, false);
@@ -14,10 +13,10 @@ export class EnumScope extends Scope {
 }
 
 /** The scope class for empty functions. */
-export class EmptyFunctionScope extends Scope {
+export class EmptyFunctionScope extends TSESLintScope.Scope {
   constructor(
     scopeManager: ScopeManager,
-    upperScope: Scope,
+    upperScope: TSESLintScope.Scope,
     block: TSESTree.TSDeclareFunction | null,
   ) {
     super(scopeManager, 'empty-function', upperScope, block, false);

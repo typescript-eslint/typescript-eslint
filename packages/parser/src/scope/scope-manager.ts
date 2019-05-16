@@ -1,18 +1,14 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
-import EslintScopeManager, {
-  ScopeManagerOptions,
-} from 'eslint-scope/lib/scope-manager';
-import { Scope } from 'eslint-scope/lib/scope';
+import { TSESTree, TSESLintScope } from '@typescript-eslint/experimental-utils';
 import { EmptyFunctionScope, EnumScope } from './scopes';
 
 /**
  * based on eslint-scope
  */
-export class ScopeManager extends EslintScopeManager {
-  scopes!: Scope[];
-  globalScope!: Scope;
+export class ScopeManager extends TSESLintScope.ScopeManager {
+  scopes!: TSESLintScope.Scope[];
+  globalScope!: TSESLintScope.Scope;
 
-  constructor(options: ScopeManagerOptions) {
+  constructor(options: TSESLintScope.ScopeManagerOptions) {
     super(options);
   }
 

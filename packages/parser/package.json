@@ -37,13 +37,12 @@
     "eslint": "^5.0.0"
   },
   "dependencies": {
+    "@types/eslint-visitor-keys": "^1.0.0",
     "@typescript-eslint/experimental-utils": "1.9.0",
     "@typescript-eslint/typescript-estree": "1.9.0",
-    "eslint-scope": "^4.0.0",
     "eslint-visitor-keys": "^1.0.0"
   },
   "devDependencies": {
-    "@types/eslint-visitor-keys": "^1.0.0",
     "@typescript-eslint/shared-fixtures": "1.9.0"
   }
 }
