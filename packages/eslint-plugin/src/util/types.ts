@@ -140,8 +140,17 @@ export function isNullableType(
 export function getDeclaration(
   checker: ts.TypeChecker,
   node: ts.Expression,
-): ts.Declaration {
-  return checker.getSymbolAtLocation(node)!.declarations![0];
+): ts.Declaration | null {
+  const symbol = checker.getSymbolAtLocation(node);
+  if (!symbol) {
+    return null;
+  }
+  const declarations = symbol.declarations;
+  if (!declarations) {
+    return null;
+  }
+
+  return declarations[0];
 }
 
 /**
