@@ -8,9 +8,8 @@ export default util.createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Warns when a namespace qualifier is unnecessary.',
+      description: 'Warns when a namespace qualifier is unnecessary',
       recommended: false,
-      tslintName: 'no-unnecessary-qualifier',
     },
     fixable: 'code',
     messages: {

@@ -28,12 +28,12 @@
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/",
     "docs": "eslint-docs",
-    "docs:check": "eslint-docs check",
-    "test": "jest --coverage",
-    "generate:configs": "ts-node --files tools/generate-configs.ts",
+    "docs:check": "ts-node --files ./tools/validate-docs/index.ts",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "generate:configs": "ts-node --files tools/generate-configs.ts",
     "prebuild": "npm run clean",
     "recommended:update": "ts-node tools/update-recommended.ts",
+    "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -44,8 +44,9 @@
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "1.9.0",
-    "eslint-docs": "^0.2.6",
+    "@types/marked": "^0.6.5",
+    "chalk": "^2.4.2",
+    "marked": "^0.6.2",
     "typescript": "*"
   },
   "peerDependencies": {

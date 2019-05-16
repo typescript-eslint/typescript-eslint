@@ -18,7 +18,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Forbids an object literal to appear in a type assertion expression',
-      tslintRuleName: 'no-object-literal-type-assertion',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

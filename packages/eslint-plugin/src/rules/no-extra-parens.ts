@@ -14,7 +14,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description: 'disallow unnecessary parentheses',
+      description: 'Disallow unnecessary parentheses',
       category: 'Possible Errors',
       recommended: false,
     },

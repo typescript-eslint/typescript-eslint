@@ -13,7 +13,6 @@ export default util.createRule({
         'Use function types instead of interfaces with call signatures',
       category: 'Best Practices',
       recommended: false,
-      tslintName: 'callable-types',
     },
     fixable: 'code',
     messages: {

@@ -9,7 +9,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require that interface names be prefixed with `I`',
-      tslintRuleName: 'interface-name',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

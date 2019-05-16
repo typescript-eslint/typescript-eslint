@@ -20,6 +20,7 @@
     "build": "lerna run build",
     "clean": "lerna clean && lerna run clean",
     "cz": "git-cz",
+    "docs:check": "lerna run docs:check",
     "generate-contributors": "yarn ts-node ./tools/generate-contributors.ts && yarn all-contributors generate",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
     "format-check": "prettier --list-different \"./**/*.{ts,js,json,md}\"",

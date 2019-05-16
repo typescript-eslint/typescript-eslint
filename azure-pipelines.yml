@@ -32,6 +32,10 @@ jobs:
         displayName: 'Run linting'
 
       - script: |
+          yarn docs:check
+        displayName: 'Validate documentation'
+
+      - script: |
           yarn test
         displayName: 'Run unit tests'
 

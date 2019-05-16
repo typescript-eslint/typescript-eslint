@@ -33,7 +33,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
-      tslintRuleName: 'member-access',
       category: 'Best Practices',
       recommended: 'error',
     },

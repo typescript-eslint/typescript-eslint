@@ -6,8 +6,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows invocation of `require()`.',
-      tslintName: 'no-require-imports',
+      description: 'Disallows invocation of `require()`',
       category: 'Best Practices',
       recommended: false,
     },

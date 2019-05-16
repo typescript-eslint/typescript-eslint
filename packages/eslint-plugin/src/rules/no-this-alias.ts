@@ -18,7 +18,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow aliasing `this`',
-      tslintRuleName: 'no-this-assignment',
       category: 'Best Practices',
       recommended: false,
     },

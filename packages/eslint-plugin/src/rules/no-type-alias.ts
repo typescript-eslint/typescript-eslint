@@ -36,7 +36,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow the use of type aliases',
-      tslintRuleName: 'interface-over-type-literal',
       category: 'Stylistic Issues',
       recommended: false,
     },
