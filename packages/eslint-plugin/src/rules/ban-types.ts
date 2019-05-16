@@ -26,7 +26,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforces that types will not to be used',
-      tslintRuleName: 'ban-types',
       category: 'Best Practices',
       recommended: 'error',
     },

@@ -11,7 +11,6 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow unused variables',
-      tslintRuleName: 'no-unused-variable',
       category: 'Variables',
       recommended: 'warn',
     },

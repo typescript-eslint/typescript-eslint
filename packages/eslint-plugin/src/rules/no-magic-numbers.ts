@@ -1,8 +1,3 @@
-/**
- * @fileoverview Rule to flag statements that use magic numbers (adapted from https://github.com/danielstjules/buddy.js)
- * @author Scott O'Hara
- */
-
 import {
   TSESTree,
   AST_NODE_TYPES,
@@ -21,7 +16,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow magic numbers',
+      description: 'Disallows magic numbers',
       category: 'Best Practices',
       recommended: false,
     },

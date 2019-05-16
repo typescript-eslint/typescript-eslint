@@ -11,7 +11,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallows the use of require statements except in import statements',
-      tslintRuleName: 'no-var-requires',
       category: 'Best Practices',
       recommended: 'error',
     },

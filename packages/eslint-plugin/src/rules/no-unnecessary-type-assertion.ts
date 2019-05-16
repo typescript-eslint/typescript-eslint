@@ -28,7 +28,6 @@ export default util.createRule<Options, MessageIds>({
         'Warns if a type assertion does not change the type of an expression',
       category: 'Best Practices',
       recommended: false,
-      tslintRuleName: 'no-unnecessary-type-assertion',
     },
     fixable: 'code',
     messages: {

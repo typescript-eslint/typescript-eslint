@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import rules from '../src/rules';
@@ -17,14 +18,19 @@ interface LinterConfig extends TSESLint.Linter.Config {
 }
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
-const MAX_RULE_NAME_LENGTH = 32 + RULE_NAME_PREFIX.length;
+const MAX_RULE_NAME_LENGTH = 32;
 const DEFAULT_RULE_SETTING = 'warn';
 const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'camelcase',
+  'func-call-spacing',
   'indent',
   'no-array-constructor',
+  'no-extra-parens',
+  'no-magic-numbers',
   'no-unused-vars',
+  'no-use-before-define',
   'no-useless-constructor',
+  'semi',
 ]);
 
 const ruleEntries = Object.entries(rules);
@@ -58,10 +64,22 @@ const reducer = <TMessageIds extends string>(
     : recommendation;
 
   if (BASE_RULES_TO_BE_OVERRIDDEN.has(key)) {
-    console.log(key.padEnd(MAX_RULE_NAME_LENGTH), '=', 'off');
+    console.log(
+      key
+        .padStart(RULE_NAME_PREFIX.length + key.length)
+        .padEnd(RULE_NAME_PREFIX.length + MAX_RULE_NAME_LENGTH),
+      '=',
+      chalk.green('off'),
+    );
     config[key] = 'off';
   }
-  console.log(ruleName.padEnd(MAX_RULE_NAME_LENGTH), '=', usedSetting);
+  console.log(
+    `${chalk.dim(RULE_NAME_PREFIX)}${key.padEnd(MAX_RULE_NAME_LENGTH)}`,
+    '=',
+    usedSetting === 'error'
+      ? chalk.red(usedSetting)
+      : chalk.yellow(usedSetting),
+  );
   config[ruleName] = usedSetting;
 
   return config;
@@ -83,7 +101,10 @@ const baseConfig: LinterConfig = {
 };
 writeConfig(baseConfig, path.resolve(__dirname, '../src/configs/base.json'));
 
-console.log('------------------------- all.json -------------------------');
+console.log();
+console.log(
+  '---------------------------------- all.json ----------------------------------',
+);
 const allConfig: LinterConfig = {
   extends: './configs/base.json',
   rules: ruleEntries.reduce<LinterConfigRules>(
@@ -94,7 +115,10 @@ const allConfig: LinterConfig = {
 };
 writeConfig(allConfig, path.resolve(__dirname, '../src/configs/all.json'));
 
-console.log('--------------------- recommended.json ---------------------');
+console.log();
+console.log(
+  '------------------------------ recommended.json ------------------------------',
+);
 const recommendedConfig: LinterConfig = {
   extends: './configs/base.json',
   rules: ruleEntries

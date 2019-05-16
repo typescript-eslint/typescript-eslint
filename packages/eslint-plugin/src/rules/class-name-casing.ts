@@ -10,7 +10,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Require PascalCased class and interface names',
-      tslintRuleName: 'class-name',
       category: 'Best Practices',
       recommended: 'error',
     },
