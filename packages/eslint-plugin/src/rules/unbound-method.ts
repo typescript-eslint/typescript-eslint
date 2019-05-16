@@ -26,7 +26,7 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Enforces unbound methods are called with their expected scope.',
       tslintName: 'no-unbound-method',
-      recommended: 'error',
+      recommended: false,
     },
     messages: {
       unbound:

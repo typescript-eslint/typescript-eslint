@@ -29,10 +29,11 @@
     "clean": "rimraf dist/",
     "docs": "eslint-docs",
     "docs:check": "eslint-docs check",
+    "test": "jest --coverage",
+    "generate:configs": "ts-node --files tools/generate-configs.ts",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "prebuild": "npm run clean",
     "recommended:update": "ts-node tools/update-recommended.ts",
-    "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -40,7 +41,6 @@
     "eslint-utils": "^1.3.1",
     "functional-red-black-tree": "^1.0.1",
     "regexpp": "^2.0.1",
-    "requireindex": "^1.2.0",
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
@@ -49,6 +49,7 @@
     "typescript": "*"
   },
   "peerDependencies": {
+    "@typescript-eslint/parser": "1.9.0",
     "eslint": "^5.0.0"
   }
 }
