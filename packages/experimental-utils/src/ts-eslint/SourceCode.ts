@@ -1,50 +1,10 @@
 /* eslint-disable @typescript-eslint/no-namespace, no-redeclare */
 
 import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
+import { SourceCode as ESLintSourceCode } from 'eslint';
 import { Scope } from './Scope';
 
-namespace SourceCode {
-  export interface Program extends TSESTree.Program {
-    comments: TSESTree.Comment[];
-    tokens: TSESTree.Token[];
-  }
-
-  export interface Config {
-    text: string;
-    ast: Program;
-    parserServices?: ParserServices;
-    scopeManager?: Scope.ScopeManager;
-    visitorKeys?: VisitorKeys;
-  }
-
-  export interface VisitorKeys {
-    [nodeType: string]: string[];
-  }
-
-  export type FilterPredicate = (
-    tokenOrComment: TSESTree.Token | TSESTree.Comment,
-  ) => boolean;
-
-  export type CursorWithSkipOptions =
-    | number
-    | FilterPredicate
-    | {
-        includeComments?: boolean;
-        filter?: FilterPredicate;
-        skip?: number;
-      };
-
-  export type CursorWithCountOptions =
-    | number
-    | FilterPredicate
-    | {
-        includeComments?: boolean;
-        filter?: FilterPredicate;
-        count?: number;
-      };
-}
-
-declare class SourceCode {
+declare interface SourceCode {
   text: string;
   ast: SourceCode.Program;
   lines: string[];
@@ -53,11 +13,6 @@ declare class SourceCode {
   scopeManager: Scope.ScopeManager;
   visitorKeys: SourceCode.VisitorKeys;
   tokensAndComments: (TSESTree.Comment | TSESTree.Token)[];
-
-  constructor(text: string, ast: SourceCode.Program);
-  constructor(config: SourceCode.Config);
-
-  static splitLines(text: string): string[];
 
   getText(
     node?: TSESTree.Node,
@@ -189,5 +144,54 @@ declare class SourceCode {
 
   getCommentsInside(node: TSESTree.Node): TSESTree.Comment[];
 }
+
+namespace SourceCode {
+  export interface Program extends TSESTree.Program {
+    comments: TSESTree.Comment[];
+    tokens: TSESTree.Token[];
+  }
+
+  export interface Config {
+    text: string;
+    ast: Program;
+    parserServices?: ParserServices;
+    scopeManager?: Scope.ScopeManager;
+    visitorKeys?: VisitorKeys;
+  }
+
+  export interface VisitorKeys {
+    [nodeType: string]: string[];
+  }
+
+  export type FilterPredicate = (
+    tokenOrComment: TSESTree.Token | TSESTree.Comment,
+  ) => boolean;
+
+  export type CursorWithSkipOptions =
+    | number
+    | FilterPredicate
+    | {
+        includeComments?: boolean;
+        filter?: FilterPredicate;
+        skip?: number;
+      };
+
+  export type CursorWithCountOptions =
+    | number
+    | FilterPredicate
+    | {
+        includeComments?: boolean;
+        filter?: FilterPredicate;
+        count?: number;
+      };
+}
+
+const SourceCode = ESLintSourceCode as {
+  new (text: string, ast: SourceCode.Program): SourceCode;
+  new (config: SourceCode.Config): SourceCode;
+
+  // static methods
+  splitLines(text: string): string[];
+};
 
 export { SourceCode };

@@ -1,16 +1,17 @@
 /* eslint-disable no-console */
 
-import { Linter } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import fs from 'fs';
 import path from 'path';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rules from '../src/rules';
 
 interface LinterConfigRules {
-  [name: string]: Linter.RuleLevel | Linter.RuleLevelAndOptions;
+  [name: string]:
+    | TSESLint.Linter.RuleLevel
+    | TSESLint.Linter.RuleLevelAndOptions;
 }
 
-interface LinterConfig extends Linter.Config {
+interface LinterConfig extends TSESLint.Linter.Config {
   extends?: string | string[];
   plugins?: string[];
 }

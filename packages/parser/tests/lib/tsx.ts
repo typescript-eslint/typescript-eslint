@@ -1,4 +1,4 @@
-import { Linter } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import fs from 'fs';
 import glob from 'glob';
 import * as parser from '../../src/parser';
@@ -31,7 +31,7 @@ describe('TSX', () => {
   });
 
   describe("if the filename ends with '.tsx', enable jsx option automatically.", () => {
-    const linter = new Linter();
+    const linter = new TSESLint.Linter();
     linter.defineParser('@typescript-eslint/parser', parser);
 
     it('filePath was not provided', () => {

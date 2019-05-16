@@ -3,13 +3,12 @@ import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { RuleTester } from '../RuleTester';
 
 const rootDir = path.join(process.cwd(), 'tests/fixtures');
-const parserOptions = {
-  ecmaVersion: 2015,
-  tsconfigRootDir: rootDir,
-  project: './tsconfig.json',
-};
 const ruleTester = new RuleTester({
-  parserOptions,
+  parserOptions: {
+    ecmaVersion: 2015,
+    tsconfigRootDir: rootDir,
+    project: './tsconfig.json',
+  },
   parser: '@typescript-eslint/parser',
 });
 

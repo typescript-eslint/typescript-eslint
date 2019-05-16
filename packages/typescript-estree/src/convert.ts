@@ -102,7 +102,7 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    let result = this.convertNode(node as TSNode, parent || node.parent);
+    const result = this.convertNode(node as TSNode, parent || node.parent);
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -1390,7 +1390,7 @@ export class Converter {
       case SyntaxKind.ClassDeclaration:
       case SyntaxKind.ClassExpression: {
         const heritageClauses = node.heritageClauses || [];
-        let classNodeType =
+        const classNodeType =
           node.kind === SyntaxKind.ClassDeclaration
             ? AST_NODE_TYPES.ClassDeclaration
             : AST_NODE_TYPES.ClassExpression;

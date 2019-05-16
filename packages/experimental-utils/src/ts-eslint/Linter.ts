@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-namespace, no-redeclare */
 
 import { TSESTree, ParserServices } from '@typescript-eslint/typescript-estree';
+import { Linter as ESLintLinter } from 'eslint';
+import { ParserOptions as TSParserOptions } from './ParserOptions';
 import { RuleModule, RuleFix } from './Rule';
 import { Scope } from './Scope';
 import { SourceCode } from './SourceCode';
 
-declare class Linter {
+interface Linter {
   version: string;
 
   verify(
@@ -34,7 +36,10 @@ declare class Linter {
 
   defineRule<TMessageIds extends string, TOptions extends readonly any[]>(
     name: string,
-    rule: RuleModule<TMessageIds, TOptions>,
+    rule: {
+      meta?: RuleModule<TMessageIds, TOptions>['meta'];
+      create: RuleModule<TMessageIds, TOptions>['create'];
+    },
   ): void;
 
   defineRules<TMessageIds extends string, TOptions extends readonly any[]>(
@@ -68,18 +73,7 @@ namespace Linter {
     globals?: { [name: string]: boolean };
   }
 
-  export interface ParserOptions {
-    ecmaVersion?: 3 | 5 | 6 | 7 | 8 | 9 | 2015 | 2016 | 2017 | 2018;
-    sourceType?: 'script' | 'module';
-    ecmaFeatures?: {
-      globalReturn?: boolean;
-      impliedStrict?: boolean;
-      jsx?: boolean;
-      experimentalObjectRestSpread?: boolean;
-      [key: string]: any;
-    };
-    [key: string]: any;
-  }
+  export type ParserOptions = TSParserOptions;
 
   export interface LintOptions {
     filename?: string;
@@ -128,5 +122,9 @@ namespace Linter {
     visitorKeys?: SourceCode.VisitorKeys;
   }
 }
+
+const Linter = ESLintLinter as {
+  new (): Linter;
+};
 
 export { Linter };

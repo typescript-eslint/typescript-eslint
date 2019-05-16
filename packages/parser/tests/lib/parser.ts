@@ -1,3 +1,4 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
 import { parse, parseForESLint, Syntax } from '../../src/parser';
 import * as scope from '../../src/analyze-scope';
@@ -35,13 +36,13 @@ describe('parser', () => {
   it('parseAndGenerateServices() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
-    const config = {
+    const config: TSESLint.ParserOptions = {
       loc: false,
       comment: false,
       range: false,
       tokens: false,
       sourceType: 'module' as 'module',
-      ecmaVersion: 10,
+      ecmaVersion: 2018,
       ecmaFeatures: {
         globalReturn: false,
         jsx: false,

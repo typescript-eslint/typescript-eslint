@@ -27,6 +27,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@typescript-eslint/experimental-utils": "1.9.0",
     "lodash.memoize": "^4.1.2"
   },
   "peerDependencies": {
@@ -34,7 +35,7 @@
     "tslint": "^5.0.0"
   },
   "devDependencies": {
-    "@types/eslint": "^4.16.3",
+    "@types/json-schema": "^7.0.3",
     "@types/lodash.memoize": "^4.1.4",
     "@typescript-eslint/parser": "1.9.0"
   }

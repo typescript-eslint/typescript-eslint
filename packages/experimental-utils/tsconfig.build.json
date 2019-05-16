@@ -5,5 +5,5 @@
     "rootDir": "./src",
     "resolveJsonModule": true
   },
-  "include": ["src"]
+  "include": ["src", "typings"]
 }

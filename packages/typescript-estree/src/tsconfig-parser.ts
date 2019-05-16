@@ -82,7 +82,7 @@ export function calculateProjectParserOptions(
     watchCallback(filePath, ts.FileWatcherEventKind.Changed);
   }
 
-  for (let rawTsconfigPath of extra.projects) {
+  for (const rawTsconfigPath of extra.projects) {
     const tsconfigPath = getTsconfigPath(rawTsconfigPath, extra);
 
     const existingWatch = knownWatchProgramMap.get(tsconfigPath);
