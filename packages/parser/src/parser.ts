@@ -88,12 +88,12 @@ export function parseForESLint(
   ast.sourceType = options.sourceType;
 
   traverser.traverse(ast, {
-    enter(node: any) {
+    enter(node) {
       switch (node.type) {
         // Function#body cannot be null in ESTree spec.
         case 'FunctionExpression':
           if (!node.body) {
-            node.type = `TSEmptyBody${node.type}` as AST_NODE_TYPES;
+            node.type = `TSEmptyBody${node.type}` as any;
           }
           break;
         // no default
