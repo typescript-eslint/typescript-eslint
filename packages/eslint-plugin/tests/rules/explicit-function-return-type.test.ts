@@ -32,13 +32,6 @@ var arrowFn = (): string => 'test';
     {
       filename: 'test.ts',
       code: `
-var curriedAddFn = (x: int) => (y: int): int => x + y;
-            `,
-      options: [{ allowCurrying: true }],
-    },
-    {
-      filename: 'test.ts',
-      code: `
 class Test {
   constructor() {}
   get prop(): number {
@@ -187,6 +180,13 @@ const myObj = {
 };
       `,
     },
+    {
+      filename: 'test.ts',
+      code: `
+var curriedAddFn = (x: int) => (y: int): int => x + y;
+            `,
+      options: [{ allowCurrying: true }],
+    },
   ],
   invalid: [
     {
@@ -229,39 +229,6 @@ var arrowFn = () => 'test';
           messageId: 'missingReturnType',
           line: 2,
           column: 15,
-        },
-      ],
-    },
-    {
-      filename: 'test.ts',
-      code: `
-var curriedAddFn = (x: number) => (y: number) => x + y;
-            `,
-      options: [{ allowCurrying: false }],
-      errors: [
-        {
-          messageId: 'missingReturnType',
-          line: 2,
-          column: 20,
-        },
-        {
-          messageId: 'missingReturnType',
-          line: 2,
-          column: 35,
-        },
-      ],
-    },
-    {
-      filename: 'test.ts',
-      code: `
-var curriedAddFn = (x: number) => (y: number) => x + y;
-            `,
-      options: [{ allowCurrying: true }],
-      errors: [
-        {
-          messageId: 'missingReturnType',
-          line: 2,
-          column: 35,
         },
       ],
     },
@@ -401,6 +368,39 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 4,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+var curriedAddFn = (x: number) => (y: number) => x + y;
+            `,
+      options: [{ allowCurrying: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 20,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 35,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+var curriedAddFn = (x: number) => (y: number) => x + y;
+            `,
+      options: [{ allowCurrying: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 35,
         },
       ],
     },
