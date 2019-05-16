@@ -32,6 +32,13 @@ var arrowFn = (): string => 'test';
     {
       filename: 'test.ts',
       code: `
+var curryFn = (bar: string) => (baz: string): string => bar + baz;
+            `,
+      options: [{ allowCurrying: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
 class Test {
   constructor() {}
   get prop(): number {
@@ -222,6 +229,39 @@ var arrowFn = () => 'test';
           messageId: 'missingReturnType',
           line: 2,
           column: 15,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+var curryFn = (bar: string) => (baz: string) => bar + baz;
+            `,
+      options: [{ allowCurrying: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 15,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 32,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+var curryFn = (bar: string) => (baz: string) => bar + baz;
+            `,
+      options: [{ allowCurrying: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 32,
         },
       ],
     },

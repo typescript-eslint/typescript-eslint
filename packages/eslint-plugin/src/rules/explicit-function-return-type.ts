@@ -8,6 +8,7 @@ type Options = [
   {
     allowExpressions?: boolean;
     allowTypedFunctionExpressions?: boolean;
+    allowCurrying?: boolean;
   }
 ];
 type MessageIds = 'missingReturnType';
@@ -35,6 +36,9 @@ export default util.createRule<Options, MessageIds>({
           allowTypedFunctionExpressions: {
             type: 'boolean',
           },
+          allowCurrying: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -44,6 +48,7 @@ export default util.createRule<Options, MessageIds>({
     {
       allowExpressions: false,
       allowTypedFunctionExpressions: false,
+      allowCurrying: false,
     },
   ],
   create(context, [options]) {
@@ -185,6 +190,14 @@ export default util.createRule<Options, MessageIds>({
           options.allowExpressions &&
           node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
           node.parent.type !== AST_NODE_TYPES.MethodDefinition
+        ) {
+          return;
+        }
+
+        if (
+          options.allowCurrying &&
+          node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+          node.body.type === AST_NODE_TYPES.ArrowFunctionExpression
         ) {
           return;
         }
