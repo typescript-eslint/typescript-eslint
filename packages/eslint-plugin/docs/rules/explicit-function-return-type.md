@@ -67,11 +67,14 @@ type Options = {
   allowExpressions?: boolean;
   // if true, type annotations are also allowed on the variable of a function expression rather than on the function directly.
   allowTypedFunctionExpressions?: boolean;
+  // if true, only arrow functions which does not return an arrow function will be checked
+  allowCurrying?: boolean;
 };
 
 const defaults = {
   allowExpressions: false,
   allowTypedFunctionExpressions: false,
+  allowCurrying: false,
 };
 ```
 
@@ -135,6 +138,20 @@ let objectPropAs = {
 let objectPropCast = <ObjectType>{
   foo: () => 1,
 };
+```
+
+### allowCurrying
+
+Examples of **incorrect** code for this rule with `{ allowCurrying: true }`:
+
+```ts
+var curryFn = (bar: string) => (baz: string) => bar + baz;
+```
+
+Examples of **correct** code for this rule with `{ allowCurrying: true }`:
+
+```ts
+var curryFn = (bar: string) => (baz: string): string => bar + baz;
 ```
 
 ## When Not To Use It
