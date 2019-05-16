@@ -45,7 +45,7 @@ export function getFirstSemanticOrSyntacticError(
      * and log a a warning.
      */
     /* istanbul ignore next */
-    console.warn(`Warning From TSC: "${e.message}`); // eslint-disable-line no-console
+    console.warn(`Warning From TSC: "${e.message}`);
     /* istanbul ignore next */
     return undefined;
   }

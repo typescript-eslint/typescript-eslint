@@ -58,7 +58,7 @@ describe('parse()', () => {
 
   describe('loggerFn should be propagated to ast-converter', () => {
     it('output tokens, comments, locs, and ranges when called with those options', () => {
-      const spy = jest.spyOn(astConverter, 'astConverter');
+      const spy = jest.spyOn(astConverter, 'default');
 
       const loggerFn = jest.fn(() => true);
 

@@ -1,5 +1,5 @@
 import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
-import { JSONSchema4 } from 'json-schema'; // eslint-disable-line import/no-extraneous-dependencies
+import { JSONSchema4 } from 'json-schema';
 import { AST } from './AST';
 import { Linter } from './Linter';
 import { Scope } from './Scope';

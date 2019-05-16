@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-namespace, no-redeclare */
 
 import { TSESTree, ParserServices } from '@typescript-eslint/typescript-estree';
 import { Linter as ESLintLinter } from 'eslint';
