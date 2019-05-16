@@ -2,6 +2,7 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
 } from '@typescript-eslint/typescript-estree';
+import { RuleTester as ESLintRuleTester } from 'eslint';
 import { ParserOptions } from './ParserOptions';
 import { RuleModule } from './Rule';
 
@@ -57,16 +58,16 @@ interface RuleTesterConfig {
   parser: '@typescript-eslint/parser';
   parserOptions?: ParserOptions;
 }
-interface RuleTester {
-  // eslint-disable-next-line @typescript-eslint/no-misused-new
-  new (config?: RuleTesterConfig): RuleTester;
-
+declare interface RuleTester {
   run<TMessageIds extends string, TOptions extends Readonly<any[]>>(
     name: string,
     rule: RuleModule<TMessageIds, TOptions>,
     tests: RunTests<TMessageIds, TOptions>,
   ): void;
 }
+const RuleTester = ESLintRuleTester as {
+  new (config?: RuleTesterConfig): RuleTester;
+};
 
 export {
   InvalidTestCase,

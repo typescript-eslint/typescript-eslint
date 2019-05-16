@@ -4,7 +4,7 @@ export interface ParserOptions {
   range?: boolean;
   tokens?: boolean;
   sourceType?: 'script' | 'module';
-  ecmaVersion?: number;
+  ecmaVersion?: 3 | 5 | 6 | 7 | 8 | 9 | 2015 | 2016 | 2017 | 2018;
   ecmaFeatures?: {
     globalReturn?: boolean;
     jsx?: boolean;

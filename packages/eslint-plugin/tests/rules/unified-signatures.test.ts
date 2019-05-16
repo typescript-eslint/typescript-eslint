@@ -5,7 +5,7 @@ import { RuleTester } from '../RuleTester';
 // Tests
 //------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester({ parser: '@typescript-eslint/parser' });
+const ruleTester = new RuleTester({ parser: '@typescript-eslint/parser' });
 
 ruleTester.run('unified-signatures', rule, {
   valid: [

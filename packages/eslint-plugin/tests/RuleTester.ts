@@ -1,8 +1,8 @@
 import { TSESLint, ESLintUtils } from '@typescript-eslint/experimental-utils';
-import { RuleTester as ESLintRuleTester } from 'eslint';
 import * as path from 'path';
 
-const RuleTester: TSESLint.RuleTester = ESLintRuleTester as any;
+// re-export the RuleTester from here to make it easier to do the tests
+const RuleTester = TSESLint.RuleTester;
 
 function getFixturesRootDir() {
   return path.join(process.cwd(), 'tests/fixtures/');

@@ -105,7 +105,7 @@ type ReportFixFunction = (
   fixer: RuleFixer,
 ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
 
-interface ReportDescriptor<TMessageIds extends string> {
+interface ReportDescriptorBase<TMessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
@@ -118,6 +118,8 @@ interface ReportDescriptor<TMessageIds extends string> {
    * The messageId which is being reported.
    */
   messageId: TMessageIds;
+}
+interface ReportDescriptorNodeOptionalLoc {
   /**
    * The Node or AST Token which the report is being attached to
    */
@@ -127,10 +129,20 @@ interface ReportDescriptor<TMessageIds extends string> {
    */
   loc?: TSESTree.SourceLocation | TSESTree.LineAndColumnData;
 }
+interface ReportDescriptorLocOnly {
+  /**
+   * An override of the location of the report
+   */
+  loc: TSESTree.SourceLocation | TSESTree.LineAndColumnData;
+}
+type ReportDescriptor<TMessageIds extends string> = ReportDescriptorBase<
+  TMessageIds
+> &
+  (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
 
 interface RuleContext<
   TMessageIds extends string,
-  TOptions extends Readonly<any[]>
+  TOptions extends readonly any[]
 > {
   /**
    * The rule ID.
@@ -370,7 +382,7 @@ interface RuleListener {
 
 interface RuleModule<
   TMessageIds extends string,
-  TOptions extends Readonly<any[]>,
+  TOptions extends readonly any[],
   // for extending base rules
   TRuleListener extends RuleListener = RuleListener
 > {

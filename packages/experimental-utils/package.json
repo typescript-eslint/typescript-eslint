@@ -34,6 +34,7 @@
     "@typescript-eslint/typescript-estree": "1.9.0"
   },
   "peerDependencies": {
+    "eslint": "*",
     "typescript": "*"
   }
 }

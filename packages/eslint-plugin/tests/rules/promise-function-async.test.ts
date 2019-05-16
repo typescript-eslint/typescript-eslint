@@ -2,16 +2,14 @@ import rule from '../../src/rules/promise-function-async';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const parserOptions = {
-  ecmaVersion: 2018,
-  tsconfigRootDir: rootDir,
-  project: './tsconfig.json',
-};
-
 const messageId = 'missingAsync';
 
 const ruleTester = new RuleTester({
-  parserOptions,
+  parserOptions: {
+    ecmaVersion: 2018,
+    tsconfigRootDir: rootDir,
+    project: './tsconfig.json',
+  },
   parser: '@typescript-eslint/parser',
 });
 

@@ -1,8 +1,3 @@
-/**
- * @fileoverview Rule to flag statements that use magic numbers (adapted from https://github.com/danielstjules/buddy.js)
- * @author Scott O'Hara
- */
-
 import {
   TSESTree,
   AST_NODE_TYPES,
