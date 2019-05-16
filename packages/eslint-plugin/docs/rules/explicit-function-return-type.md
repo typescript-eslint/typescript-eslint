@@ -145,13 +145,13 @@ let objectPropCast = <ObjectType>{
 Examples of **incorrect** code for this rule with `{ allowCurrying: true }`:
 
 ```ts
-var curryFn = (bar: string) => (baz: string) => bar + baz;
+var curryFn = (x: number) => (y: number) => x + y;
 ```
 
 Examples of **correct** code for this rule with `{ allowCurrying: true }`:
 
 ```ts
-var curryFn = (bar: string) => (baz: string): string => bar + baz;
+var curryFn = (x: number) => (y: number): number => x + y;
 ```
 
 ## When Not To Use It

@@ -32,7 +32,7 @@ var arrowFn = (): string => 'test';
     {
       filename: 'test.ts',
       code: `
-var curryFn = (bar: string) => (baz: string): string => bar + baz;
+var curriedAddFn = (x: int) => (y: int): int => x + y;
             `,
       options: [{ allowCurrying: true }],
     },
@@ -235,33 +235,33 @@ var arrowFn = () => 'test';
     {
       filename: 'test.ts',
       code: `
-var curryFn = (bar: string) => (baz: string) => bar + baz;
+var curriedAddFn = (x: number) => (y: number) => x + y;
             `,
       options: [{ allowCurrying: false }],
       errors: [
         {
           messageId: 'missingReturnType',
           line: 2,
-          column: 15,
+          column: 20,
         },
         {
           messageId: 'missingReturnType',
           line: 2,
-          column: 32,
+          column: 35,
         },
       ],
     },
     {
       filename: 'test.ts',
       code: `
-var curryFn = (bar: string) => (baz: string) => bar + baz;
+var curriedAddFn = (x: number) => (y: number) => x + y;
             `,
       options: [{ allowCurrying: true }],
       errors: [
         {
           messageId: 'missingReturnType',
           line: 2,
-          column: 32,
+          column: 35,
         },
       ],
     },
