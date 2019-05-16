@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-namespace, no-redeclare */
 
 import { CLIEngine as ESLintCLIEngine } from 'eslint';
 import { Linter } from './Linter';
