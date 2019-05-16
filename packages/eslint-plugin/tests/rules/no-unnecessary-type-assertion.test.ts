@@ -2,7 +2,7 @@ import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { RuleTester } from '../RuleTester';
 
-const rootDir = path.join(process.cwd(), 'tests/fixtures');
+const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
@@ -87,6 +87,13 @@ const x: number | null = null;
 class Foo {
   prop: number = x!;
 }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/529
+    `
+declare function foo(str?: string): void;
+declare const str: string | null;
+
+foo(str!);
     `,
   ],
 
