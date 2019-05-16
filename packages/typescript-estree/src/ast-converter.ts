@@ -4,7 +4,7 @@ import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
 import { Extra } from './parser-options';
 
-export default function astConverter(
+export function astConverter(
   ast: SourceFile,
   extra: Extra,
   shouldPreserveNodeMaps: boolean,

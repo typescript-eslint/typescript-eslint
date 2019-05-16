@@ -1,5 +1,6 @@
 declare module 'eslint/lib/util/traverser' {
   import { TSESTree } from '@typescript-eslint/experimental-utils';
+
   const traverser: {
     traverse(
       node: TSESTree.Node,

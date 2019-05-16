@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import fs from 'fs';
 import path from 'path';
