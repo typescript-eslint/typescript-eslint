@@ -18,6 +18,9 @@ ruleTester.run('no-magic-numbers', rule, {
       code: 'type Foo = true;',
     },
     {
+      code: 'enum foo { SECOND = 1000 }',
+    },
+    {
       code: 'type Foo = 1;',
       options: [{ ignoreNumericLiteralTypes: true }],
     },

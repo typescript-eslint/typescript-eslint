@@ -56,6 +56,18 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if the node grandparent is a Typescript enum declaration
+     * @param node the node to be validated.
+     * @returns true if the node grandparent is a Typescript enum declaration
+     * @private
+     */
+    function isGrandparentTSEnumDeclaration(node: TSESTree.Node): boolean {
+      return node.parent && node.parent.parent
+        ? node.parent.parent.type === AST_NODE_TYPES.TSEnumDeclaration
+        : false;
+    }
+
+    /**
      * Checks if the node grandparent is a Typescript type alias declaration
      * @param node the node to be validated.
      * @returns true if the node grandparent is a Typescript type alias declaration
@@ -133,7 +145,12 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       Literal(node) {
-        // Check TypeScript specific nodes
+        // Check if the node is a TypeScript enum declaration
+        if (isGrandparentTSEnumDeclaration(node)) {
+          return;
+        }
+
+        // Check TypeScript specific nodes for Numeric Literal
         if (
           options.ignoreNumericLiteralTypes &&
           isNumber(node) &&
