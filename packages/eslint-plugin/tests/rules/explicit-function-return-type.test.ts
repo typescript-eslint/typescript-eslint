@@ -183,7 +183,7 @@ const myObj = {
     {
       filename: 'test.ts',
       code: `
-var curriedAddFn = (x: int) => (y: int): int => x + y;
+var curriedAddFn = (x: number) => (y: number): number => x + y;
             `,
       options: [{ allowCurrying: true }],
     },
