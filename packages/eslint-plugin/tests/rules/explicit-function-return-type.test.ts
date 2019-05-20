@@ -183,7 +183,7 @@ const myObj = {
     {
       filename: 'test.ts',
       code: `
-var curriedAddFn = (x: number) => (y: number): number => x + y;
+var curriedAddFn = () => (): number => {};
             `,
       options: [{ allowCurrying: true }],
     },
@@ -393,14 +393,14 @@ var curriedAddFn = (x: number) => (y: number) => x + y;
     {
       filename: 'test.ts',
       code: `
-var curriedAddFn = (x: number) => (y: number) => x + y;
+var curriedAddFn = () => () => {};
             `,
       options: [{ allowCurrying: true }],
       errors: [
         {
           messageId: 'missingReturnType',
           line: 2,
-          column: 35,
+          column: 26,
         },
       ],
     },
