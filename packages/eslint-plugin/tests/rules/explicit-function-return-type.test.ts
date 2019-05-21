@@ -183,7 +183,58 @@ const myObj = {
     {
       filename: 'test.ts',
       code: `
-var curriedAddFn = () => (): number => {};
+() => (): void => {};
+            `,
+      options: [{ allowCurrying: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => function (): void {};
+            `,
+      options: [{ allowCurrying: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return (): void => {} };
+            `,
+      options: [{ allowCurrying: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return function (): void {} };
+            `,
+      options: [{ allowCurrying: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return (): void => {} };
+            `,
+      options: [{ allowCurrying: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return function (): void {} };
+            `,
+      options: [{ allowCurrying: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function FunctionDeclaration() {
+  return function FunctionExpression_Within_FunctionDeclaration() {
+    return function FunctionExpression_Within_FunctionExpression() {
+      return () => { // ArrowFunctionExpression_Within_FunctionExpression
+        return () => // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          (): number => 1 // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      }
+    }
+  }
+}
             `,
       options: [{ allowCurrying: true }],
     },
@@ -374,33 +425,107 @@ const x: Foo = {
     {
       filename: 'test.ts',
       code: `
-var curriedAddFn = (x: number) => (y: number) => x + y;
-            `,
-      options: [{ allowCurrying: false }],
-      errors: [
-        {
-          messageId: 'missingReturnType',
-          line: 2,
-          column: 20,
-        },
-        {
-          messageId: 'missingReturnType',
-          line: 2,
-          column: 35,
-        },
-      ],
-    },
-    {
-      filename: 'test.ts',
-      code: `
-var curriedAddFn = () => () => {};
+() => () => {};
             `,
       options: [{ allowCurrying: true }],
       errors: [
         {
           messageId: 'missingReturnType',
           line: 2,
-          column: 26,
+          column: 7,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => function () {};
+            `,
+      options: [{ allowCurrying: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 7,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return () => {} };
+            `,
+      options: [{ allowCurrying: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 16,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return function () {} };
+            `,
+      options: [{ allowCurrying: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 16,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return () => {} };
+            `,
+      options: [{ allowCurrying: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 24,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return function () {} };
+            `,
+      options: [{ allowCurrying: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 24,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function FunctionDeclaration() {
+  return function FunctionExpression_Within_FunctionDeclaration() {
+    return function FunctionExpression_Within_FunctionExpression() {
+      return () => { // ArrowFunctionExpression_Within_FunctionExpression
+        return () => // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          () => 1 // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      }
+    }
+  }
+}
+            `,
+      options: [{ allowCurrying: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 7,
+          column: 11,
         },
       ],
     },

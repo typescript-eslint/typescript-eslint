@@ -144,6 +144,50 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if a function belongs to:
+     * `() => () => ...`
+     * `() => function () { ... }`
+     * `() => { return () => ... }`
+     * `() => { return function () { ... } }`
+     * `function fn() { return () => ... }`
+     * `function fn() { return function() { ... } }`
+     */
+    function isCurrying({
+      body,
+    }:
+      | TSESTree.ArrowFunctionExpression
+      | TSESTree.FunctionDeclaration
+      | TSESTree.FunctionExpression): boolean {
+      // Should always have a body; really checking just in case
+      /* istanbul ignore if */ if (!body) {
+        return false;
+      }
+
+      // Body can be a single statement block
+      if (
+        body.type === AST_NODE_TYPES.BlockStatement &&
+        body.body.length === 1
+      ) {
+        const [statement] = body.body;
+
+        // Which is a return statement with an argument
+        if (
+          statement.type === AST_NODE_TYPES.ReturnStatement &&
+          !!statement.argument
+        ) {
+          // In which case we check that instead of original body
+          body = statement.argument;
+        }
+      }
+
+      // Then, check if body is a function expression
+      return (
+        body.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        body.type === AST_NODE_TYPES.FunctionExpression
+      );
+    }
+
+    /**
      * Checks if a function declaration/expression has a return type.
      */
     function checkFunctionReturnType(
@@ -152,6 +196,10 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
+      if (options.allowCurrying && isCurrying(node)) {
+        return;
+      }
+
       if (
         node.returnType ||
         isConstructor(node.parent) ||
@@ -190,14 +238,6 @@ export default util.createRule<Options, MessageIds>({
           options.allowExpressions &&
           node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
           node.parent.type !== AST_NODE_TYPES.MethodDefinition
-        ) {
-          return;
-        }
-
-        if (
-          options.allowCurrying &&
-          node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-          node.body.type === AST_NODE_TYPES.ArrowFunctionExpression
         ) {
           return;
         }
