@@ -65,9 +65,9 @@ The rule accepts an options object with the following properties:
 type Options = {
   // if true, only functions which are part of a declaration will be checked
   allowExpressions?: boolean;
-  // if true, type annotations are also allowed on the variable of a function expression rather than on the function directly.
+  // if true, type annotations are also allowed on the variable of a function expression rather than on the function directly
   allowTypedFunctionExpressions?: boolean;
-  // if true, only arrow functions which does not return an arrow function will be checked
+  // if true, currying functions (those immediately returning another function expression) will not be checked
   allowCurrying?: boolean;
 };
 
