@@ -29,6 +29,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreNumericLiteralTypes: {
             type: 'boolean',
           },
+          ignoreEnums: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -41,6 +44,7 @@ export default util.createRule<Options, MessageIds>({
       enforceConst: false,
       detectObjects: false,
       ignoreNumericLiteralTypes: false,
+      ignoreEnums: false,
     },
   ],
   create(context, [options]) {
@@ -53,18 +57,6 @@ export default util.createRule<Options, MessageIds>({
      */
     function isNumber(node: TSESTree.Literal): boolean {
       return typeof node.value === 'number';
-    }
-
-    /**
-     * Checks if the node grandparent is a Typescript enum declaration
-     * @param node the node to be validated.
-     * @returns true if the node grandparent is a Typescript enum declaration
-     * @private
-     */
-    function isGrandparentTSEnumDeclaration(node: TSESTree.Node): boolean {
-      return node.parent && node.parent.parent
-        ? node.parent.parent.type === AST_NODE_TYPES.TSEnumDeclaration
-        : false;
     }
 
     /**
@@ -95,6 +87,19 @@ export default util.createRule<Options, MessageIds>({
       }
 
       return false;
+    }
+
+    /**
+     * Checks if the node parent is a Typescript enum member
+     * @param node the node to be validated.
+     * @returns true if the node parent is a Typescript enum member
+     * @private
+     */
+    function isParentTSEnumDeclaration(node: TSESTree.Node): boolean {
+      return (
+        typeof node.parent !== 'undefined' &&
+        node.parent.type === AST_NODE_TYPES.TSEnumMember
+      );
     }
 
     /**
@@ -146,7 +151,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       Literal(node) {
         // Check if the node is a TypeScript enum declaration
-        if (isGrandparentTSEnumDeclaration(node)) {
+        if (options.ignoreEnums && isParentTSEnumDeclaration(node)) {
           return;
         }
 

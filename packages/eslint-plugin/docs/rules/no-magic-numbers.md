@@ -41,4 +41,28 @@ Examples of **correct** code for the `{ "ignoreNumericLiteralTypes": true }` opt
 type SmallPrimes = 2 | 3 | 5 | 7 | 11;
 ```
 
+### ignoreEnums
+
+A boolean to specify if enums used in Typescript are considered okay. `false` by default.
+
+Examples of **incorrect** code for the `{ "ignoreEnum": false }` option:
+
+```ts
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnum": false }]*/
+
+enum foo = {
+    SECOND = 1000,
+}
+```
+
+Examples of **correct** code for the `{ "ignoreEnum": true }` option:
+
+```ts
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnum": true }]*/
+
+enum foo = {
+    SECOND = 1000,
+}
+```
+
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-magic-numbers.md)</sup>

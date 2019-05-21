@@ -18,9 +18,6 @@ ruleTester.run('no-magic-numbers', rule, {
       code: 'type Foo = true;',
     },
     {
-      code: 'enum foo { SECOND = 1000 }',
-    },
-    {
       code: 'type Foo = 1;',
       options: [{ ignoreNumericLiteralTypes: true }],
     },
@@ -35,6 +32,14 @@ ruleTester.run('no-magic-numbers', rule, {
     {
       code: 'type Foo = 1 | -1;',
       options: [{ ignoreNumericLiteralTypes: true }],
+    },
+    {
+      code: 'enum foo { SECOND = 1000 }',
+      options: [{ ignoreEnums: true }],
+    },
+    {
+      code: 'enum foo { SECOND = 1000, NUM = "0123456789" }',
+      options: [{ ignoreEnums: true }],
     },
   ],
 
@@ -130,6 +135,34 @@ ruleTester.run('no-magic-numbers', rule, {
           },
           line: 1,
           column: 22,
+        },
+      ],
+    },
+    {
+      code: 'enum foo { SECOND = 1000 }',
+      options: [{ ignoreEnums: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1000',
+          },
+          line: 1,
+          column: 21,
+        },
+      ],
+    },
+    {
+      code: 'enum foo { SECOND = 1000, NUM = "0123456789" }',
+      options: [{ ignoreEnums: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1000',
+          },
+          line: 1,
+          column: 21,
         },
       ],
     },
