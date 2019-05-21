@@ -21,7 +21,6 @@ Once it is stable, it will be renamed to `@typescript-eslint/util` for a `2.0.0`
 | [`AST_TOKEN_TYPES`]         | An enum with the names of every single _token_ found in `TSESTree`.                            |
 | [`TSESLint`]                | Types for ESLint, correctly typed to work with the types found in `TSESTree`.                  |
 | [`ESLintUtils`]             | Tools for creating eslint rules with TypeScript.                                               |
-| [`ESLintUtils.RuleCreator`] | A function for creating strictly typed eslint rules with TypeScript.                           |
 | [`ParserServices`]          | The parser services provided when parsing a file using `@typescript-eslint/typescript-estree`. |
 
 [`AST_NODE_TYPES`]: ../packages/typescript-estree/src/ts-estree/ast-node-types.ts
