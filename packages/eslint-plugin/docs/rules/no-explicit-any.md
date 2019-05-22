@@ -87,22 +87,51 @@ function greet(param: Array<string>): string {}
 function greet(param: Array<string>): Array<string> {}
 ```
 
-### Options
+### ignoreRestArgs
 
-This rule accepts a single object option with the following default configuration:
+A boolean to specify if arrays from the rest operator are considered okay. `false` by default.
 
-```json
-{
-  "@typescript-eslint/no-explicit-any": [
-    "error",
-    {
-      "ignoreRestArgs": false
-    }
-  ]
-}
+Examples of **incorrect** code for the `{ "ignoreRestArgs": false }` option:
+
+```ts
+/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": false }]*/
+
+function foo1(...args: any[]): void {}
+function foo2(...args: readonly any[]): void {}
+function foo3(...args: Array<any>): void {}
+function foo4(...args: ReadonlyArray<any>): void {}
+
+const bar1 = (...args: any[]): void {}
+const bar2 = (...args: readonly any[]): void {}
+const bar3 = (...args: Array<any>): void {}
+const bar4 = (...args: ReadonlyArray<any>): void {}
+
+const baz1 = function (...args: any[]) {}
+const baz2 = function (...args: readonly any[]) {}
+const baz3 = function (...args: Array<any>) {}
+const baz4 = function (...args: ReadonlyArray<any>) {}
 ```
 
-- `ignoreRestArgs: true` will disallow usages of `any` as a type declaration except rest spread parameters.
+Examples of **correct** code for the `{ "ignoreRestArgs": true }` option:
+
+```ts
+/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
+
+function foo1(...args: any[]): void {}
+function foo2(...args: readonly any[]): void {}
+function foo3(...args: Array<any>): void {}
+function foo4(...args: ReadonlyArray<any>): void {}
+
+const bar1 = (...args: any[]): void {}
+const bar2 = (...args: readonly any[]): void {}
+const bar3 = (...args: Array<any>): void {}
+const bar4 = (...args: ReadonlyArray<any>): void {}
+
+const baz1 = function (...args: any[]) {}
+const baz2 = function (...args: readonly any[]) {}
+const baz3 = function (...args: Array<any>) {}
+const baz4 = function (...args: ReadonlyArray<any>) {}
+```
 
 ## When Not To Use It
 
