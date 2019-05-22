@@ -87,6 +87,23 @@ function greet(param: Array<string>): string {}
 function greet(param: Array<string>): Array<string> {}
 ```
 
+### Options
+
+This rule accepts a single object option with the following default configuration:
+
+```json
+{
+  "@typescript-eslint/no-explicit-any": [
+    "error",
+    {
+      "ignoreRestArgs": false
+    }
+  ]
+}
+```
+
+- `ignoreRestArgs: true` will disallow usages of `any` as a type declaration except rest spread parameters.
+
 ## When Not To Use It
 
 If an unknown type or a library without typings is used

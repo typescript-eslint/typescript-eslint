@@ -129,6 +129,15 @@ type obj = {
     message: string & Array<Array<string>>;
 }
         `,
+    // https://github.com/eslint/typescript-eslint-parser/issues/397
+    {
+      code: `
+        function foo(a: number, ...rest: any[]): void {
+          return;
+        }
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
   ],
   invalid: [
     {
@@ -676,6 +685,21 @@ type obj = {
           messageId: 'unexpectedAny',
           line: 3,
           column: 41,
+        },
+      ],
+    },
+    {
+      // https://github.com/eslint/typescript-eslint-parser/issues/397
+      code: `
+        function foo(a: number, ...rest: any[]): void {
+          return;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 2,
+          column: 42,
         },
       ],
     },
