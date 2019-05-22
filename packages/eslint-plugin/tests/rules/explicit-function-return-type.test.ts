@@ -238,6 +238,13 @@ function FunctionDeclaration() {
             `,
       options: [{ allowCurrying: true }],
     },
+    {
+      filename: 'test.ts',
+      code: `
+() => () => { return (): void => { return; } };
+            `,
+      options: [{ allowCurrying: true }],
+    },
   ],
   invalid: [
     {
@@ -526,6 +533,20 @@ function FunctionDeclaration() {
           messageId: 'missingReturnType',
           line: 7,
           column: 11,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => () => { return () => { return; } };
+            `,
+      options: [{ allowCurrying: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 22,
         },
       ],
     },
