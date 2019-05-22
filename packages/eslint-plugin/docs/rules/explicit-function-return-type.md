@@ -124,7 +124,7 @@ let funcExpr: FuncType = function() {
 };
 
 let asTyped = (() => '') as () => string;
-let caasTyped = <() => string>(() => '');
+let castTyped = <() => string>(() => '');
 
 interface ObjectType {
   foo(): number;
@@ -145,13 +145,25 @@ let objectPropCast = <ObjectType>{
 Examples of **incorrect** code for this rule with `{ allowCurrying: true }`:
 
 ```ts
-var curriedAddFn = (x: number) => (y: number) => x + y;
+var curriedArrowFn = (x: number) => (y: number) => x + y;
+
+function curriedFunction(x: number) {
+  return function(y: number) {
+    return x + y;
+  };
+}
 ```
 
 Examples of **correct** code for this rule with `{ allowCurrying: true }`:
 
 ```ts
-var curriedAddFn = (x: number) => (y: number): number => x + y;
+var curriedArrowFn = (x: number) => (y: number): number => x + y;
+
+function curriedFunction(x: number) {
+  return function(y: number): number {
+    return x + y;
+  };
+}
 ```
 
 ## When Not To Use It
