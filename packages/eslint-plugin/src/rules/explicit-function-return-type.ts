@@ -222,7 +222,8 @@ export default util.createRule<Options, MessageIds>({
     function checkFunctionExpressionReturnType(
       node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): void {
-      if (node.parent) {
+      // Should always have a parent; checking just in case
+      /* istanbul ignore else */ if (node.parent) {
         if (options.allowTypedFunctionExpressions) {
           if (
             isTypeCast(node.parent) ||
