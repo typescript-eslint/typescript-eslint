@@ -185,42 +185,42 @@ const myObj = {
       code: `
 () => (): void => {};
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
     },
     {
       filename: 'test.ts',
       code: `
 () => function (): void {};
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
     },
     {
       filename: 'test.ts',
       code: `
 () => { return (): void => {} };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
     },
     {
       filename: 'test.ts',
       code: `
 () => { return function (): void {} };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
     },
     {
       filename: 'test.ts',
       code: `
 function fn() { return (): void => {} };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
     },
     {
       filename: 'test.ts',
       code: `
 function fn() { return function (): void {} };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
     },
     {
       filename: 'test.ts',
@@ -236,14 +236,14 @@ function FunctionDeclaration() {
   }
 }
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
     },
     {
       filename: 'test.ts',
       code: `
 () => () => { return (): void => { return; } };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
     },
   ],
   invalid: [
@@ -434,7 +434,7 @@ const x: Foo = {
       code: `
 () => () => {};
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
@@ -448,7 +448,7 @@ const x: Foo = {
       code: `
 () => function () {};
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
@@ -462,7 +462,7 @@ const x: Foo = {
       code: `
 () => { return () => {} };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
@@ -476,7 +476,7 @@ const x: Foo = {
       code: `
 () => { return function () {} };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
@@ -490,7 +490,7 @@ const x: Foo = {
       code: `
 function fn() { return () => {} };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
@@ -504,7 +504,7 @@ function fn() { return () => {} };
       code: `
 function fn() { return function () {} };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
@@ -527,7 +527,7 @@ function FunctionDeclaration() {
   }
 }
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
@@ -541,7 +541,7 @@ function FunctionDeclaration() {
       code: `
 () => () => { return () => { return; } };
             `,
-      options: [{ allowCurrying: true }],
+      options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',

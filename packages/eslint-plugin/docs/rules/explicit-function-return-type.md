@@ -67,14 +67,14 @@ type Options = {
   allowExpressions?: boolean;
   // if true, type annotations are also allowed on the variable of a function expression rather than on the function directly
   allowTypedFunctionExpressions?: boolean;
-  // if true, currying functions (those immediately returning another function expression) will not be checked
-  allowCurrying?: boolean;
+  // if true, functions immediately returning another function expression will not be checked
+  allowHigherOrderFunctions?: boolean;
 };
 
 const defaults = {
   allowExpressions: false,
   allowTypedFunctionExpressions: false,
-  allowCurrying: false,
+  allowHigherOrderFunctions: false,
 };
 ```
 
@@ -140,26 +140,26 @@ let objectPropCast = <ObjectType>{
 };
 ```
 
-### allowCurrying
+### allowHigherOrderFunctions
 
-Examples of **incorrect** code for this rule with `{ allowCurrying: true }`:
+Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
 
 ```ts
-var curriedArrowFn = (x: number) => (y: number) => x + y;
+var arrowFn = (x: number) => (y: number) => x + y;
 
-function curriedFunction(x: number) {
+function fn(x: number) {
   return function(y: number) {
     return x + y;
   };
 }
 ```
 
-Examples of **correct** code for this rule with `{ allowCurrying: true }`:
+Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
 
 ```ts
-var curriedArrowFn = (x: number) => (y: number): number => x + y;
+var arrowFn = (x: number) => (y: number): number => x + y;
 
-function curriedFunction(x: number) {
+function fn(x: number) {
   return function(y: number): number {
     return x + y;
   };

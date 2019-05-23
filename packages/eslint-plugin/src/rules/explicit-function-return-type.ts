@@ -8,7 +8,7 @@ type Options = [
   {
     allowExpressions?: boolean;
     allowTypedFunctionExpressions?: boolean;
-    allowCurrying?: boolean;
+    allowHigherOrderFunctions?: boolean;
   }
 ];
 type MessageIds = 'missingReturnType';
@@ -36,7 +36,7 @@ export default util.createRule<Options, MessageIds>({
           allowTypedFunctionExpressions: {
             type: 'boolean',
           },
-          allowCurrying: {
+          allowHigherOrderFunctions: {
             type: 'boolean',
           },
         },
@@ -48,7 +48,7 @@ export default util.createRule<Options, MessageIds>({
     {
       allowExpressions: false,
       allowTypedFunctionExpressions: false,
-      allowCurrying: false,
+      allowHigherOrderFunctions: false,
     },
   ],
   create(context, [options]) {
@@ -152,7 +152,7 @@ export default util.createRule<Options, MessageIds>({
      * `function fn() { return () => ... }`
      * `function fn() { return function() { ... } }`
      */
-    function isCurrying({
+    function doesImmediatelyReturnFunctionExpression({
       body,
     }:
       | TSESTree.ArrowFunctionExpression
@@ -163,24 +163,24 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      // Body can be a single statement block
+      // Check if body is a block with a single statement
       if (
         body.type === AST_NODE_TYPES.BlockStatement &&
         body.body.length === 1
       ) {
         const [statement] = body.body;
 
-        // Which is a return statement with an argument
+        // Check if that statement is a return statement with an argument
         if (
           statement.type === AST_NODE_TYPES.ReturnStatement &&
           !!statement.argument
         ) {
-          // In which case we check that instead of original body
+          // If so, check that returned argument as body
           body = statement.argument;
         }
       }
 
-      // Then, check if body is a function expression
+      // Check if the body being returned is a function expression
       return (
         body.type === AST_NODE_TYPES.ArrowFunctionExpression ||
         body.type === AST_NODE_TYPES.FunctionExpression
@@ -196,7 +196,10 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      if (options.allowCurrying && isCurrying(node)) {
+      if (
+        options.allowHigherOrderFunctions &&
+        doesImmediatelyReturnFunctionExpression(node)
+      ) {
         return;
       }
 
