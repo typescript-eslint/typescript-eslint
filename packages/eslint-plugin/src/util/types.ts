@@ -35,3 +35,24 @@ export function containsTypeByName(
     bases.some(t => containsTypeByName(t, allowedNames))
   );
 }
+
+export const typeIsOrHasBaseType = (type: ts.Type, parentType: ts.Type) => {
+  if (type.symbol === undefined || parentType.symbol === undefined) {
+      return false;
+  }
+
+  const typeAndBaseTypes = [type];
+  const ancestorTypes = type.getBaseTypes();
+
+  if (ancestorTypes !== undefined) {
+      typeAndBaseTypes.push(...ancestorTypes);
+  }
+
+  for (const baseType of typeAndBaseTypes) {
+      if (baseType.symbol !== undefined && baseType.symbol.name === parentType.symbol.name) {
+          return true;
+      }
+  }
+
+  return false;
+};
