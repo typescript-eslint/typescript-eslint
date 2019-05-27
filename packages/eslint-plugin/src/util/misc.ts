@@ -84,6 +84,20 @@ export function arraysAreEqual<T>(
   );
 }
 
+/** Returns the first non-`undefined` result. */
+export function findFirstResult<T, U>(
+  inputs: T[],
+  getResult: (t: T) => U | undefined,
+): U | undefined {
+  for (const element of inputs) {
+    const result = getResult(element);
+    if (result !== undefined) {
+      return result;
+    }
+  }
+  return undefined;
+}
+
 /**
  * Gets a string name representation of the name of the given MethodDefinition
  * or ClassProperty node, with handling for computed property names.

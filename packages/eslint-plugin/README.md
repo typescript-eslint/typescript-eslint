@@ -166,5 +166,6 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/type-annotation-spacing`](./docs/rules/type-annotation-spacing.md)                   | Require consistent spacing around type annotations                                                                                                  | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/unbound-method`](./docs/rules/unbound-method.md)                                     | Enforces unbound methods are called with their expected scope                                                                                       |                    |          | :thought_balloon: |
 | [`@typescript-eslint/unified-signatures`](./docs/rules/unified-signatures.md)                             | Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter                                           |                    |          |                   |
+| [`@typescript-eslint/use-default-type-parameters`](./docs/rules/use-default-type-parameter.md)            | Warns if an explicitly specified type argument is the default for that type parameter                                                               | :heavy_check_mark: | :wrench: | :thought_balloon: |
 
 <!-- end rule list -->
