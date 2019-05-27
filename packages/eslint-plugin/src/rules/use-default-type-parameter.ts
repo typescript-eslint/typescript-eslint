@@ -18,13 +18,13 @@ type ParameterCapableTSNode =
 type MessageIds = 'unnecessaryTypeParameter';
 
 export default util.createRule<[], MessageIds>({
-  name: 'no-unnecessary-type-assertion',
+  name: 'use-default-type-parameter',
   meta: {
     docs: {
       description:
         'Warns if an explicitly specified type argument is the default for that type parameter',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'warn',
     },
     fixable: 'code',
     messages: {

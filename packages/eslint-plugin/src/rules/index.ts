@@ -52,6 +52,7 @@ import semi from './semi';
 import typeAnnotationSpacing from './type-annotation-spacing';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import useDefaultTypeParameter from './use-default-type-parameter';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -108,4 +109,5 @@ export default {
   'type-annotation-spacing': typeAnnotationSpacing,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
+  'use-default-type-parameter': useDefaultTypeParameter,
 };
