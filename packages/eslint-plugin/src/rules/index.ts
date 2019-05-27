@@ -43,6 +43,7 @@ import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
 import preferInterface from './prefer-interface';
 import preferNamespaceKeyword from './prefer-namespace-keyword';
+import preferReadonly from './prefer-readonly';
 import preferRegexpExec from './prefer-regexp-exec';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
 import promiseFunctionAsync from './promise-function-async';
@@ -99,6 +100,7 @@ export default {
   'prefer-includes': preferIncludes,
   'prefer-interface': preferInterface,
   'prefer-namespace-keyword': preferNamespaceKeyword,
+  'prefer-readonly': preferReadonly,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'promise-function-async': promiseFunctionAsync,

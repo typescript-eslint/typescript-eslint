@@ -26,9 +26,9 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        "Requires that private members are marked as `readonly` if they're never modified outside of the constructor.",
+        "Requires that private members are marked as `readonly` if they're never modified outside of the constructor",
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'warn',
       tslintRuleName: 'prefer-readonly',
     },
     fixable: 'code',

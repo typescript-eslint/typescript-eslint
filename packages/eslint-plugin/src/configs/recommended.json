@@ -32,6 +32,7 @@
     "@typescript-eslint/no-var-requires": "error",
     "@typescript-eslint/prefer-interface": "error",
     "@typescript-eslint/prefer-namespace-keyword": "error",
+    "@typescript-eslint/prefer-readonly": "warn",
     "@typescript-eslint/type-annotation-spacing": "error"
   }
 }
