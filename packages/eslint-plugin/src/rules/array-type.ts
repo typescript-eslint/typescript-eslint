@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESTree,
-} from '@typescript-eslint/typescript-estree';
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 /**
@@ -65,6 +65,8 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.TSTypeOperator:
     case AST_NODE_TYPES.TSInferType:
       return true;
+    case AST_NODE_TYPES.Identifier:
+      return node.name === 'ReadonlyArray';
     default:
       return false;
   }
@@ -83,7 +85,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
-      tslintRuleName: 'array-type',
       category: 'Stylistic Issues',
       recommended: 'error',
     },
@@ -153,8 +154,14 @@ export default util.createRule<Options, MessageIds>({
             ? 'errorStringGeneric'
             : 'errorStringGenericSimple';
 
+        const isReadonly =
+          node.parent &&
+          node.parent.type === AST_NODE_TYPES.TSTypeOperator &&
+          node.parent.operator === 'readonly';
+        const typeOpNode = isReadonly ? node.parent! : null;
+
         context.report({
-          node,
+          node: isReadonly ? node.parent! : node,
           messageId,
           data: {
             type: getMessageType(node.elementType),
@@ -163,8 +170,20 @@ export default util.createRule<Options, MessageIds>({
             const startText = requireWhitespaceBefore(node);
             const toFix = [
               fixer.replaceTextRange([node.range[1] - 2, node.range[1]], '>'),
-              fixer.insertTextBefore(node, `${startText ? ' ' : ''}Array<`),
+              fixer.insertTextBefore(
+                node,
+                `${startText ? ' ' : ''}${isReadonly ? 'Readonly' : ''}Array<`,
+              ),
             ];
+            if (typeOpNode) {
+              // remove the readonly operator if it exists
+              toFix.unshift(
+                fixer.removeRange([
+                  typeOpNode.range[0],
+                  typeOpNode.range[0] + 'readonly '.length,
+                ]),
+              );
+            }
 
             if (node.elementType.type === AST_NODE_TYPES.TSParenthesizedType) {
               const first = sourceCode.getFirstToken(node.elementType);
@@ -184,13 +203,18 @@ export default util.createRule<Options, MessageIds>({
       TSTypeReference(node: TSESTree.TSTypeReference) {
         if (
           option === 'generic' ||
-          node.typeName.type !== AST_NODE_TYPES.Identifier ||
-          node.typeName.name !== 'Array'
+          node.typeName.type !== AST_NODE_TYPES.Identifier
         ) {
           return;
         }
+        if (!['Array', 'ReadonlyArray'].includes(node.typeName.name)) {
+          return;
+        }
+
         const messageId =
           option === 'array' ? 'errorStringArray' : 'errorStringArraySimple';
+        const isReadonly = node.typeName.name === 'ReadonlyArray';
+        const readonlyPrefix = isReadonly ? 'readonly ' : '';
 
         const typeParams = node.typeParameters && node.typeParameters.params;
 
@@ -203,7 +227,7 @@ export default util.createRule<Options, MessageIds>({
               type: 'any',
             },
             fix(fixer) {
-              return fixer.replaceText(node, 'any[]');
+              return fixer.replaceText(node, `${readonlyPrefix}any[]`);
             },
           });
           return;
@@ -229,7 +253,7 @@ export default util.createRule<Options, MessageIds>({
             return [
               fixer.replaceTextRange(
                 [node.range[0], type.range[0]],
-                parens ? '(' : '',
+                `${readonlyPrefix}${parens ? '(' : ''}`,
               ),
               fixer.replaceTextRange(
                 [type.range[1], node.range[1]],

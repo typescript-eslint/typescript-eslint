@@ -4,7 +4,10 @@
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
 
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/indent';
 import * as util from '../util';
 
@@ -74,6 +77,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSTypeOperator,
   AST_NODE_TYPES.TSTypeParameter,
   AST_NODE_TYPES.TSTypeParameterDeclaration,
+  AST_NODE_TYPES.TSTypeParameterInstantiation,
   AST_NODE_TYPES.TSTypeReference,
   AST_NODE_TYPES.TSUnionType,
 ]);
@@ -84,7 +88,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation',
-      tslintRuleName: 'indent',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

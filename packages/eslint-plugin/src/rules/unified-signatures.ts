@@ -1,5 +1,8 @@
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 interface Failure {
   unify: Unify;
@@ -50,10 +53,9 @@ export default util.createRule({
   meta: {
     docs: {
       description:
-        'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter.',
+        'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter',
       category: 'Variables',
       recommended: false,
-      tslintName: 'unified-signatures',
     },
     type: 'suggestion',
     messages: {
@@ -136,7 +138,7 @@ export default util.createRule({
     }
 
     function checkOverloads(
-      signatures: ReadonlyArray<OverloadNode[]>,
+      signatures: readonly OverloadNode[][],
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): Failure[] {
       const result: Failure[] = [];
@@ -213,8 +215,8 @@ export default util.createRule({
 
     /** Detect `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`. */
     function signaturesDifferBySingleParameter(
-      types1: ReadonlyArray<TSESTree.Parameter>,
-      types2: ReadonlyArray<TSESTree.Parameter>,
+      types1: readonly TSESTree.Parameter[],
+      types2: readonly TSESTree.Parameter[],
     ): Unify | undefined {
       const index = getIndexOfFirstDifference(
         types1,
@@ -436,8 +438,8 @@ export default util.createRule({
 
     /* Returns the first index where `a` and `b` differ. */
     function getIndexOfFirstDifference<T>(
-      a: ReadonlyArray<T>,
-      b: ReadonlyArray<T>,
+      a: readonly T[],
+      b: readonly T[],
       equal: util.Equal<T>,
     ): number | undefined {
       for (let i = 0; i < a.length && i < b.length; i++) {
@@ -450,7 +452,7 @@ export default util.createRule({
 
     /** Calls `action` for every pair of values in `values`. */
     function forEachPair<T>(
-      values: ReadonlyArray<T>,
+      values: readonly T[],
       action: (a: T, b: T) => void,
     ): void {
       for (let i = 0; i < values.length; i++) {

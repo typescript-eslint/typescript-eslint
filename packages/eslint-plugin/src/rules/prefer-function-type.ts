@@ -1,8 +1,8 @@
 import {
   AST_NODE_TYPES,
-  TSESTree,
   AST_TOKEN_TYPES,
-} from '@typescript-eslint/typescript-estree';
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -13,7 +13,6 @@ export default util.createRule({
         'Use function types instead of interfaces with call signatures',
       category: 'Best Practices',
       recommended: false,
-      tslintName: 'callable-types',
     },
     fixable: 'code',
     messages: {

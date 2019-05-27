@@ -1,9 +1,10 @@
-import rule from '../../src/rules/indent';
-import { RuleTester, RunTests, TestCaseError } from '../RuleTester';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { RuleTester } from '../../RuleTester';
+import rule from '../../../src/rules/indent';
 import {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
-} from '../../src/util';
+} from '../../../src/util';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -608,7 +609,7 @@ type Foo = string | {
             `,
     ],
   },
-].reduce<RunTests<MessageIds, Options>>(
+].reduce<TSESLint.RunTests<MessageIds, Options>>(
   (acc, testCase) => {
     const indent = '    ';
 
@@ -630,7 +631,7 @@ type Foo = string | {
         output: code,
         errors: code
           .split('\n')
-          .map<TestCaseError<MessageIds> | null>((line, lineNum) => {
+          .map<TSESLint.TestCaseError<MessageIds> | null>((line, lineNum) => {
             const indentCount = line.split(indent).length - 1;
             const spaceCount = indentCount * indent.length;
 
@@ -649,7 +650,8 @@ type Foo = string | {
             };
           })
           .filter(
-            (error): error is TestCaseError<MessageIds> => error !== null,
+            (error): error is TSESLint.TestCaseError<MessageIds> =>
+              error !== null,
           ),
       });
     });
@@ -741,6 +743,30 @@ const foo : Foo = {
             bar = 1;
             `,
       options: [4, { VariableDeclarator: { const: 3 } }],
+    },
+    {
+      code: `
+const name: string = '  Typescript  '
+        .toUpperCase()
+        .trim(),
+
+      greeting: string = (" Hello " + name)
+        .toUpperCase()
+        .trim();
+            `,
+      options: [2, { VariableDeclarator: { const: 3 } }],
+    },
+    {
+      code: `
+const div: JQuery<HTMLElement> = $('<div>')
+        .addClass('some-class')
+        .appendTo($('body')),
+
+      button: JQuery<HTMLElement> = $('<button>')
+        .text('Cancel')
+        .appendTo(div);
+            `,
+      options: [2, { VariableDeclarator: { const: 3 } }],
     },
   ],
   invalid: [

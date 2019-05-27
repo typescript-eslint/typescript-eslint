@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 
 interface SemanticOrSyntacticError extends ts.Diagnostic {
   message: string;
@@ -52,8 +52,8 @@ export function getFirstSemanticOrSyntacticError(
 }
 
 function whitelistSupportedDiagnostics(
-  diagnostics: ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic>,
-): ReadonlyArray<ts.DiagnosticWithLocation | ts.Diagnostic> {
+  diagnostics: readonly (ts.DiagnosticWithLocation | ts.Diagnostic)[],
+): readonly (ts.DiagnosticWithLocation | ts.Diagnostic)[] {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
       case 1013: // ts 3.2 "A rest parameter or binding pattern may not have a trailing comma."

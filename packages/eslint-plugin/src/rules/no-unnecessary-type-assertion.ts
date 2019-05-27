@@ -1,5 +1,15 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
-import * as tsutils from 'tsutils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  isCallExpression,
+  isNewExpression,
+  isObjectType,
+  isObjectFlagSet,
+  isParameterDeclaration,
+  isPropertyDeclaration,
+  isStrictCompilerOptionEnabled,
+  isTypeFlagSet,
+  isVariableDeclaration,
+} from 'tsutils';
 import ts from 'typescript';
 import * as util from '../util';
 
@@ -8,7 +18,7 @@ type Options = [
     typesToIgnore?: string[];
   }
 ];
-type MessageIds = 'unnecessaryAssertion';
+type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
@@ -18,12 +28,13 @@ export default util.createRule<Options, MessageIds>({
         'Warns if a type assertion does not change the type of an expression',
       category: 'Best Practices',
       recommended: false,
-      tslintRuleName: 'no-unnecessary-type-assertion',
     },
     fixable: 'code',
     messages: {
       unnecessaryAssertion:
         'This assertion is unnecessary since it does not change the type of the expression.',
+      contextuallyUnnecessary:
+        'This assertion is unnecessary since the receiver accepts the original type of the expression.',
     },
     schema: [
       {
@@ -44,6 +55,8 @@ export default util.createRule<Options, MessageIds>({
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
     const parserServices = util.getParserServices(context);
+    const checker = parserServices.program.getTypeChecker();
+    const compilerOptions = parserServices.program.getCompilerOptions();
 
     /**
      * Sometimes tuple types don't have ObjectFlags.Tuple set, like when they're being matched against an inferred type.
@@ -76,91 +89,170 @@ export default util.createRule<Options, MessageIds>({
       return true;
     }
 
-    function checkNonNullAssertion(
-      node: TSESTree.Node,
+    /**
+     * Returns the contextual type of a given node.
+     * Contextual type is the type of the target the node is going into.
+     * i.e. the type of a called function's parameter, or the defined type of a variable declaration
+     */
+    function getContextualType(
       checker: ts.TypeChecker,
-    ): void {
-      const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-        ts.NonNullExpression
-      >(node);
-      const type = checker.getTypeAtLocation(originalNode.expression);
-
-      if (type === checker.getNonNullableType(type)) {
-        context.report({
-          node,
-          messageId: 'unnecessaryAssertion',
-          fix(fixer) {
-            return fixer.removeRange([
-              originalNode.expression.end,
-              originalNode.end,
-            ]);
-          },
-        });
-      }
-    }
-
-    function verifyCast(
-      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-      checker: ts.TypeChecker,
-    ): void {
-      if (
-        options &&
-        options.typesToIgnore &&
-        options.typesToIgnore.indexOf(
-          sourceCode.getText(node.typeAnnotation),
-        ) !== -1
-      ) {
+      node: ts.Expression,
+    ): ts.Type | undefined {
+      const parent = node.parent;
+      if (!parent) {
         return;
       }
 
-      const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-        ts.AssertionExpression
-      >(node);
-      const castType = checker.getTypeAtLocation(originalNode);
-
-      if (
-        tsutils.isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
-        (tsutils.isObjectType(castType) &&
-          (tsutils.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
-            couldBeTupleType(castType)))
+      if (isCallExpression(parent) || isNewExpression(parent)) {
+        if (node === parent.expression) {
+          // is the callee, so has no contextual type
+          return;
+        }
+      } else if (
+        isVariableDeclaration(parent) ||
+        isPropertyDeclaration(parent) ||
+        isParameterDeclaration(parent)
       ) {
-        // It's not always safe to remove a cast to a literal type or tuple
-        // type, as those types are sometimes widened without the cast.
+        return parent.type
+          ? checker.getTypeFromTypeNode(parent.type)
+          : undefined;
+      } else if (
+        ![ts.SyntaxKind.TemplateSpan, ts.SyntaxKind.JsxExpression].includes(
+          parent.kind,
+        )
+      ) {
+        // parent is not something we know we can get the contextual type of
         return;
       }
+      // TODO - support return statement checking
 
-      const uncastType = checker.getTypeAtLocation(originalNode.expression);
-
-      if (uncastType === castType) {
-        context.report({
-          node,
-          messageId: 'unnecessaryAssertion',
-          fix(fixer) {
-            return originalNode.kind === ts.SyntaxKind.TypeAssertionExpression
-              ? fixer.removeRange([
-                  originalNode.getStart(),
-                  originalNode.expression.getStart(),
-                ])
-              : fixer.removeRange([
-                  originalNode.expression.end,
-                  originalNode.end,
-                ]);
-          },
-        });
-      }
+      return checker.getContextualType(node);
     }
 
-    const checker = parserServices.program.getTypeChecker();
+    /**
+     * Returns true if there's a chance the variable has been used before a value has been assigned to it
+     */
+    function isPossiblyUsedBeforeAssigned(node: ts.Expression): boolean {
+      const declaration = util.getDeclaration(checker, node);
+      if (
+        // non-strict mode doesn't care about used before assigned errors
+        isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks') &&
+        // ignore class properties as they are compile time guarded
+        // also ignore function arguments as they can't be used before defined
+        isVariableDeclaration(declaration) &&
+        // is it `const x!: number`
+        declaration.initializer === undefined &&
+        declaration.exclamationToken === undefined &&
+        declaration.type !== undefined
+      ) {
+        // check if the defined variable type has changed since assignment
+        const declarationType = checker.getTypeFromTypeNode(declaration.type);
+        const type = util.getConstrainedTypeAtLocation(checker, node);
+        if (declarationType === type) {
+          // possibly used before assigned, so just skip it
+          // better to false negative and skip it, than false postiive and fix to compile erroring code
+          //
+          // no better way to figure this out right now
+          // https://github.com/Microsoft/TypeScript/issues/31124
+          return true;
+        }
+      }
+      return false;
+    }
 
     return {
       TSNonNullExpression(node) {
-        checkNonNullAssertion(node, checker);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
+          ts.NonNullExpression
+        >(node);
+        const type = util.getConstrainedTypeAtLocation(
+          checker,
+          originalNode.expression,
+        );
+
+        if (!util.isNullableType(type)) {
+          if (isPossiblyUsedBeforeAssigned(originalNode.expression)) {
+            return;
+          }
+
+          context.report({
+            node,
+            messageId: 'unnecessaryAssertion',
+            fix(fixer) {
+              return fixer.removeRange([
+                originalNode.expression.end,
+                originalNode.end,
+              ]);
+            },
+          });
+        } else {
+          // we know it's a nullable type
+          // so figure out if the variable is used in a place that accepts nullable types
+          const contextualType = getContextualType(checker, originalNode);
+          if (contextualType && util.isNullableType(contextualType)) {
+            context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
+              fix(fixer) {
+                return fixer.removeRange([
+                  originalNode.expression.end,
+                  originalNode.end,
+                ]);
+              },
+            });
+          }
+        }
       },
-      TSTypeAssertion(node) {
-        verifyCast(node, checker);
-      },
-      TSAsExpression(node) {
-        verifyCast(node, checker);
+      'TSAsExpression, TSTypeAssertion'(
+        node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+      ): void {
+        if (
+          options &&
+          options.typesToIgnore &&
+          options.typesToIgnore.indexOf(
+            sourceCode.getText(node.typeAnnotation),
+          ) !== -1
+        ) {
+          return;
+        }
+
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
+          ts.AssertionExpression
+        >(node);
+        const castType = checker.getTypeAtLocation(originalNode);
+
+        if (
+          isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
+          (isObjectType(castType) &&
+            (isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
+              couldBeTupleType(castType)))
+        ) {
+          // It's not always safe to remove a cast to a literal type or tuple
+          // type, as those types are sometimes widened without the cast.
+          return;
+        }
+
+        const uncastType = checker.getTypeAtLocation(originalNode.expression);
+
+        if (uncastType === castType) {
+          context.report({
+            node,
+            messageId: 'unnecessaryAssertion',
+            fix(fixer) {
+              return originalNode.kind === ts.SyntaxKind.TypeAssertionExpression
+                ? fixer.removeRange([
+                    originalNode.getStart(),
+                    originalNode.expression.getStart(),
+                  ])
+                : fixer.removeRange([
+                    originalNode.expression.end,
+                    originalNode.end,
+                  ]);
+            },
+          });
+        }
+
+        // TODO - add contextually unnecessary check for this
       },
     };
   },

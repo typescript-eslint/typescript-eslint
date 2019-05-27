@@ -1,13 +1,13 @@
+import { SourceFile } from 'typescript';
 import { convertError, Converter } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
-import ts from 'typescript';
 import { Extra } from './parser-options';
 
 export default function astConverter(
-  ast: ts.SourceFile,
+  ast: SourceFile,
   extra: Extra,
-  shouldProvideParserServices: boolean,
+  shouldPreserveNodeMaps: boolean,
 ) {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
@@ -23,7 +23,7 @@ export default function astConverter(
   const instance = new Converter(ast, {
     errorOnUnknownASTType: extra.errorOnUnknownASTType || false,
     useJSXTextNode: extra.useJSXTextNode || false,
-    shouldProvideParserServices,
+    shouldPreserveNodeMaps,
   });
 
   const estree = instance.convertProgram();
@@ -42,9 +42,7 @@ export default function astConverter(
     estree.comments = convertComments(ast, extra.code);
   }
 
-  const astMaps = shouldProvideParserServices
-    ? instance.getASTMaps()
-    : undefined;
+  const astMaps = shouldPreserveNodeMaps ? instance.getASTMaps() : undefined;
 
   return { estree, astMaps };
 }

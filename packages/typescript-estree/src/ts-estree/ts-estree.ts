@@ -20,6 +20,7 @@ export interface SourceLocation {
    */
   end: LineAndColumnData;
 }
+export type Range = [number, number];
 
 export interface BaseNode {
   /**
@@ -31,7 +32,7 @@ export interface BaseNode {
    * Both numbers are a 0-based index which is the position in the array of source code characters.
    * The first is the start position of the node, the second is the end position of the node.
    */
-  range: [number, number];
+  range: Range;
   /**
    * The parent node of the current node
    */
@@ -69,7 +70,7 @@ export type OptionalRangeAndLoc<T> = Pick<
   T,
   Exclude<keyof T, 'range' | 'loc'>
 > & {
-  range?: [number, number];
+  range?: Range;
   loc?: SourceLocation;
 };
 
@@ -288,6 +289,7 @@ export type Expression =
   | JSXOpeningFragment
   | JSXSpreadChild
   | LogicalExpression
+  | NewExpression
   | RestElement
   | SequenceExpression
   | SpreadElement
@@ -323,7 +325,8 @@ export type LeftHandSideExpression =
   | MemberExpression
   | PrimaryExpression
   | TaggedTemplateExpression
-  | TSNonNullExpression;
+  | TSNonNullExpression
+  | TSAsExpression;
 export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
 export type Modifier =
   | TSAbstractKeyword
@@ -892,7 +895,7 @@ export interface Property extends BaseNode {
   computed: boolean;
   method: boolean;
   shorthand: boolean;
-  kind: 'init';
+  kind: 'init' | 'get' | 'set';
 }
 
 export interface RestElement extends BaseNode {
@@ -925,7 +928,7 @@ export interface Super extends BaseNode {
 
 export interface SwitchCase extends BaseNode {
   type: AST_NODE_TYPES.SwitchCase;
-  test: Expression;
+  test: Expression | null;
   consequent: Statement[];
 }
 
@@ -963,7 +966,7 @@ export interface ThisExpression extends BaseNode {
 
 export interface ThrowStatement extends BaseNode {
   type: AST_NODE_TYPES.ThrowStatement;
-  argument: Statement | null;
+  argument: Statement | TSAsExpression | null;
 }
 
 export interface TryStatement extends BaseNode {
@@ -1319,7 +1322,7 @@ export interface TSTypeLiteral extends BaseNode {
 
 export interface TSTypeOperator extends BaseNode {
   type: AST_NODE_TYPES.TSTypeOperator;
-  operator: 'keyof' | 'unique';
+  operator: 'keyof' | 'unique' | 'readonly';
   typeAnnotation?: TSTypeAnnotation;
 }
 

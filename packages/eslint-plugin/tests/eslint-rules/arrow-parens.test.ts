@@ -13,6 +13,11 @@ ruleTester.run('arrow-parens', rule, {
     'const foo = <T>(t: T) => {};',
     'const foo = <T>((t: T) => {});',
     'const foo = function <T>(t: T) {};',
+    `
+const foo = <T>(bar: any): void => {
+  // Do nothing
+}
+    `,
     {
       code: 'const foo = t => {};',
       options: ['as-needed'],

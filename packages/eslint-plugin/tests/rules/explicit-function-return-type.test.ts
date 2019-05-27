@@ -120,6 +120,66 @@ var funcExpr: Foo = function() { return 'test'; };
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `const x = (() => {}) as Foo`,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `const x = <Foo>(() => {})`,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const x = {
+  foo: () => {},
+} as Foo
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const x = <Foo>{
+  foo: () => {},
+}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const x: Foo = {
+  foo: () => {},
+}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/484
+    {
+      filename: 'test.ts',
+      code: `
+type MethodType = () => void;
+
+class App {
+  private method: MethodType = () => {}
+}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/525
+    {
+      filename: 'test.ts',
+      code: `
+const myObj = {
+  set myProp(val) {
+    this.myProp = val;
+  },
+};
+      `,
+    },
   ],
   invalid: [
     {
@@ -257,6 +317,50 @@ class Test {
           messageId: 'missingReturnType',
           line: 1,
           column: 16,
+        },
+      ],
+    },
+
+    {
+      filename: 'test.ts',
+      code: `const x = (() => {}) as Foo`,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+interface Foo {}
+const x = {
+  foo: () => {},
+} as Foo
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+interface Foo {}
+const x: Foo = {
+  foo: () => {},
+}
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
         },
       ],
     },

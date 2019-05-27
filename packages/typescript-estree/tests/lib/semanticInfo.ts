@@ -2,23 +2,19 @@ import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
 import ts from 'typescript';
-import { ParserOptions } from '../../src/parser-options';
+import { TSESTreeOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
   parseCodeAndGenerateServices,
 } from '../../tools/test-utils';
 import { parseAndGenerateServices } from '../../src/parser';
-import {
-  VariableDeclaration,
-  ClassDeclaration,
-  ClassProperty,
-} from '../../src/ts-estree/ts-estree';
+import { TSESTree } from '../../src/ts-estree';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
 
-function createOptions(fileName: string): ParserOptions & { cwd?: string } {
+function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
   return {
     loc: true,
     range: true,
@@ -48,6 +44,21 @@ describe('semanticInfo', () => {
     );
   });
 
+  it(`should cache the created ts.program`, () => {
+    const filename = testFiles[0];
+    const code = readFileSync(filename, 'utf8');
+    const options = createOptions(filename);
+    const optionsProjectString = {
+      ...options,
+      project: './tsconfig.json',
+    };
+    expect(
+      parseAndGenerateServices(code, optionsProjectString).services.program,
+    ).toBe(
+      parseAndGenerateServices(code, optionsProjectString).services.program,
+    );
+  });
+
   it(`should handle "project": "./tsconfig.json" and "project": ["./tsconfig.json"] the same`, () => {
     const filename = testFiles[0];
     const code = readFileSync(filename, 'utf8');
@@ -62,6 +73,38 @@ describe('semanticInfo', () => {
     };
     expect(parseAndGenerateServices(code, optionsProjectString)).toEqual(
       parseAndGenerateServices(code, optionsProjectArray),
+    );
+  });
+
+  it(`should resolve absolute and relative tsconfig paths the same`, () => {
+    const filename = testFiles[0];
+    const code = readFileSync(filename, 'utf8');
+    const options = createOptions(filename);
+    const optionsAbsolutePath = {
+      ...options,
+      project: `${__dirname}/../fixtures/semanticInfo/tsconfig.json`,
+    };
+    const optionsRelativePath = {
+      ...options,
+      project: `./tsconfig.json`,
+    };
+    const absolutePathResult = parseAndGenerateServices(
+      code,
+      optionsAbsolutePath,
+    );
+    const relativePathResult = parseAndGenerateServices(
+      code,
+      optionsRelativePath,
+    );
+    if (absolutePathResult.services.program === undefined) {
+      throw new Error('Unable to create ts.program for absolute tsconfig');
+    } else if (relativePathResult.services.program === undefined) {
+      throw new Error('Unable to create ts.program for relative tsconfig');
+    }
+    expect(
+      absolutePathResult.services.program.getResolvedProjectReferences(),
+    ).toEqual(
+      relativePathResult.services.program.getResolvedProjectReferences(),
     );
   });
 
@@ -97,15 +140,16 @@ describe('semanticInfo', () => {
     );
 
     expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
-    const binaryExpression = (parseResult.ast.body[0] as VariableDeclaration)
-      .declarations[0].init!;
+    const binaryExpression = (parseResult.ast
+      .body[0] as TSESTree.VariableDeclaration).declarations[0].init!;
     const tsBinaryExpression = parseResult.services.esTreeNodeToTSNodeMap!.get(
       binaryExpression,
     );
     expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
 
     const computedPropertyString = ((parseResult.ast
-      .body[1] as ClassDeclaration).body.body[0] as ClassProperty).key;
+      .body[1] as TSESTree.ClassDeclaration).body
+      .body[0] as TSESTree.ClassProperty).key;
     const tsComputedPropertyString = parseResult.services.esTreeNodeToTSNodeMap!.get(
       computedPropertyString,
     );

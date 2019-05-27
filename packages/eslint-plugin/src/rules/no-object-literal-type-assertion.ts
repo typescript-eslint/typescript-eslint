@@ -1,4 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -15,7 +18,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Forbids an object literal to appear in a type assertion expression',
-      tslintRuleName: 'no-object-literal-type-assertion',
       category: 'Stylistic Issues',
       recommended: 'error',
     },
@@ -50,6 +52,12 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSAnyKeyword:
         case AST_NODE_TYPES.TSUnknownKeyword:
           return false;
+        case AST_NODE_TYPES.TSTypeReference:
+          // Ignore `as const` and `<const>` (#166)
+          return (
+            node.typeName.type === AST_NODE_TYPES.Identifier &&
+            node.typeName.name !== 'const'
+          );
         default:
           return true;
       }

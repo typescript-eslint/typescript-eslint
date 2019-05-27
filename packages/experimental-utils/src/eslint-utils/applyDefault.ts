@@ -19,7 +19,7 @@ export function applyDefault<TUser extends any[], TDefault extends TUser>(
   }
 
   options.forEach((opt, i) => {
-    if (userOptions[i]) {
+    if (userOptions[i] !== undefined) {
       const userOpt = userOptions[i];
 
       if (isObjectNotArray(userOpt) && isObjectNotArray(opt)) {

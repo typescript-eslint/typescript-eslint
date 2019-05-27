@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import {
   canContainDirective,
   createError,
@@ -18,15 +18,14 @@ import {
   isOptional,
   unescapeStringLiteralText,
 } from './node-utils';
-import { AST_NODE_TYPES, TSESTree } from './ts-estree';
-import { TSNode } from './ts-nodes';
+import { AST_NODE_TYPES, TSESTree, TSNode } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 
 interface ConverterOptions {
   errorOnUnknownASTType: boolean;
   useJSXTextNode: boolean;
-  shouldProvideParserServices: boolean;
+  shouldPreserveNodeMaps: boolean;
 }
 
 /**
@@ -103,7 +102,7 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    let result = this.convertNode(node as TSNode, parent || node.parent);
+    const result = this.convertNode(node as TSNode, parent || node.parent);
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -168,7 +167,7 @@ export class Converter {
     node: ts.Node,
     result: TSESTree.BaseNode | null,
   ) {
-    if (result && this.options.shouldProvideParserServices) {
+    if (result && this.options.shouldPreserveNodeMaps) {
       if (!this.tsNodeToESTreeNodeMap.has(node)) {
         this.tsNodeToESTreeNodeMap.set(node, result);
       }
@@ -217,7 +216,7 @@ export class Converter {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
     }
 
-    if (result && this.options.shouldProvideParserServices) {
+    if (result && this.options.shouldPreserveNodeMaps) {
       this.esTreeNodeToTSNodeMap.set(result, node);
     }
     return result as T;
@@ -1391,7 +1390,7 @@ export class Converter {
       case SyntaxKind.ClassDeclaration:
       case SyntaxKind.ClassExpression: {
         const heritageClauses = node.heritageClauses || [];
-        let classNodeType =
+        const classNodeType =
           node.kind === SyntaxKind.ClassDeclaration
             ? AST_NODE_TYPES.ClassDeclaration
             : AST_NODE_TYPES.ClassExpression;

@@ -1,5 +1,6 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { RuleTester } from '../RuleTester';
 import rule from '../../src/rules/type-annotation-spacing';
-import { RuleTester, InvalidTestCase, ValidTestCase } from '../RuleTester';
 import {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
@@ -6317,7 +6318,7 @@ type Foo = {
 const operators = ['+?:', '-?:'];
 
 ruleTester.run('type-annotation-spacing', rule, {
-  valid: operators.reduce<ValidTestCase<Options>[]>(
+  valid: operators.reduce<TSESLint.ValidTestCase<Options>[]>(
     (validCases, operator) =>
       validCases.concat([
         {
@@ -6359,7 +6360,7 @@ ruleTester.run('type-annotation-spacing', rule, {
       ]),
     [],
   ),
-  invalid: operators.reduce<InvalidTestCase<MessageIds, Options>[]>(
+  invalid: operators.reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>(
     (invalidCases, operator) =>
       invalidCases.concat([
         // space before + after cases

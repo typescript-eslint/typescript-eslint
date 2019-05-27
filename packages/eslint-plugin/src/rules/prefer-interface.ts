@@ -1,5 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
-import { RuleFix } from 'ts-eslint';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -9,7 +8,6 @@ export default util.createRule({
     docs: {
       description:
         'Prefer an interface declaration over a type literal (type T = { ... })',
-      tslintRuleName: 'interface-over-type-literal',
       category: 'Stylistic Issues',
       recommended: 'error',
     },
@@ -33,7 +31,7 @@ export default util.createRule({
           messageId: 'interfaceOverType',
           fix(fixer) {
             const typeNode = node.typeParameters || node.id;
-            const fixes: RuleFix[] = [];
+            const fixes: TSESLint.RuleFix[] = [];
 
             const firstToken = sourceCode.getFirstToken(node);
             if (firstToken) {

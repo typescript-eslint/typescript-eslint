@@ -1,5 +1,5 @@
-import ts from 'typescript';
 import unescape from 'lodash.unescape';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -678,7 +678,7 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
  * @param callback
  */
 export function firstDefined<T, U>(
-  array: ReadonlyArray<T> | undefined,
+  array: readonly T[] | undefined,
   callback: (element: T, index: number) => U | undefined,
 ): U | undefined {
   if (array === undefined) {
