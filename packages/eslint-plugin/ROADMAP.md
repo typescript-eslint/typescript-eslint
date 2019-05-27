@@ -57,7 +57,7 @@
 | [`no-duplicate-super`]               | 🌟  | [`constructor-super`][constructor-super]                              |
 | [`no-duplicate-switch-case`]         | 🌟  | [`no-duplicate-case`][no-duplicate-case]                              |
 | [`no-duplicate-variable`]            | 🌟  | [`no-redeclare`][no-redeclare]                                        |
-| [`no-dynamic-delete`]                | 🛑  | N/A                                                                   |
+| [`no-dynamic-delete`]                | ✅  | [`@typescript-eslint/no-dynamic-delete`]                              |
 | [`no-empty`]                         | 🌟  | [`no-empty`][no-empty]                                                |
 | [`no-eval`]                          | 🌟  | [`no-eval`][no-eval]                                                  |
 | [`no-floating-promises`]             | 🛑  | N/A ([relevant plugin][plugin:promise])                               |
@@ -609,6 +609,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/prefer-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-interface.md
 [`@typescript-eslint/no-array-constructor`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-array-constructor.md
 [`@typescript-eslint/prefer-function-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-function-type.md
+[`@typescript-eslint/no-dynamic-delete`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-dynamic-delete.md
 [`@typescript-eslint/no-for-in-array`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-for-in-array.md
 [`@typescript-eslint/no-unnecessary-qualifier`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md
 [`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
