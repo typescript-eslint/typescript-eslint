@@ -192,9 +192,11 @@ ruleTester.run('prefer-readonly', rule, {
       code: `class TestCorrectlyNonInlineLambdas {
         private correctlyNonInlineLambda = 7;
       }`,
-      options: [{
-        onlyInlineLambdas: true,
-      }]
+      options: [
+        {
+          onlyInlineLambdas: true,
+        },
+      ],
     },
   ],
   invalid: [
@@ -413,9 +415,11 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
-      options: [{
-        onlyInlineLambdas: true,
-      }]
+      options: [
+        {
+          onlyInlineLambdas: true,
+        },
+      ],
     },
   ],
 });

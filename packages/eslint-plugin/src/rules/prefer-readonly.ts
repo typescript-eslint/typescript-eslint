@@ -26,7 +26,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        "Requires that private variables are marked as `readonly` if they're never modified outside of the constructor.",
+        "Requires that private members are marked as `readonly` if they're never modified outside of the constructor.",
       category: 'Best Practices',
       recommended: false,
       tslintRuleName: 'prefer-readonly',
@@ -144,14 +144,15 @@ export default util.createRule<Options, MessageIds>({
           const esNode = parserServices.tsNodeToESTreeNodeMap.get(
             violatingNode,
           );
+          const nameNode =
+            esNode.type === 'TSParameterProperty'
+              ? (esNode.parameter as TSESTree.AssignmentPattern).left
+              : (esNode as TSESTree.Property).key;
           context.report({
             data: {
-              name: sourceCode.getText(
-                esNode.type === 'TSParameterProperty'
-                  ? (esNode.parameter as TSESTree.AssignmentPattern).left
-                  : (esNode as TSESTree.Property).key,
-              ),
+              name: sourceCode.getText(nameNode),
             },
+            fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
             messageId: 'preferReadonly',
             node: esNode,
           });
