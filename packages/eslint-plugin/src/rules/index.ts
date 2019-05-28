@@ -16,6 +16,7 @@ import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import noAngleBracketTypeAssertion from './no-angle-bracket-type-assertion';
 import noArrayConstructor from './no-array-constructor';
+import noDynamicDelete from './no-dynamic-delete';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
 import noExtraParens from './no-extra-parens';
@@ -72,6 +73,7 @@ export default {
   'member-ordering': memberOrdering,
   'no-angle-bracket-type-assertion': noAngleBracketTypeAssertion,
   'no-array-constructor': noArrayConstructor,
+  'no-dynamic-delete': noDynamicDelete,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
   'no-extra-parens': noExtraParens,
