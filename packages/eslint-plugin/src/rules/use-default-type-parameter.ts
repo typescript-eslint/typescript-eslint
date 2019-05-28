@@ -9,6 +9,10 @@ interface ArgsAndParams {
   typeParameters: readonly ts.TypeParameterDeclaration[];
 }
 
+type ExtendingClassLikeDeclaration = ts.ClassLikeDeclaration & {
+  heritageClauses: ts.NodeArray<ts.HeritageClause>;
+};
+
 type ParameterCapableTSNode =
   | ts.CallExpression
   | ts.NewExpression
@@ -72,15 +76,11 @@ export default util.createRule<[], MessageIds>({
       TSTypeParameterInstantiation(node) {
         const parentDeclaration = parserServices.esTreeNodeToTSNodeMap.get(
           node.parent!,
-        ) as ts.ClassLikeDeclaration | ParameterCapableTSNode;
+        ) as ExtendingClassLikeDeclaration | ParameterCapableTSNode;
 
         const expression = tsutils.isClassLikeDeclaration(parentDeclaration)
-          ? getHeritageExpressionFromClassLikeDeclaration(parentDeclaration)
+          ? parentDeclaration.heritageClauses[0].types[0]
           : parentDeclaration;
-
-        if (expression === undefined) {
-          return;
-        }
 
         const argsAndParams = getArgsAndParameters(expression, checker);
         if (argsAndParams !== undefined) {
@@ -90,17 +90,6 @@ export default util.createRule<[], MessageIds>({
     };
   },
 });
-
-function getHeritageExpressionFromClassLikeDeclaration(
-  node: ts.ClassLikeDeclaration,
-) {
-  if (node.heritageClauses === undefined) {
-    return undefined;
-  }
-
-  const [heritage] = node.heritageClauses;
-  return heritage.types[0];
-}
 
 function getArgsAndParameters(
   node: ParameterCapableTSNode,
