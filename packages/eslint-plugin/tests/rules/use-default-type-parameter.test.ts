@@ -16,15 +16,35 @@ ruleTester.run('use-default-type-parameter', rule, {
   valid: [
     `function f<T = number>() { }
       f<string>();`,
+    `declare const f: any;
+      f<string>();`,
+    `declare const f: unknown;
+      f<string>();`,
     `function g<T = number, U = string>() { }
       g<number, number>();`,
+    `declare const g: any;
+      g<string, string>();`,
+    `declare const g: unknown;
+      g<string, string>();`,
     `class C<T = number> { }
       new C<string>();`,
+    `declare const C: any;
+      new C<string>();`,
+    `declare const C: unknown;
+      new C<string>();`,
     `class C<T = number> { }
+      class D extends C<string> { }`,
+    `declare const C: any;
+      class D extends C<string> { }`,
+    `declare const C: unknown;
       class D extends C<string> { }`,
     `interface I<T = number> { }
       class Impl implements I<string> { }`,
     `class C<TC = number> { }
+      class D<TD = number> extends C { }`,
+    `declare const C: any;
+      class D<TD = number> extends C { }`,
+    `declare const C: unknown;
       class D<TD = number> extends C { }`,
   ],
   invalid: [
