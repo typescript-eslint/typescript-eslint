@@ -26,6 +26,10 @@ ruleTester.run('no-dynamic-delete', rule, {
       delete container['-Infinity'];`,
     `const container: { [i: string]: 0 } = {};
       delete container['+Infinity'];`,
+    `const value = 1;
+      delete value;`,
+    `const value = 1;
+      delete -value;`,
   ],
   invalid: [
     {
