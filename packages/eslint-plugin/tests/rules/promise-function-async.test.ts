@@ -43,6 +43,29 @@ class Test {
   }
 }
     `,
+    `
+class InvalidAsyncModifiers {
+  public constructor() {
+    return new Promise<void>();
+  }
+  public get asyncGetter() {
+    return new Promise<void>();
+  }
+  public set asyncGetter(p: Promise<void>) {
+    return p;
+  }
+}
+    `,
+    `
+const invalidAsyncModifiers = {
+  get asyncGetter() {
+    return new Promise<void>();
+  },
+  set asyncGetter(p: Promise<void>) {
+    return p;
+  }
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/227
     `export function valid(n: number) { return n; }`,
     `export default function invalid(n: number) { return n; }`,
