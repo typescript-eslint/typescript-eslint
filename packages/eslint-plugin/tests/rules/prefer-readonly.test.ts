@@ -212,6 +212,9 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestIncorrectlyModifiableStatic {
+        private static readonly incorrectlyModifiableStatic = 7;
+      }`,
     },
     {
       code: `class TestIncorrectlyModifiableStaticArrow {
@@ -225,6 +228,9 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestIncorrectlyModifiableStaticArrow {
+        private static readonly incorrectlyModifiableStaticArrow = () => 7;
+      }`,
     },
     {
       code: `class TestIncorrectlyModifiableInline {
@@ -252,6 +258,15 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestIncorrectlyModifiableInline {
+        private readonly incorrectlyModifiableInline = 7;
+
+        public createConfusingChildClass() {
+          return class {
+              private readonly incorrectlyModifiableInline = 7;
+          }
+        }
+      }`,
     },
     {
       code: `class TestIncorrectlyModifiableDelayed {
@@ -269,6 +284,13 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestIncorrectlyModifiableDelayed {
+        private readonly incorrectlyModifiableDelayed = 7;
+
+        public constructor() {
+          this.incorrectlyModifiableDelayed = 7;
+        }
+      }`,
     },
     {
       code: `class TestChildClassExpressionModifiable {
@@ -276,8 +298,10 @@ ruleTester.run('prefer-readonly', rule, {
 
         public createConfusingChildClass() {
           return class {
+            private childClassExpressionModifiable = 7;
+
             mutate() {
-              this.childClassExpressionModifiable = 7;
+              this.childClassExpressionModifiable += 1;
             }
           }
         }
@@ -291,6 +315,19 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestChildClassExpressionModifiable {
+        private readonly childClassExpressionModifiable = 7;
+
+        public createConfusingChildClass() {
+          return class {
+            private childClassExpressionModifiable = 7;
+
+            mutate() {
+              this.childClassExpressionModifiable += 1;
+            }
+          }
+        }
+      }`,
     },
     {
       code: `class TestIncorrectlyModifiablePostMinus {
@@ -309,6 +346,13 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestIncorrectlyModifiablePostMinus {
+        private readonly incorrectlyModifiablePostMinus = 7;
+
+        public mutate() {
+          this.incorrectlyModifiablePostMinus - 1;
+        }
+      }`,
     },
     {
       code: `class TestIncorrectlyModifiablePostPlus {
@@ -327,6 +371,13 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestIncorrectlyModifiablePostPlus {
+        private readonly incorrectlyModifiablePostPlus = 7;
+
+        public mutate() {
+          this.incorrectlyModifiablePostPlus + 1;
+        }
+      }`,
     },
     {
       code: `class TestIncorrectlyModifiablePreMinus {
@@ -345,6 +396,13 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestIncorrectlyModifiablePreMinus {
+        private readonly incorrectlyModifiablePreMinus = 7;
+
+        public mutate() {
+          -this.incorrectlyModifiablePreMinus;
+        }
+      }`,
     },
     {
       code: `class TestIncorrectlyModifiablePrePlus {
@@ -363,6 +421,13 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestIncorrectlyModifiablePrePlus {
+        private readonly incorrectlyModifiablePrePlus = 7;
+
+        public mutate() {
+          +this.incorrectlyModifiablePrePlus;
+        }
+      }`,
     },
     {
       code: `class TestOverlappingClassVariable {
@@ -385,6 +450,17 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestOverlappingClassVariable {
+        private readonly overlappingClassVariable = 7;
+
+        public workWithSimilarClass(other: SimilarClass) {
+          other.overlappingClassVariable = 7;
+        }
+      }
+
+      class SimilarClass {
+        public overlappingClassVariable = 7;
+      }`,
     },
     {
       code: `class TestIncorrectlyModifiableParameter {
@@ -401,6 +477,34 @@ ruleTester.run('prefer-readonly', rule, {
           messageId: 'preferReadonly',
         },
       ],
+      output: `class TestIncorrectlyModifiableParameter {
+        public constructor(
+          private readonly incorrectlyModifiableParameter = 7,
+        ) { }
+      }`,
+    },
+    {
+      code: `class TestIncorrectlyModifiableParameter {
+        public constructor(
+          public ignore: boolean,
+          private incorrectlyModifiableParameter = 7,
+        ) { }
+      }`,
+      errors: [
+        {
+          data: {
+            name: 'incorrectlyModifiableParameter',
+          },
+          line: 4,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `class TestIncorrectlyModifiableParameter {
+        public constructor(
+          public ignore: boolean,
+          private readonly incorrectlyModifiableParameter = 7,
+        ) { }
+      }`,
     },
     {
       code: `class TestCorrectlyNonInlineLambdas {
@@ -420,6 +524,9 @@ ruleTester.run('prefer-readonly', rule, {
           onlyInlineLambdas: true,
         },
       ],
+      output: `class TestCorrectlyNonInlineLambdas {
+        private readonly incorrectlyInlineLambda = () => 7;
+      }`,
     },
   ],
 });

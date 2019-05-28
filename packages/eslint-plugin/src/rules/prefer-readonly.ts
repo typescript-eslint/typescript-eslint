@@ -124,6 +124,24 @@ export default util.createRule<Options, MessageIds>({
       return tsutils.isFunctionScopeBoundary(tsNode);
     }
 
+    function getEsNodesFromViolatingNode(
+      violatingNode: ParameterOrPropertyDeclaration,
+    ) {
+      if (ts.isParameterPropertyDeclaration(violatingNode)) {
+        return {
+          esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
+          nameNode: parserServices.tsNodeToESTreeNodeMap.get(
+            violatingNode.name,
+          ),
+        };
+      }
+
+      return {
+        esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode),
+        nameNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
+      };
+    }
+
     return {
       'ClassDeclaration, ClassExpression'(
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
@@ -141,13 +159,9 @@ export default util.createRule<Options, MessageIds>({
         const sourceCode = context.getSourceCode();
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
-          const esNode = parserServices.tsNodeToESTreeNodeMap.get(
+          const { esNode, nameNode } = getEsNodesFromViolatingNode(
             violatingNode,
           );
-          const nameNode =
-            esNode.type === 'TSParameterProperty'
-              ? (esNode.parameter as TSESTree.AssignmentPattern).left
-              : (esNode as TSESTree.Property).key;
           context.report({
             data: {
               name: sourceCode.getText(nameNode),
