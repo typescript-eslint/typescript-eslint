@@ -49,6 +49,7 @@ import promiseFunctionAsync from './promise-function-async';
 import requireArraySortCompare from './require-array-sort-compare';
 import restrictPlusOperands from './restrict-plus-operands';
 import semi from './semi';
+import typedef from './typedef';
 import typeAnnotationSpacing from './type-annotation-spacing';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
@@ -105,6 +106,7 @@ export default {
   'require-array-sort-compare': requireArraySortCompare,
   'restrict-plus-operands': restrictPlusOperands,
   semi: semi,
+  typedef: typedef,
   'type-annotation-spacing': typeAnnotationSpacing,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
