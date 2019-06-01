@@ -154,7 +154,7 @@ export default util.createRule<Options, MessageIds>({
           ),
         );
       },
-      'ClassDeclaration:exit, ClassExpression:exit'() {
+      'ClassDeclaration, ClassExpression:exit'() {
         const finalizedClassScope = classScopeStack.pop()!;
         const sourceCode = context.getSourceCode();
 
