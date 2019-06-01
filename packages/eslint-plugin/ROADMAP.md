@@ -32,8 +32,8 @@
 | [`only-arrow-functions`]          | 🔌  | [`prefer-arrow/prefer-arrow-functions`]              |
 | [`prefer-for-of`]                 | ✅  | [`@typescript-eslint/prefer-for-of`]                 |
 | [`promise-function-async`]        | ✅  | [`@typescript-eslint/promise-function-async`]        |
-| [`typedef`]                       | ✅  | [`@typescript-eslint/typedef`]                       |
 | [`typedef-whitespace`]            | ✅  | [`@typescript-eslint/type-annotation-spacing`]       |
+| [`typedef`]                       | ✅  | [`@typescript-eslint/typedef`]                       |
 | [`unified-signatures`]            | ✅  | [`@typescript-eslint/unified-signatures`]            |
 
 ### Functionality
