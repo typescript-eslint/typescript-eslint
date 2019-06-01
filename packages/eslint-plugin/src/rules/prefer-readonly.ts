@@ -28,7 +28,6 @@ export default util.createRule<Options, MessageIds>({
       description:
         "Requires that private members are marked as `readonly` if they're never modified outside of the constructor",
       category: 'Best Practices',
-      recommended: 'warn',
       tslintRuleName: 'prefer-readonly',
     },
     fixable: 'code',
@@ -38,17 +37,18 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
+        allowAdditionalProperties: false,
         properties: {
           onlyInlineLambdas: {
             type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
     type: 'suggestion',
   },
-  defaultOptions: [{}],
+  defaultOptions: [{ onlyInlineLambdas: false }],
   create(context, [{ onlyInlineLambdas }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
@@ -154,7 +154,7 @@ export default util.createRule<Options, MessageIds>({
           ),
         );
       },
-      'ClassDeclaration, ClassExpression:exit'() {
+      'ClassDeclaration:exit, ClassExpression:exit'() {
         const finalizedClassScope = classScopeStack.pop()!;
         const sourceCode = context.getSourceCode();
 
@@ -173,9 +173,9 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       MemberExpression(node) {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-          node,
-        ) as ts.PropertyAccessExpression;
+        const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
+          ts.PropertyAccessExpression
+        >(node);
         if (classScopeStack.length !== 0) {
           handlePropertyAccessExpression(
             tsNode,
@@ -187,9 +187,9 @@ export default util.createRule<Options, MessageIds>({
       [functionScopeBoundaries](node: TSESTree.Node) {
         if (isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].enterConstructor(
-            parserServices.esTreeNodeToTSNodeMap.get(
+            parserServices.esTreeNodeToTSNodeMap.get<ts.ConstructorDeclaration>(
               node,
-            ) as ts.ConstructorDeclaration,
+            ),
           );
         } else if (isFunctionScopeBoundaryInStack(node)) {
           classScopeStack[classScopeStack.length - 1].enterNonConstructor();

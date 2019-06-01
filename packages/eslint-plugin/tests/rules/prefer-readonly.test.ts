@@ -13,6 +13,23 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('prefer-readonly', rule, {
   valid: [
+    `function ignore() { }`,
+    `const ignore = function () { }`,
+    `const ignore = () => { }`,
+    `const container = { member: true };
+      container.member;`,
+    `const container = { member: 1 };
+      +container.member;`,
+    `const container = { member: 1 };
+      ++container.member;`,
+    `const container = { member: 1 };
+      container.member++;`,
+    `const container = { member: 1 };
+      -container.member;`,
+    `const container = { member: 1 };
+      --container.member;`,
+    `const container = { member: 1 };
+      container.member--;`,
     `class TestEmpty { }`,
     `class TestReadonlyStatic {
       private static readonly correctlyReadonlyStatic = 7;
