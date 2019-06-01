@@ -23,6 +23,7 @@
     "@typescript-eslint/no-angle-bracket-type-assertion": "error",
     "no-array-constructor": "off",
     "@typescript-eslint/no-array-constructor": "error",
+    "@typescript-eslint/no-dynamic-delete": "error",
     "@typescript-eslint/no-empty-interface": "error",
     "@typescript-eslint/no-explicit-any": "error",
     "no-extra-parens": "off",
