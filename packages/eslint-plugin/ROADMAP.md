@@ -90,7 +90,7 @@
 | [`prefer-object-spread`]             | 🌟  | [`prefer-object-spread`][prefer-object-spread]                        |
 | [`radix`]                            | 🌟  | [`radix`][radix]                                                      |
 | [`restrict-plus-operands`]           | ✅  | [`@typescript-eslint/restrict-plus-operands`]                         |
-| [`strict-boolean-expressions`]       | 🛑  | N/A                                                                   |
+| [`strict-boolean-expressions`]       | ✅  | [`@typescript-eslint/strict-boolean-expressions`]                     |
 | [`strict-type-predicates`]           | 🛑  | N/A                                                                   |
 | [`switch-default`]                   | 🌟  | [`default-case`][default-case]                                        |
 | [`triple-equals`]                    | 🌟  | [`eqeqeq`][eqeqeq]                                                    |
