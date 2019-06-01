@@ -38,6 +38,8 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    `let a: number;
+    [a] = [1];`,
     // Arrow call signatures
     `((): void => {})()`,
     `((): number => 7)()`,
@@ -91,12 +93,22 @@ ruleTester.run('typedef', rule, {
       ],
     },
     `const container: any = {
+      method(): number {
+        return 7;
+      }
+    };`,
+    `const container: any = {
       get propDef(): number {
         return 7;
       }
     };`,
     `const container: any = {
       set propDef(input: number) { }
+    };`,
+    `const container: any = {
+      ["computed"](): boolean {
+        return true;
+      },
     };`,
     // Member variable declarations
     `class Test {
@@ -325,6 +337,19 @@ ruleTester.run('typedef', rule, {
     },
     {
       code: `const container: any = {
+        method() {
+          return 7;
+        }
+      };`,
+      errors: [
+        {
+          data: { name: 'method' },
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+    },
+    {
+      code: `const container: any = {
         get propDef() {
           return 7;
         }
@@ -333,6 +358,18 @@ ruleTester.run('typedef', rule, {
         {
           data: { name: 'propDef' },
           messageId: 'expectedTypedefNamed',
+        },
+      ],
+    },
+    {
+      code: `const container: any = {
+        ["computed"]() {
+          return true;
+        },
+      };`,
+      errors: [
+        {
+          messageId: 'expectedTypedef',
         },
       ],
     },
