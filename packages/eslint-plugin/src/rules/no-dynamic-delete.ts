@@ -14,6 +14,7 @@ export default util.createRule({
       category: 'Best Practices',
       description:
         'Bans usage of the delete operator with computed key expressions',
+      recommended: false,
     },
     fixable: 'code',
     messages: {
