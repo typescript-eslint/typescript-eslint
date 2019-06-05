@@ -45,10 +45,10 @@ Then configure the rules you want to use under the rules section.
 
 You can also enable all the recommended rules at once. Add `plugin:@typescript-eslint/recommended` in extends:
 
-```json
+```jsonc
 {
   "extends": [
-    "// eslint:recommended, ...",
+    // ... other rule sets like 'eslint:recommended' ...
     "plugin:@typescript-eslint/recommended"
   ]
 }
