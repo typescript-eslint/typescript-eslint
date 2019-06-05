@@ -47,7 +47,10 @@ You can also enable all the recommended rules at once. Add `plugin:@typescript-e
 
 ```json
 {
-  "extends": ["plugin:@typescript-eslint/recommended"]
+  "extends": [
+    "// eslint:recommended, ...",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }
 ```
 
