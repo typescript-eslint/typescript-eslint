@@ -29,7 +29,7 @@
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "pre-commit": "yarn lint-staged",
-    "pre-push": "yarn lint && yarn typecheck && yarn format-check",
+    "pre-push": "yarn format-check",
     "postinstall": "lerna bootstrap && yarn build && lerna link",
     "test": "lerna run test --parallel",
     "typecheck": "lerna run typecheck"
