@@ -43,11 +43,23 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
-You can also enable all the recommended rules at once. Add `plugin:@typescript-eslint/recommended` in extends:
+You can also enable all the recommended rules for our plugin. Add `plugin:@typescript-eslint/recommended` in extends:
 
 ```json
 {
   "extends": ["plugin:@typescript-eslint/recommended"]
+}
+```
+
+You can also use [eslint:recommended](https://eslint.org/docs/rules/) with this plugin. Add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended`:
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }
 ```
 
