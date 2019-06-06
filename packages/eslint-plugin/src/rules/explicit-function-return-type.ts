@@ -211,12 +211,10 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (util.isTypeScriptFile(context.getFilename())) {
-        context.report({
-          node,
-          messageId: 'missingReturnType',
-        });
-      }
+      context.report({
+        node,
+        messageId: 'missingReturnType',
+      });
     }
 
     /**

@@ -30,16 +30,6 @@ class Test {
             `,
     },
     {
-      filename: 'test.js',
-      code: `
-class Test {
-  getX () {
-    return 1;
-  }
-}
-            `,
-    },
-    {
       filename: 'test.ts',
       code: `
 class Test {
@@ -146,19 +136,6 @@ class Test {
         {
           accessibility: 'no-public',
           overrides: { parameterProperties: 'off' },
-        },
-      ],
-    },
-    {
-      filename: 'test.js',
-      code: `
-class Test {
-  constructor(public x: number){}
-}
-      `,
-      options: [
-        {
-          accessibility: 'no-public',
         },
       ],
     },
