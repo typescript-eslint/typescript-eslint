@@ -33,6 +33,14 @@ class Test {
       filename: 'test.ts',
       code: `
 class Test {
+  public constructor({x, y}: {x: number; y: number;}) {}
+}
+            `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
   protected name: string
   protected foo?: string
   public getX () {
