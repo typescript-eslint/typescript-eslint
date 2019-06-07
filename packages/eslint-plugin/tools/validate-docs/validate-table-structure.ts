@@ -3,8 +3,8 @@ import chalk from 'chalk';
 import marked from 'marked';
 import { logError } from './log';
 
-function validateTableStructure(
-  rules: Record<string, TSESLint.RuleModule<any, any>>,
+function validateTableStructure<TMessageIds extends string>(
+  rules: Record<string, TSESLint.RuleModule<TMessageIds, any, any>>,
   rulesTable: marked.Tokens.Table,
 ): boolean {
   const ruleNames = Object.keys(rules).sort();
