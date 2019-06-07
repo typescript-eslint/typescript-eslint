@@ -36,7 +36,7 @@ The more irrelevant code/config you give, the harder it is for us to investigate
 ```JSON
 {
   "rules": {
-    "typescript/<rule>": ["<setting>"]
+    "@typescript-eslint/<rule>": ["<setting>"]
   }
 }
 ```
