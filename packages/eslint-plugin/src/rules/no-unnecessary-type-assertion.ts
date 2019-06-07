@@ -188,18 +188,43 @@ export default util.createRule<Options, MessageIds>({
         } else {
           // we know it's a nullable type
           // so figure out if the variable is used in a place that accepts nullable types
+
           const contextualType = getContextualType(checker, originalNode);
-          if (contextualType && util.isNullableType(contextualType)) {
-            context.report({
-              node,
-              messageId: 'contextuallyUnnecessary',
-              fix(fixer) {
-                return fixer.removeRange([
-                  originalNode.expression.end,
-                  originalNode.end,
-                ]);
-              },
-            });
+          if (contextualType) {
+            // in strict mode you can't assign null to undefined, so we have to make sure that
+            // the two types share a nullable type
+            const typeIncludesUndefined = util.isTypeFlagSet(
+              type,
+              ts.TypeFlags.Undefined,
+            );
+            const typeIncludesNull = util.isTypeFlagSet(
+              type,
+              ts.TypeFlags.Null,
+            );
+
+            const contextualTypeIncludesUndefined = util.isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Undefined,
+            );
+            const contextualTypeIncludesNull = util.isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Null,
+            );
+            if (
+              (typeIncludesUndefined && contextualTypeIncludesUndefined) ||
+              (typeIncludesNull && contextualTypeIncludesNull)
+            ) {
+              context.report({
+                node,
+                messageId: 'contextuallyUnnecessary',
+                fix(fixer) {
+                  return fixer.removeRange([
+                    originalNode.expression.end,
+                    originalNode.end,
+                  ]);
+                },
+              });
+            }
           }
         }
       },
