@@ -8,6 +8,7 @@ type Options = [
   {
     allowExpressions?: boolean;
     allowTypedFunctionExpressions?: boolean;
+    allowHigherOrderFunctions?: boolean;
   }
 ];
 type MessageIds = 'missingReturnType';
@@ -35,6 +36,9 @@ export default util.createRule<Options, MessageIds>({
           allowTypedFunctionExpressions: {
             type: 'boolean',
           },
+          allowHigherOrderFunctions: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -44,6 +48,7 @@ export default util.createRule<Options, MessageIds>({
     {
       allowExpressions: false,
       allowTypedFunctionExpressions: false,
+      allowHigherOrderFunctions: false,
     },
   ],
   create(context, [options]) {
@@ -139,6 +144,50 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if a function belongs to:
+     * `() => () => ...`
+     * `() => function () { ... }`
+     * `() => { return () => ... }`
+     * `() => { return function () { ... } }`
+     * `function fn() { return () => ... }`
+     * `function fn() { return function() { ... } }`
+     */
+    function doesImmediatelyReturnFunctionExpression({
+      body,
+    }:
+      | TSESTree.ArrowFunctionExpression
+      | TSESTree.FunctionDeclaration
+      | TSESTree.FunctionExpression): boolean {
+      // Should always have a body; really checking just in case
+      /* istanbul ignore if */ if (!body) {
+        return false;
+      }
+
+      // Check if body is a block with a single statement
+      if (
+        body.type === AST_NODE_TYPES.BlockStatement &&
+        body.body.length === 1
+      ) {
+        const [statement] = body.body;
+
+        // Check if that statement is a return statement with an argument
+        if (
+          statement.type === AST_NODE_TYPES.ReturnStatement &&
+          !!statement.argument
+        ) {
+          // If so, check that returned argument as body
+          body = statement.argument;
+        }
+      }
+
+      // Check if the body being returned is a function expression
+      return (
+        body.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        body.type === AST_NODE_TYPES.FunctionExpression
+      );
+    }
+
+    /**
      * Checks if a function declaration/expression has a return type.
      */
     function checkFunctionReturnType(
@@ -147,6 +196,13 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
+      if (
+        options.allowHigherOrderFunctions &&
+        doesImmediatelyReturnFunctionExpression(node)
+      ) {
+        return;
+      }
+
       if (
         node.returnType ||
         isConstructor(node.parent) ||
@@ -169,7 +225,8 @@ export default util.createRule<Options, MessageIds>({
     function checkFunctionExpressionReturnType(
       node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): void {
-      if (node.parent) {
+      // Should always have a parent; checking just in case
+      /* istanbul ignore else */ if (node.parent) {
         if (options.allowTypedFunctionExpressions) {
           if (
             isTypeCast(node.parent) ||
