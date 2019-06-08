@@ -4,7 +4,6 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import ts from 'typescript';
 import * as util from '../util';
-import { getTypeName } from '../util';
 
 type ExpressionWithTest =
   | TSESTree.ConditionalExpression
@@ -45,7 +44,7 @@ export default util.createRule({
         node,
       );
       const type = checker.getTypeAtLocation(tsNode);
-      const typeName = getTypeName(checker, type);
+      const typeName = util.getTypeName(checker, type);
       return ['true', 'false', 'boolean'].includes(typeName);
     }
 
@@ -78,9 +77,7 @@ export default util.createRule({
       IfStatement: assertExpressionContainsBoolean,
       WhileStatement: assertExpressionContainsBoolean,
       LogicalExpression(node: TSESTree.LogicalExpression) {
-        if (node.operator === '||' || node.operator === '&&') {
-          assertNodeIsBoolean(node);
-        }
+        assertNodeIsBoolean(node);
       },
       UnaryExpression(node) {
         if (node.operator === '!') {

@@ -21,6 +21,12 @@ ruleTester.run('strict-boolean-expressions', rule, {
       let bool3 = true && val;
     `,
     `
+      let a = 0;
+      let u1 = typeof a;
+      let u2 = -a;
+      let u3 = ~a;
+    `,
+    `
       const bool1 = true;
       const bool2 = false;
       if (true) {
