@@ -7,8 +7,7 @@ export default util.createRule({
   name: 'no-floating-promises',
   meta: {
     docs: {
-      description:
-        'Requires promises to be awaited or have a rejection handler.',
+      description: 'Requires Promise-like values to be handled appropriately.',
       category: 'Best Practices',
       recommended: false,
     },
