@@ -134,6 +134,11 @@ export default util.createRule<Options, MessageIds>({
      */
     function isPossiblyUsedBeforeAssigned(node: ts.Expression): boolean {
       const declaration = util.getDeclaration(checker, node);
+      if (!declaration) {
+        // don't know what the declaration is for some reason, so just assume the worst
+        return true;
+      }
+
       if (
         // non-strict mode doesn't care about used before assigned errors
         isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks') &&

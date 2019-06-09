@@ -95,6 +95,21 @@ declare const str: string | null;
 
 foo(str!);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/532
+    `
+declare function a(a: string): any;
+declare const b: string | null;
+class Mx {
+  @a(b!)
+  private prop = 1;
+}
+    `,
+    `
+class Mx {
+  @a(b!)
+  private prop = 1;
+}
+    `,
   ],
 
   invalid: [
@@ -277,6 +292,31 @@ class Foo {
         {
           messageId: 'contextuallyUnnecessary',
           line: 4,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/532
+    {
+      code: `
+declare function a(a: string): any;
+const b = 'asdf';
+class Mx {
+  @a(b!)
+  private prop = 1;
+}
+      `,
+      output: `
+declare function a(a: string): any;
+const b = 'asdf';
+class Mx {
+  @a(b)
+  private prop = 1;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
         },
       ],
     },
