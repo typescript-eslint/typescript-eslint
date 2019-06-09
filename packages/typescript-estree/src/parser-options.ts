@@ -1,17 +1,16 @@
 import { Program } from 'typescript';
-import { Token, Comment, Node } from './ts-estree/ts-estree';
-import { TSNode } from './ts-nodes';
+import { TSESTree, TSNode } from './ts-estree';
 
 export interface Extra {
   errorOnUnknownASTType: boolean;
   errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
   useJSXTextNode: boolean;
-  tokens: null | Token[];
+  tokens: null | TSESTree.Token[];
   comment: boolean;
   code: string;
   range: boolean;
   loc: boolean;
-  comments: Comment[];
+  comments: TSESTree.Comment[];
   strict: boolean;
   jsx: boolean;
   log: Function;
@@ -21,7 +20,7 @@ export interface Extra {
   preserveNodeMaps?: boolean;
 }
 
-export interface ParserOptions {
+export interface TSESTreeOptions {
   range?: boolean;
   loc?: boolean;
   tokens?: boolean;
@@ -38,6 +37,8 @@ export interface ParserOptions {
   preserveNodeMaps?: boolean;
 }
 
+// This lets us use generics to type the return value, and removes the need to
+// handle the undefined type in the get method
 export interface ParserWeakMap<TKey, TValueBase> {
   get<TValue extends TValueBase>(key: TKey): TValue;
   has(key: any): boolean;
@@ -45,6 +46,6 @@ export interface ParserWeakMap<TKey, TValueBase> {
 
 export interface ParserServices {
   program: Program | undefined;
-  esTreeNodeToTSNodeMap: ParserWeakMap<Node, TSNode> | undefined;
-  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, Node> | undefined;
+  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, TSNode> | undefined;
+  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node> | undefined;
 }

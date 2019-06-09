@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type AccessibilityLevel =
@@ -30,7 +33,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
-      tslintRuleName: 'member-access',
       category: 'Best Practices',
       recommended: 'error',
     },

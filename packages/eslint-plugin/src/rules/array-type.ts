@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESTree,
-} from '@typescript-eslint/typescript-estree';
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 /**
@@ -85,7 +85,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
-      tslintRuleName: 'array-type',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

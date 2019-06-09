@@ -1,4 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -16,7 +19,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow the use of custom TypeScript modules and namespaces',
-      tslintRuleName: 'no-namespace',
       category: 'Best Practices',
       recommended: 'error',
     },

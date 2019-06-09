@@ -6,7 +6,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow usage of the `any` type',
-      tslintRuleName: 'no-any',
       category: 'Best Practices',
       recommended: 'warn',
     },

@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-useless-constructor';
 import * as util from '../util';
 

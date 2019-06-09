@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Modifier =
@@ -22,8 +25,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Disallow the use of parameter properties in class constructors.',
-      tslintRuleName: 'no-parameter-properties',
+        'Disallow the use of parameter properties in class constructors',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

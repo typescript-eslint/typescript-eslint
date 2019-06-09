@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -15,8 +18,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.',
-      tslintRuleName: 'no-inferrable-types',
+        'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean',
       category: 'Best Practices',
       recommended: 'error',
     },
@@ -47,50 +49,128 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
+    function isFunctionCall(init: TSESTree.Expression, callName: string) {
+      return (
+        init.type === AST_NODE_TYPES.CallExpression &&
+        init.callee.type === AST_NODE_TYPES.Identifier &&
+        init.callee.name === callName
+      );
+    }
+    function isLiteral(init: TSESTree.Expression, typeName: string) {
+      return (
+        init.type === AST_NODE_TYPES.Literal && typeof init.value === typeName
+      );
+    }
+    function isIdentifier(init: TSESTree.Expression, ...names: string[]) {
+      return (
+        init.type === AST_NODE_TYPES.Identifier && names.includes(init.name)
+      );
+    }
+    function hasUnaryPrefix(
+      init: TSESTree.Expression,
+      ...operators: string[]
+    ): init is TSESTree.UnaryExpression {
+      return (
+        init.type === AST_NODE_TYPES.UnaryExpression &&
+        operators.includes(init.operator)
+      );
+    }
+
+    type Keywords =
+      | TSESTree.TSBigIntKeyword
+      | TSESTree.TSBooleanKeyword
+      | TSESTree.TSNumberKeyword
+      | TSESTree.TSNullKeyword
+      | TSESTree.TSStringKeyword
+      | TSESTree.TSSymbolKeyword
+      | TSESTree.TSUndefinedKeyword
+      | TSESTree.TSTypeReference;
+    const keywordMap = {
+      [AST_NODE_TYPES.TSBigIntKeyword]: 'bigint',
+      [AST_NODE_TYPES.TSBooleanKeyword]: 'boolean',
+      [AST_NODE_TYPES.TSNumberKeyword]: 'number',
+      [AST_NODE_TYPES.TSNullKeyword]: 'null',
+      [AST_NODE_TYPES.TSStringKeyword]: 'string',
+      [AST_NODE_TYPES.TSSymbolKeyword]: 'symbol',
+      [AST_NODE_TYPES.TSUndefinedKeyword]: 'undefined',
+    };
+
     /**
      * Returns whether a node has an inferrable value or not
-     * @param node the node to check
-     * @param init the initializer
      */
     function isInferrable(
-      node: TSESTree.TSTypeAnnotation,
+      annotation: TSESTree.TypeNode,
       init: TSESTree.Expression,
-    ): boolean {
-      if (
-        node.type !== AST_NODE_TYPES.TSTypeAnnotation ||
-        !node.typeAnnotation
-      ) {
-        return false;
-      }
+    ): annotation is Keywords {
+      switch (annotation.type) {
+        case AST_NODE_TYPES.TSBigIntKeyword: {
+          // note that bigint cannot have + prefixed to it
+          const unwrappedInit = hasUnaryPrefix(init, '-')
+            ? init.argument
+            : init;
 
-      const annotation = node.typeAnnotation;
-
-      if (annotation.type === AST_NODE_TYPES.TSStringKeyword) {
-        if (init.type === AST_NODE_TYPES.Literal) {
-          return typeof init.value === 'string';
-        }
-        return false;
-      }
-
-      if (annotation.type === AST_NODE_TYPES.TSBooleanKeyword) {
-        return init.type === AST_NODE_TYPES.Literal;
-      }
-
-      if (annotation.type === AST_NODE_TYPES.TSNumberKeyword) {
-        // Infinity is special
-        if (
-          (init.type === AST_NODE_TYPES.UnaryExpression &&
-            init.operator === '-' &&
-            init.argument.type === AST_NODE_TYPES.Identifier &&
-            init.argument.name === 'Infinity') ||
-          (init.type === AST_NODE_TYPES.Identifier && init.name === 'Infinity')
-        ) {
-          return true;
+          return (
+            isFunctionCall(unwrappedInit, 'BigInt') ||
+            unwrappedInit.type === AST_NODE_TYPES.BigIntLiteral
+          );
         }
 
-        return (
-          init.type === AST_NODE_TYPES.Literal && typeof init.value === 'number'
-        );
+        case AST_NODE_TYPES.TSBooleanKeyword:
+          return (
+            hasUnaryPrefix(init, '!') ||
+            isFunctionCall(init, 'Boolean') ||
+            isLiteral(init, 'boolean')
+          );
+
+        case AST_NODE_TYPES.TSNumberKeyword: {
+          const unwrappedInit = hasUnaryPrefix(init, '+', '-')
+            ? init.argument
+            : init;
+
+          return (
+            isIdentifier(unwrappedInit, 'Infinity', 'NaN') ||
+            isFunctionCall(unwrappedInit, 'Number') ||
+            isLiteral(unwrappedInit, 'number')
+          );
+        }
+
+        case AST_NODE_TYPES.TSNullKeyword:
+          return init.type === AST_NODE_TYPES.Literal && init.value === null;
+
+        case AST_NODE_TYPES.TSStringKeyword:
+          return (
+            isFunctionCall(init, 'String') ||
+            isLiteral(init, 'string') ||
+            init.type === AST_NODE_TYPES.TemplateLiteral
+          );
+
+        case AST_NODE_TYPES.TSSymbolKeyword:
+          return isFunctionCall(init, 'Symbol');
+
+        case AST_NODE_TYPES.TSTypeReference: {
+          if (
+            annotation.typeName.type === AST_NODE_TYPES.Identifier &&
+            annotation.typeName.name === 'RegExp'
+          ) {
+            const isRegExpLiteral =
+              init.type === AST_NODE_TYPES.Literal &&
+              init.value instanceof RegExp;
+            const isRegExpNewCall =
+              init.type === AST_NODE_TYPES.NewExpression &&
+              init.callee.type === 'Identifier' &&
+              init.callee.name === 'RegExp';
+            const isRegExpCall = isFunctionCall(init, 'RegExp');
+
+            return isRegExpLiteral || isRegExpCall || isRegExpNewCall;
+          }
+
+          return false;
+        }
+
+        case AST_NODE_TYPES.TSUndefinedKeyword:
+          return (
+            hasUnaryPrefix(init, 'void') || isIdentifier(init, 'undefined')
+          );
       }
 
       return false;
@@ -98,9 +178,6 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Reports an inferrable type declaration, if any
-     * @param node the node being visited
-     * @param typeNode the type annotation node
-     * @param initNode the initializer node
      */
     function reportInferrableType(
       node:
@@ -114,25 +191,15 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (!isInferrable(typeNode, initNode)) {
+      if (!isInferrable(typeNode.typeAnnotation, initNode)) {
         return;
       }
 
-      let type = null;
-      if (typeNode.typeAnnotation.type === AST_NODE_TYPES.TSBooleanKeyword) {
-        type = 'boolean';
-      } else if (
-        typeNode.typeAnnotation.type === AST_NODE_TYPES.TSNumberKeyword
-      ) {
-        type = 'number';
-      } else if (
-        typeNode.typeAnnotation.type === AST_NODE_TYPES.TSStringKeyword
-      ) {
-        type = 'string';
-      } else {
-        // shouldn't happen...
-        return;
-      }
+      const type =
+        typeNode.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference
+          ? // TODO - if we add more references
+            'RegExp'
+          : keywordMap[typeNode.typeAnnotation.type];
 
       context.report({
         node,

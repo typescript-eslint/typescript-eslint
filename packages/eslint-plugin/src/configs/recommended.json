@@ -1,9 +1,5 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "sourceType": "module"
-  },
-  "plugins": ["@typescript-eslint"],
+  "extends": "./configs/base.json",
   "rules": {
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/array-type": "error",
@@ -31,6 +27,7 @@
     "@typescript-eslint/no-triple-slash-reference": "error",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",
+    "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "error",
     "@typescript-eslint/no-var-requires": "error",
     "@typescript-eslint/prefer-interface": "error",

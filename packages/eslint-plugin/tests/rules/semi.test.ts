@@ -1,5 +1,6 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule, { MessageIds, Options } from '../../src/rules/semi';
-import { InvalidTestCase, RuleTester, ValidTestCase } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -87,7 +88,7 @@ class PanCamera extends FreeCamera {
     'export default (foo) => foo.bar();',
     'export default foo = 42;',
     'export default foo += 42;',
-  ].reduce<ValidTestCase<Options>[]>(
+  ].reduce<TSESLint.ValidTestCase<Options>[]>(
     (acc, code) => {
       acc.push({
         code,
@@ -616,7 +617,7 @@ class PanCamera extends FreeCamera {
         },
       ],
     },
-  ].reduce<InvalidTestCase<MessageIds, Options>[]>(
+  ].reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>(
     (acc, test) => {
       acc.push({
         code: test.code.replace(/;/g, ''),

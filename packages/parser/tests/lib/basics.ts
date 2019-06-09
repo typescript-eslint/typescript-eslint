@@ -1,4 +1,4 @@
-import { Linter } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import fs from 'fs';
 import glob from 'glob';
 import * as parser from '../../src/parser';
@@ -24,11 +24,11 @@ describe('basics', () => {
   });
 
   it('https://github.com/eslint/typescript-eslint-parser/issues/476', () => {
-    const linter = new Linter();
+    const linter = new TSESLint.Linter();
     const code = `
 export const Price: React.SFC<PriceProps> = function Price(props) {}
 `;
-    const config: Linter.Config = {
+    const config: TSESLint.Linter.Config = {
       parser: '@typescript-eslint/parser',
       rules: {
         test: 'error',
@@ -37,15 +37,15 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
 
     linter.defineParser('@typescript-eslint/parser', parser);
     linter.defineRule('test', {
-      create(context: any) {
+      create(context) {
         return {
-          TSTypeReference(node: any) {
+          TSTypeReference(node) {
             const name = context.getSourceCode().getText(node.typeName);
             context.report({
               node,
               message: 'called on {{name}}',
               data: { name },
-            });
+            } as any);
           },
         };
       },

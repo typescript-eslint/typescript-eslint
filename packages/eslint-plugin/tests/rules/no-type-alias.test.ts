@@ -8,6 +8,10 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-type-alias', rule, {
   valid: [
     {
+      code: "type A = 'a' & ('b' | 'c');",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
       code: "type Foo = 'a';",
       options: [{ allowAliases: 'always' }],
     },

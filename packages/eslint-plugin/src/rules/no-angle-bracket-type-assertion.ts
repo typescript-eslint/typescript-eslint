@@ -7,7 +7,6 @@ export default util.createRule({
     docs: {
       description:
         'Enforces the use of `as Type` assertions instead of `<Type>` assertions',
-      tslintRuleName: 'no-angle-bracket-type-assertion',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

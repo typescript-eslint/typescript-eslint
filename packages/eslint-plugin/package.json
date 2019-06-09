@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "1.7.0",
+  "version": "1.9.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -18,34 +18,42 @@
     "README.md",
     "LICENSE"
   ],
-  "repository": "typescript-eslint/typescript-eslint",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/eslint-plugin"
+  },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "docs": "eslint-docs",
-    "docs:check": "eslint-docs check",
-    "test": "jest --coverage",
-    "recommended:update": "ts-node tools/update-recommended.ts",
-    "prebuild": "npm run clean",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist/",
+    "docs": "eslint-docs",
+    "docs:check": "ts-node --files ./tools/validate-docs/index.ts",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "generate:configs": "ts-node --files tools/generate-configs.ts",
+    "prebuild": "npm run clean",
+    "recommended:update": "ts-node tools/update-recommended.ts",
+    "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "1.7.0",
-    "@typescript-eslint/typescript-estree": "1.7.0",
+    "@typescript-eslint/experimental-utils": "1.9.0",
     "eslint-utils": "^1.3.1",
+    "functional-red-black-tree": "^1.0.1",
     "regexpp": "^2.0.1",
-    "requireindex": "^1.2.0",
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
-    "eslint-docs": "^0.2.6"
+    "@types/marked": "^0.6.5",
+    "chalk": "^2.4.2",
+    "marked": "^0.6.2"
   },
   "peerDependencies": {
+    "@typescript-eslint/parser": "1.9.0",
     "eslint": "^5.0.0"
   }
 }

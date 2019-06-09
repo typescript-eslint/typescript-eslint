@@ -2,14 +2,13 @@ import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { RuleTester } from '../RuleTester';
 
-const rootDir = path.join(process.cwd(), 'tests/fixtures');
-const parserOptions = {
-  ecmaVersion: 2015,
-  tsconfigRootDir: rootDir,
-  project: './tsconfig.json',
-};
+const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
-  parserOptions,
+  parserOptions: {
+    ecmaVersion: 2015,
+    tsconfigRootDir: rootDir,
+    project: './tsconfig.json',
+  },
   parser: '@typescript-eslint/parser',
 });
 
@@ -55,6 +54,47 @@ type Foo = number;
 const foo = <Foo>(3 + 5);`,
       options: [{ typesToIgnore: ['Foo'] }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/453
+    // the ol' use-before-assign-is-okay-trust-me assertion
+    `
+let bar: number
+bar! + 1
+    `,
+    `
+let bar: undefined | number
+bar! + 1
+    `,
+    `
+let bar: number, baz: number
+bar! + 1
+    `,
+    `
+function foo<T extends string | undefined>(bar: T) {
+  return bar!
+}
+    `,
+    `
+declare function nonNull(s: string);
+let s: string | null = null;
+nonNull(s!);
+    `,
+    `
+const x: number | null = null;
+const y: number = x!;
+    `,
+    `
+const x: number | null = null;
+class Foo {
+  prop: number = x!;
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/529
+    `
+declare function foo(str?: string): void;
+declare const str: string | null;
+
+foo(str!);
+    `,
   ],
 
   invalid: [
@@ -113,6 +153,130 @@ const foo = <Foo>(3 + 5);`,
           messageId: 'unnecessaryAssertion',
           line: 3,
           column: 13,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/453
+    {
+      code: `
+let bar: number = 1
+bar! + 1
+      `,
+      output: `
+let bar: number = 1
+bar + 1
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      // definite declaration operator
+      code: `
+let bar!: number
+bar! + 1
+      `,
+      output: `
+let bar!: number
+bar + 1
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+let bar: number | undefined
+bar = 1;
+bar! + 1
+      `,
+      output: `
+let bar: number | undefined
+bar = 1;
+bar + 1
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+function foo<T extends string>(bar: T) {
+  return bar!
+}
+      `,
+      output: `
+function foo<T extends string>(bar: T) {
+  return bar
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+declare function nonNull(s: string | null);
+let s: string | null = null;
+nonNull(s!);
+      `,
+      output: `
+declare function nonNull(s: string | null);
+let s: string | null = null;
+nonNull(s);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+const x: number | null = null;
+const y: number | null = x!;
+      `,
+      output: `
+const x: number | null = null;
+const y: number | null = x;
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+const x: number | null = null;
+class Foo {
+  prop: number | null = x!;
+}
+      `,
+      output: `
+const x: number | null = null;
+class Foo {
+  prop: number | null = x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 4,
         },
       ],
     },

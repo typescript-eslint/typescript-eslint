@@ -1,5 +1,5 @@
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 type Options = [
   {
@@ -38,7 +38,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require consistent spacing around type annotations',
-      tslintRuleName: 'typedef-whitespace',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

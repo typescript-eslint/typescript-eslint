@@ -1,6 +1,6 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/array-type';
 import { RuleTester } from '../RuleTester';
-import { Linter } from 'eslint';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -889,7 +889,7 @@ describe('array-type (nested)', () => {
   describe('should deeply fix correctly', () => {
     function testOutput(option: string, code: string, output: string): void {
       it(code, () => {
-        const linter = new Linter();
+        const linter = new TSESLint.Linter();
 
         linter.defineRule('array-type', Object.assign({}, rule) as any);
         const result = linter.verifyAndFix(

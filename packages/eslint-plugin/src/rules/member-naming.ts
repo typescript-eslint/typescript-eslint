@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 interface Config<T = string> {
@@ -16,7 +16,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Enforces naming conventions for class members by visibility.',
+        'Enforces naming conventions for class members by visibility',
       category: 'Stylistic Issues',
       recommended: false,
     },
@@ -76,9 +76,13 @@ export default util.createRule<Options, MessageIds>({
       const convention = conventions[accessibility];
 
       const method = node as TSESTree.MethodDefinition;
-      if (method.kind === 'constructor') return;
+      if (method.kind === 'constructor') {
+        return;
+      }
 
-      if (!convention || convention.test(name)) return;
+      if (!convention || convention.test(name)) {
+        return;
+      }
 
       context.report({
         node: node.key,

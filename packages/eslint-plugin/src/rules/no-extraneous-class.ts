@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -16,7 +19,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Forbids the use of classes as namespaces',
-      tslintRuleName: 'no-unnecessary-class',
       category: 'Best Practices',
       recommended: false,
     },
@@ -96,7 +98,9 @@ export default util.createRule<Options, MessageIds>({
               onlyStatic = false;
             }
           }
-          if (!(onlyStatic || onlyConstructor)) break;
+          if (!(onlyStatic || onlyConstructor)) {
+            break;
+          }
         }
 
         if (onlyConstructor) {

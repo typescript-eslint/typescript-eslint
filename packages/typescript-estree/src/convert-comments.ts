@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { getLocFor, getNodeContainer } from './node-utils';
 import { TSESTree } from './ts-estree';
 
@@ -121,6 +121,8 @@ export function convertComments(
           container &&
           container.parent &&
           container.parent.kind === ts.SyntaxKind.JsxOpeningElement &&
+          // Make sure this is the end of the opening element and not type parameter
+          end === container.parent.end &&
           container.parent.parent &&
           container.parent.parent.kind === ts.SyntaxKind.JsxElement
         ) {
