@@ -142,7 +142,7 @@ function isFunctionParam(
   param: ts.Symbol,
   node: ts.Node,
 ): boolean {
-  let type: ts.Type | undefined = checker.getApparentType(
+  const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
   for (const t of tsutils.unionTypeParts(type)) {
