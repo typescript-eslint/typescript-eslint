@@ -227,4 +227,4 @@ Thanks goes to the wonderful people listed in [`CONTRIBUTORS.md`](./CONTRIBUTORS
 
 ## Contributing Guide
 
-COMING SOON!
+COMING SOON
