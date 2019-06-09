@@ -11,7 +11,6 @@ export default util.createRule({
         'Requires promises to be awaited or have a rejection handler.',
       category: 'Best Practices',
       recommended: false,
-      tslintName: 'no-floating-promises',
     },
     messages: {
       floating: 'Promises must be handled appropriately',
