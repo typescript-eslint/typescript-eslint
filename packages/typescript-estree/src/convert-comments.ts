@@ -118,18 +118,12 @@ export function convertComments(
       case ts.SyntaxKind.GreaterThanToken:
         container = getNodeContainer(ast, start, end);
         if (
-          !container.parent ||
-          !container.parent.parent ||
-          !container.parent.parent.parent
-        ) {
-          break;
-        }
-
-        if (
-          // Rescan after an opening element or fragment
-          (container.parent.kind === ts.SyntaxKind.JsxOpeningElement &&
-            // Make sure this is the end of a tag like `<Component<number>>`
-            container.parent.end === end) ||
+          (container.parent &&
+            container.parent.parent &&
+            // Rescan after an opening element or fragment
+            (container.parent.kind === ts.SyntaxKind.JsxOpeningElement &&
+              // Make sure this is the end of a tag like `<Component<number>>`
+              container.parent.end === end)) ||
           container.parent.kind === ts.SyntaxKind.JsxOpeningFragment ||
           // Rescan after a self-closing element if it's inside another JSX element
           (container.parent.kind === ts.SyntaxKind.JsxSelfClosingElement &&
@@ -138,6 +132,7 @@ export function convertComments(
           // Rescan after a closing element if it's inside another JSX element
           ((container.parent.kind === ts.SyntaxKind.JsxClosingElement ||
             container.parent.kind === ts.SyntaxKind.JsxClosingFragment) &&
+            container.parent.parent.parent &&
             (container.parent.parent.parent.kind === ts.SyntaxKind.JsxElement ||
               container.parent.parent.parent.kind ===
                 ts.SyntaxKind.JsxFragment))
