@@ -9,6 +9,7 @@ export default util.createRule({
       category: 'Best Practices',
       recommended: 'warn',
     },
+    fixable: "code",
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
     },
@@ -21,6 +22,9 @@ export default util.createRule({
         context.report({
           node,
           messageId: 'unexpectedAny',
+          fix(fixer) {
+            return fixer.replaceText(node,"unknown");
+          }
         });
       },
     };
