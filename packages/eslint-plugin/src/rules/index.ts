@@ -25,6 +25,7 @@ import noForInArray from './no-for-in-array';
 import noInferrableTypes from './no-inferrable-types';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
+import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
 import noNonNullAssertion from './no-non-null-assertion';
 import noObjectLiteralTypeAssertion from './no-object-literal-type-assertion';
@@ -82,6 +83,7 @@ export default {
   'no-inferrable-types': noInferrableTypes,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
+  'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
   'no-non-null-assertion': noNonNullAssertion,
   'no-object-literal-type-assertion': noObjectLiteralTypeAssertion,

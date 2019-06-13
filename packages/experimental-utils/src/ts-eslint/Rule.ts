@@ -270,6 +270,7 @@ interface RuleListener {
   JSXSpreadChild?: RuleFunction<TSESTree.JSXSpreadChild>;
   JSXText?: RuleFunction<TSESTree.JSXText>;
   LabeledStatement?: RuleFunction<TSESTree.LabeledStatement>;
+  LogicalExpression?: RuleFunction<TSESTree.LogicalExpression>;
   MemberExpression?: RuleFunction<TSESTree.MemberExpression>;
   MetaProperty?: RuleFunction<TSESTree.MetaProperty>;
   MethodDefinition?: RuleFunction<TSESTree.MethodDefinition>;
