@@ -27,8 +27,11 @@ interface InvalidTestCase<
   output?: string | null;
 }
 
-interface TestCaseError<TMessageIds extends string> {
+type TestCaseError<TMessageIds extends string> = ({
   messageId: TMessageIds;
+} | {
+  message?: string | RegExp;
+}) & {
   data?: Record<string, any>;
   type?: AST_NODE_TYPES | AST_TOKEN_TYPES;
   line?: number;
