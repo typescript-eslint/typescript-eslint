@@ -5,7 +5,7 @@ import {
   ParserServices,
 } from '@typescript-eslint/typescript-estree';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import traverser from 'eslint/lib/util/traverser';
+import traverser from 'eslint/lib/shared/traverser';
 import { analyzeScope } from './analyze-scope';
 import { visitorKeys } from './visitor-keys';
 

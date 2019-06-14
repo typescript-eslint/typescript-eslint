@@ -1,4 +1,4 @@
-declare module 'eslint/lib/util/traverser' {
+declare module 'eslint/lib/shared/traverser' {
   import { TSESTree } from '@typescript-eslint/experimental-utils';
   const traverser: {
     traverse(
