@@ -101,10 +101,9 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     function isTypedVariableDeclaration(esNode: TSESTree.Node) {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(esNode);
-      if (!ts.isFunctionLike(tsNode) && !ts.isVariableDeclaration(tsNode)) {
-        return false;
-      }
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(esNode) as
+        | ts.FunctionLike
+        | ts.VariableDeclaration;
 
       return tsNode.type !== undefined;
     }

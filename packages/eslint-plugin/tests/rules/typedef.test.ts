@@ -307,6 +307,39 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    // Arrow parameters
+    {
+      code: `const receivesNumber = (a): void => { }`,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        {
+          arrowCallSignature: false,
+        },
+      ],
+    },
+    {
+      code: `const receivesStrings = (a, b): void => { }`,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'expectedTypedefNamed',
+        },
+        {
+          data: { name: 'b' },
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        {
+          arrowCallSignature: false,
+        },
+      ],
+    },
     // Call signatures
     {
       code: `function returns() { }`,
