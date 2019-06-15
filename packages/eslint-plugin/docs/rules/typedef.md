@@ -305,27 +305,17 @@ Examples of **incorrect** code with `{ "propertyDeclaration": true }`:
 ```ts
 type Members = {
   member;
-  [i: string]: ;
-};
-
-interface OtherMembers {
   otherMember;
-  [i: number]: ;
-}
+};
 ```
 
 Examples of **correct** code with `{ "propertyDeclaration": true }`:
 
 ```ts
 type Members = {
-  member: string;
-  [i: string]: string | number;
+  member: boolean;
+  otherMember: string;
 };
-
-interface OtherMembers {
-  otherMember: boolean;
-  [i: number]: boolean | string;
-}
 ```
 
 ### variableDeclaration

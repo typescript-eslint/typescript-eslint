@@ -2,28 +2,19 @@ import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import * as ts from 'typescript';
 import * as util from '../util';
 
-interface Options {
-  arrayDestructuring?: boolean;
-  arrowCallSignature?: boolean;
-  arrowParameter?: boolean;
-  callSignature?: boolean;
-  memberVariableDeclaration?: boolean;
-  objectDestructuring?: boolean;
-  parameter?: boolean;
-  propertyDeclaration?: boolean;
-  variableDeclaration?: boolean;
+const enum OptionKeys {
+  ArrayDestructuring = 'arrayDestructuring',
+  ArrowCallSignature = 'arrowCallSignature',
+  ArrowParameter = 'arrowParameter',
+  CallSignature = 'callSignature',
+  MemberVariableDeclaration = 'memberVariableDeclaration',
+  ObjectDestructuring = 'objectDestructuring',
+  Parameter = 'parameter',
+  PropertyDeclaration = 'propertyDeclaration',
+  VariableDeclaration = 'variableDeclaration',
 }
-type Option = keyof Options;
 
-const OPTION_ARRAY_DESTRUCTURING: Option = 'arrayDestructuring';
-const OPTION_ARROW_CALL_SIGNATURE: Option = 'arrowCallSignature';
-const OPTION_ARROW_PARAMETER: Option = 'arrowParameter';
-const OPTION_CALL_SIGNATURE: Option = 'callSignature';
-const OPTION_MEMBER_VARIABLE_DECLARATION: Option = 'memberVariableDeclaration';
-const OPTION_OBJECT_DESTRUCTURING: Option = 'objectDestructuring';
-const OPTION_PARAMETER: Option = 'parameter';
-const OPTION_PROPERTY_DECLARATION: Option = 'propertyDeclaration';
-const OPTION_VARIABLE_DECLARATION: Option = 'variableDeclaration';
+type Options = { [k in OptionKeys]?: boolean };
 
 type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
@@ -43,15 +34,15 @@ export default util.createRule<[Options], MessageIds>({
       {
         type: 'object',
         properties: {
-          [OPTION_ARRAY_DESTRUCTURING]: { type: 'boolean' },
-          [OPTION_ARROW_CALL_SIGNATURE]: { type: 'boolean' },
-          [OPTION_ARROW_PARAMETER]: { type: 'boolean' },
-          [OPTION_CALL_SIGNATURE]: { type: 'boolean' },
-          [OPTION_MEMBER_VARIABLE_DECLARATION]: { type: 'boolean' },
-          [OPTION_OBJECT_DESTRUCTURING]: { type: 'boolean' },
-          [OPTION_PARAMETER]: { type: 'boolean' },
-          [OPTION_PROPERTY_DECLARATION]: { type: 'boolean' },
-          [OPTION_VARIABLE_DECLARATION]: { type: 'boolean' },
+          [OptionKeys.ArrayDestructuring]: { type: 'boolean' },
+          [OptionKeys.ArrowCallSignature]: { type: 'boolean' },
+          [OptionKeys.ArrowParameter]: { type: 'boolean' },
+          [OptionKeys.CallSignature]: { type: 'boolean' },
+          [OptionKeys.MemberVariableDeclaration]: { type: 'boolean' },
+          [OptionKeys.ObjectDestructuring]: { type: 'boolean' },
+          [OptionKeys.Parameter]: { type: 'boolean' },
+          [OptionKeys.PropertyDeclaration]: { type: 'boolean' },
+          [OptionKeys.VariableDeclaration]: { type: 'boolean' },
         },
       },
     ],
@@ -59,12 +50,12 @@ export default util.createRule<[Options], MessageIds>({
   },
   defaultOptions: [
     {
-      [OPTION_ARROW_CALL_SIGNATURE]: true,
-      [OPTION_ARROW_PARAMETER]: true,
-      [OPTION_CALL_SIGNATURE]: true,
-      [OPTION_MEMBER_VARIABLE_DECLARATION]: true,
-      [OPTION_PARAMETER]: true,
-      [OPTION_PROPERTY_DECLARATION]: true,
+      [OptionKeys.ArrowCallSignature]: true,
+      [OptionKeys.ArrowParameter]: true,
+      [OptionKeys.CallSignature]: true,
+      [OptionKeys.MemberVariableDeclaration]: true,
+      [OptionKeys.Parameter]: true,
+      [OptionKeys.PropertyDeclaration]: true,
     },
   ],
   create(context, [options]) {
@@ -140,7 +131,7 @@ export default util.createRule<[Options], MessageIds>({
 
     return {
       ArrayPattern(node) {
-        if (!options[OPTION_ARRAY_DESTRUCTURING]) {
+        if (!options[OptionKeys.ArrayDestructuring]) {
           return;
         }
 
@@ -152,7 +143,7 @@ export default util.createRule<[Options], MessageIds>({
         report(node);
       },
       ArrowFunctionExpression(node) {
-        if (options[OPTION_ARROW_CALL_SIGNATURE]) {
+        if (options[OptionKeys.ArrowCallSignature]) {
           const parent = node.parent!;
           if (
             parent.type !== AST_NODE_TYPES.CallExpression &&
@@ -162,7 +153,7 @@ export default util.createRule<[Options], MessageIds>({
           }
         }
 
-        if (options[OPTION_ARROW_PARAMETER]) {
+        if (options[OptionKeys.ArrowParameter]) {
           for (const param of node.params) {
             if (!isTypedParameterDeclaration(param)) {
               report(param, getEsNodeName(param));
@@ -171,7 +162,7 @@ export default util.createRule<[Options], MessageIds>({
         }
       },
       ClassProperty(node) {
-        if (!options[OPTION_MEMBER_VARIABLE_DECLARATION]) {
+        if (!options[OptionKeys.MemberVariableDeclaration]) {
           return;
         }
 
@@ -192,11 +183,11 @@ export default util.createRule<[Options], MessageIds>({
       'FunctionDeclaration, FunctionExpression'(
         node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
       ) {
-        if (options[OPTION_CALL_SIGNATURE]) {
+        if (options[OptionKeys.CallSignature]) {
           visitCallSignature(node);
         }
 
-        if (options[OPTION_PARAMETER]) {
+        if (options[OptionKeys.Parameter]) {
           for (const param of node.params) {
             if (!isTypedParameterDeclaration(param)) {
               report(param, getEsNodeName(param));
@@ -205,7 +196,7 @@ export default util.createRule<[Options], MessageIds>({
         }
       },
       ObjectPattern(node) {
-        if (!options[OPTION_OBJECT_DESTRUCTURING]) {
+        if (!options[OptionKeys.ObjectDestructuring]) {
           return;
         }
 
@@ -219,7 +210,7 @@ export default util.createRule<[Options], MessageIds>({
       'TSIndexSignature, TSPropertySignature'(
         node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
       ) {
-        if (!options[OPTION_PROPERTY_DECLARATION] || node.typeAnnotation) {
+        if (!options[OptionKeys.PropertyDeclaration] || node.typeAnnotation) {
           return;
         }
 
@@ -231,7 +222,10 @@ export default util.createRule<[Options], MessageIds>({
         );
       },
       VariableDeclarator(node) {
-        if (!options[OPTION_VARIABLE_DECLARATION] || node.id.typeAnnotation) {
+        if (
+          !options[OptionKeys.VariableDeclaration] ||
+          node.id.typeAnnotation
+        ) {
           return;
         }
 
