@@ -1,8 +1,4 @@
-import {
-  TSESLint,
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -19,6 +15,31 @@ type Options = [
   }
 ];
 type MessageIds = 'bannedTypeMessage';
+
+function stringifyTypeName(
+  node: TSESTree.EntityName,
+  sourceCode: TSESLint.SourceCode,
+): string {
+  return sourceCode.getText(node).replace(/ /g, '');
+}
+
+function getCustomMessage(
+  bannedType: null | string | { message?: string; fixWith?: string },
+) {
+  if (bannedType === null) {
+    return '';
+  }
+
+  if (typeof bannedType === 'string') {
+    return ` ${bannedType}`;
+  }
+
+  if (bannedType.message) {
+    return ` ${bannedType.message}`;
+  }
+
+  return '';
+}
 
 export default util.createRule<Options, MessageIds>({
   name: 'ban-types',
@@ -87,39 +108,23 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ types: bannedTypes }]) {
     return {
-      'TSTypeReference Identifier'(node: TSESTree.Identifier) {
-        if (
-          node.parent &&
-          node.parent.type !== AST_NODE_TYPES.TSQualifiedName
-        ) {
-          if (node.name in bannedTypes) {
-            let customMessage = '';
-            const bannedCfgValue = bannedTypes[node.name];
+      TSTypeReference({ typeName }) {
+        const name = stringifyTypeName(typeName, context.getSourceCode());
 
-            let fix: TSESLint.ReportFixFunction | null = null;
+        if (name in bannedTypes) {
+          const bannedType = bannedTypes[name];
+          const customMessage = getCustomMessage(bannedType);
+          const fixWith = bannedType && (bannedType as any).fixWith;
 
-            if (typeof bannedCfgValue === 'string') {
-              customMessage += ` ${bannedCfgValue}`;
-            } else if (bannedCfgValue !== null) {
-              if (bannedCfgValue.message) {
-                customMessage += ` ${bannedCfgValue.message}`;
-              }
-              if (bannedCfgValue.fixWith) {
-                const fixWith = bannedCfgValue.fixWith;
-                fix = fixer => fixer.replaceText(node, fixWith);
-              }
-            }
-
-            context.report({
-              node,
-              messageId: 'bannedTypeMessage',
-              data: {
-                name: node.name,
-                customMessage,
-              },
-              fix,
-            });
-          }
+          context.report({
+            node: typeName,
+            messageId: 'bannedTypeMessage',
+            data: {
+              name: name,
+              customMessage,
+            },
+            fix: fixWith ? fixer => fixer.replaceText(typeName, fixWith) : null,
+          });
         }
       },
     };
