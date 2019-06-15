@@ -1,4 +1,4 @@
-﻿# Roadmap
+# Roadmap
 
 ✅ = done<br>
 🌟 = in ESLint core<br>
@@ -60,7 +60,7 @@
 | [`no-dynamic-delete`]                | 🛑  | N/A                                                                   |
 | [`no-empty`]                         | 🌟  | [`no-empty`][no-empty]                                                |
 | [`no-eval`]                          | 🌟  | [`no-eval`][no-eval]                                                  |
-| [`no-floating-promises`]             | 🛑  | N/A ([relevant plugin][plugin:promise])                               |
+| [`no-floating-promises`]             | ✅  | [`@typescript-eslint/no-floating-promises`]                           |
 | [`no-for-in-array`]                  | ✅  | [`@typescript-eslint/no-for-in-array`]                                |
 | [`no-implicit-dependencies`]         | 🔌  | [`import/no-extraneous-dependencies`]                                 |
 | [`no-inferred-empty-object-type`]    | 🛑  | N/A                                                                   |
@@ -612,6 +612,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-for-in-array`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-for-in-array.md
 [`@typescript-eslint/no-unnecessary-qualifier`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md
 [`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
+[`@typescript-eslint/no-floating-promises`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-floating-promises.md
 [`@typescript-eslint/use-default-type-parameter`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/use-default-type-parameter.md
 
 <!-- eslint-plugin-import -->

@@ -2,7 +2,7 @@ import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { RuleTester } from '../RuleTester';
 
-const rootDir = path.join(process.cwd(), 'tests/fixtures');
+const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
@@ -86,6 +86,28 @@ const y: number = x!;
 const x: number | null = null;
 class Foo {
   prop: number = x!;
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/529
+    `
+declare function foo(str?: string): void;
+declare const str: string | null;
+
+foo(str!);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/532
+    `
+declare function a(a: string): any;
+declare const b: string | null;
+class Mx {
+  @a(b!)
+  private prop = 1;
+}
+    `,
+    `
+class Mx {
+  @a(b!)
+  private prop = 1;
 }
     `,
   ],
@@ -270,6 +292,31 @@ class Foo {
         {
           messageId: 'contextuallyUnnecessary',
           line: 4,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/532
+    {
+      code: `
+declare function a(a: string): any;
+const b = 'asdf';
+class Mx {
+  @a(b!)
+  private prop = 1;
+}
+      `,
+      output: `
+declare function a(a: string): any;
+const b = 'asdf';
+class Mx {
+  @a(b)
+  private prop = 1;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
         },
       ],
     },

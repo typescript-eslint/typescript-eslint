@@ -52,7 +52,7 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSImportEqualsDeclaration,
       AST_NODE_TYPES.TSTypeAliasDeclaration,
     ].reduce<TSESLint.RuleListener>((acc, node) => {
-      acc[node] = checkForSemicolon;
+      acc[node as string] = checkForSemicolon;
       return acc;
     }, {});
 
