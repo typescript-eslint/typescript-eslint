@@ -95,15 +95,10 @@ function getArgsAndParameters(
   node: ParameterCapableTSNode,
   checker: ts.TypeChecker,
 ): ArgsAndParams | undefined {
-  const { typeArguments } = node;
-  if (typeArguments === undefined) {
-    return undefined;
-  }
-
   const typeParameters = getTypeParametersFromNode(node, checker);
   return typeParameters === undefined
     ? undefined
-    : { typeArguments, typeParameters };
+    : { typeArguments: node.typeArguments!, typeParameters };
 }
 
 function getTypeParametersFromNode(

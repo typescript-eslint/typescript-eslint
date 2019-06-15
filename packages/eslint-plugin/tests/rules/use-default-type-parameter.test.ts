@@ -15,9 +15,15 @@ const ruleTester = new RuleTester({
 ruleTester.run('use-default-type-parameter', rule, {
   valid: [
     `function f<T = number>() { }
+      f();`,
+    `function f<T = number>() { }
       f<string>();`,
     `declare const f: any;
+      f();`,
+    `declare const f: any;
       f<string>();`,
+    `declare const f: unknown;
+      f();`,
     `declare const f: unknown;
       f<string>();`,
     `function g<T = number, U = string>() { }
