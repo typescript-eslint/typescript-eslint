@@ -1,6 +1,14 @@
 import * as util from '../util';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-export default util.createRule({
+type Options = [
+  {
+    fixToUnknown: boolean;
+  }
+];
+type MessageIds = 'unexpectedAny';
+
+export default util.createRule<Options, MessageIds>({
   name: 'no-explicit-any',
   meta: {
     type: 'suggestion',
@@ -13,18 +21,36 @@ export default util.createRule({
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          fixToUnknown: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      fixToUnknown: false,
+    },
+  ],
+
+  create(context, [option]) {
     return {
       TSAnyKeyword(node) {
+        let fix: TSESLint.ReportFixFunction | null = null;
+
+        if (option.fixToUnknown) {
+          fix = fixer => fixer.replaceText(node, 'unknown');
+        }
+
         context.report({
           node,
           messageId: 'unexpectedAny',
-          fix(fixer) {
-            return fixer.replaceText(node, 'unknown');
-          },
+          fix,
         });
       },
     };
