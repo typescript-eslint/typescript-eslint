@@ -120,7 +120,7 @@ function getTypeParametersFromType(
   type: ts.EntityName | ts.Expression | ts.ClassDeclaration,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
-  const sym = getAliasedSymbol(checker.getSymbolAtLocation(type), checker);
+  const sym = getAliasedSymbol(checker.getSymbolAtLocation(type)!, checker);
   if (sym === undefined || sym.declarations === undefined) {
     return undefined;
   }
@@ -152,13 +152,9 @@ function getTypeParametersFromCall(
 }
 
 function getAliasedSymbol(
-  symbol: ts.Symbol | undefined,
+  symbol: ts.Symbol,
   checker: ts.TypeChecker,
 ): ts.Symbol | undefined {
-  if (symbol === undefined) {
-    return undefined;
-  }
-
   return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
     ? checker.getAliasedSymbol(symbol)
     : symbol;
