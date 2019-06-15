@@ -87,6 +87,21 @@ function greet(param: Array<string>): string {}
 function greet(param: Array<string>): Array<string> {}
 ```
 
+## Options
+
+The rule accepts an options object with the following properties:
+
+```ts
+type Options = {
+  // if true, only when fix any to unknown
+  fixToUnknown: boolean;
+};
+
+const defaults = {
+  fixToUnknwon: false,
+};
+```
+
 ## When Not To Use It
 
 If an unknown type or a library without typings is used
