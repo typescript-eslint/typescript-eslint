@@ -154,7 +154,7 @@ There are three ways in which an override can be used.
 
 #### Disallow the use of public on a given member
 
-e.g. `[ { overrides: { constructor: 'no-public' } } ]`
+e.g. `[ { overrides: { constructors: 'no-public' } } ]`
 
 The following patterns are considered incorrect with the example override
 
