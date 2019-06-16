@@ -1588,7 +1588,7 @@ export default createRule<Options, MessageIds>({
     );
 
     // For each ignored node selector, set up a listener to collect it into the `ignoredNodes` set.
-    const ignoredNodes = new Set();
+    const ignoredNodes = new Set<TSESTree.Node>();
 
     /**
      * Ignores a node

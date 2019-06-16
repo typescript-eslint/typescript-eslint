@@ -45,15 +45,6 @@ interface RunTests<
   valid: (ValidTestCase<TOptions> | string)[];
   invalid: InvalidTestCase<TMessageIds, TOptions>[];
 }
-
-interface RunTests<
-  TMessageIds extends string,
-  TOptions extends Readonly<any[]>
-> {
-  // RuleTester.run also accepts strings for valid cases
-  valid: (ValidTestCase<TOptions> | string)[];
-  invalid: InvalidTestCase<TMessageIds, TOptions>[];
-}
 interface RuleTesterConfig {
   parser: '@typescript-eslint/parser';
   parserOptions?: ParserOptions;

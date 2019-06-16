@@ -7,17 +7,11 @@ import {
 } from '../ts-eslint/Rule';
 import { applyDefault } from './applyDefault';
 
-// Utility type to remove a list of properties from an object
-type RemoveProps<
-  TObj extends Record<string, any>,
-  TKeys extends keyof TObj
-> = Pick<TObj, Exclude<keyof TObj, TKeys>>;
-
 // we'll automatically add the url + tslint description for people.
-type CreateRuleMetaDocs = RemoveProps<RuleMetaDataDocs, 'url'>;
+type CreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
 type CreateRuleMeta<TMessageIds extends string> = {
   docs: CreateRuleMetaDocs;
-} & RemoveProps<RuleMetaData<TMessageIds>, 'docs'>;
+} & Omit<RuleMetaData<TMessageIds>, 'docs'>;
 
 export function RuleCreator(urlCreator: (ruleName: string) => string) {
   // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349

@@ -43,11 +43,23 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
-You can also enable all the recommended rules at once. Add `plugin:@typescript-eslint/recommended` in extends:
+You can also enable all the recommended rules for our plugin. Add `plugin:@typescript-eslint/recommended` in extends:
 
 ```json
 {
   "extends": ["plugin:@typescript-eslint/recommended"]
+}
+```
+
+You can also use [eslint:recommended](https://eslint.org/docs/rules/) with this plugin. Add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended`:
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }
 ```
 
@@ -67,6 +79,8 @@ If you want to use rules which require type information, you will need to specif
 ```
 
 See [@typescript-eslint/parser's README.md](../parser/README.md) for more information on the available "parserOptions".
+
+**Note: Make sure to use `eslint --ext .js,.ts` since by [default](https://eslint.org/docs/user-guide/command-line-interface#--ext) `eslint` will only search for .js files.**
 
 ## Usage with Prettier
 
@@ -132,6 +146,7 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/no-explicit-any`](./docs/rules/no-explicit-any.md)                                   | Disallow usage of the `any` type                                                                                                                    | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-extra-parens`](./docs/rules/no-extra-parens.md)                                   | Disallow unnecessary parentheses                                                                                                                    |                    | :wrench: |                   |
 | [`@typescript-eslint/no-extraneous-class`](./docs/rules/no-extraneous-class.md)                           | Forbids the use of classes as namespaces                                                                                                            |                    |          |                   |
+| [`@typescript-eslint/no-floating-promises`](./docs/rules/no-floating-promises.md)                         | Requires Promise-like values to be handled appropriately.                                                                                           |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-for-in-array`](./docs/rules/no-for-in-array.md)                                   | Disallow iterating over an array with a for-in loop                                                                                                 |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-inferrable-types`](./docs/rules/no-inferrable-types.md)                           | Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean                                        | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/no-magic-numbers`](./docs/rules/no-magic-numbers.md)                                 | Disallows magic numbers                                                                                                                             |                    |          |                   |

@@ -5,8 +5,8 @@ import marked from 'marked';
 import path from 'path';
 import { logRule } from './log';
 
-function validateTableRules(
-  rules: Record<string, TSESLint.RuleModule<any, any>>,
+function validateTableRules<TMessageIds extends string>(
+  rules: Record<string, TSESLint.RuleModule<TMessageIds, any, any>>,
   rulesTable: marked.Tokens.Table,
 ): boolean {
   let hasErrors = false;
