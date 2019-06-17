@@ -76,7 +76,7 @@ For example:
 var x: number = 1;
 ```
 
-This is not valid JavaScript code, because it contains a so called type-annotation. When the TypeScript Compiler parses this code to produce a TypeScript AST, that `: number` syntax will be represented in the tree, and this is simply not something that ESLint can understand without additional help.
+This is not valid JavaScript code, because it contains a so-called type annotation. When the TypeScript Compiler parses this code to produce a TypeScript AST, that `: number` syntax will be represented in the tree, and this is simply not something that ESLint can understand without additional help.
 
 However, we can leverage the fact that ESLint has been designed with these use-cases in mind!
 
