@@ -146,7 +146,7 @@ throw 1;
 const x = !(1 as 1);
 const x = (1 as 1)++;
 function *x() { yield (1 as 1); yield 1; }
-switch (foo) { case 1: case (2 as 2): }
+switch (foo) { case 1: case (2 as 2): break; default: break; }
       `,
       options: [
         'all',

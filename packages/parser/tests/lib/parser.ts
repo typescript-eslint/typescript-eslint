@@ -1,6 +1,9 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
 import { parse, parseForESLint, Syntax } from '../../src/parser';
 import * as scope from '../../src/analyze-scope';
+
+const { AST_NODE_TYPES } = typescriptESTree;
 
 describe('parser', () => {
   it('parse() should return just the AST from parseForESLint()', () => {
@@ -33,13 +36,13 @@ describe('parser', () => {
   it('parseAndGenerateServices() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
-    const config = {
+    const config: TSESLint.ParserOptions = {
       loc: false,
       comment: false,
       range: false,
       tokens: false,
       sourceType: 'module' as 'module',
-      ecmaVersion: 10,
+      ecmaVersion: 2018,
       ecmaFeatures: {
         globalReturn: false,
         jsx: false,
@@ -60,8 +63,8 @@ describe('parser', () => {
     });
   });
 
-  it('Syntax should contain a frozen object of typescriptESTree.AST_NODE_TYPES', () => {
-    expect(Syntax).toEqual(typescriptESTree.AST_NODE_TYPES);
+  it('Syntax should contain a frozen object of AST_NODE_TYPES', () => {
+    expect(Syntax).toEqual(AST_NODE_TYPES);
     expect(
       () => ((Syntax as any).ArrayExpression = 'foo'),
     ).toThrowErrorMatchingInlineSnapshot(

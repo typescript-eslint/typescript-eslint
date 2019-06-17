@@ -2,16 +2,14 @@ import rule from '../../src/rules/promise-function-async';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const parserOptions = {
-  ecmaVersion: 2018,
-  tsconfigRootDir: rootDir,
-  project: './tsconfig.json',
-};
-
 const messageId = 'missingAsync';
 
 const ruleTester = new RuleTester({
-  parserOptions,
+  parserOptions: {
+    ecmaVersion: 2018,
+    tsconfigRootDir: rootDir,
+    project: './tsconfig.json',
+  },
   parser: '@typescript-eslint/parser',
 });
 
@@ -43,6 +41,29 @@ class Test {
 
   public async asyncPromiseMethodB() {
     return new Promise<void>();
+  }
+}
+    `,
+    `
+class InvalidAsyncModifiers {
+  public constructor() {
+    return new Promise<void>();
+  }
+  public get asyncGetter() {
+    return new Promise<void>();
+  }
+  public set asyncGetter(p: Promise<void>) {
+    return p;
+  }
+}
+    `,
+    `
+const invalidAsyncModifiers = {
+  get asyncGetter() {
+    return new Promise<void>();
+  },
+  set asyncGetter(p: Promise<void>) {
+    return p;
   }
 }
     `,

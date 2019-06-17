@@ -1,5 +1,8 @@
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 interface Failure {
   unify: Unify;
@@ -50,10 +53,9 @@ export default util.createRule({
   meta: {
     docs: {
       description:
-        'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter.',
+        'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter',
       category: 'Variables',
       recommended: false,
-      tslintName: 'unified-signatures',
     },
     type: 'suggestion',
     messages: {

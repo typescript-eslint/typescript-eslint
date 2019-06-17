@@ -70,7 +70,7 @@ export type OptionalRangeAndLoc<T> = Pick<
   T,
   Exclude<keyof T, 'range' | 'loc'>
 > & {
-  range?: [number, number];
+  range?: Range;
   loc?: SourceLocation;
 };
 
@@ -659,7 +659,7 @@ export interface ExportAllDeclaration extends BaseNode {
 
 export interface ExportDefaultDeclaration extends BaseNode {
   type: AST_NODE_TYPES.ExportDefaultDeclaration;
-  declaration: ExportDeclaration;
+  declaration: ExportDeclaration | Expression;
 }
 
 export interface ExportNamedDeclaration extends BaseNode {
@@ -895,7 +895,7 @@ export interface Property extends BaseNode {
   computed: boolean;
   method: boolean;
   shorthand: boolean;
-  kind: 'init';
+  kind: 'init' | 'get' | 'set';
 }
 
 export interface RestElement extends BaseNode {
@@ -928,7 +928,7 @@ export interface Super extends BaseNode {
 
 export interface SwitchCase extends BaseNode {
   type: AST_NODE_TYPES.SwitchCase;
-  test: Expression;
+  test: Expression | null;
   consequent: Statement[];
 }
 

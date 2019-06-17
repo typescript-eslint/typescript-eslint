@@ -1,5 +1,6 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-inferrable-types';
-import { RuleTester, InvalidTestCase } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 import {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
@@ -61,7 +62,10 @@ const testCases = [
 const validTestCases = flatten(
   testCases.map(c => c.code.map(code => `const a = ${code}`)),
 );
-const invalidTestCases: InvalidTestCase<MessageIds, Options>[] = flatten(
+const invalidTestCases: TSESLint.InvalidTestCase<
+  MessageIds,
+  Options
+>[] = flatten(
   testCases.map(cas =>
     cas.code.map(code => ({
       code: `const a: ${cas.type} = ${code}`,

@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 interface Config<T = string> {
@@ -16,7 +16,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Enforces naming conventions for class members by visibility.',
+        'Enforces naming conventions for class members by visibility',
       category: 'Stylistic Issues',
       recommended: false,
     },

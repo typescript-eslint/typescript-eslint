@@ -1,5 +1,5 @@
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
+import ts from 'typescript';
 
 import * as util from '../util';
 
@@ -10,7 +10,6 @@ export default util.createRule({
       description: 'Disallows awaiting a value that is not a Thenable',
       category: 'Best Practices',
       recommended: false,
-      tslintName: 'await-thenable',
     },
     messages: {
       await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
@@ -26,9 +25,9 @@ export default util.createRule({
 
     return {
       AwaitExpression(node) {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(
-          node,
-        ) as ts.AwaitExpression;
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
+          ts.AwaitExpression
+        >(node);
         const type = checker.getTypeAtLocation(originalNode.expression);
 
         if (

@@ -1,16 +1,13 @@
-import { ScopeManager } from './scope/scope-manager';
-import { Definition, ParameterDefinition } from 'eslint-scope/lib/definition';
-import OriginalPatternVisitor from 'eslint-scope/lib/pattern-visitor';
-import Reference from 'eslint-scope/lib/reference';
-import OriginalReferencer from 'eslint-scope/lib/referencer';
-import { getKeys as fallback } from 'eslint-visitor-keys';
-import { ParserOptions } from './parser-options';
-import { visitorKeys as childVisitorKeys } from './visitor-keys';
 import {
-  PatternVisitorCallback,
-  PatternVisitorOptions,
-} from 'eslint-scope/lib/options';
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+  TSESTree,
+  TSESLintScope,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
+import { getKeys as fallback } from 'eslint-visitor-keys';
+
+import { ParserOptions } from './parser-options';
+import { ScopeManager } from './scope/scope-manager';
+import { visitorKeys as childVisitorKeys } from './visitor-keys';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -29,11 +26,11 @@ function overrideDefine(define: any) {
   };
 }
 
-class PatternVisitor extends OriginalPatternVisitor {
+class PatternVisitor extends TSESLintScope.PatternVisitor {
   constructor(
-    options: PatternVisitorOptions,
+    options: TSESLintScope.PatternVisitorOptions,
     rootPattern: any,
-    callback: PatternVisitorCallback,
+    callback: TSESLintScope.PatternVisitorCallback,
   ) {
     super(options, rootPattern, callback);
   }
@@ -86,7 +83,7 @@ class PatternVisitor extends OriginalPatternVisitor {
   }
 }
 
-class Referencer extends OriginalReferencer<ScopeManager> {
+class Referencer extends TSESLintScope.Referencer<ScopeManager> {
   protected typeMode: boolean;
 
   constructor(options: any, scopeManager: ScopeManager) {
@@ -102,8 +99,8 @@ class Referencer extends OriginalReferencer<ScopeManager> {
    */
   visitPattern<T extends TSESTree.BaseNode>(
     node: T,
-    options: PatternVisitorOptions,
-    callback: PatternVisitorCallback,
+    options: TSESLintScope.PatternVisitorOptions,
+    callback: TSESLintScope.PatternVisitorCallback,
   ): void {
     if (!node) {
       return;
@@ -142,7 +139,14 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     if (type === 'FunctionDeclaration' && id) {
       upperScope.__define(
         id,
-        new Definition('FunctionName', id, node, null, null, null),
+        new TSESLintScope.Definition(
+          'FunctionName',
+          id,
+          node,
+          null,
+          null,
+          null,
+        ),
       );
 
       // Remove overload definition to avoid confusion of no-redeclare rule.
@@ -182,7 +186,12 @@ class Referencer extends OriginalReferencer<ScopeManager> {
           ) {
             innerScope.__define(
               pattern,
-              new ParameterDefinition(pattern, node, i, info.rest),
+              new TSESLintScope.ParameterDefinition(
+                pattern,
+                node,
+                i,
+                info.rest,
+              ),
             );
             this.referencingDefaultValue(pattern, info.assignments, null, true);
           }
@@ -343,7 +352,14 @@ class Referencer extends OriginalReferencer<ScopeManager> {
       if (!existed) {
         upperScope.__define(
           id,
-          new Definition('FunctionName', id, node, null, null, null),
+          new TSESLintScope.Definition(
+            'FunctionName',
+            id,
+            node,
+            null,
+            null,
+            null,
+          ),
         );
       }
     }
@@ -363,7 +379,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
         (pattern, info) => {
           innerScope.__define(
             pattern,
-            new ParameterDefinition(pattern, node, i, info.rest),
+            new TSESLintScope.ParameterDefinition(pattern, node, i, info.rest),
           );
 
           // Set `variable.eslintUsed` to tell ESLint that the variable is used.
@@ -656,7 +672,7 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     const scope = this.currentScope();
 
     if (id) {
-      scope.__define(id, new Definition('EnumName', id, node));
+      scope.__define(id, new TSESLintScope.Definition('EnumName', id, node));
     }
 
     scopeManager.__nestEnumScope(node);
@@ -676,9 +692,19 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     const { id, initializer } = node;
     const scope = this.currentScope();
 
-    scope.__define(id, new Definition('EnumMemberName', id, node));
+    scope.__define(
+      id,
+      new TSESLintScope.Definition('EnumMemberName', id, node),
+    );
     if (initializer) {
-      scope.__referencing(id, Reference.WRITE, initializer, null, false, true);
+      scope.__referencing(
+        id,
+        TSESLintScope.Reference.WRITE,
+        initializer,
+        null,
+        false,
+        true,
+      );
       this.visit(initializer);
     }
   }
@@ -699,7 +725,14 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     if (id && id.type === 'Identifier') {
       scope.__define(
         id,
-        new Definition('NamespaceName', id, node, null, null, null),
+        new TSESLintScope.Definition(
+          'NamespaceName',
+          id,
+          node,
+          null,
+          null,
+          null,
+        ),
       );
     }
     this.visit(body);
@@ -737,7 +770,14 @@ class Referencer extends OriginalReferencer<ScopeManager> {
     if (id && id.type === 'Identifier') {
       this.currentScope().__define(
         id,
-        new Definition('ImportBinding', id, node, null, null, null),
+        new TSESLintScope.Definition(
+          'ImportBinding',
+          id,
+          node,
+          null,
+          null,
+          null,
+        ),
       );
     }
     this.visit(moduleReference);

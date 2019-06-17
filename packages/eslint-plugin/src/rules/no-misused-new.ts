@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -6,8 +9,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Enforce valid definition of `new` and `constructor`.',
-      tslintRuleName: 'no-misused-new',
+      description: 'Enforce valid definition of `new` and `constructor`',
       category: 'Best Practices',
       recommended: 'error',
     },

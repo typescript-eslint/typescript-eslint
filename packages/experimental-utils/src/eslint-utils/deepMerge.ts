@@ -1,4 +1,4 @@
-export type ObjectLike<T = any> = Record<string, T>;
+type ObjectLike<T = any> = Record<string, T>;
 
 /**
  * Check if the variable contains an object stricly rejecting arrays
@@ -16,14 +16,11 @@ export function isObjectNotArray<T extends object>(obj: T | any[]): obj is T {
  * @param second The second object
  * @returns a new object
  */
-export function deepMerge<T extends ObjectLike = ObjectLike>(
-  first: ObjectLike = {},
-  second: ObjectLike = {},
-): T {
+export function deepMerge(first: ObjectLike = {}, second: ObjectLike = {}) {
   // get the unique set of keys across both objects
   const keys = new Set(Object.keys(first).concat(Object.keys(second)));
 
-  return Array.from(keys).reduce<T>(
+  return Array.from(keys).reduce(
     (acc, key) => {
       const firstHasKey = key in first;
       const secondHasKey = key in second;
@@ -44,6 +41,6 @@ export function deepMerge<T extends ObjectLike = ObjectLike>(
 
       return acc;
     },
-    {} as T,
+    {} as ObjectLike,
   );
 }

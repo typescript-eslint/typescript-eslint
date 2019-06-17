@@ -1,5 +1,6 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { RuleTester } from '../../RuleTester';
 import rule from '../../../src/rules/indent';
-import { RuleTester, RunTests, TestCaseError } from '../../RuleTester';
 import {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
@@ -608,7 +609,7 @@ type Foo = string | {
             `,
     ],
   },
-].reduce<RunTests<MessageIds, Options>>(
+].reduce<TSESLint.RunTests<MessageIds, Options>>(
   (acc, testCase) => {
     const indent = '    ';
 
@@ -630,7 +631,7 @@ type Foo = string | {
         output: code,
         errors: code
           .split('\n')
-          .map<TestCaseError<MessageIds> | null>((line, lineNum) => {
+          .map<TSESLint.TestCaseError<MessageIds> | null>((line, lineNum) => {
             const indentCount = line.split(indent).length - 1;
             const spaceCount = indentCount * indent.length;
 
@@ -649,7 +650,8 @@ type Foo = string | {
             };
           })
           .filter(
-            (error): error is TestCaseError<MessageIds> => error !== null,
+            (error): error is TSESLint.TestCaseError<MessageIds> =>
+              error !== null,
           ),
       });
     });

@@ -2,9 +2,11 @@
  * @fileoverview Really small utility functions that didn't deserve their own files
  */
 
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import RuleModule from 'ts-eslint';
-import { SourceCode } from 'ts-eslint';
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 
 /**
  * Check if the context file name is *.ts or *.tsx
@@ -27,7 +29,7 @@ export function upperCaseFirst(str: string) {
   return str[0].toUpperCase() + str.slice(1);
 }
 
-type InferOptionsTypeFromRuleNever<T> = T extends RuleModule<
+type InferOptionsTypeFromRuleNever<T> = T extends TSESLint.RuleModule<
   never,
   infer TOptions
 >
@@ -36,7 +38,7 @@ type InferOptionsTypeFromRuleNever<T> = T extends RuleModule<
 /**
  * Uses type inference to fetch the TOptions type from the given RuleModule
  */
-export type InferOptionsTypeFromRule<T> = T extends RuleModule<
+export type InferOptionsTypeFromRule<T> = T extends TSESLint.RuleModule<
   any,
   infer TOptions
 >
@@ -46,7 +48,7 @@ export type InferOptionsTypeFromRule<T> = T extends RuleModule<
 /**
  * Uses type inference to fetch the TMessageIds type from the given RuleModule
  */
-export type InferMessageIdsTypeFromRule<T> = T extends RuleModule<
+export type InferMessageIdsTypeFromRule<T> = T extends TSESLint.RuleModule<
   infer TMessageIds,
   any
 >
@@ -88,7 +90,7 @@ export function arraysAreEqual<T>(
  */
 export function getNameFromClassMember(
   methodDefinition: TSESTree.MethodDefinition | TSESTree.ClassProperty,
-  sourceCode: SourceCode,
+  sourceCode: TSESLint.SourceCode,
 ): string {
   if (keyCanBeReadAsPropertyName(methodDefinition.key)) {
     return getNameFromPropertyName(methodDefinition.key);

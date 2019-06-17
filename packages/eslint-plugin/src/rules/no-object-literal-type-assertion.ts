@@ -1,4 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -15,7 +18,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Forbids an object literal to appear in a type assertion expression',
-      tslintRuleName: 'no-object-literal-type-assertion',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

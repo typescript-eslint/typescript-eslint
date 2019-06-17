@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import glob from 'glob';
-import { ParserOptions } from '../../src/parser-options';
+import { TSESTreeOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
@@ -13,7 +13,7 @@ const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.js`);
 describe('javascript', () => {
   testFiles.forEach(filename => {
     const code = readFileSync(filename, 'utf8');
-    const config: ParserOptions = {
+    const config: TSESTreeOptions = {
       loc: true,
       range: true,
       tokens: true,

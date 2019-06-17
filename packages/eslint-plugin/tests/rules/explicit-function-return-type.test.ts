@@ -169,6 +169,82 @@ class App {
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/525
+    {
+      filename: 'test.ts',
+      code: `
+const myObj = {
+  set myProp(val) {
+    this.myProp = val;
+  },
+};
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => (): void => {};
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => function (): void {};
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return (): void => {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return function (): void {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return (): void => {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return function (): void {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function FunctionDeclaration() {
+  return function FunctionExpression_Within_FunctionDeclaration() {
+    return function FunctionExpression_Within_FunctionExpression() {
+      return () => { // ArrowFunctionExpression_Within_FunctionExpression
+        return () => // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          (): number => 1 // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      }
+    }
+  }
+}
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => () => { return (): void => { return; } };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
   ],
   invalid: [
     {
@@ -350,6 +426,127 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 4,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => () => {};
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 7,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => function () {};
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 7,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return () => {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 16,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return function () {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 16,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return () => {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 24,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return function () {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 24,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function FunctionDeclaration() {
+  return function FunctionExpression_Within_FunctionDeclaration() {
+    return function FunctionExpression_Within_FunctionExpression() {
+      return () => { // ArrowFunctionExpression_Within_FunctionExpression
+        return () => // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          () => 1 // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      }
+    }
+  }
+}
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 7,
+          column: 11,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => () => { return () => { return; } };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 22,
         },
       ],
     },

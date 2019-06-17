@@ -1,7 +1,9 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
-
+import ts from 'typescript';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -22,9 +24,8 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       category: 'Best Practices',
       description:
-        'Enforces unbound methods are called with their expected scope.',
-      tslintName: 'no-unbound-method',
-      recommended: 'error',
+        'Enforces unbound methods are called with their expected scope',
+      recommended: false,
     },
     messages: {
       unbound:

@@ -1,5 +1,5 @@
 import path from 'path';
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from './parser-options';
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ export function calculateProjectParserOptions(
     watchCallback(filePath, ts.FileWatcherEventKind.Changed);
   }
 
-  for (let rawTsconfigPath of extra.projects) {
+  for (const rawTsconfigPath of extra.projects) {
     const tsconfigPath = getTsconfigPath(rawTsconfigPath, extra);
 
     const existingWatch = knownWatchProgramMap.get(tsconfigPath);

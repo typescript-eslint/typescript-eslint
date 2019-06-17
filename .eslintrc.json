@@ -5,13 +5,17 @@
     "es6": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
     "curly": ["error", "all"],
-    "no-dupe-class-members": "off",
     "no-mixed-operators": "error",
     "no-console": "off",
+    "no-dupe-class-members": "off",
     "no-undef": "off",
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/no-explicit-any": "off",

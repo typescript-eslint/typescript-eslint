@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import {
   canContainDirective,
   createError,
@@ -18,8 +18,7 @@ import {
   isOptional,
   unescapeStringLiteralText,
 } from './node-utils';
-import { AST_NODE_TYPES, TSESTree } from './ts-estree';
-import { TSNode } from './ts-nodes';
+import { AST_NODE_TYPES, TSESTree, TSNode } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -103,7 +102,7 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    let result = this.convertNode(node as TSNode, parent || node.parent);
+    const result = this.convertNode(node as TSNode, parent || node.parent);
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -1391,7 +1390,7 @@ export class Converter {
       case SyntaxKind.ClassDeclaration:
       case SyntaxKind.ClassExpression: {
         const heritageClauses = node.heritageClauses || [];
-        let classNodeType =
+        const classNodeType =
           node.kind === SyntaxKind.ClassDeclaration
             ? AST_NODE_TYPES.ClassDeclaration
             : AST_NODE_TYPES.ClassExpression;

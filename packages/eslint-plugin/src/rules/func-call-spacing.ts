@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { isOpeningParenToken } from 'eslint-utils';
 import * as util from '../util';
 
@@ -16,7 +16,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description:
-        'require or disallow spacing between function identifiers and their invocations',
+        'Require or disallow spacing between function identifiers and their invocations',
       category: 'Stylistic Issues',
       recommended: false,
     },

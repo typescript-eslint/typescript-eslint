@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import ts from 'typescript';
 import * as util from '../util';
 
@@ -8,8 +8,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description:
-        'When adding two variables, operands must both be of type number or of type string.',
-      tslintName: 'restrict-plus-operands',
+        'When adding two variables, operands must both be of type number or of type string',
       category: 'Best Practices',
       recommended: false,
     },

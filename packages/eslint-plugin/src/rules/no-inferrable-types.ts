@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -15,8 +18,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.',
-      tslintRuleName: 'no-inferrable-types',
+        'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean',
       category: 'Best Practices',
       recommended: 'error',
     },

@@ -7,7 +7,7 @@
 import {
   AST_TOKEN_TYPES,
   AST_NODE_TYPES,
-} from '@typescript-eslint/typescript-estree';
+} from '@typescript-eslint/experimental-utils';
 import fs from 'fs';
 import path from 'path';
 import rule from '../../../src/rules/indent-new-do-not-use';
