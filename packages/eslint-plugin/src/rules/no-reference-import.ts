@@ -12,9 +12,9 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Disallow `/// <reference type="" />` comments when already using an import declaration.',
+        'Disallow simultaneous use of `/// <reference type="" />` comments and ES6 style imports for the same module',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
     },
     schema: [],
     messages: {

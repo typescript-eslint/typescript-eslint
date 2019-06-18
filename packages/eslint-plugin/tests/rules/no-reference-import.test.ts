@@ -13,13 +13,13 @@ ruleTester.run('no-reference-import', rule, {
     `/// <reference types="foo" />
     var foo = require("foo");`,
     `/// <reference path="foo" />
-    import * from "foo"`,
+    import * as foo from "foo"`,
   ],
   invalid: [
     {
       code: `
 /// <reference types="foo" />
-import * from "foo"
+import * as foo from "foo"
       `,
 
       parser: '@typescript-eslint/parser',
