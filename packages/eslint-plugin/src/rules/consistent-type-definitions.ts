@@ -10,7 +10,6 @@ export default util.createRule({
         'Consistent with type definition either `interface` or `type`',
       category: 'Stylistic Issues',
       recommended: 'error',
-      tslintName: 'consistent-type-definitions',
     },
     messages: {
       interfaceOverType: 'Use an `interface` instead of a `type`',
