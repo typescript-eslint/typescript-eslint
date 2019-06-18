@@ -31,6 +31,7 @@ import noNamespace from './no-namespace';
 import noNonNullAssertion from './no-non-null-assertion';
 import noObjectLiteralTypeAssertion from './no-object-literal-type-assertion';
 import noParameterProperties from './no-parameter-properties';
+import noReferenceImport from './no-reference-import';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
 import noTripleSlashReference from './no-triple-slash-reference';
@@ -90,6 +91,7 @@ export default {
   'no-non-null-assertion': noNonNullAssertion,
   'no-object-literal-type-assertion': noObjectLiteralTypeAssertion,
   'no-parameter-properties': noParameterProperties,
+  'no-reference-import': noReferenceImport,
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,
   'no-triple-slash-reference': noTripleSlashReference,
