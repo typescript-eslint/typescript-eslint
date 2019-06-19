@@ -1,10 +1,10 @@
 import * as util from '../util';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import {
   Literal,
   Node,
   TSExternalModuleReference,
 } from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 
 export default util.createRule({
   name: 'no-reference-import',
@@ -24,24 +24,20 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     let programNode: Node;
+    const sourceCode = context.getSourceCode();
+    const references: ({
+      comment: TSESTree.Comment;
+      importName: string;
+    })[] = [];
 
     function hasMatchingReference(source: Literal) {
-      const referenceRegExp = /^\/\s*<reference\s*types="(.*)"/;
-      const sourceCode = context.getSourceCode();
-      const commentsBefore = sourceCode.getCommentsBefore(programNode);
-
-      commentsBefore.forEach(comment => {
-        if (comment.type !== 'Line') {
-          return;
-        }
-        const referenceResult = referenceRegExp.exec(comment.value);
-
-        if (referenceResult && source.value === referenceResult[1]) {
+      references.forEach(reference => {
+        if (reference.importName === source.value) {
           context.report({
-            node: comment,
+            node: reference.comment,
             messageId: 'noReferenceImport',
             data: {
-              module: referenceResult[1],
+              module: reference.importName,
             },
           });
         }
@@ -49,24 +45,33 @@ export default util.createRule({
     }
     return {
       ImportDeclaration(node) {
-        if (node.type === AST_NODE_TYPES.ImportDeclaration) {
-          if (programNode) {
-            let source = node.source as Literal;
-            hasMatchingReference(source);
-          }
+        if (programNode) {
+          const source = node.source as Literal;
+          hasMatchingReference(source);
         }
       },
       TSImportEqualsDeclaration(node) {
-        if (node.type === AST_NODE_TYPES.TSImportEqualsDeclaration) {
-          if (programNode) {
-            let source = (node.moduleReference as TSExternalModuleReference)
-              .expression as Literal;
-            hasMatchingReference(source);
-          }
+        if (programNode) {
+          const source = (node.moduleReference as TSExternalModuleReference)
+            .expression as Literal;
+          hasMatchingReference(source);
         }
       },
       Program(node) {
         programNode = node;
+        const referenceRegExp = /^\/\s*<reference\s*types="(.*)"/;
+        const commentsBefore = sourceCode.getCommentsBefore(programNode);
+
+        commentsBefore.forEach(comment => {
+          if (comment.type !== 'Line') {
+            return;
+          }
+          const referenceResult = referenceRegExp.exec(comment.value);
+
+          if (referenceResult && referenceResult[1]) {
+            references.push({ comment, importName: referenceResult[1] });
+          }
+        });
       },
     };
   },
