@@ -12,10 +12,11 @@ import ts from 'typescript';
  */
 export function containsTypeByName(
   type: ts.Type,
+  allowAny: boolean,
   allowedNames: Set<string>,
 ): boolean {
   if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
-    return true;
+    return !allowAny;
   }
 
   if (isTypeReference(type)) {
@@ -30,13 +31,13 @@ export function containsTypeByName(
   }
 
   if (isUnionOrIntersectionType(type)) {
-    return type.types.some(t => containsTypeByName(t, allowedNames));
+    return type.types.some(t => containsTypeByName(t, allowAny, allowedNames));
   }
 
   const bases = type.getBaseTypes();
   return (
     typeof bases !== 'undefined' &&
-    bases.some(t => containsTypeByName(t, allowedNames))
+    bases.some(t => containsTypeByName(t, allowAny, allowedNames))
   );
 }
 
