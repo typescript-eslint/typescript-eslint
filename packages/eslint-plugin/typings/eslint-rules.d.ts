@@ -180,6 +180,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         enforceConst?: boolean;
         detectObjects?: boolean;
         ignoreNumericLiteralTypes?: boolean;
+        ignoreEnums?: boolean;
       }
     ],
     {
