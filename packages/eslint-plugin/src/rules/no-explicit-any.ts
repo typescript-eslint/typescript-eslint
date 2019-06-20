@@ -8,6 +8,7 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 type Options = [
   {
     fixToUnknown: boolean;
+    ignoreRestArgs: boolean;
   }
 ];
 type MessageIds = 'unexpectedAny';
