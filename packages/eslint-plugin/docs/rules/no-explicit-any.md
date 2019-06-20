@@ -93,12 +93,12 @@ The rule accepts an options object with the following properties:
 
 ```ts
 type Options = {
-  // if true, only when fix any to unknown
+  // if true, auto-fixing will be made available in which the "any" type is converted to an "unknown" type
   fixToUnknown: boolean;
 };
 
 const defaults = {
-  fixToUnknwon: false,
+  fixToUnknown: false,
 };
 ```
 
