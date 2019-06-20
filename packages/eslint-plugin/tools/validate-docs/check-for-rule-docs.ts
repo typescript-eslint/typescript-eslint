@@ -3,8 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import { logRule } from './log';
 
-function checkForRuleDocs<TMessageIds extends string>(
-  rules: Record<string, TSESLint.RuleModule<TMessageIds, any, any>>,
+function checkForRuleDocs(
+  rules: Record<string, Readonly<TSESLint.RuleModule<any, any, any>>>,
 ): boolean {
   const ruleDocs = new Set(
     fs.readdirSync(path.resolve(__dirname, '../../docs/rules')),
