@@ -119,7 +119,6 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      // const methodName = util.getNameFromPropertyName(methodDefinition.key);
       const methodName = util.getNameFromClassMember(
         methodDefinition,
         sourceCode,
