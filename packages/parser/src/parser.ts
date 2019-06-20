@@ -1,12 +1,12 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
-  TSESTreeOptions,
   ParserServices,
+  TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import traverser from 'eslint/lib/util/traverser';
 import { analyzeScope } from './analyze-scope';
+import { simpleTraverse } from './simple-traverse';
 import { visitorKeys } from './visitor-keys';
 
 type ParserOptions = TSESLint.ParserOptions;
@@ -87,7 +87,7 @@ export function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
 
-  traverser.traverse(ast, {
+  simpleTraverse(ast, {
     enter(node) {
       switch (node.type) {
         // Function#body cannot be null in ESTree spec.
