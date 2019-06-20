@@ -16,7 +16,7 @@ interface T2 {
 }
 ```
 
-### Options
+## Options
 
 This rule accepts one string option:
 
