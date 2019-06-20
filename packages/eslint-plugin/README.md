@@ -43,11 +43,23 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
-You can also enable all the recommended rules at once. Add `plugin:@typescript-eslint/recommended` in extends:
+You can also enable all the recommended rules for our plugin. Add `plugin:@typescript-eslint/recommended` in extends:
 
 ```json
 {
   "extends": ["plugin:@typescript-eslint/recommended"]
+}
+```
+
+You can also use [eslint:recommended](https://eslint.org/docs/rules/) with this plugin. Add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended`:
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }
 ```
 
@@ -130,10 +142,12 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/member-ordering`](./docs/rules/member-ordering.md)                                   | Require a consistent member declaration order                                                                                                       |                    |          |                   |
 | [`@typescript-eslint/no-angle-bracket-type-assertion`](./docs/rules/no-angle-bracket-type-assertion.md)   | Enforces the use of `as Type` assertions instead of `<Type>` assertions                                                                             | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-array-constructor`](./docs/rules/no-array-constructor.md)                         | Disallow generic `Array` constructors                                                                                                               | :heavy_check_mark: | :wrench: |                   |
+| [`@typescript-eslint/no-empty-function`](./docs/rules/no-empty-function.md)                               | Disallow empty functions                                                                                                                            |                    |          |                   |
 | [`@typescript-eslint/no-empty-interface`](./docs/rules/no-empty-interface.md)                             | Disallow the declaration of empty interfaces                                                                                                        | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-explicit-any`](./docs/rules/no-explicit-any.md)                                   | Disallow usage of the `any` type                                                                                                                    | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-extra-parens`](./docs/rules/no-extra-parens.md)                                   | Disallow unnecessary parentheses                                                                                                                    |                    | :wrench: |                   |
 | [`@typescript-eslint/no-extraneous-class`](./docs/rules/no-extraneous-class.md)                           | Forbids the use of classes as namespaces                                                                                                            |                    |          |                   |
+| [`@typescript-eslint/no-floating-promises`](./docs/rules/no-floating-promises.md)                         | Requires Promise-like values to be handled appropriately.                                                                                           |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-for-in-array`](./docs/rules/no-for-in-array.md)                                   | Disallow iterating over an array with a for-in loop                                                                                                 |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-inferrable-types`](./docs/rules/no-inferrable-types.md)                           | Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean                                        | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/no-magic-numbers`](./docs/rules/no-magic-numbers.md)                                 | Disallows magic numbers                                                                                                                             |                    |          |                   |
