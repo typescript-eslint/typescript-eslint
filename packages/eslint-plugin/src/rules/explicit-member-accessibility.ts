@@ -3,7 +3,6 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSParameterProperty } from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree';
 
 type AccessibilityLevel =
   | 'explicit' // require an accessor (including public)
@@ -27,7 +26,7 @@ type MessageIds = 'unwantedPublicAccessibility' | 'missingAccessibility';
 
 const accessibilityLevel = { enum: ['explicit', 'no-public', 'off'] };
 
-const isParentConstructor = (node: TSParameterProperty) => {
+const isParentConstructor = (node: TSESTree.TSParameterProperty) => {
   let parent = node.parent;
   while (parent) {
     if (parent.type === 'MethodDefinition' && parent.kind === 'constructor') {
