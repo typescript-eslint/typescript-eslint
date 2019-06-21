@@ -3,6 +3,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+import { TSParameterProperty } from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree';
 
 type AccessibilityLevel =
   | 'explicit' // require an accessor (including public)
@@ -25,6 +26,19 @@ type Options = [Config];
 type MessageIds = 'unwantedPublicAccessibility' | 'missingAccessibility';
 
 const accessibilityLevel = { enum: ['explicit', 'no-public', 'off'] };
+
+const isParentConstructor = (node: TSParameterProperty) => {
+  let parent = node.parent;
+  while (parent) {
+    if (parent.type === 'MethodDefinition' && parent.kind === 'constructor') {
+      return true;
+    }
+    // go up
+    parent = parent.parent;
+  }
+
+  return false;
+};
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
@@ -120,7 +134,6 @@ export default util.createRule<Options, MessageIds>({
       }
 
       if (util.isTypeScriptFile(context.getFilename())) {
-        // const methodName = util.getNameFromPropertyName(methodDefinition.key);
         const methodName = util.getNameFromClassMember(
           methodDefinition,
           sourceCode,
@@ -192,6 +205,12 @@ export default util.createRule<Options, MessageIds>({
           node.parameter.type !== AST_NODE_TYPES.Identifier &&
           node.parameter.type !== AST_NODE_TYPES.AssignmentPattern
         ) {
+          return;
+        }
+
+        // bail if property is defined inside constructor
+        // and constructor's override is off
+        if (isParentConstructor(node) && ctorCheck === 'off') {
           return;
         }
 

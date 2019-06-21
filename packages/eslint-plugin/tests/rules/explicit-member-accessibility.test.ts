@@ -10,6 +10,22 @@ ruleTester.run('explicit-member-accessibility', rule, {
     {
       filename: 'test.ts',
       code: `
+class Foo {
+  constructor(public bar) { console.log('there, there') }
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+          overrides: {
+            constructors: 'off',
+          },
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
 class Test {
   protected name: string
   private x: number
