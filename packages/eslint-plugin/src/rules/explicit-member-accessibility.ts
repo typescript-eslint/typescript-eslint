@@ -13,7 +13,6 @@ interface Config {
     constructors?: AccessibilityLevel;
     methods?: AccessibilityLevel;
     properties?: AccessibilityLevel;
-    parameterProperties?: AccessibilityLevel;
   };
 }
 
@@ -51,7 +50,6 @@ export default util.createRule<Options, MessageIds>({
               constructors: accessibilityLevel,
               methods: accessibilityLevel,
               properties: accessibilityLevel,
-              parameterProperties: accessibilityLevel,
             },
             additionalProperties: false,
           },
