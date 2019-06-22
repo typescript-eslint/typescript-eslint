@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type AccessibilityLevel =
@@ -25,19 +22,6 @@ type Options = [Config];
 type MessageIds = 'unwantedPublicAccessibility' | 'missingAccessibility';
 
 const accessibilityLevel = { enum: ['explicit', 'no-public', 'off'] };
-
-const isParentConstructor = (node: TSESTree.TSParameterProperty) => {
-  let parent = node.parent;
-  while (parent) {
-    if (parent.type === 'MethodDefinition' && parent.kind === 'constructor') {
-      return true;
-    }
-    // go up
-    parent = parent.parent;
-  }
-
-  return false;
-};
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
@@ -85,7 +69,6 @@ export default util.createRule<Options, MessageIds>({
     const accessorCheck = overrides.accessors || baseCheck;
     const methodCheck = overrides.methods || baseCheck;
     const propCheck = overrides.properties || baseCheck;
-    const paramPropCheck = overrides.parameterProperties || baseCheck;
 
     /**
      * Generates the report for rule violations
@@ -190,43 +173,7 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
-    /**
-     * Checks that the parameter property has the desired accessibility modifiers set.
-     * @param {TSESTree.TSParameterProperty} node The node representing a Parameter Property
-     */
-    function checkParameterPropertyAccessibilityModifier(
-      node: TSESTree.TSParameterProperty,
-    ) {
-      const nodeType = 'parameter property';
-      if (util.isTypeScriptFile(context.getFilename())) {
-        // HAS to be an identifier or assignment or TSC will throw
-        if (
-          node.parameter.type !== AST_NODE_TYPES.Identifier &&
-          node.parameter.type !== AST_NODE_TYPES.AssignmentPattern
-        ) {
-          return;
-        }
-
-        // bail if property is defined inside constructor
-        // and constructor's override is off
-        if (isParentConstructor(node) && ctorCheck === 'off') {
-          return;
-        }
-
-        const nodeName =
-          node.parameter.type === AST_NODE_TYPES.Identifier
-            ? node.parameter.name
-            : // has to be an Identifier or TSC will throw an error
-              (node.parameter.left as TSESTree.Identifier).name;
-
-        if (paramPropCheck === 'no-public' && node.accessibility === 'public') {
-          reportIssue('unwantedPublicAccessibility', nodeType, node, nodeName);
-        }
-      }
-    }
-
     return {
-      TSParameterProperty: checkParameterPropertyAccessibilityModifier,
       ClassProperty: checkPropertyAccessibilityModifier,
       MethodDefinition: checkMethodAccessibilityModifier,
     };

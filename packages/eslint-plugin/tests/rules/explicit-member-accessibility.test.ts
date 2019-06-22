@@ -396,26 +396,6 @@ class Test {
       code: `
 class Test {
   constructor(public x: number){}
-}
-      `,
-      errors: [
-        {
-          messageId: 'unwantedPublicAccessibility',
-          line: 3,
-          column: 15,
-        },
-      ],
-      options: [
-        {
-          accessibility: 'no-public',
-        },
-      ],
-    },
-    {
-      filename: 'test.ts',
-      code: `
-class Test {
-  constructor(public x: number){}
   public foo(): string {
     return 'foo';
   }
@@ -426,11 +406,6 @@ class Test {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
-        },
-        {
-          messageId: 'unwantedPublicAccessibility',
-          line: 3,
-          column: 15,
         },
       ],
       options: [
