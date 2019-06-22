@@ -31,7 +31,6 @@ import noNamespace from './no-namespace';
 import noNonNullAssertion from './no-non-null-assertion';
 import noObjectLiteralTypeAssertion from './no-object-literal-type-assertion';
 import noParameterProperties from './no-parameter-properties';
-import noReferenceImport from './no-reference-import';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
 import noTripleSlashReference from './no-triple-slash-reference';
@@ -53,6 +52,7 @@ import promiseFunctionAsync from './promise-function-async';
 import requireArraySortCompare from './require-array-sort-compare';
 import restrictPlusOperands from './restrict-plus-operands';
 import semi from './semi';
+import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
@@ -91,7 +91,6 @@ export default {
   'no-non-null-assertion': noNonNullAssertion,
   'no-object-literal-type-assertion': noObjectLiteralTypeAssertion,
   'no-parameter-properties': noParameterProperties,
-  'no-reference-import': noReferenceImport,
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,
   'no-triple-slash-reference': noTripleSlashReference,
@@ -113,6 +112,7 @@ export default {
   'require-array-sort-compare': requireArraySortCompare,
   'restrict-plus-operands': restrictPlusOperands,
   semi: semi,
+  'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
