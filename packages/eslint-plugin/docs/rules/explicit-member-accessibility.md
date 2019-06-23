@@ -25,7 +25,6 @@ interface Config {
     constructors?: AccessibilityLevel;
     methods?: AccessibilityLevel;
     properties?: AccessibilityLevel;
-    parameterProperties?: AccessibilityLevel;
   };
 }
 ```
@@ -47,7 +46,6 @@ A possible configuration could be:
     constructors: 'no-public',
     methods: 'explicit',
     properties: 'off',
-    parameterProperties: 'explicit'
   }
 }
 ```
