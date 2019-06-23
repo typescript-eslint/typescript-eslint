@@ -145,7 +145,6 @@ class Test {
       options: [
         {
           accessibility: 'no-public',
-          overrides: { parameterProperties: 'off' },
         },
       ],
     },
@@ -406,11 +405,6 @@ class Test {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
-        },
-      ],
-      options: [
-        {
-          overrides: { parameterProperties: 'no-public' },
         },
       ],
     },
