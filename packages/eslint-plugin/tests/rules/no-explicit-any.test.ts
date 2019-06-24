@@ -129,6 +129,63 @@ type obj = {
     message: string & Array<Array<string>>;
 }
         `,
+    // https://github.com/eslint/typescript-eslint-parser/issues/397
+    {
+      code: `
+        function foo(a: number, ...rest: any[]): void {
+          return;
+        }
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function foo1(...args: any[]) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const bar1 = function (...args: any[]) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const baz1 = (...args: any[]) => {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function foo2(...args: readonly any[]) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const bar2 = function (...args: readonly any[]) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const baz2 = (...args: readonly any[]) => {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function foo3(...args: Array<any>) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const bar3 = function (...args: Array<any>) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const baz3 = (...args: Array<any>) => {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function foo4(...args: ReadonlyArray<any>) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const bar4 = function (...args: ReadonlyArray<any>) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const baz4 = (...args: ReadonlyArray<any>) => {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
   ],
   invalid: [
     {
@@ -676,6 +733,54 @@ type obj = {
           messageId: 'unexpectedAny',
           line: 3,
           column: 41,
+        },
+      ],
+    },
+    {
+      // https://github.com/eslint/typescript-eslint-parser/issues/397
+      code: `
+        function foo(a: number, ...rest: any[]): void {
+          return;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 2,
+          column: 42,
+        },
+      ],
+    },
+    {
+      code: `function foo5(...args: any) {}`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 24,
+        },
+      ],
+    },
+    {
+      code: `const bar5 = function (...args: any) {}`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 33,
+        },
+      ],
+    },
+    {
+      code: `const baz5 = (...args: any) => {}`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 24,
         },
       ],
     },

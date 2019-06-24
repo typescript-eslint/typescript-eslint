@@ -5,6 +5,7 @@ import banTsIgnore from './ban-ts-ignore';
 import banTypes from './ban-types';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
+import consistentTypeDefinitions from './consistent-type-definitions';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import funcCallSpacing from './func-call-spacing';
@@ -16,10 +17,12 @@ import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import noAngleBracketTypeAssertion from './no-angle-bracket-type-assertion';
 import noArrayConstructor from './no-array-constructor';
+import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
 import noExtraParens from './no-extra-parens';
 import noExtraneousClass from './no-extraneous-class';
+import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noInferrableTypes from './no-inferrable-types';
 import noMagicNumbers from './no-magic-numbers';
@@ -62,6 +65,7 @@ export default {
   'ban-types': banTypes,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
+  'consistent-type-definitions': consistentTypeDefinitions,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
   'func-call-spacing': funcCallSpacing,
@@ -73,10 +77,12 @@ export default {
   'member-ordering': memberOrdering,
   'no-angle-bracket-type-assertion': noAngleBracketTypeAssertion,
   'no-array-constructor': noArrayConstructor,
+  'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
   'no-extra-parens': noExtraParens,
   'no-extraneous-class': noExtraneousClass,
+  'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
   'no-inferrable-types': noInferrableTypes,
   'no-magic-numbers': noMagicNumbers,

@@ -62,7 +62,7 @@ interface RuleMetaData<TMessageIds extends string> {
   /**
    * The name of the rule this rule was replaced by, if it was deprecated.
    */
-  replacedBy?: string;
+  replacedBy?: string[];
   /**
    * The options schema. Supply an empty array if there are no options.
    */
