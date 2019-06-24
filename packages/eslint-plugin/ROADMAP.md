@@ -14,7 +14,7 @@
 | --------------------------------- | :-: | ---------------------------------------------------- |
 | [`adjacent-overload-signatures`]  | ✅  | [`@typescript-eslint/adjacent-overload-signatures`]  |
 | [`ban-ts-ignore`]                 | ✅  | [`@typescript-eslint/ban-ts-ignore`]                 |
-| [`ban-types`]                     | ✅  | [`@typescript-eslint/ban-types`]                     |
+| [`ban-types`]                     | 🌓  | [`@typescript-eslint/ban-types`]<sup>[1]</sup>       |
 | [`member-access`]                 | ✅  | [`@typescript-eslint/explicit-member-accessibility`] |
 | [`member-ordering`]               | ✅  | [`@typescript-eslint/member-ordering`]               |
 | [`no-any`]                        | ✅  | [`@typescript-eslint/no-explicit-any`]               |
@@ -35,6 +35,8 @@
 | [`typedef`]                       | 🛑  | N/A                                                  |
 | [`typedef-whitespace`]            | ✅  | [`@typescript-eslint/type-annotation-spacing`]       |
 | [`unified-signatures`]            | ✅  | [`@typescript-eslint/unified-signatures`]            |
+
+<sup>[1]</sup> The ESLint rule only supports exact string matching, rather than regular expressions<br>
 
 ### Functionality
 
