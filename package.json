@@ -64,7 +64,7 @@
     "all-contributors-cli": "^6.0.0",
     "babel-code-frame": "^6.26.0",
     "cz-conventional-changelog": "2.1.0",
-    "eslint": "^5.12.1",
+    "eslint": "^6.0.0",
     "eslint-plugin-eslint-plugin": "^2.0.1",
     "eslint-plugin-jest": "^22.2.2",
     "glob": "7.1.2",
