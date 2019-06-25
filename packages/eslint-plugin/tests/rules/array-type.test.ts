@@ -908,7 +908,7 @@ describe('array-type (nested)', () => {
           },
           {
             fix: true,
-          }
+          },
         );
 
         expect(result.messages).toHaveLength(0);

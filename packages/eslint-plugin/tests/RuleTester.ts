@@ -8,13 +8,13 @@ const parser = '@typescript-eslint/parser';
 // but that's not as clean to type as this is
 type RuleTesterConfig = Omit<TSESLint.RuleTesterConfig, 'parser'> & {
   parser: typeof parser;
-}
+};
 class RuleTester extends TSESLint.RuleTester {
   constructor(options: RuleTesterConfig) {
     super({
       ...options,
       parser: require.resolve(options.parser),
-    })
+    });
   }
 
   run<TMessageIds extends string, TOptions extends Readonly<any[]>>(
@@ -29,12 +29,12 @@ class RuleTester extends TSESLint.RuleTester {
           throw new Error(errorMessage);
         }
       }
-    })
+    });
     tests.invalid.forEach(test => {
       if (test.parser === parser) {
         throw new Error(errorMessage);
       }
-    })
+    });
 
     super.run(name, rule, tests);
   }
