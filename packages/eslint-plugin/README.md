@@ -116,7 +116,6 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 
 ## Supported Rules
 
-<!-- Please run `npm run docs` to update this section -->
 <!-- begin rule list -->
 
 **Key**: :heavy_check_mark: = recommended, :wrench: = fixable, :thought_balloon: = requires type information

@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import marked from 'marked';
 import path from 'path';
-import { logRule } from './log';
+import { logRule } from '../log';
 
 function validateTableRules(
   rules: Record<string, Readonly<TSESLint.RuleModule<any, any, any>>>,
