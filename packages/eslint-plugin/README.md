@@ -43,11 +43,23 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
-You can also enable all the recommended rules at once. Add `plugin:@typescript-eslint/recommended` in extends:
+You can also enable all the recommended rules for our plugin. Add `plugin:@typescript-eslint/recommended` in extends:
 
 ```json
 {
   "extends": ["plugin:@typescript-eslint/recommended"]
+}
+```
+
+You can also use [eslint:recommended](https://eslint.org/docs/rules/) with this plugin. Add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended`:
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }
 ```
 
@@ -67,6 +79,8 @@ If you want to use rules which require type information, you will need to specif
 ```
 
 See [@typescript-eslint/parser's README.md](../parser/README.md) for more information on the available "parserOptions".
+
+**Note: Make sure to use `eslint --ext .js,.ts` since by [default](https://eslint.org/docs/user-guide/command-line-interface#--ext) `eslint` will only search for .js files.**
 
 ## Usage with Prettier
 
@@ -117,6 +131,7 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/ban-types`](./docs/rules/ban-types.md)                                               | Enforces that types will not to be used                                                                                                             | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/camelcase`](./docs/rules/camelcase.md)                                               | Enforce camelCase naming convention                                                                                                                 | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/class-name-casing`](./docs/rules/class-name-casing.md)                               | Require PascalCased class and interface names                                                                                                       | :heavy_check_mark: |          |                   |
+| [`@typescript-eslint/consistent-type-definitions`](./docs/rules/consistent-type-definitions.md)           | Consistent with type definition either `interface` or `type`                                                                                        | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/explicit-function-return-type`](./docs/rules/explicit-function-return-type.md)       | Require explicit return types on functions and class methods                                                                                        | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/explicit-member-accessibility`](./docs/rules/explicit-member-accessibility.md)       | Require explicit accessibility modifiers on class properties and methods                                                                            | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/func-call-spacing`](./docs/rules/func-call-spacing.md)                               | Require or disallow spacing between function identifiers and their invocations                                                                      |                    | :wrench: |                   |
@@ -128,10 +143,12 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/member-ordering`](./docs/rules/member-ordering.md)                                   | Require a consistent member declaration order                                                                                                       |                    |          |                   |
 | [`@typescript-eslint/no-angle-bracket-type-assertion`](./docs/rules/no-angle-bracket-type-assertion.md)   | Enforces the use of `as Type` assertions instead of `<Type>` assertions                                                                             | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-array-constructor`](./docs/rules/no-array-constructor.md)                         | Disallow generic `Array` constructors                                                                                                               | :heavy_check_mark: | :wrench: |                   |
+| [`@typescript-eslint/no-empty-function`](./docs/rules/no-empty-function.md)                               | Disallow empty functions                                                                                                                            |                    |          |                   |
 | [`@typescript-eslint/no-empty-interface`](./docs/rules/no-empty-interface.md)                             | Disallow the declaration of empty interfaces                                                                                                        | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-explicit-any`](./docs/rules/no-explicit-any.md)                                   | Disallow usage of the `any` type                                                                                                                    | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-extra-parens`](./docs/rules/no-extra-parens.md)                                   | Disallow unnecessary parentheses                                                                                                                    |                    | :wrench: |                   |
 | [`@typescript-eslint/no-extraneous-class`](./docs/rules/no-extraneous-class.md)                           | Forbids the use of classes as namespaces                                                                                                            |                    |          |                   |
+| [`@typescript-eslint/no-floating-promises`](./docs/rules/no-floating-promises.md)                         | Requires Promise-like values to be handled appropriately.                                                                                           |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-for-in-array`](./docs/rules/no-for-in-array.md)                                   | Disallow iterating over an array with a for-in loop                                                                                                 |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-inferrable-types`](./docs/rules/no-inferrable-types.md)                           | Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean                                        | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/no-magic-numbers`](./docs/rules/no-magic-numbers.md)                                 | Disallows magic numbers                                                                                                                             |                    |          |                   |
@@ -153,8 +170,8 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/prefer-for-of`](./docs/rules/prefer-for-of.md)                                       | Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated                                      |                    |          |                   |
 | [`@typescript-eslint/prefer-function-type`](./docs/rules/prefer-function-type.md)                         | Use function types instead of interfaces with call signatures                                                                                       |                    | :wrench: |                   |
 | [`@typescript-eslint/prefer-includes`](./docs/rules/prefer-includes.md)                                   | Enforce `includes` method over `indexOf` method                                                                                                     |                    | :wrench: | :thought_balloon: |
-| [`@typescript-eslint/prefer-interface`](./docs/rules/prefer-interface.md)                                 | Prefer an interface declaration over a type literal (type T = { ... })                                                                              | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/prefer-namespace-keyword`](./docs/rules/prefer-namespace-keyword.md)                 | Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules                                     | :heavy_check_mark: | :wrench: |                   |
+| [`@typescript-eslint/prefer-readonly`](./docs/rules/prefer-readonly.md)                                   | Requires that private members are marked as `readonly` if they're never modified outside of the constructor                                         |                    | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/prefer-regexp-exec`](./docs/rules/prefer-regexp-exec.md)                             | Prefer RegExp#exec() over String#match() if no global flag is provided                                                                              |                    |          | :thought_balloon: |
 | [`@typescript-eslint/prefer-string-starts-ends-with`](./docs/rules/prefer-string-starts-ends-with.md)     | Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings                             |                    | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/promise-function-async`](./docs/rules/promise-function-async.md)                     | Requires any function or method that returns a Promise to be marked async                                                                           |                    |          | :thought_balloon: |

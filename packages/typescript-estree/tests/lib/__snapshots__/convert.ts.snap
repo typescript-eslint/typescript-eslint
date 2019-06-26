@@ -34,7 +34,7 @@ Object {
   },
   "isDeclarationFile": false,
   "languageVariant": 1,
-  "languageVersion": 7,
+  "languageVersion": 8,
   "libReferenceDirectives": Array [],
   "lineMap": Array [
     null,

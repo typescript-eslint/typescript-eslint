@@ -50,9 +50,9 @@ const StaticOnly = {
 
 This rule accepts a single object option.
 
-- `constructorOnly: true` will silence warnings about classes containing only a constructor.
+- `allowConstructorOnly: true` will silence warnings about classes containing only a constructor.
 - `allowEmpty: true` will silence warnings about empty classes.
-- `staticOnly: true` will silence warnings about classes containing only static members.
+- `allowStaticOnly: true` will silence warnings about classes containing only static members.
 
 ## When Not To Use It
 

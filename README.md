@@ -76,7 +76,7 @@ For example:
 var x: number = 1;
 ```
 
-This is not valid JavaScript code, because it contains a so called type-annotation. When the TypeScript Compiler parses this code to produce a TypeScript AST, that `: number` syntax will be represented in the tree, and this is simply not something that ESLint can understand without additional help.
+This is not valid JavaScript code, because it contains a so-called type annotation. When the TypeScript Compiler parses this code to produce a TypeScript AST, that `: number` syntax will be represented in the tree, and this is simply not something that ESLint can understand without additional help.
 
 However, we can leverage the fact that ESLint has been designed with these use-cases in mind!
 
@@ -203,7 +203,7 @@ The `canary` (latest master) version is:
 
 We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
 
-**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.5.0`.**
+**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.6.0`.**
 
 This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
@@ -227,4 +227,4 @@ Thanks goes to the wonderful people listed in [`CONTRIBUTORS.md`](./CONTRIBUTORS
 
 ## Contributing Guide
 
-COMING SOON!
+COMING SOON
