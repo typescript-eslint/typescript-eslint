@@ -1382,6 +1382,10 @@ export default createRule<Options, MessageIds>({
       },
 
       VariableDeclaration(node) {
+        if (node.declarations.length === 0) {
+          return;
+        }
+
         let variableIndent = Object.prototype.hasOwnProperty.call(
           options.VariableDeclarator,
           node.kind,

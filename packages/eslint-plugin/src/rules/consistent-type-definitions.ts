@@ -27,7 +27,6 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
 
     return {
-      // VariableDeclaration with kind type has only one VariableDeclarator
       "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
         node: TSESTree.TSTypeAliasDeclaration,
       ) {
