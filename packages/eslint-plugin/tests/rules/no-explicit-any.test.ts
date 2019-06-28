@@ -1,5 +1,8 @@
-import rule from '../../src/rules/no-explicit-any';
+import rule, { MessageIds, Options } from '../../src/rules/no-explicit-any';
 import { RuleTester } from '../RuleTester';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+
+type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, Options>;
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -187,7 +190,7 @@ type obj = {
       options: [{ ignoreRestArgs: true }],
     },
   ],
-  invalid: [
+  invalid: ([
     {
       code: 'const number: any = 1',
       errors: [
@@ -784,5 +787,23 @@ type obj = {
         },
       ],
     },
-  ],
+  ] as InvalidTestCase[]).reduce<InvalidTestCase[]>((acc, testCase) => {
+    acc.push(testCase);
+    const options = testCase.options || [];
+    const code = `// fixToUnknown: true\n${testCase.code}`;
+    acc.push({
+      code,
+      output: code.replace(/any/g, 'unknown'),
+      options: [{ ...options[0], fixToUnknown: true }],
+      errors: testCase.errors.map(err => {
+        if (err.line === undefined) {
+          return err;
+        }
+
+        return { ...err, line: err.line + 1 };
+      }),
+    });
+
+    return acc;
+  }, []),
 });
