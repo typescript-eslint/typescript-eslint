@@ -5,13 +5,13 @@ import {
 import * as util from '../util';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-type Options = [
+export type Options = [
   {
     fixToUnknown?: boolean;
     ignoreRestArgs?: boolean;
   }
 ];
-type MessageIds = 'unexpectedAny';
+export type MessageIds = 'unexpectedAny';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-explicit-any',
