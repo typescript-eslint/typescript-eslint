@@ -1,6 +1,8 @@
-# Prefer an interface declaration over a type literal (type T = { ... }) (prefer-interface)
+# Prefer an interface declaration over a type literal (type T = { ... }) (prefer-interface)\
 
 Interfaces are generally preferred over type literals because interfaces can be implemented, extended and merged.
+
+## DEPRECATED - this rule has been deprecated in favour of [`consistent-type-definitions`](./consistent-type-definitions.md)
 
 ## Rule Details
 
