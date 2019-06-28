@@ -10,6 +10,8 @@ export default util.createRule({
       recommended: 'error',
     },
     schema: [],
+    deprecated: true,
+    replacedBy: ['triple-slash-reference'],
     messages: {
       noTripleSlashReference: 'Do not use a triple slash reference.',
     },

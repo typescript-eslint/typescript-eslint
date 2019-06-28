@@ -13,23 +13,13 @@ ruleTester.run('triple-slash-reference', rule, {
     {
       code: `
       /// <reference path="foo" />
+      /// <reference types="bar" />
+      /// <reference lib="baz" />
       import * as foo from "foo"
+      import * as bar from "bar"
+      import * as baz from "baz"
       `,
-      options: [{ path: 'always' }],
-    },
-    {
-      code: `
-      /// <reference types="foo" />
-      import * as foo from "foo"
-      `,
-      options: [{ types: 'always' }],
-    },
-    {
-      code: `
-      /// <reference lib="foo" />
-      import * as foo from "foo"
-      `,
-      options: [{ lib: 'always' }],
+      options: [{ path: 'always', types: 'always', lib: 'always' }],
     },
     {
       code: `
@@ -54,6 +44,22 @@ ruleTester.run('triple-slash-reference', rule, {
       import * as foo from "foo"
       `,
       options: [{ types: 'prefer-import' }],
+    },
+    {
+      code: `
+      /// <reference types="foo" />
+      import * as bar from "bar"
+      `,
+      options: [{ types: 'prefer-import' }],
+    },
+    {
+      code: `
+      /*
+      /// <reference types="foo" />
+      */
+      import * as foo from "foo"
+      `,
+      options: [{ path: 'never', types: 'never', lib: 'never' }],
     },
   ],
   invalid: [

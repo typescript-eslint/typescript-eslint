@@ -2,7 +2,7 @@
 
 Use of triple-slash reference type directives is discouraged in favor of the newer `import` style. This rule allows you to ban use of `/// <reference path="" />`, `/// <reference types="" />`, or `/// <reference lib="" />` directives.
 
-If you use the `no-triple-slash-reference` rule, consider using this rule instead.
+Consider using this rule in place of [`no-triple-slash-reference`](./no-triple-slash-reference.md) which has been deprecated.
 
 ## Rule Details
 
