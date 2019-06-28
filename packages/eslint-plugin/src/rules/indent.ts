@@ -175,6 +175,15 @@ export default util.createRule<Options, MessageIds>({
         }
       },
 
+      VariableDeclaration(node: TSESTree.VariableDeclaration) {
+        // https://github.com/typescript-eslint/typescript-eslint/issues/441
+        if (node.declarations.length === 0) {
+          return;
+        }
+
+        return rules.VariableDeclaration(node);
+      },
+
       TSAsExpression(node: TSESTree.TSAsExpression) {
         // transform it to a BinaryExpression
         return rules['BinaryExpression, LogicalExpression']({
