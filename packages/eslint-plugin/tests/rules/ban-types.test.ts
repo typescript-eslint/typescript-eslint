@@ -264,5 +264,36 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
       ],
       options,
     },
+    {
+      code: `
+let a: NS.Bad<Foo>;
+let b: Foo<NS.Bad>;
+      `,
+      output: `
+let a: NS.Good<Foo>;
+let b: Foo<NS.Good>;
+      `,
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'NS.Bad',
+            customMessage: ' Use NS.Good instead.',
+          },
+          line: 2,
+          column: 8,
+        },
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'NS.Bad',
+            customMessage: ' Use NS.Good instead.',
+          },
+          line: 3,
+          column: 12,
+        },
+      ],
+      options,
+    },
   ],
 });
