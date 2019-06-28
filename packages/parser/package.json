@@ -38,7 +38,7 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "eslint": "^5.0.0"
+    "eslint": "^5.0.0 || ^6.0.0"
   },
   "dependencies": {
     "@types/eslint-visitor-keys": "^1.0.0",
