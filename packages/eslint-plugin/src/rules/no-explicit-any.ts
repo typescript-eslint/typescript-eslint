@@ -3,8 +3,17 @@ import {
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-export default util.createRule({
+export type Options = [
+  {
+    fixToUnknown?: boolean;
+    ignoreRestArgs?: boolean;
+  }
+];
+export type MessageIds = 'unexpectedAny';
+
+export default util.createRule<Options, MessageIds>({
   name: 'no-explicit-any',
   meta: {
     type: 'suggestion',
@@ -13,6 +22,7 @@ export default util.createRule({
       category: 'Best Practices',
       recommended: 'warn',
     },
+    fixable: 'code',
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
     },
@@ -21,6 +31,9 @@ export default util.createRule({
         type: 'object',
         additionalProperties: false,
         properties: {
+          fixToUnknown: {
+            type: 'boolean',
+          },
           ignoreRestArgs: {
             type: 'boolean',
           },
@@ -30,10 +43,11 @@ export default util.createRule({
   },
   defaultOptions: [
     {
+      fixToUnknown: false,
       ignoreRestArgs: false,
     },
   ],
-  create(context, [{ ignoreRestArgs }]) {
+  create(context, [{ ignoreRestArgs, fixToUnknown }]) {
     /**
      * Checks if the node is an arrow function, function declaration or function expression
      * @param node the node to be validated.
@@ -155,9 +169,17 @@ export default util.createRule({
         if (ignoreRestArgs && isNodeDescendantOfRestElementInFunction(node)) {
           return;
         }
+
+        let fix: TSESLint.ReportFixFunction | null = null;
+
+        if (fixToUnknown) {
+          fix = fixer => fixer.replaceText(node, 'unknown');
+        }
+
         context.report({
           node,
           messageId: 'unexpectedAny',
+          fix,
         });
       },
     };
