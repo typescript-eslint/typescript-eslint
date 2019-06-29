@@ -153,6 +153,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
         break;
       } while ((bool1 && bool2) || (bool1 || bool2));
     `,
+    `
+      function foo<T extends boolean>(arg: T) { return !arg; }
+    `,
   ],
 
   invalid: [
@@ -885,6 +888,18 @@ ruleTester.run('strict-boolean-expressions', rule, {
           messageId: 'strictBooleanExpression',
           line: 6,
           column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo<T extends number>(arg: T) { return !arg; }
+      `,
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 2,
+          column: 58,
         },
       ],
     },

@@ -3,6 +3,7 @@ import {
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import ts from 'typescript';
+import * as tsutils from 'tsutils';
 import * as util from '../util';
 
 type ExpressionWithTest =
@@ -32,58 +33,69 @@ export default util.createRule({
     const checker = service.program.getTypeChecker();
 
     /**
-     * Determines if the node has a boolean type. Does recursion for nodes with
-     * left/right operators.
+     * Determines if the node has a boolean type.
      */
-    function isBooleanType(node: TSESTree.Expression): boolean {
-      if (node.type === AST_NODE_TYPES.LogicalExpression) {
-        return isBooleanType(node.left) && isBooleanType(node.right);
-      }
-
+    function isBooleanType(node: TSESTree.Node): boolean {
       const tsNode = service.esTreeNodeToTSNodeMap.get<ts.ExpressionStatement>(
         node,
       );
-      const type = checker.getTypeAtLocation(tsNode);
-      const typeName = util.getTypeName(checker, type);
-      return ['true', 'false', 'boolean'].includes(typeName);
+      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+      return tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike);
     }
 
     /**
-     * Asserts that a node is a boolean, reports otherwise.
+     * Asserts that a testable expression contains a boolean, reports otherwise.
+     * Filters all LogicalExpressions to prevent some duplicate reports.
      */
-    function assertNodeIsBoolean(node: TSESTree.Expression): void {
-      if (!isBooleanType(node)) {
-        return context.report({ node, messageId: 'strictBooleanExpression' });
-      }
-    }
-
-    /**
-     * Asserts that an expression contains a boolean, reports otherwise. Filters
-     * all LogicalExpressions to prevent some duplicate reports.
-     */
-    function assertExpressionContainsBoolean(node: ExpressionWithTest): void {
+    function assertTestExpressionContainsBoolean(
+      node: ExpressionWithTest,
+    ): void {
       if (
         node.test !== null &&
-        node.test.type !== AST_NODE_TYPES.LogicalExpression
+        node.test.type !== AST_NODE_TYPES.LogicalExpression &&
+        !isBooleanType(node.test)
       ) {
-        assertNodeIsBoolean(node.test);
+        reportNode(node.test);
       }
+    }
+
+    /**
+     * Asserts that a logical expression contains a boolean, reports otherwise.
+     */
+    function assertLocalExpressionContainsBoolean(
+      node: TSESTree.LogicalExpression,
+    ): void {
+      if (!isBooleanType(node.left) || !isBooleanType(node.right)) {
+        reportNode(node);
+      }
+    }
+
+    /**
+     * Asserts that a unary expression contains a boolean, reports otherwise.
+     */
+    function assertUnaryExpressionContainsBoolean(
+      node: TSESTree.UnaryExpression,
+    ): void {
+      if (!isBooleanType(node.argument)) {
+        reportNode(node.argument);
+      }
+    }
+
+    /**
+     * Reports an offending node in context.
+     */
+    function reportNode(node: TSESTree.Node): void {
+      context.report({ node, messageId: 'strictBooleanExpression' });
     }
 
     return {
-      ConditionalExpression: assertExpressionContainsBoolean,
-      DoWhileStatement: assertExpressionContainsBoolean,
-      ForStatement: assertExpressionContainsBoolean,
-      IfStatement: assertExpressionContainsBoolean,
-      WhileStatement: assertExpressionContainsBoolean,
-      LogicalExpression(node: TSESTree.LogicalExpression) {
-        assertNodeIsBoolean(node);
-      },
-      UnaryExpression(node) {
-        if (node.operator === '!') {
-          assertNodeIsBoolean(node.argument);
-        }
-      },
+      ConditionalExpression: assertTestExpressionContainsBoolean,
+      DoWhileStatement: assertTestExpressionContainsBoolean,
+      ForStatement: assertTestExpressionContainsBoolean,
+      IfStatement: assertTestExpressionContainsBoolean,
+      WhileStatement: assertTestExpressionContainsBoolean,
+      LogicalExpression: assertLocalExpressionContainsBoolean,
+      'UnaryExpression[operator="!"]': assertUnaryExpressionContainsBoolean,
     };
   },
 });
