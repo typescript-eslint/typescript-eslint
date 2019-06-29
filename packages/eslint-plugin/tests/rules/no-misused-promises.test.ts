@@ -17,7 +17,7 @@ ruleTester.run('no-misused-promises', rule, {
     `if (true) {}`,
     {
       code: `if (Promise.resolve()) {}`,
-      options: [{ checks: ['void-return'] }],
+      options: [{ checksConditionals: false }],
     },
     `
 if (true) {}
@@ -30,43 +30,43 @@ if (Promise.resolve()) {}
 else if (Promise.resolve()) {}
 else {}
 `,
-      options: [{ checks: ['void-return'] }],
+      options: [{ checksConditionals: false }],
     },
     `for (;;) {}`,
     `for (let i; i < 10; i++) {}`,
     {
       code: `for (let i; Promise.resolve(); i++) {}`,
-      options: [{ checks: ['void-return'] }],
+      options: [{ checksConditionals: false }],
     },
     `do {} while (true);`,
     {
       code: `do {} while (Promise.resolve())`,
-      options: [{ checks: ['void-return'] }],
+      options: [{ checksConditionals: false }],
     },
     `while (true) {}`,
     {
       code: `while (Promise.resolve()) {}`,
-      options: [{ checks: ['void-return'] }],
+      options: [{ checksConditionals: false }],
     },
     `true ? 123 : 456`,
     {
       code: `Promise.resolve() ? 123 : 456`,
-      options: [{ checks: ['void-return'] }],
+      options: [{ checksConditionals: false }],
     },
     `if (!true) {}`,
     {
       code: `if (!Promise.resolve()) {}`,
-      options: [{ checks: ['void-return'] }],
+      options: [{ checksConditionals: false }],
     },
     `(await Promise.resolve()) || false`,
     {
       code: `Promise.resolve() || false`,
-      options: [{ checks: ['void-return'] }],
+      options: [{ checksConditionals: false }],
     },
     `(true && await Promise.resolve()) || false`,
     {
       code: `(true && Promise.resolve()) || false`,
-      options: [{ checks: ['void-return'] }],
+      options: [{ checksConditionals: false }],
     },
     `false || (true && Promise.resolve())`,
     `
@@ -94,12 +94,12 @@ if (value) {}
     `[1, 2, 3].forEach(val => {});`,
     {
       code: `[1, 2, 3].forEach(async val => {});`,
-      options: [{ checks: ['conditional'] }],
+      options: [{ checksVoidReturn: false }],
     },
     `new Promise((resolve, reject) => resolve());`,
     {
       code: `new Promise(async (resolve, reject) => resolve());`,
-      options: [{ checks: ['conditional'] }],
+      options: [{ checksVoidReturn: false }],
     },
     `Promise.all(['abc', 'def'].map(async val => { await val; }))`,
     `

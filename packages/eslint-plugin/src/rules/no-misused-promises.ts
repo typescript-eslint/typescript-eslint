@@ -6,7 +6,8 @@ import * as util from '../util';
 
 type Options = [
   {
-    checks: ('conditional' | 'void-return')[];
+    checksConditionals?: boolean;
+    checksVoidReturn?: boolean;
   }
 ];
 
@@ -27,12 +28,11 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
       {
         type: 'object',
         properties: {
-          checks: {
-            type: 'array',
-            items: {
-              type: 'string',
-              enum: ['conditional', 'void-return'],
-            },
+          checksConditionals: {
+            type: 'boolean',
+          },
+          checksVoidReturn: {
+            type: 'boolean',
           },
         },
       },
@@ -41,29 +41,20 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
   },
   defaultOptions: [
     {
-      checks: ['conditional', 'void-return'],
+      checksConditionals: true,
+      checksVoidReturn: true,
     },
   ],
 
-  create(context, [{ checks }]) {
+  create(context, [{ checksConditionals, checksVoidReturn }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
     const conditionalChecks: TSESLint.RuleListener = {
-      ConditionalExpression(node) {
-        checkConditional(node.test);
-      },
-      DoWhileStatement(node) {
-        checkConditional(node.test);
-      },
-      ForStatement(node) {
-        if (node.test) {
-          checkConditional(node.test);
-        }
-      },
-      IfStatement(node) {
-        checkConditional(node.test);
-      },
+      ConditionalExpression: checkTestConditional,
+      DoWhileStatement: checkTestConditional,
+      ForStatement: checkTestConditional,
+      IfStatement: checkTestConditional,
       LogicalExpression(node) {
         // We only check the lhs of a logical expression because the rhs might
         // be the return value of a short circuit expression.
@@ -74,19 +65,19 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
           checkConditional(node.argument);
         }
       },
-      WhileStatement(node) {
-        checkConditional(node.test);
-      },
+      WhileStatement: checkTestConditional,
     };
 
     const voidReturnChecks: TSESLint.RuleListener = {
-      CallExpression(node) {
-        checkArguments(node);
-      },
-      NewExpression(node) {
-        checkArguments(node);
-      },
+      CallExpression: checkArguments,
+      NewExpression: checkArguments,
     };
+
+    function checkTestConditional(node: { test: TSESTree.Expression | null }) {
+      if (node.test) {
+        checkConditional(node.test);
+      }
+    }
 
     function checkConditional(node: TSESTree.Expression) {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
@@ -125,8 +116,8 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
     }
 
     return {
-      ...(checks.includes('conditional') ? conditionalChecks : {}),
-      ...(checks.includes('void-return') ? voidReturnChecks : {}),
+      ...(checksConditionals ? conditionalChecks : {}),
+      ...(checksVoidReturn ? voidReturnChecks : {}),
     };
   },
 });
@@ -138,9 +129,7 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
 function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node) {
   const type = checker.getTypeAtLocation(node);
 
-  outer: for (const subType of tsutils.unionTypeParts(
-    checker.getApparentType(type),
-  )) {
+  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
     const thenProp = subType.getProperty('then');
 
     // If one of the alternates has no then property, it is not thenable in all
@@ -153,20 +142,30 @@ function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node) {
     // exists at this point, we just need at least one of the alternates to
     // be of the right form to consider it thenable.
     const thenType = checker.getTypeOfSymbolAtLocation(thenProp, node);
+    let hasThenableSignature = false;
     for (const subType of tsutils.unionTypeParts(thenType)) {
       for (const signature of subType.getCallSignatures()) {
         if (
           signature.parameters.length !== 0 &&
           isFunctionParam(checker, signature.parameters[0], node)
         ) {
-          continue outer;
+          hasThenableSignature = true;
+          break;
         }
+      }
+
+      // We only need to find one variant of the then property that has a
+      // function signature for it to be thenable.
+      if (hasThenableSignature) {
+        break;
       }
     }
 
     // If no flavors of the then property are thenable, we don't consider the
     // overall type to be thenable
-    return false;
+    if (!hasThenableSignature) {
+      return false;
+    }
   }
 
   // If all variants are considered thenable (i.e. haven't returned false), we
