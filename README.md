@@ -58,7 +58,7 @@ One advantage is there is no tooling required to reconcile differences between A
 
 Palantir, the backers behind TSLint announced earlier this year that **they would be deprecating TSLint in favor of supporting `typescript-eslint`** in order to benefit the community. You can read more about that here: https://medium.com/palantir/tslint-in-2019-1a144c2317a9
 
-The TypeScript Team themselves also announced their plans to move the TypeScript codebase from TSLint to `typescript-eslint`, and they have been big supporters of this project.
+The TypeScript Team themselves also announced their plans to move the TypeScript codebase from TSLint to `typescript-eslint`, and they have been big supporters of this project. More details at https://github.com/microsoft/TypeScript/issues/30553
 
 <br>
 
