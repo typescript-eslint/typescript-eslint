@@ -54,6 +54,7 @@ import requireArraySortCompare from './require-array-sort-compare';
 import restrictPlusOperands from './restrict-plus-operands';
 import semi from './semi';
 import strictBooleanExpressions from './strict-boolean-expressions';
+import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
@@ -115,6 +116,7 @@ export default {
   'restrict-plus-operands': restrictPlusOperands,
   semi: semi,
   'strict-boolean-expressions': strictBooleanExpressions,
+  'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
