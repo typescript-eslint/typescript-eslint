@@ -39,7 +39,6 @@
     "tslint": "^5.0.0"
   },
   "devDependencies": {
-    "@types/json-schema": "^7.0.3",
     "@types/lodash.memoize": "^4.1.4",
     "@typescript-eslint/parser": "1.11.0"
   }

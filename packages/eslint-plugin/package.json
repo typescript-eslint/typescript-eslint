@@ -48,6 +48,7 @@
     "tsutils": "^3.7.0"
   },
   "devDependencies": {
+    "@types/json-schema": "^7.0.3",
     "@types/marked": "^0.6.5",
     "chalk": "^2.4.2",
     "marked": "^0.6.2"
