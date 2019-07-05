@@ -69,7 +69,7 @@
 | [`no-invalid-template-strings`]      | 🌟  | [`no-template-curly-in-string`][no-template-curly-in-string]          |
 | [`no-invalid-this`]                  | 🌟  | [`no-invalid-this`][no-invalid-this]                                  |
 | [`no-misused-new`]                   | ✅  | [`@typescript-eslint/no-misused-new`]                                 |
-| [`no-null-keyword`]                  | 🔌  | [`no-null/no-null`] (doesn’t handle `null` type)                      |
+| [`no-null-keyword`]                  | 🔌  | [`@typescript-eslint/ban-types`]                                      |
 | [`no-object-literal-type-assertion`] | ✅  | [`@typescript-eslint/no-object-literal-type-assertion`]               |
 | [`no-return-await`]                  | 🌟  | [`no-return-await`][no-return-await]                                  |
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                              |
