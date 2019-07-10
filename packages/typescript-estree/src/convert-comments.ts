@@ -118,13 +118,24 @@ export function convertComments(
       case ts.SyntaxKind.GreaterThanToken:
         container = getNodeContainer(ast, start, end);
         if (
-          container &&
-          container.parent &&
-          container.parent.kind === ts.SyntaxKind.JsxOpeningElement &&
-          // Make sure this is the end of the opening element and not type parameter
-          end === container.parent.end &&
-          container.parent.parent &&
-          container.parent.parent.kind === ts.SyntaxKind.JsxElement
+          (container.parent &&
+            container.parent.parent &&
+            // Rescan after an opening element or fragment
+            (container.parent.kind === ts.SyntaxKind.JsxOpeningElement &&
+              // Make sure this is the end of a tag like `<Component<number>>`
+              container.parent.end === end)) ||
+          container.parent.kind === ts.SyntaxKind.JsxOpeningFragment ||
+          // Rescan after a self-closing element if it's inside another JSX element
+          (container.parent.kind === ts.SyntaxKind.JsxSelfClosingElement &&
+            (container.parent.parent.kind === ts.SyntaxKind.JsxElement ||
+              container.parent.parent.kind === ts.SyntaxKind.JsxFragment)) ||
+          // Rescan after a closing element if it's inside another JSX element
+          ((container.parent.kind === ts.SyntaxKind.JsxClosingElement ||
+            container.parent.kind === ts.SyntaxKind.JsxClosingFragment) &&
+            container.parent.parent.parent &&
+            (container.parent.parent.parent.kind === ts.SyntaxKind.JsxElement ||
+              container.parent.parent.parent.kind ===
+                ts.SyntaxKind.JsxFragment))
         ) {
           kind = triviaScanner.reScanJsxToken();
           continue;
@@ -132,6 +143,15 @@ export function convertComments(
         break;
       case ts.SyntaxKind.CloseBraceToken:
         container = getNodeContainer(ast, start, end);
+
+        // Rescan after a JSX expression
+        if (
+          container.parent &&
+          container.parent.kind === ts.SyntaxKind.JsxExpression
+        ) {
+          kind = triviaScanner.reScanJsxToken();
+          continue;
+        }
 
         if (
           container.kind === ts.SyntaxKind.TemplateMiddle ||
