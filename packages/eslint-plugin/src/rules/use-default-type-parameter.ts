@@ -146,9 +146,7 @@ function getTypeParametersFromCall(
       : undefined;
   }
 
-  return sigDecl.typeParameters === undefined
-    ? undefined
-    : sigDecl.typeParameters;
+  return sigDecl.typeParameters;
 }
 
 function getAliasedSymbol(
