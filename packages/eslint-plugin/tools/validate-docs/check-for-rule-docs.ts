@@ -1,7 +1,7 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import fs from 'fs';
 import path from 'path';
-import { logRule } from './log';
+import { logRule } from '../log';
 
 function checkForRuleDocs(
   rules: Record<string, Readonly<TSESLint.RuleModule<any, any, any>>>,

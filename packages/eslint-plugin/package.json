@@ -30,13 +30,12 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "check:docs": "ts-node --files ./tools/validate-docs/index.ts",
+    "check:configs": "ts-node --files ./tools/validate-configs/index.ts",
     "clean": "rimraf dist/",
-    "docs": "eslint-docs",
-    "docs:check": "ts-node --files ./tools/validate-docs/index.ts",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "generate:configs": "ts-node --files tools/generate-configs.ts",
     "prebuild": "npm run clean",
-    "recommended:update": "ts-node tools/update-recommended.ts",
     "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
