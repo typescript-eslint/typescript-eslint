@@ -188,6 +188,21 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if a node belongs to:
+     * `foo(() => 1)`
+     */
+    function isFunctionArgument(
+      parent: TSESTree.Node,
+      child: TSESTree.Node,
+    ): boolean {
+      return (
+        parent.type === AST_NODE_TYPES.CallExpression &&
+        // make sure this isn't an IIFE
+        parent.callee !== child
+      );
+    }
+
+    /**
      * Checks if a function declaration/expression has a return type.
      */
     function checkFunctionReturnType(
@@ -232,7 +247,8 @@ export default util.createRule<Options, MessageIds>({
             isTypeCast(node.parent) ||
             isVariableDeclaratorWithTypeAnnotation(node.parent) ||
             isClassPropertyWithTypeAnnotation(node.parent) ||
-            isPropertyOfObjectWithType(node.parent)
+            isPropertyOfObjectWithType(node.parent) ||
+            isFunctionArgument(node.parent, node)
           ) {
             return;
           }
