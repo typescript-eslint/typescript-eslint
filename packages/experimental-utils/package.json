@@ -36,6 +36,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@types/json-schema": "^7.0.3",
     "@typescript-eslint/typescript-estree": "1.12.0",
     "eslint-scope": "^4.0.0"
   },
