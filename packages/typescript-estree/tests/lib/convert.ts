@@ -21,6 +21,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
+      range: true,
+      loc: true,
     });
     expect(instance.convertProgram()).toMatchSnapshot();
   });
@@ -32,6 +34,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
+      range: true,
+      loc: true,
     });
     expect((instance as any).deeplyCopy(ast.statements[0])).toMatchSnapshot();
   });
@@ -43,6 +47,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
+      range: true,
+      loc: true,
     });
     expect((instance as any).deeplyCopy(ast.statements[0])).toMatchSnapshot();
   });
@@ -54,6 +60,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
+      range: true,
+      loc: true,
     });
     expect(
       (instance as any).deeplyCopy((ast.statements[0] as any).expression),
@@ -67,6 +75,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
+      range: true,
+      loc: true,
     });
     expect((instance as any).deeplyCopy(ast)).toMatchSnapshot();
   });
@@ -78,6 +88,8 @@ describe('convert', () => {
       errorOnUnknownASTType: true,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
+      range: true,
+      loc: true,
     });
     expect(() => instance.convertProgram()).toThrow(
       'Unknown AST_NODE_TYPE: "TSJSDocNullableType"',
@@ -96,6 +108,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
+      range: true,
+      loc: true,
     });
     instance.convertProgram();
     const maps = instance.getASTMaps();
@@ -130,6 +144,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
+      range: true,
+      loc: true,
     });
     instance.convertProgram();
     const maps = instance.getASTMaps();
@@ -163,6 +179,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
+      range: true,
+      loc: true,
     });
     const program = instance.convertProgram();
     const maps = instance.getASTMaps();

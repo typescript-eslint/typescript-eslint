@@ -30,6 +30,8 @@ interface ConverterOptions {
   errorOnUnknownASTType: boolean;
   useJSXTextNode: boolean;
   shouldPreserveNodeMaps: boolean;
+  range: boolean;
+  loc: boolean;
 }
 
 /**
