@@ -206,4 +206,46 @@ describe('convert', () => {
     );
     checkMaps(ast);
   });
+
+  it('should not contain range when disabled', () => {
+    const ast = convertCode(`
+      'test';
+      2;
+      class foo {};
+      type bar = {};
+      const fn = () => {
+        const x = 2;
+        x + 5;
+      };
+    `);
+    const instance = new Converter(ast, {
+      errorOnUnknownASTType: false,
+      useJSXTextNode: false,
+      shouldPreserveNodeMaps: false,
+      range: false,
+      loc: true,
+    });
+    expect(instance.convertProgram()).toMatchSnapshot();
+  });
+
+  it('should not contain loc when disabled', () => {
+    const ast = convertCode(`
+      'test';
+      2;
+      class foo {};
+      type bar = {};
+      const fn = () => {
+        const x = 2;
+        x + 5;
+      };
+    `);
+    const instance = new Converter(ast, {
+      errorOnUnknownASTType: false,
+      useJSXTextNode: false,
+      shouldPreserveNodeMaps: false,
+      range: true,
+      loc: false,
+    });
+    expect(instance.convertProgram()).toMatchSnapshot();
+  });
 });
