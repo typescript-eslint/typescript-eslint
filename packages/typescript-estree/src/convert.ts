@@ -124,7 +124,9 @@ export class Converter {
     }
 
     let result = this.convertNode(node as TSNode, parent || node.parent);
-    if (result) result = this.applyExtraOptions(result);
+    if (result) {
+      result = this.applyExtraOptions(result);
+    }
 
     this.registerTSNodeInNodeMap(node, result);
 
