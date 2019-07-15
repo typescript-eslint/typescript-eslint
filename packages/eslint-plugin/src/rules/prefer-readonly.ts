@@ -2,7 +2,10 @@ import * as tsutils from 'tsutils';
 import ts from 'typescript';
 import * as util from '../util';
 import { typeIsOrHasBaseType } from '../util';
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'preferReadonly';
 
