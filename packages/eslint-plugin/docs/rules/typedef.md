@@ -25,14 +25,14 @@ class ContainsText {
 This rule can enforce type annotations in locations regardless of whether they're required.
 This is typically used to maintain consistency for element types that sometimes require them.
 
+> To enforce type definitions existing on call signatures as per TSLint's `arrow-call-signature` and `call-signature` options, use `explicit-function-return-type`.
+
 ## Options
 
 This rule has an object option that may receive any of the following as booleans:
 
 - `"arrayDestructuring"`
-- `"arrowCallSignature"`: `true` by default
 - `"arrowParameter"`: `true` by default
-- `"callSignature"`: `true` by default
 - `"memberVariableDeclaration"`: `true` by default
 - `"objectDestructuring"`
 - `"parameter"`: `true` by default
@@ -78,36 +78,6 @@ const [b]: [number] = [2];
 const [c, d]: [boolean, string] = [true, 'text'];
 ```
 
-### arrowCallSignature
-
-Whether to enforce type annotations for return types of arrow functions.
-
-Examples of **incorrect** code with `{ "arrowCallSignature": true }`:
-
-```ts
-const returnsVoid = () => {};
-const returnsString = () => 'text';
-
-['hello', 'world'].map(text => text.length);
-
-const mapper = {
-  map: text => text + '...',
-};
-```
-
-Examples of **correct** code with `{ "arrowCallSignature": true }`:
-
-```ts
-const returnsVoid = (): void => {};
-const returnsString = (): string => 'text';
-
-['hello', 'world'].map((text): number => text.length);
-
-const mapper = {
-  map: (text): string => text + '...',
-};
-```
-
 ### arrowParameter
 
 Whether to enforce type annotations for parameters of arrow functions.
@@ -136,71 +106,11 @@ const mapper = {
 };
 ```
 
-### callSignature
-
-Whether to enforce type annotations for return types of functions and methods.
-
-Examples of **incorrect** code with `{ "callSignature": true }`:
-
-```ts
-function logsSize(size: number) {
-  console.log(size);
-}
-
-const doublesSize = function(size: number) {
-  return size * 2;
-};
-
-const divider = {
-  dividesSize(size: number) {
-    return size / 2;
-  },
-  doesNothing: function() {
-    console.log('...');
-  },
-};
-
-class Logger {
-  log(text: string) {
-    console.log('>', text);
-    return true;
-  }
-}
-```
-
-Examples of **correct** code with `{ "callSignature": true }`:
-
-```ts
-function logsSize(size: number): void {
-  console.log(size);
-}
-
-const doublesSize = function(size: number): number {
-  return size * 2;
-};
-
-const divider = {
-  dividesSize(size: number): number {
-    return size / 2;
-  },
-  doesNothing: function(): void {
-    console.log('...');
-  },
-};
-
-class Logger {
-  log(text: string): boolean {
-    console.log('>', text);
-    return true;
-  }
-}
-```
-
 ### memberVariableDeclaration
 
 Whether to enforce type annotations on member variables of classes.
 
-Examples of **incorrect** code with `{ "callSignature": true }`:
+Examples of **incorrect** code with `{ "memberVariableDeclaration": true }`:
 
 ```ts
 class ContainsText {
@@ -209,7 +119,7 @@ class ContainsText {
 }
 ```
 
-Examples of **correct** code with `{ "callSignature": true }`:
+Examples of **correct** code with `{ "memberVariableDeclaration": true }`:
 
 ```ts
 class ContainsText {

@@ -4,9 +4,7 @@ import * as util from '../util';
 
 const enum OptionKeys {
   ArrayDestructuring = 'arrayDestructuring',
-  ArrowCallSignature = 'arrowCallSignature',
   ArrowParameter = 'arrowParameter',
-  CallSignature = 'callSignature',
   MemberVariableDeclaration = 'memberVariableDeclaration',
   ObjectDestructuring = 'objectDestructuring',
   Parameter = 'parameter',
@@ -35,9 +33,7 @@ export default util.createRule<[Options], MessageIds>({
         type: 'object',
         properties: {
           [OptionKeys.ArrayDestructuring]: { type: 'boolean' },
-          [OptionKeys.ArrowCallSignature]: { type: 'boolean' },
           [OptionKeys.ArrowParameter]: { type: 'boolean' },
-          [OptionKeys.CallSignature]: { type: 'boolean' },
           [OptionKeys.MemberVariableDeclaration]: { type: 'boolean' },
           [OptionKeys.ObjectDestructuring]: { type: 'boolean' },
           [OptionKeys.Parameter]: { type: 'boolean' },
@@ -50,9 +46,7 @@ export default util.createRule<[Options], MessageIds>({
   },
   defaultOptions: [
     {
-      [OptionKeys.ArrowCallSignature]: true,
       [OptionKeys.ArrowParameter]: true,
-      [OptionKeys.CallSignature]: true,
       [OptionKeys.MemberVariableDeclaration]: true,
       [OptionKeys.Parameter]: true,
       [OptionKeys.PropertyDeclaration]: true,
@@ -75,29 +69,11 @@ export default util.createRule<[Options], MessageIds>({
         : undefined;
     }
 
-    function getTsNodeName(tsNode: ts.FunctionLike | ts.Identifier) {
-      if (ts.isIdentifier(tsNode)) {
-        return tsNode.text;
-      }
-
-      if (tsNode.name && ts.isIdentifier(tsNode.name)) {
-        return tsNode.name.text;
-      }
-
-      return undefined;
-    }
-
     function isTypedParameterDeclaration(esNode: TSESTree.Parameter) {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(esNode)
         .parent as ts.ParameterDeclaration;
 
       return tsNode.type !== undefined;
-    }
-
-    function isTypedPropertyDeclaration(esNode: TSESTree.Node) {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(esNode);
-
-      return ts.isPropertyDeclaration(tsNode) && tsNode.type !== undefined;
     }
 
     function isTypedVariableDeclaration(esNode: TSESTree.Node) {
@@ -106,26 +82,6 @@ export default util.createRule<[Options], MessageIds>({
         | ts.VariableDeclaration;
 
       return tsNode.type !== undefined;
-    }
-
-    function visitCallSignature(
-      node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
-    ) {
-      if (
-        node.parent &&
-        node.parent.type === AST_NODE_TYPES.Property &&
-        node.parent.kind === 'set'
-      ) {
-        return;
-      }
-
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
-        ts.FunctionDeclaration | ts.FunctionExpression
-      >(node);
-
-      if (!tsNode.type) {
-        report(node, getTsNodeName(tsNode));
-      }
     }
 
     return {
@@ -142,16 +98,6 @@ export default util.createRule<[Options], MessageIds>({
         report(node);
       },
       ArrowFunctionExpression(node) {
-        if (options[OptionKeys.ArrowCallSignature]) {
-          const parent = node.parent!;
-          if (
-            parent.type !== AST_NODE_TYPES.CallExpression &&
-            !isTypedPropertyDeclaration(parent)
-          ) {
-            report(node);
-          }
-        }
-
         if (options[OptionKeys.ArrowParameter]) {
           for (const param of node.params) {
             if (!isTypedParameterDeclaration(param)) {
@@ -182,10 +128,6 @@ export default util.createRule<[Options], MessageIds>({
       'FunctionDeclaration, FunctionExpression'(
         node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
       ) {
-        if (options[OptionKeys.CallSignature]) {
-          visitCallSignature(node);
-        }
-
         if (options[OptionKeys.Parameter]) {
           for (const param of node.params) {
             if (!isTypedParameterDeclaration(param)) {

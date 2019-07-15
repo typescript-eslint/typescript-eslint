@@ -40,18 +40,6 @@ ruleTester.run('typedef', rule, {
     },
     `let a: number;
     [a] = [1];`,
-    // Arrow call signatures
-    `((): void => {})()`,
-    `((): number => 7)()`,
-    {
-      code: `const returns = () => { }`,
-      options: [
-        {
-          arrowCallSignature: false,
-          variableDeclaration: false,
-        },
-      ],
-    },
     // Arrow parameters
     `((a: number): void => {})()`,
     `((a: string, b: string): void => {})()`,
@@ -59,7 +47,6 @@ ruleTester.run('typedef', rule, {
       code: `((a: number): void => { })()`,
       options: [
         {
-          arrowCallSignature: false,
           arrowParameter: false,
         },
       ],
@@ -68,48 +55,10 @@ ruleTester.run('typedef', rule, {
       code: `((a: string, b: string): void => { })()`,
       options: [
         {
-          arrowCallSignature: false,
           arrowParameter: false,
         },
       ],
     },
-    // Call signatures
-    `function returns(): void { }`,
-    {
-      code: `function returns() { }`,
-      options: [
-        {
-          callSignature: false,
-        },
-      ],
-    },
-    {
-      code: `const returns = function () { }`,
-      options: [
-        {
-          callSignature: false,
-          variableDeclaration: false,
-        },
-      ],
-    },
-    `const container: any = {
-      method(): number {
-        return 7;
-      }
-    };`,
-    `const container: any = {
-      get propDef(): number {
-        return 7;
-      }
-    };`,
-    `const container: any = {
-      set propDef(input: number) { }
-    };`,
-    `const container: any = {
-      ["computed"](): boolean {
-        return true;
-      },
-    };`,
     // Member variable declarations
     `class Test {
       state: number;
@@ -297,16 +246,6 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
-    // Arrow call signatures
-    {
-      code: `const returnsVar = () => { }`,
-      errors: [
-        {
-          column: 20,
-          messageId: 'expectedTypedef',
-        },
-      ],
-    },
     // Arrow parameters
     {
       code: `const receivesNumber = (a): void => { }`,
@@ -314,11 +253,6 @@ ruleTester.run('typedef', rule, {
         {
           data: { name: 'a' },
           messageId: 'expectedTypedefNamed',
-        },
-      ],
-      options: [
-        {
-          arrowCallSignature: false,
         },
       ],
     },
@@ -332,77 +266,6 @@ ruleTester.run('typedef', rule, {
         {
           data: { name: 'b' },
           messageId: 'expectedTypedefNamed',
-        },
-      ],
-      options: [
-        {
-          arrowCallSignature: false,
-        },
-      ],
-    },
-    // Call signatures
-    {
-      code: `function returns() { }`,
-      errors: [
-        {
-          data: { name: 'returns' },
-          messageId: 'expectedTypedefNamed',
-        },
-      ],
-    },
-    {
-      code: `const returnsVar = function () { }`,
-      errors: [
-        {
-          column: 20,
-          messageId: 'expectedTypedef',
-        },
-      ],
-    },
-    {
-      code: `const returnsVar = function returnsExpression () { }`,
-      errors: [
-        {
-          data: { name: 'returnsExpression' },
-          messageId: 'expectedTypedefNamed',
-        },
-      ],
-    },
-    {
-      code: `const container: any = {
-        method() {
-          return 7;
-        }
-      };`,
-      errors: [
-        {
-          data: { name: 'method' },
-          messageId: 'expectedTypedefNamed',
-        },
-      ],
-    },
-    {
-      code: `const container: any = {
-        get propDef() {
-          return 7;
-        }
-      };`,
-      errors: [
-        {
-          data: { name: 'propDef' },
-          messageId: 'expectedTypedefNamed',
-        },
-      ],
-    },
-    {
-      code: `const container: any = {
-        ["computed"]() {
-          return true;
-        },
-      };`,
-      errors: [
-        {
-          messageId: 'expectedTypedef',
         },
       ],
     },
