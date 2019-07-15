@@ -1,4 +1,4 @@
-﻿# Roadmap
+# Roadmap
 
 ✅ = done<br>
 🌟 = in ESLint core<br>
@@ -14,7 +14,7 @@
 | --------------------------------- | :-: | ---------------------------------------------------- |
 | [`adjacent-overload-signatures`]  | ✅  | [`@typescript-eslint/adjacent-overload-signatures`]  |
 | [`ban-ts-ignore`]                 | ✅  | [`@typescript-eslint/ban-ts-ignore`]                 |
-| [`ban-types`]                     | ✅  | [`@typescript-eslint/ban-types`]                     |
+| [`ban-types`]                     | 🌓  | [`@typescript-eslint/ban-types`]<sup>[1]</sup>       |
 | [`member-access`]                 | ✅  | [`@typescript-eslint/explicit-member-accessibility`] |
 | [`member-ordering`]               | ✅  | [`@typescript-eslint/member-ordering`]               |
 | [`no-any`]                        | ✅  | [`@typescript-eslint/no-explicit-any`]               |
@@ -35,6 +35,8 @@
 | [`typedef`]                       | 🛑  | N/A                                                  |
 | [`typedef-whitespace`]            | ✅  | [`@typescript-eslint/type-annotation-spacing`]       |
 | [`unified-signatures`]            | ✅  | [`@typescript-eslint/unified-signatures`]            |
+
+<sup>[1]</sup> The ESLint rule only supports exact string matching, rather than regular expressions<br>
 
 ### Functionality
 
@@ -60,7 +62,7 @@
 | [`no-dynamic-delete`]                | ✅  | [`@typescript-eslint/no-dynamic-delete`]                              |
 | [`no-empty`]                         | 🌟  | [`no-empty`][no-empty]                                                |
 | [`no-eval`]                          | 🌟  | [`no-eval`][no-eval]                                                  |
-| [`no-floating-promises`]             | 🛑  | N/A ([relevant plugin][plugin:promise])                               |
+| [`no-floating-promises`]             | ✅  | [`@typescript-eslint/no-floating-promises`]                           |
 | [`no-for-in-array`]                  | ✅  | [`@typescript-eslint/no-for-in-array`]                                |
 | [`no-implicit-dependencies`]         | 🔌  | [`import/no-extraneous-dependencies`]                                 |
 | [`no-inferred-empty-object-type`]    | 🛑  | N/A                                                                   |
@@ -90,7 +92,7 @@
 | [`prefer-object-spread`]             | 🌟  | [`prefer-object-spread`][prefer-object-spread]                        |
 | [`radix`]                            | 🌟  | [`radix`][radix]                                                      |
 | [`restrict-plus-operands`]           | ✅  | [`@typescript-eslint/restrict-plus-operands`]                         |
-| [`strict-boolean-expressions`]       | 🛑  | N/A                                                                   |
+| [`strict-boolean-expressions`]       | ✅  | [`@typescript-eslint/strict-boolean-expressions`]                     |
 | [`strict-type-predicates`]           | 🛑  | N/A                                                                   |
 | [`switch-default`]                   | 🌟  | [`default-case`][default-case]                                        |
 | [`triple-equals`]                    | 🌟  | [`eqeqeq`][eqeqeq]                                                    |
@@ -120,7 +122,7 @@
 | [`no-require-imports`]       | ✅  | [`@typescript-eslint/no-require-imports`]          |
 | [`object-literal-sort-keys`] | 🌓  | [`sort-keys`][sort-keys] <sup>[2]</sup>            |
 | [`prefer-const`]             | 🌟  | [`prefer-const`][prefer-const]                     |
-| [`prefer-readonly`]          | 🛑  | N/A                                                |
+| [`prefer-readonly`]          | ✅  | [`@typescript-eslint/prefer-readonly`]             |
 | [`trailing-comma`]           | 🌓  | [`comma-dangle`][comma-dangle] or [Prettier]       |
 
 <sup>[1]</sup> Only warns when importing deprecated symbols<br>
@@ -608,11 +610,13 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/prefer-for-of`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-for-of.md
 [`@typescript-eslint/prefer-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-interface.md
 [`@typescript-eslint/no-array-constructor`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-array-constructor.md
-[`@typescript-eslint/prefer-function-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-function-type.md
 [`@typescript-eslint/no-dynamic-delete`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-dynamic-delete.md
+[`@typescript-eslint/prefer-function-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-function-type.md
+[`@typescript-eslint/prefer-readonly`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-readonly.md
 [`@typescript-eslint/no-for-in-array`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-for-in-array.md
 [`@typescript-eslint/no-unnecessary-qualifier`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md
 [`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
+[`@typescript-eslint/no-floating-promises`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-floating-promises.md
 
 <!-- eslint-plugin-import -->
 

@@ -15,7 +15,7 @@ import {
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.2.1 <3.5.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.2.1 <3.6.0';
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,

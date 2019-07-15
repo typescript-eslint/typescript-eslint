@@ -180,6 +180,107 @@ const myObj = {
 };
       `,
     },
+    {
+      filename: 'test.ts',
+      code: `
+() => (): void => {};
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => function (): void {};
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return (): void => {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return function (): void {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return (): void => {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return function (): void {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function FunctionDeclaration() {
+  return function FunctionExpression_Within_FunctionDeclaration() {
+    return function FunctionExpression_Within_FunctionExpression() {
+      return () => { // ArrowFunctionExpression_Within_FunctionExpression
+        return () => // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          (): number => 1 // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      }
+    }
+  }
+}
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => () => { return (): void => { return; } };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/679
+    {
+      filename: 'test.ts',
+      code: `
+declare function foo(arg: () => void): void
+foo(() => 1)
+foo(() => {})
+foo(() => null)
+foo(() => true)
+foo(() => '')
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Accumulator {
+  private count: number = 0;
+
+  public accumulate(fn: () => number): void {
+    this.count += fn();
+  }
+}
+
+new Accumulator().accumulate(() => 1);
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -361,6 +462,210 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 4,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => () => {};
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 7,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => function () {};
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 7,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return () => {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 16,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => { return function () {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 16,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return () => {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 24,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function fn() { return function () {} };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 24,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function FunctionDeclaration() {
+  return function FunctionExpression_Within_FunctionDeclaration() {
+    return function FunctionExpression_Within_FunctionExpression() {
+      return () => { // ArrowFunctionExpression_Within_FunctionExpression
+        return () => // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          () => 1 // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      }
+    }
+  }
+}
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 7,
+          column: 11,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+() => () => { return () => { return; } };
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 22,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/679
+    {
+      filename: 'test.ts',
+      code: `
+declare function foo(arg: () => void): void
+foo(() => 1)
+foo(() => {})
+foo(() => null)
+foo(() => true)
+foo(() => '')
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 5,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 6,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 7,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Accumulator {
+  private count: number = 0;
+
+  public accumulate(fn: () => number): void {
+    this.count += fn();
+  }
+}
+
+new Accumulator().accumulate(() => 1);
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 10,
+          column: 30,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+(() => true)()
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 2,
         },
       ],
     },

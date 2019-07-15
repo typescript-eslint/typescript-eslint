@@ -9,13 +9,13 @@ import { TokenInfo } from './TokenInfo';
  * A class to store information on desired offsets of tokens from each other
  */
 export class OffsetStorage {
-  private tokenInfo: TokenInfo;
-  private indentSize: number;
-  private indentType: string;
-  private tree: BinarySearchTree;
-  private lockedFirstTokens: WeakMap<TokenOrComment, TokenOrComment>;
-  private desiredIndentCache: WeakMap<TokenOrComment, string>;
-  private ignoredTokens: WeakSet<TokenOrComment>;
+  private readonly tokenInfo: TokenInfo;
+  private readonly indentSize: number;
+  private readonly indentType: string;
+  private readonly tree: BinarySearchTree;
+  private readonly lockedFirstTokens: WeakMap<TokenOrComment, TokenOrComment>;
+  private readonly desiredIndentCache: WeakMap<TokenOrComment, string>;
+  private readonly ignoredTokens: WeakSet<TokenOrComment>;
   /**
    * @param tokenInfo a TokenInfo instance
    * @param indentSize The desired size of each indentation level
