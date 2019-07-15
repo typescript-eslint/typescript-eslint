@@ -2,7 +2,6 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
 import { ReportFixFunction } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
@@ -25,52 +24,27 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
-
-    function checkDeleteAccessExpression(
-      esNode: TSESTree.Node,
-      tsNode: ts.Node,
-    ): void {
-      if (!ts.isElementAccessExpression(tsNode)) {
-        return;
-      }
-
-      const { argumentExpression } = tsNode;
-      if (isNecessaryDynamicAccess(argumentExpression)) {
-        return;
-      }
-
-      context.report({
-        fix: createFixer(argumentExpression),
-        messageId: 'dynamicDelete',
-        node: esNode,
-      });
-    }
-
     function createFixer(
-      argumentExpression: ts.Expression,
+      member: TSESTree.MemberExpression,
     ): ReportFixFunction | undefined {
-      const start = argumentExpression.getStart() - 1;
-      const width = argumentExpression.getWidth() + 2;
-
-      if (ts.isPrefixUnaryExpression(argumentExpression)) {
-        if (!ts.isNumericLiteral(argumentExpression.operand)) {
-          return undefined;
-        }
-
-        const convertedOperand = argumentExpression.operand.text;
+      if (
+        member.property.type === AST_NODE_TYPES.Literal &&
+        typeof member.property.value === 'string'
+      ) {
+        const { value } = member.property;
         return fixer =>
           fixer.replaceTextRange(
-            [start, start + width],
-            `[${convertedOperand}]`,
+            [member.property.range[0] - 1, member.property.range[1] + 1],
+            `.${value}`,
           );
       }
 
-      if (ts.isStringLiteral(argumentExpression)) {
+      if (member.property.type === AST_NODE_TYPES.Identifier) {
+        const { name } = member.property;
         return fixer =>
           fixer.replaceTextRange(
-            [start, start + width],
-            `.${argumentExpression.text}`,
+            [member.property.range[0] - 1, member.property.range[1] + 1],
+            `.${name}`,
           );
       }
 
@@ -79,37 +53,47 @@ export default util.createRule({
 
     return {
       'UnaryExpression[operator=delete]'(node: TSESTree.UnaryExpression) {
-        if (node.argument.type !== AST_NODE_TYPES.MemberExpression) {
+        if (
+          node.argument.type !== AST_NODE_TYPES.MemberExpression ||
+          !node.argument.computed ||
+          isNecessaryDynamicAccess(
+            diveIntoWrapperExpressions(node.argument.property),
+          )
+        ) {
           return;
         }
 
-        checkDeleteAccessExpression(
-          node.argument.property,
-          parserServices.esTreeNodeToTSNodeMap.get(node.argument),
-        );
+        context.report({
+          fix: createFixer(node.argument),
+          messageId: 'dynamicDelete',
+          node: node.argument.property,
+        });
       },
     };
   },
 });
 
-function isNecessaryDynamicAccess(argumentExpression: ts.Expression): boolean {
-  if (isNumberLike(argumentExpression)) {
+function diveIntoWrapperExpressions(
+  node: TSESTree.Expression,
+): TSESTree.Expression {
+  if (node.type === AST_NODE_TYPES.UnaryExpression) {
+    return diveIntoWrapperExpressions(node.argument);
+  }
+
+  return node;
+}
+
+function isNecessaryDynamicAccess(property: TSESTree.Expression): boolean {
+  if (property.type !== AST_NODE_TYPES.Literal) {
+    return false;
+  }
+
+  if (typeof property.value === 'number') {
     return true;
   }
 
   return (
-    ts.isStringLiteral(argumentExpression) &&
-    !tsutils.isValidPropertyAccess(argumentExpression.text)
+    typeof property.value === 'string' &&
+    !tsutils.isValidPropertyAccess(property.value)
   );
-}
-
-function isNumberLike(node: ts.Node): boolean {
-  if (ts.isPrefixUnaryExpression(node)) {
-    return (
-      ts.isNumericLiteral(node.operand) &&
-      node.operator === ts.SyntaxKind.MinusToken
-    );
-  }
-
-  return ts.isNumericLiteral(node);
 }

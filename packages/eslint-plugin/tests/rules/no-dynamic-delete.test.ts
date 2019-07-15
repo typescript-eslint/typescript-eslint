@@ -23,6 +23,8 @@ ruleTester.run('no-dynamic-delete', rule, {
     `const container: { [i: string]: 0 } = {};
       delete container[-7];`,
     `const container: { [i: string]: 0 } = {};
+      delete container[+7];`,
+    `const container: { [i: string]: 0 } = {};
       delete container['-Infinity'];`,
     `const container: { [i: string]: 0 } = {};
       delete container['+Infinity'];`,
@@ -50,11 +52,6 @@ ruleTester.run('no-dynamic-delete', rule, {
       errors: [{ messageId: 'dynamicDelete' }],
       output: `const container: { [i: string]: 0 } = {};
         delete container.delete;`,
-    },
-    {
-      code: `const container: { [i: string]: 0 } = {};
-        delete container[+7];`,
-      errors: [{ messageId: 'dynamicDelete' }],
     },
     {
       code: `const container: { [i: string]: 0 } = {};
