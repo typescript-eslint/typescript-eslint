@@ -139,7 +139,7 @@ Babel does now support parsing (but not type-checking) TypeScript source code. T
 
 The key trade-off can be summarized as: `babel-eslint` supports additional syntax which TypeScript itself does not, but `typescript-eslint` supports creating rules based on type information, which is not available to babel because there is no type-checker.
 
-Because they are therefore separate projects powered by different underlying tooling, they are currently not intended to be used together.
+Because they are separate projects powered by different underlying tooling, they are currently not intended to be used together.
 
 Some of the people involved in `typescript-eslint` are also involved in Babel and `babel-eslint`, and in this project we are working hard to align on the AST format for non-standard JavaScript syntax. This is an ongoing effort.
 

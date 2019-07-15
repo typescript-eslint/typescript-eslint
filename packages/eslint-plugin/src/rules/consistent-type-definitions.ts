@@ -9,7 +9,7 @@ export default util.createRule({
       description:
         'Consistent with type definition either `interface` or `type`',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      recommended: false,
     },
     messages: {
       interfaceOverType: 'Use an `interface` instead of a `type`',
