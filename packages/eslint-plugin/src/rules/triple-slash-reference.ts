@@ -1,10 +1,5 @@
 import * as util from '../util';
-import {
-  Literal,
-  Node,
-  TSExternalModuleReference,
-} from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree';
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 
 type Options = [
   {
@@ -55,14 +50,14 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ lib, path, types }]) {
-    let programNode: Node;
+    let programNode: TSESTree.Node;
     const sourceCode = context.getSourceCode();
     const references: ({
       comment: TSESTree.Comment;
       importName: string;
     })[] = [];
 
-    function hasMatchingReference(source: Literal) {
+    function hasMatchingReference(source: TSESTree.Literal) {
       references.forEach(reference => {
         if (reference.importName === source.value) {
           context.report({
@@ -78,14 +73,14 @@ export default util.createRule<Options, MessageIds>({
     return {
       ImportDeclaration(node) {
         if (programNode) {
-          const source = node.source as Literal;
+          const source = node.source as TSESTree.Literal;
           hasMatchingReference(source);
         }
       },
       TSImportEqualsDeclaration(node) {
         if (programNode) {
-          const source = (node.moduleReference as TSExternalModuleReference)
-            .expression as Literal;
+          const source = (node.moduleReference as TSESTree.TSExternalModuleReference)
+            .expression as TSESTree.Literal;
           hasMatchingReference(source);
         }
       },
