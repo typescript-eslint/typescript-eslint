@@ -65,13 +65,16 @@ The rule accepts an options object with the following properties:
 type Options = {
   // if true, only functions which are part of a declaration will be checked
   allowExpressions?: boolean;
-  // if true, type annotations are also allowed on the variable of a function expression rather than on the function directly.
+  // if true, type annotations are also allowed on the variable of a function expression rather than on the function directly
   allowTypedFunctionExpressions?: boolean;
+  // if true, functions immediately returning another function expression will not be checked
+  allowHigherOrderFunctions?: boolean;
 };
 
 const defaults = {
   allowExpressions: false,
   allowTypedFunctionExpressions: false,
+  allowHigherOrderFunctions: false,
 };
 ```
 
@@ -121,7 +124,7 @@ let funcExpr: FuncType = function() {
 };
 
 let asTyped = (() => '') as () => string;
-let caasTyped = <() => string>(() => '');
+let castTyped = <() => string>(() => '');
 
 interface ObjectType {
   foo(): number;
@@ -135,6 +138,35 @@ let objectPropAs = {
 let objectPropCast = <ObjectType>{
   foo: () => 1,
 };
+
+declare functionWithArg(arg: () => number);
+functionWithArg(() => 1);
+```
+
+### allowHigherOrderFunctions
+
+Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
+
+```ts
+var arrowFn = (x: number) => (y: number) => x + y;
+
+function fn(x: number) {
+  return function(y: number) {
+    return x + y;
+  };
+}
+```
+
+Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
+
+```ts
+var arrowFn = (x: number) => (y: number): number => x + y;
+
+function fn(x: number) {
+  return function(y: number): number {
+    return x + y;
+  };
+}
 ```
 
 ## When Not To Use It

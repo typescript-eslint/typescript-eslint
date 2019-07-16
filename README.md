@@ -58,7 +58,7 @@ One advantage is there is no tooling required to reconcile differences between A
 
 Palantir, the backers behind TSLint announced earlier this year that **they would be deprecating TSLint in favor of supporting `typescript-eslint`** in order to benefit the community. You can read more about that here: https://medium.com/palantir/tslint-in-2019-1a144c2317a9
 
-The TypeScript Team themselves also announced their plans to move the TypeScript codebase from TSLint to `typescript-eslint`, and they have been big supporters of this project.
+The TypeScript Team themselves also announced their plans to move the TypeScript codebase from TSLint to `typescript-eslint`, and they have been big supporters of this project. More details at https://github.com/microsoft/TypeScript/issues/30553
 
 <br>
 
@@ -76,7 +76,7 @@ For example:
 var x: number = 1;
 ```
 
-This is not valid JavaScript code, because it contains a so called type-annotation. When the TypeScript Compiler parses this code to produce a TypeScript AST, that `: number` syntax will be represented in the tree, and this is simply not something that ESLint can understand without additional help.
+This is not valid JavaScript code, because it contains a so-called type annotation. When the TypeScript Compiler parses this code to produce a TypeScript AST, that `: number` syntax will be represented in the tree, and this is simply not something that ESLint can understand without additional help.
 
 However, we can leverage the fact that ESLint has been designed with these use-cases in mind!
 
@@ -139,7 +139,7 @@ Babel does now support parsing (but not type-checking) TypeScript source code. T
 
 The key trade-off can be summarized as: `babel-eslint` supports additional syntax which TypeScript itself does not, but `typescript-eslint` supports creating rules based on type information, which is not available to babel because there is no type-checker.
 
-Because they are therefore separate projects powered by different underlying tooling, they are currently not intended to be used together.
+Because they are separate projects powered by different underlying tooling, they are currently not intended to be used together.
 
 Some of the people involved in `typescript-eslint` are also involved in Babel and `babel-eslint`, and in this project we are working hard to align on the AST format for non-standard JavaScript syntax. This is an ongoing effort.
 
@@ -203,7 +203,7 @@ The `canary` (latest master) version is:
 
 We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
 
-**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.5.0`.**
+**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.6.0`.**
 
 This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
@@ -227,4 +227,4 @@ Thanks goes to the wonderful people listed in [`CONTRIBUTORS.md`](./CONTRIBUTORS
 
 ## Contributing Guide
 
-COMING SOON!
+COMING SOON

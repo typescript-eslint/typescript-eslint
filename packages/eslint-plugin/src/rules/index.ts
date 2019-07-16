@@ -5,6 +5,7 @@ import banTsIgnore from './ban-ts-ignore';
 import banTypes from './ban-types';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
+import consistentTypeDefinitions from './consistent-type-definitions';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import funcCallSpacing from './func-call-spacing';
@@ -16,14 +17,17 @@ import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import noAngleBracketTypeAssertion from './no-angle-bracket-type-assertion';
 import noArrayConstructor from './no-array-constructor';
+import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
 import noExtraParens from './no-extra-parens';
 import noExtraneousClass from './no-extraneous-class';
+import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noInferrableTypes from './no-inferrable-types';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
+import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
 import noNonNullAssertion from './no-non-null-assertion';
 import noObjectLiteralTypeAssertion from './no-object-literal-type-assertion';
@@ -43,14 +47,17 @@ import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
 import preferInterface from './prefer-interface';
 import preferNamespaceKeyword from './prefer-namespace-keyword';
+import preferReadonly from './prefer-readonly';
 import preferRegexpExec from './prefer-regexp-exec';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
 import promiseFunctionAsync from './promise-function-async';
 import requireArraySortCompare from './require-array-sort-compare';
 import restrictPlusOperands from './restrict-plus-operands';
 import semi from './semi';
-import typedef from './typedef';
+import strictBooleanExpressions from './strict-boolean-expressions';
+import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
+import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
 
@@ -62,6 +69,7 @@ export default {
   'ban-types': banTypes,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
+  'consistent-type-definitions': consistentTypeDefinitions,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
   'func-call-spacing': funcCallSpacing,
@@ -73,14 +81,17 @@ export default {
   'member-ordering': memberOrdering,
   'no-angle-bracket-type-assertion': noAngleBracketTypeAssertion,
   'no-array-constructor': noArrayConstructor,
+  'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
   'no-extra-parens': noExtraParens,
   'no-extraneous-class': noExtraneousClass,
+  'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
   'no-inferrable-types': noInferrableTypes,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
+  'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
   'no-non-null-assertion': noNonNullAssertion,
   'no-object-literal-type-assertion': noObjectLiteralTypeAssertion,
@@ -100,14 +111,17 @@ export default {
   'prefer-includes': preferIncludes,
   'prefer-interface': preferInterface,
   'prefer-namespace-keyword': preferNamespaceKeyword,
+  'prefer-readonly': preferReadonly,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'promise-function-async': promiseFunctionAsync,
   'require-array-sort-compare': requireArraySortCompare,
   'restrict-plus-operands': restrictPlusOperands,
-  semi: semi,
-  typedef: typedef,
+  'strict-boolean-expressions': strictBooleanExpressions,
+  'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
+  semi: semi,
+  typedef: typedef,
 };

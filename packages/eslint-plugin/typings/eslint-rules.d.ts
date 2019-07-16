@@ -155,6 +155,24 @@ declare module 'eslint/lib/rules/no-dupe-args' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-empty-function' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'unexpected',
+    [
+      {
+        allow?: string[];
+      }
+    ],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-implicit-globals' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
@@ -180,6 +198,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         enforceConst?: boolean;
         detectObjects?: boolean;
         ignoreNumericLiteralTypes?: boolean;
+        ignoreEnums?: boolean;
       }
     ],
     {

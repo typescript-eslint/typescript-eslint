@@ -1,5 +1,8 @@
-import rule from '../../src/rules/no-explicit-any';
+import rule, { MessageIds, Options } from '../../src/rules/no-explicit-any';
 import { RuleTester } from '../RuleTester';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+
+type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, Options>;
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -129,8 +132,65 @@ type obj = {
     message: string & Array<Array<string>>;
 }
         `,
+    // https://github.com/eslint/typescript-eslint-parser/issues/397
+    {
+      code: `
+        function foo(a: number, ...rest: any[]): void {
+          return;
+        }
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function foo1(...args: any[]) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const bar1 = function (...args: any[]) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const baz1 = (...args: any[]) => {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function foo2(...args: readonly any[]) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const bar2 = function (...args: readonly any[]) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const baz2 = (...args: readonly any[]) => {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function foo3(...args: Array<any>) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const bar3 = function (...args: Array<any>) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const baz3 = (...args: Array<any>) => {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function foo4(...args: ReadonlyArray<any>) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const bar4 = function (...args: ReadonlyArray<any>) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `const baz4 = (...args: ReadonlyArray<any>) => {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
   ],
-  invalid: [
+  invalid: ([
     {
       code: 'const number: any = 1',
       errors: [
@@ -679,5 +739,71 @@ type obj = {
         },
       ],
     },
-  ],
+    {
+      // https://github.com/eslint/typescript-eslint-parser/issues/397
+      code: `
+        function foo(a: number, ...rest: any[]): void {
+          return;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 2,
+          column: 42,
+        },
+      ],
+    },
+    {
+      code: `function foo5(...args: any) {}`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 24,
+        },
+      ],
+    },
+    {
+      code: `const bar5 = function (...args: any) {}`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 33,
+        },
+      ],
+    },
+    {
+      code: `const baz5 = (...args: any) => {}`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 24,
+        },
+      ],
+    },
+  ] as InvalidTestCase[]).reduce<InvalidTestCase[]>((acc, testCase) => {
+    acc.push(testCase);
+    const options = testCase.options || [];
+    const code = `// fixToUnknown: true\n${testCase.code}`;
+    acc.push({
+      code,
+      output: code.replace(/any/g, 'unknown'),
+      options: [{ ...options[0], fixToUnknown: true }],
+      errors: testCase.errors.map(err => {
+        if (err.line === undefined) {
+          return err;
+        }
+
+        return { ...err, line: err.line + 1 };
+      }),
+    });
+
+    return acc;
+  }, []),
 });

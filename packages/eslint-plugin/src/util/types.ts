@@ -1,5 +1,4 @@
 import {
-  isTypeFlagSet,
   isTypeReference,
   isUnionOrIntersectionType,
   unionTypeParts,
@@ -13,10 +12,11 @@ import ts from 'typescript';
  */
 export function containsTypeByName(
   type: ts.Type,
+  allowAny: boolean,
   allowedNames: Set<string>,
 ): boolean {
   if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
-    return true;
+    return !allowAny;
   }
 
   if (isTypeReference(type)) {
@@ -31,13 +31,13 @@ export function containsTypeByName(
   }
 
   if (isUnionOrIntersectionType(type)) {
-    return type.types.some(t => containsTypeByName(t, allowedNames));
+    return type.types.some(t => containsTypeByName(t, allowAny, allowedNames));
   }
 
   const bases = type.getBaseTypes();
   return (
     typeof bases !== 'undefined' &&
-    bases.some(t => containsTypeByName(t, allowedNames))
+    bases.some(t => containsTypeByName(t, allowAny, allowedNames))
   );
 }
 
@@ -115,18 +115,24 @@ export function getConstrainedTypeAtLocation(
  * Checks if the given type is (or accepts) nullable
  * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
  */
-export function isNullableType(type: ts.Type, isReceiver?: boolean): boolean {
-  let flags: ts.TypeFlags = 0;
-  for (const t of unionTypeParts(type)) {
-    flags |= t.flags;
+export function isNullableType(
+  type: ts.Type,
+  {
+    isReceiver = false,
+    allowUndefined = true,
+  }: { isReceiver?: boolean; allowUndefined?: boolean } = {},
+): boolean {
+  const flags = getTypeFlags(type);
+
+  if (isReceiver && flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+    return true;
   }
 
-  flags =
-    isReceiver && flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)
-      ? -1
-      : flags;
-
-  return (flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
+  if (allowUndefined) {
+    return (flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
+  } else {
+    return (flags & ts.TypeFlags.Null) !== 0;
+  }
 }
 
 /**
@@ -135,6 +141,71 @@ export function isNullableType(type: ts.Type, isReceiver?: boolean): boolean {
 export function getDeclaration(
   checker: ts.TypeChecker,
   node: ts.Expression,
-): ts.Declaration {
-  return checker.getSymbolAtLocation(node)!.declarations![0];
+): ts.Declaration | null {
+  const symbol = checker.getSymbolAtLocation(node);
+  if (!symbol) {
+    return null;
+  }
+  const declarations = symbol.declarations;
+  if (!declarations) {
+    return null;
+  }
+
+  return declarations[0];
 }
+
+/**
+ * Gets all of the type flags in a type, iterating through unions automatically
+ */
+export function getTypeFlags(type: ts.Type): ts.TypeFlags {
+  let flags: ts.TypeFlags = 0;
+  for (const t of unionTypeParts(type)) {
+    flags |= t.flags;
+  }
+  return flags;
+}
+
+/**
+ * Checks if the given type is (or accepts) the given flags
+ * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
+ */
+export function isTypeFlagSet(
+  type: ts.Type,
+  flagsToCheck: ts.TypeFlags,
+  isReceiver?: boolean,
+): boolean {
+  const flags = getTypeFlags(type);
+
+  if (isReceiver && flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+    return true;
+  }
+
+  return (flags & flagsToCheck) !== 0;
+}
+
+/**
+ * @returns Whether a type is an instance of the parent type, including for the parent's base types.
+ */
+export const typeIsOrHasBaseType = (type: ts.Type, parentType: ts.Type) => {
+  if (type.symbol === undefined || parentType.symbol === undefined) {
+    return false;
+  }
+
+  const typeAndBaseTypes = [type];
+  const ancestorTypes = type.getBaseTypes();
+
+  if (ancestorTypes !== undefined) {
+    typeAndBaseTypes.push(...ancestorTypes);
+  }
+
+  for (const baseType of typeAndBaseTypes) {
+    if (
+      baseType.symbol !== undefined &&
+      baseType.symbol.name === parentType.symbol.name
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
