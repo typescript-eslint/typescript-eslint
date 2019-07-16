@@ -45,6 +45,7 @@
     "@typescript-eslint/no-triple-slash-reference": "error",
     "@typescript-eslint/no-type-alias": "error",
     "@typescript-eslint/no-unnecessary-qualifier": "error",
+    "@typescript-eslint/no-unnecessary-type-arguments": "error",
     "@typescript-eslint/no-unnecessary-type-assertion": "error",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
@@ -66,7 +67,6 @@
     "@typescript-eslint/semi": "error",
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/unbound-method": "error",
-    "@typescript-eslint/unified-signatures": "error",
-    "@typescript-eslint/use-default-type-parameter": "error"
+    "@typescript-eslint/unified-signatures": "error"
   }
 }

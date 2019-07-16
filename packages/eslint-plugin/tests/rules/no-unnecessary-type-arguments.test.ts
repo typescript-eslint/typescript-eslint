@@ -1,5 +1,5 @@
 import path from 'path';
-import rule from '../../src/rules/use-default-type-parameter';
+import rule from '../../src/rules/no-unnecessary-type-arguments';
 import { RuleTester } from '../RuleTester';
 
 const rootDir = path.join(process.cwd(), 'tests/fixtures');
@@ -12,7 +12,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('use-default-type-parameter', rule, {
+ruleTester.run('no-unnecessary-type-arguments', rule, {
   valid: [
     `function f<T = number>() { }
       f();`,

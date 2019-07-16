@@ -22,7 +22,7 @@ type ParameterCapableTSNode =
 type MessageIds = 'unnecessaryTypeParameter';
 
 export default util.createRule<[], MessageIds>({
-  name: 'use-default-type-parameter',
+  name: 'no-unnecessary-type-arguments',
   meta: {
     docs: {
       description:

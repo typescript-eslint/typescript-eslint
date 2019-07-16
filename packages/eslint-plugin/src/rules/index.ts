@@ -55,7 +55,7 @@ import semi from './semi';
 import typeAnnotationSpacing from './type-annotation-spacing';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
-import useDefaultTypeParameter from './use-default-type-parameter';
+import useDefaultTypeParameter from './no-unnecessary-type-arguments';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -96,6 +96,7 @@ export default {
   'no-triple-slash-reference': noTripleSlashReference,
   'no-type-alias': noTypeAlias,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
+  'no-unnecessary-type-arguments': useDefaultTypeParameter,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
@@ -111,9 +112,8 @@ export default {
   'promise-function-async': promiseFunctionAsync,
   'require-array-sort-compare': requireArraySortCompare,
   'restrict-plus-operands': restrictPlusOperands,
-  semi: semi,
   'type-annotation-spacing': typeAnnotationSpacing,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
-  'use-default-type-parameter': useDefaultTypeParameter,
+  semi: semi,
 };

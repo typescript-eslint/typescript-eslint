@@ -98,7 +98,7 @@
 | [`triple-equals`]                    | 🌟  | [`eqeqeq`][eqeqeq]                                                    |
 | [`typeof-compare`]                   | 🌟  | [`valid-typeof`][valid-typeof]                                        |
 | [`unnecessary-constructor`]          | 🌟  | [`no-useless-constructor`][no-useless-constructor]                    |
-| [`use-default-type-parameter`]       | ✅  | [`@typescript-eslint/use-default-type-parameter`]                     |
+| [`use-default-type-parameter`]       | ✅  | [`@typescript-eslint/no-unnecessary-type-arguments`]                  |
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                              |
 
 <sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)<br>
@@ -613,9 +613,9 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/prefer-function-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-function-type.md
 [`@typescript-eslint/no-for-in-array`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-for-in-array.md
 [`@typescript-eslint/no-unnecessary-qualifier`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md
+[`@typescript-eslint/no-unnecessary-type-arguments`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-type-arguments.md
 [`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
 [`@typescript-eslint/no-floating-promises`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-floating-promises.md
-[`@typescript-eslint/use-default-type-parameter`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/use-default-type-parameter.md
 
 <!-- eslint-plugin-import -->
 
