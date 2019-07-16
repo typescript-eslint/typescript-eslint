@@ -1,10 +1,10 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  TSESLint,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
-import { ReportFixFunction } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 
 export default util.createRule({
   name: 'no-dynamic-delete',
@@ -26,7 +26,7 @@ export default util.createRule({
   create(context) {
     function createFixer(
       member: TSESTree.MemberExpression,
-    ): ReportFixFunction | undefined {
+    ): TSESLint.ReportFixFunction | undefined {
       if (
         member.property.type === AST_NODE_TYPES.Literal &&
         typeof member.property.value === 'string'
