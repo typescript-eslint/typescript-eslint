@@ -4,7 +4,7 @@ import { Program } from 'typescript';
 const TSLintLinter = Linter as any;
 
 export class CustomLinter extends TSLintLinter {
-  constructor(options: ILinterOptions, private program: Program) {
+  constructor(options: ILinterOptions, private readonly program: Program) {
     super(options, program);
   }
 

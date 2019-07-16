@@ -182,3 +182,30 @@ export function isTypeFlagSet(
 
   return (flags & flagsToCheck) !== 0;
 }
+
+/**
+ * @returns Whether a type is an instance of the parent type, including for the parent's base types.
+ */
+export const typeIsOrHasBaseType = (type: ts.Type, parentType: ts.Type) => {
+  if (type.symbol === undefined || parentType.symbol === undefined) {
+    return false;
+  }
+
+  const typeAndBaseTypes = [type];
+  const ancestorTypes = type.getBaseTypes();
+
+  if (ancestorTypes !== undefined) {
+    typeAndBaseTypes.push(...ancestorTypes);
+  }
+
+  for (const baseType of typeAndBaseTypes) {
+    if (
+      baseType.symbol !== undefined &&
+      baseType.symbol.name === parentType.symbol.name
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};

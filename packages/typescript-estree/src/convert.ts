@@ -43,9 +43,9 @@ export function convertError(error: any) {
 
 export class Converter {
   private readonly ast: ts.SourceFile;
-  private options: ConverterOptions;
-  private esTreeNodeToTSNodeMap = new WeakMap();
-  private tsNodeToESTreeNodeMap = new WeakMap();
+  private readonly options: ConverterOptions;
+  private readonly esTreeNodeToTSNodeMap = new WeakMap();
+  private readonly tsNodeToESTreeNodeMap = new WeakMap();
 
   private allowPattern: boolean = false;
   private inTypeMode: boolean = false;
