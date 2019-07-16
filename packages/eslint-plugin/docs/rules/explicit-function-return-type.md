@@ -138,6 +138,9 @@ let objectPropAs = {
 let objectPropCast = <ObjectType>{
   foo: () => 1,
 };
+
+declare functionWithArg(arg: () => number);
+functionWithArg(() => 1);
 ```
 
 ### allowHigherOrderFunctions
