@@ -1,5 +1,4 @@
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import * as ts from 'typescript';
 import * as util from '../util';
 
 const enum OptionKeys {
@@ -53,8 +52,6 @@ export default util.createRule<[Options], MessageIds>({
     },
   ],
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-
     function report(location: TSESTree.Node, name?: string) {
       context.report({
         node: location,
@@ -63,114 +60,76 @@ export default util.createRule<[Options], MessageIds>({
       });
     }
 
-    function getEsNodeName(esNode: TSESTree.Parameter | TSESTree.PropertyName) {
-      return esNode.type === AST_NODE_TYPES.Identifier
-        ? esNode.name
-        : undefined;
+    function getNodeName(node: TSESTree.Parameter | TSESTree.PropertyName) {
+      return node.type === AST_NODE_TYPES.Identifier ? node.name : undefined;
     }
 
-    function isTypedParameterDeclaration(esNode: TSESTree.Parameter) {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(esNode)
-        .parent as ts.ParameterDeclaration;
-
-      return tsNode.type !== undefined;
-    }
-
-    function isTypedVariableDeclaration(esNode: TSESTree.Node) {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(esNode) as
-        | ts.FunctionLike
-        | ts.VariableDeclaration;
-
-      return tsNode.type !== undefined;
+    function checkParameters(params: TSESTree.Parameter[]) {
+      for (const param of params) {
+        if (
+          param.type !== AST_NODE_TYPES.TSParameterProperty &&
+          !param.typeAnnotation
+        ) {
+          report(param, getNodeName(param));
+        }
+      }
     }
 
     return {
       ArrayPattern(node) {
-        if (!options[OptionKeys.ArrayDestructuring]) {
-          return;
+        if (options[OptionKeys.ArrayDestructuring] && !node.typeAnnotation) {
+          report(node);
         }
-
-        const parent = node.parent;
-        if (!parent || isTypedVariableDeclaration(parent)) {
-          return;
-        }
-
-        report(node);
       },
       ArrowFunctionExpression(node) {
         if (options[OptionKeys.ArrowParameter]) {
-          for (const param of node.params) {
-            if (!isTypedParameterDeclaration(param)) {
-              report(param, getEsNodeName(param));
-            }
-          }
+          checkParameters(node.params);
         }
       },
       ClassProperty(node) {
-        if (!options[OptionKeys.MemberVariableDeclaration]) {
-          return;
+        if (
+          options[OptionKeys.MemberVariableDeclaration] &&
+          !node.typeAnnotation
+        ) {
+          report(
+            node,
+            node.key.type === AST_NODE_TYPES.Identifier
+              ? node.key.name
+              : undefined,
+          );
         }
-
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.PropertyDeclaration
-        >(node);
-        if (tsNode.type !== undefined) {
-          return;
-        }
-
-        report(
-          node,
-          node.key.type === AST_NODE_TYPES.Identifier
-            ? node.key.name
-            : undefined,
-        );
       },
       'FunctionDeclaration, FunctionExpression'(
         node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
       ) {
         if (options[OptionKeys.Parameter]) {
-          for (const param of node.params) {
-            if (!isTypedParameterDeclaration(param)) {
-              report(param, getEsNodeName(param));
-            }
-          }
+          checkParameters(node.params);
         }
       },
       ObjectPattern(node) {
-        if (!options[OptionKeys.ObjectDestructuring]) {
-          return;
+        if (options[OptionKeys.ObjectDestructuring] && !node.typeAnnotation) {
+          report(node);
         }
-
-        const parent = node.parent;
-        if (!parent || isTypedVariableDeclaration(parent)) {
-          return;
-        }
-
-        report(node);
       },
       'TSIndexSignature, TSPropertySignature'(
         node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
       ) {
-        if (!options[OptionKeys.PropertyDeclaration] || node.typeAnnotation) {
-          return;
+        if (options[OptionKeys.PropertyDeclaration] && !node.typeAnnotation) {
+          report(
+            node,
+            node.type === AST_NODE_TYPES.TSPropertySignature
+              ? getNodeName(node.key)
+              : undefined,
+          );
         }
-
-        report(
-          node,
-          node.type === AST_NODE_TYPES.TSPropertySignature
-            ? getEsNodeName(node.key)
-            : undefined,
-        );
       },
       VariableDeclarator(node) {
         if (
-          !options[OptionKeys.VariableDeclaration] ||
-          node.id.typeAnnotation
+          options[OptionKeys.VariableDeclaration] &&
+          !node.id.typeAnnotation
         ) {
-          return;
+          report(node, getNodeName(node.id));
         }
-
-        report(node, getEsNodeName(node.id));
       },
     };
   },
