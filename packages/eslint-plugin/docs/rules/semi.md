@@ -1,12 +1,15 @@
 # require or disallow semicolons instead of ASI (semi)
 
-This rule enforces consistent use of semicolons.
+This rule enforces consistent use of semicolons after statements.
 
 ## Rule Details
 
 This rule extends the base [eslint/semi](https://eslint.org/docs/rules/semi) rule.
 It supports all options and features of the base rule.
 This version adds support for numerous typescript features.
+
+See also the [@typescript-eslint/member-delimiter-style](member-delimiter-style.md) rule,
+which allows you to specify the delimiter for `type` and `interface` members.
 
 ## How to use
 
