@@ -9,7 +9,7 @@ It supports all options and features of the base rule.
 This version adds support for numerous typescript features.
 
 See also the [@typescript-eslint/member-delimiter-style](member-delimiter-style.md) rule,
-which by default requires members to be delimited by semicolons.
+which allows you to specify the delimiter for `type` and `interface` members.
 
 ## How to use
 
