@@ -649,9 +649,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -938,9 +939,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -1117,9 +1119,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -1296,9 +1299,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -1514,9 +1518,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -1803,9 +1808,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -2092,9 +2098,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -2271,9 +2278,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -2450,9 +2458,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -2629,9 +2638,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -2808,9 +2818,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -3097,9 +3108,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -3386,9 +3398,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -3565,9 +3578,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -3744,9 +3758,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -4033,9 +4048,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -4212,9 +4228,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
@@ -4391,9 +4408,10 @@ Object {
     "type": "Program",
   },
   "services": Object {
-    "esTreeNodeToTSNodeMap": undefined,
-    "program": undefined,
-    "tsNodeToESTreeNodeMap": undefined,
+    "esTreeNodeToTSNodeMap": WeakMap {},
+    "hasFullTypeInformation": false,
+    "program": Object {},
+    "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;

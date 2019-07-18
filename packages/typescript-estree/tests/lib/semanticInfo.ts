@@ -206,7 +206,7 @@ describe('semanticInfo', () => {
       },
     );
 
-    expect(parseResult.services.program).toBeUndefined();
+    expect(parseResult.services.program).toBeDefined();
 
     // get bound name
     const boundName = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
@@ -229,7 +229,7 @@ describe('semanticInfo', () => {
       { ...createOptions('<input>'), project: undefined },
     );
 
-    expect(parseResult.services.program).toBeUndefined();
+    expect(parseResult.services.program).toBeDefined();
   });
 
   it(`non-existent file should throw error when project provided`, () => {
