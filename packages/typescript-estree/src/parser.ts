@@ -9,6 +9,7 @@ import { TSESTree } from './ts-estree';
 import {
   calculateProjectParserOptions,
   createProgram,
+  unusedVarsOptions,
 } from './tsconfig-parser';
 
 /**
@@ -57,7 +58,7 @@ function resetExtra(): void {
     code: '',
     tsconfigRootDir: process.cwd(),
     extraFileExtensions: [],
-    preserveNodeMaps: undefined,
+    preserveNodeMaps: true,
   };
 }
 
@@ -90,8 +91,11 @@ function getASTFromProject(code: string, options: TSESTreeOptions) {
 function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
   const fileName = options.filePath || getFileName(options);
   const program = createProgram(code, fileName, extra);
-  const ast = program && program.getSourceFile(fileName);
-  return ast && { ast, program };
+  if (program) {
+    const ast = program.getSourceFile(fileName);
+    return ast && { ast, program };
+  }
+  return null;
 }
 
 /**
@@ -142,6 +146,7 @@ function createNewProgram(code: string) {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined,
+      ...unusedVarsOptions,
     },
     compilerHost,
   );
@@ -245,13 +250,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   /**
    * Allow the user to enable or disable the preservation of the AST node maps
    * during the conversion process.
-   *
-   * NOTE: For backwards compatibility we also preserve node maps in the case where `project` is set,
-   * and `preserveNodeMaps` is not explicitly set to anything.
    */
   extra.preserveNodeMaps =
     typeof options.preserveNodeMaps === 'boolean' && options.preserveNodeMaps;
-  if (options.preserveNodeMaps === undefined && extra.projects.length > 0) {
+  if (options.preserveNodeMaps === undefined) {
     extra.preserveNodeMaps = true;
   }
 }
@@ -291,6 +293,7 @@ export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
 // Public
 //------------------------------------------------------------------------------
 
+// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 export const version: string = require('../package.json').version;
 
 export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
@@ -386,18 +389,12 @@ export function parseAndGenerateServices<
     shouldProvideParserServices,
   );
   /**
-   * Determine whether or not two-way maps of converted AST nodes should be preserved
-   * during the conversion process
-   */
-  const shouldPreserveNodeMaps =
-    extra.preserveNodeMaps !== undefined
-      ? extra.preserveNodeMaps
-      : shouldProvideParserServices;
-  /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
    * mappings between converted and original AST nodes
    */
-  const { estree, astMaps } = convert(ast, extra, shouldPreserveNodeMaps);
+  const preserveNodeMaps =
+    typeof extra.preserveNodeMaps === 'boolean' ? extra.preserveNodeMaps : true;
+  const { estree, astMaps } = convert(ast, extra, preserveNodeMaps);
   /**
    * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
    * there may be other syntactic or semantic issues in the code that we can optionally report on.
@@ -414,15 +411,10 @@ export function parseAndGenerateServices<
   return {
     ast: estree as AST<T>,
     services: {
-      program: shouldProvideParserServices ? program : undefined,
-      esTreeNodeToTSNodeMap:
-        shouldPreserveNodeMaps && astMaps
-          ? astMaps.esTreeNodeToTSNodeMap
-          : undefined,
-      tsNodeToESTreeNodeMap:
-        shouldPreserveNodeMaps && astMaps
-          ? astMaps.tsNodeToESTreeNodeMap
-          : undefined,
+      hasFullTypeInformation: shouldProvideParserServices,
+      program,
+      esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
+      tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
     },
   };
 }

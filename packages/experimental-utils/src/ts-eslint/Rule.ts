@@ -169,7 +169,7 @@ interface RuleContext<
   /**
    * An object containing parser-provided services for rules
    */
-  parserServices?: ParserServices;
+  parserServices: ParserServices;
 
   /**
    * Returns an array of the ancestors of the currently-traversed node, starting at

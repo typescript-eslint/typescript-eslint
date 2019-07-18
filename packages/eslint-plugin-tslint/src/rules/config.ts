@@ -1,7 +1,4 @@
-import {
-  ESLintUtils,
-  ParserServices,
-} from '@typescript-eslint/experimental-utils';
+import { ESLintUtils } from '@typescript-eslint/experimental-utils';
 import memoize from 'lodash.memoize';
 import { Configuration, RuleSeverity } from 'tslint';
 import { CustomLinter } from '../custom-linter';
@@ -99,17 +96,7 @@ export default createRule<Options, MessageIds>({
   create(context) {
     const fileName = context.getFilename();
     const sourceCode = context.getSourceCode().text;
-    const parserServices: ParserServices | undefined = context.parserServices;
-
-    /**
-     * The user needs to have configured "project" in their parserOptions
-     * for @typescript-eslint/parser
-     */
-    if (!parserServices || !parserServices.program) {
-      throw new Error(
-        `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`,
-      );
-    }
+    const parserServices = ESLintUtils.getParserServices(context);
 
     /**
      * The TSLint rules configuration passed in by the user

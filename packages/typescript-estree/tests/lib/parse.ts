@@ -88,7 +88,7 @@ describe('parse()', () => {
           tokens: expect.any(Array),
           tsconfigRootDir: expect.any(String),
           useJSXTextNode: false,
-          preserveNodeMaps: false,
+          preserveNodeMaps: true,
         },
         false,
       );
@@ -159,11 +159,15 @@ describe('parse()', () => {
       );
     });
 
-    it('should not preserve node maps by default for parseAndGenerateServices(), unless `project` is set', () => {
+    it('should preserve node maps by default for parseAndGenerateServices()', () => {
       const noOptionSet = parser.parseAndGenerateServices(code, baseConfig);
 
-      expect(noOptionSet.services.esTreeNodeToTSNodeMap).toBeUndefined();
-      expect(noOptionSet.services.tsNodeToESTreeNodeMap).toBeUndefined();
+      expect(noOptionSet.services.esTreeNodeToTSNodeMap).toEqual(
+        expect.any(WeakMap),
+      );
+      expect(noOptionSet.services.tsNodeToESTreeNodeMap).toEqual(
+        expect.any(WeakMap),
+      );
 
       const withProjectNoOptionSet = parser.parseAndGenerateServices(code, {
         ...baseConfig,
@@ -178,53 +182,50 @@ describe('parse()', () => {
       );
     });
 
-    it('should preserve node maps for parseAndGenerateServices() when option is `true`, regardless of `project` config', () => {
-      const optionSetToTrue = parser.parseAndGenerateServices(code, {
-        ...baseConfig,
-        preserveNodeMaps: true,
-      });
-
-      expect(optionSetToTrue.services.esTreeNodeToTSNodeMap).toEqual(
-        expect.any(WeakMap),
-      );
-      expect(optionSetToTrue.services.tsNodeToESTreeNodeMap).toEqual(
-        expect.any(WeakMap),
-      );
-
-      const withProjectOptionSetToTrue = parser.parseAndGenerateServices(code, {
-        ...baseConfig,
-        preserveNodeMaps: true,
-        project: './tsconfig.json',
-      });
-
-      expect(withProjectOptionSetToTrue.services.esTreeNodeToTSNodeMap).toEqual(
-        expect.any(WeakMap),
-      );
-      expect(withProjectOptionSetToTrue.services.tsNodeToESTreeNodeMap).toEqual(
-        expect.any(WeakMap),
-      );
-    });
-
-    it('should not preserve node maps for parseAndGenerateServices() when option is `false`, regardless of `project` config', () => {
+    function checkNodeMaps(setting: boolean): void {
       const optionSetToFalse = parser.parseAndGenerateServices(code, {
         ...baseConfig,
-        preserveNodeMaps: false,
+        preserveNodeMaps: setting,
       });
 
-      expect(optionSetToFalse.services.esTreeNodeToTSNodeMap).toBeUndefined();
-      expect(optionSetToFalse.services.tsNodeToESTreeNodeMap).toBeUndefined();
+      expect(
+        optionSetToFalse.services.esTreeNodeToTSNodeMap.has(
+          optionSetToFalse.ast.body[0],
+        ),
+      ).toBe(setting);
+      expect(
+        optionSetToFalse.services.tsNodeToESTreeNodeMap.has(
+          optionSetToFalse.services.program.getSourceFile('estree.ts'),
+        ),
+      ).toBe(setting);
 
       const withProjectOptionSetToFalse = parser.parseAndGenerateServices(
         code,
-        { ...baseConfig, preserveNodeMaps: false, project: './tsconfig.json' },
+        {
+          ...baseConfig,
+          preserveNodeMaps: setting,
+          project: './tsconfig.json',
+        },
       );
 
       expect(
-        withProjectOptionSetToFalse.services.esTreeNodeToTSNodeMap,
-      ).toBeUndefined();
+        withProjectOptionSetToFalse.services.esTreeNodeToTSNodeMap.has(
+          withProjectOptionSetToFalse.ast.body[0],
+        ),
+      ).toBe(setting);
       expect(
-        withProjectOptionSetToFalse.services.tsNodeToESTreeNodeMap,
-      ).toBeUndefined();
-    });
+        withProjectOptionSetToFalse.services.tsNodeToESTreeNodeMap.has(
+          withProjectOptionSetToFalse.services.program.getSourceFile(
+            'estree.ts',
+          ),
+        ),
+      ).toBe(setting);
+    }
+
+    it('should preserve node maps for parseAndGenerateServices() when option is `true`, regardless of `project` config', () =>
+      checkNodeMaps(true));
+
+    it('should not preserve node maps for parseAndGenerateServices() when option is `false`, regardless of `project` config', () =>
+      checkNodeMaps(false));
   });
 });

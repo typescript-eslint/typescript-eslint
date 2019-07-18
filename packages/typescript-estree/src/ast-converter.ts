@@ -42,7 +42,7 @@ export default function astConverter(
     estree.comments = convertComments(ast, extra.code);
   }
 
-  const astMaps = shouldPreserveNodeMaps ? instance.getASTMaps() : undefined;
+  const astMaps = instance.getASTMaps();
 
   return { estree, astMaps };
 }

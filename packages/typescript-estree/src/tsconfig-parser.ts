@@ -6,12 +6,10 @@ import { Extra } from './parser-options';
 // Environment calculation
 //------------------------------------------------------------------------------
 
-/**
- * Default compiler options for program generation from single root file
- */
-const defaultCompilerOptions: ts.CompilerOptions = {
-  allowNonTsExtensions: true,
-  allowJs: true,
+// these flags are required to make no-unused-vars work
+export const unusedVarsOptions = {
+  noUnusedLocals: true,
+  noUnusedParameters: true,
 };
 
 /**
@@ -99,7 +97,10 @@ export function calculateProjectParserOptions(
     // create compiler host
     const watchCompilerHost = ts.createWatchCompilerHost(
       tsconfigPath,
-      /*optionsToExtend*/ { allowNonTsExtensions: true } as ts.CompilerOptions,
+      /*optionsToExtend*/ {
+        allowNonTsExtensions: true,
+        ...unusedVarsOptions,
+      } as ts.CompilerOptions,
       ts.sys,
       ts.createSemanticDiagnosticsBuilderProgram,
       diagnosticReporter,
@@ -202,7 +203,11 @@ export function createProgram(code: string, filePath: string, extra: Extra) {
 
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,
-    defaultCompilerOptions,
+    {
+      allowNonTsExtensions: true,
+      allowJs: true,
+      ...unusedVarsOptions,
+    },
     { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} },
   );
 

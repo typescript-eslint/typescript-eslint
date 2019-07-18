@@ -58,7 +58,7 @@ export class Converter {
    */
   constructor(ast: ts.SourceFile, options: ConverterOptions) {
     this.ast = ast;
-    this.options = options;
+    this.options = { ...options };
   }
 
   getASTMaps() {

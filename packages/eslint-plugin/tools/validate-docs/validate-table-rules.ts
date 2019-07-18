@@ -104,8 +104,11 @@ function validateTableRules(
     // not perfect but should be good enough
     const ruleFileContents = fs.readFileSync(
       path.resolve(__dirname, `../../src/rules/${ruleName}.ts`),
+      'utf-8',
     );
-    const usesTypeInformation = ruleFileContents.includes('getParserServices');
+    const usesTypeInformation = /getParserServices\(([^,]+\)|.+?, false\))/.test(
+      ruleFileContents,
+    );
     validateTableBoolean(
       usesTypeInformation,
       rowNeedsTypeInfo,

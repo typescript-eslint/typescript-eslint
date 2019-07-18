@@ -45,7 +45,8 @@ export interface ParserWeakMap<TKey, TValueBase> {
 }
 
 export interface ParserServices {
-  program: Program | undefined;
-  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, TSNode> | undefined;
-  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node> | undefined;
+  hasFullTypeInformation: boolean;
+  program: Program;
+  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, TSNode>;
+  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node>;
 }

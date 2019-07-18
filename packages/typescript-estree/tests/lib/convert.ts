@@ -98,8 +98,8 @@ describe('convert', () => {
     instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: any) {
-      child.forEachChild((node: any) => {
+    function checkMaps(child: ts.SourceFile | ts.Node) {
+      child.forEachChild(node => {
         if (
           node.kind !== ts.SyntaxKind.EndOfFileToken &&
           node.kind !== ts.SyntaxKind.JsxAttributes &&
@@ -132,8 +132,8 @@ describe('convert', () => {
     instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: any) {
-      child.forEachChild((node: any) => {
+    function checkMaps(child: ts.SourceFile | ts.Node) {
+      child.forEachChild(node => {
         if (
           node.kind !== ts.SyntaxKind.EndOfFileToken &&
           node.kind !== ts.SyntaxKind.JsxAttributes
@@ -165,8 +165,8 @@ describe('convert', () => {
     const program = instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: any) {
-      child.forEachChild((node: any) => {
+    function checkMaps(child: ts.SourceFile | ts.Node) {
+      child.forEachChild(node => {
         if (node.kind !== ts.SyntaxKind.EndOfFileToken) {
           expect(ast).toBe(
             maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast)),
