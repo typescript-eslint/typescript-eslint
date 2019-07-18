@@ -112,7 +112,7 @@ misuses of them outside of what the Typescript compiler will check.
 
 ## Related to
 
-- [`no-floating-promises`]('./no-floating-promises.md')
+- [`no-floating-promises`](./no-floating-promises.md)
 
 ## Further Reading
 
