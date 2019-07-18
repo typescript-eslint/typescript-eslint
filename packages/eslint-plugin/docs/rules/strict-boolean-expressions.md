@@ -61,3 +61,5 @@ Options may be provided as an object with:
 ## Related To
 
 - TSLint: [strict-boolean-expressions](https://palantir.github.io/tslint/rules/strict-boolean-expressions)
+
+- [no-unnecessary-condition](./no-unnecessary-condition.md) - a looser alternative to this rule.

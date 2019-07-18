@@ -55,3 +55,5 @@ The main downside to using this rule is the need for type information.
 ## Related To
 
 - ESLint: [no-constant-condition](https://eslint.org/docs/rules/no-constant-condition) - this rule is essentially a stronger versison
+
+- [strict-boolean-expression](./strict-boolean-expressions.md) - a stricter alternative to this rule.
