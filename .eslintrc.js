@@ -18,16 +18,6 @@ module.exports = {
   ],
   rules: {
     //
-    // eslint base
-    //
-
-    'comma-dangle': ['error', 'always-multiline'],
-    curly: ['error', 'all'],
-    'no-mixed-operators': 'error',
-    'no-console': 'error',
-    'no-process-exit': 'error',
-
-    //
     // our plugin :D
     //
 
@@ -42,38 +32,14 @@ module.exports = {
     '@typescript-eslint/no-parameter-properties': 'off',
 
     //
-    // eslint-plugin-import
+    // eslint base
     //
 
-    // disallow non-import statements appearing before import statements
-    'import/first': 'error',
-    // Require a newline after the last import/require in a group
-    'import/newline-after-import': 'error',
-    // Forbid import of modules using absolute paths
-    'import/no-absolute-path': 'error',
-    // disallow AMD require/define
-    'import/no-amd': 'error',
-    // forbid default exports
-    'import/no-default-export': 'error',
-    // Forbid the use of extraneous packages
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: true,
-        peerDependencies: true,
-        optionalDependencies: false,
-      },
-    ],
-    // Forbid mutable exports
-    'import/no-mutable-exports': 'error',
-    // Prevent importing the default as if it were named
-    'import/no-named-default': 'error',
-    // Prohibit named exports // we want everything to be a named export
-    'import/no-named-export': 'off',
-    // Forbid a module from importing itself
-    'import/no-self-import': 'error',
-    // Require modules with a single export to use a default export // we want everything to be named
-    'import/prefer-default-export': 'off',
+    'comma-dangle': ['error', 'always-multiline'],
+    curly: ['error', 'all'],
+    'no-mixed-operators': 'error',
+    'no-console': 'error',
+    'no-process-exit': 'error',
 
     //
     // eslint-plugin-eslint-comment
@@ -108,6 +74,40 @@ module.exports = {
         ],
       },
     ],
+
+    //
+    // eslint-plugin-import
+    //
+
+    // disallow non-import statements appearing before import statements
+    'import/first': 'error',
+    // Require a newline after the last import/require in a group
+    'import/newline-after-import': 'error',
+    // Forbid import of modules using absolute paths
+    'import/no-absolute-path': 'error',
+    // disallow AMD require/define
+    'import/no-amd': 'error',
+    // forbid default exports
+    'import/no-default-export': 'error',
+    // Forbid the use of extraneous packages
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: true,
+        peerDependencies: true,
+        optionalDependencies: false,
+      },
+    ],
+    // Forbid mutable exports
+    'import/no-mutable-exports': 'error',
+    // Prevent importing the default as if it were named
+    'import/no-named-default': 'error',
+    // Prohibit named exports // we want everything to be a named export
+    'import/no-named-export': 'off',
+    // Forbid a module from importing itself
+    'import/no-self-import': 'error',
+    // Require modules with a single export to use a default export // we want everything to be named
+    'import/prefer-default-export': 'off',
   },
   parserOptions: {
     sourceType: 'module',
