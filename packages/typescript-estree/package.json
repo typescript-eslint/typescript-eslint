@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "1.9.0",
+  "version": "1.12.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "main": "dist/parser.js",
   "types": "dist/parser.d.ts",
@@ -12,7 +12,11 @@
   "engines": {
     "node": ">=6.14.0"
   },
-  "repository": "typescript-eslint/typescript-eslint",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/typescript-estree"
+  },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
@@ -49,7 +53,7 @@
     "@types/lodash.unescape": "^4.0.4",
     "@types/lodash.isplainobject": "^4.0.4",
     "@types/semver": "^5.5.0",
-    "@typescript-eslint/shared-fixtures": "1.9.0",
+    "@typescript-eslint/shared-fixtures": "1.12.0",
     "babel-code-frame": "^6.26.0",
     "lodash.isplainobject": "4.0.6",
     "typescript": "*",

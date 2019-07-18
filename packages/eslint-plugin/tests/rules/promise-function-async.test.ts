@@ -30,7 +30,6 @@ const asyncPromiseFunctionExpressionB = async function() { return new Promise<vo
     `
 class Test {
   public nonAsyncNonPromiseArrowFunction = (n: number) => n;
-
   public nonAsyncNonPromiseMethod() {
     return 0;
   }
@@ -44,12 +43,83 @@ class Test {
   }
 }
     `,
+    `
+class InvalidAsyncModifiers {
+  public constructor() {
+    return new Promise<void>();
+  }
+  public get asyncGetter() {
+    return new Promise<void>();
+  }
+  public set asyncGetter(p: Promise<void>) {
+    return p;
+  }
+}
+    `,
+    `
+const invalidAsyncModifiers = {
+  get asyncGetter() {
+    return new Promise<void>();
+  },
+  set asyncGetter(p: Promise<void>) {
+    return p;
+  }
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/227
     `export function valid(n: number) { return n; }`,
     `export default function invalid(n: number) { return n; }`,
     `class Foo { constructor() { } }`,
+    {
+      code: `
+function returnsAny(): any {
+  return 0;
+}
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
+    {
+      code: `
+function returnsUnknown(): unknown {
+  return 0;
+}
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
   ],
   invalid: [
+    {
+      code: `
+function returnsAny(): any {
+  return 0;
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+    },
+    {
+      code: `
+function returnsUnknown(): unknown {
+  return 0;
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+    },
     {
       code: `
 const nonAsyncPromiseFunctionExpressionA = function(p: Promise<void>) { return p; };

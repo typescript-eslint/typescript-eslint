@@ -29,6 +29,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreNumericLiteralTypes: {
             type: 'boolean',
           },
+          ignoreEnums: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -41,6 +44,7 @@ export default util.createRule<Options, MessageIds>({
       enforceConst: false,
       detectObjects: false,
       ignoreNumericLiteralTypes: false,
+      ignoreEnums: false,
     },
   ],
   create(context, [options]) {
@@ -83,6 +87,19 @@ export default util.createRule<Options, MessageIds>({
       }
 
       return false;
+    }
+
+    /**
+     * Checks if the node parent is a Typescript enum member
+     * @param node the node to be validated.
+     * @returns true if the node parent is a Typescript enum member
+     * @private
+     */
+    function isParentTSEnumDeclaration(node: TSESTree.Node): boolean {
+      return (
+        typeof node.parent !== 'undefined' &&
+        node.parent.type === AST_NODE_TYPES.TSEnumMember
+      );
     }
 
     /**
@@ -133,7 +150,12 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       Literal(node) {
-        // Check TypeScript specific nodes
+        // Check if the node is a TypeScript enum declaration
+        if (options.ignoreEnums && isParentTSEnumDeclaration(node)) {
+          return;
+        }
+
+        // Check TypeScript specific nodes for Numeric Literal
         if (
           options.ignoreNumericLiteralTypes &&
           isNumber(node) &&

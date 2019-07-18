@@ -1,10 +1,6 @@
 import rules from '../../src/rules';
 import allConfig from '../../src/configs/all.json';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-interface IndexRules {
-  [name: string]: TSESLint.RuleModule<string, any, any>;
-}
 interface JsonRules {
   [name: string]: string;
 }
@@ -12,10 +8,10 @@ interface JsonRules {
 describe('all.json config', () => {
   const RULE_NAME_PREFIX = '@typescript-eslint/';
 
-  const typedRules: IndexRules = rules;
-  const notDeprecatedRuleNames = Object.keys(typedRules).reduce<string[]>(
+  const rulesNames = Object.keys(rules) as (keyof typeof rules)[];
+  const notDeprecatedRuleNames = rulesNames.reduce<string[]>(
     (collection, name) => {
-      if (!typedRules[name].meta.deprecated) {
+      if (!rules[name].meta.deprecated) {
         collection.push(`${RULE_NAME_PREFIX}${name}`);
       }
       return collection;

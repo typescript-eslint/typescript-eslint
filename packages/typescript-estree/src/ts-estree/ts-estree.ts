@@ -659,7 +659,7 @@ export interface ExportAllDeclaration extends BaseNode {
 
 export interface ExportDefaultDeclaration extends BaseNode {
   type: AST_NODE_TYPES.ExportDefaultDeclaration;
-  declaration: ExportDeclaration;
+  declaration: ExportDeclaration | Expression;
 }
 
 export interface ExportNamedDeclaration extends BaseNode {
@@ -1387,6 +1387,7 @@ export interface UnaryExpression extends UnaryExpressionBase {
 
 export interface VariableDeclaration extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclaration;
+  // NOTE - this is not guaranteed to have any elements in it. i.e. `const;`
   declarations: VariableDeclarator[];
   kind: 'let' | 'const' | 'var';
   declare?: boolean;

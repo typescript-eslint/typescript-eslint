@@ -24,13 +24,11 @@
     "@typescript-eslint/no-non-null-assertion": "error",
     "@typescript-eslint/no-object-literal-type-assertion": "error",
     "@typescript-eslint/no-parameter-properties": "error",
-    "@typescript-eslint/no-triple-slash-reference": "error",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "error",
     "@typescript-eslint/no-var-requires": "error",
-    "@typescript-eslint/prefer-interface": "error",
     "@typescript-eslint/prefer-namespace-keyword": "error",
     "@typescript-eslint/type-annotation-spacing": "error"
   }

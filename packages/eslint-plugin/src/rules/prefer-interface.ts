@@ -16,6 +16,8 @@ export default util.createRule({
       interfaceOverType: 'Use an interface instead of a type literal.',
     },
     schema: [],
+    deprecated: true,
+    replacedBy: ['consistent-type-definitions'],
   },
   defaultOptions: [],
   create(context) {
