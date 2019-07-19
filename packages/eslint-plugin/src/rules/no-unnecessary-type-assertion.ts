@@ -16,7 +16,7 @@ import * as util from '../util';
 type Options = [
   {
     typesToIgnore?: string[];
-  }
+  },
 ];
 type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 
@@ -239,9 +239,9 @@ export default util.createRule<Options, MessageIds>({
         if (
           options &&
           options.typesToIgnore &&
-          options.typesToIgnore.indexOf(
+          options.typesToIgnore.includes(
             sourceCode.getText(node.typeAnnotation),
-          ) !== -1
+          )
         ) {
           return;
         }

@@ -34,7 +34,7 @@ interface Linter {
 
   getSourceCode(): SourceCode;
 
-  defineRule<TMessageIds extends string, TOptions extends readonly any[]>(
+  defineRule<TMessageIds extends string, TOptions extends readonly unknown[]>(
     name: string,
     rule: {
       meta?: RuleModule<TMessageIds, TOptions>['meta'];
@@ -42,14 +42,14 @@ interface Linter {
     },
   ): void;
 
-  defineRules<TMessageIds extends string, TOptions extends readonly any[]>(
+  defineRules<TMessageIds extends string, TOptions extends readonly unknown[]>(
     rules: Record<string, RuleModule<TMessageIds, TOptions>>,
   ): void;
 
-  getRules<TMessageIds extends string, TOptions extends readonly any[]>(): Map<
-    string,
-    RuleModule<TMessageIds, TOptions>
-  >;
+  getRules<
+    TMessageIds extends string,
+    TOptions extends readonly unknown[]
+  >(): Map<string, RuleModule<TMessageIds, TOptions>>;
 
   defineParser(name: string, parser: Linter.ParserModule): void;
 }
@@ -58,9 +58,7 @@ namespace Linter {
   export type Severity = 0 | 1 | 2;
   export type RuleLevel = Severity | 'off' | 'warn' | 'error';
 
-  export interface RuleLevelAndOptions extends Array<any> {
-    0: RuleLevel;
-  }
+  export type RuleLevelAndOptions = [RuleLevel, ...unknown[]];
 
   export interface Config {
     rules?: {
@@ -68,7 +66,7 @@ namespace Linter {
     };
     parser?: string;
     parserOptions?: ParserOptions;
-    settings?: { [name: string]: any };
+    settings?: { [name: string]: unknown };
     env?: { [name: string]: boolean };
     globals?: { [name: string]: boolean };
   }
@@ -109,10 +107,10 @@ namespace Linter {
 
   export type ParserModule =
     | {
-        parse(text: string, options?: any): TSESTree.Program;
+        parse(text: string, options?: unknown): TSESTree.Program;
       }
     | {
-        parseForESLint(text: string, options?: any): ESLintParseResult;
+        parseForESLint(text: string, options?: unknown): ESLintParseResult;
       };
 
   export interface ESLintParseResult {

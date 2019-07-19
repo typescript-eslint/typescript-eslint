@@ -3,13 +3,14 @@ import {
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-magic-numbers';
-import { JSONSchema4 } from 'json-schema'; // eslint-disable-line import/no-extraneous-dependencies
 import * as util from '../util';
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const baseRuleSchema = (baseRule.meta.schema as JSONSchema4[])[0];
+const baseRuleSchema = Array.isArray(baseRule.meta.schema)
+  ? baseRule.meta.schema[0]
+  : baseRule.meta.schema;
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-magic-numbers',

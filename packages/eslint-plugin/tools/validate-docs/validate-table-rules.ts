@@ -6,7 +6,7 @@ import path from 'path';
 import { logRule } from '../log';
 
 function validateTableRules(
-  rules: Record<string, Readonly<TSESLint.RuleModule<any, any, any>>>,
+  rules: Record<string, Readonly<TSESLint.RuleModule<string, unknown[]>>>,
   rulesTable: marked.Tokens.Table,
 ): boolean {
   let hasErrors = false;

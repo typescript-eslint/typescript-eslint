@@ -891,7 +891,7 @@ describe('array-type (nested)', () => {
       it(code, () => {
         const linter = new TSESLint.Linter();
 
-        linter.defineRule('array-type', Object.assign({}, rule) as any);
+        linter.defineRule('array-type', Object.assign({}, rule));
         const result = linter.verifyAndFix(
           code,
           {

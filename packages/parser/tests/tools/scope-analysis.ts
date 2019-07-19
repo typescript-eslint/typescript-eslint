@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /** Reference resolver. */
 export class ReferenceResolver {
   map: Map<any, any>;

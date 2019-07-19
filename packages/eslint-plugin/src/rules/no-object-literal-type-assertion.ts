@@ -7,7 +7,7 @@ import * as util from '../util';
 type Options = [
   {
     allowAsParameter?: boolean;
-  }
+  },
 ];
 type MessageIds = 'unexpectedTypeAssertion';
 

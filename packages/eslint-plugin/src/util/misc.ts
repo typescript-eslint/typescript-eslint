@@ -39,7 +39,7 @@ type InferOptionsTypeFromRuleNever<T> = T extends TSESLint.RuleModule<
  * Uses type inference to fetch the TOptions type from the given RuleModule
  */
 export type InferOptionsTypeFromRule<T> = T extends TSESLint.RuleModule<
-  any,
+  string,
   infer TOptions
 >
   ? TOptions
@@ -50,7 +50,7 @@ export type InferOptionsTypeFromRule<T> = T extends TSESLint.RuleModule<
  */
 export type InferMessageIdsTypeFromRule<T> = T extends TSESLint.RuleModule<
   infer TMessageIds,
-  any
+  unknown[]
 >
   ? TMessageIds
   : unknown;
@@ -113,10 +113,10 @@ function keyCanBeReadAsPropertyName(
 }
 
 export type ExcludeKeys<
-  TObj extends Record<string, any>,
+  TObj extends Record<string, unknown>,
   TKeys extends keyof TObj
 > = { [k in Exclude<keyof TObj, TKeys>]: TObj[k] };
 export type RequireKeys<
-  TObj extends Record<string, any>,
+  TObj extends Record<string, unknown>,
   TKeys extends keyof TObj
 > = ExcludeKeys<TObj, TKeys> & { [k in TKeys]-?: Exclude<TObj[k], undefined> };

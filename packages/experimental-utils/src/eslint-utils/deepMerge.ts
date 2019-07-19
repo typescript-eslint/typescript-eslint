@@ -1,11 +1,13 @@
-type ObjectLike<T = any> = Record<string, T>;
+type ObjectLike<T = unknown> = Record<string, T>;
 
 /**
  * Check if the variable contains an object stricly rejecting arrays
  * @param obj an object
  * @returns `true` if obj is an object
  */
-export function isObjectNotArray<T extends object>(obj: T | any[]): obj is T {
+export function isObjectNotArray<T extends ObjectLike>(
+  obj: unknown | unknown[],
+): obj is T {
   return typeof obj === 'object' && !Array.isArray(obj);
 }
 
@@ -24,19 +26,21 @@ export function deepMerge(first: ObjectLike = {}, second: ObjectLike = {}) {
     (acc, key) => {
       const firstHasKey = key in first;
       const secondHasKey = key in second;
+      const firstValue = first[key];
+      const secondValue = second[key];
 
       if (firstHasKey && secondHasKey) {
-        if (isObjectNotArray(first[key]) && isObjectNotArray(second[key])) {
+        if (isObjectNotArray(firstValue) && isObjectNotArray(secondValue)) {
           // object type
-          acc[key] = deepMerge(first[key], second[key]);
+          acc[key] = deepMerge(firstValue, secondValue);
         } else {
           // value type
-          acc[key] = second[key];
+          acc[key] = secondValue;
         }
       } else if (firstHasKey) {
-        acc[key] = first[key];
+        acc[key] = firstValue;
       } else {
-        acc[key] = second[key];
+        acc[key] = secondValue;
       }
 
       return acc;

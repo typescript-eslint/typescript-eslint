@@ -15,15 +15,15 @@ interface CLIEngine {
 
   executeOnText(text: string, filename?: string): CLIEngine.LintReport;
 
-  addPlugin(name: string, pluginObject: any): void;
+  addPlugin(name: string, pluginObject: unknown): void;
 
   isPathIgnored(filePath: string): boolean;
 
   getFormatter(format?: string): CLIEngine.Formatter;
 
   getRules<
-    TMessageIds extends string = any,
-    TOptions extends readonly any[] = any[],
+    TMessageIds extends string = string,
+    TOptions extends readonly unknown[] = unknown[],
     // for extending base rules
     TRuleListener extends RuleListener = RuleListener
   >(): Map<string, RuleModule<TMessageIds, TOptions, TRuleListener>>;
@@ -32,7 +32,7 @@ interface CLIEngine {
 namespace CLIEngine {
   export interface Options {
     allowInlineConfig?: boolean;
-    baseConfig?: false | { [name: string]: any };
+    baseConfig?: false | { [name: string]: unknown };
     cache?: boolean;
     cacheFile?: string;
     cacheLocation?: string;

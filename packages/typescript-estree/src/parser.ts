@@ -312,6 +312,7 @@ export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Ensure the source code is a string, and store a reference to it
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (typeof code !== 'string' && !((code as any) instanceof String)) {
     code = String(code);
   }
@@ -353,6 +354,7 @@ export function parseAndGenerateServices<
   /**
    * Ensure the source code is a string, and store a reference to it
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (typeof code !== 'string' && !((code as any) instanceof String)) {
     code = String(code);
   }

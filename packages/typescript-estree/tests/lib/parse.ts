@@ -14,7 +14,7 @@ describe('parse()', () => {
   describe('modules', () => {
     it('should have correct column number when strict mode error occurs', () => {
       try {
-        parser.parse('function fn(a, a) {\n}', { sourceType: 'module' } as any);
+        parser.parse('function fn(a, a) {\n}');
       } catch (err) {
         expect(err.column).toEqual(16);
       }
@@ -37,6 +37,8 @@ describe('parse()', () => {
   });
 
   describe('non string code', () => {
+    // testing a non string code..
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const code = (12345 as any) as string;
     const config: TSESTreeOptions = {
       comment: true,

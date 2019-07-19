@@ -25,7 +25,7 @@ type Options = [
       | 'in-unions'
       | 'in-intersections'
       | 'in-unions-and-intersections';
-  }
+  },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
 
@@ -133,12 +133,12 @@ export default util.createRule<Options, MessageIds>({
       allowed: string,
     ): boolean {
       return (
-        compositions.indexOf(allowed) === -1 ||
+        !compositions.includes(allowed) ||
         (!isTopLevel &&
           ((compositionType === AST_NODE_TYPES.TSUnionType &&
-            unions.indexOf(allowed) > -1) ||
+            unions.includes(allowed)) ||
             (compositionType === AST_NODE_TYPES.TSIntersectionType &&
-              intersections.indexOf(allowed) > -1)))
+              intersections.includes(allowed))))
       );
     }
 
@@ -225,7 +225,7 @@ export default util.createRule<Options, MessageIds>({
           );
         }
       } else if (
-        /Keyword$/.test(type.node.type) ||
+        type.node.type.endsWith('Keyword') ||
         aliasTypes.has(type.node.type)
       ) {
         // alias / keyword
