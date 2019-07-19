@@ -46,7 +46,12 @@ interface RunTests<
   invalid: InvalidTestCase<TMessageIds, TOptions>[];
 }
 interface RuleTesterConfig {
-  parser: '@typescript-eslint/parser';
+  parser?:
+    | '@typescript-eslint/parser'
+    | 'espree'
+    | 'babel-eslint'
+    | 'esprima'
+    | string;
   parserOptions?: ParserOptions;
 }
 declare interface RuleTester {
