@@ -51,6 +51,7 @@
 | [`import-blacklist`]                 | 🌟  | [`no-restricted-imports`][no-restricted-imports]                      |
 | [`label-position`]                   | 🌟  | [`no-unused-labels`][no-unused-labels] (similar)                      |
 | [`no-arg`]                           | 🌟  | [`no-caller`][no-caller] (also blocks `arguments.caller`)             |
+| [`no-async-without-await`]           | 🛑  | N/A                                                                   |
 | [`no-bitwise`]                       | 🌟  | [`no-bitwise`][no-bitwise]                                            |
 | [`no-conditional-assignment`]        | 🌟  | [`no-cond-assign`][no-cond-assign]<sup>[1]</sup>                      |
 | [`no-console`]                       | 🌟  | [`no-console`][no-console] (configuration works slightly differently) |
@@ -355,6 +356,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`import-blacklist`]: https://palantir.github.io/tslint/rules/import-blacklist
 [`label-position`]: https://palantir.github.io/tslint/rules/label-position
 [`no-arg`]: https://palantir.github.io/tslint/rules/no-arg
+[`no-async-without-await`]: https://palantir.github.io/tslint/rules/no-async-without-await
 [`no-bitwise`]: https://palantir.github.io/tslint/rules/no-bitwise
 [`no-conditional-assignment`]: https://palantir.github.io/tslint/rules/no-conditional-assignment
 [`no-console`]: https://palantir.github.io/tslint/rules/no-console
