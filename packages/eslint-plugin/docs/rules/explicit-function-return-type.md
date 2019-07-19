@@ -141,6 +141,13 @@ let objectPropCast = <ObjectType>{
 
 declare functionWithArg(arg: () => number);
 functionWithArg(() => 1);
+
+declare functionWithObjectArg(arg: { meth: () => number });
+functionWithObjectArg({
+  meth() {
+    return 1;
+  },
+});
 ```
 
 ### allowHigherOrderFunctions

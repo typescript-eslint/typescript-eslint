@@ -281,6 +281,32 @@ new Accumulator().accumulate(() => 1);
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+declare function foo(arg: { meth: () => number }): void
+foo({
+  meth() {
+    return 1;
+  },
+})
+foo({
+  meth: function () {
+    return 1;
+  },
+})
+foo({
+  meth: () => {
+    return 1;
+  },
+})
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -289,7 +315,7 @@ new Accumulator().accumulate(() => 1);
 function test() {
     return;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'missingReturnType',
@@ -304,7 +330,7 @@ function test() {
 var fn = function() {
     return 1;
 };
-            `,
+      `,
       errors: [
         {
           messageId: 'missingReturnType',
@@ -317,7 +343,7 @@ var fn = function() {
       filename: 'test.ts',
       code: `
 var arrowFn = () => 'test';
-            `,
+      `,
       errors: [
         {
           messageId: 'missingReturnType',
@@ -340,7 +366,7 @@ class Test {
   }
   arrow = () => 'arrow';
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'missingReturnType',
@@ -361,21 +387,23 @@ class Test {
     },
     {
       filename: 'test.ts',
-      code: `function test() {
-        return;
-      }`,
+      code: `
+function test() {
+  return;
+}
+      `,
       options: [{ allowExpressions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 1,
+          line: 2,
           column: 1,
         },
       ],
     },
     {
       filename: 'test.ts',
-      code: `const foo = () => {};`,
+      code: 'const foo = () => {};',
       options: [{ allowExpressions: true }],
       errors: [
         {
@@ -387,7 +415,7 @@ class Test {
     },
     {
       filename: 'test.ts',
-      code: `const foo = function() {};`,
+      code: 'const foo = function() {};',
       options: [{ allowExpressions: true }],
       errors: [
         {
@@ -399,7 +427,7 @@ class Test {
     },
     {
       filename: 'test.ts',
-      code: `var arrowFn = () => 'test';`,
+      code: "var arrowFn = () => 'test';",
       options: [{ allowTypedFunctionExpressions: true }],
       errors: [
         {
@@ -411,7 +439,7 @@ class Test {
     },
     {
       filename: 'test.ts',
-      code: `var funcExpr = function() { return 'test'; };`,
+      code: "var funcExpr = function() { return 'test'; };",
       options: [{ allowTypedFunctionExpressions: true }],
       errors: [
         {
@@ -424,7 +452,7 @@ class Test {
 
     {
       filename: 'test.ts',
-      code: `const x = (() => {}) as Foo`,
+      code: 'const x = (() => {}) as Foo',
       options: [{ allowTypedFunctionExpressions: false }],
       errors: [
         {
@@ -467,84 +495,72 @@ const x: Foo = {
     },
     {
       filename: 'test.ts',
-      code: `
-() => () => {};
-            `,
+      code: '() => () => {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
+          line: 1,
           column: 7,
         },
       ],
     },
     {
       filename: 'test.ts',
-      code: `
-() => function () {};
-            `,
+      code: '() => function () {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
+          line: 1,
           column: 7,
         },
       ],
     },
     {
       filename: 'test.ts',
-      code: `
-() => { return () => {} };
-            `,
+      code: '() => { return () => {} };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
+          line: 1,
           column: 16,
         },
       ],
     },
     {
       filename: 'test.ts',
-      code: `
-() => { return function () {} };
-            `,
+      code: '() => { return function () {} };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
+          line: 1,
           column: 16,
         },
       ],
     },
     {
       filename: 'test.ts',
-      code: `
-function fn() { return () => {} };
-            `,
+      code: 'function fn() { return () => {} };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
+          line: 1,
           column: 24,
         },
       ],
     },
     {
       filename: 'test.ts',
-      code: `
-function fn() { return function () {} };
-            `,
+      code: 'function fn() { return function () {} };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
+          line: 1,
           column: 24,
         },
       ],
@@ -574,14 +590,12 @@ function FunctionDeclaration() {
     },
     {
       filename: 'test.ts',
-      code: `
-() => () => { return () => { return; } };
-            `,
+      code: '() => () => { return () => { return; } };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
+          line: 1,
           column: 22,
         },
       ],
@@ -653,8 +667,39 @@ new Accumulator().accumulate(() => 1);
     },
     {
       filename: 'test.ts',
+      code: '(() => true)()',
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          column: 2,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
       code: `
-(() => true)()
+declare function foo(arg: { meth: () => number }): void
+foo({
+  meth() {
+    return 1;
+  },
+})
+foo({
+  meth: function () {
+    return 1;
+  },
+})
+foo({
+  meth: () => {
+    return 1;
+  },
+})
       `,
       options: [
         {
@@ -664,8 +709,18 @@ new Accumulator().accumulate(() => 1);
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
-          column: 2,
+          line: 4,
+          column: 7,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 9,
+          column: 9,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 14,
+          column: 9,
         },
       ],
     },
