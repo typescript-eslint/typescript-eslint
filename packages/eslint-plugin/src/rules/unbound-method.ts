@@ -25,7 +25,7 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       description:
         'Enforces unbound methods are called with their expected scope',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       unbound:

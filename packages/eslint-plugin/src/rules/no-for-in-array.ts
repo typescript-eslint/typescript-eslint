@@ -7,7 +7,7 @@ export default util.createRule({
     docs: {
       description: 'Disallow iterating over an array with a for-in loop',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       forInViolation:

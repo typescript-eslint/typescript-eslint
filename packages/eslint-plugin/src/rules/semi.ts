@@ -16,6 +16,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Require or disallow semicolons instead of ASI',
       category: 'Stylistic Issues',
+      // too opinionated to be recommended
       recommended: false,
     },
     fixable: 'code',

@@ -10,6 +10,8 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Require that interface names be prefixed with `I`',
       category: 'Stylistic Issues',
+      // this will always be recommended as there's no reason to use this convention
+      // https://github.com/typescript-eslint/typescript-eslint/issues/374
       recommended: 'error',
     },
     messages: {

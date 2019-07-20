@@ -19,7 +19,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow aliasing `this`',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     schema: [
       {

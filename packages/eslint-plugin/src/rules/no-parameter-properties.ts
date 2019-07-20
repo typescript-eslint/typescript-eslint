@@ -27,7 +27,8 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Disallow the use of parameter properties in class constructors',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      // too opinionated to be recommended
+      recommended: false,
     },
     messages: {
       noParamProp:

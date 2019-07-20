@@ -8,7 +8,7 @@ export default util.createRule({
       description:
         'Disallows non-null assertions using the `!` postfix operator',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      recommended: 'warn',
     },
     messages: {
       noNonNull: 'Forbidden non-null assertion.',

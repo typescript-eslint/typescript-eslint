@@ -12,7 +12,7 @@ export default createRule({
       description:
         'Prefer RegExp#exec() over String#match() if no global flag is provided',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',

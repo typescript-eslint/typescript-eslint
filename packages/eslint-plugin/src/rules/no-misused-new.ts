@@ -16,7 +16,7 @@ export default util.createRule({
     schema: [],
     messages: {
       errorMessageInterface: 'Interfaces cannot be constructed, only classes.',
-      errorMessageClass: 'Class cannon have method named `new`.',
+      errorMessageClass: 'Class cannot have method named `new`.',
     },
   },
   defaultOptions: [],

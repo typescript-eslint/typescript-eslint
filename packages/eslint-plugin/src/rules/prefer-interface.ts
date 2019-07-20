@@ -9,7 +9,8 @@ export default util.createRule({
       description:
         'Prefer an interface declaration over a type literal (type T = { ... })',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      // too opinionated to be recommended
+      recommended: false,
     },
     fixable: 'code',
     messages: {

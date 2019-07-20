@@ -10,6 +10,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Enforces naming of generic type variables',
       category: 'Stylistic Issues',
+      // too opinionated to be recommended
       recommended: false,
     },
     messages: {

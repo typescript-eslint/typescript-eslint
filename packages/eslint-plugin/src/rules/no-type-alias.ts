@@ -44,6 +44,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the use of type aliases',
       category: 'Stylistic Issues',
+      // too opinionated to be recommended
       recommended: false,
     },
     messages: {

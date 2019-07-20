@@ -7,7 +7,7 @@ export default util.createRule({
     docs: {
       description: 'Disallow `/// <reference path="" />` comments',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
     },
     schema: [],
     deprecated: true,
