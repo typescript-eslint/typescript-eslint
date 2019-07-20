@@ -124,7 +124,7 @@ const recommendedConfig: LinterConfig = {
   rules: ruleEntries
     .filter(entry => !!entry[1].meta.docs.recommended)
     .reduce<LinterConfigRules>(
-      (config, entry) => reducer(config, entry, { filterDeprecated: true }),
+      (config, entry) => reducer(config, entry, { filterDeprecated: false }),
       {},
     ),
 };
