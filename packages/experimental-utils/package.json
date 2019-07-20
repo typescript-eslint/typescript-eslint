@@ -41,7 +41,9 @@
     "eslint-scope": "^4.0.0"
   },
   "peerDependencies": {
-    "eslint": "*",
+    "eslint": "*"
+  },
+  "devDependencies": {
     "typescript": "*"
   }
 }
