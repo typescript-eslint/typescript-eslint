@@ -36,6 +36,8 @@ export default util.createRule<Options, MessageIds>({
         },
       },
     ],
+    deprecated: true,
+    replacedBy: ['consistent-type-assertions'],
   },
   defaultOptions: [
     {

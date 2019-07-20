@@ -15,6 +15,8 @@ export default util.createRule({
         "Prefer 'as {{cast}}' instead of '<{{cast}}>' when doing type assertions.",
     },
     schema: [],
+    deprecated: true,
+    replacedBy: ['consistent-type-assertions'],
   },
   defaultOptions: [],
   create(context) {

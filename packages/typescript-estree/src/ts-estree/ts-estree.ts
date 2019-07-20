@@ -1312,7 +1312,7 @@ export interface TSTypeAnnotation extends BaseNode {
 export interface TSTypeAssertion extends BaseNode {
   type: AST_NODE_TYPES.TSTypeAssertion;
   typeAnnotation: TypeNode;
-  expression: UnaryExpression;
+  expression: Expression;
 }
 
 export interface TSTypeLiteral extends BaseNode {

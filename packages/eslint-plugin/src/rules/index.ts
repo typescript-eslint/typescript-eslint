@@ -5,6 +5,7 @@ import banTsIgnore from './ban-ts-ignore';
 import banTypes from './ban-types';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
+import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
@@ -69,6 +70,7 @@ export default {
   'ban-types': banTypes,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
+  'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
