@@ -15,7 +15,6 @@ import interfaceNamePrefix from './interface-name-prefix';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
-import noAngleBracketTypeAssertion from './no-angle-bracket-type-assertion';
 import noArrayConstructor from './no-array-constructor';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
@@ -30,11 +29,9 @@ import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
 import noNonNullAssertion from './no-non-null-assertion';
-import noObjectLiteralTypeAssertion from './no-object-literal-type-assertion';
 import noParameterProperties from './no-parameter-properties';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
-import noTripleSlashReference from './no-triple-slash-reference';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
@@ -45,7 +42,6 @@ import noVarRequires from './no-var-requires';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
-import preferInterface from './prefer-interface';
 import preferNamespaceKeyword from './prefer-namespace-keyword';
 import preferReadonly from './prefer-readonly';
 import preferRegexpExec from './prefer-regexp-exec';
@@ -79,7 +75,6 @@ export default {
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
-  'no-angle-bracket-type-assertion': noAngleBracketTypeAssertion,
   'no-array-constructor': noArrayConstructor,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
@@ -94,11 +89,9 @@ export default {
   'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
   'no-non-null-assertion': noNonNullAssertion,
-  'no-object-literal-type-assertion': noObjectLiteralTypeAssertion,
   'no-parameter-properties': noParameterProperties,
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,
-  'no-triple-slash-reference': noTripleSlashReference,
   'no-type-alias': noTypeAlias,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
@@ -109,7 +102,6 @@ export default {
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,
-  'prefer-interface': preferInterface,
   'prefer-namespace-keyword': preferNamespaceKeyword,
   'prefer-readonly': preferReadonly,
   'prefer-regexp-exec': preferRegexpExec,
