@@ -62,8 +62,6 @@ jobs:
           node_version: 10.x
         node_8_x:
           node_version: 8.x
-        node_6_x:
-          node_version: 6.x
     steps:
       - task: NodeTool@0
         inputs:
