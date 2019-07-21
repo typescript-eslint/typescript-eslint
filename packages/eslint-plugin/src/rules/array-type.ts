@@ -72,11 +72,11 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
   }
 }
 
-export type ArrayOption = 'array' | 'generic' | 'array-simple';
+export type OptionString = 'array' | 'generic' | 'array-simple';
 type Options = [
   {
-    default: ArrayOption;
-    readonly?: ArrayOption;
+    default: OptionString;
+    readonly?: OptionString;
   }
 ];
 type MessageIds =
