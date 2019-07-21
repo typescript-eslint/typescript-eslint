@@ -45,20 +45,20 @@ type SmallPrimes = 2 | 3 | 5 | 7 | 11;
 
 A boolean to specify if enums used in Typescript are considered okay. `false` by default.
 
-Examples of **incorrect** code for the `{ "ignoreEnum": false }` option:
+Examples of **incorrect** code for the `{ "ignoreEnums": false }` option:
 
 ```ts
-/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnum": false }]*/
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnums": false }]*/
 
 enum foo = {
     SECOND = 1000,
 }
 ```
 
-Examples of **correct** code for the `{ "ignoreEnum": true }` option:
+Examples of **correct** code for the `{ "ignoreEnums": true }` option:
 
 ```ts
-/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnum": true }]*/
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnums": true }]*/
 
 enum foo = {
     SECOND = 1000,

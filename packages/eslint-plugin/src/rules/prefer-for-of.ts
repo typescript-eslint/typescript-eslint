@@ -186,8 +186,11 @@ export default util.createRule({
           return;
         }
 
-        const [declarator] = node.init.declarations;
+        const declarator = node.init.declarations[0] as
+          | TSESTree.VariableDeclarator
+          | undefined;
         if (
+          !declarator ||
           !isZeroInitialized(declarator) ||
           declarator.id.type !== AST_NODE_TYPES.Identifier
         ) {

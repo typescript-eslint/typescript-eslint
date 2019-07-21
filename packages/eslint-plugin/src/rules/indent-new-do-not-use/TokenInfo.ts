@@ -8,7 +8,7 @@ import { TokenOrComment } from './BinarySearchTree';
  * A helper class to get token-based info related to indentation
  */
 export class TokenInfo {
-  private sourceCode: TSESLint.SourceCode;
+  private readonly sourceCode: TSESLint.SourceCode;
   public firstTokensByLineNumber: Map<number, TSESTree.Token>;
 
   constructor(sourceCode: TSESLint.SourceCode) {

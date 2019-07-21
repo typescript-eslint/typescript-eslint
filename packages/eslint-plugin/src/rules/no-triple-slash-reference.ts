@@ -10,8 +10,10 @@ export default util.createRule({
       recommended: 'error',
     },
     schema: [],
+    deprecated: true,
+    replacedBy: ['triple-slash-reference'],
     messages: {
-      tripleSlashReference: 'Do not use a triple slash reference.',
+      noTripleSlashReference: 'Do not use a triple slash reference.',
     },
   },
   defaultOptions: [],
@@ -30,7 +32,7 @@ export default util.createRule({
           if (referenceRegExp.test(comment.value)) {
             context.report({
               node: comment,
-              messageId: 'tripleSlashReference',
+              messageId: 'noTripleSlashReference',
             });
           }
         });
