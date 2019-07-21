@@ -1,5 +1,6 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule from '../../src/rules/array-type';
+import * as parser from '@typescript-eslint/parser';
+import rule, { OptionString } from '../../src/rules/array-type';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -886,17 +887,22 @@ let yyyy: Arr<Array<Array<Arr<string>>>> = [[[["2"]]]];`,
 // eslint rule tester is not working with multi-pass
 // https://github.com/eslint/eslint/issues/11187
 describe('array-type (nested)', () => {
-  describe('should deeply fix correctly', () => {
-    function testOutput(option: string, code: string, output: string): void {
-      it(code, () => {
-        const linter = new TSESLint.Linter();
+  const linter = new TSESLint.Linter();
+  linter.defineRule('array-type', rule);
+  linter.defineParser('@typescript-eslint/parser', parser);
 
-        linter.defineRule('array-type', Object.assign({}, rule) as any);
+  describe('should deeply fix correctly', () => {
+    function testOutput(
+      option: OptionString,
+      code: string,
+      output: string,
+    ): void {
+      it(code, () => {
         const result = linter.verifyAndFix(
           code,
           {
             rules: {
-              'array-type': [2, option],
+              'array-type': ['error', option],
             },
             parser: '@typescript-eslint/parser',
           },
@@ -905,6 +911,8 @@ describe('array-type (nested)', () => {
           },
         );
 
+        expect(result.messages).toHaveLength(0);
+        expect(result.fixed).toBeTruthy();
         expect(result.output).toBe(output);
       });
     }

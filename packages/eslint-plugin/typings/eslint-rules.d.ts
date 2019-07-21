@@ -212,7 +212,7 @@ declare module 'eslint/lib/rules/no-redeclare' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   const rule: TSESLint.RuleModule<
-    never,
+    'redeclared' | 'redeclaredAsBuiltin' | 'redeclaredBySyntax',
     [
       {
         builtinGlobals?: boolean;
