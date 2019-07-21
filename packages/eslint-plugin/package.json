@@ -49,6 +49,7 @@
   "devDependencies": {
     "@types/json-schema": "^7.0.3",
     "@types/marked": "^0.6.5",
+    "@types/prettier": "^1.18.0",
     "chalk": "^2.4.2",
     "marked": "^0.6.2"
   },

@@ -4,7 +4,10 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
+import { format } from 'prettier';
 import rules from '../src/rules';
+
+import prettierConfig = require('../../../.prettierrc.json');
 
 interface LinterConfigRules {
   [name: string]:
@@ -25,11 +28,13 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'func-call-spacing',
   'indent',
   'no-array-constructor',
+  'no-empty-function',
   'no-extra-parens',
   'no-magic-numbers',
   'no-unused-vars',
   'no-use-before-define',
   'no-useless-constructor',
+  'require-await',
   'semi',
 ]);
 
@@ -89,7 +94,11 @@ const reducer = <TMessageIds extends string>(
  * Helper function writes configuration.
  */
 function writeConfig(config: LinterConfig, filePath: string): void {
-  fs.writeFileSync(filePath, `${JSON.stringify(config, null, 2)}\n`);
+  const configStr = format(JSON.stringify(config), {
+    parser: 'json',
+    ...(prettierConfig as any),
+  });
+  fs.writeFileSync(filePath, configStr);
 }
 
 const baseConfig: LinterConfig = {
