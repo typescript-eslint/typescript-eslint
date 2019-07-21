@@ -97,7 +97,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`radix`]                            | 🌟  | [`radix`][radix]                                                      |
 | [`restrict-plus-operands`]           | ✅  | [`@typescript-eslint/restrict-plus-operands`]                         |
 | [`strict-boolean-expressions`]       | ✅  | [`@typescript-eslint/strict-boolean-expressions`]                     |
-| [`strict-type-predicates`]           | 🛑  | N/A                                                                   |
+| [`strict-type-predicates`]           | ✅  | [`@typescript-eslint/strict-type-predicates`]                         |
 | [`switch-default`]                   | 🌟  | [`default-case`][default-case]                                        |
 | [`triple-equals`]                    | 🌟  | [`eqeqeq`][eqeqeq]                                                    |
 | [`typeof-compare`]                   | 🌟  | [`valid-typeof`][valid-typeof]                                        |
