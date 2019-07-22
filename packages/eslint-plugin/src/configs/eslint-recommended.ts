@@ -9,7 +9,7 @@
 export default {
   overrides: [
     {
-      files: ['*.ts', '*.tsx'],
+      files: ['*.ts', '*.tsx', '.*.ts', '.*.tsx'],
       rules: {
         /**
          * 1. Disable things that are checked by Typescript
