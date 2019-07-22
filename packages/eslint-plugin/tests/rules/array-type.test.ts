@@ -969,7 +969,6 @@ describe('array-type (nested)', () => {
         );
 
         expect(result.messages).toHaveLength(0);
-        expect(result.fixed).toBeTruthy();
         expect(result.output).toBe(output);
       });
     }
