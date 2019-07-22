@@ -6,7 +6,7 @@ const prefix = '@typescript-eslint/';
 function checkConfigAll() {
   const { rules } = plugin;
 
-  const all = plugin.configs.all.rules;
+  const all = plugin.configs.all.overrides[0].rules;
   const allNames = new Set(Object.keys(all));
 
   return Object.entries(rules).reduce((acc, [ruleName, rule]) => {

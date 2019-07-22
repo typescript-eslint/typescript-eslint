@@ -6,7 +6,7 @@ const prefix = '@typescript-eslint/';
 function checkConfigRecommended() {
   const { rules } = plugin;
 
-  const recommended = plugin.configs.recommended.rules;
+  const recommended = plugin.configs.recommended.overrides[0].rules;
   const recommendedNames = new Set(Object.keys(recommended));
 
   return Object.entries(rules).reduce((acc, [ruleName, rule]) => {

@@ -20,7 +20,7 @@ describe('all.json config', () => {
   );
 
   // with end of Node.js 6 support, we can use Object.entries(allConfig.rules) here
-  const configRules: JsonRules = allConfig.rules;
+  const configRules: JsonRules = allConfig.overrides[0].rules;
   const typescriptEslintConfigRules = Object.keys(configRules).filter(name =>
     name.startsWith(RULE_NAME_PREFIX),
   );
