@@ -6,10 +6,7 @@ import { firstDefined } from './node-utils';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 import { TSESTree } from './ts-estree';
-import {
-  calculateProjectParserOptions,
-  createProgram,
-} from './tsconfig-parser';
+import { calculateProjectParserOptions } from './tsconfig-parser';
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
@@ -67,7 +64,7 @@ function resetExtra(): void {
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
 function getASTFromProject(code: string, options: TSESTreeOptions) {
-  return firstDefined(
+  const astAndProgram = firstDefined(
     calculateProjectParserOptions(
       code,
       options.filePath || getFileName(options),
@@ -80,18 +77,17 @@ function getASTFromProject(code: string, options: TSESTreeOptions) {
       return ast && { ast, program: currentProgram };
     },
   );
-}
 
-/**
- * @param code The code of the file being linted
- * @param options The config object
- * @returns If found, returns the source file corresponding to the code and the containing program
- */
-function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
-  const fileName = options.filePath || getFileName(options);
-  const program = createProgram(code, fileName, extra);
-  const ast = program && program.getSourceFile(fileName);
-  return ast && { ast, program };
+  if (!astAndProgram) {
+    throw new Error(
+      `If "parserOptions.project" has been set for @typescript-eslint/parser, ${options.filePath ||
+        getFileName(
+          options,
+        )} must be included in at least one of the projects provided.`,
+    );
+  }
+
+  return astAndProgram;
 }
 
 /**
@@ -164,7 +160,6 @@ function getProgramAndAST(
 ) {
   return (
     (shouldProvideParserServices && getASTFromProject(code, options)) ||
-    (shouldProvideParserServices && getASTAndDefaultProject(code, options)) ||
     createNewProgram(code)
   );
 }

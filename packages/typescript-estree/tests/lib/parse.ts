@@ -2,6 +2,9 @@ import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
 import { TSESTreeOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
+import { join } from 'path';
+
+const FIXTURES_DIR = './tests/fixtures/simpleProject';
 
 describe('parse()', () => {
   describe('basic functionality', () => {
@@ -135,6 +138,12 @@ describe('parse()', () => {
       tokens: true,
       range: true,
       loc: true,
+      filePath: 'tests/fixtures/simpleProject/file.ts',
+    };
+    const projectConfig: TSESTreeOptions = {
+      ...baseConfig,
+      tsconfigRootDir: join(process.cwd(), FIXTURES_DIR),
+      project: './tsconfig.json',
     };
 
     it('should not impact the use of parse()', () => {
@@ -165,10 +174,10 @@ describe('parse()', () => {
       expect(noOptionSet.services.esTreeNodeToTSNodeMap).toBeUndefined();
       expect(noOptionSet.services.tsNodeToESTreeNodeMap).toBeUndefined();
 
-      const withProjectNoOptionSet = parser.parseAndGenerateServices(code, {
-        ...baseConfig,
-        project: './tsconfig.json',
-      });
+      const withProjectNoOptionSet = parser.parseAndGenerateServices(
+        code,
+        projectConfig,
+      );
 
       expect(withProjectNoOptionSet.services.esTreeNodeToTSNodeMap).toEqual(
         expect.any(WeakMap),
@@ -192,9 +201,8 @@ describe('parse()', () => {
       );
 
       const withProjectOptionSetToTrue = parser.parseAndGenerateServices(code, {
-        ...baseConfig,
+        ...projectConfig,
         preserveNodeMaps: true,
-        project: './tsconfig.json',
       });
 
       expect(withProjectOptionSetToTrue.services.esTreeNodeToTSNodeMap).toEqual(
@@ -216,7 +224,10 @@ describe('parse()', () => {
 
       const withProjectOptionSetToFalse = parser.parseAndGenerateServices(
         code,
-        { ...baseConfig, preserveNodeMaps: false, project: './tsconfig.json' },
+        {
+          ...projectConfig,
+          preserveNodeMaps: false,
+        },
       );
 
       expect(
