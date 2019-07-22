@@ -52,7 +52,6 @@ if (false) {
   console.log("hello");
 }
             `,
-      parser: '@typescript-eslint/parser',
       errors: [
         {
           messageId: 'tsIgnoreComment',
