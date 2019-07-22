@@ -37,12 +37,12 @@ export default {
         // This is already checked by Typescript.
         'no-redeclare': 'off',
         /**
-         * 2. Enable more ideomatic code
+         * 2. Enable more idiomatic code
          */
         // Typescript allows const and let instead of var.
         'no-var': 'error',
         'prefer-const': 'error',
-        // The spread operator/rest parameters should be prefered in Typescript.
+        // The spread operator/rest parameters should be preferred in Typescript.
         'prefer-rest-params': 'error',
         'prefer-spread': 'error',
       },
