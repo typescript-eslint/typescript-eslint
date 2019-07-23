@@ -48,12 +48,12 @@ describe('parser', () => {
         jsx: false,
       },
       // ts-estree specific
-      filePath: 'test/foo',
+      filePath: 'tests/fixtures/services/isolated-file.src.ts',
       project: 'tsconfig.json',
       useJSXTextNode: false,
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      tsconfigRootDir: './',
+      tsconfigRootDir: 'tests/fixtures/services',
       extraFileExtensions: ['foo'],
     };
     parseForESLint(code, config);
