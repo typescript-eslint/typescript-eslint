@@ -456,6 +456,7 @@ export function getTokenType(token: any): AST_TOKEN_TYPES {
       case SyntaxKind.TypeKeyword:
       case SyntaxKind.ModuleKeyword:
       case SyntaxKind.AsyncKeyword:
+      case SyntaxKind.IsKeyword:
         return AST_TOKEN_TYPES.Identifier;
 
       default:

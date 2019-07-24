@@ -46,14 +46,6 @@ class Test {
             `,
     },
     {
-      filename: 'test.js',
-      code: `
-function test() {
-    return;
-}
-            `,
-    },
-    {
       filename: 'test.ts',
       code: `fn(() => {});`,
       options: [

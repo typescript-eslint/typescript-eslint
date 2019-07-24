@@ -1,5 +1,8 @@
 import rule from 'eslint/lib/rules/no-redeclare';
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -19,7 +22,6 @@ ruleTester.run('no-redeclare', rule, {
         ecmaVersion: 6,
       },
     },
-    'var Object = 0;',
     { code: 'var Object = 0;', options: [{ builtinGlobals: false }] },
     {
       code: 'var Object = 0;',
@@ -31,7 +33,11 @@ ruleTester.run('no-redeclare', rule, {
       options: [{ builtinGlobals: true }],
       parserOptions: { ecmaFeatures: { globalReturn: true } },
     },
-    { code: 'var top = 0;', env: { browser: true } },
+    {
+      code: 'var top = 0;',
+      env: { browser: true },
+      options: [{ builtinGlobals: false }],
+    },
     { code: 'var top = 0;', options: [{ builtinGlobals: true }] },
     {
       code: 'var top = 0;',
@@ -84,85 +90,115 @@ class D<T> {}
       parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
       code: 'switch(foo) { case a: var b = 3;\ncase b: var b = 4}',
       errors: [
         {
-          message: "'b' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'b',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
       code: 'var a = 3; var a = 10;',
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
       code: 'var a = {}; var a = [];',
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
       code: 'var a; function a() {}',
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
       code: 'function a() {} function a() {}',
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
       code: 'var a = function() { }; var a = function() { }',
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
       code: 'var a = function() { }; var a = new Date();',
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
       code: 'var a = 3; var a = 10; var a = 15;',
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
@@ -170,9 +206,12 @@ class D<T> {}
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
@@ -180,9 +219,12 @@ class D<T> {}
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
@@ -190,9 +232,12 @@ class D<T> {}
       options: [{ builtinGlobals: true }],
       errors: [
         {
-          message: "'Object' is already defined.",
+          messageId: 'redeclaredAsBuiltin',
+          data: {
+            id: 'Object',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
@@ -200,9 +245,12 @@ class D<T> {}
       options: [{ builtinGlobals: true }],
       errors: [
         {
-          message: "'top' is already defined.",
+          messageId: 'redeclaredAsBuiltin',
+          data: {
+            id: 'top',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
       env: { browser: true },
     },
@@ -212,13 +260,19 @@ class D<T> {}
       parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
         {
-          message: "'Object' is already defined.",
+          messageId: 'redeclaredAsBuiltin',
+          data: {
+            id: 'Object',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
@@ -227,9 +281,12 @@ class D<T> {}
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
@@ -238,9 +295,12 @@ class D<T> {}
       parserOptions: { ecmaVersion: 6, ecmaFeatures: { globalReturn: true } },
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
     {
@@ -249,9 +309,12 @@ class D<T> {}
       parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          message: "'a' is already defined.",
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
           type: AST_NODE_TYPES.Identifier,
-        } as any,
+        },
       ],
     },
 
@@ -261,9 +324,12 @@ class D<T> {}
       options: [{ builtinGlobals: true }],
       errors: [
         {
-          message: "'b' is already defined.",
-          type: AST_NODE_TYPES.Identifier,
-        } as any,
+          messageId: 'redeclaredBySyntax',
+          data: {
+            id: 'b',
+          },
+          type: AST_TOKEN_TYPES.Block,
+        },
       ],
     },
   ],
