@@ -40,7 +40,7 @@ export function omitDeep(
     }
 
     for (const prop in node) {
-      if (node.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(node, prop)) {
         if (shouldOmit(prop, node[prop])) {
           delete node[prop];
           continue;

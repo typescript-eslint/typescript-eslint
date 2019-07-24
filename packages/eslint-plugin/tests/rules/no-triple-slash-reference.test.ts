@@ -33,7 +33,6 @@ let a
 /// <reference path="Animal" />
 let a
             `,
-      parser: '@typescript-eslint/parser',
       errors: [
         {
           messageId: 'noTripleSlashReference',

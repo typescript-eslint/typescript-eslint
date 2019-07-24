@@ -102,6 +102,11 @@ function returnsAny(): any {
   return 0;
 }
       `,
+      options: [
+        {
+          allowAny: false,
+        },
+      ],
       errors: [
         {
           messageId,
@@ -114,6 +119,11 @@ function returnsUnknown(): unknown {
   return 0;
 }
       `,
+      options: [
+        {
+          allowAny: false,
+        },
+      ],
       errors: [
         {
           messageId,
