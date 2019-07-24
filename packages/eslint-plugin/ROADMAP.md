@@ -26,7 +26,7 @@
 | [`no-namespace`]                  | ✅  | [`@typescript-eslint/no-namespace`]                  |
 | [`no-non-null-assertion`]         | ✅  | [`@typescript-eslint/no-non-null-assertion`]         |
 | [`no-parameter-reassignment`]     | ✅  | [`no-param-reassign`][no-param-reassign]             |
-| [`no-reference`]                  | ✅  | [`@typescript-eslint/no-triple-slash-reference`]     |
+| [`no-reference`]                  | ✅  | [`@typescript-eslint/triple-slash-reference`]        |
 | [`no-unnecessary-type-assertion`] | ✅  | [`@typescript-eslint/no-unnecessary-type-assertion`] |
 | [`no-var-requires`]               | ✅  | [`@typescript-eslint/no-var-requires`]               |
 | [`only-arrow-functions`]          | 🔌  | [`prefer-arrow/prefer-arrow-functions`]              |
@@ -577,8 +577,8 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/await-thenable`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/await-thenable.md
 [`@typescript-eslint/ban-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-types.md
 [`@typescript-eslint/ban-ts-ignore`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-ts-ignore.md
-[`@typescript-eslint/consistent-type-definitions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-definitions.md
 [`@typescript-eslint/consistent-type-assertions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-assertions.md
+[`@typescript-eslint/consistent-type-definitions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-definitions.md
 [`@typescript-eslint/explicit-member-accessibility`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
 [`@typescript-eslint/member-ordering`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-ordering.md
 [`@typescript-eslint/no-explicit-any`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-explicit-any.md
@@ -588,7 +588,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/promise-function-async`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/promise-function-async.md
 [`@typescript-eslint/no-namespace`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-namespace.md
 [`@typescript-eslint/no-non-null-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-non-null-assertion.md
-[`@typescript-eslint/no-triple-slash-reference`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-triple-slash-reference.md
+[`@typescript-eslint/triple-slash-reference`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/triple-slash-reference.md
 [`@typescript-eslint/unbound-method`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unbound-method.md
 [`@typescript-eslint/no-unnecessary-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-type-assertion.md
 [`@typescript-eslint/no-var-requires`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-var-requires.md
