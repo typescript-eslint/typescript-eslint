@@ -52,6 +52,7 @@ import preferRegexpExec from './prefer-regexp-exec';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
 import promiseFunctionAsync from './promise-function-async';
 import requireArraySortCompare from './require-array-sort-compare';
+import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import semi from './semi';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -116,6 +117,7 @@ export default {
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'promise-function-async': promiseFunctionAsync,
   'require-array-sort-compare': requireArraySortCompare,
+  'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
   'strict-boolean-expressions': strictBooleanExpressions,
   'triple-slash-reference': tripleSlashReference,

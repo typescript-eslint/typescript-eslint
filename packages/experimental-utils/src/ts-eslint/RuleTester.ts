@@ -46,7 +46,8 @@ interface RunTests<
   invalid: InvalidTestCase<TMessageIds, TOptions>[];
 }
 interface RuleTesterConfig {
-  parser: '@typescript-eslint/parser';
+  // should be require.resolve(parserPackageName)
+  parser: string;
   parserOptions?: ParserOptions;
 }
 declare interface RuleTester {

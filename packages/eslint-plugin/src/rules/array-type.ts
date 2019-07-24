@@ -72,12 +72,20 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
   }
 }
 
-type Options = ['array' | 'generic' | 'array-simple'];
+export type OptionString = 'array' | 'generic' | 'array-simple';
+type Options = [
+  {
+    default: OptionString;
+    readonly?: OptionString;
+  }
+];
 type MessageIds =
   | 'errorStringGeneric'
   | 'errorStringGenericSimple'
   | 'errorStringArray'
   | 'errorStringArraySimple';
+
+const arrayOption = { enum: ['array', 'generic', 'array-simple'] };
 
 export default util.createRule<Options, MessageIds>({
   name: 'array-type',
@@ -101,13 +109,31 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        enum: ['array', 'generic', 'array-simple'],
+        type: 'object',
+        properties: {
+          default: arrayOption,
+          readonly: arrayOption,
+        },
       },
     ],
   },
-  defaultOptions: ['array'],
-  create(context, [option]) {
+  defaultOptions: [
+    {
+      default: 'array',
+    },
+  ],
+  create(context, [options]) {
     const sourceCode = context.getSourceCode();
+
+    const defaultOption = options.default;
+    const readonlyOption = options.readonly || defaultOption;
+
+    const isArraySimpleOption =
+      defaultOption === 'array-simple' && readonlyOption === 'array-simple';
+    const isArrayOption =
+      defaultOption === 'array' && readonlyOption === 'array';
+    const isGenericOption =
+      defaultOption === 'generic' && readonlyOption === 'generic';
 
     /**
      * Check if whitespace is needed before this node
@@ -142,22 +168,36 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSArrayType(node) {
+      TSArrayType(node: TSESTree.TSArrayType) {
         if (
-          option === 'array' ||
-          (option === 'array-simple' && isSimpleType(node.elementType))
+          isArrayOption ||
+          (isArraySimpleOption && isSimpleType(node.elementType))
         ) {
           return;
         }
-        const messageId =
-          option === 'generic'
-            ? 'errorStringGeneric'
-            : 'errorStringGenericSimple';
 
         const isReadonly =
           node.parent &&
           node.parent.type === AST_NODE_TYPES.TSTypeOperator &&
           node.parent.operator === 'readonly';
+
+        const isReadonlyGeneric =
+          readonlyOption === 'generic' && defaultOption !== 'generic';
+
+        const isReadonlyArray =
+          readonlyOption !== 'generic' && defaultOption === 'generic';
+
+        if (
+          (isReadonlyGeneric && !isReadonly) ||
+          (isReadonlyArray && isReadonly)
+        ) {
+          return;
+        }
+
+        const messageId =
+          defaultOption === 'generic'
+            ? 'errorStringGeneric'
+            : 'errorStringGenericSimple';
         const typeOpNode = isReadonly ? node.parent! : null;
 
         context.report({
@@ -200,23 +240,32 @@ export default util.createRule<Options, MessageIds>({
           },
         });
       },
+
       TSTypeReference(node: TSESTree.TSTypeReference) {
         if (
-          option === 'generic' ||
+          isGenericOption ||
           node.typeName.type !== AST_NODE_TYPES.Identifier
         ) {
           return;
         }
-        if (!['Array', 'ReadonlyArray'].includes(node.typeName.name)) {
+
+        const isReadonlyArrayType = node.typeName.name === 'ReadonlyArray';
+        const isArrayType = node.typeName.name === 'Array';
+
+        if (
+          !(isArrayType || isReadonlyArrayType) ||
+          (readonlyOption === 'generic' && isReadonlyArrayType) ||
+          (defaultOption === 'generic' && !isReadonlyArrayType)
+        ) {
           return;
         }
 
-        const messageId =
-          option === 'array' ? 'errorStringArray' : 'errorStringArraySimple';
-        const isReadonly = node.typeName.name === 'ReadonlyArray';
-        const readonlyPrefix = isReadonly ? 'readonly ' : '';
-
+        const readonlyPrefix = isReadonlyArrayType ? 'readonly ' : '';
         const typeParams = node.typeParameters && node.typeParameters.params;
+        const messageId =
+          defaultOption === 'array'
+            ? 'errorStringArray'
+            : 'errorStringArraySimple';
 
         if (!typeParams || typeParams.length === 0) {
           // Create an 'any' array
@@ -230,12 +279,13 @@ export default util.createRule<Options, MessageIds>({
               return fixer.replaceText(node, `${readonlyPrefix}any[]`);
             },
           });
+
           return;
         }
 
         if (
           typeParams.length !== 1 ||
-          (option === 'array-simple' && !isSimpleType(typeParams[0]))
+          (defaultOption === 'array-simple' && !isSimpleType(typeParams[0]))
         ) {
           return;
         }
