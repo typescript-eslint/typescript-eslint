@@ -118,20 +118,20 @@ export default util.createRule<Options, MessageIds>({
      * `const x = <Foo>{ prop: () => {} }`
      */
     function isPropertyOfObjectWithType(
-      parent: TSESTree.Node | undefined,
+      property: TSESTree.Node | undefined,
     ): boolean {
-      if (!parent || parent.type !== AST_NODE_TYPES.Property) {
+      if (!property || property.type !== AST_NODE_TYPES.Property) {
         return false;
       }
-      parent = parent.parent; // this shouldn't happen, checking just in case
+      const objectExpr = property.parent; // this shouldn't happen, checking just in case
       /* istanbul ignore if */ if (
-        !parent ||
-        parent.type !== AST_NODE_TYPES.ObjectExpression
+        !objectExpr ||
+        objectExpr.type !== AST_NODE_TYPES.ObjectExpression
       ) {
         return false;
       }
 
-      parent = parent.parent; // this shouldn't happen, checking just in case
+      const parent = objectExpr.parent; // this shouldn't happen, checking just in case
       /* istanbul ignore if */ if (!parent) {
         return false;
       }
@@ -139,7 +139,8 @@ export default util.createRule<Options, MessageIds>({
       return (
         isTypeCast(parent) ||
         isClassPropertyWithTypeAnnotation(parent) ||
-        isVariableDeclaratorWithTypeAnnotation(parent)
+        isVariableDeclaratorWithTypeAnnotation(parent) ||
+        isFunctionArgument(parent)
       );
     }
 
@@ -193,12 +194,12 @@ export default util.createRule<Options, MessageIds>({
      */
     function isFunctionArgument(
       parent: TSESTree.Node,
-      child: TSESTree.Node,
+      callee?: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): boolean {
       return (
         parent.type === AST_NODE_TYPES.CallExpression &&
         // make sure this isn't an IIFE
-        parent.callee !== child
+        parent.callee !== callee
       );
     }
 
