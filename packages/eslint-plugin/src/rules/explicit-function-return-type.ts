@@ -9,7 +9,7 @@ type Options = [
     allowExpressions?: boolean;
     allowTypedFunctionExpressions?: boolean;
     allowHigherOrderFunctions?: boolean;
-  },
+  }
 ];
 type MessageIds = 'missingReturnType';
 
