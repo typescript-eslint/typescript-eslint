@@ -8,7 +8,6 @@ import {
   AST_TOKEN_TYPES,
   TSESLint,
 } from '@typescript-eslint/experimental-utils';
-import { createGlobalLinebreakMatcher } from 'eslint/lib/util/ast-utils';
 import {
   isOpeningParenToken,
   isClosingParenToken,
@@ -25,6 +24,10 @@ import { TokenOrComment } from './BinarySearchTree';
 import { OffsetStorage } from './OffsetStorage';
 import { TokenInfo } from './TokenInfo';
 import { createRule, ExcludeKeys, RequireKeys } from '../../util';
+
+function createGlobalLinebreakMatcher() {
+  return /\r\n|[\r\n\u2028\u2029]/gu;
+}
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -1382,6 +1385,10 @@ export default createRule<Options, MessageIds>({
       },
 
       VariableDeclaration(node) {
+        if (node.declarations.length === 0) {
+          return;
+        }
+
         let variableIndent = Object.prototype.hasOwnProperty.call(
           options.VariableDeclarator,
           node.kind,
@@ -1588,7 +1595,7 @@ export default createRule<Options, MessageIds>({
     );
 
     // For each ignored node selector, set up a listener to collect it into the `ignoredNodes` set.
-    const ignoredNodes = new Set();
+    const ignoredNodes = new Set<TSESTree.Node>();
 
     /**
      * Ignores a node

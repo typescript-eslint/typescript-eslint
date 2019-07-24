@@ -46,14 +46,6 @@ class Test {
             `,
     },
     {
-      filename: 'test.js',
-      code: `
-function test() {
-    return;
-}
-            `,
-    },
-    {
       filename: 'test.ts',
       code: `fn(() => {});`,
       options: [
@@ -244,6 +236,42 @@ function FunctionDeclaration() {
 () => () => { return (): void => { return; } };
             `,
       options: [{ allowHigherOrderFunctions: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/679
+    {
+      filename: 'test.ts',
+      code: `
+declare function foo(arg: () => void): void
+foo(() => 1)
+foo(() => {})
+foo(() => null)
+foo(() => true)
+foo(() => '')
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Accumulator {
+  private count: number = 0;
+
+  public accumulate(fn: () => number): void {
+    this.count += fn();
+  }
+}
+
+new Accumulator().accumulate(() => 1);
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
     },
   ],
   invalid: [
@@ -547,6 +575,89 @@ function FunctionDeclaration() {
           messageId: 'missingReturnType',
           line: 2,
           column: 22,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/679
+    {
+      filename: 'test.ts',
+      code: `
+declare function foo(arg: () => void): void
+foo(() => 1)
+foo(() => {})
+foo(() => null)
+foo(() => true)
+foo(() => '')
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 5,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 6,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 7,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Accumulator {
+  private count: number = 0;
+
+  public accumulate(fn: () => number): void {
+    this.count += fn();
+  }
+}
+
+new Accumulator().accumulate(() => 1);
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 10,
+          column: 30,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+(() => true)()
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 2,
         },
       ],
     },

@@ -12,6 +12,8 @@ A triple-slash reference directive is a comment beginning with three slashes fol
 ES6 Modules handle this now:
 `import animal from "./Animal"`
 
+## DEPRECATED - this rule has been deprecated in favour of [`triple-slash-reference`](./triple-slash-reference.md)
+
 ## Rule Details
 
 Does not allow the use of `/// <reference />` comments.

@@ -16,6 +16,10 @@ const options: InferOptionsTypeFromRule<typeof rule> = [
       Object: "Use '{}' instead.",
       Array: null,
       F: null,
+      'NS.Bad': {
+        message: 'Use NS.Good instead.',
+        fixWith: 'NS.Good',
+      },
     },
   },
 ];
@@ -39,6 +43,14 @@ ruleTester.run('ban-types', rule, {
       code: 'let e: foo.String;',
       options,
     },
+    {
+      code: 'let a: _.NS.Bad',
+      options,
+    },
+    {
+      code: 'let a: NS.Bad._',
+      options,
+    },
   ],
   invalid: [
     {
@@ -55,6 +67,25 @@ ruleTester.run('ban-types', rule, {
         },
       ],
       options,
+    },
+    {
+      code: 'let aa: Foo;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'Foo',
+            customMessage: '',
+          },
+        },
+      ],
+      options: [
+        {
+          types: {
+            Foo: { message: '' },
+          },
+        },
+      ],
     },
     {
       code: 'let b: {c: String};',
@@ -213,6 +244,53 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
           },
           line: 6,
           column: 30,
+        },
+      ],
+      options,
+    },
+    {
+      code: 'let a: NS.Bad;',
+      output: 'let a: NS.Good;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'NS.Bad',
+            customMessage: ' Use NS.Good instead.',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+      options,
+    },
+    {
+      code: `
+let a: NS.Bad<Foo>;
+let b: Foo<NS.Bad>;
+      `,
+      output: `
+let a: NS.Good<Foo>;
+let b: Foo<NS.Good>;
+      `,
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'NS.Bad',
+            customMessage: ' Use NS.Good instead.',
+          },
+          line: 2,
+          column: 8,
+        },
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'NS.Bad',
+            customMessage: ' Use NS.Good instead.',
+          },
+          line: 3,
+          column: 12,
         },
       ],
       options,

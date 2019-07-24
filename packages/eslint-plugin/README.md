@@ -43,11 +43,23 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
-You can also enable all the recommended rules at once. Add `plugin:@typescript-eslint/recommended` in extends:
+You can also enable all the recommended rules for our plugin. Add `plugin:@typescript-eslint/recommended` in extends:
 
 ```json
 {
   "extends": ["plugin:@typescript-eslint/recommended"]
+}
+```
+
+You can also use [eslint:recommended](https://eslint.org/docs/rules/) with this plugin. Add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended`:
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }
 ```
 
@@ -104,7 +116,6 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 
 ## Supported Rules
 
-<!-- Please run `npm run docs` to update this section -->
 <!-- begin rule list -->
 
 **Key**: :heavy_check_mark: = recommended, :wrench: = fixable, :thought_balloon: = requires type information
@@ -119,6 +130,7 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/ban-types`](./docs/rules/ban-types.md)                                               | Enforces that types will not to be used                                                                                                             | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/camelcase`](./docs/rules/camelcase.md)                                               | Enforce camelCase naming convention                                                                                                                 | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/class-name-casing`](./docs/rules/class-name-casing.md)                               | Require PascalCased class and interface names                                                                                                       | :heavy_check_mark: |          |                   |
+| [`@typescript-eslint/consistent-type-definitions`](./docs/rules/consistent-type-definitions.md)           | Consistent with type definition either `interface` or `type`                                                                                        |                    | :wrench: |                   |
 | [`@typescript-eslint/explicit-function-return-type`](./docs/rules/explicit-function-return-type.md)       | Require explicit return types on functions and class methods                                                                                        | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/explicit-member-accessibility`](./docs/rules/explicit-member-accessibility.md)       | Require explicit accessibility modifiers on class properties and methods                                                                            | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/func-call-spacing`](./docs/rules/func-call-spacing.md)                               | Require or disallow spacing between function identifiers and their invocations                                                                      |                    | :wrench: |                   |
@@ -130,21 +142,23 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/member-ordering`](./docs/rules/member-ordering.md)                                   | Require a consistent member declaration order                                                                                                       |                    |          |                   |
 | [`@typescript-eslint/no-angle-bracket-type-assertion`](./docs/rules/no-angle-bracket-type-assertion.md)   | Enforces the use of `as Type` assertions instead of `<Type>` assertions                                                                             | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-array-constructor`](./docs/rules/no-array-constructor.md)                         | Disallow generic `Array` constructors                                                                                                               | :heavy_check_mark: | :wrench: |                   |
+| [`@typescript-eslint/no-empty-function`](./docs/rules/no-empty-function.md)                               | Disallow empty functions                                                                                                                            |                    |          |                   |
 | [`@typescript-eslint/no-empty-interface`](./docs/rules/no-empty-interface.md)                             | Disallow the declaration of empty interfaces                                                                                                        | :heavy_check_mark: |          |                   |
-| [`@typescript-eslint/no-explicit-any`](./docs/rules/no-explicit-any.md)                                   | Disallow usage of the `any` type                                                                                                                    | :heavy_check_mark: |          |                   |
+| [`@typescript-eslint/no-explicit-any`](./docs/rules/no-explicit-any.md)                                   | Disallow usage of the `any` type                                                                                                                    | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/no-extra-parens`](./docs/rules/no-extra-parens.md)                                   | Disallow unnecessary parentheses                                                                                                                    |                    | :wrench: |                   |
 | [`@typescript-eslint/no-extraneous-class`](./docs/rules/no-extraneous-class.md)                           | Forbids the use of classes as namespaces                                                                                                            |                    |          |                   |
+| [`@typescript-eslint/no-floating-promises`](./docs/rules/no-floating-promises.md)                         | Requires Promise-like values to be handled appropriately.                                                                                           |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-for-in-array`](./docs/rules/no-for-in-array.md)                                   | Disallow iterating over an array with a for-in loop                                                                                                 |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-inferrable-types`](./docs/rules/no-inferrable-types.md)                           | Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean                                        | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/no-magic-numbers`](./docs/rules/no-magic-numbers.md)                                 | Disallows magic numbers                                                                                                                             |                    |          |                   |
 | [`@typescript-eslint/no-misused-new`](./docs/rules/no-misused-new.md)                                     | Enforce valid definition of `new` and `constructor`                                                                                                 | :heavy_check_mark: |          |                   |
+| [`@typescript-eslint/no-misused-promises`](./docs/rules/no-misused-promises.md)                           | Avoid using promises in places not designed to handle them                                                                                          |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-namespace`](./docs/rules/no-namespace.md)                                         | Disallow the use of custom TypeScript modules and namespaces                                                                                        | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-non-null-assertion`](./docs/rules/no-non-null-assertion.md)                       | Disallows non-null assertions using the `!` postfix operator                                                                                        | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-object-literal-type-assertion`](./docs/rules/no-object-literal-type-assertion.md) | Forbids an object literal to appear in a type assertion expression                                                                                  | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-parameter-properties`](./docs/rules/no-parameter-properties.md)                   | Disallow the use of parameter properties in class constructors                                                                                      | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-require-imports`](./docs/rules/no-require-imports.md)                             | Disallows invocation of `require()`                                                                                                                 |                    |          |                   |
 | [`@typescript-eslint/no-this-alias`](./docs/rules/no-this-alias.md)                                       | Disallow aliasing `this`                                                                                                                            |                    |          |                   |
-| [`@typescript-eslint/no-triple-slash-reference`](./docs/rules/no-triple-slash-reference.md)               | Disallow `/// <reference path="" />` comments                                                                                                       | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-type-alias`](./docs/rules/no-type-alias.md)                                       | Disallow the use of type aliases                                                                                                                    |                    |          |                   |
 | [`@typescript-eslint/no-unnecessary-qualifier`](./docs/rules/no-unnecessary-qualifier.md)                 | Warns when a namespace qualifier is unnecessary                                                                                                     |                    | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/no-unnecessary-type-assertion`](./docs/rules/no-unnecessary-type-assertion.md)       | Warns if a type assertion does not change the type of an expression                                                                                 |                    | :wrench: | :thought_balloon: |
@@ -155,14 +169,17 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/prefer-for-of`](./docs/rules/prefer-for-of.md)                                       | Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated                                      |                    |          |                   |
 | [`@typescript-eslint/prefer-function-type`](./docs/rules/prefer-function-type.md)                         | Use function types instead of interfaces with call signatures                                                                                       |                    | :wrench: |                   |
 | [`@typescript-eslint/prefer-includes`](./docs/rules/prefer-includes.md)                                   | Enforce `includes` method over `indexOf` method                                                                                                     |                    | :wrench: | :thought_balloon: |
-| [`@typescript-eslint/prefer-interface`](./docs/rules/prefer-interface.md)                                 | Prefer an interface declaration over a type literal (type T = { ... })                                                                              | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/prefer-namespace-keyword`](./docs/rules/prefer-namespace-keyword.md)                 | Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules                                     | :heavy_check_mark: | :wrench: |                   |
+| [`@typescript-eslint/prefer-readonly`](./docs/rules/prefer-readonly.md)                                   | Requires that private members are marked as `readonly` if they're never modified outside of the constructor                                         |                    | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/prefer-regexp-exec`](./docs/rules/prefer-regexp-exec.md)                             | Prefer RegExp#exec() over String#match() if no global flag is provided                                                                              |                    |          | :thought_balloon: |
 | [`@typescript-eslint/prefer-string-starts-ends-with`](./docs/rules/prefer-string-starts-ends-with.md)     | Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings                             |                    | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/promise-function-async`](./docs/rules/promise-function-async.md)                     | Requires any function or method that returns a Promise to be marked async                                                                           |                    |          | :thought_balloon: |
 | [`@typescript-eslint/require-array-sort-compare`](./docs/rules/require-array-sort-compare.md)             | Enforce giving `compare` argument to `Array#sort`                                                                                                   |                    |          | :thought_balloon: |
+| [`@typescript-eslint/require-await`](./docs/rules/require-await.md)                                       | Disallow async functions which have no `await` expression                                                                                           |                    |          | :thought_balloon: |
 | [`@typescript-eslint/restrict-plus-operands`](./docs/rules/restrict-plus-operands.md)                     | When adding two variables, operands must both be of type number or of type string                                                                   |                    |          | :thought_balloon: |
 | [`@typescript-eslint/semi`](./docs/rules/semi.md)                                                         | Require or disallow semicolons instead of ASI                                                                                                       |                    | :wrench: |                   |
+| [`@typescript-eslint/strict-boolean-expressions`](./docs/rules/strict-boolean-expressions.md)             | Restricts the types allowed in boolean expressions                                                                                                  |                    |          | :thought_balloon: |
+| [`@typescript-eslint/triple-slash-reference`](./docs/rules/triple-slash-reference.md)                     | Sets preference level for triple slash directives versus ES6-style import declarations                                                              |                    |          |                   |
 | [`@typescript-eslint/type-annotation-spacing`](./docs/rules/type-annotation-spacing.md)                   | Require consistent spacing around type annotations                                                                                                  | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/unbound-method`](./docs/rules/unbound-method.md)                                     | Enforces unbound methods are called with their expected scope                                                                                       |                    |          | :thought_balloon: |
 | [`@typescript-eslint/unified-signatures`](./docs/rules/unified-signatures.md)                             | Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter                                           |                    |          |                   |

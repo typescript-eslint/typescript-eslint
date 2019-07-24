@@ -155,6 +155,24 @@ declare module 'eslint/lib/rules/no-dupe-args' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-empty-function' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'unexpected',
+    [
+      {
+        allow?: string[];
+      }
+    ],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-implicit-globals' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
@@ -180,6 +198,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         enforceConst?: boolean;
         detectObjects?: boolean;
         ignoreNumericLiteralTypes?: boolean;
+        ignoreEnums?: boolean;
       }
     ],
     {
@@ -193,7 +212,7 @@ declare module 'eslint/lib/rules/no-redeclare' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   const rule: TSESLint.RuleModule<
-    never,
+    'redeclared' | 'redeclaredAsBuiltin' | 'redeclaredBySyntax',
     [
       {
         builtinGlobals?: boolean;
@@ -385,6 +404,29 @@ declare module 'eslint/lib/rules/no-extra-parens' {
       WhileStatement(node: TSESTree.WhileStatement): void;
       WithStatement(node: TSESTree.WithStatement): void;
       YieldExpression(node: TSESTree.YieldExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/require-await' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      'ArrowFunctionExpression:exit'(
+        node: TSESTree.ArrowFunctionExpression,
+      ): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      AwaitExpression(node: TSESTree.AwaitExpression): void;
+      ForOfStatement(node: TSESTree.ForOfStatement): void;
     }
   >;
   export = rule;

@@ -22,7 +22,7 @@ let a
       code: '/// <reference path="Animal" />',
       errors: [
         {
-          messageId: 'tripleSlashReference',
+          messageId: 'noTripleSlashReference',
           line: 1,
           column: 1,
         },
@@ -33,10 +33,9 @@ let a
 /// <reference path="Animal" />
 let a
             `,
-      parser: '@typescript-eslint/parser',
       errors: [
         {
-          messageId: 'tripleSlashReference',
+          messageId: 'noTripleSlashReference',
           line: 2,
           column: 1,
         },
