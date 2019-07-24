@@ -1,5 +1,5 @@
 import path from 'path';
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from './parser-options';
 
 //------------------------------------------------------------------------------
@@ -82,14 +82,17 @@ export function calculateProjectParserOptions(
     watchCallback(filePath, ts.FileWatcherEventKind.Changed);
   }
 
-  for (let rawTsconfigPath of extra.projects) {
+  for (const rawTsconfigPath of extra.projects) {
     const tsconfigPath = getTsconfigPath(rawTsconfigPath, extra);
 
     const existingWatch = knownWatchProgramMap.get(tsconfigPath);
 
     if (typeof existingWatch !== 'undefined') {
       // get new program (updated if necessary)
-      results.push(existingWatch.getProgram().getProgram());
+      const updatedProgram = existingWatch.getProgram().getProgram();
+      updatedProgram.getTypeChecker(); // sets parent pointers in source files
+      results.push(updatedProgram);
+
       continue;
     }
 
@@ -152,9 +155,9 @@ export function calculateProjectParserOptions(
       const oldReadDirectory = host.readDirectory;
       host.readDirectory = (
         path: string,
-        extensions?: ReadonlyArray<string>,
-        exclude?: ReadonlyArray<string>,
-        include?: ReadonlyArray<string>,
+        extensions?: readonly string[],
+        exclude?: readonly string[],
+        include?: readonly string[],
         depth?: number,
       ) =>
         oldReadDirectory(

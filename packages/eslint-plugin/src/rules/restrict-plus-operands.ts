@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import ts from 'typescript';
 import * as util from '../util';
 
@@ -8,8 +8,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description:
-        'When adding two variables, operands must both be of type number or of type string.',
-      tslintRuleName: 'restrict-plus-operands',
+        'When adding two variables, operands must both be of type number or of type string',
       category: 'Best Practices',
       recommended: false,
     },
@@ -32,10 +31,18 @@ export default util.createRule({
 
     /**
      * Helper function to get base type of node
-     * @param type type to be evaluated
-     * @returns string, number or invalid
      */
     function getBaseTypeOfLiteralType(type: ts.Type): BaseLiteral {
+      const constraint = type.getConstraint();
+      if (
+        constraint &&
+        // for generic types with union constraints, it will return itself from getConstraint
+        // so we have to guard against infinite recursion...
+        constraint !== type
+      ) {
+        return getBaseTypeOfLiteralType(constraint);
+      }
+
       if (type.isNumberLiteral()) {
         return 'number';
       }

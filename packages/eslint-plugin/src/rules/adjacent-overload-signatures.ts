@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type RuleNode =
@@ -16,7 +19,6 @@ export default util.createRule({
     docs: {
       description: 'Require that member overloads be consecutive',
       category: 'Best Practices',
-      tslintName: 'adjacent-overload-signatures',
       recommended: 'error',
     },
     schema: [],

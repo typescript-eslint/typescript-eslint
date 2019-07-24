@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -6,10 +6,9 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows invocation of `require()`.',
-      tslintName: 'no-require-imports',
+      description: 'Disallows invocation of `require()`',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
     },
     schema: [],
     messages: {

@@ -1,6 +1,6 @@
 import rule from '../../src/rules/no-use-before-define';
 import { RuleTester } from '../RuleTester';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -213,7 +213,6 @@ export namespace Third {
 }
             `,
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      parser: '@typescript-eslint/parser',
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/550
     `
@@ -398,7 +397,7 @@ a();
     function a() {}
 }
             `,
-      parser: 'espree',
+      parser: require.resolve('espree'),
       errors: [
         {
           messageId: 'noUseBeforeDefine',

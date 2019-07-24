@@ -1,8 +1,8 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/prefer-function-type';
 import { RuleTester } from '../RuleTester';
 
-var ruleTester = new RuleTester({
+const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
   },

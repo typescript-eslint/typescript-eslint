@@ -1,5 +1,5 @@
-import ts from 'typescript';
 import unescape from 'lodash.unescape';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -455,6 +455,8 @@ export function getTokenType(token: any): AST_TOKEN_TYPES {
       case SyntaxKind.SetKeyword:
       case SyntaxKind.TypeKeyword:
       case SyntaxKind.ModuleKeyword:
+      case SyntaxKind.AsyncKeyword:
+      case SyntaxKind.IsKeyword:
         return AST_TOKEN_TYPES.Identifier;
 
       default:
@@ -550,17 +552,17 @@ export function convertToken(
   ast: ts.SourceFile,
 ): TSESTree.Token {
   const start =
-      token.kind === SyntaxKind.JsxText
-        ? token.getFullStart()
-        : token.getStart(ast),
-    end = token.getEnd(),
-    value = ast.text.slice(start, end),
-    newToken: TSESTree.Token = {
-      type: getTokenType(token),
-      value,
-      range: [start, end],
-      loc: getLocFor(start, end, ast),
-    };
+    token.kind === SyntaxKind.JsxText
+      ? token.getFullStart()
+      : token.getStart(ast);
+  const end = token.getEnd();
+  const value = ast.text.slice(start, end);
+  const newToken: TSESTree.Token = {
+    type: getTokenType(token),
+    value,
+    range: [start, end],
+    loc: getLocFor(start, end, ast),
+  };
 
   if (newToken.type === 'RegularExpression') {
     newToken.regex = {
@@ -678,7 +680,7 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
  * @param callback
  */
 export function firstDefined<T, U>(
-  array: ReadonlyArray<T> | undefined,
+  array: readonly T[] | undefined,
   callback: (element: T, index: number) => U | undefined,
 ): U | undefined {
   if (array === undefined) {

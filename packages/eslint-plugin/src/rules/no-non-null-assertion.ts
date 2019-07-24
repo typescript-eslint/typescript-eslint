@@ -7,7 +7,6 @@ export default util.createRule({
     docs: {
       description:
         'Disallows non-null assertions using the `!` postfix operator',
-      tslintRuleName: 'no-non-null-assertion',
       category: 'Stylistic Issues',
       recommended: 'error',
     },

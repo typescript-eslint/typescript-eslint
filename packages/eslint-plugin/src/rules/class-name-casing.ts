@@ -1,5 +1,8 @@
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
 export default util.createRule({
   name: 'class-name-casing',
@@ -7,7 +10,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Require PascalCased class and interface names',
-      tslintRuleName: 'class-name',
       category: 'Best Practices',
       recommended: 'error',
     },

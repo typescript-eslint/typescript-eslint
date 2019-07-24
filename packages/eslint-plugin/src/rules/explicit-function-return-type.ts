@@ -1,10 +1,14 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
   {
     allowExpressions?: boolean;
     allowTypedFunctionExpressions?: boolean;
+    allowHigherOrderFunctions?: boolean;
   }
 ];
 type MessageIds = 'missingReturnType';
@@ -32,6 +36,9 @@ export default util.createRule<Options, MessageIds>({
           allowTypedFunctionExpressions: {
             type: 'boolean',
           },
+          allowHigherOrderFunctions: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -41,6 +48,7 @@ export default util.createRule<Options, MessageIds>({
     {
       allowExpressions: false,
       allowTypedFunctionExpressions: false,
+      allowHigherOrderFunctions: false,
     },
   ],
   create(context, [options]) {
@@ -48,8 +56,9 @@ export default util.createRule<Options, MessageIds>({
      * Checks if a node is a constructor.
      * @param node The node to check
      */
-    function isConstructor(node: TSESTree.Node): boolean {
+    function isConstructor(node: TSESTree.Node | undefined): boolean {
       return (
+        !!node &&
         node.type === AST_NODE_TYPES.MethodDefinition &&
         node.kind === 'constructor'
       );
@@ -57,17 +66,19 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks if a node is a setter.
-     * @param parent The node to check
      */
-    function isSetter(node: TSESTree.Node): boolean {
+    function isSetter(node: TSESTree.Node | undefined): boolean {
       return (
-        node.type === AST_NODE_TYPES.MethodDefinition && node.kind === 'set'
+        !!node &&
+        (node.type === AST_NODE_TYPES.MethodDefinition ||
+          node.type === AST_NODE_TYPES.Property) &&
+        node.kind === 'set'
       );
     }
 
     /**
      * Checks if a node is a variable declarator with a type annotation.
-     * @param node The node to check
+     * `const x: Foo = ...`
      */
     function isVariableDeclaratorWithTypeAnnotation(
       node: TSESTree.Node,
@@ -79,8 +90,120 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if a node is a class property with a type annotation.
+     * `public x: Foo = ...`
+     */
+    function isClassPropertyWithTypeAnnotation(node: TSESTree.Node): boolean {
+      return (
+        node.type === AST_NODE_TYPES.ClassProperty && !!node.typeAnnotation
+      );
+    }
+
+    /**
+     * Checks if a node is a type cast
+     * `(() => {}) as Foo`
+     * `<Foo>(() => {})`
+     */
+    function isTypeCast(node: TSESTree.Node): boolean {
+      return (
+        node.type === AST_NODE_TYPES.TSAsExpression ||
+        node.type === AST_NODE_TYPES.TSTypeAssertion
+      );
+    }
+
+    /**
+     * Checks if a node belongs to:
+     * `const x: Foo = { prop: () => {} }`
+     * `const x = { prop: () => {} } as Foo`
+     * `const x = <Foo>{ prop: () => {} }`
+     */
+    function isPropertyOfObjectWithType(
+      parent: TSESTree.Node | undefined,
+    ): boolean {
+      if (!parent || parent.type !== AST_NODE_TYPES.Property) {
+        return false;
+      }
+      parent = parent.parent; // this shouldn't happen, checking just in case
+      /* istanbul ignore if */ if (
+        !parent ||
+        parent.type !== AST_NODE_TYPES.ObjectExpression
+      ) {
+        return false;
+      }
+
+      parent = parent.parent; // this shouldn't happen, checking just in case
+      /* istanbul ignore if */ if (!parent) {
+        return false;
+      }
+
+      return (
+        isTypeCast(parent) ||
+        isClassPropertyWithTypeAnnotation(parent) ||
+        isVariableDeclaratorWithTypeAnnotation(parent)
+      );
+    }
+
+    /**
+     * Checks if a function belongs to:
+     * `() => () => ...`
+     * `() => function () { ... }`
+     * `() => { return () => ... }`
+     * `() => { return function () { ... } }`
+     * `function fn() { return () => ... }`
+     * `function fn() { return function() { ... } }`
+     */
+    function doesImmediatelyReturnFunctionExpression({
+      body,
+    }:
+      | TSESTree.ArrowFunctionExpression
+      | TSESTree.FunctionDeclaration
+      | TSESTree.FunctionExpression): boolean {
+      // Should always have a body; really checking just in case
+      /* istanbul ignore if */ if (!body) {
+        return false;
+      }
+
+      // Check if body is a block with a single statement
+      if (
+        body.type === AST_NODE_TYPES.BlockStatement &&
+        body.body.length === 1
+      ) {
+        const [statement] = body.body;
+
+        // Check if that statement is a return statement with an argument
+        if (
+          statement.type === AST_NODE_TYPES.ReturnStatement &&
+          !!statement.argument
+        ) {
+          // If so, check that returned argument as body
+          body = statement.argument;
+        }
+      }
+
+      // Check if the body being returned is a function expression
+      return (
+        body.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        body.type === AST_NODE_TYPES.FunctionExpression
+      );
+    }
+
+    /**
+     * Checks if a node belongs to:
+     * `foo(() => 1)`
+     */
+    function isFunctionArgument(
+      parent: TSESTree.Node,
+      child: TSESTree.Node,
+    ): boolean {
+      return (
+        parent.type === AST_NODE_TYPES.CallExpression &&
+        // make sure this isn't an IIFE
+        parent.callee !== child
+      );
+    }
+
+    /**
      * Checks if a function declaration/expression has a return type.
-     * @param node The node representing a function.
      */
     function checkFunctionReturnType(
       node:
@@ -89,45 +212,53 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression,
     ): void {
       if (
-        options.allowExpressions &&
-        node.type !== AST_NODE_TYPES.FunctionDeclaration &&
-        node.parent &&
-        node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
-        node.parent.type !== AST_NODE_TYPES.MethodDefinition
+        options.allowHigherOrderFunctions &&
+        doesImmediatelyReturnFunctionExpression(node)
       ) {
         return;
       }
 
       if (
-        !node.returnType &&
-        node.parent &&
-        !isConstructor(node.parent) &&
-        !isSetter(node.parent) &&
-        util.isTypeScriptFile(context.getFilename())
+        node.returnType ||
+        isConstructor(node.parent) ||
+        isSetter(node.parent)
       ) {
-        context.report({
-          node,
-          messageId: 'missingReturnType',
-        });
+        return;
       }
+
+      context.report({
+        node,
+        messageId: 'missingReturnType',
+      });
     }
 
     /**
      * Checks if a function declaration/expression has a return type.
-     * @param {ASTNode} node The node representing a function.
      */
     function checkFunctionExpressionReturnType(
-      node:
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
+      node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): void {
-      if (
-        options.allowTypedFunctionExpressions &&
-        node.parent &&
-        isVariableDeclaratorWithTypeAnnotation(node.parent)
-      ) {
-        return;
+      // Should always have a parent; checking just in case
+      /* istanbul ignore else */ if (node.parent) {
+        if (options.allowTypedFunctionExpressions) {
+          if (
+            isTypeCast(node.parent) ||
+            isVariableDeclaratorWithTypeAnnotation(node.parent) ||
+            isClassPropertyWithTypeAnnotation(node.parent) ||
+            isPropertyOfObjectWithType(node.parent) ||
+            isFunctionArgument(node.parent, node)
+          ) {
+            return;
+          }
+        }
+
+        if (
+          options.allowExpressions &&
+          node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
+          node.parent.type !== AST_NODE_TYPES.MethodDefinition
+        ) {
+          return;
+        }
       }
 
       checkFunctionReturnType(node);

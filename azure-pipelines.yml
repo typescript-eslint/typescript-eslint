@@ -32,6 +32,14 @@ jobs:
         displayName: 'Run linting'
 
       - script: |
+          yarn check:docs
+        displayName: 'Validate documentation'
+
+      - script: |
+          yarn check:configs
+        displayName: 'Validate plugin configs'
+
+      - script: |
           yarn test
         displayName: 'Run unit tests'
 
@@ -54,8 +62,6 @@ jobs:
           node_version: 10.x
         node_8_x:
           node_version: 8.x
-        node_6_x:
-          node_version: 6.x
     steps:
       - task: NodeTool@0
         inputs:
@@ -71,28 +77,28 @@ jobs:
           yarn test
         displayName: 'Run unit tests'
 
-  - job: publish_canary_version
-    displayName: Publish the latest code as a canary version
-    dependsOn:
-    - primary_code_validation_and_tests
-    - unit_tests_on_other_node_versions
-    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest'))
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-      - task: NodeTool@0
-        inputs:
-          versionSpec: 11
-        displayName: 'Install Node.js 11'
+  # - job: publish_canary_version
+  #   displayName: Publish the latest code as a canary version
+  #   dependsOn:
+  #   - primary_code_validation_and_tests
+  #   - unit_tests_on_other_node_versions
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest'))
+  #   pool:
+  #     vmImage: 'Ubuntu-16.04'
+  #   steps:
+  #     - task: NodeTool@0
+  #       inputs:
+  #         versionSpec: 11
+  #       displayName: 'Install Node.js 11'
 
-      - script: |
-          # This also runs a build as part of the postinstall
-          # bootstrap
-          yarn --ignore-engines --frozen-lockfile
+  #     - script: |
+  #         # This also runs a build as part of the postinstall
+  #         # bootstrap
+  #         yarn --ignore-engines --frozen-lockfile
 
-      - script: |
-          npm config set //registry.npmjs.org/:_authToken=$(NPM_TOKEN)
+  #     - script: |
+  #         npm config set //registry.npmjs.org/:_authToken=$(NPM_TOKEN)
 
-      - script: |
-          npx lerna publish --canary --exact --force-publish --yes
-        displayName: 'Publish all packages to npm'
+  #     - script: |
+  #         npx lerna publish --canary --exact --force-publish --yes
+  #       displayName: 'Publish all packages to npm'

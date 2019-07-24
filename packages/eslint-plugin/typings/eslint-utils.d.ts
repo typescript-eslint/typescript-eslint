@@ -1,13 +1,12 @@
 declare module 'eslint-utils' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import { Scope, SourceCode } from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   export function getFunctionHeadLocation(
     node:
       | TSESTree.FunctionDeclaration
       | TSESTree.FunctionExpression
       | TSESTree.ArrowFunctionExpression,
-    sourceCode: SourceCode,
+    sourceCode: TSESLint.SourceCode,
   ): TSESTree.SourceLocation;
 
   export function getFunctionNameWithKind(
@@ -22,22 +21,22 @@ declare module 'eslint-utils' {
       | TSESTree.MemberExpression
       | TSESTree.Property
       | TSESTree.MethodDefinition,
-    initialScope?: Scope.Scope,
+    initialScope?: TSESLint.Scope.Scope,
   ): string | null;
 
   export function getStaticValue(
     node: TSESTree.Node,
-    initialScope?: Scope.Scope,
+    initialScope?: TSESLint.Scope.Scope,
   ): { value: any } | null;
 
   export function getStringIfConstant(
     node: TSESTree.Node,
-    initialScope?: Scope.Scope,
+    initialScope?: TSESLint.Scope.Scope,
   ): string | null;
 
   export function hasSideEffect(
     node: TSESTree.Node,
-    sourceCode: SourceCode,
+    sourceCode: TSESLint.SourceCode,
     options?: {
       considerGetters?: boolean;
       considerImplicitTypeConversion?: boolean;
@@ -46,7 +45,7 @@ declare module 'eslint-utils' {
 
   export function isParenthesized(
     node: TSESTree.Node,
-    sourceCode: SourceCode,
+    sourceCode: TSESLint.SourceCode,
   ): boolean;
 
   export class PatternMatcher {
@@ -56,14 +55,14 @@ declare module 'eslint-utils' {
   }
 
   export function findVariable(
-    initialScope: Scope.Scope,
+    initialScope: TSESLint.Scope.Scope,
     name: string,
-  ): Scope.Variable | null;
+  ): TSESLint.Scope.Variable | null;
 
   export function getInnermostScope(
-    initialScope: Scope.Scope,
+    initialScope: TSESLint.Scope.Scope,
     node: TSESTree.Node,
-  ): Scope.Scope;
+  ): TSESLint.Scope.Scope;
 
   export class ReferenceTracker {
     static readonly READ: unique symbol;
@@ -71,10 +70,10 @@ declare module 'eslint-utils' {
     static readonly CONSTRUCT: unique symbol;
 
     constructor(
-      globalScope: Scope.Scope,
+      globalScope: TSESLint.Scope.Scope,
       options?: {
         mode: 'strict' | 'legacy';
-        globalObjectNames: ReadonlyArray<string>;
+        globalObjectNames: readonly string[];
       },
     );
 
@@ -103,7 +102,7 @@ declare module 'eslint-utils' {
     }
     export interface FoundReference<T = any> {
       node: TSESTree.Node;
-      path: ReadonlyArray<string>;
+      path: readonly string[];
       type: ReferenceType;
       entry: T;
     }

@@ -1,5 +1,5 @@
-import isPlainObject from 'lodash.isplainobject';
 import { AST_NODE_TYPES } from '../../src/ts-estree';
+import isPlainObject from 'lodash.isplainobject';
 
 /**
  * By default, pretty-format (within Jest matchers) retains the names/types of nodes from the babylon AST,
@@ -40,7 +40,7 @@ export function omitDeep(
     }
 
     for (const prop in node) {
-      if (node.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(node, prop)) {
         if (shouldOmit(prop, node[prop])) {
           delete node[prop];
           continue;

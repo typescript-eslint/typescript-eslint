@@ -4,7 +4,10 @@
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
 
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/indent';
 import * as util from '../util';
 
@@ -85,7 +88,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation',
-      tslintRuleName: 'indent',
       category: 'Stylistic Issues',
       recommended: 'error',
     },
@@ -171,6 +173,15 @@ export default util.createRule<Options, MessageIds>({
         if (!KNOWN_NODES.has(node.type)) {
           rules['*:exit'](node);
         }
+      },
+
+      VariableDeclaration(node: TSESTree.VariableDeclaration) {
+        // https://github.com/typescript-eslint/typescript-eslint/issues/441
+        if (node.declarations.length === 0) {
+          return;
+        }
+
+        return rules.VariableDeclaration(node);
       },
 
       TSAsExpression(node: TSESTree.TSAsExpression) {

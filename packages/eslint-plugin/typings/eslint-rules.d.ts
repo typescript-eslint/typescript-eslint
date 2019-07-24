@@ -1,15 +1,13 @@
 // don't provide a general import case so that people have to strictly type out a declaration
-// declare module 'eslint/lib/rules/*' {
-//   import RuleModule from 'ts-eslint';
-//   const rule: RuleModule<any, any[]>;
+// declare module 'eslint/lib/rules/*' TSESLint, {
+//   const rule: TSESLint.RuleModule<any, any[]>;
 //   export = rule;
 // }
 
 declare module 'eslint/lib/rules/arrow-parens' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     | 'unexpectedParens'
     | 'expectedParens'
     | 'unexpectedParensInline'
@@ -28,10 +26,9 @@ declare module 'eslint/lib/rules/arrow-parens' {
 }
 
 declare module 'eslint/lib/rules/camelcase' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     'notCamelCase',
     [
       {
@@ -48,16 +45,15 @@ declare module 'eslint/lib/rules/camelcase' {
 }
 
 declare module 'eslint/lib/rules/indent' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   type Listener = (node: TSESTree.Node) => void;
   type ElementList = number | 'first' | 'off';
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     'wrongIndentation',
     [
-      'tab' | number,
-      {
+      ('tab' | number)?,
+      ({
         SwitchCase?: number;
         VariableDeclarator?:
           | ElementList
@@ -85,7 +81,7 @@ declare module 'eslint/lib/rules/indent' {
         flatTernaryExpressions?: boolean;
         ignoredNodes?: string[];
         ignoreComments?: boolean;
-      }
+      })?
     ],
     {
       '*:exit'(node: TSESTree.Node): void;
@@ -146,10 +142,9 @@ declare module 'eslint/lib/rules/indent' {
 }
 
 declare module 'eslint/lib/rules/no-dupe-args' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     'unexpected',
     [],
     {
@@ -160,11 +155,28 @@ declare module 'eslint/lib/rules/no-dupe-args' {
   export = rule;
 }
 
-declare module 'eslint/lib/rules/no-implicit-globals' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+declare module 'eslint/lib/rules/no-empty-function' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
+    'unexpected',
+    [
+      {
+        allow?: string[];
+      }
+    ],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-implicit-globals' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
     never,
     [],
     {
@@ -174,12 +186,33 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
   export = rule;
 }
 
-declare module 'eslint/lib/rules/no-redeclare' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+declare module 'eslint/lib/rules/no-magic-numbers' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
-    never,
+  const rule: TSESLint.RuleModule<
+    'noMagic',
+    [
+      {
+        ignore?: string[];
+        ignoreArrayIndexes?: boolean;
+        enforceConst?: boolean;
+        detectObjects?: boolean;
+        ignoreNumericLiteralTypes?: boolean;
+        ignoreEnums?: boolean;
+      }
+    ],
+    {
+      Literal(node: TSESTree.Literal): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-redeclare' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'redeclared' | 'redeclaredAsBuiltin' | 'redeclaredBySyntax',
     [
       {
         builtinGlobals?: boolean;
@@ -193,10 +226,9 @@ declare module 'eslint/lib/rules/no-redeclare' {
 }
 
 declare module 'eslint/lib/rules/no-restricted-globals' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     never,
     (
       | string
@@ -212,10 +244,9 @@ declare module 'eslint/lib/rules/no-restricted-globals' {
 }
 
 declare module 'eslint/lib/rules/no-shadow' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     never,
     [
       {
@@ -232,10 +263,9 @@ declare module 'eslint/lib/rules/no-shadow' {
 }
 
 declare module 'eslint/lib/rules/no-undef' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     'undef',
     [
       {
@@ -250,10 +280,9 @@ declare module 'eslint/lib/rules/no-undef' {
 }
 
 declare module 'eslint/lib/rules/no-unused-vars' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     never,
     (
       | 'all'
@@ -275,10 +304,9 @@ declare module 'eslint/lib/rules/no-unused-vars' {
 }
 
 declare module 'eslint/lib/rules/no-use-before-define' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     never,
     (
       | 'nofunc'
@@ -295,10 +323,9 @@ declare module 'eslint/lib/rules/no-use-before-define' {
 }
 
 declare module 'eslint/lib/rules/strict' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     | 'function'
     | 'global'
     | 'multiple'
@@ -318,10 +345,9 @@ declare module 'eslint/lib/rules/strict' {
 }
 
 declare module 'eslint/lib/rules/no-useless-constructor' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     never,
     [],
     {
@@ -332,23 +358,105 @@ declare module 'eslint/lib/rules/no-useless-constructor' {
 }
 
 declare module 'eslint/lib/rules/no-extra-parens' {
-  import { TSESTree } from '@typescript-eslint/typescript-estree';
-  import RuleModule from 'ts-eslint';
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const rule: RuleModule<
+  const rule: TSESLint.RuleModule<
     'unexpected',
-    (
-      | 'all'
-      | 'functions'
-      | {
-          conditionalAssign?: boolean;
-          returnAssign?: boolean;
-          nestedBinaryExpressions?: boolean;
-          ignoreJSX?: 'none' | 'all' | 'multi-line' | 'single-line';
-          enforceForArrowConditionals?: boolean;
-        })[],
+    [
+      'all' | 'functions',
+      {
+        conditionalAssign?: boolean;
+        returnAssign?: boolean;
+        nestedBinaryExpressions?: boolean;
+        ignoreJSX?: 'none' | 'all' | 'multi-line' | 'single-line';
+        enforceForArrowConditionals?: boolean;
+      }?
+    ],
     {
+      ArrayExpression(node: TSESTree.ArrayExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      AssignmentExpression(node: TSESTree.AssignmentExpression): void;
+      AwaitExpression(node: TSESTree.AwaitExpression): void;
+      BinaryExpression(node: TSESTree.BinaryExpression): void;
+      CallExpression(node: TSESTree.CallExpression): void;
+      ClassDeclaration(node: TSESTree.ClassDeclaration): void;
+      ClassExpression(node: TSESTree.ClassExpression): void;
+      ConditionalExpression(node: TSESTree.ConditionalExpression): void;
+      DoWhileStatement(node: TSESTree.DoWhileStatement): void;
+      'ForInStatement, ForOfStatement'(
+        node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
+      ): void;
+      ForStatement(node: TSESTree.ForStatement): void;
+      IfStatement(node: TSESTree.IfStatement): void;
+      LogicalExpression(node: TSESTree.LogicalExpression): void;
       MemberExpression(node: TSESTree.MemberExpression): void;
+      NewExpression(node: TSESTree.NewExpression): void;
+      ObjectExpression(node: TSESTree.ObjectExpression): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      SequenceExpression(node: TSESTree.SequenceExpression): void;
+      SpreadElement(node: TSESTree.SpreadElement): void;
+      SwitchCase(node: TSESTree.SwitchCase): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
+      ThrowStatement(node: TSESTree.ThrowStatement): void;
+      UnaryExpression(node: TSESTree.UnaryExpression): void;
+      UpdateExpression(node: TSESTree.UpdateExpression): void;
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+      WhileStatement(node: TSESTree.WhileStatement): void;
+      WithStatement(node: TSESTree.WithStatement): void;
+      YieldExpression(node: TSESTree.YieldExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/require-await' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      'ArrowFunctionExpression:exit'(
+        node: TSESTree.ArrowFunctionExpression,
+      ): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      AwaitExpression(node: TSESTree.AwaitExpression): void;
+      ForOfStatement(node: TSESTree.ForOfStatement): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/semi' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [
+      'always' | 'never',
+      {
+        beforeStatementContinuationChars?: 'always' | 'any' | 'never';
+        omitLastInOneLineBlock?: boolean;
+      }?
+    ],
+    {
+      VariableDeclaration(node: TSESTree.VariableDeclaration): void;
+      ExpressionStatement(node: TSESTree.ExpressionStatement): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      ThrowStatement(node: TSESTree.ThrowStatement): void;
+      DoWhileStatement(node: TSESTree.DoWhileStatement): void;
+      DebuggerStatement(node: TSESTree.DebuggerStatement): void;
+      BreakStatement(node: TSESTree.BreakStatement): void;
+      ContinueStatement(node: TSESTree.ContinueStatement): void;
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
+      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+      ExportDefaultDeclaration(node: TSESTree.ExportDefaultDeclaration): void;
     }
   >;
   export = rule;

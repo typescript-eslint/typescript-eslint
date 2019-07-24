@@ -1,8 +1,9 @@
-import { rules } from '../src';
-import { Linter, RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import * as parser from '@typescript-eslint/parser';
 import { readFileSync } from 'fs';
+import rule, { Options } from '../src/rules/config';
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
@@ -13,35 +14,39 @@ const ruleTester = new RuleTester({
      */
     project: './tests/tsconfig.json',
   },
-  parser: '@typescript-eslint/parser',
+  parser: require.resolve('@typescript-eslint/parser'),
 });
 
 /**
  * Inline rules should be supported
  */
-const tslintRulesConfig = {
-  rules: {
-    semicolon: [true, 'always'],
+const tslintRulesConfig: Options = [
+  {
+    rules: {
+      semicolon: [true, 'always'],
+    },
   },
-};
+];
 
 /**
  * Custom rules directories should be supported
  */
-const tslintRulesDirectoryConfig = {
-  rulesDirectory: ['./tests/test-tslint-rules-directory'],
-  rules: {
-    'always-fail': {
-      severity: 'error',
+const tslintRulesDirectoryConfig: Options = [
+  {
+    rulesDirectory: ['./tests/test-tslint-rules-directory'],
+    rules: {
+      'always-fail': {
+        severity: 'error',
+      },
     },
   },
-};
+];
 
-ruleTester.run('tslint/config', rules.config, {
+ruleTester.run('tslint/config', rule, {
   valid: [
     {
       code: 'var foo = true;',
-      options: [tslintRulesConfig],
+      options: tslintRulesConfig,
     },
     {
       filename: './tests/test-project/file-spec.ts',
@@ -52,15 +57,11 @@ ruleTester.run('tslint/config', rules.config, {
       parserOptions: {
         project: `${__dirname}/test-project/tsconfig.json`,
       },
-      options: [
-        {
-          ...tslintRulesConfig,
-        },
-      ],
+      options: tslintRulesConfig,
     },
     {
       code: 'throw "should be ok because rule is not loaded";',
-      options: [tslintRulesConfig],
+      options: tslintRulesConfig,
     },
   ],
 
@@ -70,18 +71,26 @@ ruleTester.run('tslint/config', rules.config, {
       code: 'throw "err" // no-string-throw',
       errors: [
         {
-          message:
-            'Throwing plain strings (not instances of Error) gives no stack traces (tslint:no-string-throw)',
+          messageId: 'failure',
+          data: {
+            message:
+              'Throwing plain strings (not instances of Error) gives no stack traces',
+            ruleName: 'no-string-throw',
+          },
         },
       ],
     },
     {
       code: 'var foo = true // semicolon',
-      options: [tslintRulesConfig],
+      options: tslintRulesConfig,
       output: 'var foo = true // semicolon',
       errors: [
         {
-          message: 'Missing semicolon (tslint:semicolon)',
+          messageId: 'failure',
+          data: {
+            message: 'Missing semicolon',
+            ruleName: 'semicolon',
+          },
           line: 1,
           column: 15,
         },
@@ -89,11 +98,15 @@ ruleTester.run('tslint/config', rules.config, {
     },
     {
       code: 'var foo = true // fail',
-      options: [tslintRulesDirectoryConfig],
+      options: tslintRulesDirectoryConfig,
       output: 'var foo = true // fail',
       errors: [
         {
-          message: 'failure (tslint:always-fail)',
+          messageId: 'failure',
+          data: {
+            message: 'failure',
+            ruleName: 'always-fail',
+          },
           line: 1,
           column: 1,
         },
@@ -118,8 +131,12 @@ ruleTester.run('tslint/config', rules.config, {
       ],
       errors: [
         {
-          message:
-            "Operands of '+' operation must either be both strings or both numbers, consider using template literals (tslint:restrict-plus-operands)",
+          messageId: 'failure',
+          data: {
+            message:
+              'Operands of \'+\' operation must either be both strings or both numbers, but found 1 + "2". Consider using template literals.',
+            ruleName: 'restrict-plus-operands',
+          },
         },
       ],
     },
@@ -127,9 +144,10 @@ ruleTester.run('tslint/config', rules.config, {
 });
 
 describe('tslint/error', () => {
-  function testOutput(code: string, config: Linter.Config): void {
-    const linter = new Linter();
-    linter.defineRule('tslint/config', rules.config);
+  function testOutput(code: string, config: TSESLint.Linter.Config): void {
+    const linter = new TSESLint.Linter();
+    linter.defineRule('tslint/config', rule);
+    linter.defineParser('@typescript-eslint/parser', parser);
 
     expect(() => linter.verify(code, config)).toThrow(
       `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`,
@@ -157,9 +175,10 @@ describe('tslint/error', () => {
   });
 
   it('should not crash if there is no tslint rules specified', () => {
-    const linter = new Linter();
+    const linter = new TSESLint.Linter();
     jest.spyOn(console, 'warn').mockImplementation();
-    linter.defineRule('tslint/config', rules.config);
+    linter.defineRule('tslint/config', rule);
+    linter.defineParser('@typescript-eslint/parser', parser);
     expect(() =>
       linter.verify('foo;', {
         parserOptions: {
@@ -174,7 +193,7 @@ describe('tslint/error', () => {
 
     expect(console.warn).toHaveBeenCalledWith(
       expect.stringContaining(
-        'No valid rules have been specified for TypeScript files',
+        'Tried to lint <input> but found no valid, enabled rules for this file type and file path in the resolved configuration.',
       ),
     );
     jest.resetAllMocks();

@@ -1,8 +1,9 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
   {
+    allowAny?: boolean;
     allowedPromiseNames?: string[];
     checkArrowFunctions?: boolean;
     checkFunctionDeclarations?: boolean;
@@ -18,10 +19,9 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Requires any function or method that returns a Promise to be marked async.',
-      tslintName: 'promise-function-async',
+        'Requires any function or method that returns a Promise to be marked async',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
     },
     messages: {
       missingAsync: 'Functions that return promises must be async.',
@@ -30,6 +30,9 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
+          allowAny: {
+            type: 'boolean',
+          },
           allowedPromiseNames: {
             type: 'array',
             items: {
@@ -55,6 +58,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      allowAny: true,
       allowedPromiseNames: [],
       checkArrowFunctions: true,
       checkFunctionDeclarations: true,
@@ -66,6 +70,7 @@ export default util.createRule<Options, MessageIds>({
     context,
     [
       {
+        allowAny,
         allowedPromiseNames,
         checkArrowFunctions,
         checkFunctionDeclarations,
@@ -91,7 +96,9 @@ export default util.createRule<Options, MessageIds>({
       }
       const returnType = checker.getReturnTypeOfSignature(signatures[0]);
 
-      if (!util.containsTypeByName(returnType, allAllowedPromiseNames)) {
+      if (
+        !util.containsTypeByName(returnType, allowAny!, allAllowedPromiseNames)
+      ) {
         return;
       }
 

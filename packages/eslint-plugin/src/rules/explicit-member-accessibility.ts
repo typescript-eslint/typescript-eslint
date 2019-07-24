@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type AccessibilityLevel =
@@ -30,7 +33,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
-      tslintRuleName: 'member-access',
       category: 'Best Practices',
       recommended: 'error',
     },
@@ -117,30 +119,27 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (util.isTypeScriptFile(context.getFilename())) {
-        // const methodName = util.getNameFromPropertyName(methodDefinition.key);
-        const methodName = util.getNameFromClassMember(
+      const methodName = util.getNameFromClassMember(
+        methodDefinition,
+        sourceCode,
+      );
+      if (
+        check === 'no-public' &&
+        methodDefinition.accessibility === 'public'
+      ) {
+        reportIssue(
+          'unwantedPublicAccessibility',
+          nodeType,
           methodDefinition,
-          sourceCode,
+          methodName,
         );
-        if (
-          check === 'no-public' &&
-          methodDefinition.accessibility === 'public'
-        ) {
-          reportIssue(
-            'unwantedPublicAccessibility',
-            nodeType,
-            methodDefinition,
-            methodName,
-          );
-        } else if (check === 'explicit' && !methodDefinition.accessibility) {
-          reportIssue(
-            'missingAccessibility',
-            nodeType,
-            methodDefinition,
-            methodName,
-          );
-        }
+      } else if (check === 'explicit' && !methodDefinition.accessibility) {
+        reportIssue(
+          'missingAccessibility',
+          nodeType,
+          methodDefinition,
+          methodName,
+        );
       }
     }
 
@@ -153,26 +152,24 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const nodeType = 'class property';
 
-      if (util.isTypeScriptFile(context.getFilename())) {
-        const propertyName = util.getNameFromPropertyName(classProperty.key);
-        if (
-          propCheck === 'no-public' &&
-          classProperty.accessibility === 'public'
-        ) {
-          reportIssue(
-            'unwantedPublicAccessibility',
-            nodeType,
-            classProperty,
-            propertyName,
-          );
-        } else if (propCheck === 'explicit' && !classProperty.accessibility) {
-          reportIssue(
-            'missingAccessibility',
-            nodeType,
-            classProperty,
-            propertyName,
-          );
-        }
+      const propertyName = util.getNameFromPropertyName(classProperty.key);
+      if (
+        propCheck === 'no-public' &&
+        classProperty.accessibility === 'public'
+      ) {
+        reportIssue(
+          'unwantedPublicAccessibility',
+          nodeType,
+          classProperty,
+          propertyName,
+        );
+      } else if (propCheck === 'explicit' && !classProperty.accessibility) {
+        reportIssue(
+          'missingAccessibility',
+          nodeType,
+          classProperty,
+          propertyName,
+        );
       }
     }
 
@@ -184,24 +181,22 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.TSParameterProperty,
     ) {
       const nodeType = 'parameter property';
-      if (util.isTypeScriptFile(context.getFilename())) {
-        // HAS to be an identifier or assignment or TSC will throw
-        if (
-          node.parameter.type !== AST_NODE_TYPES.Identifier &&
-          node.parameter.type !== AST_NODE_TYPES.AssignmentPattern
-        ) {
-          return;
-        }
+      // HAS to be an identifier or assignment or TSC will throw
+      if (
+        node.parameter.type !== AST_NODE_TYPES.Identifier &&
+        node.parameter.type !== AST_NODE_TYPES.AssignmentPattern
+      ) {
+        return;
+      }
 
-        const nodeName =
-          node.parameter.type === AST_NODE_TYPES.Identifier
-            ? node.parameter.name
-            : // has to be an Identifier or TSC will throw an error
-              (node.parameter.left as TSESTree.Identifier).name;
+      const nodeName =
+        node.parameter.type === AST_NODE_TYPES.Identifier
+          ? node.parameter.name
+          : // has to be an Identifier or TSC will throw an error
+            (node.parameter.left as TSESTree.Identifier).name;
 
-        if (paramPropCheck === 'no-public' && node.accessibility === 'public') {
-          reportIssue('unwantedPublicAccessibility', nodeType, node, nodeName);
-        }
+      if (paramPropCheck === 'no-public' && node.accessibility === 'public') {
+        reportIssue('unwantedPublicAccessibility', nodeType, node, nodeName);
       }
     }
 
