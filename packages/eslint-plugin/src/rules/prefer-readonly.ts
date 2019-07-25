@@ -179,7 +179,7 @@ export default util.createRule<Options, MessageIds>({
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
           ts.PropertyAccessExpression
         >(node);
-        if (classScopeStack.length !== 0) {
+        if (classScopeStack.length !== 0 && !node.computed) {
           handlePropertyAccessExpression(
             tsNode,
             tsNode.parent,
