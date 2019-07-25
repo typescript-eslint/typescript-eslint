@@ -58,6 +58,7 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import useDefaultTypeParameter from './no-unnecessary-type-arguments';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -97,6 +98,7 @@ export default {
   'no-this-alias': noThisAlias,
   'no-type-alias': noTypeAlias,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
+  'no-unnecessary-type-arguments': useDefaultTypeParameter,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
@@ -113,11 +115,11 @@ export default {
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
+  semi: semi,
   'strict-boolean-expressions': strictBooleanExpressions,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
+  typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
-  semi: semi,
-  typedef: typedef,
 };
