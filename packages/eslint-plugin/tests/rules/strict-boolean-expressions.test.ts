@@ -156,6 +156,15 @@ ruleTester.run('strict-boolean-expressions', rule, {
     `
       function foo<T extends boolean>(arg: T) { return !arg; }
     `,
+    {
+      options: [{ ignoreRhs: true }],
+      code: `
+const obj = {};
+const bool = false;
+const boolOrObj = bool || obj;
+const boolAndObj = bool && obj;
+`,
+    },
   ],
 
   invalid: [
@@ -902,6 +911,27 @@ ruleTester.run('strict-boolean-expressions', rule, {
           column: 58,
         },
       ],
+    },
+    {
+      options: [{ ignoreRhs: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 4,
+          column: 19,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 5,
+          column: 20,
+        },
+      ],
+      code: `
+const obj = {};
+const bool = false;
+const objOrBool = obj || bool;
+const objAndBool = obj && bool;
+`,
     },
   ],
 });

@@ -18536,21 +18536,21 @@ Object {
 
 exports[`typescript fixtures/basics/keyword-variables.src 1`] = `
 Object {
-  "$id": 11,
+  "$id": 13,
   "block": Object {
     "range": Array [
       0,
-      154,
+      174,
     ],
     "type": "Program",
   },
   "childScopes": Array [
     Object {
-      "$id": 10,
+      "$id": 12,
       "block": Object {
         "range": Array [
           0,
-          154,
+          174,
         ],
         "type": "Program",
       },
@@ -18559,9 +18559,9 @@ Object {
       "isStrict": true,
       "references": Array [
         Object {
-          "$id": 5,
+          "$id": 6,
           "from": Object {
-            "$ref": 10,
+            "$ref": 12,
           },
           "identifier": Object {
             "name": "get",
@@ -18584,9 +18584,9 @@ Object {
           },
         },
         Object {
-          "$id": 6,
+          "$id": 7,
           "from": Object {
-            "$ref": 10,
+            "$ref": 12,
           },
           "identifier": Object {
             "name": "set",
@@ -18609,9 +18609,9 @@ Object {
           },
         },
         Object {
-          "$id": 7,
+          "$id": 8,
           "from": Object {
-            "$ref": 10,
+            "$ref": 12,
           },
           "identifier": Object {
             "name": "module",
@@ -18634,9 +18634,9 @@ Object {
           },
         },
         Object {
-          "$id": 8,
+          "$id": 9,
           "from": Object {
-            "$ref": 10,
+            "$ref": 12,
           },
           "identifier": Object {
             "name": "type",
@@ -18659,9 +18659,9 @@ Object {
           },
         },
         Object {
-          "$id": 9,
+          "$id": 10,
           "from": Object {
-            "$ref": 10,
+            "$ref": 12,
           },
           "identifier": Object {
             "name": "async",
@@ -18683,11 +18683,36 @@ Object {
             "type": "Literal",
           },
         },
+        Object {
+          "$id": 11,
+          "from": Object {
+            "$ref": 12,
+          },
+          "identifier": Object {
+            "name": "is",
+            "range": Array [
+              87,
+              89,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 5,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              92,
+              93,
+            ],
+            "type": "Literal",
+          },
+        },
       ],
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 11,
+        "$ref": 13,
       },
       "variableMap": Object {
         "async": Object {
@@ -18695,6 +18720,9 @@ Object {
         },
         "get": Object {
           "$ref": 0,
+        },
+        "is": Object {
+          "$ref": 5,
         },
         "module": Object {
           "$ref": 2,
@@ -18707,7 +18735,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 10,
+        "$ref": 12,
       },
       "variables": Array [
         Object {
@@ -18742,22 +18770,22 @@ Object {
               "name": Object {
                 "name": "get",
                 "range": Array [
-                  93,
-                  96,
+                  107,
+                  110,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  93,
-                  96,
+                  107,
+                  110,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  82,
-                  153,
+                  96,
+                  173,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -18777,8 +18805,8 @@ Object {
             Object {
               "name": "get",
               "range": Array [
-                93,
-                96,
+                107,
+                110,
               ],
               "type": "Identifier",
             },
@@ -18786,11 +18814,11 @@ Object {
           "name": "get",
           "references": Array [
             Object {
-              "$ref": 5,
+              "$ref": 6,
             },
           ],
           "scope": Object {
-            "$ref": 10,
+            "$ref": 12,
           },
         },
         Object {
@@ -18825,22 +18853,22 @@ Object {
               "name": Object {
                 "name": "set",
                 "range": Array [
-                  100,
-                  103,
+                  114,
+                  117,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  100,
-                  103,
+                  114,
+                  117,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  82,
-                  153,
+                  96,
+                  173,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -18860,8 +18888,8 @@ Object {
             Object {
               "name": "set",
               "range": Array [
-                100,
-                103,
+                114,
+                117,
               ],
               "type": "Identifier",
             },
@@ -18869,11 +18897,11 @@ Object {
           "name": "set",
           "references": Array [
             Object {
-              "$ref": 6,
+              "$ref": 7,
             },
           ],
           "scope": Object {
-            "$ref": 10,
+            "$ref": 12,
           },
         },
         Object {
@@ -18908,22 +18936,22 @@ Object {
               "name": Object {
                 "name": "module",
                 "range": Array [
-                  107,
-                  113,
+                  121,
+                  127,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  107,
-                  113,
+                  121,
+                  127,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  82,
-                  153,
+                  96,
+                  173,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -18943,8 +18971,8 @@ Object {
             Object {
               "name": "module",
               "range": Array [
-                107,
-                113,
+                121,
+                127,
               ],
               "type": "Identifier",
             },
@@ -18952,11 +18980,11 @@ Object {
           "name": "module",
           "references": Array [
             Object {
-              "$ref": 7,
+              "$ref": 8,
             },
           ],
           "scope": Object {
-            "$ref": 10,
+            "$ref": 12,
           },
         },
         Object {
@@ -18991,22 +19019,22 @@ Object {
               "name": Object {
                 "name": "type",
                 "range": Array [
-                  117,
-                  121,
+                  131,
+                  135,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  117,
-                  121,
+                  131,
+                  135,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  82,
-                  153,
+                  96,
+                  173,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -19026,8 +19054,8 @@ Object {
             Object {
               "name": "type",
               "range": Array [
-                117,
-                121,
+                131,
+                135,
               ],
               "type": "Identifier",
             },
@@ -19035,11 +19063,11 @@ Object {
           "name": "type",
           "references": Array [
             Object {
-              "$ref": 8,
+              "$ref": 9,
             },
           ],
           "scope": Object {
-            "$ref": 10,
+            "$ref": 12,
           },
         },
         Object {
@@ -19074,22 +19102,22 @@ Object {
               "name": Object {
                 "name": "async",
                 "range": Array [
-                  125,
-                  130,
+                  139,
+                  144,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  125,
-                  130,
+                  139,
+                  144,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  82,
-                  153,
+                  96,
+                  173,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -19109,8 +19137,8 @@ Object {
             Object {
               "name": "async",
               "range": Array [
-                125,
-                130,
+                139,
+                144,
               ],
               "type": "Identifier",
             },
@@ -19118,11 +19146,94 @@ Object {
           "name": "async",
           "references": Array [
             Object {
-              "$ref": 9,
+              "$ref": 10,
             },
           ],
           "scope": Object {
-            "$ref": 10,
+            "$ref": 12,
+          },
+        },
+        Object {
+          "$id": 5,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "is",
+                "range": Array [
+                  87,
+                  89,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  87,
+                  93,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  81,
+                  94,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+            Object {
+              "name": Object {
+                "name": "is",
+                "range": Array [
+                  148,
+                  150,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  148,
+                  150,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  96,
+                  173,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "is",
+              "range": Array [
+                87,
+                89,
+              ],
+              "type": "Identifier",
+            },
+            Object {
+              "name": "is",
+              "range": Array [
+                148,
+                150,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "is",
+          "references": Array [
+            Object {
+              "$ref": 11,
+            },
+          ],
+          "scope": Object {
+            "$ref": 12,
           },
         },
       ],
@@ -19136,7 +19247,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 11,
+    "$ref": 13,
   },
   "variables": Array [],
 }

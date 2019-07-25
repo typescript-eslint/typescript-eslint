@@ -13,7 +13,13 @@ type ExpressionWithTest =
   | TSESTree.IfStatement
   | TSESTree.WhileStatement;
 
-export default util.createRule({
+type Options = [
+  {
+    ignoreRhs?: boolean;
+  }
+];
+
+export default util.createRule<Options, 'strictBooleanExpression'>({
   name: 'strict-boolean-expressions',
   meta: {
     type: 'suggestion',
@@ -22,13 +28,27 @@ export default util.createRule({
       category: 'Best Practices',
       recommended: false,
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignoreRhs: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     messages: {
       strictBooleanExpression: 'Unexpected non-boolean in conditional.',
     },
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      ignoreRhs: false,
+    },
+  ],
+  create(context, [{ ignoreRhs }]) {
     const service = util.getParserServices(context);
     const checker = service.program.getTypeChecker();
 
@@ -65,7 +85,10 @@ export default util.createRule({
     function assertLocalExpressionContainsBoolean(
       node: TSESTree.LogicalExpression,
     ): void {
-      if (!isBooleanType(node.left) || !isBooleanType(node.right)) {
+      if (
+        !isBooleanType(node.left) ||
+        (!ignoreRhs && !isBooleanType(node.right))
+      ) {
         reportNode(node);
       }
     }

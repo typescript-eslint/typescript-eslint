@@ -9,13 +9,6 @@ import {
 } from '@typescript-eslint/experimental-utils';
 
 /**
- * Check if the context file name is *.ts or *.tsx
- */
-export function isTypeScriptFile(fileName: string) {
-  return /\.tsx?$/i.test(fileName || '');
-}
-
-/**
  * Check if the context file name is *.d.ts or *.d.tsx
  */
 export function isDefinitionFile(fileName: string) {

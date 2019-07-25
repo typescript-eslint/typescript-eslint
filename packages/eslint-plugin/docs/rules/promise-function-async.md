@@ -36,7 +36,7 @@ async function functionDeturnsPromise() {
 
 Options may be provided as an object with:
 
-- `allowAny` to indicate that `any` or `unknown` shouldn't be considered Promises (`false` by default).
+- `allowAny` to indicate that `any` or `unknown` shouldn't be considered Promises (`true` by default).
 - `allowedPromiseNames` to indicate any extra names of classes or interfaces to be considered Promises when returned.
 
 In addition, each of the following properties may be provided, and default to `true`:
@@ -51,7 +51,6 @@ In addition, each of the following properties may be provided, and default to `t
   "@typescript-eslint/promise-function-async": [
     "error",
     {
-      "allowAny": true,
       "allowedPromiseNames": ["Thenable"],
       "checkArrowFunctions": true,
       "checkFunctionDeclarations": true,
