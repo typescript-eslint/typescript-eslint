@@ -64,26 +64,18 @@ function resetExtra(): void {
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
 function getASTFromProject(code: string, options: TSESTreeOptions) {
+  const filePath = options.filePath || getFileName(options);
   const astAndProgram = firstDefined(
-    calculateProjectParserOptions(
-      code,
-      options.filePath || getFileName(options),
-      extra,
-    ),
+    calculateProjectParserOptions(code, filePath, extra),
     currentProgram => {
-      const ast = currentProgram.getSourceFile(
-        options.filePath || getFileName(options),
-      );
+      const ast = currentProgram.getSourceFile(filePath);
       return ast && { ast, program: currentProgram };
     },
   );
 
   if (!astAndProgram) {
     throw new Error(
-      `If "parserOptions.project" has been set for @typescript-eslint/parser, ${options.filePath ||
-        getFileName(
-          options,
-        )} must be included in at least one of the projects provided.`,
+      `If "parserOptions.project" has been set for @typescript-eslint/parser, ${filePath} must be included in at least one of the projects provided.`,
     );
   }
 
