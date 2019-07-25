@@ -219,7 +219,7 @@ ruleTester.run('prefer-readonly', rule, {
       public mutate() {
         this['computed'] = 1;
       }
-    }`
+    }`,
   ],
   invalid: [
     {
