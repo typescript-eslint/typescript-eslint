@@ -85,7 +85,7 @@ export default util.createRule<Options, MessageIds>({
       TSParameterProperty(node) {
         const modifiers = getModifiers(node);
 
-        if (allows.indexOf(modifiers) === -1) {
+        if (!allows.includes(modifiers)) {
           // HAS to be an identifier or assignment or TSC will throw
           if (
             node.parameter.type !== AST_NODE_TYPES.Identifier &&

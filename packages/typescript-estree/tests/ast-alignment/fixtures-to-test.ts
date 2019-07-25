@@ -33,8 +33,6 @@ const sharedFixturesDirPath = path.join(
 class FixturesTester {
   protected fixtures: FixturePatternConfig[] = [];
 
-  constructor() {}
-
   /**
    * Utility to generate a FixturePatternConfig object containing the glob pattern for specific subsections of the fixtures/ directory,
    * including the capability to ignore specific nested patterns.

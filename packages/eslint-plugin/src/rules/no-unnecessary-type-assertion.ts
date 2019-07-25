@@ -239,9 +239,9 @@ export default util.createRule<Options, MessageIds>({
         if (
           options &&
           options.typesToIgnore &&
-          options.typesToIgnore.indexOf(
+          options.typesToIgnore.includes(
             sourceCode.getText(node.typeAnnotation),
-          ) !== -1
+          )
         ) {
           return;
         }

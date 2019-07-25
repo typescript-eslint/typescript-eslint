@@ -97,7 +97,7 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
 export function isAssignmentOperator(
   operator: ts.Token<ts.AssignmentOperator>,
 ): boolean {
-  return ASSIGNMENT_OPERATORS.indexOf(operator.kind) > -1;
+  return ASSIGNMENT_OPERATORS.includes(operator.kind);
 }
 
 /**
@@ -108,7 +108,7 @@ export function isAssignmentOperator(
 export function isLogicalOperator(
   operator: ts.Token<ts.LogicalOperator>,
 ): boolean {
-  return LOGICAL_OPERATORS.indexOf(operator.kind) > -1;
+  return LOGICAL_OPERATORS.includes(operator.kind);
 }
 
 /**

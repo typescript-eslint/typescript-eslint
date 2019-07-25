@@ -178,10 +178,10 @@ describe('semanticInfo', () => {
       arrayBoundName,
     );
     expect(tsArrayBoundName).toBeDefined();
-    checkNumberArrayType(checker, tsArrayBoundName!);
+    checkNumberArrayType(checker, tsArrayBoundName);
 
     expect(
-      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName!),
+      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName),
     ).toBe(arrayBoundName);
   });
 
@@ -204,9 +204,9 @@ describe('semanticInfo', () => {
     );
     expect(tsBoundName).toBeDefined();
 
-    checkNumberArrayType(checker, tsBoundName!);
+    checkNumberArrayType(checker, tsBoundName);
 
-    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName!)).toBe(
+    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName)).toBe(
       boundName,
     );
   });
@@ -262,8 +262,7 @@ function testIsolatedFile(parseResult: any) {
   const checker = parseResult.services.program!.getTypeChecker();
 
   // get number node (ast shape validated by snapshot)
-  const arrayMember = (parseResult.ast as any).body[0].declarations[0].init
-    .elements[0];
+  const arrayMember = parseResult.ast.body[0].declarations[0].init.elements[0];
   expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
 
   // get corresponding TS node
@@ -286,7 +285,7 @@ function testIsolatedFile(parseResult: any) {
   );
 
   // get bound name
-  const boundName = (parseResult.ast as any).body[0].declarations[0].id;
+  const boundName = parseResult.ast.body[0].declarations[0].id;
   expect(boundName.name).toBe('x');
   const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
     boundName,

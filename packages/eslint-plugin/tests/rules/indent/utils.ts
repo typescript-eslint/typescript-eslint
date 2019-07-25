@@ -17,6 +17,7 @@ type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
  * @returns The template literal, with spaces removed from all lines
  */
 export function unIndent(strings: TemplateStringsArray): string {
+  const WHITESPACE_REGEX = / */u;
   const templateValue = strings[0];
   const lines = templateValue
     .replace(/^\n/u, '')
@@ -24,7 +25,7 @@ export function unIndent(strings: TemplateStringsArray): string {
     .split('\n');
   const lineIndents = lines
     .filter(line => line.trim())
-    .map(line => line.match(/ */u)![0].length);
+    .map(line => WHITESPACE_REGEX.exec(line)![0].length);
   const minLineIndent = Math.min(...lineIndents);
 
   return lines.map(line => line.slice(minLineIndent)).join('\n');

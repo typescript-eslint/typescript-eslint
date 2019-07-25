@@ -17,7 +17,7 @@ export class ReferenceResolver {
       return obj;
     }
 
-    const { map } = this;
+    const map = this.map;
     return {
       get $ref() {
         return map.get(obj).$id;

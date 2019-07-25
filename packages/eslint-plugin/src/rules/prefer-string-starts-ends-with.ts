@@ -79,6 +79,8 @@ export default createRule({
       return (
         evaluated != null &&
         typeof evaluated.value === 'string' &&
+        // checking for single character string
+        // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
         evaluated.value[0] === evaluated.value
       );
     }

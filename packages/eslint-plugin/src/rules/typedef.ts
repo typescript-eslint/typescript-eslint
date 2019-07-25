@@ -21,7 +21,7 @@ export default util.createRule<[Options], MessageIds>({
     docs: {
       description: 'Requires type annotations to exist',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      recommended: false,
     },
     messages: {
       expectedTypedef: 'expected a type annotation',
