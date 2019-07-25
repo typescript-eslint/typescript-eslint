@@ -12,7 +12,7 @@ type MessageIds = 'preferReadonly';
 type Options = [
   {
     onlyInlineLambdas?: boolean;
-  }
+  },
 ];
 
 const functionScopeBoundaries = [

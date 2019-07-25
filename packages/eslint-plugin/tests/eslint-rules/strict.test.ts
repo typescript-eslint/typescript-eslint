@@ -38,7 +38,9 @@ window.whatevs = {
           message: "Use the function form of 'use strict'.",
           line: 3,
           column: 9,
-        } as any, // the base rule doesn't use messageId
+          // the base rule doesn't use messageId
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
       ],
     },
   ],

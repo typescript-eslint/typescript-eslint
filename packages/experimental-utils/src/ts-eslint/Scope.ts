@@ -93,7 +93,7 @@ namespace Scope {
           | TSESTree.ArrowFunctionExpression;
         parent: null;
       }
-    | { type: 'TDZ'; node: any; parent: null }
+    | { type: 'TDZ'; node: unknown; parent: null }
     | {
         type: 'Variable';
         node: TSESTree.VariableDeclarator;

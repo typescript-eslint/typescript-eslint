@@ -41,7 +41,7 @@ export interface TSESTreeOptions {
 // handle the undefined type in the get method
 export interface ParserWeakMap<TKey, TValueBase> {
   get<TValue extends TValueBase>(key: TKey): TValue;
-  has(key: any): boolean;
+  has(key: unknown): boolean;
 }
 
 export interface ParserServices {

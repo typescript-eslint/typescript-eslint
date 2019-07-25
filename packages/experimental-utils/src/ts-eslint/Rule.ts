@@ -1,5 +1,5 @@
 import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
-import { JSONSchema4 } from 'json-schema';
+import { JSONSchema4 } from '../json-schema';
 import { AST } from './AST';
 import { Linter } from './Linter';
 import { Scope } from './Scope';
@@ -109,7 +109,7 @@ interface ReportDescriptorBase<TMessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   /**
    * The fixer function.
    */
@@ -142,7 +142,7 @@ type ReportDescriptor<TMessageIds extends string> = ReportDescriptorBase<
 
 interface RuleContext<
   TMessageIds extends string,
-  TOptions extends readonly any[]
+  TOptions extends readonly unknown[]
 > {
   /**
    * The rule ID.
@@ -383,7 +383,7 @@ interface RuleListener {
 
 interface RuleModule<
   TMessageIds extends string,
-  TOptions extends readonly any[],
+  TOptions extends readonly unknown[],
   // for extending base rules
   TRuleListener extends RuleListener = RuleListener
 > {

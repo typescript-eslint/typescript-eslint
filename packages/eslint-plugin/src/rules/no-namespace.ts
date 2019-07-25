@@ -8,7 +8,7 @@ type Options = [
   {
     allowDeclarations?: boolean;
     allowDefinitionFiles?: boolean;
-  }
+  },
 ];
 type MessageIds = 'moduleSyntaxIsPreferred';
 

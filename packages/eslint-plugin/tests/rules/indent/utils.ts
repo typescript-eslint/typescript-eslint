@@ -24,7 +24,7 @@ export function unIndent(strings: TemplateStringsArray): string {
     .split('\n');
   const lineIndents = lines
     .filter(line => line.trim())
-    .map(line => line.match(/ */u)![0].length);
+    .map(line => / */u.exec(line)![0].length);
   const minLineIndent = Math.min(...lineIndents);
 
   return lines.map(line => line.slice(minLineIndent)).join('\n');
@@ -38,7 +38,7 @@ type ProvidedError = [
   // actual indent
   number | string,
   // node type
-  AST_NODE_TYPES | AST_TOKEN_TYPES
+  AST_NODE_TYPES | AST_TOKEN_TYPES,
 ];
 
 function is2DProvidedErrorArr(

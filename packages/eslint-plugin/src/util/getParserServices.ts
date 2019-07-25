@@ -4,7 +4,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 
 type RequiredParserServices = {
-  [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>
+  [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>;
 };
 
 /**
@@ -12,7 +12,7 @@ type RequiredParserServices = {
  */
 export function getParserServices<
   TMessageIds extends string,
-  TOptions extends any[]
+  TOptions extends unknown[]
 >(
   context: TSESLint.RuleContext<TMessageIds, TOptions>,
 ): RequiredParserServices {

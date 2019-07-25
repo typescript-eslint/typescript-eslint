@@ -4,7 +4,7 @@ import path from 'path';
 import { logRule } from '../log';
 
 function checkForRuleDocs(
-  rules: Record<string, Readonly<TSESLint.RuleModule<any, any, any>>>,
+  rules: Record<string, Readonly<TSESLint.RuleModule<string, unknown[]>>>,
 ): boolean {
   const ruleDocs = new Set(
     fs.readdirSync(path.resolve(__dirname, '../../docs/rules')),

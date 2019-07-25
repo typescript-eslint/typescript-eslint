@@ -47,6 +47,8 @@
     "eslint-visitor-keys": "^1.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/shared-fixtures": "1.13.0"
+    "@types/glob": "^7.1.1",
+    "@typescript-eslint/shared-fixtures": "1.13.0",
+    "glob": "^7.1.4"
   }
 }

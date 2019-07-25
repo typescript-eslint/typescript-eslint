@@ -14,12 +14,21 @@ import { visitorKeys as childVisitorKeys } from './visitor-keys';
  * @param {Function} define The original Scope#__define method.
  * @returns {Function} The override function.
  */
-function overrideDefine(define: any) {
-  return /* @this {Scope} */ function(this: any, node: any, definition: any) {
+function overrideDefine(
+  define: (node: TSESTree.Node, def: TSESLintScope.Definition) => void,
+) {
+  return function(
+    this: TSESLintScope.Scope,
+    node: TSESTree.Node,
+    definition: TSESLintScope.Definition,
+  ) {
     define.call(this, node, definition);
 
     // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
-    const variable = this.set.get(node.name);
+    const variable =
+      'name' in node &&
+      typeof node.name === 'string' &&
+      this.set.get(node.name);
     if (variable) {
       variable.eslintUsed = true;
     }
@@ -29,7 +38,7 @@ function overrideDefine(define: any) {
 class PatternVisitor extends TSESLintScope.PatternVisitor {
   constructor(
     options: TSESLintScope.PatternVisitorOptions,
-    rootPattern: any,
+    rootPattern: TSESTree.BaseNode,
     callback: TSESLintScope.PatternVisitorCallback,
   ) {
     super(options, rootPattern, callback);
@@ -86,7 +95,10 @@ class PatternVisitor extends TSESLintScope.PatternVisitor {
 class Referencer extends TSESLintScope.Referencer<ScopeManager> {
   protected typeMode: boolean;
 
-  constructor(options: any, scopeManager: ScopeManager) {
+  constructor(
+    options: TSESLintScope.ScopeManagerOptions,
+    scopeManager: ScopeManager,
+  ) {
     super(options, scopeManager);
     this.typeMode = false;
   }
@@ -115,7 +127,6 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     visitor.visit(node);
 
     if (options.processRightHandNodes) {
-      // @ts-ignore
       visitor.rightHandNodes.forEach(this.visit, this);
     }
   }
@@ -155,7 +166,6 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
         const def = defs[i];
         if (
           def.type === 'FunctionName' &&
-          // @ts-ignore
           def.node.type === 'TSDeclareFunction'
         ) {
           defs.splice(i, 1);
@@ -832,7 +842,10 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
   }
 }
 
-export function analyzeScope(ast: any, parserOptions: ParserOptions) {
+export function analyzeScope(
+  ast: TSESTree.Program,
+  parserOptions: ParserOptions,
+) {
   const options = {
     ignoreEval: true,
     optimistic: false,

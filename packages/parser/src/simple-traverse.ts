@@ -1,6 +1,7 @@
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { visitorKeys } from './visitor-keys';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isValidNode(x: any): x is TSESTree.Node {
   return x !== null && typeof x === 'object' && typeof x.type === 'string';
 }
@@ -37,7 +38,7 @@ class SimpleTraverser {
     }
 
     for (const key of keys) {
-      const childOrChildren = node[key as keyof typeof node];
+      const childOrChildren = node[key as keyof TSESTree.Node];
 
       if (Array.isArray(childOrChildren)) {
         for (const child of childOrChildren) {

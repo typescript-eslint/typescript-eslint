@@ -8,7 +8,7 @@ type Options = [
   {
     checksConditionals?: boolean;
     checksVoidReturn?: boolean;
-  }
+  },
 ];
 
 export default util.createRule<Options, 'conditional' | 'voidReturn'>({
