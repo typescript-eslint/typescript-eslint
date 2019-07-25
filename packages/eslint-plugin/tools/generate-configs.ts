@@ -38,7 +38,9 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'semi',
 ]);
 
-const ruleEntries = Object.entries(rules);
+const ruleEntries = Object.entries(rules).sort((a, b) =>
+  a[0].localeCompare(b[0]),
+);
 
 /**
  * Helper function reduces records to key - value pairs.
