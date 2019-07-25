@@ -38,5 +38,15 @@ ruleTester.run('no-var-requires', rule, {
         },
       ],
     },
+    {
+      code: "let foo = trick(require('foo'))",
+      errors: [
+        {
+          messageId: 'noVarReqs',
+          line: 1,
+          column: 17,
+        },
+      ],
+    },
   ],
 });

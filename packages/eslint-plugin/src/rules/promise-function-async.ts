@@ -58,7 +58,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowAny: false,
+      allowAny: true,
       allowedPromiseNames: [],
       checkArrowFunctions: true,
       checkFunctionDeclarations: true,

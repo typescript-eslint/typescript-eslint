@@ -212,7 +212,7 @@ declare module 'eslint/lib/rules/no-redeclare' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   const rule: TSESLint.RuleModule<
-    never,
+    'redeclared' | 'redeclaredAsBuiltin' | 'redeclaredBySyntax',
     [
       {
         builtinGlobals?: boolean;
@@ -404,6 +404,29 @@ declare module 'eslint/lib/rules/no-extra-parens' {
       WhileStatement(node: TSESTree.WhileStatement): void;
       WithStatement(node: TSESTree.WithStatement): void;
       YieldExpression(node: TSESTree.YieldExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/require-await' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      'ArrowFunctionExpression:exit'(
+        node: TSESTree.ArrowFunctionExpression,
+      ): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      AwaitExpression(node: TSESTree.AwaitExpression): void;
+      ForOfStatement(node: TSESTree.ForOfStatement): void;
     }
   >;
   export = rule;

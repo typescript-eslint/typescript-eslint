@@ -51,6 +51,8 @@ ruleTester.run('no-useless-constructor', rule, {
     'class A extends B { private constructor(foo, bar) { super(bar); } }',
     'class A extends B { public constructor(foo){ super(foo); } }',
     'class A extends B { public constructor(foo){} }',
+    // type definition / overload
+    'class A { constructor(foo); }',
   ],
   invalid: [
     {

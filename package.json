@@ -31,7 +31,8 @@
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "pre-commit": "yarn lint-staged",
     "pre-push": "yarn format-check",
-    "postinstall": "lerna bootstrap && yarn build && lerna link",
+    "postinstall": "lerna bootstrap && yarn build && lerna link && npm run check-clean-workspace-after-install",
+    "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "test": "lerna run test --parallel",
     "typecheck": "lerna run typecheck"
   },
@@ -56,7 +57,7 @@
     "@types/node": "^12.6.8",
     "all-contributors-cli": "^6.8.0",
     "cz-conventional-changelog": "2.1.0",
-    "eslint": "^5.12.1",
+    "eslint": "^6.0.0",
     "eslint-plugin-eslint-comments": "^3.1.2",
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-import": "^2.18.0",

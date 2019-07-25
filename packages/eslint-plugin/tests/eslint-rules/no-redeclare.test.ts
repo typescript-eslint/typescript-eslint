@@ -1,5 +1,8 @@
 import rule from 'eslint/lib/rules/no-redeclare';
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -8,15 +11,6 @@ const ruleTester = new RuleTester({
   },
   parser: '@typescript-eslint/parser',
 });
-
-// the rule has no message ids
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function error(name: string): any {
-  return {
-    message: `'${name}' is already defined.`,
-    type: AST_NODE_TYPES.Identifier,
-  };
-}
 
 ruleTester.run('no-redeclare', rule, {
   valid: [
@@ -28,7 +22,6 @@ ruleTester.run('no-redeclare', rule, {
         ecmaVersion: 6,
       },
     },
-    'var Object = 0;',
     { code: 'var Object = 0;', options: [{ builtinGlobals: false }] },
     {
       code: 'var Object = 0;',
@@ -40,7 +33,11 @@ ruleTester.run('no-redeclare', rule, {
       options: [{ builtinGlobals: true }],
       parserOptions: { ecmaFeatures: { globalReturn: true } },
     },
-    { code: 'var top = 0;', env: { browser: true } },
+    {
+      code: 'var top = 0;',
+      env: { browser: true },
+      options: [{ builtinGlobals: false }],
+    },
     { code: 'var top = 0;', options: [{ builtinGlobals: true }] },
     {
       code: 'var top = 0;',
@@ -91,91 +88,249 @@ class D<T> {}
     {
       code: 'var a = 3; var a = 10;',
       parserOptions: { ecmaVersion: 6 },
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'switch(foo) { case a: var b = 3;\ncase b: var b = 4}',
-      errors: [error('b')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'b',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a = 3; var a = 10;',
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a = {}; var a = [];',
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a; function a() {}',
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'function a() {} function a() {}',
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a = function() { }; var a = function() { }',
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a = function() { }; var a = new Date();',
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a = 3; var a = 10; var a = 15;',
-      errors: [error('a'), error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a; var a;',
       parserOptions: { sourceType: 'module' },
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'export var a; var a;',
       parserOptions: { sourceType: 'module' },
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var Object = 0;',
       options: [{ builtinGlobals: true }],
-      errors: [error('Object')],
+      errors: [
+        {
+          messageId: 'redeclaredAsBuiltin',
+          data: {
+            id: 'Object',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var top = 0;',
       options: [{ builtinGlobals: true }],
-      errors: [error('top')],
+      errors: [
+        {
+          messageId: 'redeclaredAsBuiltin',
+          data: {
+            id: 'top',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
       env: { browser: true },
     },
     {
       code: 'var a; var {a = 0, b: Object = 0} = {};',
       options: [{ builtinGlobals: true }],
       parserOptions: { ecmaVersion: 6 },
-      errors: [error('a'), error('Object')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          messageId: 'redeclaredAsBuiltin',
+          data: {
+            id: 'Object',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a; var {a = 0, b: Object = 0} = {};',
       options: [{ builtinGlobals: true }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a; var {a = 0, b: Object = 0} = {};',
       options: [{ builtinGlobals: true }],
       parserOptions: { ecmaVersion: 6, ecmaFeatures: { globalReturn: true } },
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
     {
       code: 'var a; var {a = 0, b: Object = 0} = {};',
       options: [{ builtinGlobals: false }],
       parserOptions: { ecmaVersion: 6 },
-      errors: [error('a')],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'a',
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
     },
 
     // Notifications of readonly are moved from no-undef: https://github.com/eslint/eslint/issues/4504
     {
       code: '/*global b:false*/ var b = 1;',
       options: [{ builtinGlobals: true }],
-      errors: [error('b')],
+      errors: [
+        {
+          messageId: 'redeclaredBySyntax',
+          data: {
+            id: 'b',
+          },
+          type: AST_TOKEN_TYPES.Block,
+        },
+      ],
     },
   ],
 });

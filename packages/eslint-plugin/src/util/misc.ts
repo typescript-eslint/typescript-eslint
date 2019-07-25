@@ -9,13 +9,6 @@ import {
 } from '@typescript-eslint/experimental-utils';
 
 /**
- * Check if the context file name is *.ts or *.tsx
- */
-export function isTypeScriptFile(fileName: string) {
-  return /\.tsx?$/i.test(fileName || '');
-}
-
-/**
  * Check if the context file name is *.d.ts or *.d.tsx
  */
 export function isDefinitionFile(fileName: string) {
@@ -82,6 +75,20 @@ export function arraysAreEqual<T>(
       a.length === b.length &&
       a.every((x, idx) => eq(x, b[idx])))
   );
+}
+
+/** Returns the first non-`undefined` result. */
+export function findFirstResult<T, U>(
+  inputs: T[],
+  getResult: (t: T) => U | undefined,
+): U | undefined {
+  for (const element of inputs) {
+    const result = getResult(element);
+    if (result !== undefined) {
+      return result;
+    }
+  }
+  return undefined;
 }
 
 /**

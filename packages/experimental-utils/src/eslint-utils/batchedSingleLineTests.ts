@@ -36,6 +36,10 @@ function batchedSingleLineTests<
 ): (ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>)[] {
   // eslint counts lines from 1
   const lineOffset = options.code.startsWith('\n') ? 2 : 1;
+  const output =
+    'output' in options && options.output
+      ? options.output.trim().split('\n')
+      : null;
   return options.code
     .trim()
     .split('\n')
@@ -45,7 +49,7 @@ function batchedSingleLineTests<
         'errors' in options
           ? options.errors.filter(e => e.line === lineNum)
           : [];
-      return {
+      const returnVal = {
         ...options,
         code,
         errors: errors.map(e => ({
@@ -53,6 +57,13 @@ function batchedSingleLineTests<
           line: 1,
         })),
       };
+      if (output && output[i]) {
+        return {
+          ...returnVal,
+          output: output[i],
+        };
+      }
+      return returnVal;
     });
 }
 
