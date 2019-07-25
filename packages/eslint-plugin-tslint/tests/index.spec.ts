@@ -179,26 +179,30 @@ describe('tslint/error', () => {
     });
   });
 
-  it('barf', () => {
+  it('should not crash if there are no tslint rules specified', () => {
     const linter = new TSESLint.Linter();
     jest.spyOn(console, 'warn').mockImplementation();
     linter.defineRule('tslint/config', rule);
     linter.defineParser('@typescript-eslint/parser', parser);
     expect(() =>
-      linter.verify('foo;', {
-        parserOptions: {
-          project: `${__dirname}/test-project/tsconfig.json`,
+      linter.verify(
+        'foo;',
+        {
+          parserOptions: {
+            project: `${__dirname}/test-project/tsconfig.json`,
+          },
+          rules: {
+            'tslint/config': [2, {}],
+          },
+          parser: '@typescript-eslint/parser',
         },
-        rules: {
-          'tslint/config': [2, {}],
-        },
-        parser: '@typescript-eslint/parser',
-      }),
+        `${__dirname}/test-project/extra.ts`,
+      ),
     ).not.toThrow();
 
     expect(console.warn).toHaveBeenCalledWith(
       expect.stringContaining(
-        'Tried to lint <input> but found no valid, enabled rules for this file type and file path in the resolved configuration.',
+        `Tried to lint ${__dirname}/test-project/extra.ts but found no valid, enabled rules for this file type and file path in the resolved configuration.`,
       ),
     );
     jest.resetAllMocks();
