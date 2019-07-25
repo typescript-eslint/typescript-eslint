@@ -20,7 +20,7 @@ class RuleTester extends TSESLint.RuleTester {
   // as of eslint 6 you have to provide an absolute path to the parser
   // If you don't do that at the test level, the test will fail somewhat cryptically...
   // This is a lot more explicit
-  run<TMessageIds extends string, TOptions extends Readonly<any[]>>(
+  run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
     name: string,
     rule: TSESLint.RuleModule<TMessageIds, TOptions>,
     tests: TSESLint.RunTests<TMessageIds, TOptions>,

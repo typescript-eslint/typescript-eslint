@@ -12,14 +12,16 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
+// The rule has no messageId
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const noAwaitFunctionDeclaration: any = {
   message: "Async function 'numberOne' has no 'await' expression.",
 };
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const noAwaitFunctionExpression: any = {
   message: "Async function has no 'await' expression.",
 };
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const noAwaitAsyncFunctionExpression: any = {
   message: "Async arrow function has no 'await' expression.",
 };
