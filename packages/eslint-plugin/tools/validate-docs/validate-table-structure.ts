@@ -1,7 +1,7 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import chalk from 'chalk';
 import marked from 'marked';
-import { logError } from './log';
+import { logError } from '../log';
 
 function validateTableStructure(
   rules: Record<string, Readonly<TSESLint.RuleModule<any, any, any>>>,

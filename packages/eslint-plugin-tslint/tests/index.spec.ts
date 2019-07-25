@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import * as parser from '@typescript-eslint/parser';
 import { readFileSync } from 'fs';
 import rule, { Options } from '../src/rules/config';
 
@@ -13,7 +14,7 @@ const ruleTester = new TSESLint.RuleTester({
      */
     project: './tests/tsconfig.json',
   },
-  parser: '@typescript-eslint/parser',
+  parser: require.resolve('@typescript-eslint/parser'),
 });
 
 /**
@@ -146,6 +147,7 @@ describe('tslint/error', () => {
   function testOutput(code: string, config: TSESLint.Linter.Config): void {
     const linter = new TSESLint.Linter();
     linter.defineRule('tslint/config', rule);
+    linter.defineParser('@typescript-eslint/parser', parser);
 
     expect(() => linter.verify(code, config)).toThrow(
       `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`,
@@ -176,6 +178,7 @@ describe('tslint/error', () => {
     const linter = new TSESLint.Linter();
     jest.spyOn(console, 'warn').mockImplementation();
     linter.defineRule('tslint/config', rule);
+    linter.defineParser('@typescript-eslint/parser', parser);
     expect(() =>
       linter.verify('foo;', {
         parserOptions: {
