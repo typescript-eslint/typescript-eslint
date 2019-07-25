@@ -5,6 +5,7 @@ import banTsIgnore from './ban-ts-ignore';
 import banTypes from './ban-types';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
+import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
@@ -15,7 +16,6 @@ import interfaceNamePrefix from './interface-name-prefix';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
-import noAngleBracketTypeAssertion from './no-angle-bracket-type-assertion';
 import noArrayConstructor from './no-array-constructor';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
@@ -30,7 +30,6 @@ import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
 import noNonNullAssertion from './no-non-null-assertion';
-import noObjectLiteralTypeAssertion from './no-object-literal-type-assertion';
 import noParameterProperties from './no-parameter-properties';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
@@ -68,6 +67,7 @@ export default {
   'ban-types': banTypes,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
+  'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
@@ -78,7 +78,6 @@ export default {
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
-  'no-angle-bracket-type-assertion': noAngleBracketTypeAssertion,
   'no-array-constructor': noArrayConstructor,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
@@ -93,7 +92,6 @@ export default {
   'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
   'no-non-null-assertion': noNonNullAssertion,
-  'no-object-literal-type-assertion': noObjectLiteralTypeAssertion,
   'no-parameter-properties': noParameterProperties,
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,

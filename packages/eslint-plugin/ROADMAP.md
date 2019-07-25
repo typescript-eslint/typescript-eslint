@@ -71,7 +71,7 @@
 | [`no-invalid-this`]                  | 🌟  | [`no-invalid-this`][no-invalid-this]                                  |
 | [`no-misused-new`]                   | ✅  | [`@typescript-eslint/no-misused-new`]                                 |
 | [`no-null-keyword`]                  | 🔌  | [`no-null/no-null`] (doesn’t handle `null` type)                      |
-| [`no-object-literal-type-assertion`] | ✅  | [`@typescript-eslint/no-object-literal-type-assertion`]               |
+| [`no-object-literal-type-assertion`] | ✅  | [`@typescript-eslint/consistent-type-assertions`]                     |
 | [`no-return-await`]                  | 🌟  | [`no-return-await`][no-return-await]                                  |
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                              |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                |
@@ -155,7 +155,7 @@
 | [`newline-before-return`]           | 🌟  | [`padding-line-between-statements`][padding-line-between-statements] <sup>[1]</sup> |
 | [`newline-per-chained-call`]        | 🌟  | [`newline-per-chained-call`][newline-per-chained-call]                              |
 | [`new-parens`]                      | 🌟  | [`new-parens`][new-parens]                                                          |
-| [`no-angle-bracket-type-assertion`] | ✅  | [`@typescript-eslint/no-angle-bracket-type-assertion`]                              |
+| [`no-angle-bracket-type-assertion`] | ✅  | [`@typescript-eslint/consistent-type-assertions`]                                   |
 | [`no-boolean-literal-compare`]      | 🛑  | N/A                                                                                 |
 | [`no-consecutive-blank-lines`]      | 🌟  | [`no-multiple-empty-lines`][no-multiple-empty-lines]                                |
 | [`no-irregular-whitespace`]         | 🌟  | [`no-irregular-whitespace`][no-irregular-whitespace] with `skipStrings: false`      |
@@ -579,6 +579,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/await-thenable`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/await-thenable.md
 [`@typescript-eslint/ban-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-types.md
 [`@typescript-eslint/ban-ts-ignore`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-ts-ignore.md
+[`@typescript-eslint/consistent-type-assertions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-assertions.md
 [`@typescript-eslint/consistent-type-definitions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-definitions.md
 [`@typescript-eslint/explicit-member-accessibility`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
 [`@typescript-eslint/member-ordering`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-ordering.md
@@ -597,7 +598,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/typedef`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/typedef.md
 [`@typescript-eslint/unified-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unified-signatures.md
 [`@typescript-eslint/no-misused-new`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-misused-new.md
-[`@typescript-eslint/no-object-literal-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-object-literal-type-assertion.md
 [`@typescript-eslint/no-this-alias`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-this-alias.md
 [`@typescript-eslint/no-extraneous-class`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extraneous-class.md
 [`@typescript-eslint/no-unused-vars`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unused-vars.md
@@ -608,7 +608,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/array-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/array-type.md
 [`@typescript-eslint/class-name-casing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/class-name-casing.md
 [`@typescript-eslint/interface-name-prefix`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/interface-name-prefix.md
-[`@typescript-eslint/no-angle-bracket-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-angle-bracket-type-assertion.md
 [`@typescript-eslint/no-parameter-properties`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-parameter-properties.md
 [`@typescript-eslint/member-delimiter-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-delimiter-style.md
 [`@typescript-eslint/prefer-for-of`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-for-of.md
