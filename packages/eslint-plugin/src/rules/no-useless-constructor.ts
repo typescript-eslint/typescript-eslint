@@ -63,6 +63,7 @@ export default util.createRule<Options, MessageIds>({
         if (
           node.value &&
           node.value.type === AST_NODE_TYPES.FunctionExpression &&
+          node.value.body &&
           checkAccessibility(node) &&
           checkParams(node)
         ) {
