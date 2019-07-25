@@ -33,6 +33,7 @@ function createGlobalLinebreakMatcher() {
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const WHITESPACE_REGEX = /\s*$/u;
 const KNOWN_NODES = new Set([
   AST_NODE_TYPES.AssignmentExpression,
   AST_NODE_TYPES.AssignmentPattern,
@@ -245,7 +246,8 @@ type Options = [('tab' | number)?, IndentConfig?];
 type MessageIds = 'wrongIndentation';
 
 type AppliedOptions = ExcludeKeys<
-  RequireKeys<IndentConfig, keyof IndentConfig>,
+  // slight hack to make interface work with Record<string, unknown>
+  RequireKeys<Pick<IndentConfig, keyof IndentConfig>, keyof IndentConfig>,
   'VariableDeclarator'
 > & {
   VariableDeclarator: 'off' | VariableDeclaratorObj;
@@ -540,7 +542,7 @@ export default createRule<Options, MessageIds>({
       while (
         statement &&
         ((statement.type === AST_NODE_TYPES.UnaryExpression &&
-          ['!', '~', '+', '-'].indexOf(statement.operator) > -1) ||
+          ['!', '~', '+', '-'].includes(statement.operator)) ||
           statement.type === AST_NODE_TYPES.AssignmentExpression ||
           statement.type === AST_NODE_TYPES.LogicalExpression ||
           statement.type === AST_NODE_TYPES.SequenceExpression ||
@@ -565,9 +567,9 @@ export default createRule<Options, MessageIds>({
      *          or the total number of linebreaks if the string is all whitespace.
      */
     function countTrailingLinebreaks(str: string): number {
-      const trailingWhitespace = str.match(/\s*$/u)![0];
-      const linebreakMatches = trailingWhitespace.match(
-        createGlobalLinebreakMatcher(),
+      const trailingWhitespace = WHITESPACE_REGEX.exec(str)![0];
+      const linebreakMatches = createGlobalLinebreakMatcher().exec(
+        trailingWhitespace,
       );
 
       return linebreakMatches === null ? 0 : linebreakMatches.length;
@@ -722,7 +724,7 @@ export default createRule<Options, MessageIds>({
       parameterParens.add(closingParen);
       offsets.setDesiredOffset(
         openingParen,
-        sourceCode.getTokenBefore(openingParen)!,
+        sourceCode.getTokenBefore(openingParen),
         0,
       );
 
@@ -900,7 +902,7 @@ export default createRule<Options, MessageIds>({
 
         offsets.setDesiredOffsets(
           [operator.range[0], node.range[1]],
-          sourceCode.getLastToken(node.left)!,
+          sourceCode.getLastToken(node.left),
           1,
         );
         offsets.ignoreToken(operator);
@@ -958,7 +960,7 @@ export default createRule<Options, MessageIds>({
         if (node.parent && !STATEMENT_LIST_PARENTS.has(node.parent.type)) {
           offsets.setDesiredOffset(
             sourceCode.getFirstToken(node)!,
-            sourceCode.getFirstToken(node.parent)!,
+            sourceCode.getFirstToken(node.parent),
             0,
           );
         }
@@ -1088,7 +1090,7 @@ export default createRule<Options, MessageIds>({
             // Indent everything after and including the `from` token in `export {foo, bar, baz} from 'qux'`
             offsets.setDesiredOffsets(
               [closingCurly.range[1], node.range[1]],
-              sourceCode.getFirstToken(node)!,
+              sourceCode.getFirstToken(node),
               1,
             );
           }
@@ -1182,7 +1184,7 @@ export default createRule<Options, MessageIds>({
 
           offsets.setDesiredOffsets(
             [fromToken.range[0], end],
-            sourceCode.getFirstToken(node)!,
+            sourceCode.getFirstToken(node),
             1,
           );
         }
@@ -1521,7 +1523,7 @@ export default createRule<Options, MessageIds>({
         }
         offsets.setDesiredOffsets(
           node.name.range,
-          sourceCode.getFirstToken(node)!,
+          sourceCode.getFirstToken(node),
         );
         addElementListIndent(node.attributes, firstToken, closingToken, 1);
       },

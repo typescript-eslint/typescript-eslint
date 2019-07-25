@@ -1,3 +1,6 @@
+// anys are required to work around manipulating the AST in weird ways
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
   AST_NODE_TYPES,
   TSESTree,

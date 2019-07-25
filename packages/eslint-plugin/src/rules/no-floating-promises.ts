@@ -25,9 +25,9 @@ export default util.createRule({
 
     return {
       ExpressionStatement(node) {
-        const { expression } = parserServices.esTreeNodeToTSNodeMap.get(
-          node,
-        ) as ts.ExpressionStatement;
+        const { expression } = parserServices.esTreeNodeToTSNodeMap.get<
+          ts.ExpressionStatement
+        >(node);
 
         if (isUnhandledPromise(checker, expression)) {
           context.report({

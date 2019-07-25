@@ -36,7 +36,8 @@
   },
   "peerDependencies": {
     "eslint": "^5.0.0 || ^6.0.0",
-    "tslint": "^5.0.0"
+    "tslint": "^5.0.0",
+    "typescript": "*"
   },
   "devDependencies": {
     "@types/lodash.memoize": "^4.1.4",

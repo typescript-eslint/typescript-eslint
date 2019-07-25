@@ -6,7 +6,7 @@ export type Options = [
   'never' | 'always',
   {
     allowNewlines?: boolean;
-  }?
+  }?,
 ];
 export type MessageIds = 'unexpected' | 'missing';
 

@@ -6,7 +6,7 @@ import { TSESTreeOptions } from '../src/parser-options';
  * @param  {Object} ast the AST object
  * @returns {Object}     copy of the AST object
  */
-export function getRaw(ast: any) {
+export function getRaw(ast: parser.TSESTree.Program) {
   return JSON.parse(
     JSON.stringify(ast, (key, value) => {
       if ((key === 'start' || key === 'end') && typeof value === 'number') {

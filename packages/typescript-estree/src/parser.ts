@@ -1,6 +1,6 @@
 import semver from 'semver';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
-import convert from './ast-converter';
+import { astConverter } from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
@@ -50,7 +50,7 @@ function resetExtra(): void {
     strict: false,
     jsx: false,
     useJSXTextNode: false,
-    log: console.log,
+    log: console.log, // eslint-disable-line no-console
     projects: [],
     errorOnUnknownASTType: false,
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
@@ -312,6 +312,7 @@ export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Ensure the source code is a string, and store a reference to it
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (typeof code !== 'string' && !((code as any) instanceof String)) {
     code = String(code);
   }
@@ -339,7 +340,7 @@ export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
    */
-  const { estree } = convert(ast, extra, false);
+  const { estree } = astConverter(ast, extra, false);
   return estree as AST<T>;
 }
 
@@ -353,6 +354,7 @@ export function parseAndGenerateServices<
   /**
    * Ensure the source code is a string, and store a reference to it
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (typeof code !== 'string' && !((code as any) instanceof String)) {
     code = String(code);
   }
@@ -397,7 +399,7 @@ export function parseAndGenerateServices<
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
    * mappings between converted and original AST nodes
    */
-  const { estree, astMaps } = convert(ast, extra, shouldPreserveNodeMaps);
+  const { estree, astMaps } = astConverter(ast, extra, shouldPreserveNodeMaps);
   /**
    * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
    * there may be other syntactic or semantic issues in the code that we can optionally report on.

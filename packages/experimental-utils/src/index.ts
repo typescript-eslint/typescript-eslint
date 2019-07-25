@@ -1,8 +1,9 @@
 import * as ESLintUtils from './eslint-utils';
 import * as TSESLint from './ts-eslint';
 import * as TSESLintScope from './ts-eslint-scope';
+import * as JSONSchema from './json-schema';
 
-export { ESLintUtils, TSESLint, TSESLintScope };
+export { ESLintUtils, JSONSchema, TSESLint, TSESLintScope };
 
 // for convenience's sake - export the types directly from here so consumers
 // don't need to reference/install both packages in their code

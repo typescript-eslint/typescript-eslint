@@ -77,7 +77,7 @@ type Options = [
   {
     default: OptionString;
     readonly?: OptionString;
-  }
+  },
 ];
 type MessageIds =
   | 'errorStringGeneric'

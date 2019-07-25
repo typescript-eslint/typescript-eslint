@@ -20,6 +20,8 @@ describe('parser', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
     const spyScope = jest.spyOn(scope, 'analyzeScope');
+    // intentionally wrong sourceType
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parseForESLint(code, { sourceType: 'foo' as any });
     expect(spy).toHaveBeenCalledWith(code, {
       ecmaFeatures: {},
@@ -66,6 +68,8 @@ describe('parser', () => {
   it('Syntax should contain a frozen object of AST_NODE_TYPES', () => {
     expect(Syntax).toEqual(AST_NODE_TYPES);
     expect(
+      // intentionally breaking the readonly
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       () => ((Syntax as any).ArrayExpression = 'foo'),
     ).toThrowErrorMatchingInlineSnapshot(
       `"Cannot assign to read only property 'ArrayExpression' of object '#<Object>'"`,

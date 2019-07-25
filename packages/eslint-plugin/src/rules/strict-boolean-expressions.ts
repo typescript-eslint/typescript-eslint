@@ -16,7 +16,7 @@ type ExpressionWithTest =
 type Options = [
   {
     ignoreRhs?: boolean;
-  }
+  },
 ];
 
 export default util.createRule<Options, 'strictBooleanExpression'>({
