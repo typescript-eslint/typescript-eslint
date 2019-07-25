@@ -215,6 +215,11 @@ ruleTester.run('prefer-readonly', rule, {
         },
       ],
     },
+    `class TestComputedParameter {
+      public mutate() {
+        this['computed'] = 1;
+      }
+    }`
   ],
   invalid: [
     {
