@@ -15,7 +15,7 @@ Examples of **correct** code with a configuration of `'^T[A-Z][a-zA-Z]+$'`:
 
 ```typescript
 type ReadOnly<TType extends object> = {
-  readonly [TKey in keyof TType]: TType[TKey]
+  readonly [TKey in keyof TType]: TType[TKey];
 };
 
 interface SimpleMap<TValue> {

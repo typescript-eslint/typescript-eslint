@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ESLintReferencer from 'eslint-scope/lib/referencer';
 import {

@@ -156,6 +156,8 @@ export function calculateProjectParserOptions(
     // ensure fileWatchers aren't created for directories
     watchCompilerHost.watchDirectory = () => noopFileWatcher;
 
+    // we're using internal typescript APIs which aren't on the types
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     // allow files with custom extensions to be included in program (uses internal ts api)
     const oldOnDirectoryStructureHostCreate = (watchCompilerHost as any)
       .onCachedDirectoryStructureHostCreate;
@@ -181,6 +183,7 @@ export function calculateProjectParserOptions(
         );
       oldOnDirectoryStructureHostCreate(host);
     };
+    /* eslint-enable @typescript-eslint/no-explicit-any */
 
     // create program
     const programWatch = ts.createWatchProgram(watchCompilerHost);

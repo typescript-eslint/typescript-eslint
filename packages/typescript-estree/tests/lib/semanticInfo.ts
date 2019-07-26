@@ -8,7 +8,10 @@ import {
   formatSnapshotName,
   parseCodeAndGenerateServices,
 } from '../../tools/test-utils';
-import { parseAndGenerateServices } from '../../src/parser';
+import {
+  parseAndGenerateServices,
+  ParseAndGenerateServicesResult,
+} from '../../src/parser';
 import { TSESTree } from '../../src/ts-estree';
 import { clearCaches } from '../../src/tsconfig-parser';
 
@@ -173,8 +176,10 @@ describe('semanticInfo', () => {
 
     // get array node (ast shape validated by snapshot)
     // node is defined in other file than the parsed one
-    const arrayBoundName = (parseResult.ast as any).body[1].expression.callee
-      .object;
+    const arrayBoundName = (((parseResult.ast
+      .body[1] as TSESTree.ExpressionStatement)
+      .expression as TSESTree.CallExpression)
+      .callee as TSESTree.MemberExpression).object as TSESTree.Identifier;
     expect(arrayBoundName.name).toBe('arr');
 
     expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
@@ -182,10 +187,10 @@ describe('semanticInfo', () => {
       arrayBoundName,
     );
     expect(tsArrayBoundName).toBeDefined();
-    checkNumberArrayType(checker, tsArrayBoundName!);
+    checkNumberArrayType(checker, tsArrayBoundName);
 
     expect(
-      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName!),
+      parseResult.services.tsNodeToESTreeNodeMap!.get(tsArrayBoundName),
     ).toBe(arrayBoundName);
   });
 
@@ -202,7 +207,8 @@ describe('semanticInfo', () => {
     expect(parseResult.services.program).toBeUndefined();
 
     // get bound name
-    const boundName = (parseResult.ast as any).body[0].declarations[0].id;
+    const boundName = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
+      .declarations[0].id as TSESTree.Identifier;
     expect(boundName.name).toBe('x');
 
     const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
@@ -210,7 +216,7 @@ describe('semanticInfo', () => {
     );
     expect(tsBoundName).toBeDefined();
 
-    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName!)).toBe(
+    expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName)).toBe(
       boundName,
     );
   });
@@ -263,13 +269,17 @@ describe('semanticInfo', () => {
   });
 });
 
-function testIsolatedFile(parseResult: any) {
+function testIsolatedFile(
+  parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
+) {
   // get type checker
   expect(parseResult).toHaveProperty('services.program.getTypeChecker');
   const checker = parseResult.services.program!.getTypeChecker();
 
   // get number node (ast shape validated by snapshot)
-  const arrayMember = (parseResult.ast as any).body[0].declarations[0].init
+  const declaration = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
+    .declarations[0];
+  const arrayMember = (declaration.init! as TSESTree.ArrayExpression)
     .elements[0];
   expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
 
@@ -282,9 +292,11 @@ function testIsolatedFile(parseResult: any) {
   expect((tsArrayMember as ts.NumericLiteral).text).toBe('3');
 
   // get type of TS node
-  const arrayMemberType: any = checker.getTypeAtLocation(tsArrayMember);
+  const arrayMemberType = checker.getTypeAtLocation(tsArrayMember);
   expect(arrayMemberType.flags).toBe(ts.TypeFlags.NumberLiteral);
-  expect(arrayMemberType.value).toBe(3);
+  // using an internal api
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  expect((arrayMemberType as any).value).toBe(3);
 
   // make sure it maps back to original ESTree node
   expect(parseResult).toHaveProperty('services.tsNodeToESTreeNodeMap');
@@ -293,7 +305,7 @@ function testIsolatedFile(parseResult: any) {
   );
 
   // get bound name
-  const boundName = (parseResult.ast as any).body[0].declarations[0].id;
+  const boundName = declaration.id as TSESTree.Identifier;
   expect(boundName.name).toBe('x');
   const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
     boundName,

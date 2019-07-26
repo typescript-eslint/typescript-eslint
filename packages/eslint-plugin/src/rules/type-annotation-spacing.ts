@@ -15,7 +15,7 @@ type Options = [
         after?: boolean;
       };
     };
-  }?
+  }?,
 ];
 type MessageIds =
   | 'expectedSpaceAfter'
@@ -104,7 +104,7 @@ export default util.createRule<Options, MessageIds>({
       let previousToken = sourceCode.getTokenBefore(punctuatorTokenEnd)!;
       let type = punctuatorTokenEnd.value;
 
-      if (punctuators.indexOf(type) === -1) {
+      if (!punctuators.includes(type)) {
         return;
       }
 

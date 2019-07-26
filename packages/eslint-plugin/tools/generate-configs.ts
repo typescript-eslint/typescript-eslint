@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import chalk from 'chalk';
 import fs from 'fs';
@@ -42,7 +40,7 @@ const ruleEntries = Object.entries(rules);
  */
 const reducer = <TMessageIds extends string>(
   config: LinterConfigRules,
-  entry: [string, TSESLint.RuleModule<TMessageIds, any, any>],
+  entry: [string, TSESLint.RuleModule<TMessageIds, unknown[]>],
   settings: {
     errorLevel?: 'error' | 'warn';
     filterDeprecated: boolean;

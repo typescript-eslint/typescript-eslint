@@ -4,6 +4,7 @@ import {
   parseAndGenerateServices,
   ParserServices,
   TSESTreeOptions,
+  TSESTree,
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
 import { simpleTraverse } from './simple-traverse';
@@ -15,7 +16,11 @@ type ParserOptions = TSESLint.ParserOptions;
 const packageJSON = require('../package.json');
 
 interface ParseForESLintResult {
-  ast: any;
+  ast: TSESTree.Program & {
+    range?: [number, number];
+    tokens?: TSESTree.Token[];
+    comments?: TSESTree.Comment[];
+  };
   services: ParserServices;
   visitorKeys: typeof visitorKeys;
   scopeManager: ReturnType<typeof analyzeScope>;
@@ -93,6 +98,7 @@ export function parseForESLint(
         // Function#body cannot be null in ESTree spec.
         case 'FunctionExpression':
           if (!node.body) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             node.type = `TSEmptyBody${node.type}` as any;
           }
           break;

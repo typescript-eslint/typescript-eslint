@@ -6,6 +6,7 @@ import * as parseUtils from './utils';
 function createError(message: string, line: number, column: number) {
   // Construct an error similar to the ones thrown by Babylon.
   const error = new SyntaxError(`${message} (${line}:${column})`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (error as any).loc = {
     line,
     column,
@@ -73,7 +74,8 @@ export function parse(text: string, opts: ASTComparisonParseOptions) {
    * Always return a consistent interface, there will be times when we expect both
    * parsers to fail to parse the invalid source.
    */
-  const result: any = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const result: { parseError: any | null; ast: any | null } = {
     parseError: null,
     ast: null,
   };

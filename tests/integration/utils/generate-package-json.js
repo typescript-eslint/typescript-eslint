@@ -1,4 +1,5 @@
 const fs = require('fs');
+// eslint-disable-next-line import/no-absolute-path
 const rootPackageJSON = require('/usr/root-package.json');
 
 /**

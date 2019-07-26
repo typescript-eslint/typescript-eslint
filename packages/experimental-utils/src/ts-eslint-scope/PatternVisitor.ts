@@ -8,7 +8,7 @@ import {
 } from './Options';
 
 interface PatternVisitor extends Visitor {
-  options: any;
+  options: PatternVisitorOptions;
   scopeManager: ScopeManager;
   parent?: TSESTree.Node;
   rightHandNodes: TSESTree.Node[];
@@ -27,7 +27,7 @@ interface PatternVisitor extends Visitor {
 const PatternVisitor = ESLintPatternVisitor as {
   new (
     options: PatternVisitorOptions,
-    rootPattern: any,
+    rootPattern: TSESTree.BaseNode,
     callback: PatternVisitorCallback,
   ): PatternVisitor;
 

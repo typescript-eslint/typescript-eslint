@@ -8,7 +8,7 @@ import { ValidTestCase, InvalidTestCase } from '../ts-eslint';
  * Because it makes the test error messages harder to decipher.
  * This way each line will fail separately, instead of them all failing together.
  */
-function batchedSingleLineTests<TOptions extends Readonly<any[]>>(
+function batchedSingleLineTests<TOptions extends Readonly<unknown[]>>(
   test: ValidTestCase<TOptions>,
 ): ValidTestCase<TOptions>[];
 /**
@@ -24,18 +24,18 @@ function batchedSingleLineTests<TOptions extends Readonly<any[]>>(
  */
 function batchedSingleLineTests<
   TMessageIds extends string,
-  TOptions extends Readonly<any[]>
+  TOptions extends Readonly<unknown[]>
 >(
   test: InvalidTestCase<TMessageIds, TOptions>,
 ): InvalidTestCase<TMessageIds, TOptions>[];
 function batchedSingleLineTests<
   TMessageIds extends string,
-  TOptions extends Readonly<any[]>
+  TOptions extends Readonly<unknown[]>
 >(
   options: ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>,
 ): (ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>)[] {
   // eslint counts lines from 1
-  const lineOffset = options.code[0] === '\n' ? 2 : 1;
+  const lineOffset = options.code.startsWith('\n') ? 2 : 1;
   const output =
     'output' in options && options.output
       ? options.output.trim().split('\n')
