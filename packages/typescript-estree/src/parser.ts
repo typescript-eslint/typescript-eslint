@@ -6,7 +6,10 @@ import { firstDefined } from './node-utils';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-errors';
 import { TSESTree } from './ts-estree';
-import { calculateProjectParserOptions } from './tsconfig-parser';
+import {
+  calculateProjectParserOptions,
+  createProgram,
+} from './tsconfig-parser';
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
@@ -55,6 +58,7 @@ function resetExtra(): void {
     tsconfigRootDir: process.cwd(),
     extraFileExtensions: [],
     preserveNodeMaps: undefined,
+    createDefaultProgram: false,
   };
 }
 
@@ -63,7 +67,11 @@ function resetExtra(): void {
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTFromProject(code: string, options: TSESTreeOptions) {
+function getASTFromProject(
+  code: string,
+  options: TSESTreeOptions,
+  createDefaultProgram: boolean,
+) {
   const filePath = options.filePath || getFileName(options);
   const astAndProgram = firstDefined(
     calculateProjectParserOptions(code, filePath, extra),
@@ -73,13 +81,25 @@ function getASTFromProject(code: string, options: TSESTreeOptions) {
     },
   );
 
-  if (!astAndProgram) {
+  if (!astAndProgram && !createDefaultProgram) {
     throw new Error(
       `If "parserOptions.project" has been set for @typescript-eslint/parser, ${filePath} must be included in at least one of the projects provided.`,
     );
   }
 
   return astAndProgram;
+}
+
+/**
+ * @param code The code of the file being linted
+ * @param options The config object
+ * @returns If found, returns the source file corresponding to the code and the containing program
+ */
+function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
+  const fileName = options.filePath || getFileName(options);
+  const program = createProgram(code, fileName, extra);
+  const ast = program && program.getSourceFile(fileName);
+  return ast && { ast, program };
 }
 
 /**
@@ -149,9 +169,14 @@ function getProgramAndAST(
   code: string,
   options: TSESTreeOptions,
   shouldProvideParserServices: boolean,
+  createDefaultProgram: boolean,
 ) {
   return (
-    (shouldProvideParserServices && getASTFromProject(code, options)) ||
+    (shouldProvideParserServices &&
+      getASTFromProject(code, options, createDefaultProgram)) ||
+    (shouldProvideParserServices &&
+      createDefaultProgram &&
+      getASTAndDefaultProject(code, options)) ||
     createNewProgram(code)
   );
 }
@@ -241,6 +266,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   if (options.preserveNodeMaps === undefined && extra.projects.length > 0) {
     extra.preserveNodeMaps = true;
   }
+
+  extra.createDefaultProgram =
+    typeof options.createDefaultProgram === 'boolean' &&
+    options.createDefaultProgram;
 }
 
 function warnAboutTSVersion(): void {
@@ -373,6 +402,7 @@ export function parseAndGenerateServices<
     code,
     options,
     shouldProvideParserServices,
+    extra.createDefaultProgram,
   );
   /**
    * Determine whether or not two-way maps of converted AST nodes should be preserved

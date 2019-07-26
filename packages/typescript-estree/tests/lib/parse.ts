@@ -94,6 +94,7 @@ describe('parse()', () => {
           tsconfigRootDir: expect.any(String),
           useJSXTextNode: false,
           preserveNodeMaps: false,
+          createDefaultProgram: false,
         },
         false,
       );

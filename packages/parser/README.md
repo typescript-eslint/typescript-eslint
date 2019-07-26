@@ -48,9 +48,24 @@ The following additional configuration options are available by specifying them 
 
 - **`useJSXTextNode`** - default `true`. Please set `false` if you use this parser on ESLint v4. If this is `false`, the parser creates the AST of JSX texts as the legacy style.
 
-- **`project`** - default `undefined`. This option allows you to provide a path to your project's `tsconfig.json`. **This setting is required if you want to use rules which require type information**. You may want to use this setting in tandem with the `tsconfigRootDir` option below. Note that if this setting is specified, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files.
+- **`project`** - default `undefined`. This option allows you to provide a path to your project's `tsconfig.json`. **This setting is required if you want to use rules which require type information**. You may want to use this setting in tandem with the `tsconfigRootDir` option below.
+
+  - Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
+
+  ```ts
+  {
+    "extends": "./tsconfig.json", // path to existing tsconfig
+    "includes": [
+      "src/**/*.ts",
+      "test/**/*.ts",
+      // etc
+    ]
+  }
+  ```
 
 - **`tsconfigRootDir`** - default `undefined`. This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
+
+- **`createDefaultProgram`** - default `false`. This option allows you to request that when the `project` setting is specified, files will be allowed when not included in the projects defined by the provided `tsconfig.json` files. However, this may incur significant performance costs, so this option is primarily included for backwards-compatibility. See the **`project`** section for more information.
 
 - **`extraFileExtensions`** - default `undefined`. This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation. E.g. a `.vue` file
 

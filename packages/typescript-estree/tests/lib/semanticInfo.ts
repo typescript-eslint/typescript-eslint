@@ -267,6 +267,15 @@ describe('semanticInfo', () => {
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
     ).toThrowErrorMatchingSnapshot();
   });
+
+  it('default program produced with option', () => {
+    const parseResult = parseCodeAndGenerateServices('var foo = 5;', {
+      ...createOptions('<input>'),
+      createDefaultProgram: true,
+    });
+
+    expect(parseResult.services.program).toBeDefined();
+  });
 });
 
 function testIsolatedFile(
