@@ -69,9 +69,7 @@ export default createRule<Options, MessageIds>({
     },
     type: 'problem',
     messages: {
-      failure: '{{message}} (tslint:{{ruleName}})`',
-      // TODO: Apply the below fix after confirming integration tests fail appropriately in CI
-      // failure: '{{message}} (tslint:{{ruleName}})',
+      failure: '{{message}} (tslint:{{ruleName}})',
     },
     schema: [
       {
