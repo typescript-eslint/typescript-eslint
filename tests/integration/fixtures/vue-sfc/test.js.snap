@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should produce the expected lint ouput 1`] = `
+Array [
+  Object {
+    "errorCount": 1,
+    "filePath": "/usr/linked/Hello.vue",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 29,
+        "endColumn": 32,
+        "endLine": 31,
+        "line": 31,
+        "message": "Unexpected any. Specify a different type.",
+        "messageId": "unexpectedAny",
+        "nodeType": "TSAnyKeyword",
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+      },
+    ],
+    "source": "<!-- Hello.vue -->
+<template>
+    <div>
+        <div>
+		    <!-- !!!!! expected error !!!!! -->
+			Hello {{ (name as any) }}{{exclamationMarks}}
+		</div>
+        <button @click=\\"decrement\\">-</button>
+        <button @click=\\"increment\\">+</button>
+    </div>
+</template>
+
+<script lang=\\"ts\\">
+import Vue from \\"vue\\";
+export default Vue.extend({
+    props: ['name', 'initialEnthusiasm'],
+    data() {
+        return {
+            enthusiasm: this.initialEnthusiasm,
+        }
+    },
+    methods: {
+        increment() { this.enthusiasm++; },
+        decrement() {
+            if (this.enthusiasm > 1) {
+                this.enthusiasm--;
+            }
+        },
+    },
+    computed: {
+        exclamationMarks(): any { // !!!!! expected error !!!!!
+            return Array(this.enthusiasm + 1).join('!');
+        }
+    }
+});
+</script>
+",
+    "warningCount": 0,
+  },
+]
+`;
