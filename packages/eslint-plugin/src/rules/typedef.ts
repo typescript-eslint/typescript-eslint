@@ -55,7 +55,7 @@ export default util.createRule<[Options], MessageIds>({
     },
   ],
   create(context, [options]) {
-    function report(location: TSESTree.Node, name?: string) {
+    function report(location: TSESTree.Node, name?: string): void {
       context.report({
         node: location,
         messageId: name ? 'expectedTypedefNamed' : 'expectedTypedef',
@@ -63,11 +63,13 @@ export default util.createRule<[Options], MessageIds>({
       });
     }
 
-    function getNodeName(node: TSESTree.Parameter | TSESTree.PropertyName) {
+    function getNodeName(
+      node: TSESTree.Parameter | TSESTree.PropertyName,
+    ): string | undefined {
       return node.type === AST_NODE_TYPES.Identifier ? node.name : undefined;
     }
 
-    function checkParameters(params: TSESTree.Parameter[]) {
+    function checkParameters(params: TSESTree.Parameter[]): void {
       for (const param of params) {
         if (
           param.type !== AST_NODE_TYPES.TSParameterProperty &&
@@ -79,17 +81,17 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     return {
-      ArrayPattern(node) {
+      ArrayPattern(node): void {
         if (options[OptionKeys.ArrayDestructuring] && !node.typeAnnotation) {
           report(node);
         }
       },
-      ArrowFunctionExpression(node) {
+      ArrowFunctionExpression(node): void {
         if (options[OptionKeys.ArrowParameter]) {
           checkParameters(node.params);
         }
       },
-      ClassProperty(node) {
+      ClassProperty(node): void {
         if (
           options[OptionKeys.MemberVariableDeclaration] &&
           !node.typeAnnotation
@@ -104,19 +106,19 @@ export default util.createRule<[Options], MessageIds>({
       },
       'FunctionDeclaration, FunctionExpression'(
         node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
-      ) {
+      ): void {
         if (options[OptionKeys.Parameter]) {
           checkParameters(node.params);
         }
       },
-      ObjectPattern(node) {
+      ObjectPattern(node): void {
         if (options[OptionKeys.ObjectDestructuring] && !node.typeAnnotation) {
           report(node);
         }
       },
       'TSIndexSignature, TSPropertySignature'(
         node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
-      ) {
+      ): void {
         if (options[OptionKeys.PropertyDeclaration] && !node.typeAnnotation) {
           report(
             node,
@@ -126,7 +128,7 @@ export default util.createRule<[Options], MessageIds>({
           );
         }
       },
-      VariableDeclarator(node) {
+      VariableDeclarator(node): void {
         if (
           options[OptionKeys.VariableDeclaration] &&
           !node.id.typeAnnotation

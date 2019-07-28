@@ -73,13 +73,15 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
       NewExpression: checkArguments,
     };
 
-    function checkTestConditional(node: { test: TSESTree.Expression | null }) {
+    function checkTestConditional(node: {
+      test: TSESTree.Expression | null;
+    }): void {
       if (node.test) {
         checkConditional(node.test);
       }
     }
 
-    function checkConditional(node: TSESTree.Expression) {
+    function checkConditional(node: TSESTree.Expression): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       if (isAlwaysThenable(checker, tsNode)) {
         context.report({
@@ -91,7 +93,7 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
 
     function checkArguments(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
-    ) {
+    ): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
         ts.CallExpression | ts.NewExpression
       >(node);
@@ -126,7 +128,7 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
 // alternates in a union) to be thenable. Otherwise, you might be trying to
 // check if something is defined or undefined and get caught because one of the
 // branches is thenable.
-function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node) {
+function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
   for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
@@ -195,7 +197,7 @@ function isFunctionParam(
 function voidFunctionParams(
   checker: ts.TypeChecker,
   node: ts.CallExpression | ts.NewExpression,
-) {
+): Set<number> {
   const voidReturnIndices = new Set<number>();
   const thenableReturnIndices = new Set<number>();
   const type = checker.getTypeAtLocation(node.expression);
@@ -237,7 +239,10 @@ function voidFunctionParams(
 }
 
 // Returns true if the expression is a function that returns a thenable
-function returnsThenable(checker: ts.TypeChecker, node: ts.Expression) {
+function returnsThenable(
+  checker: ts.TypeChecker,
+  node: ts.Expression,
+): boolean {
   const type = checker.getApparentType(checker.getTypeAtLocation(node));
 
   for (const subType of tsutils.unionTypeParts(type)) {

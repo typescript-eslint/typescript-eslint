@@ -10,10 +10,12 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-function error(messages: { message: string; line: number; column: number }[]) {
-  // the base rule doesn't have messageIds
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return messages as any[];
+// the base rule doesn't have messageIds
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function error(
+  messages: { message: string; line: number; column: number }[],
+): any[] {
+  return messages;
 }
 
 ruleTester.run('no-unused-vars', rule, {

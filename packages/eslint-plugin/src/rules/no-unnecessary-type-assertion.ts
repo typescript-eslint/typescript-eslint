@@ -166,7 +166,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSNonNullExpression(node) {
+      TSNonNullExpression(node): void {
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
           ts.NonNullExpression
         >(node);

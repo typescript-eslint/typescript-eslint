@@ -43,7 +43,7 @@ class FixturesTester {
   public addFixturePatternConfig(
     fixturesSubPath: string,
     config: CreateFixturePatternConfig = {},
-  ) {
+  ): void {
     let _fixturesDirPath = fixturesDirPath;
     if (!fs.existsSync(path.join(fixturesDirPath, fixturesSubPath))) {
       _fixturesDirPath = sharedFixturesDirPath;

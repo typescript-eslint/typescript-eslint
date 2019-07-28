@@ -31,7 +31,7 @@ export default util.createRule<Options, MessageIds>({
     const regex = new RegExp(rule!);
 
     return {
-      TSTypeParameter(node) {
+      TSTypeParameter(node): void {
         const name = node.name.name;
 
         if (name && !regex.test(name)) {

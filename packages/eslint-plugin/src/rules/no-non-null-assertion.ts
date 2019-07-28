@@ -18,7 +18,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      TSNonNullExpression(node) {
+      TSNonNullExpression(node): void {
         context.report({
           node,
           messageId: 'noNonNull',

@@ -61,7 +61,7 @@ export default util.createRule<Options, MessageIds>({
       node: ts.PropertyAccessExpression,
       parent: ts.Node,
       classScope: ClassScope,
-    ) {
+    ): void {
       if (ts.isBinaryExpression(parent)) {
         handleParentBinaryExpression(node, parent, classScope);
         return;
@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
       node: ts.PropertyAccessExpression,
       parent: ts.BinaryExpression,
       classScope: ClassScope,
-    ) {
+    ): void {
       if (
         parent.left === node &&
         tsutils.isAssignmentKind(parent.operatorToken.kind)
@@ -96,7 +96,7 @@ export default util.createRule<Options, MessageIds>({
     function handleParentPostfixOrPrefixUnaryExpression(
       node: ts.PostfixUnaryExpression | ts.PrefixUnaryExpression,
       classScope: ClassScope,
-    ) {
+    ): void {
       if (
         node.operator === ts.SyntaxKind.PlusPlusToken ||
         node.operator === ts.SyntaxKind.MinusMinusToken
@@ -107,14 +107,16 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
-    function isConstructor(node: TSESTree.Node) {
+    function isConstructor(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.MethodDefinition &&
         node.kind === 'constructor'
       );
     }
 
-    function isFunctionScopeBoundaryInStack(node: TSESTree.Node) {
+    function isFunctionScopeBoundaryInStack(
+      node: TSESTree.Node,
+    ): boolean | tsutils.ScopeBoundary {
       if (classScopeStack.length === 0) {
         return false;
       }
@@ -129,7 +131,7 @@ export default util.createRule<Options, MessageIds>({
 
     function getEsNodesFromViolatingNode(
       violatingNode: ParameterOrPropertyDeclaration,
-    ) {
+    ): { esNode: TSESTree.Node; nameNode: TSESTree.Node } {
       if (ts.isParameterPropertyDeclaration(violatingNode)) {
         return {
           esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
@@ -148,7 +150,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       'ClassDeclaration, ClassExpression'(
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
-      ) {
+      ): void {
         classScopeStack.push(
           new ClassScope(
             checker,
@@ -157,7 +159,7 @@ export default util.createRule<Options, MessageIds>({
           ),
         );
       },
-      'ClassDeclaration, ClassExpression:exit'() {
+      'ClassDeclaration, ClassExpression:exit'(): void {
         const finalizedClassScope = classScopeStack.pop()!;
         const sourceCode = context.getSourceCode();
 
@@ -175,7 +177,7 @@ export default util.createRule<Options, MessageIds>({
           });
         }
       },
-      MemberExpression(node) {
+      MemberExpression(node): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
           ts.PropertyAccessExpression
         >(node);
@@ -187,7 +189,7 @@ export default util.createRule<Options, MessageIds>({
           );
         }
       },
-      [functionScopeBoundaries](node: TSESTree.Node) {
+      [functionScopeBoundaries](node: TSESTree.Node): void {
         if (isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].enterConstructor(
             parserServices.esTreeNodeToTSNodeMap.get<ts.ConstructorDeclaration>(
@@ -198,7 +200,7 @@ export default util.createRule<Options, MessageIds>({
           classScopeStack[classScopeStack.length - 1].enterNonConstructor();
         }
       },
-      [`${functionScopeBoundaries}:exit`](node: TSESTree.Node) {
+      [`${functionScopeBoundaries}:exit`](node: TSESTree.Node): void {
         if (isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].exitConstructor();
         } else if (isFunctionScopeBoundaryInStack(node)) {
@@ -247,7 +249,7 @@ class ClassScope {
     }
   }
 
-  public addDeclaredVariable(node: ParameterOrPropertyDeclaration) {
+  public addDeclaredVariable(node: ParameterOrPropertyDeclaration): void {
     if (
       !tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
       tsutils.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
@@ -270,7 +272,7 @@ class ClassScope {
     ).set(node.name.getText(), node);
   }
 
-  public addVariableModification(node: ts.PropertyAccessExpression) {
+  public addVariableModification(node: ts.PropertyAccessExpression): void {
     const modifierType = this.checker.getTypeAtLocation(node.expression);
     if (
       modifierType.symbol === undefined ||
@@ -295,7 +297,7 @@ class ClassScope {
     ).add(node.name.text);
   }
 
-  public enterConstructor(node: ts.ConstructorDeclaration) {
+  public enterConstructor(node: ts.ConstructorDeclaration): void {
     this.constructorScopeDepth = DIRECTLY_INSIDE_CONSTRUCTOR;
 
     for (const parameter of node.parameters) {
@@ -305,23 +307,23 @@ class ClassScope {
     }
   }
 
-  public exitConstructor() {
+  public exitConstructor(): void {
     this.constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
   }
 
-  public enterNonConstructor() {
+  public enterNonConstructor(): void {
     if (this.constructorScopeDepth !== OUTSIDE_CONSTRUCTOR) {
       this.constructorScopeDepth += 1;
     }
   }
 
-  public exitNonConstructor() {
+  public exitNonConstructor(): void {
     if (this.constructorScopeDepth !== OUTSIDE_CONSTRUCTOR) {
       this.constructorScopeDepth -= 1;
     }
   }
 
-  public finalizeUnmodifiedPrivateNonReadonlys() {
+  public finalizeUnmodifiedPrivateNonReadonlys(): ParameterOrPropertyDeclaration[] {
     this.memberVariableModifications.forEach(variableName => {
       this.privateModifiableMembers.delete(variableName);
     });

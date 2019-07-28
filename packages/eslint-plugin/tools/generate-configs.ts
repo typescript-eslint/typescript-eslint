@@ -2,10 +2,10 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import { format } from 'prettier';
+import { format, Options } from 'prettier';
 import rules from '../src/rules';
 
-import prettierConfig = require('../../../.prettierrc.json');
+const prettierConfig: Options = require('../../../.prettierrc.json');
 
 interface LinterConfigRules {
   [name: string]:
@@ -45,14 +45,14 @@ const ruleEntries = Object.entries(rules).sort((a, b) =>
  * @param config
  * @param entry
  */
-const reducer = <TMessageIds extends string>(
+function reducer<TMessageIds extends string>(
   config: LinterConfigRules,
   entry: [string, TSESLint.RuleModule<TMessageIds, unknown[]>],
   settings: {
     errorLevel?: 'error' | 'warn';
     filterDeprecated: boolean;
   },
-) => {
+): LinterConfigRules {
   const key = entry[0];
   const value = entry[1];
 
@@ -88,7 +88,7 @@ const reducer = <TMessageIds extends string>(
   config[ruleName] = usedSetting;
 
   return config;
-};
+}
 
 /**
  * Helper function writes configuration.
@@ -96,7 +96,7 @@ const reducer = <TMessageIds extends string>(
 function writeConfig(config: LinterConfig, filePath: string): void {
   const configStr = format(JSON.stringify(config), {
     parser: 'json',
-    ...(prettierConfig as any),
+    ...prettierConfig,
   });
   fs.writeFileSync(filePath, configStr);
 }

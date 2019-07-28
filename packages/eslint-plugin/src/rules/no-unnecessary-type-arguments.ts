@@ -73,7 +73,7 @@ export default util.createRule<[], MessageIds>({
     }
 
     return {
-      TSTypeParameterInstantiation(node) {
+      TSTypeParameterInstantiation(node): void {
         const parentDeclaration = parserServices.esTreeNodeToTSNodeMap.get<
           ExtendingClassLikeDeclaration | ParameterCapableTSNode
         >(node.parent!);
@@ -104,7 +104,7 @@ function getArgsAndParameters(
 function getTypeParametersFromNode(
   node: ParameterCapableTSNode,
   checker: ts.TypeChecker,
-) {
+): readonly ts.TypeParameterDeclaration[] | undefined {
   if (ts.isExpressionWithTypeArguments(node)) {
     return getTypeParametersFromType(node.expression, checker);
   }

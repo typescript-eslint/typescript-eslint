@@ -2,7 +2,11 @@
 // License: https://github.com/eslint/eslint/blob/48700fc8408f394887cdedd071b22b757700fdcb/LICENSE
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { BinarySearchTree, TokenOrComment } from './BinarySearchTree';
+import {
+  BinarySearchTree,
+  TokenOrComment,
+  TreeValue,
+} from './BinarySearchTree';
 import { TokenInfo } from './TokenInfo';
 
 /**
@@ -34,7 +38,7 @@ export class OffsetStorage {
     this.ignoredTokens = new WeakSet();
   }
 
-  private getOffsetDescriptor(token: TokenOrComment) {
+  private getOffsetDescriptor(token: TokenOrComment): TreeValue {
     return this.tree.findLe(token.range[0]).value;
   }
 

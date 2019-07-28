@@ -82,7 +82,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSParameterProperty(node) {
+      TSParameterProperty(node): void {
         const modifiers = getModifiers(node);
 
         if (!allows.includes(modifiers)) {

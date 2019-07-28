@@ -308,14 +308,14 @@ export default util.createRule({
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): IsTypeParameter {
       if (typeParameters === undefined) {
-        return () => false;
+        return (() => false) as IsTypeParameter;
       }
 
       const set = new Set<string>();
       for (const t of typeParameters.params) {
         set.add(t.name.name);
       }
-      return typeName => set.has(typeName);
+      return (typeName => set.has(typeName)) as IsTypeParameter;
     }
 
     /** True if any of the outer type parameters are used in a signature. */
@@ -477,7 +477,7 @@ export default util.createRule({
     function createScope(
       parent: ScopeNode,
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
-    ) {
+    ): void {
       currentScope && scopes.push(currentScope);
       currentScope = {
         overloads: new Map(),
@@ -486,7 +486,7 @@ export default util.createRule({
       };
     }
 
-    function checkScope() {
+    function checkScope(): void {
       const failures = checkOverloads(
         Array.from(currentScope.overloads.values()),
         currentScope.typeParameters,
@@ -495,7 +495,7 @@ export default util.createRule({
       currentScope = scopes.pop()!;
     }
 
-    function addOverload(signature: OverloadNode, key?: string) {
+    function addOverload(signature: OverloadNode, key?: string): void {
       key = key || getOverloadKey(signature);
       if (currentScope && signature.parent === currentScope.parent && key) {
         const overloads = currentScope.overloads.get(key);
@@ -514,15 +514,15 @@ export default util.createRule({
     return {
       Program: createScope,
       TSModuleBlock: createScope,
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node): void {
         createScope(node.body, node.typeParameters);
       },
-      ClassDeclaration(node) {
+      ClassDeclaration(node): void {
         createScope(node.body, node.typeParameters);
       },
       TSTypeLiteral: createScope,
       // collect overloads
-      TSDeclareFunction(node) {
+      TSDeclareFunction(node): void {
         if (node.id && !node.body) {
           addOverload(node, node.id.name);
         }
@@ -530,12 +530,12 @@ export default util.createRule({
       TSCallSignatureDeclaration: addOverload,
       TSConstructSignatureDeclaration: addOverload,
       TSMethodSignature: addOverload,
-      TSAbstractMethodDefinition(node) {
+      TSAbstractMethodDefinition(node): void {
         if (!node.value.body) {
           addOverload(node);
         }
       },
-      MethodDefinition(node) {
+      MethodDefinition(node): void {
         if (!node.value.body) {
           addOverload(node);
         }

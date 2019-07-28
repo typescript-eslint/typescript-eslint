@@ -54,7 +54,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       "VariableDeclarator[init.type='ThisExpression']"(
         node: TSESTree.VariableDeclarator,
-      ) {
+      ): void {
         const { id } = node;
 
         if (allowDestructuring && id.type !== AST_NODE_TYPES.Identifier) {

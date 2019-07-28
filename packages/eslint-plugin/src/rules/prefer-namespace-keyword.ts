@@ -26,7 +26,7 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
 
     return {
-      TSModuleDeclaration(node) {
+      TSModuleDeclaration(node): void {
         // Do nothing if the name is a string.
         if (!node.id || node.id.type === AST_NODE_TYPES.Literal) {
           return;

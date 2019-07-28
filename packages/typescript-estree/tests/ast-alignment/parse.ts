@@ -3,7 +3,11 @@ import codeFrame from 'babel-code-frame';
 import * as parser from '../../src/parser';
 import * as parseUtils from './utils';
 
-function createError(message: string, line: number, column: number) {
+function createError(
+  message: string,
+  line: number,
+  column: number,
+): SyntaxError {
   // Construct an error similar to the ones thrown by Babylon.
   const error = new SyntaxError(`${message} (${line}:${column})`);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,7 +18,8 @@ function createError(message: string, line: number, column: number) {
   return error;
 }
 
-function parseWithBabelParser(text: string, jsx: boolean = true) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function parseWithBabelParser(text: string, jsx: boolean = true): any {
   const babel = require('@babel/parser');
   const plugins: ParserPlugin[] = [
     'typescript',
@@ -40,7 +45,11 @@ function parseWithBabelParser(text: string, jsx: boolean = true) {
   });
 }
 
-function parseWithTypeScriptESTree(text: string, jsx: boolean = true) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function parseWithTypeScriptESTree(
+  text: string,
+  jsx: boolean = true,
+): parser.AST<any> {
   try {
     const result = parser.parseAndGenerateServices(text, {
       loc: true,
@@ -69,7 +78,11 @@ interface ASTComparisonParseOptions {
   jsx?: boolean;
 }
 
-export function parse(text: string, opts: ASTComparisonParseOptions) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function parse(
+  text: string,
+  opts: ASTComparisonParseOptions,
+): { parseError: any | null; ast: any | null } {
   /**
    * Always return a consistent interface, there will be times when we expect both
    * parsers to fail to parse the invalid source.

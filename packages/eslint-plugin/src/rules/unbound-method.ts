@@ -54,7 +54,7 @@ export default util.createRule<Options, MessageIds>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
-      [AST_NODE_TYPES.MemberExpression](node: TSESTree.MemberExpression) {
+      MemberExpression(node): void {
         if (isSafeUse(node)) {
           return;
         }
@@ -73,7 +73,7 @@ export default util.createRule<Options, MessageIds>({
   },
 });
 
-function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
+function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
     // working around https://github.com/microsoft/TypeScript/issues/31294

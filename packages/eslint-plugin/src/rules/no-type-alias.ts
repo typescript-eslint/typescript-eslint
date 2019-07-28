@@ -269,7 +269,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSTypeAliasDeclaration(node) {
+      TSTypeAliasDeclaration(node): void {
         const types = getTypes(node.typeAnnotation);
         if (types.length === 1) {
           // is a top level type annotation

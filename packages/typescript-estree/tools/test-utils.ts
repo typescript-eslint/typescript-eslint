@@ -6,7 +6,7 @@ import { TSESTreeOptions } from '../src/parser-options';
  * @param  {Object} ast the AST object
  * @returns {Object}     copy of the AST object
  */
-export function getRaw(ast: parser.TSESTree.Program) {
+export function getRaw(ast: parser.TSESTree.Program): parser.TSESTree.Program {
   return JSON.parse(
     JSON.stringify(ast, (key, value) => {
       if ((key === 'start' || key === 'end') && typeof value === 'number') {
@@ -20,7 +20,7 @@ export function getRaw(ast: parser.TSESTree.Program) {
 export function parseCodeAndGenerateServices(
   code: string,
   config: TSESTreeOptions,
-) {
+): parser.ParseAndGenerateServicesResult<parser.TSESTreeOptions> {
   return parser.parseAndGenerateServices(code, config);
 }
 
@@ -36,18 +36,18 @@ export function createSnapshotTestBlock(
   code: string,
   config: TSESTreeOptions,
   generateServices?: true,
-) {
+): () => void {
   /**
    * @returns {Object} the AST object
    */
-  function parse() {
+  function parse(): parser.TSESTree.Program {
     const ast = generateServices
       ? parser.parseAndGenerateServices(code, config).ast
       : parser.parse(code, config);
     return getRaw(ast);
   }
 
-  return () => {
+  return (): void => {
     try {
       const result = parse();
       expect(result).toMatchSnapshot();

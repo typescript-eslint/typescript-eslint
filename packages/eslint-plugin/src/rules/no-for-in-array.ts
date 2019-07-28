@@ -19,7 +19,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      ForInStatement(node) {
+      ForInStatement(node): void {
         const parserServices = util.getParserServices(context);
         const checker = parserServices.program.getTypeChecker();
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get<

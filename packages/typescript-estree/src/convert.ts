@@ -19,8 +19,10 @@ import {
   isESTreeClassMember,
   isOptional,
   unescapeStringLiteralText,
+  TSError,
 } from './node-utils';
 import { AST_NODE_TYPES, TSESTree, TSNode } from './ts-estree';
+import { ParserWeakMap } from './parser-options';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -35,12 +37,17 @@ interface ConverterOptions {
  * @param error the error object
  * @returns converted error object
  */
-export function convertError(error: any) {
+export function convertError(error: any): TSError {
   return createError(
     error.file,
     error.start,
     error.message || error.messageText,
   );
+}
+
+export interface ASTMaps {
+  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, TSNode>;
+  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node>;
 }
 
 export class Converter {
@@ -63,7 +70,7 @@ export class Converter {
     this.options = options;
   }
 
-  getASTMaps() {
+  getASTMaps(): ASTMaps {
     return {
       esTreeNodeToTSNodeMap: this.esTreeNodeToTSNodeMap,
       tsNodeToESTreeNodeMap: this.tsNodeToESTreeNodeMap,
@@ -168,7 +175,7 @@ export class Converter {
   private registerTSNodeInNodeMap(
     node: ts.Node,
     result: TSESTree.BaseNode | null,
-  ) {
+  ): void {
     if (result && this.options.shouldPreserveNodeMaps) {
       if (!this.tsNodeToESTreeNodeMap.has(node)) {
         this.tsNodeToESTreeNodeMap.set(node, result);

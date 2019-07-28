@@ -169,7 +169,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSArrayType(node: TSESTree.TSArrayType) {
+      TSArrayType(node): void {
         if (
           isArrayOption ||
           (isArraySimpleOption && isSimpleType(node.elementType))
@@ -242,7 +242,7 @@ export default util.createRule<Options, MessageIds>({
         });
       },
 
-      TSTypeReference(node: TSESTree.TSTypeReference) {
+      TSTypeReference(node): void {
         if (
           isGenericOption ||
           node.typeName.type !== AST_NODE_TYPES.Identifier

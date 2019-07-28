@@ -30,7 +30,7 @@ export default util.createRule({
     return {
       "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
         node: TSESTree.TSTypeAliasDeclaration,
-      ) {
+      ): void {
         if (option === 'interface') {
           context.report({
             node: node.id,
@@ -64,7 +64,7 @@ export default util.createRule({
           });
         }
       },
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node): void {
         if (option === 'type') {
           context.report({
             node: node.id,

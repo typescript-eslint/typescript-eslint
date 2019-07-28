@@ -69,7 +69,7 @@ export default util.createRule({
     return {
       'TSInterfaceBody > TSConstructSignatureDeclaration'(
         node: TSESTree.TSConstructSignatureDeclaration,
-      ) {
+      ): void {
         if (
           isMatchingParentType(
             node.parent!.parent as TSESTree.TSInterfaceDeclaration,
@@ -85,7 +85,7 @@ export default util.createRule({
       },
       "TSMethodSignature[key.name='constructor']"(
         node: TSESTree.TSMethodSignature,
-      ) {
+      ): void {
         context.report({
           node,
           messageId: 'errorMessageInterface',
@@ -93,7 +93,7 @@ export default util.createRule({
       },
       "ClassBody > MethodDefinition[key.name='new']"(
         node: TSESTree.MethodDefinition,
-      ) {
+      ): void {
         if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
           if (
             node.parent &&

@@ -3,13 +3,13 @@ import { logRule } from '../log';
 
 const prefix = '@typescript-eslint/';
 
-function checkConfigRecommended() {
+function checkConfigRecommended(): boolean {
   const { rules } = plugin;
 
   const recommended = plugin.configs.recommended.rules;
   const recommendedNames = new Set(Object.keys(recommended));
 
-  return Object.entries(rules).reduce((acc, [ruleName, rule]) => {
+  return Object.entries(rules).reduce<boolean>((acc, [ruleName, rule]) => {
     if (!rule.meta.deprecated && rule.meta.docs.recommended !== false) {
       const prefixed = `${prefix}${ruleName}` as keyof typeof recommended;
       if (recommendedNames.has(prefixed)) {

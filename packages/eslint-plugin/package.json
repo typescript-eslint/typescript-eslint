@@ -52,6 +52,7 @@
     "@types/prettier": "^1.18.0",
     "chalk": "^2.4.2",
     "marked": "^0.7.0",
+    "prettier": "*",
     "typescript": "*"
   },
   "peerDependencies": {
