@@ -199,7 +199,6 @@ import * as Foo from './foo';
 declare module './foo' {
   const x: Foo.T = 3;
 }`,
-      filename: path.join(rootPath, 'bar.ts'),
       errors: [
         {
           messageId,

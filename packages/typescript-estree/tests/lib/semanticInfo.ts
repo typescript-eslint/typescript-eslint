@@ -8,8 +8,12 @@ import {
   formatSnapshotName,
   parseCodeAndGenerateServices,
 } from '../../tools/test-utils';
-import { parseAndGenerateServices } from '../../src/parser';
+import {
+  parseAndGenerateServices,
+  ParseAndGenerateServicesResult,
+} from '../../src/parser';
 import { TSESTree } from '../../src/ts-estree';
+import { clearCaches } from '../../src/tsconfig-parser';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
@@ -25,10 +29,13 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
     errorOnUnknownASTType: true,
     filePath: fileName,
     tsconfigRootDir: join(process.cwd(), FIXTURES_DIR),
-    project: './tsconfig.json',
+    project: `./tsconfig.json`,
     loggerFn: false,
   };
 }
+
+// ensure tsconfig-parser caches are clean for each test
+beforeEach(() => clearCaches());
 
 describe('semanticInfo', () => {
   // test all AST snapshots
@@ -169,8 +176,10 @@ describe('semanticInfo', () => {
 
     // get array node (ast shape validated by snapshot)
     // node is defined in other file than the parsed one
-    const arrayBoundName = (parseResult.ast as any).body[1].expression.callee
-      .object;
+    const arrayBoundName = (((parseResult.ast
+      .body[1] as TSESTree.ExpressionStatement)
+      .expression as TSESTree.CallExpression)
+      .callee as TSESTree.MemberExpression).object as TSESTree.Identifier;
     expect(arrayBoundName.name).toBe('arr');
 
     expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
@@ -188,23 +197,24 @@ describe('semanticInfo', () => {
   it('non-existent file tests', () => {
     const parseResult = parseCodeAndGenerateServices(
       `const x = [parseInt("5")];`,
-      createOptions('<input>'),
+      {
+        ...createOptions('<input>'),
+        project: undefined,
+        preserveNodeMaps: true,
+      },
     );
 
-    // get type checker
-    expect(parseResult).toHaveProperty('services.program.getTypeChecker');
-    const checker = parseResult.services.program!.getTypeChecker();
+    expect(parseResult.services.program).toBeUndefined();
 
     // get bound name
-    const boundName = (parseResult.ast as any).body[0].declarations[0].id;
+    const boundName = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
+      .declarations[0].id as TSESTree.Identifier;
     expect(boundName.name).toBe('x');
 
     const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
       boundName,
     );
     expect(tsBoundName).toBeDefined();
-
-    checkNumberArrayType(checker, tsBoundName);
 
     expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName)).toBe(
       boundName,
@@ -214,18 +224,21 @@ describe('semanticInfo', () => {
   it('non-existent file should provide parents nodes', () => {
     const parseResult = parseCodeAndGenerateServices(
       `function M() { return Base }`,
-      createOptions('<input>'),
+      { ...createOptions('<input>'), project: undefined },
     );
 
-    // https://github.com/JamesHenry/typescript-estree/issues/77
-    expect(parseResult.services.program).toBeDefined();
-    expect(
-      parseResult.services.program!.getSourceFile('<input>'),
-    ).toBeDefined();
-    expect(
-      parseResult.services.program!.getSourceFile('<input>')!.statements[0]
-        .parent,
-    ).toBeDefined();
+    expect(parseResult.services.program).toBeUndefined();
+  });
+
+  it(`non-existent file should throw error when project provided`, () => {
+    expect(() =>
+      parseCodeAndGenerateServices(
+        `function M() { return Base }`,
+        createOptions('<input>'),
+      ),
+    ).toThrow(
+      `If "parserOptions.project" has been set for @typescript-eslint/parser, <input> must be included in at least one of the projects provided.`,
+    );
   });
 
   it('non-existent project file', () => {
@@ -254,15 +267,29 @@ describe('semanticInfo', () => {
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
     ).toThrowErrorMatchingSnapshot();
   });
+
+  it('default program produced with option', () => {
+    const parseResult = parseCodeAndGenerateServices('var foo = 5;', {
+      ...createOptions('<input>'),
+      createDefaultProgram: true,
+    });
+
+    expect(parseResult.services.program).toBeDefined();
+  });
 });
 
-function testIsolatedFile(parseResult: any) {
+function testIsolatedFile(
+  parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
+): void {
   // get type checker
   expect(parseResult).toHaveProperty('services.program.getTypeChecker');
   const checker = parseResult.services.program!.getTypeChecker();
 
   // get number node (ast shape validated by snapshot)
-  const arrayMember = parseResult.ast.body[0].declarations[0].init.elements[0];
+  const declaration = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
+    .declarations[0];
+  const arrayMember = (declaration.init! as TSESTree.ArrayExpression)
+    .elements[0];
   expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
 
   // get corresponding TS node
@@ -274,9 +301,11 @@ function testIsolatedFile(parseResult: any) {
   expect((tsArrayMember as ts.NumericLiteral).text).toBe('3');
 
   // get type of TS node
-  const arrayMemberType: any = checker.getTypeAtLocation(tsArrayMember);
+  const arrayMemberType = checker.getTypeAtLocation(tsArrayMember);
   expect(arrayMemberType.flags).toBe(ts.TypeFlags.NumberLiteral);
-  expect(arrayMemberType.value).toBe(3);
+  // using an internal api
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  expect((arrayMemberType as any).value).toBe(3);
 
   // make sure it maps back to original ESTree node
   expect(parseResult).toHaveProperty('services.tsNodeToESTreeNodeMap');
@@ -285,7 +314,7 @@ function testIsolatedFile(parseResult: any) {
   );
 
   // get bound name
-  const boundName = parseResult.ast.body[0].declarations[0].id;
+  const boundName = declaration.id as TSESTree.Identifier;
   expect(boundName.name).toBe('x');
   const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap!.get(
     boundName,
@@ -302,7 +331,7 @@ function testIsolatedFile(parseResult: any) {
  * @param {ts.TypeChecker} checker
  * @param {ts.Node} tsNode
  */
-function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node) {
+function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   const nodeType = checker.getTypeAtLocation(tsNode);
   expect(nodeType.flags).toBe(ts.TypeFlags.Object);
   expect((nodeType as ts.ObjectType).objectFlags).toBe(

@@ -10,6 +10,7 @@ const ruleTester = new RuleTester({
 });
 
 // the base rule doesn't use a message id...
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const error: any = {
   message: 'Useless constructor.',
   type: 'MethodDefinition',

@@ -15,7 +15,7 @@ type Options = [
         after?: boolean;
       };
     };
-  }?
+  }?,
 ];
 type MessageIds =
   | 'expectedSpaceAfter'

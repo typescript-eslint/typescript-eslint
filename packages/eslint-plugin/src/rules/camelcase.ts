@@ -37,9 +37,9 @@ export default util.createRule<Options, MessageIds>({
     ];
 
     const properties = options.properties;
-    const allow = options.allow!.map(r => ({
-      regexp: new RegExp(r),
-      name: r,
+    const allow = (options.allow || []).map(entry => ({
+      name: entry,
+      regex: new RegExp(entry),
     }));
 
     /**
@@ -60,7 +60,7 @@ export default util.createRule<Options, MessageIds>({
     function isAllowed(name: string): boolean {
       return (
         allow.findIndex(
-          entry => name === entry.name || entry.regexp.test(name),
+          entry => name === entry.name || entry.regex.test(name),
         ) !== -1
       );
     }

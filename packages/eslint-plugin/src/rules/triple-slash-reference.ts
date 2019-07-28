@@ -6,7 +6,7 @@ type Options = [
     lib?: 'always' | 'never';
     path?: 'always' | 'never';
     types?: 'always' | 'never' | 'prefer-import';
-  }
+  },
 ];
 type MessageIds = 'tripleSlashReference';
 

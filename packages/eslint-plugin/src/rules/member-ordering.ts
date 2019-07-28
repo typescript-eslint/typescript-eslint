@@ -13,7 +13,7 @@ type Options = [
     classExpressions?: OrderConfig;
     interfaces?: OrderConfig;
     typeLiterals?: OrderConfig;
-  }
+  },
 ];
 
 const allMemberTypes = ['field', 'method', 'constructor'].reduce<string[]>(

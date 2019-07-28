@@ -39,7 +39,7 @@ type ProvidedError = [
   // actual indent
   number | string,
   // node type
-  AST_NODE_TYPES | AST_TOKEN_TYPES
+  AST_NODE_TYPES | AST_TOKEN_TYPES,
 ];
 
 function is2DProvidedErrorArr(

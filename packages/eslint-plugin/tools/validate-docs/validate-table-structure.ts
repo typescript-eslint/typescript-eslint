@@ -5,7 +5,7 @@ import { logError } from '../log';
 
 const RULE_LINK_REGEX = /\[`@typescript-eslint\/(.+)`\]/;
 function validateTableStructure(
-  rules: Record<string, Readonly<TSESLint.RuleModule<any, any, any>>>,
+  rules: Record<string, Readonly<TSESLint.RuleModule<string, unknown[]>>>,
   rulesTable: marked.Tokens.Table,
 ): boolean {
   const ruleNames = Object.keys(rules)

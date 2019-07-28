@@ -196,6 +196,8 @@ export function isJSDocComment(node: ts.Node): boolean {
  * @returns the binary expression type
  */
 export function getBinaryExpressionType(
+  // can be any operator
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   operator: ts.Token<any>,
 ):
   | AST_NODE_TYPES.AssignmentExpression
@@ -444,6 +446,8 @@ export function isOptional(node: {
  * @param token the ts.Token
  * @returns the token type
  */
+// ts.Node types are ugly
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getTokenType(token: any): AST_TOKEN_TYPES {
   // Need two checks for keywords since some are also identifiers
   if (token.originalKeywordKind) {
@@ -668,7 +672,8 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
   // If we have a token or node that has a non-zero width, it must have tokens.
   // Note: getWidth() does not take trivia into account.
   return n.kind === SyntaxKind.EndOfFileToken
-    ? !!(n as any).jsDoc
+    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      !!(n as any).jsDoc
     : n.getWidth(ast) !== 0;
 }
 

@@ -15,7 +15,7 @@ type Modifier =
 type Options = [
   {
     allows: Modifier[];
-  }
+  },
 ];
 type MessageIds = 'noParamProp';
 

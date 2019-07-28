@@ -45,6 +45,7 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
               node,
               message: 'called on {{name}}',
               data: { name },
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any);
           },
         };

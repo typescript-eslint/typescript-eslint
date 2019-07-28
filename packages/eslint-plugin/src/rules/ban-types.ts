@@ -12,7 +12,7 @@ type Options = [
           fixWith?: string;
         }
     >;
-  }
+  },
 ];
 type MessageIds = 'bannedTypeMessage';
 
@@ -114,7 +114,8 @@ export default util.createRule<Options, MessageIds>({
         if (name in bannedTypes) {
           const bannedType = bannedTypes[name];
           const customMessage = getCustomMessage(bannedType);
-          const fixWith = bannedType && (bannedType as any).fixWith;
+          const fixWith =
+            bannedType && typeof bannedType === 'object' && bannedType.fixWith;
 
           context.report({
             node: typeName,

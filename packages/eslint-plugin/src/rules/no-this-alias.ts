@@ -8,7 +8,7 @@ type Options = [
   {
     allowDestructuring?: boolean;
     allowedNames?: string[];
-  }
+  },
 ];
 type MessageIds = 'thisAssignment' | 'thisDestructure';
 

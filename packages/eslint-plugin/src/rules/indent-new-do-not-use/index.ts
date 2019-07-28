@@ -244,7 +244,8 @@ type Options = [('tab' | number)?, IndentConfig?];
 type MessageIds = 'wrongIndentation';
 
 type AppliedOptions = ExcludeKeys<
-  RequireKeys<IndentConfig, keyof IndentConfig>,
+  // slight hack to make interface work with Record<string, unknown>
+  RequireKeys<Pick<IndentConfig, keyof IndentConfig>, keyof IndentConfig>,
   'VariableDeclarator'
 > & {
   VariableDeclarator: 'off' | VariableDeclaratorObj;
@@ -437,7 +438,7 @@ export default createRule<Options, MessageIds>({
       expectedAmount: number,
       actualSpaces: number,
       actualTabs: number,
-    ) {
+    ): { expected: string; actual: string | number } {
       const expectedStatement = `${expectedAmount} ${indentType}${
         expectedAmount === 1 ? '' : 's'
       }`; // e.g. "2 tabs"
@@ -582,7 +583,7 @@ export default createRule<Options, MessageIds>({
       startToken: TSESTree.Token,
       endToken: TSESTree.Token,
       offset: number | string,
-    ) {
+    ): void {
       /**
        * Gets the first token of a given element, including surrounding parentheses.
        * @param element A node in the `elements` list
@@ -1584,6 +1585,7 @@ export default createRule<Options, MessageIds>({
         const listener = baseOffsetListeners[key] as TSESLint.RuleFunction<
           TSESTree.Node
         >;
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         acc[key] = node => listenerCallQueue.push({ listener, node });
 
         return acc;

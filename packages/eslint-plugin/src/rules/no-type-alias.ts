@@ -25,7 +25,7 @@ type Options = [
       | 'in-unions'
       | 'in-intersections'
       | 'in-unions-and-intersections';
-  }
+  },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
 

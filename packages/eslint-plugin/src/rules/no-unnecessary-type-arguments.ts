@@ -68,15 +68,15 @@ export default util.createRule<[], MessageIds>({
               : [typeArguments[i - 1].end, arg.end],
           ),
         messageId: 'unnecessaryTypeParameter',
-        node: esParameters!.params[i],
+        node: esParameters.params[i],
       });
     }
 
     return {
       TSTypeParameterInstantiation(node) {
-        const parentDeclaration = parserServices.esTreeNodeToTSNodeMap.get(
-          node.parent!,
-        ) as ExtendingClassLikeDeclaration | ParameterCapableTSNode;
+        const parentDeclaration = parserServices.esTreeNodeToTSNodeMap.get<
+          ExtendingClassLikeDeclaration | ParameterCapableTSNode
+        >(node.parent!);
 
         const expression = tsutils.isClassLikeDeclaration(parentDeclaration)
           ? parentDeclaration.heritageClauses[0].types[0]
