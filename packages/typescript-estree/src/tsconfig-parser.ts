@@ -31,6 +31,16 @@ const watchCallbackTrackingMap = new Map<string, ts.FileWatcherCallback>();
 const parsedFilesSeen = new Set<string>();
 
 /**
+ * Clear tsconfig caches.
+ * Primarily used for testing.
+ */
+export function clearCaches() {
+  knownWatchProgramMap.clear();
+  watchCallbackTrackingMap.clear();
+  parsedFilesSeen.clear();
+}
+
+/**
  * Holds information about the file currently being linted
  */
 const currentLintOperationState = {

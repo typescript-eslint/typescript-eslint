@@ -13,6 +13,7 @@ import {
   ParseAndGenerateServicesResult,
 } from '../../src/parser';
 import { TSESTree } from '../../src/ts-estree';
+import { clearCaches } from '../../src/tsconfig-parser';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
@@ -28,10 +29,13 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
     errorOnUnknownASTType: true,
     filePath: fileName,
     tsconfigRootDir: join(process.cwd(), FIXTURES_DIR),
-    project: './tsconfig.json',
+    project: `./tsconfig.json`,
     loggerFn: false,
   };
 }
+
+// ensure tsconfig-parser caches are clean for each test
+beforeEach(() => clearCaches());
 
 describe('semanticInfo', () => {
   // test all AST snapshots
@@ -193,12 +197,14 @@ describe('semanticInfo', () => {
   it('non-existent file tests', () => {
     const parseResult = parseCodeAndGenerateServices(
       `const x = [parseInt("5")];`,
-      createOptions('<input>'),
+      {
+        ...createOptions('<input>'),
+        project: undefined,
+        preserveNodeMaps: true,
+      },
     );
 
-    // get type checker
-    expect(parseResult).toHaveProperty('services.program.getTypeChecker');
-    const checker = parseResult.services.program!.getTypeChecker();
+    expect(parseResult.services.program).toBeUndefined();
 
     // get bound name
     const boundName = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
@@ -210,8 +216,6 @@ describe('semanticInfo', () => {
     );
     expect(tsBoundName).toBeDefined();
 
-    checkNumberArrayType(checker, tsBoundName);
-
     expect(parseResult.services.tsNodeToESTreeNodeMap!.get(tsBoundName)).toBe(
       boundName,
     );
@@ -220,18 +224,21 @@ describe('semanticInfo', () => {
   it('non-existent file should provide parents nodes', () => {
     const parseResult = parseCodeAndGenerateServices(
       `function M() { return Base }`,
-      createOptions('<input>'),
+      { ...createOptions('<input>'), project: undefined },
     );
 
-    // https://github.com/JamesHenry/typescript-estree/issues/77
-    expect(parseResult.services.program).toBeDefined();
-    expect(
-      parseResult.services.program!.getSourceFile('<input>'),
-    ).toBeDefined();
-    expect(
-      parseResult.services.program!.getSourceFile('<input>')!.statements[0]
-        .parent,
-    ).toBeDefined();
+    expect(parseResult.services.program).toBeUndefined();
+  });
+
+  it(`non-existent file should throw error when project provided`, () => {
+    expect(() =>
+      parseCodeAndGenerateServices(
+        `function M() { return Base }`,
+        createOptions('<input>'),
+      ),
+    ).toThrow(
+      `If "parserOptions.project" has been set for @typescript-eslint/parser, <input> must be included in at least one of the projects provided.`,
+    );
   });
 
   it('non-existent project file', () => {
@@ -259,6 +266,15 @@ describe('semanticInfo', () => {
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
     ).toThrowErrorMatchingSnapshot();
+  });
+
+  it('default program produced with option', () => {
+    const parseResult = parseCodeAndGenerateServices('var foo = 5;', {
+      ...createOptions('<input>'),
+      createDefaultProgram: true,
+    });
+
+    expect(parseResult.services.program).toBeDefined();
   });
 });
 

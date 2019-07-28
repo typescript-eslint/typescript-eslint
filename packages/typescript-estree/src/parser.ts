@@ -58,6 +58,7 @@ function resetExtra(): void {
     tsconfigRootDir: process.cwd(),
     extraFileExtensions: [],
     preserveNodeMaps: undefined,
+    createDefaultProgram: false,
   };
 }
 
@@ -66,20 +67,27 @@ function resetExtra(): void {
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTFromProject(code: string, options: TSESTreeOptions) {
-  return firstDefined(
-    calculateProjectParserOptions(
-      code,
-      options.filePath || getFileName(options),
-      extra,
-    ),
+function getASTFromProject(
+  code: string,
+  options: TSESTreeOptions,
+  createDefaultProgram: boolean,
+) {
+  const filePath = options.filePath || getFileName(options);
+  const astAndProgram = firstDefined(
+    calculateProjectParserOptions(code, filePath, extra),
     currentProgram => {
-      const ast = currentProgram.getSourceFile(
-        options.filePath || getFileName(options),
-      );
+      const ast = currentProgram.getSourceFile(filePath);
       return ast && { ast, program: currentProgram };
     },
   );
+
+  if (!astAndProgram && !createDefaultProgram) {
+    throw new Error(
+      `If "parserOptions.project" has been set for @typescript-eslint/parser, ${filePath} must be included in at least one of the projects provided.`,
+    );
+  }
+
+  return astAndProgram;
 }
 
 /**
@@ -161,10 +169,14 @@ function getProgramAndAST(
   code: string,
   options: TSESTreeOptions,
   shouldProvideParserServices: boolean,
+  createDefaultProgram: boolean,
 ) {
   return (
-    (shouldProvideParserServices && getASTFromProject(code, options)) ||
-    (shouldProvideParserServices && getASTAndDefaultProject(code, options)) ||
+    (shouldProvideParserServices &&
+      getASTFromProject(code, options, createDefaultProgram)) ||
+    (shouldProvideParserServices &&
+      createDefaultProgram &&
+      getASTAndDefaultProject(code, options)) ||
     createNewProgram(code)
   );
 }
@@ -254,6 +266,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   if (options.preserveNodeMaps === undefined && extra.projects.length > 0) {
     extra.preserveNodeMaps = true;
   }
+
+  extra.createDefaultProgram =
+    typeof options.createDefaultProgram === 'boolean' &&
+    options.createDefaultProgram;
 }
 
 function warnAboutTSVersion(): void {
@@ -386,6 +402,7 @@ export function parseAndGenerateServices<
     code,
     options,
     shouldProvideParserServices,
+    extra.createDefaultProgram,
   );
   /**
    * Determine whether or not two-way maps of converted AST nodes should be preserved
