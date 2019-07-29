@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowDestructuring: false,
+      allowDestructuring: true,
       allowedNames: [],
     },
   ],
