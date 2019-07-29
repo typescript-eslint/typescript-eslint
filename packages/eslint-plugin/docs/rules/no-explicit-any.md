@@ -128,6 +128,21 @@ const baz1 = function (...args: any[]) {}
 const baz2 = function (...args: readonly any[]) {}
 const baz3 = function (...args: Array<any>) {}
 const baz4 = function (...args: ReadonlyArray<any>) {}
+
+interface Qux1 { (...args: any[]): void; }
+interface Qux2 { (...args: readonly any[]): void; }
+interface Qux3 { (...args: Array<any>): void; }
+interface Qux4 { (...args: ReadonlyArray<any>): void; }
+
+function quux1(fn: (...args: any[]) => void): void {}
+function quux2(fn: (...args: readonly any[]) => void): void {}
+function quux3(fn: (...args: Array<any>) => void): void {}
+function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}
+
+function quuz1(): ((...args: any[]) => void) {}
+function quuz2(): ((...args: readonly any[]) => void) {}
+function quuz3(): ((...args: Array<any>) => void) {}
+function quuz4(): ((...args: ReadonlyArray<any>) => void) {}
 ```
 
 Examples of **correct** code for the `{ "ignoreRestArgs": true }` option:
@@ -149,6 +164,21 @@ const baz1 = function (...args: any[]) {}
 const baz2 = function (...args: readonly any[]) {}
 const baz3 = function (...args: Array<any>) {}
 const baz4 = function (...args: ReadonlyArray<any>) {}
+
+interface Qux1 { (...args: any[]): void; }
+interface Qux2 { (...args: readonly any[]): void; }
+interface Qux3 { (...args: Array<any>): void; }
+interface Qux4 { (...args: ReadonlyArray<any>): void; }
+
+function quux1(fn: (...args: any[]) => void): void {}
+function quux2(fn: (...args: readonly any[]) => void): void {}
+function quux3(fn: (...args: Array<any>) => void): void {}
+function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}
+
+function quuz1(): ((...args: any[]) => void) {}
+function quuz2(): ((...args: readonly any[]) => void) {}
+function quuz3(): ((...args: Array<any>) => void) {}
+function quuz4(): ((...args: ReadonlyArray<any>) => void) {}
 ```
 
 ## When Not To Use It
