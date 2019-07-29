@@ -239,9 +239,6 @@ export default util.createRule<Options, MessageIds>({
         ) {
           reportError(type.node, type.compositionType, isTopLevel, 'Aliases');
         }
-      } else {
-        // unhandled type - shouldn't happen
-        reportError(type.node, type.compositionType, isTopLevel, 'Unhandled');
       }
     }
 

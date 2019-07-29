@@ -8,6 +8,18 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-type-alias', rule, {
   valid: [
     {
+      code: 'type Foo = string | [number, number];',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = string & [number, number];',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = string & [number, number] | [number, number, number];',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
       code: "type A = 'a' & ('b' | 'c');",
       options: [{ allowAliases: 'always' }],
     },
