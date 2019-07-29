@@ -69,7 +69,7 @@ export default createRule<Options, MessageIds>({
     },
     type: 'problem',
     messages: {
-      failure: '{{message}} (tslint:{{ruleName}})`',
+      failure: '{{message}} (tslint:{{ruleName}})',
     },
     schema: [
       {
