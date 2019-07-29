@@ -142,9 +142,9 @@ let objectPropCast = <ObjectType>{
 declare functionWithArg(arg: () => number);
 functionWithArg(() => 1);
 
-declare functionWithObjectArg(arg: { meth: () => number });
+declare functionWithObjectArg(arg: { method: () => number });
 functionWithObjectArg({
-  meth() {
+  method() {
     return 1;
   },
 });
