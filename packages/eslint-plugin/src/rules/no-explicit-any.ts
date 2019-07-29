@@ -51,7 +51,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Checks if the node is an arrow function, function declaration or function expression
      * @param node the node to be validated.
-     * @returns true if the node is an arrow function, function declaration or function expression
+     * @returns true if the node is an arrow function, function declaration, function expression, function type, or call signature
      * @private
      */
     function isNodeValidFunction(node: TSESTree.Node): boolean {
@@ -59,6 +59,8 @@ export default util.createRule<Options, MessageIds>({
         AST_NODE_TYPES.ArrowFunctionExpression,
         AST_NODE_TYPES.FunctionDeclaration,
         AST_NODE_TYPES.FunctionExpression,
+        AST_NODE_TYPES.TSFunctionType,
+        AST_NODE_TYPES.TSCallSignatureDeclaration,
       ].includes(node.type);
     }
 
