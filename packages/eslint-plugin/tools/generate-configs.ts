@@ -35,6 +35,13 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'require-await',
   'semi',
 ]);
+// list of rules from the bae plugin that we think should be turned on for typescript code
+const BASE_RULES_THAT_ARE_RECOMMENDED = new Set([
+  'no-var',
+  'prefer-const',
+  'prefer-rest-params',
+  'prefer-spread',
+]);
 
 const ruleEntries = Object.entries(rules).sort((a, b) =>
   a[0].localeCompare(b[0]),
@@ -128,14 +135,18 @@ console.log();
 console.log(
   '------------------------------ recommended.json ------------------------------',
 );
+const recommendedRules = ruleEntries
+  .filter(entry => !!entry[1].meta.docs.recommended)
+  .reduce<LinterConfigRules>(
+    (config, entry) => reducer(config, entry, { filterDeprecated: false }),
+    {},
+  );
+BASE_RULES_THAT_ARE_RECOMMENDED.forEach(ruleName => {
+  recommendedRules[ruleName] = 'error';
+});
 const recommendedConfig: LinterConfig = {
   extends: './configs/base.json',
-  rules: ruleEntries
-    .filter(entry => !!entry[1].meta.docs.recommended)
-    .reduce<LinterConfigRules>(
-      (config, entry) => reducer(config, entry, { filterDeprecated: false }),
-      {},
-    ),
+  rules: recommendedRules,
 };
 writeConfig(
   recommendedConfig,
