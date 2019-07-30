@@ -1,6 +1,7 @@
-# Enforces that types will not to be used (ban-types)
+# Bans specific types from being used (ban-types)
 
-Bans specific types from being used. Does not ban the corresponding runtime objects from being used.
+This rule bans specific types and can suggest alternatives. It does not ban the
+corresponding runtime objects from being used.
 
 ## Rule Details
 

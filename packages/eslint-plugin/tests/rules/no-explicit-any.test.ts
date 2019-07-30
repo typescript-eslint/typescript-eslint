@@ -189,6 +189,54 @@ type obj = {
       code: `const baz4 = (...args: ReadonlyArray<any>) => {}`,
       options: [{ ignoreRestArgs: true }],
     },
+    {
+      code: `interface Qux1 { (...args: any[]): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Qux2 { (...args: readonly any[]): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Qux3 { (...args: Array<any>): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Qux4 { (...args: ReadonlyArray<any>): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function quux1(fn: (...args: any[]) => void): void {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function quux2(fn: (...args: readonly any[]) => void): void {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function quux3(fn: (...args: Array<any>) => void): void {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function quuz1(): ((...args: any[]) => void) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function quuz2(): ((...args: readonly any[]) => void) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function quuz3(): ((...args: Array<any>) => void) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `function quuz4(): ((...args: ReadonlyArray<any>) => void) {}`,
+      options: [{ ignoreRestArgs: true }],
+    },
   ],
   invalid: ([
     {
@@ -784,6 +832,39 @@ type obj = {
           messageId: 'unexpectedAny',
           line: 1,
           column: 24,
+        },
+      ],
+    },
+    {
+      code: `interface Qux5 { (...args: any): void; }`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 28,
+        },
+      ],
+    },
+    {
+      code: `function quux5(fn: (...args: any) => void): void {}`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 30,
+        },
+      ],
+    },
+    {
+      code: `function quuz5(): ((...args: any) => void) {}`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 30,
         },
       ],
     },
