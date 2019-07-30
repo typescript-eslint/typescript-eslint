@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces that types will not to be used',
+      description: 'Bans specific types from being used',
       category: 'Best Practices',
       recommended: 'error',
     },
