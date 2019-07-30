@@ -8,18 +8,6 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-type-alias', rule, {
   valid: [
     {
-      code: 'type Foo = string | [number, number];',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = string & [number, number];',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = string & [number, number] | [number, number, number];',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
       code: "type A = 'a' & ('b' | 'c');",
       options: [{ allowAliases: 'always' }],
     },
@@ -387,6 +375,23 @@ type Foo<T> = {
     {
       code: 'type Foo = typeof bar | typeof baz;',
       options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] | [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = [string] | [number, number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] & [number, number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+    },
+    {
+      code:
+        'type Foo = [string] & [number, number] | [number, number, number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
   ],
   invalid: [
@@ -2924,6 +2929,105 @@ type Foo<T> = {
           },
           line: 1,
           column: 27,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number] | [number, number]',
+      options: [{ allowTupleTypes: 'never' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 23,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number] & [number, number]',
+      options: [{ allowTupleTypes: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'intersection',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'intersection',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 23,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number] | [number, number]',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 23,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
         },
       ],
     },

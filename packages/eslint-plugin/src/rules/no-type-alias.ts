@@ -25,6 +25,12 @@ type Options = [
       | 'in-unions'
       | 'in-intersections'
       | 'in-unions-and-intersections';
+    allowTupleTypes?:
+      | 'always'
+      | 'never'
+      | 'in-unions'
+      | 'in-intersections'
+      | 'in-unions-and-intersections';
   },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
@@ -85,6 +91,15 @@ export default util.createRule<Options, MessageIds>({
               'in-unions-and-intersections',
             ],
           },
+          allowTupleTypes: {
+            enum: [
+              'always',
+              'never',
+              'in-unions',
+              'in-intersections',
+              'in-unions-and-intersections',
+            ],
+          },
         },
         additionalProperties: false,
       },
@@ -96,11 +111,20 @@ export default util.createRule<Options, MessageIds>({
       allowCallbacks: 'never',
       allowLiterals: 'never',
       allowMappedTypes: 'never',
+      allowTupleTypes: 'never',
     },
   ],
   create(
     context,
-    [{ allowAliases, allowCallbacks, allowLiterals, allowMappedTypes }],
+    [
+      {
+        allowAliases,
+        allowCallbacks,
+        allowLiterals,
+        allowMappedTypes,
+        allowTupleTypes,
+      },
+    ],
   ) {
     const unions = ['always', 'in-unions', 'in-unions-and-intersections'];
     const intersections = [
@@ -224,6 +248,23 @@ export default util.createRule<Options, MessageIds>({
             'Mapped types',
           );
         }
+      } else if (type.node.type === AST_NODE_TYPES.TSTupleType) {
+        // tuple types
+        if (
+          allowTupleTypes === 'never' ||
+          !isSupportedComposition(
+            isTopLevel,
+            type.compositionType,
+            allowTupleTypes!,
+          )
+        ) {
+          reportError(
+            type.node,
+            type.compositionType,
+            isTopLevel,
+            'Tuple Types',
+          );
+        }
       } else if (
         type.node.type.endsWith('Keyword') ||
         aliasTypes.has(type.node.type)
@@ -239,6 +280,9 @@ export default util.createRule<Options, MessageIds>({
         ) {
           reportError(type.node, type.compositionType, isTopLevel, 'Aliases');
         }
+      } else {
+        // unhandled type - shouldn't happen
+        reportError(type.node, type.compositionType, isTopLevel, 'Unhandled');
       }
     }
 
