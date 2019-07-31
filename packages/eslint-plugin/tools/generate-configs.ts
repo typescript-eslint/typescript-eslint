@@ -2,10 +2,10 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import { format, Options } from 'prettier';
+import { format, resolveConfig } from 'prettier';
 import rules from '../src/rules';
 
-const prettierConfig: Options = require('../../../.prettierrc.json');
+const prettierConfig = resolveConfig(__dirname);
 
 interface LinterConfigRules {
   [name: string]:
@@ -35,7 +35,7 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'require-await',
   'semi',
 ]);
-// list of rules from the bae plugin that we think should be turned on for typescript code
+// list of rules from the base plugin that we think should be turned on for typescript code
 const BASE_RULES_THAT_ARE_RECOMMENDED = new Set([
   'no-var',
   'prefer-const',
