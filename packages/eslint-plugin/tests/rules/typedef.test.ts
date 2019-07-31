@@ -108,6 +108,7 @@ ruleTester.run('typedef', rule, {
     `function receivesNumbers([a, b]: number[]): void { }`,
     `function receivesString({ a }: { a: string }): void { }`,
     `function receivesStrings({ a, b }: { [i: string ]: string }): void { }`,
+    `function receivesNumber(a: number = 123): void { }`,
     // Property declarations
     `type Test = {
        member: number;
