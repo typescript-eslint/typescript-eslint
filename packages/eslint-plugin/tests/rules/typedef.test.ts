@@ -381,6 +381,17 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    {
+      code: `class Test {
+        public constructor(public x) { }
+      }`,
+      errors: [
+        {
+          column: 28,
+          messageId: 'expectedTypedef',
+        },
+      ],
+    },
     // Property declarations
     {
       code: `type Test = {

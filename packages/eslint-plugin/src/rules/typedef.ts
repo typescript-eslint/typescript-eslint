@@ -76,7 +76,7 @@ export default util.createRule<[Options], MessageIds>({
             annotationNode = param.left;
             break;
           case AST_NODE_TYPES.TSParameterProperty:
-            annotationNode = undefined;
+            annotationNode = param.parameter;
             break;
           default:
             annotationNode = param;
