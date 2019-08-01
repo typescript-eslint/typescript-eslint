@@ -131,7 +131,32 @@ export default util.createRule<[Options], MessageIds>({
           options[OptionKeys.VariableDeclaration] &&
           !node.id.typeAnnotation
         ) {
-          report(node, getNodeName(node.id));
+          // Are we inside a context that does not allow type annotations?
+          let typeAnnotationRequired = true;
+
+          let current: TSESTree.Node | undefined = node.parent;
+          while (current) {
+            switch (current.type) {
+              case AST_NODE_TYPES.VariableDeclaration:
+                // Keep looking upwards
+                current = current.parent;
+                break;
+              case AST_NODE_TYPES.ForOfStatement:
+              case AST_NODE_TYPES.ForInStatement:
+                // Stop traversing and don't report an error
+                typeAnnotationRequired = false;
+                current = undefined;
+                break;
+              default:
+                // Stop traversing
+                current = undefined;
+                break;
+            }
+          }
+
+          if (typeAnnotationRequired) {
+            report(node, getNodeName(node.id));
+          }
         }
       },
     };
