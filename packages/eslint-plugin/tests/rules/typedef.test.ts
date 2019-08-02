@@ -198,6 +198,31 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    // Contexts where TypeScript doesn't allow annotations
+    {
+      code: `for (x of [1, 2, 3]) { }`,
+      options: [
+        {
+          variableDeclaration: true,
+        },
+      ],
+    },
+    {
+      code: `for (const x in {}) { }`,
+      options: [
+        {
+          variableDeclaration: true,
+        },
+      ],
+    },
+    {
+      code: `try { } catch (e) { }`,
+      options: [
+        {
+          variableDeclaration: true,
+        },
+      ],
+    },
   ],
   invalid: [
     // Array destructuring
