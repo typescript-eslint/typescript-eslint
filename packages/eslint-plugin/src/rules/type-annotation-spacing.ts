@@ -39,8 +39,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Require consistent spacing around type annotations',
       category: 'Stylistic Issues',
-      // too opinionated to be recommended
-      recommended: false,
+      recommended: 'error',
     },
     fixable: 'whitespace',
     messages: {

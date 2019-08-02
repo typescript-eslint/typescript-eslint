@@ -38,6 +38,7 @@
     "require-await": "off",
     "@typescript-eslint/require-await": "error",
     "@typescript-eslint/triple-slash-reference": "error",
+    "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/unbound-method": "error",
     "no-var": "error",
     "prefer-const": "error",
