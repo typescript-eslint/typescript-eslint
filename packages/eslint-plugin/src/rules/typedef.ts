@@ -69,10 +69,21 @@ export default util.createRule<[Options], MessageIds>({
 
     function checkParameters(params: TSESTree.Parameter[]) {
       for (const param of params) {
-        if (
-          param.type !== AST_NODE_TYPES.TSParameterProperty &&
-          !param.typeAnnotation
-        ) {
+        let annotationNode: TSESTree.Node | undefined;
+
+        switch (param.type) {
+          case AST_NODE_TYPES.AssignmentPattern:
+            annotationNode = param.left;
+            break;
+          case AST_NODE_TYPES.TSParameterProperty:
+            annotationNode = param.parameter;
+            break;
+          default:
+            annotationNode = param;
+            break;
+        }
+
+        if (annotationNode !== undefined && !annotationNode.typeAnnotation) {
           report(param, getNodeName(param));
         }
       }
