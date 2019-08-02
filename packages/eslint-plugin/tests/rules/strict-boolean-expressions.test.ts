@@ -165,6 +165,15 @@ const boolOrObj = bool || obj;
 const boolAndObj = bool && obj;
 `,
     },
+    {
+      options: [{ allowNullable: true }],
+      code: `
+        const f1 = (x?: boolean) => x ? 1 : 0;
+        const f2 = (x: boolean | null) => x ? 1 : 0;
+        const f3 = (x?: true | null) => x ? 1 : 0;
+        const f4 = (x?: false) => x ? 1 : 0;
+      `,
+    },
   ],
 
   invalid: [
@@ -932,6 +941,19 @@ const bool = false;
 const objOrBool = obj || bool;
 const objAndBool = obj && bool;
 `,
+    },
+    {
+      options: [{ allowNullable: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 2,
+          column: 44,
+        },
+      ],
+      code: `
+        const f = (x: null | undefined) => x ? 1 : 0;
+      `,
     },
   ],
 });

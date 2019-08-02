@@ -16,7 +16,8 @@ type ExpressionWithTest =
 type Options = [
   {
     ignoreRhs?: boolean;
-  },
+    allowNullable?: boolean;
+  }
 ];
 
 export default util.createRule<Options, 'strictBooleanExpression'>({
@@ -35,6 +36,9 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
           ignoreRhs: {
             type: 'boolean',
           },
+          allowNullable: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -46,9 +50,10 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
   defaultOptions: [
     {
       ignoreRhs: false,
+      allowNullable: false,
     },
   ],
-  create(context, [{ ignoreRhs }]) {
+  create(context, [options]) {
     const service = util.getParserServices(context);
     const checker = service.program.getTypeChecker();
 
@@ -60,7 +65,30 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
         node,
       );
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike);
+
+      if (tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)) {
+        return true;
+      }
+
+      // Check variants of union
+      if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Union)) {
+        let hasBoolean = false;
+        for (const ty of (type as ts.UnionType).types) {
+          if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.BooleanLike)) {
+            hasBoolean = true;
+            continue;
+          }
+          if (options.allowNullable) {
+            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Null)) continue;
+            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Undefined)) continue;
+          }
+          // Union variant is something else
+          return false;
+        }
+        return hasBoolean;
+      }
+
+      return false;
     }
 
     /**
@@ -87,7 +115,7 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
     ): void {
       if (
         !isBooleanType(node.left) ||
-        (!ignoreRhs && !isBooleanType(node.right))
+        (!options.ignoreRhs && !isBooleanType(node.right))
       ) {
         reportNode(node);
       }

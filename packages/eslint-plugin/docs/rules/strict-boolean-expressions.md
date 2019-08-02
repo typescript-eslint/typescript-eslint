@@ -56,6 +56,7 @@ while (typeof str !== 'undefined') {
 
 Options may be provided as an object with:
 
+- `allowNullable` to allow `undefined` and `null` in addition to `boolean` as a type of all boolean expressions. (`false` by default).
 - `ignoreRhs` to skip the check on the right hand side of expressions like `a && b` or `a || b` - allows these operators to be used for their short-circuiting behavior. (`false` by default).
 
 ## Related To
