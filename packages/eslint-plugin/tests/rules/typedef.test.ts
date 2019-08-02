@@ -101,13 +101,21 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
-    // Parameters
+    // Function parameters
     `function receivesNumber(a: number): void { }`,
     `function receivesStrings(a: string, b: string): void { }`,
     `function receivesNumber([a]: [number]): void { }`,
     `function receivesNumbers([a, b]: number[]): void { }`,
     `function receivesString({ a }: { a: string }): void { }`,
     `function receivesStrings({ a, b }: { [i: string ]: string }): void { }`,
+    `function receivesNumber(a: number = 123): void { }`,
+    // Method parameters
+    `class Test {
+      public method(x: number): number { return x; }
+    }`,
+    `class Test {
+      public method(x: number = 123): number { return x; }
+    }`,
     // Property declarations
     `type Test = {
        member: number;
@@ -316,7 +324,7 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
-    // Parameters
+    // Function parameters
     {
       code: `function receivesNumber(a): void { }`,
       errors: [
@@ -371,6 +379,40 @@ ruleTester.run('typedef', rule, {
       errors: [
         {
           column: 26,
+          messageId: 'expectedTypedef',
+        },
+      ],
+    },
+    // Method parameters
+    {
+      code: `class Test {
+        public method(x): number { return x; }
+      }`,
+      errors: [
+        {
+          column: 23,
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+    },
+    {
+      code: `class Test {
+        public method(x = 123): number { return x; }
+      }`,
+      errors: [
+        {
+          column: 23,
+          messageId: 'expectedTypedef',
+        },
+      ],
+    },
+    {
+      code: `class Test {
+        public constructor(public x) { }
+      }`,
+      errors: [
+        {
+          column: 28,
           messageId: 'expectedTypedef',
         },
       ],
