@@ -4,7 +4,14 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-export default util.createRule({
+type Options = [
+  {
+    allowUnderscorePrefix?: boolean;
+  },
+];
+type MessageIds = 'notPascalCased';
+
+export default util.createRule<Options, MessageIds>({
   name: 'class-name-casing',
   meta: {
     type: 'suggestion',
@@ -16,16 +23,31 @@ export default util.createRule({
     messages: {
       notPascalCased: "{{friendlyName}} '{{name}}' must be PascalCased.",
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowUnderscorePrefix: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ allowUnderscorePrefix: false }],
+  create(context, [options]) {
     /**
      * Determine if the identifier name is PascalCased
      * @param name The identifier name
      */
     function isPascalCase(name: string): boolean {
-      return /^[A-Z][0-9A-Za-z]*$/.test(name);
+      if (options.allowUnderscorePrefix) {
+        return /^_?[A-Z][0-9A-Za-z]*$/.test(name);
+      } else {
+        return /^[A-Z][0-9A-Za-z]*$/.test(name);
+      }
     }
 
     /**
