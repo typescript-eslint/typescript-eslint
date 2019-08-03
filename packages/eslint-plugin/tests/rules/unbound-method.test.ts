@@ -31,6 +31,24 @@ instance.unbound();
 ContainsMethods.boundStatic();
 ContainsMethods.unboundStatic();
 
+class A {
+    visit(node: any): void {}
+    foo(nodes: any[]) {
+        nodes.every(this.visit, this)
+        nodes.filter(this.visit, this)
+        nodes.find(this.visit, this)
+        nodes.findIndex(this.visit, this)
+        nodes.flatMap(this.visit, this)
+        nodes.forEach(this.visit, this)
+        nodes.map(this.visit, this)
+        nodes.some(this.visit, this)
+    }
+}
+
+{
+    Array.from('ABC', null, this)
+}
+
 {
     const bound = instance.bound;
     const boundStatic = ContainsMethods;

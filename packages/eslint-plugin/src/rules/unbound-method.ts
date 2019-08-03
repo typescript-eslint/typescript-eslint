@@ -18,6 +18,18 @@ type Options = [Config];
 
 type MessageIds = 'unbound';
 
+enum MethodsWithThisArg {
+  From = 'from',
+  Every = 'every',
+  Filter = 'filter',
+  Find = 'find',
+  FindIndex = 'findIndex',
+  FlatMap = 'flatMap',
+  ForEach = 'forEach',
+  Map = 'map',
+  Some = 'some',
+}
+
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
@@ -108,6 +120,21 @@ function isSafeUse(node: TSESTree.Node): boolean {
       return true;
 
     case AST_NODE_TYPES.CallExpression:
+      if (
+        parent.callee.type === AST_NODE_TYPES.MemberExpression &&
+        parent.callee.property.type === AST_NODE_TYPES.Identifier
+      ) {
+        const method = parent.callee.property.name;
+        const args = parent.arguments;
+
+        if (Object.values(MethodsWithThisArg).includes(method)) {
+          const thisArg = getThisArgArgument(method, args);
+          if (!thisArg) {
+            break;
+          }
+          return thisArg.type == AST_NODE_TYPES.ThisExpression;
+        }
+      }
       return parent.callee === node;
 
     case AST_NODE_TYPES.ConditionalExpression:
@@ -126,4 +153,8 @@ function isSafeUse(node: TSESTree.Node): boolean {
   }
 
   return false;
+}
+
+function getThisArgArgument(method: string, args: TSESTree.Expression[]) {
+  return method === MethodsWithThisArg.From ? args[2] : args[1];
 }
