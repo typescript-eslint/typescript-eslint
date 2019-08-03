@@ -17,7 +17,7 @@ type Options = [
   {
     ignoreRhs?: boolean;
     allowNullable?: boolean;
-  }
+  },
 ];
 
 export default util.createRule<Options, 'strictBooleanExpression'>({
@@ -79,8 +79,12 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
             continue;
           }
           if (options.allowNullable) {
-            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Null)) continue;
-            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Undefined)) continue;
+            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Null)) {
+              continue;
+            }
+            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Undefined)) {
+              continue;
+            }
           }
           // Union variant is something else
           return false;
