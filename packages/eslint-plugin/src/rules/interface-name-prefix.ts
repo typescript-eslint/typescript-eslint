@@ -1,7 +1,42 @@
 import * as util from '../util';
 
-type Options = ['never' | 'always'];
+type ParsedOptions =
+  | {
+      prefixWithI: 'never';
+    }
+  | {
+      prefixWithI: 'always';
+      allowUnderscorePrefix: boolean;
+    };
+type Options = [
+
+    | 'never'
+    | 'always'
+    | {
+        prefixWithI?: 'never';
+      }
+    | {
+        prefixWithI: 'always';
+        allowUnderscorePrefix?: boolean;
+      },
+];
 type MessageIds = 'noPrefix' | 'alwaysPrefix';
+
+/**
+ * Parses a given value as options.
+ */
+export function parseOptions([options]: Options): ParsedOptions {
+  if (options === 'always') {
+    return { prefixWithI: 'always', allowUnderscorePrefix: false };
+  }
+  if (options !== 'never' && options.prefixWithI === 'always') {
+    return {
+      prefixWithI: 'always',
+      allowUnderscorePrefix: !!options.allowUnderscorePrefix,
+    };
+  }
+  return { prefixWithI: 'never' };
+}
 
 export default util.createRule<Options, MessageIds>({
   name: 'interface-name-prefix',
@@ -18,13 +53,46 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        enum: ['never', 'always'],
+        oneOf: [
+          {
+            enum: [
+              // Deprecated, equivalent to: { prefixWithI: 'never' }
+              'never',
+              // Deprecated, equivalent to: { prefixWithI: 'always', allowUnderscorePrefix: false }
+              'always',
+            ],
+          },
+          {
+            type: 'object',
+            properties: {
+              prefixWithI: {
+                type: 'string',
+                enum: ['never'],
+              },
+            },
+            additionalProperties: false,
+          },
+          {
+            type: 'object',
+            properties: {
+              prefixWithI: {
+                type: 'string',
+                enum: ['always'],
+              },
+              allowUnderscorePrefix: {
+                type: 'boolean',
+              },
+            },
+            required: ['prefixWithI'], // required to select this "oneOf" alternative
+            additionalProperties: false,
+          },
+        ],
       },
     ],
   },
-  defaultOptions: ['never'],
-  create(context, [option]) {
-    const never = option !== 'always';
+  defaultOptions: [{ prefixWithI: 'never' }],
+  create(context, [options]) {
+    const parsedOptions = parseOptions([options]);
 
     /**
      * Checks if a string is prefixed with "I".
@@ -38,21 +106,42 @@ export default util.createRule<Options, MessageIds>({
       return /^I[A-Z]/.test(name);
     }
 
+    /**
+     * Checks if a string is prefixed with "I" or "_I".
+     * @param name The string to check
+     */
+    function isPrefixedWithIOrUnderscoreI(name: string): boolean {
+      if (typeof name !== 'string') {
+        return false;
+      }
+
+      return /^_?I[A-Z]/.test(name);
+    }
+
     return {
       TSInterfaceDeclaration(node): void {
-        if (never) {
-          if (isPrefixedWithI(node.id.name)) {
+        if (parsedOptions.prefixWithI === 'never') {
+          if (isPrefixedWithIOrUnderscoreI(node.id.name)) {
             context.report({
               node: node.id,
               messageId: 'noPrefix',
             });
           }
         } else {
-          if (!isPrefixedWithI(node.id.name)) {
-            context.report({
-              node: node.id,
-              messageId: 'alwaysPrefix',
-            });
+          if (parsedOptions.allowUnderscorePrefix) {
+            if (!isPrefixedWithIOrUnderscoreI(node.id.name)) {
+              context.report({
+                node: node.id,
+                messageId: 'alwaysPrefix',
+              });
+            }
+          } else {
+            if (!isPrefixedWithI(node.id.name)) {
+              context.report({
+                node: node.id,
+                messageId: 'alwaysPrefix',
+              });
+            }
           }
         }
       },
