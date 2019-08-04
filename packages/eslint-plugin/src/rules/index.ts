@@ -37,6 +37,7 @@ import noTypeAlias from './no-type-alias';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnusedVars from './no-unused-vars';
+import noUntypedPublicSignature from './no-untyped-public-signature';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
@@ -100,6 +101,7 @@ export default {
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': useDefaultTypeParameter,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
+  'no-untyped-public-signature': noUntypedPublicSignature,
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,

@@ -1,0 +1,110 @@
+import rule from '../../src/rules/no-untyped-public-signature';
+import { RuleTester } from '../RuleTester';
+
+const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {},
+  },
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('no-untyped-public-signature', rule, {
+  valid: [
+    {
+      code: `class A {
+                  private a(c) {
+                  }
+                }`,
+    },
+    {
+      code: `class A {
+                  private async a(c) {
+                  }
+                }`,
+    },
+    {
+      code: `
+            class A {
+                public b(c: string):void {
+                
+                }
+            }`,
+    },
+    {
+      code: `
+             class A {
+                public b(...c):void {
+                
+                }
+            }`,
+    },
+  ],
+  invalid: [
+    //untyped parameter
+    {
+      code: `class A {
+                public b(c):void {
+                
+                }
+            }`,
+      errors: [{ messageId: 'untypedParameter' }],
+    },
+    //untyped parameter (any)
+    {
+      code: `class A {
+                public b(c: any):void {
+                
+                }
+            }`,
+      errors: [{ messageId: 'untypedParameter' }],
+    },
+    //implicit public method
+    {
+      code: `class A {
+                b(c):void {
+                
+                }
+            }`,
+      errors: [{ messageId: 'untypedParameter' }],
+    },
+    //implicit async public method
+    {
+      code: `class A {
+                  async a(c): void {
+                  }
+                }`,
+      errors: [{ messageId: 'untypedParameter' }],
+    },
+    //no return type
+    {
+      code: `class A {
+                  public a(c: number) {
+                  }
+                }`,
+      errors: [{ messageId: 'noReturnType' }],
+    },
+    //no return type + untyped parameter
+    {
+      code: `class A {
+                public b(c) {
+                
+                }
+            }`,
+      errors: [
+        { messageId: 'untypedParameter' },
+        { messageId: 'noReturnType' },
+      ],
+    },
+    //any return type
+    {
+      code: `class A {
+                public b(c: number): any {
+                
+                }
+            }`,
+      errors: [{ messageId: 'noReturnType' }],
+    },
+  ],
+});
