@@ -68,16 +68,16 @@ The following additional configuration options are available by specifying them 
 
   - Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
 
-  ```ts
-  {
-    "extends": "./tsconfig.json", // path to existing tsconfig
-    "includes": [
-      "src/**/*.ts",
-      "test/**/*.ts",
-      // etc
-    ]
-  }
-  ```
+    ```jsonc
+    {
+      "extends": "./tsconfig.json", // path to existing tsconfig
+      "includes": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+        // etc
+      ]
+    }
+    ```
 
 - **`tsconfigRootDir`** - default `undefined`. This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
 
