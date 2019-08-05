@@ -50,6 +50,22 @@ The following additional configuration options are available by specifying them 
 
 - **`project`** - default `undefined`. This option allows you to provide a path to your project's `tsconfig.json`. **This setting is required if you want to use rules which require type information**. You may want to use this setting in tandem with the `tsconfigRootDir` option below.
 
+  - Accepted values:
+
+    ```js
+    // path
+    project: './tsconfig.json';
+
+    // glob pattern
+    project: './packages/**/tsconfig.json';
+
+    // array of paths and/or glob patterns
+    project: [
+      './packages/**/tsconfig.json',
+      './separate-package/tsconfig.json',
+    ];
+    ```
+
   - Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
 
   ```ts
