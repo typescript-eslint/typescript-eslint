@@ -4,7 +4,6 @@ about: Report an issue with the `@typescript-eslint/experimental-utils` package
 title: ''
 labels: 'package: utils, triage'
 assignees: ''
-
 ---
 
 **What did you expect to happen?**

@@ -4,7 +4,6 @@ about: Report an issue with the '@typescript-eslint/eslint-plugin-tslint' packag
 title: ''
 labels: 'package: eslint-plugin-tslint, triage'
 assignees: ''
-
 ---
 
 **What code were you trying to parse?**

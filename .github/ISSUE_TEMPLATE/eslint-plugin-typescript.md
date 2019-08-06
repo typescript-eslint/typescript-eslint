@@ -4,7 +4,6 @@ about: Report an issue with the '@typescript-eslint/eslint-plugin' package
 title: '[rulename] <issue title>'
 labels: 'package: eslint-plugin, triage'
 assignees: ''
-
 ---
 
 <!--

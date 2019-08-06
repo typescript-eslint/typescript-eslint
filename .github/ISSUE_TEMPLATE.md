@@ -1,11 +1,9 @@
 ---
 name: catch-all template
-about: Provides some general structure to issues that people choose to log outside
-  the normal flow
+about: Provides some general structure to issues that people choose to log outside the normal flow
 title: ''
 labels: triage
 assignees: ''
-
 ---
 
 **What were you trying to do?**
@@ -17,6 +15,7 @@ assignees: ''
   }
 }
 ```
+
 ```ts
 // Put your code here
 ```
