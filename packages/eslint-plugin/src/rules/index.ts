@@ -3,6 +3,7 @@ import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsIgnore from './ban-ts-ignore';
 import banTypes from './ban-types';
+import braceStyle from './brace-style';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
 import consistentTypeAssertions from './consistent-type-assertions';
@@ -66,6 +67,7 @@ export default {
   'await-thenable': awaitThenable,
   'ban-ts-ignore': banTsIgnore,
   'ban-types': banTypes,
+  'brace-style': braceStyle,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
   'consistent-type-assertions': consistentTypeAssertions,

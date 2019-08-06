@@ -19,6 +19,7 @@ const RULE_NAME_PREFIX = '@typescript-eslint/';
 const MAX_RULE_NAME_LENGTH = 32;
 const DEFAULT_RULE_SETTING = 'warn';
 const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
+  'brace-style',
   'camelcase',
   'func-call-spacing',
   'indent',

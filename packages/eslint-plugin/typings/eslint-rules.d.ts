@@ -461,3 +461,30 @@ declare module 'eslint/lib/rules/semi' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/brace-style' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    | 'nextLineOpen'
+    | 'sameLineOpen'
+    | 'blockSameLine'
+    | 'nextLineClose'
+    | 'singleLineClose'
+    | 'sameLineClose',
+    [
+      '1tbs' | 'stroustrup' | 'allman',
+      {
+        allowSingleLine?: boolean;
+      }?,
+    ],
+    {
+      BlockStatement(node: TSESTree.BlockStatement): void;
+      ClassBody(node: TSESTree.ClassBody): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
+      IfStatement(node: TSESTree.IfStatement): void;
+      TryStatement(node: TSESTree.TryStatement): void;
+    }
+  >;
+  export = rule;
+}
