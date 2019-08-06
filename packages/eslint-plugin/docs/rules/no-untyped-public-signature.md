@@ -30,6 +30,20 @@ private foo(param1) {
 }
 ```
 
+## Options
+
+This rule, in its default state, does not require any argument.
+
+### ignoredMethods
+
+You may pass method names you would like this rule to ignore, like so:
+
+```cjson
+{
+    "@typescript-eslint/no-untyped-public-signature": ["error", { "ignoredMethods": ["ignoredMethodName"] }]
+}
+```
+
 ## When Not To Use It
 
 If you don't wish to type public methods.

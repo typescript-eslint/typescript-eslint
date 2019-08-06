@@ -40,6 +40,28 @@ ruleTester.run('no-untyped-public-signature', rule, {
                 }
             }`,
     },
+    {
+      code: `
+             class A {
+                b(c):void {
+                
+                }
+            }`,
+      options: [{ignoredMethods: ['b']}],
+    },
+    {
+      code: `
+             class A {
+                b(...c):void {
+                
+                }
+                
+                d(c):void {
+                
+                }
+            }`,
+      options: [{ignoredMethods: ['b', 'd']}],
+    },
   ],
   invalid: [
     //untyped parameter
@@ -104,6 +126,19 @@ ruleTester.run('no-untyped-public-signature', rule, {
                 
                 }
             }`,
+      errors: [{ messageId: 'noReturnType' }],
+    },
+    //with ignored methods
+    {
+      code: `class A {
+                public b(c: number): any {
+                
+                }
+                
+                c() {
+                }
+            }`,
+      options: [{ignoredMethods: ['c']}],
       errors: [{ messageId: 'noReturnType' }],
     },
   ],

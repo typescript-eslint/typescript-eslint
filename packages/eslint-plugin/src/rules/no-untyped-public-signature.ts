@@ -1,12 +1,11 @@
 import * as util from '../util';
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'noReturnType' | 'untypedParameter';
 
-type Options = [];
+type Options = [
+  { ignoredMethods: string[] }
+  ];
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-unused-public-signature',
@@ -24,15 +23,27 @@ export default util.createRule<Options, MessageIds>({
     schema: [
       {
         allowAdditionalProperties: false,
+        properties: {
+          ignoredMethods: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        },
         type: 'object',
       },
     ],
     type: 'suggestion',
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ignoredMethods: []}],
+  create(context, [{ignoredMethods}]) {
     function isPublicMethod(node: TSESTree.MethodDefinition) {
       return node.accessibility === 'public' || !node.accessibility;
+    }
+
+    function isIgnoredMethod(node: TSESTree.MethodDefinition, ignoredMethods: string[]) {
+      return (ignoredMethods.includes((node.key as TSESTree.Identifier).name))
     }
 
     function isParamTyped(node: TSESTree.Identifier) {
@@ -54,7 +65,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       MethodDefinition(node: TSESTree.MethodDefinition) {
-        if (isPublicMethod(node)) {
+        if (isPublicMethod(node) && !isIgnoredMethod(node, ignoredMethods)) {
           const paramIdentifiers = node.value.params.filter(
             param => param.type === AST_NODE_TYPES.Identifier,
           ) as TSESTree.Identifier[];
