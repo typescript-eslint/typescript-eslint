@@ -4,33 +4,20 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+type Values =
+  | 'always'
+  | 'never'
+  | 'in-unions'
+  | 'in-intersections'
+  | 'in-unions-and-intersections';
+
 type Options = [
   {
-    allowAliases?:
-      | 'always'
-      | 'never'
-      | 'in-unions'
-      | 'in-intersections'
-      | 'in-unions-and-intersections';
+    allowAliases?: Values;
     allowCallbacks?: 'always' | 'never';
-    allowLiterals?:
-      | 'always'
-      | 'never'
-      | 'in-unions'
-      | 'in-intersections'
-      | 'in-unions-and-intersections';
-    allowMappedTypes?:
-      | 'always'
-      | 'never'
-      | 'in-unions'
-      | 'in-intersections'
-      | 'in-unions-and-intersections';
-    allowTupleTypes?:
-      | 'always'
-      | 'never'
-      | 'in-unions'
-      | 'in-intersections'
-      | 'in-unions-and-intersections';
+    allowLiterals?: Values;
+    allowMappedTypes?: Values;
+    allowTupleTypes?: Values;
   },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
@@ -92,6 +79,24 @@ export default util.createRule<Options, MessageIds>({
             ],
           },
           allowTupleTypes: {
+            enum: [
+              'always',
+              'never',
+              'in-unions',
+              'in-intersections',
+              'in-unions-and-intersections',
+            ],
+          },
+          allowKeyOf: {
+            enum: [
+              'always',
+              'never',
+              'in-unions',
+              'in-intersections',
+              'in-unions-and-intersections',
+            ],
+          },
+          allowReadOnly: {
             enum: [
               'always',
               'never',
@@ -203,6 +208,20 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
+    const checkAndThrow = (
+      optionValue: Values,
+      isTopLevel: boolean,
+      type: TypeWithLabel,
+      label: string,
+    ) => {
+      if (
+        optionValue === 'never' ||
+        !isSupportedComposition(isTopLevel, type.compositionType, optionValue)
+      ) {
+        reportError(type.node, type.compositionType, isTopLevel, label);
+      }
+    };
+
     /**
      * Validates the node looking for aliases, callbacks and literals.
      * @param node the node to be validated.
@@ -221,65 +240,19 @@ export default util.createRule<Options, MessageIds>({
         }
       } else if (type.node.type === AST_NODE_TYPES.TSTypeLiteral) {
         // literal object type
-        if (
-          allowLiterals === 'never' ||
-          !isSupportedComposition(
-            isTopLevel,
-            type.compositionType,
-            allowLiterals!,
-          )
-        ) {
-          reportError(type.node, type.compositionType, isTopLevel, 'Literals');
-        }
+        checkAndThrow(allowLiterals!, isTopLevel, type, 'Literals');
       } else if (type.node.type === AST_NODE_TYPES.TSMappedType) {
         // mapped type
-        if (
-          allowMappedTypes === 'never' ||
-          !isSupportedComposition(
-            isTopLevel,
-            type.compositionType,
-            allowMappedTypes!,
-          )
-        ) {
-          reportError(
-            type.node,
-            type.compositionType,
-            isTopLevel,
-            'Mapped types',
-          );
-        }
+        checkAndThrow(allowMappedTypes!, isTopLevel, type, 'Mapped types');
       } else if (type.node.type === AST_NODE_TYPES.TSTupleType) {
         // tuple types
-        if (
-          allowTupleTypes === 'never' ||
-          !isSupportedComposition(
-            isTopLevel,
-            type.compositionType,
-            allowTupleTypes!,
-          )
-        ) {
-          reportError(
-            type.node,
-            type.compositionType,
-            isTopLevel,
-            'Tuple Types',
-          );
-        }
+        checkAndThrow(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
       } else if (
         type.node.type.endsWith('Keyword') ||
         aliasTypes.has(type.node.type)
       ) {
         // alias / keyword
-        if (
-          allowAliases === 'never' ||
-          !isSupportedComposition(
-            isTopLevel,
-            type.compositionType,
-            allowAliases!,
-          )
-        ) {
-          reportError(type.node, type.compositionType, isTopLevel, 'Aliases');
-        }
+        checkAndThrow(allowAliases!, isTopLevel, type, 'Aliases');
       } else {
         // unhandled type - shouldn't happen
         reportError(type.node, type.compositionType, isTopLevel, 'Unhandled');
