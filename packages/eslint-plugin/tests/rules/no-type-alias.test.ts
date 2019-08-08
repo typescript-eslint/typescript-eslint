@@ -8,6 +8,10 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-type-alias', rule, {
   valid: [
     {
+      code: 'type Foo = keyof [string]',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
       code: "type A = 'a' & ('b' | 'c');",
       options: [{ allowAliases: 'always' }],
     },
@@ -393,6 +397,48 @@ type Foo<T> = {
         'type Foo = [string] & [number, number] | [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
+    // {
+    //   code: 'type Foo = readonly [string] | [number, number];',
+    //   options: [{ allowReadOnly: 'always' }],
+    // },
+    // {
+    //   code: 'type Foo = readonly [string] | readonly [number, number];',
+    //   options: [{ allowReadOnly: 'always' }],
+    // },
+    // {
+    //   code: 'type Foo = readonly [string] | [number, number];',
+    //   options: [{ allowReadOnly: 'in-unions' }],
+    // },
+    // {
+    //   code: 'type Foo = [string] & readonly [number, number];',
+    //   options: [{ allowReadOnly: 'in-intersections' }],
+    // },
+    // {
+    //   code:
+    //     'type Foo = [string] & [number, number] | readonly [number, number, number];',
+    //   options: [{ allowReadOnly: 'in-unions-and-intersections' }],
+    // },
+    // {
+    //   code: 'type Foo = keyof [string] | [number, number];',
+    //   options: [{ allowKeyOf: 'always' }],
+    // },
+    // {
+    //   code: 'type Foo = keyof [string] | keyof [number, number];',
+    //   options: [{ allowKeyOf: 'always' }],
+    // },
+    // {
+    //   code: 'type Foo = keyof [string] | [number, number];',
+    //   options: [{ allowKeyOf: 'in-unions' }],
+    // },
+    // {
+    //   code: 'type Foo = [string] & keyof [number, number];',
+    //   options: [{ allowKeyOf: 'in-intersections' }],
+    // },
+    // {
+    //   code:
+    //     'type Foo = [string] & [number, number] | keyof [number, number, number];',
+    //   options: [{ allowKeyOf: 'in-unions-and-intersections' }],
+    // },
   ],
   invalid: [
     {

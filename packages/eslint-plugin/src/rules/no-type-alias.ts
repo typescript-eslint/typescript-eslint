@@ -208,7 +208,23 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
-    const checkAndThrow = (
+    const isValidTupleType = (type: TypeWithLabel) => {
+      if (type.node.type === AST_NODE_TYPES.TSTupleType) {
+        return true;
+      }
+      if (type.node.type === AST_NODE_TYPES.TSTypeOperator) {
+        if (
+          ['keyof', 'readonly'].includes(type.node.operator) &&
+          type.node.typeAnnotation &&
+          type.node.typeAnnotation.type === AST_NODE_TYPES.TSTupleType
+        ) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const checkAndReport = (
       optionValue: Values,
       isTopLevel: boolean,
       type: TypeWithLabel,
@@ -240,19 +256,19 @@ export default util.createRule<Options, MessageIds>({
         }
       } else if (type.node.type === AST_NODE_TYPES.TSTypeLiteral) {
         // literal object type
-        checkAndThrow(allowLiterals!, isTopLevel, type, 'Literals');
+        checkAndReport(allowLiterals!, isTopLevel, type, 'Literals');
       } else if (type.node.type === AST_NODE_TYPES.TSMappedType) {
         // mapped type
-        checkAndThrow(allowMappedTypes!, isTopLevel, type, 'Mapped types');
-      } else if (type.node.type === AST_NODE_TYPES.TSTupleType) {
+        checkAndReport(allowMappedTypes!, isTopLevel, type, 'Mapped types');
+      } else if (isValidTupleType(type)) {
         // tuple types
-        checkAndThrow(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
+        checkAndReport(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
       } else if (
         type.node.type.endsWith('Keyword') ||
         aliasTypes.has(type.node.type)
       ) {
         // alias / keyword
-        checkAndThrow(allowAliases!, isTopLevel, type, 'Aliases');
+        checkAndReport(allowAliases!, isTopLevel, type, 'Aliases');
       } else {
         // unhandled type - shouldn't happen
         reportError(type.node, type.compositionType, isTopLevel, 'Unhandled');
