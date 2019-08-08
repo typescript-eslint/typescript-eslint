@@ -56,8 +56,8 @@ export class Converter {
   private readonly esTreeNodeToTSNodeMap = new WeakMap();
   private readonly tsNodeToESTreeNodeMap = new WeakMap();
 
-  private allowPattern: boolean = false;
-  private inTypeMode: boolean = false;
+  private allowPattern = false;
+  private inTypeMode = false;
 
   /**
    * Converts a TypeScript node into an ESTree node

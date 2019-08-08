@@ -28,7 +28,7 @@ interface ParseForESLintResult {
 
 function validateBoolean(
   value: boolean | undefined,
-  fallback: boolean = false,
+  fallback = false,
 ): boolean {
   if (typeof value !== 'boolean') {
     return fallback;

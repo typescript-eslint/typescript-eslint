@@ -155,8 +155,8 @@ export class OffsetStorage {
   public setDesiredOffsets(
     range: [number, number],
     fromToken: TokenOrComment | null,
-    offset: number = 0,
-    force: boolean = false,
+    offset = 0,
+    force = false,
   ): void {
     /*
      * Offset ranges are stored as a collection of nodes, where each node maps a numeric key to an offset

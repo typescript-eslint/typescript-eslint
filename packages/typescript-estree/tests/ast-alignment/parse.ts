@@ -19,7 +19,7 @@ function createError(
   return error;
 }
 
-function parseWithBabelParser(text: string, jsx: boolean = true): any {
+function parseWithBabelParser(text: string, jsx = true): any {
   const babel = require('@babel/parser');
   const plugins: ParserPlugin[] = [
     'typescript',
@@ -45,10 +45,7 @@ function parseWithBabelParser(text: string, jsx: boolean = true): any {
   });
 }
 
-function parseWithTypeScriptESTree(
-  text: string,
-  jsx: boolean = true,
-): parser.AST<any> {
+function parseWithTypeScriptESTree(text: string, jsx = true): parser.AST<any> {
   try {
     const result = parser.parseAndGenerateServices(text, {
       loc: true,

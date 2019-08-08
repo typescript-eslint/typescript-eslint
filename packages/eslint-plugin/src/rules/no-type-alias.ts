@@ -189,7 +189,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function validateTypeAliases(
       type: TypeWithLabel,
-      isTopLevel: boolean = false,
+      isTopLevel = false,
     ): void {
       if (type.node.type === AST_NODE_TYPES.TSFunctionType) {
         // callback
