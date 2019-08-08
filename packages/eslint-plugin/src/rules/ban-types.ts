@@ -130,24 +130,30 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
-    const ruleListener: TSESLint.RuleListener = {
-      TSTypeReference({ typeName }) {
-        const name = stringifyTypeName(typeName, context.getSourceCode());
-        if (name in bannedTypes) {
-          reportBannedType(typeName, name);
-        }
-      },
-    };
+    let trackedBannedTypes = 0;
+    const bannedTypeNames = Object.keys(bannedTypes);
+    const ruleListener: TSESLint.RuleListener = {};
 
     if ('null' in bannedTypes) {
       ruleListener.TSNullKeyword = typeName => {
         reportBannedType(typeName, 'null');
       };
+      ++trackedBannedTypes;
     }
 
     if ('undefined' in bannedTypes) {
       ruleListener.TSUndefinedKeyword = typeName => {
         reportBannedType(typeName, 'undefined');
+      };
+      ++trackedBannedTypes;
+    }
+
+    if (bannedTypeNames.length > trackedBannedTypes) {
+      ruleListener.TSTypeReference = ({ typeName }) => {
+        const name = stringifyTypeName(typeName, context.getSourceCode());
+        if (name in bannedTypes) {
+          reportBannedType(typeName, name);
+        }
       };
     }
 
