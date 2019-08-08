@@ -41,7 +41,7 @@ function getCustomMessage(
   return '';
 }
 
-function reportIfBanned(
+function reportBannedType(
   node: TSESTree.EntityName | TSESTree.TSNullKeyword,
   name: string,
   context: TSESLint.RuleContext<
@@ -70,22 +70,20 @@ function reportIfBanned(
     | null
   >,
 ) {
-  if (name in bannedTypes) {
-    const bannedType = bannedTypes[name];
-    const customMessage = getCustomMessage(bannedType);
-    const fixWith =
-      bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+  const bannedType = bannedTypes[name];
+  const customMessage = getCustomMessage(bannedType);
+  const fixWith =
+    bannedType && typeof bannedType === 'object' && bannedType.fixWith;
 
-    context.report({
-      node: node,
-      messageId: 'bannedTypeMessage',
-      data: {
-        name,
-        customMessage,
-      },
-      fix: fixWith ? fixer => fixer.replaceText(node, fixWith) : null,
-    });
-  }
+  context.report({
+    node: node,
+    messageId: 'bannedTypeMessage',
+    data: {
+      name,
+      customMessage,
+    },
+    fix: fixWith ? fixer => fixer.replaceText(node, fixWith) : null,
+  });
 }
 
 export default util.createRule<Options, MessageIds>({
@@ -157,15 +155,17 @@ export default util.createRule<Options, MessageIds>({
     const ruleListener: TSESLint.RuleListener = {
       TSTypeReference({ typeName }) {
         const name = stringifyTypeName(typeName, context.getSourceCode());
-        reportIfBanned(typeName, name, context, bannedTypes);
+        if (name in bannedTypes) {
+          reportBannedType(typeName, name, context, bannedTypes);
+        }
       },
     };
 
-    if ('null' in bannedTypes)
+    if ('null' in bannedTypes) {
       ruleListener.TSNullKeyword = typeName => {
-        reportIfBanned(typeName, 'null', context, bannedTypes);
+        reportBannedType(typeName, 'null', context, bannedTypes);
       };
-
+    }
     return ruleListener;
   },
 });
