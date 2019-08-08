@@ -67,6 +67,7 @@
     "semi": "off",
     "@typescript-eslint/semi": "error",
     "@typescript-eslint/strict-boolean-expressions": "error",
+    "@typescript-eslint/switch-final-break": "error",
     "@typescript-eslint/triple-slash-reference": "error",
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/typedef": "error",

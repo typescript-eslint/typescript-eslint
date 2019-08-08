@@ -53,6 +53,7 @@ import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import semi from './semi';
 import strictBooleanExpressions from './strict-boolean-expressions';
+import switchFinalBreak from './switch-final-break';
 import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
@@ -117,6 +118,7 @@ export default {
   'restrict-plus-operands': restrictPlusOperands,
   semi: semi,
   'strict-boolean-expressions': strictBooleanExpressions,
+  'switch-final-break': switchFinalBreak,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
   typedef: typedef,
