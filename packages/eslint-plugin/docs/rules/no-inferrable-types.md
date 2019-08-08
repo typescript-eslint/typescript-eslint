@@ -24,8 +24,8 @@ The default options are:
 
 ```JSON
 {
-  "ignoreParameters": true,
-  "ignoreProperties": true,
+  "ignoreParameters": false,
+  "ignoreProperties": false,
 }
 ```
 
