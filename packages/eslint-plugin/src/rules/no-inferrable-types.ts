@@ -44,8 +44,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoreParameters: true,
-      ignoreProperties: true,
+      ignoreParameters: false,
+      ignoreProperties: false,
     },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
