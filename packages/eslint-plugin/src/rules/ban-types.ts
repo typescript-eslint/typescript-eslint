@@ -41,6 +41,53 @@ function getCustomMessage(
   return '';
 }
 
+function reportIfBanned(
+  node: TSESTree.EntityName | TSESTree.TSNullKeyword,
+  name: string,
+  context: TSESLint.RuleContext<
+    'bannedTypeMessage',
+    [
+      {
+        types: Record<
+          string,
+          | string
+          | {
+              message: string;
+              fixWith?: string | undefined;
+            }
+          | null
+        >;
+      }
+    ]
+  >,
+  bannedTypes: Record<
+    string,
+    | string
+    | {
+        message: string;
+        fixWith?: string | undefined;
+      }
+    | null
+  >,
+) {
+  if (name in bannedTypes) {
+    const bannedType = bannedTypes[name];
+    const customMessage = getCustomMessage(bannedType);
+    const fixWith =
+      bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+
+    context.report({
+      node: node,
+      messageId: 'bannedTypeMessage',
+      data: {
+        name,
+        customMessage,
+      },
+      fix: fixWith ? fixer => fixer.replaceText(node, fixWith) : null,
+    });
+  }
+}
+
 export default util.createRule<Options, MessageIds>({
   name: 'ban-types',
   meta: {
@@ -107,27 +154,18 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ types: bannedTypes }]) {
-    return {
+    const ruleListener: TSESLint.RuleListener = {
       TSTypeReference({ typeName }) {
         const name = stringifyTypeName(typeName, context.getSourceCode());
-
-        if (name in bannedTypes) {
-          const bannedType = bannedTypes[name];
-          const customMessage = getCustomMessage(bannedType);
-          const fixWith =
-            bannedType && typeof bannedType === 'object' && bannedType.fixWith;
-
-          context.report({
-            node: typeName,
-            messageId: 'bannedTypeMessage',
-            data: {
-              name: name,
-              customMessage,
-            },
-            fix: fixWith ? fixer => fixer.replaceText(typeName, fixWith) : null,
-          });
-        }
+        reportIfBanned(typeName, name, context, bannedTypes);
       },
     };
+
+    if ('null' in bannedTypes)
+      ruleListener.TSNullKeyword = typeName => {
+        reportIfBanned(typeName, 'null', context, bannedTypes);
+      };
+
+    return ruleListener;
   },
 });
