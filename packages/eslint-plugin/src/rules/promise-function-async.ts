@@ -102,6 +102,10 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
+      if (node.parent && node.parent.type === 'Property') {
+        return;
+      }
+
       context.report({
         messageId: 'missingAsync',
         node,
