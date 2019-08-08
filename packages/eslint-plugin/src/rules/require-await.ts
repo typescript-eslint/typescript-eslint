@@ -63,6 +63,15 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.ArrowFunctionExpression:
           rules.ArrowFunctionExpression(node);
+
+          // If body type is not BlockStatment, we need to check the return type here
+          if (!(node.body.type === 'BlockStatement')) {
+            const expression = parserServices.esTreeNodeToTSNodeMap.get(
+              node.body,
+            );
+            scopeInfo.returnsPromise = isThenableType(expression);
+          }
+
           break;
       }
     }
@@ -101,6 +110,18 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
+    /**
+     * Checks if the node returns a thenable type
+     *
+     * @param {ASTNode} node - The node to check
+     * @returns {boolean}
+     */
+    function isThenableType(node: ts.Node) {
+      const type = checker.getTypeAtLocation(node);
+
+      return tsutils.isThenableType(checker, node, type);
+    }
+
     return {
       'FunctionDeclaration[async = true]': enterFunction,
       'FunctionExpression[async = true]': enterFunction,
@@ -121,10 +142,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const type = checker.getTypeAtLocation(expression);
-        if (tsutils.isThenableType(checker, expression, type)) {
-          scopeInfo.returnsPromise = true;
-        }
+        scopeInfo.returnsPromise = isThenableType(expression);
       },
 
       AwaitExpression: rules.AwaitExpression as TSESLint.RuleFunction<

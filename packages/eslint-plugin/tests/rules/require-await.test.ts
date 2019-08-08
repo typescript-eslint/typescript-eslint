@@ -73,6 +73,10 @@ ruleTester.run('require-await', rule, {
       }`,
     },
     {
+      // Async arrow function with promise return
+      code: `const numberOne = async (): Promise<number> => Promise.resolve(1);`,
+    },
+    {
       // Async function declaration with async function return
       code: `async function numberOne(): Promise<number> {
         return getAsyncNumber(1);
@@ -86,6 +90,13 @@ ruleTester.run('require-await', rule, {
       code: `const numberOne = async function(): Promise<number> {
         return getAsyncNumber(1);
       }
+      const getAsyncNumber = async function(x: number): Promise<number> {
+        return Promise.resolve(x);
+      }`,
+    },
+    {
+      // Async arrow function with async function return
+      code: `const numberOne = async (): Promise<number> => getAsyncNumber(1);
       const getAsyncNumber = async function(x: number): Promise<number> {
         return Promise.resolve(x);
       }`,
