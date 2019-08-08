@@ -182,7 +182,7 @@
 | [`semicolon`]                       | 🌓  | [`@typescript-eslint/semi`]                                                         |
 | [`space-before-function-paren`]     | 🌟  | [`space-before-function-paren`][space-after-function-paren]                         |
 | [`space-within-parens`]             | 🌟  | [`space-in-parens`][space-in-parens]                                                |
-| [`switch-final-break`]              | ✅  | [`@typescript-eslint/switch-final-break`]                                       |
+| [`switch-final-break`]              | ✅  | [`@typescript-eslint/switch-final-break`]                                           |
 | [`type-literal-delimiter`]          | ✅  | [`@typescript-eslint/member-delimiter-style`]                                       |
 | [`unnecessary-bind`]                | 🌟  | [`no-extra-bind`][no-extra-bind]                                                    |
 | [`variable-name`]                   | 🌟  | <sup>[2]</sup>                                                                      |

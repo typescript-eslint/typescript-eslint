@@ -1,21 +1,23 @@
-import * as util from "../util";
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
+import * as util from '../util';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 
-type MessageIds = "switchFinalBreakNever" | "switchFinalBreakAlways";
+type MessageIds = 'switchFinalBreakNever' | 'switchFinalBreakAlways';
 
-type Options = ["never" | "always"];
-
+type Options = ['never' | 'always'];
 
 export default util.createRule<Options, MessageIds>({
-  name: "switch-final-break",
+  name: 'switch-final-break',
   meta: {
     docs: {
       description:
-        "Checks whether the final clause of a switch statement ends in `break;`.",
-      category: "Best Practices",
+        'Checks whether the final clause of a switch statement ends in `break;`.',
+      category: 'Best Practices',
       recommended: false,
     },
-    fixable: "code",
+    fixable: 'code',
     messages: {
       switchFinalBreakNever:
         "Final clause in 'switch' statement should not end with 'break;'.",
@@ -24,15 +26,18 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        enum: ["never", "always"],
+        enum: ['never', 'always'],
       },
     ],
-    type: "suggestion",
+    type: 'suggestion',
   },
-  defaultOptions: ["never"],
+  defaultOptions: ['never'],
   create(context, [requireBreak]) {
     function getLastStatement(node: TSESTree.SwitchCase) {
-      if (node.consequent.length === 1 && node.consequent[0].type === AST_NODE_TYPES.BlockStatement) {
+      if (
+        node.consequent.length === 1 &&
+        node.consequent[0].type === AST_NODE_TYPES.BlockStatement
+      ) {
         //block statement
         const block = node.consequent[0] as TSESTree.BlockStatement;
         return block.body[block.body.length - 1];
@@ -47,18 +52,29 @@ export default util.createRule<Options, MessageIds>({
           const lastCase = node.cases[node.cases.length - 1];
           const lastStatement = getLastStatement(lastCase);
 
-          if (requireBreak === "always") {
-            if (!lastStatement || lastStatement.type !== AST_NODE_TYPES.BreakStatement) {
+          if (requireBreak === 'always') {
+            if (
+              !lastStatement ||
+              lastStatement.type !== AST_NODE_TYPES.BreakStatement
+            ) {
               context.report({
                 node: lastCase,
-                messageId: "switchFinalBreakAlways",
+                messageId: 'switchFinalBreakAlways',
                 fix: fixer => {
                   if (!lastStatement) {
-                    return fixer.insertTextAfter(lastCase, " break;");
+                    return fixer.insertTextAfter(lastCase, ' break;');
                   }
-                  const lastStatementText = context.getSourceCode().getLines()[lastStatement.loc.start.line - 1];
-                  const indentation = lastStatementText.slice(0, lastStatementText.search(/\S+/));
-                  return fixer.insertTextAfter(lastStatement, `\n${indentation}break;`);
+                  const lastStatementText = context.getSourceCode().getLines()[
+                    lastStatement.loc.start.line - 1
+                  ];
+                  const indentation = lastStatementText.slice(
+                    0,
+                    lastStatementText.search(/\S+/),
+                  );
+                  return fixer.insertTextAfter(
+                    lastStatement,
+                    `\n${indentation}break;`,
+                  );
                 },
               });
             }
@@ -66,13 +82,21 @@ export default util.createRule<Options, MessageIds>({
             return;
           }
 
-          if (lastStatement === undefined || (lastStatement.type !== AST_NODE_TYPES.BreakStatement)) {
+          if (
+            lastStatement === undefined ||
+            lastStatement.type !== AST_NODE_TYPES.BreakStatement
+          ) {
             return;
           }
 
           if (lastStatement.label !== null) {
             const parent = node.parent;
-            if (parent && (!(parent.type === AST_NODE_TYPES.LabeledStatement) || ((parent as unknown as TSESTree.LabeledStatement).label === lastStatement.label))) {
+            if (
+              parent &&
+              (!(parent.type === AST_NODE_TYPES.LabeledStatement) ||
+                ((parent as unknown) as TSESTree.LabeledStatement).label ===
+                  lastStatement.label)
+            ) {
               // break jumps somewhere else, don't complain
               return;
             }
@@ -80,14 +104,25 @@ export default util.createRule<Options, MessageIds>({
 
           context.report({
             node: lastStatement,
-            messageId: "switchFinalBreakNever",
+            messageId: 'switchFinalBreakNever',
             fix: fixer => {
               const sourceText = context.getSourceCode().getText();
-              const reversedSourceText = sourceText.split("").reverse().join("");
-              const lastStatementReversedIndex = reversedSourceText.length - lastStatement.range[0];
-              const substringToTrimMatch = reversedSourceText.slice(lastStatementReversedIndex).match(/\s*\n?/g);
-              const trimLength = substringToTrimMatch ? substringToTrimMatch[0].length : 0;
-              return fixer.removeRange([lastStatement.range[0] - trimLength, lastStatement.range[1]]);
+              const reversedSourceText = sourceText
+                .split('')
+                .reverse()
+                .join('');
+              const lastStatementReversedIndex =
+                reversedSourceText.length - lastStatement.range[0];
+              const substringToTrimMatch = reversedSourceText
+                .slice(lastStatementReversedIndex)
+                .match(/\s*\n?/g);
+              const trimLength = substringToTrimMatch
+                ? substringToTrimMatch[0].length
+                : 0;
+              return fixer.removeRange([
+                lastStatement.range[0] - trimLength,
+                lastStatement.range[1],
+              ]);
             },
           });
         }

@@ -1,12 +1,11 @@
-import rule from "../../src/rules/switch-final-break";
-import { RuleTester } from "../RuleTester";
-
+import rule from '../../src/rules/switch-final-break';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run("switch-final-break", rule, {
+ruleTester.run('switch-final-break', rule, {
   valid: [
     //default option
     `switch (x) {
@@ -56,9 +55,8 @@ switch (x) {
     foo();
     break;
   }`,
-      options: ["always"],
-    }
-    ,
+      options: ['always'],
+    },
     {
       code: `switch (x) {
   case 0: {
@@ -66,16 +64,15 @@ switch (x) {
       break;
     }
   }`,
-      options: ["always"],
-    }
-    ,
+      options: ['always'],
+    },
     {
       code: `switch (x) {
   default:
     foo();
     break;
   }`,
-      options: ["always"],
+      options: ['always'],
     },
   ],
   invalid: [
@@ -88,7 +85,7 @@ switch (x) {
       `,
       errors: [
         {
-          messageId: "switchFinalBreakNever",
+          messageId: 'switchFinalBreakNever',
           line: 4,
           column: 9,
         },
@@ -110,7 +107,7 @@ switch (x) {
       `,
       errors: [
         {
-          messageId: "switchFinalBreakNever",
+          messageId: 'switchFinalBreakNever',
           line: 5,
           column: 9,
         },
@@ -123,7 +120,7 @@ switch (x) {
 }
       `,
     },
-{
+    {
       code: `switch (x) {
     case 0: {
         foo();break;
@@ -131,7 +128,7 @@ switch (x) {
 }`,
       errors: [
         {
-          messageId: "switchFinalBreakNever",
+          messageId: 'switchFinalBreakNever',
           line: 3,
           column: 15,
         },
@@ -150,7 +147,7 @@ switch (x) {
 }`,
       errors: [
         {
-          messageId: "switchFinalBreakNever",
+          messageId: 'switchFinalBreakNever',
           line: 3,
           column: 17,
         },
@@ -171,7 +168,7 @@ switch (x) {
       `,
       errors: [
         {
-          messageId: "switchFinalBreakNever",
+          messageId: 'switchFinalBreakNever',
           line: 5,
           column: 9,
         },
@@ -197,7 +194,7 @@ outer2: while (true) {
 }      `,
       errors: [
         {
-          messageId: "switchFinalBreakNever",
+          messageId: 'switchFinalBreakNever',
           line: 8,
           column: 13,
         },
@@ -214,41 +211,38 @@ outer2: while (true) {
     },
     //always option
     {
-      code:
-        `switch (x) {
+      code: `switch (x) {
   case 0:
     foo();
   }`,
-      options: ["always"],
+      options: ['always'],
       errors: [
         {
-          messageId: "switchFinalBreakAlways",
+          messageId: 'switchFinalBreakAlways',
           line: 2,
           column: 3,
         },
       ],
-      output:`switch (x) {
+      output: `switch (x) {
   case 0:
     foo();
     break;
   }`,
     },
     {
-      code:
-        `switch (x) {
+      code: `switch (x) {
   case 0: {
       foo();
     }
   }`,
-      options: ["always"],
-      errors:
-        [
-          {
-            messageId: "switchFinalBreakAlways",
-            line: 2,
-            column: 3,
-          },
-        ],
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'switchFinalBreakAlways',
+          line: 2,
+          column: 3,
+        },
+      ],
       output: `switch (x) {
   case 0: {
       foo();
@@ -257,67 +251,57 @@ outer2: while (true) {
   }`,
     },
     {
-      code:
-        `switch (x) {
+      code: `switch (x) {
   default:
     foo();
   }`,
-      options: ["always"],
-      errors:
-        [
-          {
-            messageId: "switchFinalBreakAlways",
-            line: 2,
-            column: 3,
-          },
-        ],
-      output:
-        `switch (x) {
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'switchFinalBreakAlways',
+          line: 2,
+          column: 3,
+        },
+      ],
+      output: `switch (x) {
   default:
     foo();
     break;
   }`,
-    }
-    ,
+    },
     {
-      code:
-        `switch (x) {
+      code: `switch (x) {
   default: {
       foo();
     }
-  }`,output:
-        `switch (x) {
+  }`,
+      output: `switch (x) {
   default: {
       foo();
       break;
     }
   }`,
-      options: ["always"],
-      errors:
-        [
-          {
-            messageId: "switchFinalBreakAlways",
-            line: 2,
-            column: 3,
-          },
-        ],
-    },
-    {
-      code:
-        `switch (x) {
-  case 0:
-  }`,
-      options: ["always"],
+      options: ['always'],
       errors: [
         {
-          messageId: "switchFinalBreakAlways",
+          messageId: 'switchFinalBreakAlways',
           line: 2,
           column: 3,
         },
       ],
     },
-
+    {
+      code: `switch (x) {
+  case 0:
+  }`,
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'switchFinalBreakAlways',
+          line: 2,
+          column: 3,
+        },
+      ],
+    },
   ],
-}
-)
-;
+});

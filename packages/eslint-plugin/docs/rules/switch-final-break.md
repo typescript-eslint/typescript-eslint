@@ -4,9 +4,9 @@ Examples of **correct** code:
 
 ```ts
 switch (x) {
-    case 0: {
-        foo();
-    }
+  case 0: {
+    foo();
+  }
 }
 ```
 
@@ -14,10 +14,10 @@ Examples of **incorrect** code:
 
 ```ts
 switch (x) {
-    case 0: {
-        foo();
-        break;
-    }
+  case 0: {
+    foo();
+    break;
+  }
 }
 ```
 
