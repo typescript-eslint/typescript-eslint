@@ -9,7 +9,7 @@
     "typescript"
   ],
   "engines": {
-    "node": "^6.14.0 || ^8.10.0 || >=9.10.0"
+    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
   },
   "files": [
     "dist",
@@ -54,7 +54,7 @@
     "typescript": "*"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^1.9.0",
+    "@typescript-eslint/parser": "^2.0.0-alpha.0",
     "eslint": "^5.0.0 || ^6.0.0"
   }
 }
