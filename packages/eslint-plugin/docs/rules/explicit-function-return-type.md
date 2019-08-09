@@ -159,24 +159,20 @@ functionWithObjectArg({
 Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
 
 ```ts
-var arrowFn = (x: number) => (y: number) => x + y;
+var arrowFn = () => () => {};
 
-function fn(x: number) {
-  return function(y: number) {
-    return x + y;
-  };
+function fn() {
+  return function() {};
 }
 ```
 
 Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
 
 ```ts
-var arrowFn = (x: number) => (y: number): number => x + y;
+var arrowFn = () => (): void => {};
 
-function fn(x: number) {
-  return function(y: number): number {
-    return x + y;
-  };
+function fn() {
+  return function(): void {};
 }
 ```
 
