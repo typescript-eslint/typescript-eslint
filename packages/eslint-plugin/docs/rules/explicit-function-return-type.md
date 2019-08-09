@@ -84,6 +84,10 @@ Examples of **incorrect** code for this rule with `{ allowExpressions: true }`:
 
 ```ts
 function test() {}
+
+const fn = () => {};
+
+export default () => {};
 ```
 
 Examples of **correct** code for this rule with `{ allowExpressions: true }`:
