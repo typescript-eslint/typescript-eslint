@@ -92,6 +92,15 @@ class Test {
     },
     {
       filename: 'test.ts',
+      code: `export default (): void => {}`,
+      options: [
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
       code: `
 var arrowFn: Foo = () => 'test';
             `,
@@ -414,6 +423,30 @@ function test() {
           messageId: 'missingReturnType',
           line: 1,
           column: 13,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'export default () => {};',
+      options: [{ allowExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'export default function() {};',
+      options: [{ allowExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          column: 16,
         },
       ],
     },
