@@ -69,10 +69,21 @@ export default util.createRule<[Options], MessageIds>({
 
     function checkParameters(params: TSESTree.Parameter[]) {
       for (const param of params) {
-        if (
-          param.type !== AST_NODE_TYPES.TSParameterProperty &&
-          !param.typeAnnotation
-        ) {
+        let annotationNode: TSESTree.Node | undefined;
+
+        switch (param.type) {
+          case AST_NODE_TYPES.AssignmentPattern:
+            annotationNode = param.left;
+            break;
+          case AST_NODE_TYPES.TSParameterProperty:
+            annotationNode = param.parameter;
+            break;
+          default:
+            annotationNode = param;
+            break;
+        }
+
+        if (annotationNode !== undefined && !annotationNode.typeAnnotation) {
           report(param, getNodeName(param));
         }
       }
@@ -131,7 +142,32 @@ export default util.createRule<[Options], MessageIds>({
           options[OptionKeys.VariableDeclaration] &&
           !node.id.typeAnnotation
         ) {
-          report(node, getNodeName(node.id));
+          // Are we inside a context that does not allow type annotations?
+          let typeAnnotationRequired = true;
+
+          let current: TSESTree.Node | undefined = node.parent;
+          while (current) {
+            switch (current.type) {
+              case AST_NODE_TYPES.VariableDeclaration:
+                // Keep looking upwards
+                current = current.parent;
+                break;
+              case AST_NODE_TYPES.ForOfStatement:
+              case AST_NODE_TYPES.ForInStatement:
+                // Stop traversing and don't report an error
+                typeAnnotationRequired = false;
+                current = undefined;
+                break;
+              default:
+                // Stop traversing
+                current = undefined;
+                break;
+            }
+          }
+
+          if (typeAnnotationRequired) {
+            report(node, getNodeName(node.id));
+          }
         }
       },
     };
