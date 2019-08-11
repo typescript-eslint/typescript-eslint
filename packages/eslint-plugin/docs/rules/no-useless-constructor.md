@@ -71,6 +71,16 @@ class A extends B {
 }
 ```
 
+## Rule Changes
+
+```cjson
+{
+    // note you must disable the base rule as it can report incorrect errors
+    'no-useless-constructor': 0, // "off"
+    '@typescript-eslint/no-useless-constructor': 2, // "error"
+}
+```
+
 ## When Not To Use It
 
 If you don't want to be notified about unnecessary constructors, you can safely disable this rule.
