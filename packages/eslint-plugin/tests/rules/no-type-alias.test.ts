@@ -8,10 +8,6 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-type-alias', rule, {
   valid: [
     {
-      code: 'type Foo = keyof [string]',
-      options: [{ allowTupleTypes: 'always' }],
-    },
-    {
       code: "type A = 'a' & ('b' | 'c');",
       options: [{ allowAliases: 'always' }],
     },
@@ -381,6 +377,10 @@ type Foo<T> = {
       options: [{ allowAliases: 'in-unions' }],
     },
     {
+      code: 'type Foo = keyof [string]',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
       code: 'type Foo = [string] | [number, number];',
       options: [{ allowTupleTypes: 'always' }],
     },
@@ -397,48 +397,48 @@ type Foo<T> = {
         'type Foo = [string] & [number, number] | [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
-    // {
-    //   code: 'type Foo = readonly [string] | [number, number];',
-    //   options: [{ allowReadOnly: 'always' }],
-    // },
-    // {
-    //   code: 'type Foo = readonly [string] | readonly [number, number];',
-    //   options: [{ allowReadOnly: 'always' }],
-    // },
-    // {
-    //   code: 'type Foo = readonly [string] | [number, number];',
-    //   options: [{ allowReadOnly: 'in-unions' }],
-    // },
-    // {
-    //   code: 'type Foo = [string] & readonly [number, number];',
-    //   options: [{ allowReadOnly: 'in-intersections' }],
-    // },
-    // {
-    //   code:
-    //     'type Foo = [string] & [number, number] | readonly [number, number, number];',
-    //   options: [{ allowReadOnly: 'in-unions-and-intersections' }],
-    // },
-    // {
-    //   code: 'type Foo = keyof [string] | [number, number];',
-    //   options: [{ allowKeyOf: 'always' }],
-    // },
-    // {
-    //   code: 'type Foo = keyof [string] | keyof [number, number];',
-    //   options: [{ allowKeyOf: 'always' }],
-    // },
-    // {
-    //   code: 'type Foo = keyof [string] | [number, number];',
-    //   options: [{ allowKeyOf: 'in-unions' }],
-    // },
-    // {
-    //   code: 'type Foo = [string] & keyof [number, number];',
-    //   options: [{ allowKeyOf: 'in-intersections' }],
-    // },
-    // {
-    //   code:
-    //     'type Foo = [string] & [number, number] | keyof [number, number, number];',
-    //   options: [{ allowKeyOf: 'in-unions-and-intersections' }],
-    // },
+    {
+      code: 'type Foo = readonly [string] | [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = readonly [string] | readonly [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = readonly [string] | [number, number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] & readonly [number, number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+    },
+    {
+      code:
+        'type Foo = [string] & [number, number] | readonly [number, number, number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = keyof [string] | [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = keyof [string] | keyof [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = keyof [string] | [number, number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] & keyof [number, number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+    },
+    {
+      code:
+        'type Foo = [string] & [number, number] | keyof [number, number, number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
   ],
   invalid: [
     {
@@ -3070,6 +3070,105 @@ type Foo<T> = {
     },
     {
       code: 'type Foo = [number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = readonly [number] | keyof [number, number]',
+      options: [{ allowTupleTypes: 'never' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 32,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = keyof [number] & [number, number]',
+      options: [{ allowTupleTypes: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'intersection',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'intersection',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 29,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number] | readonly [number, number]',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 23,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = readonly [number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = keyof [number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = readonly [number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
       errors: [
         {

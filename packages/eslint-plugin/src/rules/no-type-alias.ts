@@ -10,6 +10,13 @@ type Values =
   | 'in-unions'
   | 'in-intersections'
   | 'in-unions-and-intersections';
+const enumValues: Values[] = [
+  'always',
+  'never',
+  'in-unions',
+  'in-intersections',
+  'in-unions-and-intersections',
+];
 
 type Options = [
   {
@@ -49,61 +56,19 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowAliases: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ],
+            enum: enumValues,
           },
           allowCallbacks: {
             enum: ['always', 'never'],
           },
           allowLiterals: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ],
+            enum: enumValues,
           },
           allowMappedTypes: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ],
+            enum: enumValues,
           },
           allowTupleTypes: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ],
-          },
-          allowKeyOf: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ],
-          },
-          allowReadOnly: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ],
+            enum: enumValues,
           },
         },
         additionalProperties: false,
