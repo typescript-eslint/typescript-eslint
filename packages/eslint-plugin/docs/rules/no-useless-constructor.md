@@ -76,8 +76,8 @@ class A extends B {
 ```cjson
 {
     // note you must disable the base rule as it can report incorrect errors
-    'no-useless-constructor': 0, // "off"
-    '@typescript-eslint/no-useless-constructor': 2, // "error"
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": "error",
 }
 ```
 
