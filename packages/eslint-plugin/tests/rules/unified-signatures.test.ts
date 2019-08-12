@@ -591,5 +591,39 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+export function foo(line: number): number;
+export function foo(line: number, character?: number): number;
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(line: number): number;
+export function foo(line: number, character?: number): number;
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          column: 35,
+        },
+      ],
+    },
   ],
 });
