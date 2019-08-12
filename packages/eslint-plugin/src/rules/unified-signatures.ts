@@ -35,6 +35,9 @@ type ScopeNode =
   | TSESTree.TSTypeLiteral;
 
 type OverloadNode = MethodDefinition | SignatureDefinition;
+type ContainingNode =
+  | TSESTree.ExportNamedDeclaration
+  | TSESTree.ExportDefaultDeclaration;
 
 type SignatureDefinition =
   | TSESTree.FunctionExpression
@@ -494,9 +497,17 @@ export default util.createRule({
       currentScope = scopes.pop()!;
     }
 
-    function addOverload(signature: OverloadNode, key?: string) {
+    function addOverload(
+      signature: OverloadNode,
+      key?: string,
+      containingNode?: ContainingNode,
+    ) {
       key = key || getOverloadKey(signature);
-      if (currentScope && signature.parent === currentScope.parent && key) {
+      if (
+        currentScope &&
+        (containingNode || signature).parent === currentScope.parent &&
+        key
+      ) {
         const overloads = currentScope.overloads.get(key);
         if (overloads !== undefined) {
           overloads.push(signature);
@@ -520,10 +531,11 @@ export default util.createRule({
         createScope(node.body, node.typeParameters);
       },
       TSTypeLiteral: createScope,
+
       // collect overloads
       TSDeclareFunction(node) {
         if (node.id && !node.body) {
-          addOverload(node, node.id.name);
+          addOverload(node, node.id.name, getExportingNode(node));
         }
       },
       TSCallSignatureDeclaration: addOverload,
@@ -539,6 +551,7 @@ export default util.createRule({
           addOverload(node);
         }
       },
+
       // validate scopes
       'Program:exit': checkScope,
       'TSModuleBlock:exit': checkScope,
@@ -548,6 +561,14 @@ export default util.createRule({
     };
   },
 });
+
+function getExportingNode(node: TSESTree.TSDeclareFunction) {
+  return node.parent &&
+    (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+      node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration)
+    ? node.parent
+    : undefined;
+}
 
 function getOverloadKey(node: OverloadNode): string | undefined {
   const info = getOverloadInfo(node);
