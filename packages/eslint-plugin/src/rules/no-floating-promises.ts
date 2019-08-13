@@ -24,7 +24,7 @@ export default util.createRule({
     const checker = parserServices.program.getTypeChecker();
 
     return {
-      ExpressionStatement(node) {
+      ExpressionStatement(node): void {
         const { expression } = parserServices.esTreeNodeToTSNodeMap.get<
           ts.ExpressionStatement
         >(node);
