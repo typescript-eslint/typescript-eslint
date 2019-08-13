@@ -7,7 +7,7 @@ function checkConfigRecommendedRequiringTypeChecking(): boolean {
   const { rules } = plugin;
 
   const recommendedRequiringTypeChecking =
-    plugin.configs.recommendedRequiringTypeChecking.rules;
+    plugin.configs['recommended-requiring-type-checking'].rules;
   const recommendedNames = new Set(
     Object.keys(recommendedRequiringTypeChecking),
   );
