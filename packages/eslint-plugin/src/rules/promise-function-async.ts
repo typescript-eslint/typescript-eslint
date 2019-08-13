@@ -22,6 +22,7 @@ export default util.createRule<Options, MessageIds>({
         'Requires any function or method that returns a Promise to be marked async',
       category: 'Best Practices',
       recommended: false,
+      requiresTypeChecking: true,
     },
     messages: {
       missingAsync: 'Functions that return promises must be async.',
