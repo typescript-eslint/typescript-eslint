@@ -47,8 +47,8 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowExpressions: false,
-      allowTypedFunctionExpressions: false,
-      allowHigherOrderFunctions: false,
+      allowTypedFunctionExpressions: true,
+      allowHigherOrderFunctions: true,
     },
   ],
   create(context, [options]) {
@@ -256,7 +256,8 @@ export default util.createRule<Options, MessageIds>({
         if (
           options.allowExpressions &&
           node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
-          node.parent.type !== AST_NODE_TYPES.MethodDefinition
+          node.parent.type !== AST_NODE_TYPES.MethodDefinition &&
+          node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration
         ) {
           return;
         }

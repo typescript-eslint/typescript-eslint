@@ -86,7 +86,7 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.ClassDeclaration
           | TSESTree.TSInterfaceDeclaration
           | TSESTree.ClassExpression,
-      ) {
+      ): void {
         // class expressions (i.e. export default class {}) are OK
         if (node.id && !isPascalCase(node.id.name)) {
           report(node, node.id);
@@ -94,7 +94,7 @@ export default util.createRule<Options, MessageIds>({
       },
       "VariableDeclarator[init.type='ClassExpression']"(
         node: TSESTree.VariableDeclarator,
-      ) {
+      ): void {
         if (
           node.id.type === AST_NODE_TYPES.ArrayPattern ||
           node.id.type === AST_NODE_TYPES.ObjectPattern
