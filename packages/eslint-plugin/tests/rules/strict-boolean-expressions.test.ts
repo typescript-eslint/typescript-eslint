@@ -950,9 +950,15 @@ const objAndBool = obj && bool;
           line: 2,
           column: 44,
         },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 3,
+          column: 35,
+        },
       ],
       code: `
         const f = (x: null | undefined) => x ? 1 : 0;
+        const f = (x?: number) => x ? 1 : 0;
       `,
     },
   ],
