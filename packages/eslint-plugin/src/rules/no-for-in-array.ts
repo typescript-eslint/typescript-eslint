@@ -7,7 +7,7 @@ export default util.createRule({
     docs: {
       description: 'Disallow iterating over an array with a for-in loop',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       forInViolation:
@@ -19,7 +19,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      ForInStatement(node) {
+      ForInStatement(node): void {
         const parserServices = util.getParserServices(context);
         const checker = parserServices.program.getTypeChecker();
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get<

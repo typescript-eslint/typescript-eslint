@@ -1,14 +1,15 @@
 import { SourceFile } from 'typescript';
-import { convertError, Converter } from './convert';
+import { convertError, Converter, ASTMaps } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
 import { Extra } from './parser-options';
+import { TSESTree } from './ts-estree';
 
 export function astConverter(
   ast: SourceFile,
   extra: Extra,
   shouldPreserveNodeMaps: boolean,
-) {
+): { estree: TSESTree.Program; astMaps: ASTMaps | undefined } {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
    * source.

@@ -8,20 +8,20 @@ export class ReferenceResolver {
     this.map = new Map();
   }
 
-  resolve(obj: any, properties: any) {
+  resolve(obj: any, properties: any): any {
     const resolved = Object.assign({ $id: this.map.size }, properties);
     this.map.set(obj, resolved);
     return resolved;
   }
 
-  ref(obj: any) {
+  ref(obj: any): any {
     if (typeof obj !== 'object' || obj === null) {
       return obj;
     }
 
-    const { map } = this;
+    const map = this.map;
     return {
-      get $ref() {
+      get $ref(): any {
         return map.get(obj).$id;
       },
     };
@@ -34,7 +34,7 @@ export class ReferenceResolver {
  * @param {ASTNode} node The AST node object.
  * @returns {Object} The object that can be used for JSON.stringify.
  */
-export function nodeToJSON(node: any) {
+export function nodeToJSON(node: any): any {
   if (!node) {
     return node;
   }
@@ -52,7 +52,7 @@ export function nodeToJSON(node: any) {
  * @param {ReferenceResolver} resolver The reference resolver.
  * @returns {Object} The object that can be used for JSON.stringify.
  */
-export function variableToJSON(variable: any, resolver: any) {
+export function variableToJSON(variable: any, resolver: any): any {
   const { name, eslintUsed } = variable;
   const defs = variable.defs.map((d: any) => ({
     type: d.type,
@@ -80,7 +80,7 @@ export function variableToJSON(variable: any, resolver: any) {
  * @param {ReferenceResolver} resolver The reference resolver.
  * @returns {Object} The object that can be used for JSON.stringify.
  */
-export function referenceToJSON(reference: any, resolver: any) {
+export function referenceToJSON(reference: any, resolver: any): any {
   const kind = `${reference.isRead() ? 'r' : ''}${
     reference.isWrite() ? 'w' : ''
   }`;
@@ -104,7 +104,10 @@ export function referenceToJSON(reference: any, resolver: any) {
  * @param {ReferenceResolver} resolver The reference resolver.
  * @returns {Object} The object that can be used for JSON.stringify.
  */
-export function scopeToJSON(scope: any, resolver = new ReferenceResolver()) {
+export function scopeToJSON(
+  scope: any,
+  resolver = new ReferenceResolver(),
+): any {
   const { type, functionExpressionScope, isStrict } = scope;
   const block = nodeToJSON(scope.block);
   const variables = scope.variables.map((v: any) =>
@@ -142,7 +145,7 @@ export function scopeToJSON(scope: any, resolver = new ReferenceResolver()) {
   });
 }
 
-export function getScopeTree(scopeManager: any) {
+export function getScopeTree(scopeManager: any): any {
   const { globalScope } = scopeManager;
 
   // Do the postprocess to test.

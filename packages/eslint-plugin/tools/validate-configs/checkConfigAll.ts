@@ -3,13 +3,13 @@ import { logRule } from '../log';
 
 const prefix = '@typescript-eslint/';
 
-function checkConfigAll() {
+function checkConfigAll(): boolean {
   const { rules } = plugin;
 
   const all = plugin.configs.all.rules;
   const allNames = new Set(Object.keys(all));
 
-  return Object.entries(rules).reduce((acc, [ruleName, rule]) => {
+  return Object.entries(rules).reduce<boolean>((acc, [ruleName, rule]) => {
     if (!rule.meta.deprecated) {
       const prefixed = `${prefix}${ruleName}` as keyof typeof all;
       if (allNames.has(prefixed)) {

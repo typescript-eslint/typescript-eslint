@@ -68,7 +68,7 @@ class RuleTester extends TSESLint.RuleTester {
   }
 }
 
-function getFixturesRootDir() {
+function getFixturesRootDir(): string {
   return path.join(process.cwd(), 'tests/fixtures/');
 }
 
