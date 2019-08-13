@@ -47,7 +47,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
                 
                 }
             }`,
-      options: [{ignoredMethods: ['b']}],
+      options: [{ ignoredMethods: ['b'] }],
     },
     {
       code: `
@@ -60,7 +60,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
                 
                 }
             }`,
-      options: [{ignoredMethods: ['b', 'd']}],
+      options: [{ ignoredMethods: ['b', 'd'] }],
     },
   ],
   invalid: [
@@ -138,7 +138,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
                 c() {
                 }
             }`,
-      options: [{ignoredMethods: ['c']}],
+      options: [{ ignoredMethods: ['c'] }],
       errors: [{ messageId: 'noReturnType' }],
     },
   ],

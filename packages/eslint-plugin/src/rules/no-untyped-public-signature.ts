@@ -1,11 +1,12 @@
 import * as util from '../util';
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'noReturnType' | 'untypedParameter';
 
-type Options = [
-  { ignoredMethods: string[] }
-  ];
+type Options = [{ ignoredMethods: string[] }];
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-unused-public-signature',
@@ -36,14 +37,17 @@ export default util.createRule<Options, MessageIds>({
     ],
     type: 'suggestion',
   },
-  defaultOptions: [{ignoredMethods: []}],
-  create(context, [{ignoredMethods}]) {
+  defaultOptions: [{ ignoredMethods: [] }],
+  create(context, [{ ignoredMethods }]) {
     function isPublicMethod(node: TSESTree.MethodDefinition) {
       return node.accessibility === 'public' || !node.accessibility;
     }
 
-    function isIgnoredMethod(node: TSESTree.MethodDefinition, ignoredMethods: string[]) {
-      return (ignoredMethods.includes((node.key as TSESTree.Identifier).name))
+    function isIgnoredMethod(
+      node: TSESTree.MethodDefinition,
+      ignoredMethods: string[],
+    ) {
+      return ignoredMethods.includes((node.key as TSESTree.Identifier).name);
     }
 
     function isParamTyped(node: TSESTree.Identifier) {
