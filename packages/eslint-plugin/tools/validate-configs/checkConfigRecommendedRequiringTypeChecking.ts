@@ -3,21 +3,27 @@ import { logRule } from '../log';
 
 const prefix = '@typescript-eslint/';
 
-function checkConfigRecommended(): boolean {
+function checkConfigRecommendedRequiringTypeChecking(): boolean {
   const { rules } = plugin;
 
-  const recommended = plugin.configs.recommended.rules;
-  const recommendedNames = new Set(Object.keys(recommended));
+  const recommendedRequiringTypeChecking =
+    plugin.configs.recommendedRequiringTypeChecking.rules;
+  const recommendedNames = new Set(
+    Object.keys(recommendedRequiringTypeChecking),
+  );
 
   return Object.entries(rules).reduce<boolean>((acc, [ruleName, rule]) => {
     if (
       !rule.meta.deprecated &&
       rule.meta.docs.recommended !== false &&
-      rule.meta.docs.requiresTypeChecking !== true
+      rule.meta.docs.requiresTypeChecking === true
     ) {
-      const prefixed = `${prefix}${ruleName}` as keyof typeof recommended;
+      const prefixed = `${prefix}${ruleName}` as keyof typeof recommendedRequiringTypeChecking;
       if (recommendedNames.has(prefixed)) {
-        if (recommended[prefixed] !== rule.meta.docs.recommended) {
+        if (
+          recommendedRequiringTypeChecking[prefixed] !==
+          rule.meta.docs.recommended
+        ) {
           logRule(
             false,
             ruleName,
@@ -36,4 +42,4 @@ function checkConfigRecommended(): boolean {
   }, false);
 }
 
-export { checkConfigRecommended };
+export { checkConfigRecommendedRequiringTypeChecking };
