@@ -147,7 +147,9 @@ export function convertComments(
         // Rescan after a JSX expression
         if (
           container.parent &&
-          container.parent.kind === ts.SyntaxKind.JsxExpression
+          container.parent.kind === ts.SyntaxKind.JsxExpression &&
+          container.parent.parent &&
+          container.parent.parent.kind === ts.SyntaxKind.JsxElement
         ) {
           kind = triviaScanner.reScanJsxToken();
           continue;
