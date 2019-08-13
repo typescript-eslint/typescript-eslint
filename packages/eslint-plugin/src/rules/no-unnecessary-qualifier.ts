@@ -132,7 +132,7 @@ export default util.createRule({
       namespacesInScope.push(esTreeNodeToTSNodeMap.get(node));
     }
 
-    function exitDeclaration() {
+    function exitDeclaration(): void {
       namespacesInScope.pop();
     }
 

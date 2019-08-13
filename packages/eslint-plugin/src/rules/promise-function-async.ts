@@ -86,7 +86,7 @@ export default util.createRule<Options, MessageIds>({
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
-    function validateNode(node: TSESTree.Node) {
+    function validateNode(node: TSESTree.Node): void {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const signatures = checker
         .getTypeAtLocation(originalNode)
@@ -111,17 +111,21 @@ export default util.createRule<Options, MessageIds>({
     return {
       'ArrowFunctionExpression[async = false]'(
         node: TSESTree.ArrowFunctionExpression,
-      ) {
+      ): void {
         if (checkArrowFunctions) {
           validateNode(node);
         }
       },
-      'FunctionDeclaration[async = false]'(node: TSESTree.FunctionDeclaration) {
+      'FunctionDeclaration[async = false]'(
+        node: TSESTree.FunctionDeclaration,
+      ): void {
         if (checkFunctionDeclarations) {
           validateNode(node);
         }
       },
-      'FunctionExpression[async = false]'(node: TSESTree.FunctionExpression) {
+      'FunctionExpression[async = false]'(
+        node: TSESTree.FunctionExpression,
+      ): void {
         if (
           node.parent &&
           'kind' in node.parent &&

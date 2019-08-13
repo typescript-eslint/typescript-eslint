@@ -10,6 +10,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Enforces naming of generic type variables',
       category: 'Stylistic Issues',
+      // too opinionated to be recommended
       recommended: false,
     },
     messages: {
@@ -30,7 +31,7 @@ export default util.createRule<Options, MessageIds>({
     const regex = new RegExp(rule!);
 
     return {
-      TSTypeParameter(node) {
+      TSTypeParameter(node): void {
         const name = node.name.name;
 
         if (name && !regex.test(name)) {

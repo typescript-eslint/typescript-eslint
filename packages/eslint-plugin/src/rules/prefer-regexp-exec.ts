@@ -12,7 +12,7 @@ export default createRule({
       description:
         'Prefer RegExp#exec() over String#match() if no global flag is provided',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',
@@ -39,7 +39,7 @@ export default createRule({
     return {
       "CallExpression[arguments.length=1] > MemberExpression.callee[property.name='match'][computed=false]"(
         node: TSESTree.MemberExpression,
-      ) {
+      ): void {
         const callNode = node.parent as TSESTree.CallExpression;
         const arg = callNode.arguments[0];
         const evaluated = getStaticValue(arg, globalScope);

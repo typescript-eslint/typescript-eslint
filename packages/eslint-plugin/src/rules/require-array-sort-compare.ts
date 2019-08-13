@@ -26,7 +26,7 @@ export default util.createRule({
     return {
       "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
         node: TSESTree.MemberExpression,
-      ) {
+      ): void {
         // Get the symbol of the `sort` method.
         const tsNode = service.esTreeNodeToTSNodeMap.get(node);
         const sortSymbol = checker.getSymbolAtLocation(tsNode);
