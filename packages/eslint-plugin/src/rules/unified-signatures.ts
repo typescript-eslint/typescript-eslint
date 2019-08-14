@@ -427,7 +427,8 @@ export default util.createRule({
         a === b ||
         (a !== undefined &&
           b !== undefined &&
-          a.typeAnnotation.type === b.typeAnnotation.type)
+          sourceCode.getText(a.typeAnnotation) ===
+            sourceCode.getText(b.typeAnnotation))
       );
     }
 
@@ -506,8 +507,7 @@ export default util.createRule({
       key = key || getOverloadKey(signature);
       if (
         currentScope &&
-        (containingNode || signature).parent === currentScope.parent &&
-        key
+        (containingNode || signature).parent === currentScope.parent
       ) {
         const overloads = currentScope.overloads.get(key);
         if (overloads !== undefined) {
@@ -569,7 +569,7 @@ function getExportingNode(node: TSESTree.TSDeclareFunction) {
     : undefined;
 }
 
-function getOverloadKey(node: OverloadNode): string | undefined {
+function getOverloadKey(node: OverloadNode): string {
   const info = getOverloadInfo(node);
 
   return (
