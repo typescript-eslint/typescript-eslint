@@ -47,8 +47,8 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowExpressions: false,
-      allowTypedFunctionExpressions: false,
-      allowHigherOrderFunctions: false,
+      allowTypedFunctionExpressions: true,
+      allowHigherOrderFunctions: true,
     },
   ],
   create(context, [options]) {
