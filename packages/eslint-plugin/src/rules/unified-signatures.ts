@@ -561,7 +561,12 @@ export default util.createRule({
   },
 });
 
-function getExportingNode(node: TSESTree.TSDeclareFunction) {
+function getExportingNode(
+  node: TSESTree.TSDeclareFunction,
+):
+  | TSESTree.ExportNamedDeclaration
+  | TSESTree.ExportDefaultDeclaration
+  | undefined {
   return node.parent &&
     (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
       node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration)
