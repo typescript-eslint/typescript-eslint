@@ -33,7 +33,7 @@ let warnedAboutTSVersion = false;
  *
  * @param options Parser options
  */
-function getFileName({ jsx }: { jsx?: boolean }) {
+function getFileName({ jsx }: { jsx?: boolean }): string {
   return jsx ? 'estree.tsx' : 'estree.ts';
 }
 
@@ -62,6 +62,11 @@ function resetExtra(): void {
   };
 }
 
+interface ASTAndProgram {
+  ast: ts.SourceFile;
+  program: ts.Program | undefined;
+}
+
 /**
  * @param code The code of the file being linted
  * @param options The config object
@@ -71,7 +76,7 @@ function getASTFromProject(
   code: string,
   options: TSESTreeOptions,
   createDefaultProgram: boolean,
-) {
+): ASTAndProgram | undefined {
   const filePath = options.filePath || getFileName(options);
   const astAndProgram = firstDefined(
     calculateProjectParserOptions(code, filePath, extra),
@@ -95,7 +100,10 @@ function getASTFromProject(
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
+function getASTAndDefaultProject(
+  code: string,
+  options: TSESTreeOptions,
+): ASTAndProgram | undefined {
   const fileName = options.filePath || getFileName(options);
   const program = createProgram(code, fileName, extra);
   const ast = program && program.getSourceFile(fileName);
@@ -106,7 +114,7 @@ function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
  * @param code The code of the file being linted
  * @returns Returns a new source file and program corresponding to the linted code
  */
-function createNewProgram(code: string) {
+function createNewProgram(code: string): ASTAndProgram {
   const FILENAME = getFileName(extra);
 
   const compilerHost: ts.CompilerHost = {
@@ -170,7 +178,7 @@ function getProgramAndAST(
   options: TSESTreeOptions,
   shouldProvideParserServices: boolean,
   createDefaultProgram: boolean,
-) {
+): ASTAndProgram | undefined {
   return (
     (shouldProvideParserServices &&
       getASTFromProject(code, options, createDefaultProgram)) ||
@@ -293,7 +301,7 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
-type AST<T extends TSESTreeOptions> = TSESTree.Program &
+export type AST<T extends TSESTreeOptions> = TSESTree.Program &
   (T['range'] extends true ? { range: [number, number] } : {}) &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
@@ -403,7 +411,7 @@ export function parseAndGenerateServices<
     options,
     shouldProvideParserServices,
     extra.createDefaultProgram,
-  );
+  )!;
   /**
    * Determine whether or not two-way maps of converted AST nodes should be preserved
    * during the conversion process

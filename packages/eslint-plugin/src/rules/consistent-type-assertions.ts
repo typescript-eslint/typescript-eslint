@@ -77,7 +77,7 @@ export default util.createRule<Options, MessageIds>({
 
     function reportIncorrectAssertionType(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-    ) {
+    ): void {
       const messageId = options.assertionStyle;
       context.report({
         node,
@@ -89,7 +89,7 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
-    function checkType(node: TSESTree.TypeNode) {
+    function checkType(node: TSESTree.TypeNode): boolean {
       switch (node.type) {
         case AST_NODE_TYPES.TSAnyKeyword:
         case AST_NODE_TYPES.TSUnknownKeyword:
@@ -107,7 +107,7 @@ export default util.createRule<Options, MessageIds>({
 
     function checkExpression(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-    ) {
+    ): void {
       if (
         options.assertionStyle === 'never' ||
         options.objectLiteralTypeAssertions === 'allow' ||
@@ -137,7 +137,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSTypeAssertion(node) {
+      TSTypeAssertion(node): void {
         if (options.assertionStyle !== 'angle-bracket') {
           reportIncorrectAssertionType(node);
           return;
@@ -145,7 +145,7 @@ export default util.createRule<Options, MessageIds>({
 
         checkExpression(node);
       },
-      TSAsExpression(node) {
+      TSAsExpression(node): void {
         if (options.assertionStyle !== 'as') {
           reportIncorrectAssertionType(node);
           return;

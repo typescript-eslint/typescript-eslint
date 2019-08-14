@@ -9,6 +9,7 @@ export default util.createRule({
       description:
         'Consistent with type definition either `interface` or `type`',
       category: 'Stylistic Issues',
+      // too opinionated to be recommended
       recommended: false,
     },
     messages: {
@@ -29,7 +30,7 @@ export default util.createRule({
     return {
       "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
         node: TSESTree.TSTypeAliasDeclaration,
-      ) {
+      ): void {
         if (option === 'interface') {
           context.report({
             node: node.id,
@@ -63,7 +64,7 @@ export default util.createRule({
           });
         }
       },
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node): void {
         if (option === 'type') {
           context.report({
             node: node.id,

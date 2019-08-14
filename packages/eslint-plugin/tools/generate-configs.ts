@@ -2,7 +2,10 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
+import { format, resolveConfig } from 'prettier';
 import rules from '../src/rules';
+
+const prettierConfig = resolveConfig(__dirname);
 
 interface LinterConfigRules {
   [name: string]:
@@ -24,33 +27,61 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'func-call-spacing',
   'indent',
   'no-array-constructor',
+  'no-empty-function',
   'no-extra-parens',
   'no-magic-numbers',
   'no-unused-vars',
   'no-use-before-define',
   'no-useless-constructor',
+  'require-await',
   'semi',
 ]);
+// list of rules from the base plugin that we think should be turned on for typescript code
+const BASE_RULES_THAT_ARE_RECOMMENDED = new Set([
+  'no-var',
+  'prefer-const',
+  'prefer-rest-params',
+  'prefer-spread',
+]);
 
-const ruleEntries = Object.entries(rules);
+const ruleEntries = Object.entries(rules).sort((a, b) =>
+  a[0].localeCompare(b[0]),
+);
 
 /**
  * Helper function reduces records to key - value pairs.
  * @param config
  * @param entry
  */
-const reducer = <TMessageIds extends string>(
+function reducer<TMessageIds extends string>(
   config: LinterConfigRules,
   entry: [string, TSESLint.RuleModule<TMessageIds, unknown[]>],
   settings: {
     errorLevel?: 'error' | 'warn';
     filterDeprecated: boolean;
+    filterRequiresTypeChecking?: 'include' | 'exclude';
   },
-) => {
+): LinterConfigRules {
   const key = entry[0];
   const value = entry[1];
 
   if (settings.filterDeprecated && value.meta.deprecated) {
+    return config;
+  }
+
+  // Explicitly exclude rules requiring type-checking
+  if (
+    settings.filterRequiresTypeChecking === 'exclude' &&
+    value.meta.docs.requiresTypeChecking === true
+  ) {
+    return config;
+  }
+
+  // Explicitly include rules requiring type-checking
+  if (
+    settings.filterRequiresTypeChecking === 'include' &&
+    value.meta.docs.requiresTypeChecking !== true
+  ) {
     return config;
   }
 
@@ -82,13 +113,17 @@ const reducer = <TMessageIds extends string>(
   config[ruleName] = usedSetting;
 
   return config;
-};
+}
 
 /**
  * Helper function writes configuration.
  */
 function writeConfig(config: LinterConfig, filePath: string): void {
-  fs.writeFileSync(filePath, `${JSON.stringify(config, null, 2)}\n`);
+  const configStr = format(JSON.stringify(config), {
+    parser: 'json',
+    ...prettierConfig,
+  });
+  fs.writeFileSync(filePath, configStr);
 }
 
 const baseConfig: LinterConfig = {
@@ -102,7 +137,7 @@ writeConfig(baseConfig, path.resolve(__dirname, '../src/configs/base.json'));
 
 console.log();
 console.log(
-  '---------------------------------- all.json ----------------------------------',
+  '------------------------------------------------ all.json ------------------------------------------------',
 );
 const allConfig: LinterConfig = {
   extends: './configs/base.json',
@@ -116,18 +151,55 @@ writeConfig(allConfig, path.resolve(__dirname, '../src/configs/all.json'));
 
 console.log();
 console.log(
-  '------------------------------ recommended.json ------------------------------',
+  '------------------------------ recommended.json (should not require program) ------------------------------',
 );
+const recommendedRules = ruleEntries
+  .filter(entry => !!entry[1].meta.docs.recommended)
+  .reduce<LinterConfigRules>(
+    (config, entry) =>
+      reducer(config, entry, {
+        filterDeprecated: false,
+        filterRequiresTypeChecking: 'exclude',
+      }),
+    {},
+  );
+BASE_RULES_THAT_ARE_RECOMMENDED.forEach(ruleName => {
+  recommendedRules[ruleName] = 'error';
+});
 const recommendedConfig: LinterConfig = {
   extends: './configs/base.json',
-  rules: ruleEntries
-    .filter(entry => !!entry[1].meta.docs.recommended)
-    .reduce<LinterConfigRules>(
-      (config, entry) => reducer(config, entry, { filterDeprecated: false }),
-      {},
-    ),
+  rules: recommendedRules,
 };
 writeConfig(
   recommendedConfig,
   path.resolve(__dirname, '../src/configs/recommended.json'),
+);
+
+console.log();
+console.log(
+  '--------------------------------- recommended-requiring-type-checking.json ---------------------------------',
+);
+const recommendedRulesRequiringProgram = ruleEntries
+  .filter(entry => !!entry[1].meta.docs.recommended)
+  .reduce<LinterConfigRules>(
+    (config, entry) =>
+      reducer(config, entry, {
+        filterDeprecated: false,
+        filterRequiresTypeChecking: 'include',
+      }),
+    {},
+  );
+BASE_RULES_THAT_ARE_RECOMMENDED.forEach(ruleName => {
+  recommendedRulesRequiringProgram[ruleName] = 'error';
+});
+const recommendedRequiringTypeCheckingConfig: LinterConfig = {
+  extends: './configs/base.json',
+  rules: recommendedRulesRequiringProgram,
+};
+writeConfig(
+  recommendedRequiringTypeCheckingConfig,
+  path.resolve(
+    __dirname,
+    '../src/configs/recommended-requiring-type-checking.json',
+  ),
 );
