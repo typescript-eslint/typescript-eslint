@@ -10,6 +10,7 @@ export default util.createRule({
       category: 'Best Practices',
       description: 'Warns when a namespace qualifier is unnecessary',
       recommended: false,
+      requiresTypeChecking: true,
     },
     fixable: 'code',
     messages: {

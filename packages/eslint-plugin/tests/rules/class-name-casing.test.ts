@@ -14,6 +14,10 @@ ruleTester.run('class-name-casing', rule, {
         sourceType: 'module',
       },
     },
+    {
+      code: 'class _NameWithUnderscore {}',
+      options: [{ allowUnderscorePrefix: true }],
+    },
     'var Foo = class {};',
     'interface SomeInterface {}',
     'class ClassNameWithDigit2 {}',
@@ -44,6 +48,20 @@ ruleTester.run('class-name-casing', rule, {
           data: {
             friendlyName: 'Class',
             name: 'Another_Invalid_Class_Name',
+          },
+          line: 1,
+          column: 7,
+        },
+      ],
+    },
+    {
+      code: 'class _NameWithUnderscore {}',
+      errors: [
+        {
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Class',
+            name: '_NameWithUnderscore',
           },
           line: 1,
           column: 7,

@@ -18,6 +18,7 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
       description: 'Avoid using promises in places not designed to handle them',
       category: 'Best Practices',
       recommended: 'error',
+      requiresTypeChecking: true,
     },
     messages: {
       voidReturn:

@@ -51,7 +51,7 @@ You can also enable all the recommended rules for our plugin. Add `plugin:@types
 }
 ```
 
-You can also use [eslint:recommended](https://eslint.org/docs/rules/) with this plugin. Add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended`:
+You can also use [eslint:recommended](https://eslint.org/docs/rules/) (the set of rules which are recommended for all projects by the ESLint Team) with this plugin. As noted in the root README, not all eslint core rules are compatible with TypeScript, so you need to add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended` (which will adjust the one from eslint appropriately for TypeScript) to your config:
 
 ```json
 {
@@ -63,7 +63,24 @@ You can also use [eslint:recommended](https://eslint.org/docs/rules/) with this 
 }
 ```
 
-If you want to use rules which require type information, you will need to specify a path to your tsconfig.json file in the "project" property of "parserOptions".
+As of version 2 of this plugin, _by design_, none of the rules in the main `recommended` config require type-checking in order to run. This means that they are more lightweight and faster to run.
+
+Some highly valuable rules simply require type-checking in order to be implemented correctly, however, so we provide an additional config you can extend from called `recommended-requiring-type-checking`. You wou apply this _in addition_ to the recommended configs previously mentioned, e.g.:
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ]
+}
+```
+
+Pro Tip: For larger codebases you may want to consider splitting our linting into two separate stages: 1. fast feedback rules which operate purely based on syntax (no type-checking), 2. rules which are based on semantics (type-checking).
+
+NOTE: If you want to use rules which require type information, you will need to specify a path to your tsconfig.json file in the "project" property of "parserOptions". If you do not do this, you will get a runtime error which explains this.
 
 ```json
 {
