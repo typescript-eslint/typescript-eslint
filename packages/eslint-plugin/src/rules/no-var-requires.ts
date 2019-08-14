@@ -22,7 +22,7 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [],
   create(context) {
     return {
-      CallExpression(node) {
+      CallExpression(node): void {
         if (
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.callee.name === 'require' &&

@@ -44,6 +44,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the use of type aliases',
       category: 'Stylistic Issues',
+      // too opinionated to be recommended
       recommended: false,
     },
     messages: {
@@ -212,7 +213,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function validateTypeAliases(
       type: TypeWithLabel,
-      isTopLevel: boolean = false,
+      isTopLevel = false,
     ): void {
       if (type.node.type === AST_NODE_TYPES.TSFunctionType) {
         // callback
@@ -263,7 +264,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSTypeAliasDeclaration(node) {
+      TSTypeAliasDeclaration(node): void {
         const types = getTypes(node.typeAnnotation);
         if (types.length === 1) {
           // is a top level type annotation

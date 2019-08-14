@@ -644,6 +644,13 @@ export function getNodeContainer(
   return container!;
 }
 
+export interface TSError {
+  index: number;
+  lineNumber: number;
+  column: number;
+  message: string;
+}
+
 /**
  * @param ast     the AST object
  * @param start      the index at which the error starts
@@ -654,7 +661,7 @@ export function createError(
   ast: ts.SourceFile,
   start: number,
   message: string,
-) {
+): TSError {
   const loc = ast.getLineAndCharacterOfPosition(start);
   return {
     index: start,
@@ -668,7 +675,7 @@ export function createError(
  * @param n the TSNode
  * @param ast the TS AST
  */
-export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile) {
+export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
   // If we have a token or node that has a non-zero width, it must have tokens.
   // Note: getWidth() does not take trivia into account.
   return n.kind === SyntaxKind.EndOfFileToken

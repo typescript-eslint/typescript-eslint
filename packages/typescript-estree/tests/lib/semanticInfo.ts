@@ -280,7 +280,7 @@ describe('semanticInfo', () => {
 
 function testIsolatedFile(
   parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
-) {
+): void {
   // get type checker
   expect(parseResult).toHaveProperty('services.program.getTypeChecker');
   const checker = parseResult.services.program!.getTypeChecker();
@@ -331,7 +331,7 @@ function testIsolatedFile(
  * @param {ts.TypeChecker} checker
  * @param {ts.Node} tsNode
  */
-function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node) {
+function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   const nodeType = checker.getTypeAtLocation(tsNode);
   expect(nodeType.flags).toBe(ts.TypeFlags.Object);
   expect((nodeType as ts.ObjectType).objectFlags).toBe(
