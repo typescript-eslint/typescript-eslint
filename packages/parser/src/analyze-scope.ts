@@ -21,7 +21,7 @@ function overrideDefine(
     this: TSESLintScope.Scope,
     node: TSESTree.Node,
     definition: TSESLintScope.Definition,
-  ) {
+  ): void {
     define.call(this, node, definition);
 
     // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
@@ -147,7 +147,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     const upperScope = this.currentScope();
 
     // Process the name.
-    if (type === 'FunctionDeclaration' && id) {
+    if (type === AST_NODE_TYPES.FunctionDeclaration && id) {
       upperScope.__define(
         id,
         new TSESLintScope.Definition(
@@ -166,14 +166,14 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
         const def = defs[i];
         if (
           def.type === 'FunctionName' &&
-          def.node.type === 'TSDeclareFunction'
+          def.node.type === AST_NODE_TYPES.TSDeclareFunction
         ) {
           defs.splice(i, 1);
           identifiers.splice(i, 1);
           break;
         }
       }
-    } else if (type === 'FunctionExpression' && id) {
+    } else if (type === AST_NODE_TYPES.FunctionExpression && id) {
       scopeManager.__nestFunctionExpressionNameScope(node);
     }
 
@@ -213,7 +213,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     this.visit(returnType);
 
     // Process the body.
-    if (body && body.type === 'BlockStatement') {
+    if (body && body.type === AST_NODE_TYPES.BlockStatement) {
       this.visitChildren(body);
     } else {
       this.visit(body);
@@ -732,7 +732,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
       return;
     }
 
-    if (id && id.type === 'Identifier') {
+    if (id && id.type === AST_NODE_TYPES.Identifier) {
       scope.__define(
         id,
         new TSESLintScope.Definition(
@@ -777,7 +777,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
    */
   TSImportEqualsDeclaration(node: TSESTree.TSImportEqualsDeclaration): void {
     const { id, moduleReference } = node;
-    if (id && id.type === 'Identifier') {
+    if (id && id.type === AST_NODE_TYPES.Identifier) {
       this.currentScope().__define(
         id,
         new TSESLintScope.Definition(
@@ -809,7 +809,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     scopeManager.__currentScope = globalScope;
 
     // Skip TSModuleBlock to avoid to create that block scope.
-    if (node.body && node.body.type === 'TSModuleBlock') {
+    if (node.body && node.body.type === AST_NODE_TYPES.TSModuleBlock) {
       node.body.body.forEach(this.visit, this);
     }
 
@@ -845,7 +845,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
 export function analyzeScope(
   ast: TSESTree.Program,
   parserOptions: ParserOptions,
-) {
+): ScopeManager {
   const options = {
     ignoreEval: true,
     optimistic: false,

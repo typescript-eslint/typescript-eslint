@@ -18,7 +18,10 @@ export function isObjectNotArray<T extends ObjectLike>(
  * @param second The second object
  * @returns a new object
  */
-export function deepMerge(first: ObjectLike = {}, second: ObjectLike = {}) {
+export function deepMerge(
+  first: ObjectLike = {},
+  second: ObjectLike = {},
+): Record<string, unknown> {
   // get the unique set of keys across both objects
   const keys = new Set(Object.keys(first).concat(Object.keys(second)));
 

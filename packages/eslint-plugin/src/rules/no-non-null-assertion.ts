@@ -8,7 +8,7 @@ export default util.createRule({
       description:
         'Disallows non-null assertions using the `!` postfix operator',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      recommended: 'warn',
     },
     messages: {
       noNonNull: 'Forbidden non-null assertion.',
@@ -18,7 +18,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      TSNonNullExpression(node) {
+      TSNonNullExpression(node): void {
         context.report({
           node,
           messageId: 'noNonNull',
