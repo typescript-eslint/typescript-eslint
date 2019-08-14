@@ -10,6 +10,7 @@ export default util.createRule({
       description: 'Requires Promise-like values to be handled appropriately.',
       category: 'Best Practices',
       recommended: false,
+      requiresTypeChecking: true,
     },
     messages: {
       floating: 'Promises must be handled appropriately',

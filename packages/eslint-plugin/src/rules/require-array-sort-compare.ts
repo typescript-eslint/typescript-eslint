@@ -12,6 +12,7 @@ export default util.createRule({
       description: 'Enforce giving `compare` argument to `Array#sort`',
       category: 'Best Practices',
       recommended: false,
+      requiresTypeChecking: true,
     },
     messages: {
       requireCompare: "Require 'compare' argument.",

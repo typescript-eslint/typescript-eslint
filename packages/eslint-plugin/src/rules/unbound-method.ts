@@ -26,6 +26,7 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Enforces unbound methods are called with their expected scope',
       recommended: 'error',
+      requiresTypeChecking: true,
     },
     messages: {
       unbound:

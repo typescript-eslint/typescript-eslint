@@ -10,6 +10,7 @@ export default util.createRule({
       description: 'Disallows awaiting a value that is not a Thenable',
       category: 'Best Practices',
       recommended: 'error',
+      requiresTypeChecking: true,
     },
     messages: {
       await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',

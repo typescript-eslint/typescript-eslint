@@ -24,6 +24,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow async functions which have no `await` expression',
       category: 'Best Practices',
       recommended: 'error',
+      requiresTypeChecking: true,
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,

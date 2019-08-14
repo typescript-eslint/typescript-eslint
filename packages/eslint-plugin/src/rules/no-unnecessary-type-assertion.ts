@@ -28,6 +28,7 @@ export default util.createRule<Options, MessageIds>({
         'Warns if a type assertion does not change the type of an expression',
       category: 'Best Practices',
       recommended: 'error',
+      requiresTypeChecking: true,
     },
     fixable: 'code',
     messages: {

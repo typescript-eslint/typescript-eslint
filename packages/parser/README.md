@@ -55,7 +55,7 @@ The following additional configuration options are available by specifying them 
   ```ts
   {
     "extends": "./tsconfig.json", // path to existing tsconfig
-    "includes": [
+    "include": [
       "src/**/*.ts",
       "test/**/*.ts",
       // etc
