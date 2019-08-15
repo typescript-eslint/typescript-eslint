@@ -1,0 +1,9 @@
+{
+  "include": [
+    "ts/included.ts",
+    "ts/included.tsx",
+    "js/included.js",
+    "js/included.jsx",
+    "other/included.vue"
+  ]
+}
