@@ -54,7 +54,7 @@
 | [`no-async-without-await`]           | ✅  | [`@typescript-eslint/require-await`]                                  |
 | [`no-bitwise`]                       | 🌟  | [`no-bitwise`][no-bitwise]                                            |
 | [`no-conditional-assignment`]        | 🌟  | [`no-cond-assign`][no-cond-assign]<sup>[1]</sup>                      |
-| [`no-console`]                       | 🌟  | [`no-console`][no-console] (configuration works slightly differently) |
+| [`no-console`]                       | ✅  | [`no-console`][no-console] (configuration works slightly differently) |
 | [`no-construct`]                     | 🌟  | [`no-new-wrappers`][no-new-wrappers]                                  |
 | [`no-debugger`]                      | 🌟  | [`no-debugger`][no-debugger]                                          |
 | [`no-duplicate-super`]               | 🌟  | [`constructor-super`][constructor-super]                              |

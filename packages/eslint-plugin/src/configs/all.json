@@ -24,6 +24,7 @@
     "@typescript-eslint/member-ordering": "error",
     "no-array-constructor": "off",
     "@typescript-eslint/no-array-constructor": "error",
+    "@typescript-eslint/no-console": "error",
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/no-empty-interface": "error",
     "@typescript-eslint/no-explicit-any": "error",
