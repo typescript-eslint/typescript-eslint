@@ -28,7 +28,7 @@ interface ParseForESLintResult {
 
 function validateBoolean(
   value: boolean | undefined,
-  fallback: boolean = false,
+  fallback = false,
 ): boolean {
   if (typeof value !== 'boolean') {
     return fallback;
@@ -44,7 +44,10 @@ export const version = packageJSON.version;
 
 export const Syntax = Object.freeze(AST_NODE_TYPES);
 
-export function parse(code: string, options?: ParserOptions) {
+export function parse(
+  code: string,
+  options?: ParserOptions,
+): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 

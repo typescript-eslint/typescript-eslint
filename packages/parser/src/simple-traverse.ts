@@ -26,7 +26,7 @@ class SimpleTraverser {
     this.enter = enter;
   }
 
-  traverse(node: unknown, parent: TSESTree.Node | undefined) {
+  traverse(node: unknown, parent: TSESTree.Node | undefined): void {
     if (!isValidNode(node)) {
       return;
     }
@@ -54,6 +54,6 @@ class SimpleTraverser {
 export function simpleTraverse(
   startingNode: TSESTree.Node,
   options: SimpleTraverseOptions,
-) {
+): void {
   new SimpleTraverser(options).traverse(startingNode, undefined);
 }

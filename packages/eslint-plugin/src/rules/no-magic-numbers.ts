@@ -150,7 +150,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      Literal(node) {
+      Literal(node): void {
         // Check if the node is a TypeScript enum declaration
         if (options.ignoreEnums && isParentTSEnumDeclaration(node)) {
           return;

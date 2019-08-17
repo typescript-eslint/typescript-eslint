@@ -25,15 +25,13 @@ import { OffsetStorage } from './OffsetStorage';
 import { TokenInfo } from './TokenInfo';
 import { createRule, ExcludeKeys, RequireKeys } from '../../util';
 
-function createGlobalLinebreakMatcher() {
-  return /\r\n|[\r\n\u2028\u2029]/gu;
-}
+const GLOBAL_LINEBREAK_REGEX = /\r\n|[\r\n\u2028\u2029]/gu;
+const WHITESPACE_REGEX = /\s*$/u;
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const WHITESPACE_REGEX = /\s*$/u;
 const KNOWN_NODES = new Set([
   AST_NODE_TYPES.AssignmentExpression,
   AST_NODE_TYPES.AssignmentPattern,
@@ -440,7 +438,7 @@ export default createRule<Options, MessageIds>({
       expectedAmount: number,
       actualSpaces: number,
       actualTabs: number,
-    ) {
+    ): { expected: string; actual: string | number } {
       const expectedStatement = `${expectedAmount} ${indentType}${
         expectedAmount === 1 ? '' : 's'
       }`; // e.g. "2 tabs"
@@ -568,9 +566,7 @@ export default createRule<Options, MessageIds>({
      */
     function countTrailingLinebreaks(str: string): number {
       const trailingWhitespace = WHITESPACE_REGEX.exec(str)![0];
-      const linebreakMatches = createGlobalLinebreakMatcher().exec(
-        trailingWhitespace,
-      );
+      const linebreakMatches = GLOBAL_LINEBREAK_REGEX.exec(trailingWhitespace);
 
       return linebreakMatches === null ? 0 : linebreakMatches.length;
     }
@@ -587,7 +583,7 @@ export default createRule<Options, MessageIds>({
       startToken: TSESTree.Token,
       endToken: TSESTree.Token,
       offset: number | string,
-    ) {
+    ): void {
       /**
        * Gets the first token of a given element, including surrounding parentheses.
        * @param element A node in the `elements` list
@@ -1589,6 +1585,7 @@ export default createRule<Options, MessageIds>({
         const listener = baseOffsetListeners[key] as TSESLint.RuleFunction<
           TSESTree.Node
         >;
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         acc[key] = node => listenerCallQueue.push({ listener, node });
 
         return acc;
