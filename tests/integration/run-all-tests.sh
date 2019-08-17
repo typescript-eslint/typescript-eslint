@@ -9,3 +9,6 @@ docker-compose -f tests/integration/docker-compose.yml up --build --abort-on-con
 
 # vue-sfc
 docker-compose -f tests/integration/docker-compose.yml up --build --abort-on-container-exit vue-sfc
+
+# recommended-does-not-require-program
+docker-compose -f tests/integration/docker-compose.yml up --build --abort-on-container-exit recommended-does-not-require-program

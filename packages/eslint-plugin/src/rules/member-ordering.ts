@@ -364,28 +364,28 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      ClassDeclaration(node) {
+      ClassDeclaration(node): void {
         validateMembersOrder(
           node.body.body,
           options.classes || options.default!,
           true,
         );
       },
-      ClassExpression(node) {
+      ClassExpression(node): void {
         validateMembersOrder(
           node.body.body,
           options.classExpressions || options.default!,
           true,
         );
       },
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node): void {
         validateMembersOrder(
           node.body.body,
           options.interfaces || options.default!,
           false,
         );
       },
-      TSTypeLiteral(node) {
+      TSTypeLiteral(node): void {
         validateMembersOrder(
           node.members,
           options.typeLiterals || options.default!,

@@ -22,7 +22,7 @@
 | [`no-import-side-effect`]         | 🔌  | [`import/no-unassigned-import`]                      |
 | [`no-inferrable-types`]           | ✅  | [`@typescript-eslint/no-inferrable-types`]           |
 | [`no-internal-module`]            | ✅  | [`@typescript-eslint/prefer-namespace-keyword`]      |
-| [`no-magic-numbers`]              | 🌟  | [`no-magic-numbers`][no-magic-numbers]               |
+| [`no-magic-numbers`]              | ✅  | [`@typescript-eslint/no-magic-numbers`]              |
 | [`no-namespace`]                  | ✅  | [`@typescript-eslint/no-namespace`]                  |
 | [`no-non-null-assertion`]         | ✅  | [`@typescript-eslint/no-non-null-assertion`]         |
 | [`no-parameter-reassignment`]     | ✅  | [`no-param-reassign`][no-param-reassign]             |
@@ -620,6 +620,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-unnecessary-type-arguments`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-type-arguments.md
 [`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
 [`@typescript-eslint/no-floating-promises`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-floating-promises.md
+[`@typescript-eslint/no-magic-numbers`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-magic-numbers.md
 
 <!-- eslint-plugin-import -->
 
