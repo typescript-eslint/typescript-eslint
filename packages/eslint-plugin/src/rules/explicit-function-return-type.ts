@@ -9,6 +9,7 @@ type Options = [
     allowExpressions?: boolean;
     allowTypedFunctionExpressions?: boolean;
     allowHigherOrderFunctions?: boolean;
+    allowDirectConstAssertionInArrowFunctions?: boolean;
   },
 ];
 type MessageIds = 'missingReturnType';
@@ -39,6 +40,9 @@ export default util.createRule<Options, MessageIds>({
           allowHigherOrderFunctions: {
             type: 'boolean',
           },
+          allowDirectConstAssertionInArrowFunctions: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -49,6 +53,7 @@ export default util.createRule<Options, MessageIds>({
       allowExpressions: false,
       allowTypedFunctionExpressions: true,
       allowHigherOrderFunctions: true,
+      allowDirectConstAssertionInArrowFunctions: true,
     },
   ],
   create(context, [options]) {
@@ -204,6 +209,30 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if a function belongs to:
+     * `() => ({ action: 'xxx' }) as const`
+     */
+    function returnsConstAssertionDirectly(
+      node: TSESTree.ArrowFunctionExpression,
+    ): boolean {
+      const { body } = node;
+      if (body.type === AST_NODE_TYPES.TSAsExpression) {
+        const { typeAnnotation } = body;
+        if (typeAnnotation.type === AST_NODE_TYPES.TSTypeReference) {
+          const { typeName } = typeAnnotation;
+          if (
+            typeName.type === AST_NODE_TYPES.Identifier &&
+            typeName.name === 'const'
+          ) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    /**
      * Checks if a function declaration/expression has a return type.
      */
     function checkFunctionReturnType(
@@ -261,6 +290,15 @@ export default util.createRule<Options, MessageIds>({
         ) {
           return;
         }
+      }
+
+      // https://github.com/typescript-eslint/typescript-eslint/issues/653
+      if (
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        options.allowDirectConstAssertionInArrowFunctions &&
+        returnsConstAssertionDirectly(node)
+      ) {
+        return;
       }
 
       checkFunctionReturnType(node);
