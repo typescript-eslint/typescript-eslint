@@ -236,9 +236,7 @@ describe('semanticInfo', () => {
         `function M() { return Base }`,
         createOptions('<input>'),
       ),
-    ).toThrow(
-      `If "parserOptions.project" has been set for @typescript-eslint/parser, <input> must be included in at least one of the projects provided.`,
-    );
+    ).toThrow(/The file does not match your project config: <input>/);
   });
 
   it('non-existent project file', () => {
