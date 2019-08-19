@@ -65,7 +65,7 @@ You can also use [eslint:recommended](https://eslint.org/docs/rules/) (the set o
 
 As of version 2 of this plugin, _by design_, none of the rules in the main `recommended` config require type-checking in order to run. This means that they are more lightweight and faster to run.
 
-Some highly valuable rules simply require type-checking in order to be implemented correctly, however, so we provide an additional config you can extend from called `recommended-requiring-type-checking`. You wou apply this _in addition_ to the recommended configs previously mentioned, e.g.:
+Some highly valuable rules simply require type-checking in order to be implemented correctly, however, so we provide an additional config you can extend from called `recommended-requiring-type-checking`. You would apply this _in addition_ to the recommended configs previously mentioned, e.g.:
 
 ```json
 {
@@ -191,6 +191,7 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/prefer-regexp-exec`](./docs/rules/prefer-regexp-exec.md)                             | Prefer RegExp#exec() over String#match() if no global flag is provided                                                                              | :heavy_check_mark: |          | :thought_balloon: |
 | [`@typescript-eslint/prefer-string-starts-ends-with`](./docs/rules/prefer-string-starts-ends-with.md)     | Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings                             | :heavy_check_mark: | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/promise-function-async`](./docs/rules/promise-function-async.md)                     | Requires any function or method that returns a Promise to be marked async                                                                           |                    |          | :thought_balloon: |
+| [`@typescript-eslint/quotes`](./docs/rules/quotes.md)                                                         | Enforce the consistent use of either backticks, double, or single quotes                                                                                                       |                    | :wrench: |                   |
 | [`@typescript-eslint/require-array-sort-compare`](./docs/rules/require-array-sort-compare.md)             | Enforce giving `compare` argument to `Array#sort`                                                                                                   |                    |          | :thought_balloon: |
 | [`@typescript-eslint/require-await`](./docs/rules/require-await.md)                                       | Disallow async functions which have no `await` expression                                                                                           | :heavy_check_mark: |          | :thought_balloon: |
 | [`@typescript-eslint/restrict-plus-operands`](./docs/rules/restrict-plus-operands.md)                     | When adding two variables, operands must both be of type number or of type string                                                                   |                    |          | :thought_balloon: |
