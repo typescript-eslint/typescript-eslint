@@ -1,6 +1,8 @@
 import path from 'path';
 import semver from 'semver';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import { sync as globSync } from 'glob';
+import isGlob from 'is-glob';
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
@@ -283,6 +285,15 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     options.project.every(projectPath => typeof projectPath === 'string')
   ) {
     extra.projects = options.project;
+  }
+
+  // Transform glob patterns into paths
+  if (extra.projects) {
+    extra.projects = extra.projects.reduce<string[]>(
+      (projects, project) =>
+        projects.concat(isGlob(project) ? globSync(project) : project),
+      [],
+    );
   }
 
   if (typeof options.tsconfigRootDir === 'string') {

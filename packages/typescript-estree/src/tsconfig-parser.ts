@@ -72,7 +72,7 @@ function getTsconfigPath(tsconfigPath: string, extra: Extra): string {
  * @param code The code being linted
  * @param filePath The path of the file being parsed
  * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param extra.project Provided tsconfig paths
+ * @param extra.projects Provided tsconfig paths
  * @returns The programs corresponding to the supplied tsconfig paths
  */
 export function calculateProjectParserOptions(
@@ -207,7 +207,7 @@ export function calculateProjectParserOptions(
  * @param code The code being linted
  * @param filePath The file being linted
  * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param extra.project Provided tsconfig paths
+ * @param extra.projects Provided tsconfig paths
  * @returns The program containing just the file being linted and associated library files
  */
 export function createProgram(
