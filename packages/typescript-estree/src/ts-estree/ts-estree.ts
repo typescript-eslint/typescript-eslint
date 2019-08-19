@@ -1324,7 +1324,7 @@ export interface TSTypeLiteral extends BaseNode {
 export interface TSTypeOperator extends BaseNode {
   type: AST_NODE_TYPES.TSTypeOperator;
   operator: 'keyof' | 'unique' | 'readonly';
-  typeAnnotation?: TSTypeAnnotation;
+  typeAnnotation?: TypeNode;
 }
 
 export interface TSTypeParameter extends BaseNode {
