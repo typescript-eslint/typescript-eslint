@@ -68,24 +68,29 @@ The following additional configuration options are available by specifying them 
 
   - Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
 
-    ```jsonc
+    ```js
     {
-      "extends": "./tsconfig.json", // path to existing tsconfig
+      // extend your base config so you don't have to redefine your compilerOptions
+      "extends": "./tsconfig.json",
       "include": [
         "src/**/*.ts",
         "test/**/*.ts",
+        "typings/**/*.ts",
         // etc
+
+        // if you have a mixed JS/TS codebase, don't forget to include your JS files
+        "src/**/*.js"
       ]
     }
     ```
 
 - **`tsconfigRootDir`** - default `undefined`. This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
 
-- **`createDefaultProgram`** - default `false`. This option allows you to request that when the `project` setting is specified, files will be allowed when not included in the projects defined by the provided `tsconfig.json` files. However, this may incur significant performance costs, so this option is primarily included for backwards-compatibility. See the **`project`** section for more information.
-
 - **`extraFileExtensions`** - default `undefined`. This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation. E.g. a `.vue` file
 
 - **`warnOnUnsupportedTypeScriptVersion`** - default `true`. This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported
+
+- **`createDefaultProgram`** - default `false`. This option allows you to request that when the `project` setting is specified, files will be allowed when not included in the projects defined by the provided `tsconfig.json` files. **Using this option will incur significant performance costs. This option is primarily included for backwards-compatibility.** See the **`project`** section above for more information.
 
 ### .eslintrc.json
 

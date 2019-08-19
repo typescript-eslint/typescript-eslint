@@ -1,3 +1,4 @@
+import path from 'path';
 import semver from 'semver';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { sync as globSync } from 'glob';
@@ -11,6 +12,7 @@ import { TSESTree } from './ts-estree';
 import {
   calculateProjectParserOptions,
   createProgram,
+  defaultCompilerOptions,
 } from './tsconfig-parser';
 
 /**
@@ -89,9 +91,39 @@ function getASTFromProject(
   );
 
   if (!astAndProgram && !createDefaultProgram) {
-    throw new Error(
-      `If "parserOptions.project" has been set for @typescript-eslint/parser, ${filePath} must be included in at least one of the projects provided.`,
-    );
+    // the file was either not matched within the tsconfig, or the extension wasn't expected
+    const errorLines = [
+      '"parserOptions.project" has been set for @typescript-eslint/parser.',
+      `The file does not match your project config: ${filePath}.`,
+    ];
+    let hasMatchedAnError = false;
+
+    const fileExtension = path.extname(filePath);
+    if (!['.ts', '.tsx', '.js', '.jsx'].includes(fileExtension)) {
+      const nonStandardExt = `The extension for the file (${fileExtension}) is non-standard`;
+      if (extra.extraFileExtensions && extra.extraFileExtensions.length > 0) {
+        if (!extra.extraFileExtensions.includes(fileExtension)) {
+          errorLines.push(
+            `${nonStandardExt}. It should be added to your existing "parserOptions.extraFileExtensions".`,
+          );
+          hasMatchedAnError = true;
+        }
+      } else {
+        errorLines.push(
+          `${nonStandardExt}. You should add "parserOptions.extraFileExtensions" to your config.`,
+        );
+        hasMatchedAnError = true;
+      }
+    }
+
+    if (!hasMatchedAnError) {
+      errorLines.push(
+        'The file must be included in at least one of the projects provided.',
+      );
+      hasMatchedAnError = true;
+    }
+
+    throw new Error(errorLines.join('\n'));
   }
 
   return astAndProgram;
@@ -160,6 +192,7 @@ function createNewProgram(code: string): ASTAndProgram {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined,
+      ...defaultCompilerOptions,
     },
     compilerHost,
   );
