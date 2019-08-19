@@ -90,7 +90,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      Identifier(node) {
+      Identifier(node): void {
         /*
          * Leading and trailing underscores are commonly used to flag
          * private/protected identifiers, strip them

@@ -71,9 +71,9 @@ The following additional configuration options are available by specifying them 
     ```jsonc
     {
       "extends": "./tsconfig.json", // path to existing tsconfig
-      "includes": [
+      "include": [
         "src/**/*.ts",
-        "test/**/*.ts"
+        "test/**/*.ts",
         // etc
       ]
     }

@@ -27,7 +27,7 @@ describe('JSX', () => {
    * Test each fixture file
    */
   function testFixture(fixturesDir: string, useJSXTextNode: boolean) {
-    return (filename: string) => {
+    return (filename: string): void => {
       const code = fs.readFileSync(filename, 'utf8');
       const config = {
         useJSXTextNode,
