@@ -35,6 +35,9 @@ type ScopeNode =
   | TSESTree.TSTypeLiteral;
 
 type OverloadNode = MethodDefinition | SignatureDefinition;
+type ContainingNode =
+  | TSESTree.ExportNamedDeclaration
+  | TSESTree.ExportDefaultDeclaration;
 
 type SignatureDefinition =
   | TSESTree.FunctionExpression
@@ -424,7 +427,8 @@ export default util.createRule({
         a === b ||
         (a !== undefined &&
           b !== undefined &&
-          a.typeAnnotation.type === b.typeAnnotation.type)
+          sourceCode.getText(a.typeAnnotation) ===
+            sourceCode.getText(b.typeAnnotation))
       );
     }
 
@@ -495,9 +499,16 @@ export default util.createRule({
       currentScope = scopes.pop()!;
     }
 
-    function addOverload(signature: OverloadNode, key?: string): void {
+    function addOverload(
+      signature: OverloadNode,
+      key?: string,
+      containingNode?: ContainingNode,
+    ): void {
       key = key || getOverloadKey(signature);
-      if (currentScope && signature.parent === currentScope.parent && key) {
+      if (
+        currentScope &&
+        (containingNode || signature).parent === currentScope.parent
+      ) {
         const overloads = currentScope.overloads.get(key);
         if (overloads !== undefined) {
           overloads.push(signature);
@@ -521,11 +532,10 @@ export default util.createRule({
         createScope(node.body, node.typeParameters);
       },
       TSTypeLiteral: createScope,
+
       // collect overloads
       TSDeclareFunction(node): void {
-        if (node.id && !node.body) {
-          addOverload(node, node.id.name);
-        }
+        addOverload(node, node.id.name, getExportingNode(node));
       },
       TSCallSignatureDeclaration: addOverload,
       TSConstructSignatureDeclaration: addOverload,
@@ -540,6 +550,7 @@ export default util.createRule({
           addOverload(node);
         }
       },
+
       // validate scopes
       'Program:exit': checkScope,
       'TSModuleBlock:exit': checkScope,
@@ -550,7 +561,20 @@ export default util.createRule({
   },
 });
 
-function getOverloadKey(node: OverloadNode): string | undefined {
+function getExportingNode(
+  node: TSESTree.TSDeclareFunction,
+):
+  | TSESTree.ExportNamedDeclaration
+  | TSESTree.ExportDefaultDeclaration
+  | undefined {
+  return node.parent &&
+    (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+      node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration)
+    ? node.parent
+    : undefined;
+}
+
+function getOverloadKey(node: OverloadNode): string {
   const info = getOverloadInfo(node);
 
   return (
