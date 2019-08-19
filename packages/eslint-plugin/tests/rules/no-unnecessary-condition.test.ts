@@ -54,6 +54,12 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
     necessaryConditionTest('any'), // any
     necessaryConditionTest('unknown'), // unknown
 
+    // Generic type params
+    `
+function test<T extends string>(t: T) {
+  return t ? 'yes' : 'no'
+}`,
+
     // Supports ignoring the RHS
     {
       code: `
@@ -93,6 +99,15 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
     unnecessaryConditionTest('null', 'alwaysFalsy'),
     unnecessaryConditionTest('void', 'alwaysFalsy'),
     unnecessaryConditionTest('never', 'never'),
+
+    // Generic type params
+    {
+      code: `
+function test<T extends object>(t: T) {
+  return t ? 'yes' : 'no'
+}`,
+      errors: [ruleError(3, 10, 'alwaysTruthy')],
+    },
 
     // Still errors on in the expected locations when ignoring RHS
     {
