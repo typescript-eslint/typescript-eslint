@@ -462,6 +462,26 @@ declare module 'eslint/lib/rules/semi' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/quotes' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [
+      'single' | 'double' | 'backtick',
+      {
+        allowTemplateLiterals?: boolean;
+        avoidEscape?: boolean;
+      }?,
+    ],
+    {
+      Literal(node: TSESTree.Literal): void;
+      TemplateLiteral(node: TSESTree.TemplateLiteral): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/brace-style' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
