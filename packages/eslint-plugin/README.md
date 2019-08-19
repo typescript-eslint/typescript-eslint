@@ -65,7 +65,7 @@ You can also use [eslint:recommended](https://eslint.org/docs/rules/) (the set o
 
 As of version 2 of this plugin, _by design_, none of the rules in the main `recommended` config require type-checking in order to run. This means that they are more lightweight and faster to run.
 
-Some highly valuable rules simply require type-checking in order to be implemented correctly, however, so we provide an additional config you can extend from called `recommended-requiring-type-checking`. You wou apply this _in addition_ to the recommended configs previously mentioned, e.g.:
+Some highly valuable rules simply require type-checking in order to be implemented correctly, however, so we provide an additional config you can extend from called `recommended-requiring-type-checking`. You would apply this _in addition_ to the recommended configs previously mentioned, e.g.:
 
 ```json
 {
