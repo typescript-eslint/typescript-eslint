@@ -86,6 +86,30 @@ class Class {
         },
       ],
     },
+
+    {
+      code: `
+class Test {
+    constructor(public __a: string, protected __b: string, private __c: string = 100) {}
+}
+      `,
+      options: [
+        {
+          protected: '^__',
+          private: '^__',
+          public: '^__',
+        },
+      ],
+    },
+    {
+      code:
+        // Semantically invalid test case, TS has to throw an error.
+        `
+class Foo {
+    constructor(private ...name: string[], private [test]: [string]) {}
+}
+      `,
+    },
   ],
   invalid: [
     {
@@ -326,6 +350,52 @@ class Class {
           },
           line: 6,
           column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+    constructor(public a: string, protected b: string, private c: string = 100) {}
+}
+      `,
+      options: [
+        {
+          public: '^__',
+          protected: '^__',
+          private: '^__',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'public',
+            convention: '/^__/',
+            name: 'a',
+          },
+          line: 3,
+          column: 24,
+        },
+        {
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'protected',
+            convention: '/^__/',
+            name: 'b',
+          },
+          line: 3,
+          column: 45,
+        },
+        {
+          messageId: 'incorrectName',
+          data: {
+            accessibility: 'private',
+            convention: '/^__/',
+            name: 'c',
+          },
+          line: 3,
+          column: 64,
         },
       ],
     },
