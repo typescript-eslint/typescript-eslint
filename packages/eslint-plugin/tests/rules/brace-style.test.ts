@@ -495,6 +495,50 @@ interface Foo
       `,
       options: ['allman'],
     },
+    {
+      code: `
+module "Foo" {
+}
+      `,
+      options: ['1tbs'],
+    },
+    {
+      code: `
+module "Foo" {
+}
+      `,
+      options: ['stroustrup'],
+    },
+    {
+      code: `
+module "Foo"
+{
+}
+      `,
+      options: ['allman'],
+    },
+    {
+      code: `
+namespace Foo {
+}
+      `,
+      options: ['1tbs'],
+    },
+    {
+      code: `
+namespace Foo {
+}
+      `,
+      options: ['stroustrup'],
+    },
+    {
+      code: `
+namespace Foo
+{
+}
+      `,
+      options: ['allman'],
+    },
   ],
 
   invalid: [
@@ -1000,6 +1044,68 @@ interface Foo {
     {
       code: `interface Foo { \n }`,
       output: `interface Foo \n{ \n }`,
+      options: ['allman'],
+      errors: [{ messageId: 'sameLineOpen' }],
+    },
+    {
+      code: `
+module "Foo"
+{
+}
+      `,
+      output: `
+module "Foo" {
+}
+      `,
+      errors: [{ messageId: 'nextLineOpen' }],
+    },
+    {
+      code: `
+module "Foo"
+{
+}
+      `,
+      output: `
+module "Foo" {
+}
+      `,
+      options: ['stroustrup'],
+      errors: [{ messageId: 'nextLineOpen' }],
+    },
+    {
+      code: `module "Foo" { \n }`,
+      output: `module "Foo" \n{ \n }`,
+      options: ['allman'],
+      errors: [{ messageId: 'sameLineOpen' }],
+    },
+    {
+      code: `
+namespace Foo
+{
+}
+      `,
+      output: `
+namespace Foo {
+}
+      `,
+      errors: [{ messageId: 'nextLineOpen' }],
+    },
+    {
+      code: `
+namespace Foo
+{
+}
+      `,
+      output: `
+namespace Foo {
+}
+      `,
+      options: ['stroustrup'],
+      errors: [{ messageId: 'nextLineOpen' }],
+    },
+    {
+      code: `namespace Foo { \n }`,
+      output: `namespace Foo \n{ \n }`,
       options: ['allman'],
       errors: [{ messageId: 'sameLineOpen' }],
     },

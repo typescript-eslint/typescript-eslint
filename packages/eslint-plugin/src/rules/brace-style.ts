@@ -1,4 +1,7 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/brace-style';
 import * as util from '../util';
 
@@ -21,18 +24,22 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: ['1tbs'],
   create(context) {
     const rules = baseRule.create(context);
+    const checkBlockStatement = (
+      node: TSESTree.TSModuleBlock | TSESTree.TSInterfaceBody,
+    ) => {
+      rules.BlockStatement({
+        type: AST_NODE_TYPES.BlockStatement,
+        parent: node.parent,
+        range: node.range,
+        body: node.body as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        loc: node.loc,
+      });
+    };
 
     return {
       ...rules,
-      TSInterfaceBody(node) {
-        return rules.BlockStatement({
-          type: AST_NODE_TYPES.BlockStatement,
-          parent: node.parent,
-          range: node.range,
-          body: node.body as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-          loc: node.loc,
-        });
-      },
+      TSInterfaceBody: checkBlockStatement,
+      TSModuleBlock: checkBlockStatement,
     };
   },
 });
