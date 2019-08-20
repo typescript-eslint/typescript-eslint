@@ -65,6 +65,13 @@ export class Bar {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/170
     'export default class { hello() { return "I am foo!"; } }',
+    {
+      code: `
+@FooDecorator
+class Foo {}
+      `,
+      options: [{ allowWithDecorator: true }],
+    },
   ],
 
   invalid: [
