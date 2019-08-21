@@ -83,34 +83,39 @@ export default util.createRule({
       return getBaseTypeOfLiteralType(type);
     }
 
-    return {
-      "BinaryExpression[operator='+']"(node: TSESTree.BinaryExpression): void {
-        const leftType = getNodeType(node.left);
-        const rightType = getNodeType(node.right);
+    function checkPlusOperands(
+      node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression,
+    ): void {
+      const leftType = getNodeType(node.left);
+      const rightType = getNodeType(node.right);
 
-        if (
-          leftType === 'invalid' ||
-          rightType === 'invalid' ||
-          leftType !== rightType
-        ) {
-          if (leftType === 'string' || rightType === 'string') {
-            context.report({
-              node,
-              messageId: 'notStrings',
-            });
-          } else if (leftType === 'bigint' || rightType === 'bigint') {
-            context.report({
-              node,
-              messageId: 'notBigInts',
-            });
-          } else {
-            context.report({
-              node,
-              messageId: 'notNumbers',
-            });
-          }
+      if (
+        leftType === 'invalid' ||
+        rightType === 'invalid' ||
+        leftType !== rightType
+      ) {
+        if (leftType === 'string' || rightType === 'string') {
+          context.report({
+            node,
+            messageId: 'notStrings',
+          });
+        } else if (leftType === 'bigint' || rightType === 'bigint') {
+          context.report({
+            node,
+            messageId: 'notBigInts',
+          });
+        } else {
+          context.report({
+            node,
+            messageId: 'notNumbers',
+          });
         }
-      },
+      }
+    }
+
+    return {
+      "BinaryExpression[operator='+']": checkPlusOperands,
+      "AssignmentExpression[operator='+=']": checkPlusOperands,
     };
   },
 });

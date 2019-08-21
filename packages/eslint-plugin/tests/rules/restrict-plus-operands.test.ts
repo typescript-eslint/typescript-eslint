@@ -81,6 +81,10 @@ function foo<T extends 1>(a: T) {
     return a + 1;
 }
     `,
+    `
+let foo: number = 0;
+foo += 1;
+    `,
   ],
   invalid: [
     {
@@ -380,6 +384,19 @@ function foo<T extends 1>(a: T) {
           messageId: 'notStrings',
           line: 3,
           column: 12,
+        },
+      ],
+    },
+    {
+      code: `
+let foo: string | undefined;
+foo += "some data";
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 3,
+          column: 1,
         },
       ],
     },
