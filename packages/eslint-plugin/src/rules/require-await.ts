@@ -65,7 +65,7 @@ export default util.createRule<Options, MessageIds>({
           rules.ArrowFunctionExpression(node);
 
           // If body type is not BlockStatment, we need to check the return type here
-          if (!(node.body.type === 'BlockStatement')) {
+          if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
             const expression = parserServices.esTreeNodeToTSNodeMap.get(
               node.body,
             );
