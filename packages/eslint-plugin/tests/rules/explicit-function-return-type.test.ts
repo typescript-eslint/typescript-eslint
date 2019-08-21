@@ -92,6 +92,15 @@ class Test {
     },
     {
       filename: 'test.ts',
+      code: `export default (): void => {}`,
+      options: [
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
       code: `
 var arrowFn: Foo = () => 'test';
             `,
@@ -299,6 +308,20 @@ foo({
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+const func = (value: number) => (({ type: "X", value }) as const);
+const func = (value: number) => ({ type: "X", value } as const);
+const func = (value: number) => (x as const);
+const func = (value: number) => x as const;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -414,6 +437,30 @@ function test() {
           messageId: 'missingReturnType',
           line: 1,
           column: 13,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'export default () => {};',
+      options: [{ allowExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'export default function() {};',
+      options: [{ allowExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          column: 16,
         },
       ],
     },
@@ -713,6 +760,48 @@ foo({
           messageId: 'missingReturnType',
           line: 14,
           column: 9,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const func = (value: number) => ({ type: "X", value } as any);
+const func = (value: number) => ({ type: "X", value } as Action);
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 14,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          column: 14,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const func = (value: number) => ({ type: "X", value } as const);
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 14,
         },
       ],
     },

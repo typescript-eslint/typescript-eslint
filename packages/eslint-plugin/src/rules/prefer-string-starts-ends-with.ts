@@ -20,7 +20,8 @@ export default createRule({
       description:
         'Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
+      requiresTypeChecking: true,
     },
     messages: {
       preferStartsWith: "Use 'String#startsWith' method instead.",

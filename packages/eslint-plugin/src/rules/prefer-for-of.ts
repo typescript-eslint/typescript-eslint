@@ -181,7 +181,7 @@ export default util.createRule({
     }
 
     return {
-      'ForStatement:exit'(node: TSESTree.ForStatement) {
+      'ForStatement:exit'(node: TSESTree.ForStatement): void {
         if (!isSingleVariableDeclaration(node.init)) {
           return;
         }

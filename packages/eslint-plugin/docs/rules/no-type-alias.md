@@ -86,6 +86,7 @@ or more of the following you may pass an object with the options set as follows:
 - `allowCallbacks` set to `"always"` will allow you to use type aliases with callbacks (Defaults to `"never"`)
 - `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
 - `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
+- `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
 
 ### allowAliases
 
@@ -451,6 +452,81 @@ type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
   { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+```
+
+### allowTupleTypes
+
+This applies to tuple types (`type Foo = [number]`).
+
+The setting accepts the following options:
+
+- `"always"` or `"never"` to active or deactivate the feature.
+- `"in-unions"`, allows tuples in union statements, e.g. `type Foo = [string] | [string, string];`
+- `"in-intersections"`, allows tuples in intersection statements, e.g. `type Foo = [string] & [string, string];`
+- `"in-unions-and-intersections"`, allows tuples in union and/or intersection statements.
+
+Examples of **correct** code for the `{ "allowTupleTypes": "always" }` options:
+
+```ts
+type Foo = [number];
+
+type Foo = [number] | [number, number];
+
+type Foo = [number] & [number, number];
+
+type Foo = [number] | [number, number] & [string, string];
+```
+
+Examples of **incorrect** code for the `{ "allowTupleTypes": "in-unions" }` option:
+
+```ts
+type Foo = [number];
+
+type Foo = [number] & [number, number];
+
+type Foo = [string] & [number];
+```
+
+Examples of **correct** code for the `{ "allowTupleTypes": "in-unions" }` option:
+
+```ts
+type Foo = [number] | [number, number];
+
+type Foo = [string] | [number];
+```
+
+Examples of **incorrect** code for the `{ "allowTupleTypes": "in-intersections" }` option:
+
+```ts
+type Foo = [number];
+
+type Foo = [number] | [number, number];
+
+type Foo = [string] | [number];
+```
+
+Examples of **correct** code for the `{ "allowTupleTypes": "in-intersections" }` option:
+
+```ts
+type Foo = [number] & [number, number];
+
+type Foo = [string] & [number];
+```
+
+Examples of **incorrect** code for the `{ "allowTupleTypes": "in-unions-and-intersections" }` option:
+
+```ts
+type Foo = [number];
+
+type Foo = [string];
+```
+
+Examples of **correct** code for the `{ "allowLiterals": "in-unions-and-intersections" }` option:
+
+```ts
+type Foo = [number] & [number, number];
+
+type Foo = [string] | [number];
 ```
 
 ## When Not To Use It

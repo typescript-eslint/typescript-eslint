@@ -9,9 +9,10 @@ import { Extra } from './parser-options';
 /**
  * Default compiler options for program generation from single root file
  */
-const defaultCompilerOptions: ts.CompilerOptions = {
+export const defaultCompilerOptions: ts.CompilerOptions = {
   allowNonTsExtensions: true,
   allowJs: true,
+  checkJs: true,
 };
 
 /**
@@ -34,7 +35,7 @@ const parsedFilesSeen = new Set<string>();
  * Clear tsconfig caches.
  * Primarily used for testing.
  */
-export function clearCaches() {
+export function clearCaches(): void {
   knownWatchProgramMap.clear();
   watchCallbackTrackingMap.clear();
   parsedFilesSeen.clear();
@@ -58,7 +59,7 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
   );
 }
 
-const noopFileWatcher = { close: () => {} };
+const noopFileWatcher = { close: (): void => {} };
 
 function getTsconfigPath(tsconfigPath: string, extra: Extra): string {
   return path.isAbsolute(tsconfigPath)
@@ -71,7 +72,7 @@ function getTsconfigPath(tsconfigPath: string, extra: Extra): string {
  * @param code The code being linted
  * @param filePath The path of the file being parsed
  * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param extra.project Provided tsconfig paths
+ * @param extra.projects Provided tsconfig paths
  * @returns The programs corresponding to the supplied tsconfig paths
  */
 export function calculateProjectParserOptions(
@@ -109,7 +110,7 @@ export function calculateProjectParserOptions(
     // create compiler host
     const watchCompilerHost = ts.createWatchCompilerHost(
       tsconfigPath,
-      /*optionsToExtend*/ { allowNonTsExtensions: true } as ts.CompilerOptions,
+      defaultCompilerOptions,
       ts.sys,
       ts.createSemanticDiagnosticsBuilderProgram,
       diagnosticReporter,
@@ -118,7 +119,7 @@ export function calculateProjectParserOptions(
 
     // ensure readFile reads the code being linted instead of the copy on disk
     const oldReadFile = watchCompilerHost.readFile;
-    watchCompilerHost.readFile = (filePath, encoding) =>
+    watchCompilerHost.readFile = (filePath, encoding): string | undefined =>
       path.normalize(filePath) ===
       path.normalize(currentLintOperationState.filePath)
         ? currentLintOperationState.code
@@ -128,7 +129,7 @@ export function calculateProjectParserOptions(
     watchCompilerHost.onUnRecoverableConfigFileDiagnostic = diagnosticReporter;
 
     // ensure process doesn't emit programs
-    watchCompilerHost.afterProgramCreate = program => {
+    watchCompilerHost.afterProgramCreate = (program): void => {
       // report error if there are any errors in the config file
       const configFileDiagnostics = program
         .getConfigFileParsingDiagnostics()
@@ -143,18 +144,20 @@ export function calculateProjectParserOptions(
     };
 
     // register callbacks to trigger program updates without using fileWatchers
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     watchCompilerHost.watchFile = (fileName, callback) => {
       const normalizedFileName = path.normalize(fileName);
       watchCallbackTrackingMap.set(normalizedFileName, callback);
       return {
-        close: () => {
+        close: (): void => {
           watchCallbackTrackingMap.delete(normalizedFileName);
         },
       };
     };
 
     // ensure fileWatchers aren't created for directories
-    watchCompilerHost.watchDirectory = () => noopFileWatcher;
+    watchCompilerHost.watchDirectory = (): typeof noopFileWatcher =>
+      noopFileWatcher;
 
     // we're using internal typescript APIs which aren't on the types
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -163,8 +166,9 @@ export function calculateProjectParserOptions(
       .onCachedDirectoryStructureHostCreate;
     (watchCompilerHost as any).onCachedDirectoryStructureHostCreate = (
       host: any,
-    ) => {
+    ): void => {
       const oldReadDirectory = host.readDirectory;
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       host.readDirectory = (
         path: string,
         extensions?: readonly string[],
@@ -203,10 +207,14 @@ export function calculateProjectParserOptions(
  * @param code The code being linted
  * @param filePath The file being linted
  * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param extra.project Provided tsconfig paths
+ * @param extra.projects Provided tsconfig paths
  * @returns The program containing just the file being linted and associated library files
  */
-export function createProgram(code: string, filePath: string, extra: Extra) {
+export function createProgram(
+  code: string,
+  filePath: string,
+  extra: Extra,
+): ts.Program | undefined {
   if (!extra.projects || extra.projects.length !== 1) {
     return undefined;
   }
@@ -225,7 +233,7 @@ export function createProgram(code: string, filePath: string, extra: Extra) {
 
   const compilerHost = ts.createCompilerHost(commandLine.options, true);
   const oldReadFile = compilerHost.readFile;
-  compilerHost.readFile = (fileName: string) =>
+  compilerHost.readFile = (fileName: string): string | undefined =>
     path.normalize(fileName) === path.normalize(filePath)
       ? code
       : oldReadFile(fileName);

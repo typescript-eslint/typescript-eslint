@@ -23,7 +23,8 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow async functions which have no `await` expression',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
+      requiresTypeChecking: true,
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
@@ -46,7 +47,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
         | TSESTree.ArrowFunctionExpression,
-    ) {
+    ): void {
       scopeInfo = {
         upper: scopeInfo,
         returnsPromise: false,
@@ -88,7 +89,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
         | TSESTree.ArrowFunctionExpression,
-    ) {
+    ): void {
       if (scopeInfo) {
         if (!scopeInfo.returnsPromise) {
           switch (node.type) {
@@ -130,7 +131,7 @@ export default util.createRule<Options, MessageIds>({
       'FunctionExpression[async = true]:exit': exitFunction,
       'ArrowFunctionExpression[async = true]:exit': exitFunction,
 
-      ReturnStatement(node: TSESTree.ReturnStatement) {
+      ReturnStatement(node): void {
         if (!scopeInfo) {
           return;
         }

@@ -167,7 +167,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSAnyKeyword(node) {
+      TSAnyKeyword(node): void {
         if (ignoreRestArgs && isNodeDescendantOfRestElementInFunction(node)) {
           return;
         }
@@ -175,7 +175,8 @@ export default util.createRule<Options, MessageIds>({
         let fix: TSESLint.ReportFixFunction | null = null;
 
         if (fixToUnknown) {
-          fix = fixer => fixer.replaceText(node, 'unknown');
+          fix = (fixer =>
+            fixer.replaceText(node, 'unknown')) as TSESLint.ReportFixFunction;
         }
 
         context.report({

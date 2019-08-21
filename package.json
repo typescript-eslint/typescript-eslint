@@ -47,7 +47,7 @@
     ]
   },
   "engines": {
-    "node": ">=6.14.0"
+    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.1.0",
@@ -55,7 +55,7 @@
     "@commitlint/travis-cli": "^8.1.0",
     "@types/jest": "^24.0.15",
     "@types/node": "^12.6.8",
-    "all-contributors-cli": "^6.8.0",
+    "all-contributors-cli": "^6.8.1",
     "cz-conventional-changelog": "2.1.0",
     "eslint": "^6.0.0",
     "eslint-plugin-eslint-comments": "^3.1.2",

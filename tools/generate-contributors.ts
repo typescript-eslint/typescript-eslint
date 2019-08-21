@@ -35,7 +35,7 @@ interface AllContributorsUser {
   contributions: string[];
 }
 
-async function* fetchUsers(page = 1) {
+async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
   let lastLength = 0;
   do {
     const response = await fetch(`${contributorsApiUrl}&page=${page}`, {
@@ -61,7 +61,7 @@ async function* fetchUsers(page = 1) {
   );
 }
 
-async function main() {
+async function main(): Promise<void> {
   const githubContributors: Contributor[] = [];
 
   // fetch all of the contributor info
@@ -99,7 +99,7 @@ async function main() {
     imageSize: 100,
     commit: false,
     contributors,
-    contributorsPerLine: 7,
+    contributorsPerLine: 5,
   };
   const rcPath = path.resolve(__dirname, '../.all-contributorsrc');
   fs.writeFileSync(rcPath, JSON.stringify(allContributorsConfig, null, 2));

@@ -68,6 +68,11 @@ declare module 'foo' {
     },
     {
       code: 'const { props, state } = this;',
+      options: [
+        {
+          allowDestructuring: false,
+        },
+      ],
       errors: [destructureError],
     },
     {
@@ -104,6 +109,11 @@ class TestClass {
     }
 }
 `,
+      options: [
+        {
+          allowDestructuring: false,
+        },
+      ],
       errors: [
         idError,
         idError,
