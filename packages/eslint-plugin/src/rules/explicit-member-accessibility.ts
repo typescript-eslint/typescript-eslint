@@ -18,6 +18,7 @@ interface Config {
     properties?: AccessibilityLevel;
     parameterProperties?: AccessibilityLevel;
   };
+  exceptMethods?: string[];
 }
 
 type Options = [Config];
@@ -57,7 +58,14 @@ export default util.createRule<Options, MessageIds>({
               properties: accessibilityLevel,
               parameterProperties: accessibilityLevel,
             },
+
             additionalProperties: false,
+          },
+          exceptMethods: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
           },
         },
         additionalProperties: false,
@@ -74,7 +82,7 @@ export default util.createRule<Options, MessageIds>({
     const methodCheck = overrides.methods || baseCheck;
     const propCheck = overrides.properties || baseCheck;
     const paramPropCheck = overrides.parameterProperties || baseCheck;
-
+    const exceptMethods = option.exceptMethods || [];
     /**
      * Generates the report for rule violations
      */
@@ -116,14 +124,16 @@ export default util.createRule<Options, MessageIds>({
           nodeType = `${methodDefinition.kind} property accessor`;
           break;
       }
-      if (check === 'off') {
-        return;
-      }
 
       const methodName = util.getNameFromClassMember(
         methodDefinition,
         sourceCode,
       );
+
+      if (check === 'off' || exceptMethods.includes(methodName)) {
+        return;
+      }
+
       if (
         check === 'no-public' &&
         methodDefinition.accessibility === 'public'

@@ -258,6 +258,21 @@ class Test {
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  getX () {
+    return this.x
+  }
+}
+      `,
+      options: [
+        {
+          exceptMethods: ['getX'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
