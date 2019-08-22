@@ -169,21 +169,20 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      // Check if body is a block with a single statement
-      if (
-        body.type === AST_NODE_TYPES.BlockStatement &&
-        body.body.length === 1
-      ) {
-        const [statement] = body.body;
-
-        // Check if that statement is a return statement with an argument
-        if (
-          statement.type === AST_NODE_TYPES.ReturnStatement &&
-          !!statement.argument
-        ) {
-          // If so, check that returned argument as body
-          body = statement.argument;
-        }
+      // Check if body is a block with a return statement
+      if (body.type === AST_NODE_TYPES.BlockStatement) {
+        // Check if ReturnStatement exist among body and use that argument
+        // for checking whether it is a function expression
+        body.body.some(statement => {
+          if (
+            statement.type === AST_NODE_TYPES.ReturnStatement &&
+            !!statement.argument
+          ) {
+            // If so, check that returned argument as body
+            body = statement.argument;
+            return;
+          }
+        });
       }
 
       // Check if the body being returned is a function expression

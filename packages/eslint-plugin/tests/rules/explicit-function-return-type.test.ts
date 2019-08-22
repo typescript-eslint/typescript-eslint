@@ -246,6 +246,17 @@ function FunctionDeclaration() {
             `,
       options: [{ allowHigherOrderFunctions: true }],
     },
+    {
+      filename: 'test.ts',
+      code: `
+const x = (arg1: string) => {
+  const tempVar1 = 'temporary value1';
+  const tempVar2 = 'temporary value2';
+  return (arg2: number): string => 'foo';
+}
+            `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/679
     {
       filename: 'test.ts',
