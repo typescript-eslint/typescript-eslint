@@ -15,7 +15,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow empty functions',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
@@ -81,7 +81,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isConciseConstructor(
       node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
-    ) {
+    ): boolean {
       // Check TypeScript specific nodes
       return (
         isConstructor(node) && isBodyEmpty(node) && hasParameterProperties(node)
@@ -89,12 +89,12 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      FunctionDeclaration(node: TSESTree.FunctionDeclaration) {
+      FunctionDeclaration(node): void {
         if (!isConciseConstructor(node)) {
           rules.FunctionDeclaration(node);
         }
       },
-      FunctionExpression(node: TSESTree.FunctionExpression) {
+      FunctionExpression(node): void {
         if (!isConciseConstructor(node)) {
           rules.FunctionExpression(node);
         }

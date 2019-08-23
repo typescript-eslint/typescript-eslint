@@ -18,7 +18,7 @@ const defaultConfig = {
  * @param ast the AST object
  * @returns copy of the AST object
  */
-function getRaw(ast: TSESTree.Program) {
+function getRaw(ast: TSESTree.Program): TSESTree.Program {
   return JSON.parse(
     JSON.stringify(ast, (key, value) => {
       if ((key === 'start' || key === 'end') && typeof value === 'number') {
@@ -39,18 +39,18 @@ function getRaw(ast: TSESTree.Program) {
 export function createSnapshotTestBlock(
   code: string,
   config: ParserOptions = {},
-) {
+): () => void {
   config = Object.assign({}, defaultConfig, config);
 
   /**
    * @returns {Object} the AST object
    */
-  function parse() {
+  function parse(): TSESTree.Program {
     const ast = parser.parseForESLint(code, config).ast;
     return getRaw(ast);
   }
 
-  return () => {
+  return (): void => {
     try {
       const result = parse();
       expect(result).toMatchSnapshot();
@@ -77,18 +77,19 @@ export function createSnapshotTestBlock(
 export function createScopeSnapshotTestBlock(
   code: string,
   config: ParserOptions = {},
-) {
+): () => void {
   config = Object.assign({}, defaultConfig, config);
 
   /**
    * @returns {Object} the AST object
    */
-  function parse() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function parse(): any {
     const result = parser.parseForESLint(code, config);
     return getScopeTree(result.scopeManager);
   }
 
-  return () => {
+  return (): void => {
     try {
       const result = parse();
       expect(result).toMatchSnapshot();
@@ -123,7 +124,7 @@ export function formatSnapshotName(
   filename: string,
   fixturesDir: string,
   fileExtension = '.js',
-) {
+): string {
   return `fixtures/${filename
     .replace(fixturesDir + '/', '')
     .replace(fileExtension, '')}`;
