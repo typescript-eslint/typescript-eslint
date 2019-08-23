@@ -81,6 +81,36 @@ function foo<T extends 1>(a: T) {
     return a + 1;
 }
     `,
+    {
+      code: `
+export const f = (a: any, b: any) => a + b;
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
+    {
+      code: `
+export const f = (a: string, b: any) => a + b;
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
+    {
+      code: `
+export const f = (a: boolean, b: any) => a + b;
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -380,6 +410,23 @@ function foo<T extends 1>(a: T) {
           messageId: 'notStrings',
           line: 3,
           column: 12,
+        },
+      ],
+    },
+    {
+      code: `
+export const f = (a: string, b: number) => a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 2,
+          column: 44,
+        },
+      ],
+      options: [
+        {
+          allowAny: true,
         },
       ],
     },

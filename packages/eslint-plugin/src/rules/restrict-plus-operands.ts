@@ -2,7 +2,15 @@ import { TSESTree } from '@typescript-eslint/experimental-utils';
 import ts from 'typescript';
 import * as util from '../util';
 
-export default util.createRule({
+type Options = [
+  {
+    allowAny?: boolean;
+  },
+];
+
+type MessageId = 'notStrings' | 'notBigInts' | 'notNumbers';
+
+export default util.createRule<Options, MessageId>({
   name: 'restrict-plus-operands',
   meta: {
     type: 'problem',
@@ -20,15 +28,24 @@ export default util.createRule({
         "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal.",
       notBigInts: "Operands of '+' operation must be both bigints.",
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowAny: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ allowAny: false }],
+  create(context, [option]) {
     const service = util.getParserServices(context);
 
     const typeChecker = service.program.getTypeChecker();
 
-    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid';
+    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid' | 'any';
 
     /**
      * Helper function to get base type of node
@@ -65,7 +82,8 @@ export default util.createRule({
       if (
         stringType === 'number' ||
         stringType === 'string' ||
-        stringType === 'bigint'
+        stringType === 'bigint' ||
+        stringType === 'any'
       ) {
         return stringType;
       }
@@ -87,6 +105,10 @@ export default util.createRule({
       "BinaryExpression[operator='+']"(node: TSESTree.BinaryExpression): void {
         const leftType = getNodeType(node.left);
         const rightType = getNodeType(node.right);
+
+        if (option.allowAny && (leftType === 'any' || rightType === 'any')) {
+          return;
+        }
 
         if (
           leftType === 'invalid' ||
