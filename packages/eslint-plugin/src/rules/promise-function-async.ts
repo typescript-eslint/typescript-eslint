@@ -102,7 +102,11 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (node.parent && node.parent.type === 'Property') {
+      if (
+        node.parent &&
+        node.parent.type === 'Property' &&
+        (node.parent.kind === 'get' || node.parent.kind === 'set')
+      ) {
         return;
       }
 
