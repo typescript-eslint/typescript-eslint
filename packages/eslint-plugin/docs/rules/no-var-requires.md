@@ -17,6 +17,7 @@ Examples of **correct** code for this rule:
 ```ts
 import foo = require('foo');
 require('foo');
+import foo from 'foo';
 ```
 
 ## When Not To Use It
