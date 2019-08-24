@@ -16,10 +16,32 @@ var foo = 1n + 1;
 
 ## Options
 
+Options may be provided as an object with:
+
+- `allowAny` to ignore this rule when either left or
+  right of plus operand is a type `any`
+
 ```json
 {
-  "@typescript-eslint/restrict-plus-operands": "error"
+  "@typescript-eslint/estrict-plus-operands": [
+    "error",
+    {
+      "allowAny": true
+    }
+  ]
 }
+```
+
+### allowAny
+
+If the rule is too strict then making this option `true`
+can be a help. Though It is not recommended since lint errors are potentially a real runtime errors in many cases.
+
+Examples of **correct** code for this rule with `{ allowAny: true`:
+
+```ts
+const x = (a: any, b: string) => a + b;
+const y = (a: boolean, b: any) => a + b;
 ```
 
 ## Compatibility
