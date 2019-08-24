@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "main": "dist/parser.js",
+  "types": "dist/parser.d.ts",
   "files": [
     "dist",
     "README.md",
