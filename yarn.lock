@@ -1345,6 +1345,11 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/is-glob@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@types/is-glob/-/is-glob-4.0.1.tgz#a93eec1714172c8eb3225a1cc5eb88c2477b7d00"
+  integrity sha512-k3RS5HyBPu4h+5hTmIEfPB2rl5P3LnGdQEZrV2b9OWTJVtsUQ2VBcedqYKGqxvZqle5UALUXdSfVA8nf3HfyWQ==
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.1.tgz#42995b446db9a48a11a07ec083499a860e9138ff"
@@ -1701,10 +1706,10 @@ ajv@^6.10.0, ajv@^6.5.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-all-contributors-cli@^6.8.0:
-  version "6.8.0"
-  resolved "https://registry.yarnpkg.com/all-contributors-cli/-/all-contributors-cli-6.8.0.tgz#1b98e9ee60ca3724ef50fb7469b8e85de1ebdec9"
-  integrity sha512-7xYAmljxgGL4w0XTRBuGTJMqf/xTGhvPyRbIp2InKfn0INo08faCT6gP18iyYMpVPotgAUcaGTeLrewh2IP54Q==
+all-contributors-cli@^6.8.1:
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/all-contributors-cli/-/all-contributors-cli-6.8.1.tgz#70c8c560ad05d054c09798d4a155887c82c5d553"
+  integrity sha512-06nnLE9Gl0gGqUIzmELNT/k8IWF31Xgq97GkuMJjEOS+3DFXuJ/0U+AJwa9UxP3Ivlqn484xXx4o3XDqPhytjA==
   dependencies:
     "@babel/runtime" "^7.2.0"
     async "^3.0.1"
@@ -4706,7 +4711,7 @@ is-glob@^3.1.0:
   dependencies:
     is-extglob "^2.1.0"
 
-is-glob@^4.0.0:
+is-glob@^4.0.0, is-glob@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/is-glob/-/is-glob-4.0.1.tgz#7567dbe9f2f5e2467bc77ab83c4a29482407a5dc"
   integrity sha512-5G0tKtBTFImOqDnLB2hG6Bp2qcKEFduo4tZu9MT/H6NQv/ghhy30o55ufafxJ/LdH79LLs2Kfrn85TLKyA7BUg==
