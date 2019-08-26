@@ -97,6 +97,12 @@ instane.boundStatic && 0;
 
 ContainsMethods.boundStatic ? 1 : 0;
 ContainsMethods.unboundStatic ? 1 : 0;
+
+typeof instance.bound === 'function';
+typeof instance.unbound === 'function';
+
+typeof ContainsMethods.boundStatic === 'function';
+typeof ContainsMethods.unboundStatic === 'function';
     `,
     `interface RecordA {
   readonly type: "A"
