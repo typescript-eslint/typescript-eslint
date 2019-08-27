@@ -26,6 +26,19 @@ type MessageIds = 'unwantedPublicAccessibility' | 'missingAccessibility';
 
 const accessibilityLevel = { enum: ['explicit', 'no-public', 'off'] };
 
+const isParentConstructor = (node: TSESTree.TSParameterProperty) => {
+  let parent = node.parent;
+  while (parent) {
+    if (parent.type === 'MethodDefinition' && parent.kind === 'constructor') {
+      return true;
+    }
+    // go up
+    parent = parent.parent;
+  }
+
+  return false;
+};
+
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
   meta: {
@@ -190,14 +203,34 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
+      if (ctorCheck === 'off' && isParentConstructor(node)) {
+        return;
+      }
+
       const nodeName =
         node.parameter.type === AST_NODE_TYPES.Identifier
           ? node.parameter.name
           : // has to be an Identifier or TSC will throw an error
             (node.parameter.left as TSESTree.Identifier).name;
 
-      if (paramPropCheck === 'no-public' && node.accessibility === 'public') {
-        reportIssue('unwantedPublicAccessibility', nodeType, node, nodeName);
+      switch (paramPropCheck) {
+        case 'explicit': {
+          if (!node.accessibility) {
+            reportIssue('missingAccessibility', nodeType, node, nodeName);
+          }
+          break;
+        }
+        case 'no-public': {
+          if (node.accessibility === 'public') {
+            reportIssue(
+              'unwantedPublicAccessibility',
+              nodeType,
+              node,
+              nodeName,
+            );
+          }
+          break;
+        }
       }
     }
 
