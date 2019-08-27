@@ -99,7 +99,7 @@ async function main(): Promise<void> {
     imageSize: 100,
     commit: false,
     contributors,
-    contributorsPerLine: 7,
+    contributorsPerLine: 5,
   };
   const rcPath = path.resolve(__dirname, '../.all-contributorsrc');
   fs.writeFileSync(rcPath, JSON.stringify(allContributorsConfig, null, 2));

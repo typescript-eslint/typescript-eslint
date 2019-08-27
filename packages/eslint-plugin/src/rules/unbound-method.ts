@@ -120,6 +120,9 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.TaggedTemplateExpression:
       return parent.tag === node;
 
+    case AST_NODE_TYPES.UnaryExpression:
+      return parent.operator === 'typeof';
+
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSAsExpression:
     case AST_NODE_TYPES.TSTypeAssertion:

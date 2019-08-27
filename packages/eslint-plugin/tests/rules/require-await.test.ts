@@ -41,8 +41,14 @@ ruleTester.run('require-await', rule, {
       }`,
     },
     {
-      // Non-async arrow function expression
+      // Non-async arrow function expression (concise-body)
       code: `const numberOne = (): number => 1;`,
+    },
+    {
+      // Non-async arrow function expression (block-body)
+      code: `const numberOne = (): number => {
+        return 1;
+      };`,
     },
     {
       // Async function declaration with await
@@ -57,8 +63,14 @@ ruleTester.run('require-await', rule, {
       }`,
     },
     {
-      // Async arrow function expression with await
+      // Async arrow function expression with await (concise-body)
       code: `const numberOne = async (): Promise<number> => await 1;`,
+    },
+    {
+      // Async arrow function expression with await (block-body)
+      code: `const numberOne = async (): Promise<number> => {
+        return await 1;
+      };`,
     },
     {
       // Async function declaration with promise return
@@ -71,6 +83,16 @@ ruleTester.run('require-await', rule, {
       code: `const numberOne = async function(): Promise<number> {
         return Promise.resolve(1);
       }`,
+    },
+    {
+      // Async arrow function with promise return (concise-body)
+      code: `const numberOne = async (): Promise<number> => Promise.resolve(1);`,
+    },
+    {
+      // Async arrow function with promise return (block-body)
+      code: `const numberOne = async (): Promise<number> => {
+        return Promise.resolve(1);
+      };`,
     },
     {
       // Async function declaration with async function return
@@ -86,6 +108,22 @@ ruleTester.run('require-await', rule, {
       code: `const numberOne = async function(): Promise<number> {
         return getAsyncNumber(1);
       }
+      const getAsyncNumber = async function(x: number): Promise<number> {
+        return Promise.resolve(x);
+      }`,
+    },
+    {
+      // Async arrow function with async function return (concise-body)
+      code: `const numberOne = async (): Promise<number> => getAsyncNumber(1);
+      const getAsyncNumber = async function(x: number): Promise<number> {
+        return Promise.resolve(x);
+      }`,
+    },
+    {
+      // Async arrow function with async function return (block-body)
+      code: `const numberOne = async (): Promise<number> => {
+        return getAsyncNumber(1);
+      };
       const getAsyncNumber = async function(x: number): Promise<number> {
         return Promise.resolve(x);
       }`,

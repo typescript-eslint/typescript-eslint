@@ -63,6 +63,12 @@ const invalidAsyncModifiers = {
   },
   set asyncGetter(p: Promise<void>) {
     return p;
+  },
+  get asyncGetterFunc() {
+    return async () => new Promise<void>();
+  },
+  set asyncGetterFunc(p: () => Promise<void>) {
+    return p;
   }
 }
     `,
