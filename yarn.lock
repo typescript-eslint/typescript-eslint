@@ -1706,10 +1706,10 @@ ajv@^6.10.0, ajv@^6.5.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-all-contributors-cli@^6.8.0:
-  version "6.8.0"
-  resolved "https://registry.yarnpkg.com/all-contributors-cli/-/all-contributors-cli-6.8.0.tgz#1b98e9ee60ca3724ef50fb7469b8e85de1ebdec9"
-  integrity sha512-7xYAmljxgGL4w0XTRBuGTJMqf/xTGhvPyRbIp2InKfn0INo08faCT6gP18iyYMpVPotgAUcaGTeLrewh2IP54Q==
+all-contributors-cli@^6.8.1:
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/all-contributors-cli/-/all-contributors-cli-6.8.1.tgz#70c8c560ad05d054c09798d4a155887c82c5d553"
+  integrity sha512-06nnLE9Gl0gGqUIzmELNT/k8IWF31Xgq97GkuMJjEOS+3DFXuJ/0U+AJwa9UxP3Ivlqn484xXx4o3XDqPhytjA==
   dependencies:
     "@babel/runtime" "^7.2.0"
     async "^3.0.1"
