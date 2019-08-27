@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "1.13.0",
+  "version": "2.0.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -9,7 +9,7 @@
     "typescript"
   ],
   "engines": {
-    "node": "^6.14.0 || ^8.10.0 || >=9.10.0"
+    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
   },
   "files": [
     "dist",
@@ -30,17 +30,17 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "check:docs": "ts-node --files ./tools/validate-docs/index.ts",
-    "check:configs": "ts-node --files ./tools/validate-configs/index.ts",
+    "check:docs": "../../node_modules/.bin/ts-node --files ./tools/validate-docs/index.ts",
+    "check:configs": "../../node_modules/.bin/ts-node --files ./tools/validate-configs/index.ts",
     "clean": "rimraf dist/",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
-    "generate:configs": "ts-node --files tools/generate-configs.ts",
+    "generate:configs": "../../node_modules/.bin/ts-node --files tools/generate-configs.ts",
     "prebuild": "npm run clean",
     "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "1.13.0",
+    "@typescript-eslint/experimental-utils": "2.0.0",
     "eslint-utils": "^1.4.0",
     "functional-red-black-tree": "^1.0.1",
     "regexpp": "^2.0.1",
@@ -49,12 +49,14 @@
   "devDependencies": {
     "@types/json-schema": "^7.0.3",
     "@types/marked": "^0.6.5",
+    "@types/prettier": "^1.18.0",
     "chalk": "^2.4.2",
     "marked": "^0.7.0",
+    "prettier": "*",
     "typescript": "*"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^1.9.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "eslint": "^5.0.0 || ^6.0.0"
   }
 }

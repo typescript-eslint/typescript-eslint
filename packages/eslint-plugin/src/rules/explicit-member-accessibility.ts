@@ -33,8 +33,9 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
-      category: 'Best Practices',
-      recommended: 'error',
+      category: 'Stylistic Issues',
+      // too opinionated to be recommended
+      recommended: false,
     },
     messages: {
       missingAccessibility:
@@ -82,7 +83,7 @@ export default util.createRule<Options, MessageIds>({
       nodeType: string,
       node: TSESTree.Node,
       nodeName: string,
-    ) {
+    ): void {
       context.report({
         node: node,
         messageId: messageId,
@@ -179,7 +180,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkParameterPropertyAccessibilityModifier(
       node: TSESTree.TSParameterProperty,
-    ) {
+    ): void {
       const nodeType = 'parameter property';
       // HAS to be an identifier or assignment or TSC will throw
       if (

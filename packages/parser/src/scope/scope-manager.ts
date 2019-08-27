@@ -13,12 +13,14 @@ export class ScopeManager extends TSESLintScope.ScopeManager {
   }
 
   /** @internal */
-  __nestEnumScope(node: TSESTree.TSEnumDeclaration) {
+  __nestEnumScope(node: TSESTree.TSEnumDeclaration): TSESLintScope.Scope {
     return this.__nestScope(new EnumScope(this, this.__currentScope, node));
   }
 
   /** @internal */
-  __nestEmptyFunctionScope(node: TSESTree.TSDeclareFunction) {
+  __nestEmptyFunctionScope(
+    node: TSESTree.TSDeclareFunction,
+  ): TSESLintScope.Scope {
     return this.__nestScope(
       new EmptyFunctionScope(this, this.__currentScope, node),
     );

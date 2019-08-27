@@ -186,7 +186,10 @@ export function isTypeFlagSet(
 /**
  * @returns Whether a type is an instance of the parent type, including for the parent's base types.
  */
-export const typeIsOrHasBaseType = (type: ts.Type, parentType: ts.Type) => {
+export function typeIsOrHasBaseType(
+  type: ts.Type,
+  parentType: ts.Type,
+): boolean {
   if (type.symbol === undefined || parentType.symbol === undefined) {
     return false;
   }
@@ -208,4 +211,4 @@ export const typeIsOrHasBaseType = (type: ts.Type, parentType: ts.Type) => {
   }
 
   return false;
-};
+}

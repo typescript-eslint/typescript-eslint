@@ -1,5 +1,8 @@
+import path from 'path';
 import semver from 'semver';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import { sync as globSync } from 'glob';
+import isGlob from 'is-glob';
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
@@ -9,6 +12,7 @@ import { TSESTree } from './ts-estree';
 import {
   calculateProjectParserOptions,
   createProgram,
+  defaultCompilerOptions,
 } from './tsconfig-parser';
 
 /**
@@ -33,7 +37,7 @@ let warnedAboutTSVersion = false;
  *
  * @param options Parser options
  */
-function getFileName({ jsx }: { jsx?: boolean }) {
+function getFileName({ jsx }: { jsx?: boolean }): string {
   return jsx ? 'estree.tsx' : 'estree.ts';
 }
 
@@ -62,6 +66,11 @@ function resetExtra(): void {
   };
 }
 
+interface ASTAndProgram {
+  ast: ts.SourceFile;
+  program: ts.Program | undefined;
+}
+
 /**
  * @param code The code of the file being linted
  * @param options The config object
@@ -71,7 +80,7 @@ function getASTFromProject(
   code: string,
   options: TSESTreeOptions,
   createDefaultProgram: boolean,
-) {
+): ASTAndProgram | undefined {
   const filePath = options.filePath || getFileName(options);
   const astAndProgram = firstDefined(
     calculateProjectParserOptions(code, filePath, extra),
@@ -82,9 +91,39 @@ function getASTFromProject(
   );
 
   if (!astAndProgram && !createDefaultProgram) {
-    throw new Error(
-      `If "parserOptions.project" has been set for @typescript-eslint/parser, ${filePath} must be included in at least one of the projects provided.`,
-    );
+    // the file was either not matched within the tsconfig, or the extension wasn't expected
+    const errorLines = [
+      '"parserOptions.project" has been set for @typescript-eslint/parser.',
+      `The file does not match your project config: ${filePath}.`,
+    ];
+    let hasMatchedAnError = false;
+
+    const fileExtension = path.extname(filePath);
+    if (!['.ts', '.tsx', '.js', '.jsx'].includes(fileExtension)) {
+      const nonStandardExt = `The extension for the file (${fileExtension}) is non-standard`;
+      if (extra.extraFileExtensions && extra.extraFileExtensions.length > 0) {
+        if (!extra.extraFileExtensions.includes(fileExtension)) {
+          errorLines.push(
+            `${nonStandardExt}. It should be added to your existing "parserOptions.extraFileExtensions".`,
+          );
+          hasMatchedAnError = true;
+        }
+      } else {
+        errorLines.push(
+          `${nonStandardExt}. You should add "parserOptions.extraFileExtensions" to your config.`,
+        );
+        hasMatchedAnError = true;
+      }
+    }
+
+    if (!hasMatchedAnError) {
+      errorLines.push(
+        'The file must be included in at least one of the projects provided.',
+      );
+      hasMatchedAnError = true;
+    }
+
+    throw new Error(errorLines.join('\n'));
   }
 
   return astAndProgram;
@@ -95,7 +134,10 @@ function getASTFromProject(
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
+function getASTAndDefaultProject(
+  code: string,
+  options: TSESTreeOptions,
+): ASTAndProgram | undefined {
   const fileName = options.filePath || getFileName(options);
   const program = createProgram(code, fileName, extra);
   const ast = program && program.getSourceFile(fileName);
@@ -106,7 +148,7 @@ function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
  * @param code The code of the file being linted
  * @returns Returns a new source file and program corresponding to the linted code
  */
-function createNewProgram(code: string) {
+function createNewProgram(code: string): ASTAndProgram {
   const FILENAME = getFileName(extra);
 
   const compilerHost: ts.CompilerHost = {
@@ -150,6 +192,7 @@ function createNewProgram(code: string) {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined,
+      ...defaultCompilerOptions,
     },
     compilerHost,
   );
@@ -170,7 +213,7 @@ function getProgramAndAST(
   options: TSESTreeOptions,
   shouldProvideParserServices: boolean,
   createDefaultProgram: boolean,
-) {
+): ASTAndProgram | undefined {
   return (
     (shouldProvideParserServices &&
       getASTFromProject(code, options, createDefaultProgram)) ||
@@ -244,6 +287,15 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     extra.projects = options.project;
   }
 
+  // Transform glob patterns into paths
+  if (extra.projects) {
+    extra.projects = extra.projects.reduce<string[]>(
+      (projects, project) =>
+        projects.concat(isGlob(project) ? globSync(project) : project),
+      [],
+    );
+  }
+
   if (typeof options.tsconfigRootDir === 'string') {
     extra.tsconfigRootDir = options.tsconfigRootDir;
   }
@@ -293,7 +345,7 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
-type AST<T extends TSESTreeOptions> = TSESTree.Program &
+export type AST<T extends TSESTreeOptions> = TSESTree.Program &
   (T['range'] extends true ? { range: [number, number] } : {}) &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
@@ -403,7 +455,7 @@ export function parseAndGenerateServices<
     options,
     shouldProvideParserServices,
     extra.createDefaultProgram,
-  );
+  )!;
   /**
    * Determine whether or not two-way maps of converted AST nodes should be preserved
    * during the conversion process

@@ -11,6 +11,7 @@ export default util.createRule({
         'When adding two variables, operands must both be of type number or of type string',
       category: 'Best Practices',
       recommended: false,
+      requiresTypeChecking: true,
     },
     messages: {
       notNumbers:
@@ -83,7 +84,7 @@ export default util.createRule({
     }
 
     return {
-      "BinaryExpression[operator='+']"(node: TSESTree.BinaryExpression) {
+      "BinaryExpression[operator='+']"(node: TSESTree.BinaryExpression): void {
         const leftType = getNodeType(node.left);
         const rightType = getNodeType(node.right);
 
