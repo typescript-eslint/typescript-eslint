@@ -42,7 +42,7 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
           url: urlCreator(name),
         },
       },
-      create(context) {
+      create(context): TRuleListener {
         const optionsWithDefault = applyDefault(
           defaultOptions,
           context.options,

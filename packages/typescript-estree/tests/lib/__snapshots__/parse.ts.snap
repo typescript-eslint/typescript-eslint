@@ -189,6 +189,42 @@ Object {
 }
 `;
 
+exports[`parse() invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension does not match 1`] = `
+"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+The file does not match your project config: tests/fixtures/invalidFileErrors/other/unknownFileType.unknown.
+The extension for the file (.unknown) is non-standard. It should be added to your existing \\"parserOptions.extraFileExtensions\\"."
+`;
+
+exports[`parse() invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches the file isn't included 1`] = `
+"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+The file does not match your project config: tests/fixtures/invalidFileErrors/other/notIncluded.vue.
+The file must be included in at least one of the projects provided."
+`;
+
+exports[`parse() invalid file error messages project includes errors for not included files 1`] = `
+"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+The file does not match your project config: tests/fixtures/invalidFileErrors/ts/notIncluded.ts.
+The file must be included in at least one of the projects provided."
+`;
+
+exports[`parse() invalid file error messages project includes errors for not included files 2`] = `
+"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+The file does not match your project config: tests/fixtures/invalidFileErrors/ts/notIncluded.tsx.
+The file must be included in at least one of the projects provided."
+`;
+
+exports[`parse() invalid file error messages project includes errors for not included files 3`] = `
+"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+The file does not match your project config: tests/fixtures/invalidFileErrors/js/notIncluded.js.
+The file must be included in at least one of the projects provided."
+`;
+
+exports[`parse() invalid file error messages project includes errors for not included files 4`] = `
+"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+The file does not match your project config: tests/fixtures/invalidFileErrors/js/notIncluded.jsx.
+The file must be included in at least one of the projects provided."
+`;
+
 exports[`parse() non string code should correctly convert code to a string for parse() 1`] = `
 Object {
   "body": Array [

@@ -25,7 +25,7 @@ function stringifyTypeName(
 
 function getCustomMessage(
   bannedType: null | string | { message?: string; fixWith?: string },
-) {
+): string {
   if (bannedType === null) {
     return '';
   }
@@ -108,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ types: bannedTypes }]) {
     return {
-      TSTypeReference({ typeName }) {
+      TSTypeReference({ typeName }): void {
         const name = stringifyTypeName(typeName, context.getSourceCode());
 
         if (name in bannedTypes) {
@@ -124,6 +124,7 @@ export default util.createRule<Options, MessageIds>({
               name: name,
               customMessage,
             },
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             fix: fixWith ? fixer => fixer.replaceText(typeName, fixWith) : null,
           });
         }

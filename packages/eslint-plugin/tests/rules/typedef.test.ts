@@ -198,6 +198,24 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    {
+      code: `const [a, b] = [1, 2];`,
+      options: [
+        {
+          objectDestructuring: false,
+          variableDeclaration: true,
+        },
+      ],
+    },
+    {
+      code: `const { a, b } = { a: '', b: '' };`,
+      options: [
+        {
+          objectDestructuring: false,
+          variableDeclaration: true,
+        },
+      ],
+    },
     // Contexts where TypeScript doesn't allow annotations
     {
       code: `for (x of [1, 2, 3]) { }`,

@@ -10,6 +10,7 @@ export default util.createRule({
       category: 'Best Practices',
       description: 'Warns when a namespace qualifier is unnecessary',
       recommended: false,
+      requiresTypeChecking: true,
     },
     fixable: 'code',
     messages: {
@@ -132,7 +133,7 @@ export default util.createRule({
       namespacesInScope.push(esTreeNodeToTSNodeMap.get(node));
     }
 
-    function exitDeclaration() {
+    function exitDeclaration(): void {
       namespacesInScope.pop();
     }
 
