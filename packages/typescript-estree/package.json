@@ -47,7 +47,7 @@
     "semver": "^6.3.0"
   },
   "devDependencies": {
-    "@babel/code-frame": "7.0.0",
+    "@babel/code-frame": "7.5.5",
     "@babel/parser": "7.3.2",
     "@babel/types": "^7.3.2",
     "@types/babel-code-frame": "^6.20.1",
