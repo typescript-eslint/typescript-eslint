@@ -119,6 +119,9 @@ ruleTester.run('typedef', rule, {
     `class Test {
       constructor(param: string = 'something') {}
     }`,
+    `class Test {
+      constructor(private param: string = 'something') {}
+    }`,
     // Method parameters
     `class Test {
       public method(x: number): number { return x; }
@@ -426,6 +429,17 @@ ruleTester.run('typedef', rule, {
     {
       code: `class Test {
         constructor(param = 'something') {}
+      }`,
+      errors: [
+        {
+          column: 21,
+          messageId: 'expectedTypedef',
+        },
+      ],
+    },
+    {
+      code: `class Test {
+        constructor(private param = 'something') {}
       }`,
       errors: [
         {

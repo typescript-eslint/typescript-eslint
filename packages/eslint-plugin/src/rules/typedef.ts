@@ -79,6 +79,15 @@ export default util.createRule<[Options], MessageIds>({
             break;
           case AST_NODE_TYPES.TSParameterProperty:
             annotationNode = param.parameter;
+
+            // Check TS parameter property with default value like `constructor(private param: string = 'something') {}`
+            if (
+              annotationNode &&
+              annotationNode.type === AST_NODE_TYPES.AssignmentPattern
+            ) {
+              annotationNode = annotationNode.left;
+            }
+
             break;
           default:
             annotationNode = param;
