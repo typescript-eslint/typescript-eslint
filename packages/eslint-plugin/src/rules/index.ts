@@ -53,6 +53,7 @@ import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import semi from './semi';
+import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
 import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
@@ -118,6 +119,7 @@ export default {
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
   semi: semi,
+  'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
