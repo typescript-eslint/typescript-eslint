@@ -26,19 +26,6 @@ type MessageIds = 'unwantedPublicAccessibility' | 'missingAccessibility';
 
 const accessibilityLevel = { enum: ['explicit', 'no-public', 'off'] };
 
-const isParentConstructor = (node: TSESTree.TSParameterProperty) => {
-  let parent = node.parent;
-  while (parent) {
-    if (parent.type === 'MethodDefinition' && parent.kind === 'constructor') {
-      return true;
-    }
-    // go up
-    parent = parent.parent;
-  }
-
-  return false;
-};
-
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
   meta: {
@@ -200,10 +187,6 @@ export default util.createRule<Options, MessageIds>({
         node.parameter.type !== AST_NODE_TYPES.Identifier &&
         node.parameter.type !== AST_NODE_TYPES.AssignmentPattern
       ) {
-        return;
-      }
-
-      if (ctorCheck === 'off' && isParentConstructor(node)) {
         return;
       }
 

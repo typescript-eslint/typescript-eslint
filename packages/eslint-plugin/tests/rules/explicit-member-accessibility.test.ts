@@ -245,17 +245,8 @@ class Test {
         },
       ],
     },
-    {
-      filename: 'test.ts',
-      options: [
-        { accessibility: 'no-public', overrides: { constructors: 'off' } },
-      ],
-      code: `
-class Foo {
-  constructor(public bar) {}
-}
-            `,
-    },
+  ],
+  invalid: [
     {
       filename: 'test.ts',
       code: `
@@ -271,25 +262,14 @@ export class XXXX {
           },
         },
       ],
-    },
-    {
-      filename: 'test.ts',
-      code: `
-export class XXXX {
-  private constructor(readonly samosa: string) {}
-}
-      `,
-      options: [
+      errors: [
         {
-          accessibility: 'off',
-          overrides: {
-            constructors: 'no-public',
-          },
+          messageId: 'missingAccessibility',
+          column: 22,
+          line: 3,
         },
       ],
     },
-  ],
-  invalid: [
     {
       filename: 'test.ts',
       code: `
