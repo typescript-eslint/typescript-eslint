@@ -1,6 +1,7 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -57,6 +58,53 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
+    const sourceCode = context.getSourceCode();
+
+    /**
+     * Returns start column position
+     * @param node
+     */
+    function getLocStart(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): TSESTree.LineAndColumnData {
+      /* highlight method name */
+      const parent = node.parent;
+      if (
+        parent &&
+        (parent.type === AST_NODE_TYPES.MethodDefinition ||
+          (parent.type === AST_NODE_TYPES.Property && parent.method))
+      ) {
+        return parent.loc.start;
+      }
+
+      return node.loc.start;
+    }
+
+    /**
+     * Returns end column position
+     * @param node
+     */
+    function getLocEnd(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): TSESTree.LineAndColumnData {
+      /* highlight `=>` */
+      if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+        return sourceCode.getTokenBefore(
+          node.body,
+          token =>
+            token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=>',
+        )!.loc.end;
+      }
+
+      return sourceCode.getTokenBefore(node.body!)!.loc.end;
+    }
+
     /**
      * Checks if a node is a constructor.
      * @param node The node to check
@@ -258,6 +306,7 @@ export default util.createRule<Options, MessageIds>({
 
       context.report({
         node,
+        loc: { start: getLocStart(node), end: getLocEnd(node) },
         messageId: 'missingReturnType',
       });
     }
