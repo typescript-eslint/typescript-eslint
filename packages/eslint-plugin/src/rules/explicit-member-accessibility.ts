@@ -204,7 +204,7 @@ export default util.createRule<Options, MessageIds>({
           break;
         }
         case 'no-public': {
-          if (node.accessibility === 'public') {
+          if (node.accessibility === 'public' && node.readonly) {
             reportIssue(
               'unwantedPublicAccessibility',
               nodeType,
