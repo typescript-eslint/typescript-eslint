@@ -387,6 +387,7 @@ declare module 'eslint/lib/rules/no-extra-parens' {
         node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
       ): void;
       ForStatement(node: TSESTree.ForStatement): void;
+      'ForStatement > *.init:exit'(node: TSESTree.Node): void;
       IfStatement(node: TSESTree.IfStatement): void;
       LogicalExpression(node: TSESTree.LogicalExpression): void;
       MemberExpression(node: TSESTree.MemberExpression): void;
