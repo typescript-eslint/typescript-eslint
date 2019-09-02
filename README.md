@@ -191,15 +191,15 @@ We publish a canary release on every successful merge to master, so **you never 
 
 Additionally, we promote the to the `latest` tag on NPM once per week, **on Mondays at 1pm Eastern**.
 
-The version under the `latest` tag is:
+The latest version under the `latest` tag is:
 
 <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/latest.svg?style=flat-square" alt="NPM Version" /></a>
 
-The version under the `canary` tag **(latest commit to master)** is:
+The latest version under the `canary` tag **(latest commit to master)** is:
 
 <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square" alt="NPM Version" /></a>
 
-(Note: The only exceptions to the automated publishes described are when we are in the final phases are creating the next major version of the libraries - e.g. going from 1.x.x to 2.x.x. During these periods, we manually publish canary releases until we are happy with the release and promote it to `latest`.)
+(Note: The only exceptions to the automated publishes described above are when we are in the final phases of creating the next major version of the libraries - e.g. going from 1.x.x to 2.x.x. During these periods, we manually publish `canary` releases until we are happy with the release and promote it to `latest`.)
 
 <br>
 
