@@ -26347,13 +26347,12 @@ Object {
                   "line": 1,
                 },
               },
+              "name": "constructor",
               "range": Array [
                 9,
                 22,
               ],
-              "raw": "\\"constructor\\"",
-              "type": "Literal",
-              "value": "constructor",
+              "type": "Identifier",
             },
             "kind": "constructor",
             "loc": Object {

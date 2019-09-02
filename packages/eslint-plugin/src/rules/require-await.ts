@@ -117,7 +117,7 @@ export default util.createRule<Options, MessageIds>({
      * @param {ASTNode} node - The node to check
      * @returns {boolean}
      */
-    function isThenableType(node: ts.Node) {
+    function isThenableType(node: ts.Node): boolean {
       const type = checker.getTypeAtLocation(node);
 
       return tsutils.isThenableType(checker, node, type);

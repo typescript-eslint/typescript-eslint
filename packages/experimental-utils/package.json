@@ -38,7 +38,7 @@
   "dependencies": {
     "@types/json-schema": "^7.0.3",
     "@typescript-eslint/typescript-estree": "2.1.0",
-    "eslint-scope": "^4.0.0"
+    "eslint-scope": "^5.0.0"
   },
   "peerDependencies": {
     "eslint": "*"
