@@ -187,15 +187,19 @@ If you are interested in using TypeScript and ESLint together, you will want to 
 
 All of the packages are published with the same version number to make it easier to coordinate both releases and installations.
 
-Additionally, we also publish a canary release on every successful merge to master, so you never need to wait for a new stable version to make use of any updates.
+We publish a canary release on every successful merge to master, so **you never need to wait for a new stable version to make use of any updates**.
 
-The `latest` (stable) version is:
+Additionally, we promote the to the `latest` tag on NPM once per week, **on Mondays at 1pm Eastern**.
+
+The version under the `latest` tag is:
 
 <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/latest.svg?style=flat-square" alt="NPM Version" /></a>
 
-The `canary` (latest master) version is:
+The version under the `canary` tag **(latest commit to master)** is:
 
 <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square" alt="NPM Version" /></a>
+
+(Note: The only exceptions to the automated publishes described are when we are in the final phases are creating the next major version of the libraries - e.g. going from 1.x.x to 2.x.x. During these periods, we manually publish canary releases until we are happy with the release and promote it to `latest`.)
 
 <br>
 
