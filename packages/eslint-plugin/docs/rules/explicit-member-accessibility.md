@@ -27,7 +27,7 @@ type Options = {
     properties?: AccessibilityLevel;
     parameterProperties?: AccessibilityLevel;
   };
-}
+};
 
 const defaultOptions: Options = {
   accessibility: 'explicit',
