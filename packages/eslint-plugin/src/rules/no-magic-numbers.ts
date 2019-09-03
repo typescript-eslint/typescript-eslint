@@ -161,7 +161,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isParentTSReadonlyClassProperty(node: TSESTree.Node): boolean {
       return (
-        typeof node.parent !== 'undefined' &&
+        !!node.parent &&
         node.parent.type === AST_NODE_TYPES.ClassProperty &&
         !!node.parent.readonly
       );
