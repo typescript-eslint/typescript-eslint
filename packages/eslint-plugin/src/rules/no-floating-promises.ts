@@ -16,6 +16,7 @@ export default util.createRule<Options, 'floating'>({
       description: 'Requires Promise-like values to be handled appropriately.',
       category: 'Best Practices',
       recommended: false,
+      requiresTypeChecking: true,
     },
     messages: {
       floating: 'Promises must be handled appropriately',
@@ -42,7 +43,7 @@ export default util.createRule<Options, 'floating'>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
-      ExpressionStatement(node) {
+      ExpressionStatement(node): void {
         const { expression } = parserServices.esTreeNodeToTSNodeMap.get<
           ts.ExpressionStatement
         >(node);

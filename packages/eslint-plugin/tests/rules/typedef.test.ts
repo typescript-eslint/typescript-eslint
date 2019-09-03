@@ -109,6 +109,19 @@ ruleTester.run('typedef', rule, {
     `function receivesString({ a }: { a: string }): void { }`,
     `function receivesStrings({ a, b }: { [i: string ]: string }): void { }`,
     `function receivesNumber(a: number = 123): void { }`,
+    // Constructor parameters
+    `class Test {
+      constructor() {}
+    }`,
+    `class Test {
+      constructor(param: string) {}
+    }`,
+    `class Test {
+      constructor(param: string = 'something') {}
+    }`,
+    `class Test {
+      constructor(private param: string = 'something') {}
+    }`,
     // Method parameters
     `class Test {
       public method(x: number): number { return x; }
@@ -195,6 +208,24 @@ ruleTester.run('typedef', rule, {
       options: [
         {
           variableDeclaration: false,
+        },
+      ],
+    },
+    {
+      code: `const [a, b] = [1, 2];`,
+      options: [
+        {
+          objectDestructuring: false,
+          variableDeclaration: true,
+        },
+      ],
+    },
+    {
+      code: `const { a, b } = { a: '', b: '' };`,
+      options: [
+        {
+          objectDestructuring: false,
+          variableDeclaration: true,
         },
       ],
     },
@@ -379,6 +410,40 @@ ruleTester.run('typedef', rule, {
       errors: [
         {
           column: 26,
+          messageId: 'expectedTypedef',
+        },
+      ],
+    },
+    // Constructor parameters
+    {
+      code: `class Test {
+        constructor(param) {}
+      }`,
+      errors: [
+        {
+          column: 21,
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+    },
+    {
+      code: `class Test {
+        constructor(param = 'something') {}
+      }`,
+      errors: [
+        {
+          column: 21,
+          messageId: 'expectedTypedef',
+        },
+      ],
+    },
+    {
+      code: `class Test {
+        constructor(private param = 'something') {}
+      }`,
+      errors: [
+        {
+          column: 21,
           messageId: 'expectedTypedef',
         },
       ],

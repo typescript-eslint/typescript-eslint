@@ -185,12 +185,12 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSMappedType(node) {
+      TSMappedType(node): void {
         if (node.typeAnnotation) {
           checkTypeAnnotationSpacing(node.typeAnnotation);
         }
       },
-      TSTypeAnnotation(node) {
+      TSTypeAnnotation(node): void {
         checkTypeAnnotationSpacing(node.typeAnnotation);
       },
     };

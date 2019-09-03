@@ -33,8 +33,6 @@ const sharedFixturesDirPath = path.join(
 class FixturesTester {
   protected fixtures: FixturePatternConfig[] = [];
 
-  constructor() {}
-
   /**
    * Utility to generate a FixturePatternConfig object containing the glob pattern for specific subsections of the fixtures/ directory,
    * including the capability to ignore specific nested patterns.
@@ -45,7 +43,7 @@ class FixturesTester {
   public addFixturePatternConfig(
     fixturesSubPath: string,
     config: CreateFixturePatternConfig = {},
-  ) {
+  ): void {
     let _fixturesDirPath = fixturesDirPath;
     if (!fs.existsSync(path.join(fixturesDirPath, fixturesSubPath))) {
       _fixturesDirPath = sharedFixturesDirPath;
@@ -203,6 +201,10 @@ tester.addFixturePatternConfig('javascript/classes', {
      * super() is being used outside of constructor. Other parsers (e.g. espree, acorn) do not error on this.
      */
     'class-one-method-super', // babel parse errors
+    /**
+     * TS3.6 made computed constructors parse as actual constructors.
+     */
+    'class-two-methods-computed-constructor',
   ],
 });
 
@@ -235,6 +237,11 @@ tester.addFixturePatternConfig('javascript/forIn', {
      * TODO: Investigate this in more detail
      */
     'for-in-with-assigment', // babel parse errors
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: Invalid left-hand side in for-loop
+     */
+    'for-in-with-bare-assigment',
   ],
 });
 
@@ -251,6 +258,14 @@ tester.addFixturePatternConfig('javascript/modules', {
      * Expected babel parse errors - ts-estree is not currently throwing
      */
     'invalid-export-named-default', // babel parse errors
+
+    // babel does not recognise these as modules
+    'export-named-as-default',
+    'export-named-as-specifier',
+    'export-named-as-specifiers',
+    'export-named-specifier',
+    'export-named-specifiers-comma',
+    'export-named-specifiers',
   ],
   ignoreSourceType: [
     'error-function',
@@ -395,6 +410,11 @@ tester.addFixturePatternConfig('typescript/basics', {
     'const-assertions',
     'readonly-arrays',
     'readonly-tuples',
+    /**
+     * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
+     * SyntaxError: 'abstract' modifier can only appear on a class, method, or property declaration.
+     */
+    'abstract-class-with-abstract-constructor',
   ],
   ignoreSourceType: [
     /**
