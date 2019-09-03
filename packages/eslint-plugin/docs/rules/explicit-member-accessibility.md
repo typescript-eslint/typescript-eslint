@@ -214,6 +214,46 @@ class Animal {
 }
 ```
 
+e.g. `[ { accessibility: 'off', overrides: { parameterProperties: 'explicit' } } ]`
+
+The following code is considered incorrect with the example override
+
+```ts
+class Animal {
+  constructor(readonly animalName: string) {}
+}
+```
+
+The following code patterns are considered correct with the example override
+
+```ts
+class Animal {
+  constructor(public readonly animalName: string) {}
+}
+
+class Animal {
+  constructor(public animalName: string) {}
+}
+```
+
+e.g. `[ { accessibility: 'off', overrides: { parameterProperties: 'no-public' } } ]`
+
+The following code is considered incorrect with the example override
+
+```ts
+class Animal {
+  constructor(public readonly animalName: string) {}
+}
+```
+
+The following code is considered correct with the example override
+
+```ts
+class Animal {
+  constructor(public animalName: string) {}
+}
+```
+
 #### Disable any checks on given member type
 
 e.g. `[{ overrides: { accessors : 'off' } } ]`

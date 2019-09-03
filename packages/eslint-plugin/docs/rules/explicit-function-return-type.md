@@ -73,8 +73,8 @@ type Options = {
 
 const defaults = {
   allowExpressions: false,
-  allowTypedFunctionExpressions: false,
-  allowHigherOrderFunctions: false,
+  allowTypedFunctionExpressions: true,
+  allowHigherOrderFunctions: true,
 };
 ```
 

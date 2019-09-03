@@ -196,8 +196,24 @@ export default util.createRule<Options, MessageIds>({
           : // has to be an Identifier or TSC will throw an error
             (node.parameter.left as TSESTree.Identifier).name;
 
-      if (paramPropCheck === 'no-public' && node.accessibility === 'public') {
-        reportIssue('unwantedPublicAccessibility', nodeType, node, nodeName);
+      switch (paramPropCheck) {
+        case 'explicit': {
+          if (!node.accessibility) {
+            reportIssue('missingAccessibility', nodeType, node, nodeName);
+          }
+          break;
+        }
+        case 'no-public': {
+          if (node.accessibility === 'public' && node.readonly) {
+            reportIssue(
+              'unwantedPublicAccessibility',
+              nodeType,
+              node,
+              nodeName,
+            );
+          }
+          break;
+        }
       }
     }
 

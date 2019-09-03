@@ -174,7 +174,7 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
-    const isValidTupleType = (type: TypeWithLabel) => {
+    const isValidTupleType = (type: TypeWithLabel): boolean => {
       if (type.node.type === AST_NODE_TYPES.TSTupleType) {
         return true;
       }
@@ -195,7 +195,7 @@ export default util.createRule<Options, MessageIds>({
       isTopLevel: boolean,
       type: TypeWithLabel,
       label: string,
-    ) => {
+    ): void => {
       if (
         optionValue === 'never' ||
         !isSupportedComposition(isTopLevel, type.compositionType, optionValue)
