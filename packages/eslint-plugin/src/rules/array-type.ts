@@ -94,7 +94,8 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      // too opinionated to be recommended
+      recommended: false,
     },
     fixable: 'code',
     messages: {
@@ -168,7 +169,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSArrayType(node: TSESTree.TSArrayType) {
+      TSArrayType(node): void {
         if (
           isArrayOption ||
           (isArraySimpleOption && isSimpleType(node.elementType))
@@ -241,7 +242,7 @@ export default util.createRule<Options, MessageIds>({
         });
       },
 
-      TSTypeReference(node: TSESTree.TSTypeReference) {
+      TSTypeReference(node): void {
         if (
           isGenericOption ||
           node.typeName.type !== AST_NODE_TYPES.Identifier

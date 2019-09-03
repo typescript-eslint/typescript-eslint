@@ -32,6 +32,11 @@ interface RuleMetaDataDocs {
    * The URL of the rule's docs
    */
   url: string;
+  /**
+   * Does the rule require us to create a full TypeScript Program in order for it
+   * to type-check code. This is only used for documentation purposes.
+   */
+  requiresTypeChecking?: boolean;
 }
 interface RuleMetaData<TMessageIds extends string> {
   /**
@@ -270,6 +275,7 @@ interface RuleListener {
   JSXSpreadChild?: RuleFunction<TSESTree.JSXSpreadChild>;
   JSXText?: RuleFunction<TSESTree.JSXText>;
   LabeledStatement?: RuleFunction<TSESTree.LabeledStatement>;
+  Literal?: RuleFunction<TSESTree.Literal>;
   LogicalExpression?: RuleFunction<TSESTree.LogicalExpression>;
   MemberExpression?: RuleFunction<TSESTree.MemberExpression>;
   MetaProperty?: RuleFunction<TSESTree.MetaProperty>;

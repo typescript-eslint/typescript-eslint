@@ -28,6 +28,7 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
       description: 'Restricts the types allowed in boolean expressions',
       category: 'Best Practices',
       recommended: false,
+      requiresTypeChecking: true,
     },
     schema: [
       {

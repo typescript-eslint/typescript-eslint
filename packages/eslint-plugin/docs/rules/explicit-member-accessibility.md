@@ -18,7 +18,7 @@ type AccessibilityLevel =
   | 'no-public' // don't require public
   | 'off'; // don't check
 
-interface Config {
+type Options = {
   accessibility?: AccessibilityLevel;
   overrides?: {
     accessors?: AccessibilityLevel;
@@ -27,14 +27,36 @@ interface Config {
     properties?: AccessibilityLevel;
     parameterProperties?: AccessibilityLevel;
   };
+};
+
+const defaultOptions: Options = {
+  accessibility: 'explicit',
+};
+```
+
+### Configuring in a mixed JS/TS codebase
+
+If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.jsx` files.
+
+```jsonc
+{
+  "rules": {
+    // disable the rule for all files
+    "@typescript-eslint/explicit-member-accessibility": "off"
+  },
+  "overrides": [
+    {
+      // enable the rule specifically for TypeScript files
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-member-accessibility": ["error"]
+      }
+    }
+  ]
 }
 ```
 
-Default config:
-
-```JSON
-{ "accessibility": "explicit" }
-```
+### `accessibility`
 
 This rule in it's default state requires no configuration and will enforce that every class member has an accessibility modifier. If you would like to allow for some implicit public members then you have the following options:
 A possible configuration could be:
@@ -79,7 +101,7 @@ The following patterns are considered correct with the default options `{ access
 
 ```ts
 class Animal {
-  public constructor(public breed, animalName) {
+  public constructor(public breed, name) {
     // Parameter property and constructor
     this.animalName = name;
   }
@@ -102,7 +124,7 @@ The following patterns are considered incorrect with the accessibility set to **
 
 ```ts
 class Animal {
-  public constructor(public breed, animalName) {
+  public constructor(public breed, name) {
     // Parameter property and constructor
     this.animalName = name;
   }
@@ -125,7 +147,7 @@ The following patterns are considered correct with the accessibility set to **no
 
 ```ts
 class Animal {
-  constructor(protected breed, animalName) {
+  constructor(protected breed, name) {
     // Parameter property and constructor
     this.name = name;
   }
@@ -211,6 +233,46 @@ class Animal {
   }
   public legs: number;
   private hasFleas: boolean;
+}
+```
+
+e.g. `[ { accessibility: 'off', overrides: { parameterProperties: 'explicit' } } ]`
+
+The following code is considered incorrect with the example override
+
+```ts
+class Animal {
+  constructor(readonly animalName: string) {}
+}
+```
+
+The following code patterns are considered correct with the example override
+
+```ts
+class Animal {
+  constructor(public readonly animalName: string) {}
+}
+
+class Animal {
+  constructor(public animalName: string) {}
+}
+```
+
+e.g. `[ { accessibility: 'off', overrides: { parameterProperties: 'no-public' } } ]`
+
+The following code is considered incorrect with the example override
+
+```ts
+class Animal {
+  constructor(public readonly animalName: string) {}
+}
+```
+
+The following code is considered correct with the example override
+
+```ts
+class Animal {
+  constructor(public animalName: string) {}
 }
 ```
 

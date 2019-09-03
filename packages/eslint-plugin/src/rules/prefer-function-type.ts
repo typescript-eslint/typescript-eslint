@@ -72,7 +72,7 @@ export default util.createRule({
         | TSESTree.TSCallSignatureDeclaration
         | TSESTree.TSConstructSignatureDeclaration,
       parent: TSESTree.Node,
-    ) {
+    ): string {
       const start = call.range[0];
       const colonPos = call.returnType!.range[0] - start;
       const text = sourceCode.getText().slice(start, call.range[1]);
@@ -102,7 +102,10 @@ export default util.createRule({
      * @param member The TypeElement being checked
      * @param node The parent of member being checked
      */
-    function checkMember(member: TSESTree.TypeElement, node: TSESTree.Node) {
+    function checkMember(
+      member: TSESTree.TypeElement,
+      node: TSESTree.Node,
+    ): void {
       if (
         (member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
           member.type === AST_NODE_TYPES.TSConstructSignatureDeclaration) &&
@@ -141,12 +144,12 @@ export default util.createRule({
     }
 
     return {
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node): void {
         if (!hasOneSupertype(node) && node.body.body.length === 1) {
           checkMember(node.body.body[0], node);
         }
       },
-      'TSTypeLiteral[members.length = 1]'(node: TSESTree.TSTypeLiteral) {
+      'TSTypeLiteral[members.length = 1]'(node: TSESTree.TSTypeLiteral): void {
         checkMember(node.members[0], node);
       },
     };

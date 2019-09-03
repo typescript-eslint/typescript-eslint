@@ -54,7 +54,7 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ allowConstructorOnly, allowEmpty, allowStaticOnly }]) {
     return {
-      ClassBody(node) {
+      ClassBody(node): void {
         const parent = node.parent as
           | TSESTree.ClassDeclaration
           | TSESTree.ClassExpression

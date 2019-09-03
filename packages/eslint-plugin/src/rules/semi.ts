@@ -16,6 +16,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Require or disallow semicolons instead of ASI',
       category: 'Stylistic Issues',
+      // too opinionated to be recommended
       recommended: false,
     },
     fixable: 'code',
@@ -59,7 +60,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       ...rules,
       ...nodesToCheck,
-      ExportDefaultDeclaration(node) {
+      ExportDefaultDeclaration(node): void {
         if (node.declaration.type !== AST_NODE_TYPES.TSInterfaceDeclaration) {
           rules.ExportDefaultDeclaration(node);
         }
