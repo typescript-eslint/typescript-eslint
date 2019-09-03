@@ -199,6 +199,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         detectObjects?: boolean;
         ignoreNumericLiteralTypes?: boolean;
         ignoreEnums?: boolean;
+        ignoreReadonlyClassProperties?: boolean;
       },
     ],
     {
