@@ -123,6 +123,15 @@ ruleTester.run('no-inferrable-types', rule, {
         "class Foo { a: number = 5; b: boolean = true; c: string = 'foo'; }",
       options: [{ ignoreProperties: true }],
     },
+    {
+      code: `
+class Foo {
+  a?: number = 5;
+  b?: boolean = true;
+  c?: string = 'foo';
+}
+      `,
+    },
   ],
 
   invalid: [

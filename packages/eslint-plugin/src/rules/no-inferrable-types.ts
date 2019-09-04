@@ -250,7 +250,7 @@ export default util.createRule<Options, MessageIds>({
       // Essentially a readonly property without a type
       // will result in its value being the type, leading to
       // compile errors if the type is stripped.
-      if (ignoreProperties || node.readonly) {
+      if (ignoreProperties || node.readonly || node.optional) {
         return;
       }
       reportInferrableType(node, node.typeAnnotation, node.value);

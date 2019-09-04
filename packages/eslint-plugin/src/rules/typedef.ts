@@ -79,6 +79,15 @@ export default util.createRule<[Options], MessageIds>({
             break;
           case AST_NODE_TYPES.TSParameterProperty:
             annotationNode = param.parameter;
+
+            // Check TS parameter property with default value like `constructor(private param: string = 'something') {}`
+            if (
+              annotationNode &&
+              annotationNode.type === AST_NODE_TYPES.AssignmentPattern
+            ) {
+              annotationNode = annotationNode.left;
+            }
+
             break;
           default:
             annotationNode = param;
@@ -141,36 +150,35 @@ export default util.createRule<[Options], MessageIds>({
       },
       VariableDeclarator(node): void {
         if (
-          options[OptionKeys.VariableDeclaration] &&
-          !node.id.typeAnnotation
+          !options[OptionKeys.VariableDeclaration] ||
+          node.id.typeAnnotation ||
+          (node.id.type === AST_NODE_TYPES.ArrayPattern &&
+            !options[OptionKeys.ArrayDestructuring]) ||
+          (node.id.type === AST_NODE_TYPES.ObjectPattern &&
+            !options[OptionKeys.ObjectDestructuring])
         ) {
-          // Are we inside a context that does not allow type annotations?
-          let typeAnnotationRequired = true;
+          return;
+        }
 
-          let current: TSESTree.Node | undefined = node.parent;
-          while (current) {
-            switch (current.type) {
-              case AST_NODE_TYPES.VariableDeclaration:
-                // Keep looking upwards
-                current = current.parent;
-                break;
-              case AST_NODE_TYPES.ForOfStatement:
-              case AST_NODE_TYPES.ForInStatement:
-                // Stop traversing and don't report an error
-                typeAnnotationRequired = false;
-                current = undefined;
-                break;
-              default:
-                // Stop traversing
-                current = undefined;
-                break;
-            }
-          }
-
-          if (typeAnnotationRequired) {
-            report(node, getNodeName(node.id));
+        let current: TSESTree.Node | undefined = node.parent;
+        while (current) {
+          switch (current.type) {
+            case AST_NODE_TYPES.VariableDeclaration:
+              // Keep looking upwards
+              current = current.parent;
+              break;
+            case AST_NODE_TYPES.ForOfStatement:
+            case AST_NODE_TYPES.ForInStatement:
+              // Stop traversing and don't report an error
+              return;
+            default:
+              // Stop traversing
+              current = undefined;
+              break;
           }
         }
+
+        report(node, getNodeName(node.id));
       },
     };
   },
