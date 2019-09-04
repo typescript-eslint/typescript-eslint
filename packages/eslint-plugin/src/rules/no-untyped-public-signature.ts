@@ -57,7 +57,9 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
-    function isReturnTyped(node: TSESTree.TSTypeAnnotation | undefined): boolean {
+    function isReturnTyped(
+      node: TSESTree.TSTypeAnnotation | undefined,
+    ): boolean {
       if (!node) {
         return false;
       }
