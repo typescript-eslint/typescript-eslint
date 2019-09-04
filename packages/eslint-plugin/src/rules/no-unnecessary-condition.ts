@@ -54,6 +54,7 @@ export default createRule<Options, 'alwaysTruthy' | 'alwaysFalsy' | 'never'>({
         'Prevents conditionals where the type is always truthy or always falsy',
       category: 'Best Practices',
       recommended: false,
+      requiresTypeChecking: true,
     },
     schema: [
       {
