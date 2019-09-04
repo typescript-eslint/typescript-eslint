@@ -1,6 +1,10 @@
 import path from 'path';
-import rule from '../../src/rules/no-unnecessary-condition';
+import rule, { Options } from '../../src/rules/no-unnecessary-condition';
 import { RuleTester } from '../RuleTester';
+import {
+  TestCaseError,
+  InvalidTestCase,
+} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 
@@ -13,19 +17,26 @@ const ruleTester = new RuleTester({
 });
 
 type MessageId = 'alwaysTruthy' | 'alwaysFalsy' | 'never';
-const ruleError = (line: number, column: number, messageId: MessageId) => ({
+const ruleError = (
+  line: number,
+  column: number,
+  messageId: MessageId,
+): TestCaseError<MessageId> => ({
   messageId,
   line,
   column,
 });
 
-const necessaryConditionTest = (condition: string) => `
+const necessaryConditionTest = (condition: string): string => `
 declare const b1: ${condition};
 declare const b2: boolean;
 const t1 = b1 && b2;
 `;
 
-const unnecessaryConditionTest = (condition: string, messageId: MessageId) => ({
+const unnecessaryConditionTest = (
+  condition: string,
+  messageId: MessageId,
+): InvalidTestCase<MessageId, Options> => ({
   code: necessaryConditionTest(condition),
   errors: [ruleError(4, 12, messageId)],
 });

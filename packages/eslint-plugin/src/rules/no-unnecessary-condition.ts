@@ -18,17 +18,17 @@ import {
 
 // Truthiness utilities
 // #region
-const isTruthyLiteral = (type: ts.Type) =>
-  isBooleanLiteralType(type, true) || (isLiteralType(type) && type.value);
+const isTruthyLiteral = (type: ts.Type): boolean =>
+  isBooleanLiteralType(type, true) || (isLiteralType(type) && !!type.value);
 
-const isPossiblyFalsy = (type: ts.Type) =>
+const isPossiblyFalsy = (type: ts.Type): boolean =>
   unionTypeParts(type)
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
     .filter(t => !isTruthyLiteral(t))
     .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
 
-const isPossiblyTruthy = (type: ts.Type) =>
+const isPossiblyTruthy = (type: ts.Type): boolean =>
   unionTypeParts(type).some(type => !isFalsyType(type));
 // #endregion
 
@@ -39,7 +39,7 @@ type ExpressionWithTest =
   | TSESTree.IfStatement
   | TSESTree.WhileStatement;
 
-type Options = [
+export type Options = [
   {
     ignoreRhs?: boolean;
   },
