@@ -43,7 +43,7 @@ export default util.createRule<Options, MessageIds>({
     };
 
     return {
-      Literal(node) {
+      Literal(node): void {
         if (
           option === 'backtick' &&
           (isModuleDeclaration(node) || isTypeLiteral(node))
@@ -54,7 +54,7 @@ export default util.createRule<Options, MessageIds>({
         rules.Literal(node);
       },
 
-      TemplateLiteral(node) {
+      TemplateLiteral(node): void {
         rules.TemplateLiteral(node);
       },
     };
