@@ -1,5 +1,8 @@
 import path from 'path';
-import rule, { Options } from '../../src/rules/no-unnecessary-condition';
+import rule, {
+  Options,
+  MessageId,
+} from '../../src/rules/no-unnecessary-condition';
 import { RuleTester } from '../RuleTester';
 import {
   TestCaseError,
@@ -16,7 +19,6 @@ const ruleTester = new RuleTester({
   },
 });
 
-type MessageId = 'alwaysTruthy' | 'alwaysFalsy' | 'never';
 const ruleError = (
   line: number,
   column: number,
@@ -69,6 +71,12 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
     `
 function test<T extends string>(t: T) {
   return t ? 'yes' : 'no'
+}`,
+
+    // Boolean expressions
+    `
+function test(a: string) {
+  return a === "a"
 }`,
 
     // Supports ignoring the RHS
@@ -132,6 +140,34 @@ function test<T extends 'a' | 'b'>(t: T) {
   return t ? 'yes' : 'no'
 }`,
       errors: [ruleError(3, 10, 'alwaysTruthy')],
+    },
+
+    // Boolean expressions
+    {
+      code: `
+function test(a: "a") {
+  return a === "a"
+}`,
+      errors: [ruleError(3, 10, 'literalBooleanExpression')],
+    },
+    {
+      code: `
+const y = 1;
+if (y === 0) {}
+`,
+      errors: [ruleError(3, 5, 'literalBooleanExpression')],
+    },
+    {
+      code: `
+enum Foo {
+  a = 1,
+  b = 2
+}
+
+const x = Foo.a;
+if (x === Foo.a) {}
+`,
+      errors: [ruleError(8, 5, 'literalBooleanExpression')],
     },
 
     // Still errors on in the expected locations when ignoring RHS

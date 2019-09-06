@@ -30,6 +30,15 @@ const isPossiblyFalsy = (type: ts.Type): boolean =>
 
 const isPossiblyTruthy = (type: ts.Type): boolean =>
   unionTypeParts(type).some(type => !isFalsyType(type));
+
+// isLiteralType only covers numbers and strings, this is a more exhaustive check.
+const isLiteral = (type: ts.Type): boolean =>
+  isBooleanLiteralType(type, true) ||
+  isBooleanLiteralType(type, false) ||
+  type.flags === ts.TypeFlags.Undefined ||
+  type.flags === ts.TypeFlags.Null ||
+  type.flags === ts.TypeFlags.Void ||
+  isLiteralType(type);
 // #endregion
 
 type ExpressionWithTest =
@@ -45,7 +54,12 @@ export type Options = [
   },
 ];
 
-export default createRule<Options, 'alwaysTruthy' | 'alwaysFalsy' | 'never'>({
+export type MessageId =
+  | 'alwaysTruthy'
+  | 'alwaysFalsy'
+  | 'literalBooleanExpression'
+  | 'never';
+export default createRule<Options, MessageId>({
   name: 'no-unnecessary-conditionals',
   meta: {
     type: 'suggestion',
@@ -70,6 +84,8 @@ export default createRule<Options, 'alwaysTruthy' | 'alwaysFalsy' | 'never'>({
     messages: {
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
+      literalBooleanExpression:
+        'Unnecessary conditional, both sides of the expression are literal values',
       never: 'Unnecessary conditional, value is `never`',
     },
   },
@@ -82,15 +98,17 @@ export default createRule<Options, 'alwaysTruthy' | 'alwaysFalsy' | 'never'>({
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
 
+    function getNodeType(node: TSESTree.Node): ts.Type {
+      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
+      return getConstrainedTypeAtLocation(checker, tsNode);
+    }
+
     /**
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
      */
     function checkNode(node: TSESTree.Node): void {
-      const tsNode = service.esTreeNodeToTSNodeMap.get<ts.ExpressionStatement>(
-        node,
-      );
-      const type = getConstrainedTypeAtLocation(checker, tsNode);
+      const type = getNodeType(node);
 
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeFlagSet(type, TypeFlags.Any | TypeFlags.Unknown)) {
@@ -102,6 +120,26 @@ export default createRule<Options, 'alwaysTruthy' | 'alwaysFalsy' | 'never'>({
         context.report({ node, messageId: 'alwaysFalsy' });
       } else if (!isPossiblyFalsy(type)) {
         context.report({ node, messageId: 'alwaysTruthy' });
+      }
+    }
+
+    /**
+     * Checks that a binary expression is necessarily conditoinal, reports otherwise.
+     * If both sides of the binary expression are literal values, it's not a necessary condition.
+     *
+     * NOTE: It's also unnecessary if the types that don't overlap at all
+     *    but that case is handled by the Typescript compiler itself.
+     */
+    const BOOL_OPERATORS = ['<', '>', '<=', '>=', '==', '===', '!=', '!=='];
+    function checkIfBinaryExpressionIsNecessaryConditional(
+      node: TSESTree.BinaryExpression,
+    ): void {
+      if (
+        BOOL_OPERATORS.includes(node.operator) &&
+        isLiteral(getNodeType(node.left)) &&
+        isLiteral(getNodeType(node.right))
+      ) {
+        context.report({ node, messageId: 'literalBooleanExpression' });
       }
     }
 
@@ -133,6 +171,7 @@ export default createRule<Options, 'alwaysTruthy' | 'alwaysFalsy' | 'never'>({
     }
 
     return {
+      BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       ConditionalExpression: checkIfTestExpressionIsNecessaryConditional,
       DoWhileStatement: checkIfTestExpressionIsNecessaryConditional,
       ForStatement: checkIfTestExpressionIsNecessaryConditional,
