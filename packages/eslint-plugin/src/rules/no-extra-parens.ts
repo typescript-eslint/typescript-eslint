@@ -179,6 +179,11 @@ export default util.createRule<Options, MessageIds>({
 
         return rules.ForStatement(node);
       },
+      'ForStatement > *.init:exit'(node: TSESTree.Node) {
+        if (node.type !== AST_NODE_TYPES.TSAsExpression) {
+          return rules['ForStatement > *.init:exit'](node);
+        }
+      },
       // IfStatement
       LogicalExpression: binaryExp,
       MemberExpression(node) {
