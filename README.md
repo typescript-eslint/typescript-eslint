@@ -207,7 +207,7 @@ The latest version under the `canary` tag **(latest commit to master)** is:
 
 We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
 
-**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.6.0`.**
+**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.7.0`.**
 
 This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
