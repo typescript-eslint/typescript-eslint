@@ -26,7 +26,7 @@ export default util.createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     const checkBlockStatement = (
       node: TSESTree.TSModuleBlock | TSESTree.TSInterfaceBody,
-    ) => {
+    ): void => {
       rules.BlockStatement({
         type: AST_NODE_TYPES.BlockStatement,
         parent: node.parent,
