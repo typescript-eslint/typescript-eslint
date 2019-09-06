@@ -1,0 +1,6 @@
+{
+  "include": [
+    "test.js",
+    "test.ts",
+  ]
+}

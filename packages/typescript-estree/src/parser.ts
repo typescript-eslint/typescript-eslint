@@ -86,6 +86,7 @@ function getASTFromProject(
     calculateProjectParserOptions(code, filePath, extra),
     currentProgram => {
       const ast = currentProgram.getSourceFile(filePath);
+      console.log(ast);
       return ast && { ast, program: currentProgram };
     },
   );
