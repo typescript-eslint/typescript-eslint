@@ -119,6 +119,20 @@ function test<T extends object>(t: T) {
 }`,
       errors: [ruleError(3, 10, 'alwaysTruthy')],
     },
+    {
+      code: `
+function test<T extends false>(t: T) {
+  return t ? 'yes' : 'no'
+}`,
+      errors: [ruleError(3, 10, 'alwaysFalsy')],
+    },
+    {
+      code: `
+function test<T extends 'a' | 'b'>(t: T) {
+  return t ? 'yes' : 'no'
+}`,
+      errors: [ruleError(3, 10, 'alwaysTruthy')],
+    },
 
     // Still errors on in the expected locations when ignoring RHS
     {
