@@ -11,6 +11,7 @@ type AccessibilityLevel =
 
 interface Config {
   accessibility?: AccessibilityLevel;
+  exceptMethods?: string[];
   overrides?: {
     accessors?: AccessibilityLevel;
     constructors?: AccessibilityLevel;
@@ -18,7 +19,6 @@ interface Config {
     properties?: AccessibilityLevel;
     parameterProperties?: AccessibilityLevel;
   };
-  exceptMethods?: string[];
 }
 
 type Options = [Config];
