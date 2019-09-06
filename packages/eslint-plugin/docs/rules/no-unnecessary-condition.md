@@ -11,13 +11,16 @@ Examples of **incorrect** code for this rule:
 
 ```ts
 function head<T>(items: T[]) {
+  // items can never be nullable, so this is unnecessary
   if (items) {
     return items[0].toUpperCase();
   }
 }
 
-const foo = 'foo';
-if (foo) {
+function foo(arg: 'bar' | 'baz') {
+  // arg is never nullable or empty string, so this is unnecessary
+  if (arg) {
+  }
 }
 ```
 
@@ -25,14 +28,16 @@ Examples of **correct** code for this rule:
 
 ```ts
 function head<T>(items: T[]) {
+  // Necessary, since items.length might be 0
   if (items.length) {
     return items[0].toUpperCase();
   }
 }
 
-declare const foo: string;
-// Necessary, since foo might be ''. (If undesired, consider using `strict-boolean-expressions` rule)
-if (foo) {
+function foo(arg: 'bar' | 'baz') {
+  // Necessary, since foo might be ''.
+  if (arg) {
+  }
 }
 ```
 
