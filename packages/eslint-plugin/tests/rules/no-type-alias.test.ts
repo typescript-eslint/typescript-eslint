@@ -439,6 +439,10 @@ type Foo<T> = {
         'type Foo = [string] & [number, number] | keyof [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'always' }],
+    },
   ],
   invalid: [
     {
@@ -3173,6 +3177,33 @@ type Foo<T> = {
       errors: [
         {
           messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
         },
       ],
     },
