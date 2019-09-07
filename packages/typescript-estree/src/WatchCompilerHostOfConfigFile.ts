@@ -1,14 +1,11 @@
-// These types are internal to typescript
+// These types are internal to TS.
+// They have been trimmed down to only include the relevant bits
+// We use some special internal TS apis to help us do our parsing flexibly
 
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 
+// https://github.com/microsoft/TypeScript/blob/b84e65db4ea5c39dbaa2ccd6594efe4653318251/src/compiler/watchUtilities.ts#L6-L18
 interface DirectoryStructureHost {
-  fileExists(path: string): boolean;
-  readFile(path: string, encoding?: string): string | undefined;
-
-  // TODO: GH#18217 Optional methods are frequently used as non-optional
-  directoryExists?(path: string): boolean;
-  getDirectories?(path: string): string[];
   readDirectory?(
     path: string,
     extensions?: ReadonlyArray<string>,
@@ -16,12 +13,9 @@ interface DirectoryStructureHost {
     include?: ReadonlyArray<string>,
     depth?: number,
   ): string[];
-  realpath?(path: string): string;
-
-  createDirectory?(path: string): void;
-  writeFile?(path: string, data: string, writeByteOrderMark?: boolean): void;
 }
 
+// https://github.com/microsoft/TypeScript/blob/b84e65db4ea5c39dbaa2ccd6594efe4653318251/src/compiler/watchUtilities.ts#L25-L35
 interface CachedDirectoryStructureHost extends DirectoryStructureHost {
   readDirectory(
     path: string,
@@ -32,6 +26,7 @@ interface CachedDirectoryStructureHost extends DirectoryStructureHost {
   ): string[];
 }
 
+// https://github.com/microsoft/TypeScript/blob/5d36aab06f12b0a3ba6197eb14e98204ec0195fb/src/compiler/watch.ts#L548-L554
 interface WatchCompilerHostOfConfigFile<T extends ts.BuilderProgram>
   extends ts.WatchCompilerHostOfConfigFile<T> {
   onCachedDirectoryStructureHostCreate(
