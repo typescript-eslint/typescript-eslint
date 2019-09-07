@@ -335,7 +335,8 @@ export default util.createRule<Options, MessageIds>({
           options.allowExpressions &&
           node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
           node.parent.type !== AST_NODE_TYPES.MethodDefinition &&
-          node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration
+          node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
+          node.parent.type !== AST_NODE_TYPES.ClassProperty
         ) {
           return;
         }

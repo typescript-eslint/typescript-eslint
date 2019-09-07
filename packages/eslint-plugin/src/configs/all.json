@@ -6,6 +6,8 @@
     "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/ban-ts-ignore": "error",
     "@typescript-eslint/ban-types": "error",
+    "brace-style": "off",
+    "@typescript-eslint/brace-style": "error",
     "camelcase": "off",
     "@typescript-eslint/camelcase": "error",
     "@typescript-eslint/class-name-casing": "error",
