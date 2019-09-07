@@ -34,7 +34,7 @@ function head<T>(items: T[]) {
   }
 }
 
-function foo(arg: 'bar' | 'baz') {
+function foo(arg: string) {
   // Necessary, since foo might be ''.
   if (arg) {
   }

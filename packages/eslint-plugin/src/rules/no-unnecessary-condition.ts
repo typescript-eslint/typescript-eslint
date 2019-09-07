@@ -124,18 +124,18 @@ export default createRule<Options, MessageId>({
     }
 
     /**
-     * Checks that a binary expression is necessarily conditoinal, reports otherwise.
+     * Checks that a binary expression is necessarily conditional, reports otherwise.
      * If both sides of the binary expression are literal values, it's not a necessary condition.
      *
      * NOTE: It's also unnecessary if the types that don't overlap at all
      *    but that case is handled by the Typescript compiler itself.
      */
-    const BOOL_OPERATORS = ['<', '>', '<=', '>=', '==', '===', '!=', '!=='];
+    const BOOL_OPERATORS = new Set(['<', '>', '<=', '>=', '==', '===', '!=', '!==']);
     function checkIfBinaryExpressionIsNecessaryConditional(
       node: TSESTree.BinaryExpression,
     ): void {
       if (
-        BOOL_OPERATORS.includes(node.operator) &&
+        BOOL_OPERATORS.has(node.operator) &&
         isLiteral(getNodeType(node.left)) &&
         isLiteral(getNodeType(node.right))
       ) {
