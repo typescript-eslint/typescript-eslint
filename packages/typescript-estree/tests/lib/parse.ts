@@ -297,30 +297,4 @@ describe('parse()', () => {
       });
     });
   });
-
-  describe('duplicate filenames', () => {
-    const PROJECT_DIR = resolve(FIXTURES_DIR, '../duplicateFileNames');
-    const code = 'var a = true';
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      tsconfigRootDir: PROJECT_DIR,
-      project: './tsconfig.json',
-    };
-    const testParse = (filePath: string): void => {
-      parser.parseAndGenerateServices(code, {
-        ...config,
-        filePath: relative(process.cwd(), join(PROJECT_DIR, filePath)),
-      });
-    };
-
-    it('doesnt error on duplicate filenames', () => {
-      expect(() => {
-        testParse('test.js');
-        testParse('test.ts');
-      }).not.toThrow();
-    });
-  });
 });

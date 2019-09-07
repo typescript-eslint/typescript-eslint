@@ -14,6 +14,8 @@ export const defaultCompilerOptions: ts.CompilerOptions = {
   allowNonTsExtensions: true,
   allowJs: true,
   checkJs: true,
+  noEmit: true,
+  // extendedDiagnostics: true,
 };
 
 /**
@@ -139,12 +141,6 @@ export function calculateProjectParserOptions(
             diag.category === ts.DiagnosticCategory.Error &&
             diag.code !== 18003,
         );
-      console.log(
-        program
-          .getSourceFiles()
-          .map(f => f.fileName)
-          .filter(f => !f.includes('node_modules')),
-      );
       if (configFileDiagnostics.length > 0) {
         diagnosticReporter(configFileDiagnostics[0]);
       }
@@ -169,7 +165,13 @@ export function calculateProjectParserOptions(
       watchCompilerHost.onCachedDirectoryStructureHostCreate;
     watchCompilerHost.onCachedDirectoryStructureHostCreate = (host): void => {
       const oldReadDirectory = host.readDirectory;
-      host.readDirectory = (path, extensions, exclude, include, depth): string[] =>
+      host.readDirectory = (
+        path,
+        extensions,
+        exclude,
+        include,
+        depth,
+      ): string[] =>
         oldReadDirectory(
           path,
           !extensions

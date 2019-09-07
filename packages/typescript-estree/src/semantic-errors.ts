@@ -89,7 +89,6 @@ function whitelistSupportedDiagnostics(
       case 2364: // ts 3.2 "The left-hand side of an assignment expression must be a variable or a property access."
       case 2369: // ts 3.2 "A parameter property is only allowed in a constructor implementation."
       case 2462: // ts 3.2 "A rest element must be last in a destructuring pattern."
-      // case 5056: // #955 - "Cannot write file '{0}' because it would be overwritten by multiple input files."
       case 8017: // ts 3.2 "Octal literal types must use ES2015 syntax. Use the syntax '{0}'."
       case 17012: // ts 3.2 "'{0}' is not a valid meta-property for keyword '{1}'. Did you mean '{2}'?"
       case 17013: // ts 3.2 "Meta-property '{0}' is only allowed in the body of a function declaration, function expression, or constructor."
