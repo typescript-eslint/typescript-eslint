@@ -9,7 +9,13 @@ interface DirectoryStructureHost {
   // TODO: GH#18217 Optional methods are frequently used as non-optional
   directoryExists?(path: string): boolean;
   getDirectories?(path: string): string[];
-  readDirectory?(path: string, extensions?: ReadonlyArray<string>, exclude?: ReadonlyArray<string>, include?: ReadonlyArray<string>, depth?: number): string[];
+  readDirectory?(
+    path: string,
+    extensions?: ReadonlyArray<string>,
+    exclude?: ReadonlyArray<string>,
+    include?: ReadonlyArray<string>,
+    depth?: number,
+  ): string[];
   realpath?(path: string): string;
 
   createDirectory?(path: string): void;
@@ -17,13 +23,20 @@ interface DirectoryStructureHost {
 }
 
 interface CachedDirectoryStructureHost extends DirectoryStructureHost {
-  readDirectory(path: string, extensions?: ReadonlyArray<string>, exclude?: ReadonlyArray<string>, include?: ReadonlyArray<string>, depth?: number): string[];
+  readDirectory(
+    path: string,
+    extensions?: ReadonlyArray<string>,
+    exclude?: ReadonlyArray<string>,
+    include?: ReadonlyArray<string>,
+    depth?: number,
+  ): string[];
 }
 
-interface WatchCompilerHostOfConfigFile<T extends ts.BuilderProgram> extends ts.WatchCompilerHostOfConfigFile<T> {
-  onCachedDirectoryStructureHostCreate(host: CachedDirectoryStructureHost): void;
+interface WatchCompilerHostOfConfigFile<T extends ts.BuilderProgram>
+  extends ts.WatchCompilerHostOfConfigFile<T> {
+  onCachedDirectoryStructureHostCreate(
+    host: CachedDirectoryStructureHost,
+  ): void;
 }
 
-export {
-  WatchCompilerHostOfConfigFile,
-}
+export { WatchCompilerHostOfConfigFile };
