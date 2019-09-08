@@ -12,7 +12,7 @@ import {
 type Options = [
   {
     typesToIgnore?: string[];
-  }
+  },
 ];
 type MessageIds =
   | 'expressionAlwaysFalse'
@@ -28,8 +28,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Warns for type predicates that are always true or always false',
+      description: 'Disallow always true (or false) type predicates',
       category: 'Best Practices',
       recommended: false,
     },
