@@ -11,7 +11,7 @@ type AccessibilityLevel =
 
 interface Config {
   accessibility?: AccessibilityLevel;
-  exceptMethods?: string[];
+  ignoredMethodNames?: string[];
   overrides?: {
     accessors?: AccessibilityLevel;
     constructors?: AccessibilityLevel;
@@ -61,7 +61,7 @@ export default util.createRule<Options, MessageIds>({
 
             additionalProperties: false,
           },
-          exceptMethods: {
+          ignoredMethodNames: {
             type: 'array',
             items: {
               type: 'string',
@@ -82,7 +82,7 @@ export default util.createRule<Options, MessageIds>({
     const methodCheck = overrides.methods || baseCheck;
     const propCheck = overrides.properties || baseCheck;
     const paramPropCheck = overrides.parameterProperties || baseCheck;
-    const exceptMethods = option.exceptMethods || [];
+    const ignoredMethodNames = new Set(option.ignoredMethodNames || []);
     /**
      * Generates the report for rule violations
      */
@@ -130,7 +130,7 @@ export default util.createRule<Options, MessageIds>({
         sourceCode,
       );
 
-      if (check === 'off' || exceptMethods.includes(methodName)) {
+      if (check === 'off' || ignoredMethodNames.has(methodName)) {
         return;
       }
 
