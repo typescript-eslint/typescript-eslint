@@ -130,7 +130,16 @@ export default createRule<Options, MessageId>({
      * NOTE: It's also unnecessary if the types that don't overlap at all
      *    but that case is handled by the Typescript compiler itself.
      */
-    const BOOL_OPERATORS = new Set(['<', '>', '<=', '>=', '==', '===', '!=', '!==']);
+    const BOOL_OPERATORS = new Set([
+      '<',
+      '>',
+      '<=',
+      '>=',
+      '==',
+      '===',
+      '!=',
+      '!==',
+    ]);
     function checkIfBinaryExpressionIsNecessaryConditional(
       node: TSESTree.BinaryExpression,
     ): void {
