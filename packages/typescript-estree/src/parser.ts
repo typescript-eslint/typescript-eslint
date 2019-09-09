@@ -99,6 +99,19 @@ function getASTFromProject(
     ];
     let hasMatchedAnError = false;
 
+    extra.extraFileExtensions.forEach(extraExtension => {
+      if (extraExtension.startsWith('.')) {
+        errorLines.push(
+          `Found unexpected extension "${extraExtension}" specified with the "extraFileExtensions" option. Did you mean ".${extraExtension}"?`,
+        );
+      }
+      if (DEFAULT_EXTRA_FILE_EXTENSIONS.includes(extraExtension)) {
+        errorLines.push(
+          `You unnecessairly included the extension "${extraExtension}" with the "extraFileExtensions" option. This extension is already handled by the parser by default.`,
+        );
+      }
+    });
+
     const fileExtension = path.extname(filePath);
     if (!DEFAULT_EXTRA_FILE_EXTENSIONS.includes(fileExtension)) {
       const nonStandardExt = `The extension for the file (${fileExtension}) is non-standard`;
