@@ -25,6 +25,7 @@ const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
   SUPPORTED_TYPESCRIPT_VERSIONS,
 );
+const DEFAULT_EXTRA_FILE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 
 let extra: Extra;
 let warnedAboutTSVersion = false;
@@ -99,7 +100,7 @@ function getASTFromProject(
     let hasMatchedAnError = false;
 
     const fileExtension = path.extname(filePath);
-    if (!['.ts', '.tsx', '.js', '.jsx'].includes(fileExtension)) {
+    if (!DEFAULT_EXTRA_FILE_EXTENSIONS.includes(fileExtension)) {
       const nonStandardExt = `The extension for the file (${fileExtension}) is non-standard`;
       if (extra.extraFileExtensions && extra.extraFileExtensions.length > 0) {
         if (!extra.extraFileExtensions.includes(fileExtension)) {

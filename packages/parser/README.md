@@ -88,7 +88,7 @@ The following additional configuration options are available by specifying them 
 
 - **`tsconfigRootDir`** - default `undefined`. This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
 
-- **`extraFileExtensions`** - default `undefined`. This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation. E.g. a `.vue` file
+- **`extraFileExtensions`** - default `undefined`. This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation. The default extensions are `.ts`, `.tsx`, `.js`, and `.jsx`. Add extensions starting with `.`, follwed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions: [".vue"]`.
 
 - **`warnOnUnsupportedTypeScriptVersion`** - default `true`. This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported
 
