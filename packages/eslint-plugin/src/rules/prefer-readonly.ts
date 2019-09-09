@@ -68,7 +68,7 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (ts.isDeleteExpression(parent)) {
+      if (ts.isDeleteExpression(parent) || isDestructuringAssignment(node)) {
         classScope.addVariableModification(node);
         return;
       }
@@ -106,6 +106,35 @@ export default util.createRule<Options, MessageIds>({
           node.operand as ts.PropertyAccessExpression,
         );
       }
+    }
+
+    function isDestructuringAssignment(
+      node: ts.PropertyAccessExpression,
+    ): boolean {
+      let current: ts.Node = node.parent;
+
+      while (current) {
+        const parent = current.parent;
+
+        if (
+          ts.isObjectLiteralExpression(parent) ||
+          ts.isArrayLiteralExpression(parent) ||
+          ts.isSpreadAssignment(parent) ||
+          (ts.isSpreadElement(parent) &&
+            ts.isArrayLiteralExpression(parent.parent))
+        ) {
+          current = parent;
+        } else if (ts.isBinaryExpression(parent)) {
+          return (
+            parent.left === current &&
+            parent.operatorToken.kind === ts.SyntaxKind.EqualsToken
+          );
+        } else {
+          break;
+        }
+      }
+
+      return false;
     }
 
     function isConstructor(node: TSESTree.Node): boolean {
