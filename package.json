@@ -31,7 +31,7 @@
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "pre-commit": "yarn lint-staged",
     "pre-push": "yarn format-check",
-    "postinstall": "lerna bootstrap && yarn build && lerna link && npm run check-clean-workspace-after-install",
+    "postinstall": "lerna bootstrap && yarn build && lerna link && npm run check-clean-workspace-after-install && opencollective-postinstall",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "test": "lerna run test --parallel",
     "typecheck": "lerna run typecheck"
@@ -74,5 +74,12 @@
     "ts-node": "^8.3.0",
     "tslint": "^5.19.0",
     "typescript": ">=3.2.1 <3.7.0"
+  },
+  "dependencies": {
+    "opencollective-postinstall": "^2.0.2"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/typescript-eslint"
   }
 }
