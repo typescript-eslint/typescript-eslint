@@ -3,7 +3,7 @@
 <p align="center">Monorepo for all the tooling which enables ESLint to support TypeScript</p>
 
 <p align="center">
-    <a href="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_build/latest?definitionId=1&branchName=master"><img src="https://img.shields.io/azure-devops/build/typescript-eslint/TypeScript%20ESLint/1/master.svg?label=%F0%9F%9A%80%20Azure%20Pipelines&style=flat-square" alt="Azure Pipelines"/></a>
+    <a href="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_build/latest?definitionId=1&branchName=master"><a href="https://opencollective.com/typescript-eslint" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/typescript-eslint/all/badge.svg?label=financial+contributors" /></a> <img src="https://img.shields.io/azure-devops/build/typescript-eslint/TypeScript%20ESLint/1/master.svg?label=%F0%9F%9A%80%20Azure%20Pipelines&style=flat-square" alt="Azure Pipelines"/></a>
     <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
     <a href="https://www.npmjs.com/package/@typescript-eslint/typescript-estree"><img src="https://img.shields.io/npm/dm/@typescript-eslint/typescript-estree.svg?style=flat-square" alt="NPM Downloads" /></a>
     <a href="https://codecov.io/gh/typescript-eslint/typescript-eslint"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/typescript-eslint/typescript-eslint.svg?style=flat-square"></a>
@@ -216,6 +216,36 @@ If you use a non-supported version of TypeScript, the parser will log a warning 
 **Please ensure that you are using a supported version before submitting any issues/bug reports.**
 
 <br>
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/typescript-eslint/typescript-eslint/graphs/contributors"><img src="https://opencollective.com/typescript-eslint/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/typescript-eslint/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/typescript-eslint"><img src="https://opencollective.com/typescript-eslint/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/typescript-eslint/contribute)]
+
+<a href="https://opencollective.com/typescript-eslint/organization/0/website"><img src="https://opencollective.com/typescript-eslint/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/1/website"><img src="https://opencollective.com/typescript-eslint/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/2/website"><img src="https://opencollective.com/typescript-eslint/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/3/website"><img src="https://opencollective.com/typescript-eslint/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/4/website"><img src="https://opencollective.com/typescript-eslint/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/5/website"><img src="https://opencollective.com/typescript-eslint/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/6/website"><img src="https://opencollective.com/typescript-eslint/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/7/website"><img src="https://opencollective.com/typescript-eslint/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/8/website"><img src="https://opencollective.com/typescript-eslint/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/9/website"><img src="https://opencollective.com/typescript-eslint/organization/9/avatar.svg"></a>
 
 ## License
 
