@@ -732,7 +732,7 @@ export interface Import extends BaseNode {
 
 export interface ImportDeclaration extends BaseNode {
   type: AST_NODE_TYPES.ImportDeclaration;
-  source: Expression;
+  source: Literal;
   specifiers: ImportClause[];
 }
 
