@@ -3,6 +3,7 @@ import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsIgnore from './ban-ts-ignore';
 import banTypes from './ban-types';
+import braceStyle from './brace-style';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
 import consistentTypeAssertions from './consistent-type-assertions';
@@ -34,6 +35,7 @@ import noParameterProperties from './no-parameter-properties';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
 import noTypeAlias from './no-type-alias';
+import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnusedVars from './no-unused-vars';
@@ -67,6 +69,7 @@ export default {
   'await-thenable': awaitThenable,
   'ban-ts-ignore': banTsIgnore,
   'ban-types': banTypes,
+  'brace-style': braceStyle,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
   'consistent-type-assertions': consistentTypeAssertions,
@@ -98,6 +101,7 @@ export default {
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,
   'no-type-alias': noTypeAlias,
+  'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': useDefaultTypeParameter,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
