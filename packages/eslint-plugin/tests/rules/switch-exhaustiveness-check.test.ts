@@ -104,5 +104,34 @@ switch (day) {
 `,
       errors: [{ messageId: 'switchIsNotExhaustive', line: 7, column: 9 }],
     },
+    {
+      // Still complains with empty switch
+      code: `
+type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'  
+
+const day = 'Monday' as Day
+
+switch (day) {
+}
+`,
+      errors: [{ messageId: 'switchIsNotExhaustive', line: 6, column: 9 }],
+    },
+    {
+      // Still complains with union intersection part
+      code: `
+type FooBar = string & { foo: void } | 'bar'
+
+const foobar = 'bar' as FooBar
+let result = 0
+
+switch (foobar) {
+  case 'bar': {
+    result = 42
+    break
+  }
+}      
+      `,
+      errors: [{ messageId: 'switchIsNotExhaustive', line: 7, column: 9 }],
+    },
   ],
 });
