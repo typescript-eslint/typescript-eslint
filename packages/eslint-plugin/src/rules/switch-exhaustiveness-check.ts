@@ -45,6 +45,7 @@ export default createRule({
       }
 
       const lastCase = node.cases[node.cases.length - 1];
+      const lastCaseIndent = Array(lastCase.loc.start.column + 1).join(' ');
       let fixString = '';
 
       for (const missingBranchType of missingBranchTypes) {
@@ -62,7 +63,10 @@ export default createRule({
           continue;
         }
 
-        fixString += `\n   case ${checker.typeToString(missingBranchType)}: {}`;
+        const caseTest = checker.typeToString(missingBranchType);
+        const errorMessage = `Not implemented yet: ${caseTest} case`;
+
+        fixString += `\n${lastCaseIndent}case ${caseTest}: { throw new Error('${errorMessage}') }`;
       }
 
       return fixer.insertTextAfter(lastCase, fixString);
