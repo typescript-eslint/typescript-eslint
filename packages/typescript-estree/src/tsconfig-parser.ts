@@ -32,6 +32,17 @@ const knownWatchProgramMap = new Map<
  */
 const watchCallbackTrackingMap = new Map<string, ts.FileWatcherCallback>();
 
+/**
+ * Tracks the ts.sys.watchFile watchers that we've opened for config files.
+ * We store these so we can clean up our handles if required.
+ */
+const configSystemFileWatcherTrackingSet = new Set<ts.FileWatcher>();
+/**
+ * Tracks the ts.sys.watchDirectory watchers that we've opened for project folders.
+ * We store these so we can clean up our handles if required.
+ */
+const directorySystemFileWatcherTrackingSet = new Set<ts.FileWatcher>();
+
 const parsedFilesSeen = new Set<string>();
 
 /**
@@ -42,6 +53,14 @@ export function clearCaches(): void {
   knownWatchProgramMap.clear();
   watchCallbackTrackingMap.clear();
   parsedFilesSeen.clear();
+
+  // stop tracking config files
+  configSystemFileWatcherTrackingSet.forEach(cb => cb.close());
+  configSystemFileWatcherTrackingSet.clear();
+
+  // stop tracking folders
+  directorySystemFileWatcherTrackingSet.forEach(cb => cb.close());
+  directorySystemFileWatcherTrackingSet.clear();
 }
 
 /**
@@ -61,8 +80,6 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
     ts.flattenDiagnosticMessageText(diagnostic.messageText, ts.sys.newLine),
   );
 }
-
-const noopFileWatcher = { close: (): void => {} };
 
 function getTsconfigPath(tsconfigPath: string, extra: Extra): string {
   return path.isAbsolute(tsconfigPath)
@@ -146,19 +163,57 @@ export function calculateProjectParserOptions(
       }
     };
 
-    // register callbacks to trigger program updates without using fileWatchers
-    watchCompilerHost.watchFile = (fileName, callback): ts.FileWatcher => {
+    // in watch mode, eslint will give us the latest file contents
+    // store the watch callback so we can trigger an update with eslint's content
+    watchCompilerHost.watchFile = (
+      fileName,
+      callback,
+      interval,
+    ): ts.FileWatcher => {
+      // specifically (and separately) watch the tsconfig file
+      // this allows us to react to changes in the tsconfig's include/exclude options
+      let watcher: ts.FileWatcher | null = null;
+      if (fileName.includes(tsconfigPath) && ts.sys.watchFile) {
+        watcher = ts.sys.watchFile(fileName, callback, interval);
+        configSystemFileWatcherTrackingSet.add(watcher);
+      }
+
       const normalizedFileName = path.normalize(fileName);
       watchCallbackTrackingMap.set(normalizedFileName, callback);
+
       return {
         close: (): void => {
           watchCallbackTrackingMap.delete(normalizedFileName);
+
+          if (watcher) {
+            watcher.close();
+            configSystemFileWatcherTrackingSet.delete(watcher);
+          }
         },
       };
     };
 
-    // ensure fileWatchers aren't created for directories
-    watchCompilerHost.watchDirectory = (): ts.FileWatcher => noopFileWatcher;
+    // when new files are added in watch mode, we need to tell typescript about those files
+    // if we don't then typescript will act like they don't exist.
+    watchCompilerHost.watchDirectory = (
+      path,
+      callback,
+      recursive,
+    ): ts.FileWatcher => {
+      if (ts.sys.watchDirectory) {
+        const watcher = ts.sys.watchDirectory(path, callback, recursive);
+        directorySystemFileWatcherTrackingSet.add(watcher);
+
+        return {
+          close(): void {
+            watcher.close();
+            directorySystemFileWatcherTrackingSet.delete(watcher);
+          },
+        };
+      } else {
+        return { close: (): void => {} };
+      }
+    };
 
     // allow files with custom extensions to be included in program (uses internal ts api)
     const oldOnDirectoryStructureHostCreate =
