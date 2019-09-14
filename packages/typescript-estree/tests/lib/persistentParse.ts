@@ -1,6 +1,6 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as tmp from 'tmp';
+import fs from 'fs';
+import path from 'path';
+import tmp from 'tmp';
 import { parseAndGenerateServices } from '../../src/parser';
 import { clearCaches } from '../../src/tsconfig-parser';
 
@@ -73,6 +73,11 @@ async function runTimer(interval: PollingInterval): Promise<void> {
     setTimeout(resolve, interval);
   });
 }
+async function waitForChokidar(): Promise<void> {
+  // wait for chokidar to be ready
+  // this isn't won't be a problem when running the eslint CLI in watch mode because the init takes a few hundred ms
+  await runTimer(PollingInterval.Medium);
+}
 
 describe('persistent lint session', () => {
   it('parses both files successfully when included', () => {
@@ -96,6 +101,8 @@ describe('persistent lint session', () => {
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
     expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
 
+    await waitForChokidar();
+
     // change the config file so it now includes all files
     writeTSConfig(PROJECT_DIR, tsConfigIncludeAll);
 
@@ -113,6 +120,8 @@ describe('persistent lint session', () => {
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
     // bar should throw because it doesn't exist yet
     expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
+
+    await waitForChokidar();
 
     // write a new file and attempt to parse it
     writeFile(PROJECT_DIR, 'bar');

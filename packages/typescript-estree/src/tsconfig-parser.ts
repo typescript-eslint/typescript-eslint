@@ -1,3 +1,4 @@
+import chokidar from 'chokidar';
 import path from 'path';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from './parser-options';
@@ -172,9 +173,18 @@ export function calculateProjectParserOptions(
     ): ts.FileWatcher => {
       // specifically (and separately) watch the tsconfig file
       // this allows us to react to changes in the tsconfig's include/exclude options
-      let watcher: ts.FileWatcher | null = null;
-      if (fileName.includes(tsconfigPath) && ts.sys.watchFile) {
-        watcher = ts.sys.watchFile(fileName, callback, interval);
+      let watcher: chokidar.FSWatcher | null = null;
+      if (fileName.includes(tsconfigPath)) {
+        watcher = chokidar.watch(fileName, {
+          ignoreInitial: true,
+          interval,
+          persistent: false,
+          useFsEvents: false,
+        });
+        watcher.on('change', path => {
+          callback(path, ts.FileWatcherEventKind.Changed);
+        });
+        // watcher = { close() {} };
         configSystemFileWatcherTrackingSet.add(watcher);
       }
 
@@ -195,24 +205,23 @@ export function calculateProjectParserOptions(
 
     // when new files are added in watch mode, we need to tell typescript about those files
     // if we don't then typescript will act like they don't exist.
-    watchCompilerHost.watchDirectory = (
-      path,
-      callback,
-      recursive,
-    ): ts.FileWatcher => {
-      if (ts.sys.watchDirectory) {
-        const watcher = ts.sys.watchDirectory(path, callback, recursive);
-        directorySystemFileWatcherTrackingSet.add(watcher);
+    watchCompilerHost.watchDirectory = (path, callback): ts.FileWatcher => {
+      const watcher = chokidar.watch(path, {
+        ignoreInitial: true,
+        persistent: false,
+        useFsEvents: false,
+      });
+      watcher.on('add', path => {
+        callback(path);
+      });
+      directorySystemFileWatcherTrackingSet.add(watcher);
 
-        return {
-          close(): void {
-            watcher.close();
-            directorySystemFileWatcherTrackingSet.delete(watcher);
-          },
-        };
-      } else {
-        return { close: (): void => {} };
-      }
+      return {
+        close(): void {
+          watcher.close();
+          directorySystemFileWatcherTrackingSet.delete(watcher);
+        },
+      };
     };
 
     // allow files with custom extensions to be included in program (uses internal ts api)
