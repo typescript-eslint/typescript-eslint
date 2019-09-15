@@ -24,6 +24,14 @@ async function test() {
   return Promise.resolve("value");
 }
 `,
+    {
+      options: [{ ignoreVoid: true }],
+      code: `
+async function test() {
+  void Promise.resolve("value");
+}
+`,
+    },
     `
 async function test() {
   await Promise.reject(new Error("message"));
