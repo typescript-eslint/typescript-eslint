@@ -50,16 +50,32 @@ interface RuleTesterConfig {
   parser: string;
   parserOptions?: ParserOptions;
 }
-declare interface RuleTester {
+
+// we don't want to have the built type defs to attempt to import eslint
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+class RuleTester extends (ESLintRuleTester as {
+  new (...args: unknown[]): any;
+}) {
+  constructor(config?: RuleTesterConfig) {
+    super(config);
+
+    // nobody will ever need watching in tests
+    // so we can give everyone a perf win by disabling watching
+    if (config && config.parserOptions && config.parserOptions.project) {
+      config.parserOptions.noWatch =
+        typeof config.parserOptions.noWatch === 'boolean' || true;
+    }
+  }
+
   run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
     name: string,
     rule: RuleModule<TMessageIds, TOptions>,
     tests: RunTests<TMessageIds, TOptions>,
-  ): void;
+  ): void {
+    // this method is only defined here because we lazily type the eslint import with `any`
+    super.run(name, rule, tests);
+  }
 }
-const RuleTester = ESLintRuleTester as {
-  new (config?: RuleTesterConfig): RuleTester;
-};
 
 export {
   InvalidTestCase,

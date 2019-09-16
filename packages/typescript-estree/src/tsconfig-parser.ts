@@ -31,7 +31,7 @@ const knownWatchProgramMap = new Map<
  * Maps file paths to their set of corresponding watch callbacks
  * There may be more than one per file if a file is shared between projects
  */
-const watchCallbackTrackingMap = new Map<string, ts.FileWatcherCallback>();
+const watchCallbackTrackingMap = new Map<string, Set<ts.FileWatcherCallback>>();
 
 /**
  * Tracks the ts.sys.watchFile watchers that we've opened for config files.
@@ -47,8 +47,8 @@ const directorySystemFileWatcherTrackingSet = new Set<ts.FileWatcher>();
 const parsedFilesSeen = new Set<string>();
 
 /**
- * Clear tsconfig caches.
- * Primarily used for testing.
+ * Clear all of the parser caches.
+ * This should only be used in testing to ensure the parser is clean between tests.
  */
 export function clearCaches(): void {
   knownWatchProgramMap.clear();
@@ -88,6 +88,36 @@ function getTsconfigPath(tsconfigPath: string, extra: Extra): string {
     : path.join(extra.tsconfigRootDir || process.cwd(), tsconfigPath);
 }
 
+interface Watcher {
+  close(): void;
+  on(evt: 'add', listener: (file: string) => void): void;
+  on(evt: 'change', listener: (file: string) => void): void;
+}
+/**
+ * Watches a file or directory for changes
+ */
+function watch(
+  path: string,
+  options: chokidar.WatchOptions,
+  extra: Extra,
+): Watcher {
+  // an escape hatch to disable the file watchers as they can take a bit to initialise in some cases
+  // this also supports an env variable so it's easy to switch on/off from the CLI
+  if (process.env.PARSER_NO_WATCH === 'true' || extra.noWatch === true) {
+    return {
+      close: (): void => {},
+      on: (): void => {},
+    };
+  }
+
+  return chokidar.watch(path, {
+    ignoreInitial: true,
+    persistent: false,
+    useFsEvents: false,
+    ...options,
+  });
+}
+
 /**
  * Calculate project environments using options provided by consumer and paths from config
  * @param code The code being linted
@@ -109,9 +139,13 @@ export function calculateProjectParserOptions(
 
   // Update file version if necessary
   // TODO: only update when necessary, currently marks as changed on every lint
-  const watchCallback = watchCallbackTrackingMap.get(filePath);
-  if (parsedFilesSeen.has(filePath) && typeof watchCallback !== 'undefined') {
-    watchCallback(filePath, ts.FileWatcherEventKind.Changed);
+  const watchCallbacks = watchCallbackTrackingMap.get(filePath);
+  if (
+    parsedFilesSeen.has(filePath) &&
+    watchCallbacks &&
+    watchCallbacks.size > 0
+  ) {
+    watchCallbacks.forEach(cb => cb(filePath, ts.FileWatcherEventKind.Changed));
   }
 
   for (const rawTsconfigPath of extra.projects) {
@@ -173,27 +207,35 @@ export function calculateProjectParserOptions(
     ): ts.FileWatcher => {
       // specifically (and separately) watch the tsconfig file
       // this allows us to react to changes in the tsconfig's include/exclude options
-      let watcher: chokidar.FSWatcher | null = null;
+      let watcher: Watcher | null = null;
       if (fileName.includes(tsconfigPath)) {
-        watcher = chokidar.watch(fileName, {
-          ignoreInitial: true,
-          interval,
-          persistent: false,
-          useFsEvents: false,
-        });
+        watcher = watch(
+          fileName,
+          {
+            interval,
+          },
+          extra,
+        );
         watcher.on('change', path => {
           callback(path, ts.FileWatcherEventKind.Changed);
         });
-        // watcher = { close() {} };
         configSystemFileWatcherTrackingSet.add(watcher);
       }
 
       const normalizedFileName = path.normalize(fileName);
-      watchCallbackTrackingMap.set(normalizedFileName, callback);
+      const watchers = ((): Set<ts.FileWatcherCallback> => {
+        let watchers = watchCallbackTrackingMap.get(normalizedFileName);
+        if (!watchers) {
+          watchers = new Set();
+          watchCallbackTrackingMap.set(normalizedFileName, watchers);
+        }
+        return watchers;
+      })();
+      watchers.add(callback);
 
       return {
         close: (): void => {
-          watchCallbackTrackingMap.delete(normalizedFileName);
+          watchers.delete(callback);
 
           if (watcher) {
             watcher.close();
@@ -205,12 +247,19 @@ export function calculateProjectParserOptions(
 
     // when new files are added in watch mode, we need to tell typescript about those files
     // if we don't then typescript will act like they don't exist.
-    watchCompilerHost.watchDirectory = (path, callback): ts.FileWatcher => {
-      const watcher = chokidar.watch(path, {
-        ignoreInitial: true,
-        persistent: false,
-        useFsEvents: false,
-      });
+    watchCompilerHost.watchDirectory = (
+      dirPath,
+      callback,
+      recursive,
+    ): ts.FileWatcher => {
+      const watcher = watch(
+        dirPath,
+        {
+          depth: recursive ? 0 : undefined,
+          interval: 250,
+        },
+        extra,
+      );
       watcher.on('add', path => {
         callback(path);
       });
