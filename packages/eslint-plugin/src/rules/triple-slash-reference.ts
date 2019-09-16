@@ -73,8 +73,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       ImportDeclaration(node): void {
         if (programNode) {
-          const source = node.source as TSESTree.Literal;
-          hasMatchingReference(source);
+          hasMatchingReference(node.source);
         }
       },
       TSImportEqualsDeclaration(node): void {
