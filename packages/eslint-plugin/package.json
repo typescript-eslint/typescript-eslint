@@ -29,15 +29,15 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json",
     "check:docs": "../../node_modules/.bin/ts-node --files ./tools/validate-docs/index.ts",
     "check:configs": "../../node_modules/.bin/ts-node --files ./tools/validate-configs/index.ts",
-    "clean": "rimraf dist/",
+    "clean": "tsc -b tsconfig.build.json --clean",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "generate:configs": "../../node_modules/.bin/ts-node --files tools/generate-configs.ts",
-    "prebuild": "npm run clean",
+    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "test": "jest --coverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "2.2.0",

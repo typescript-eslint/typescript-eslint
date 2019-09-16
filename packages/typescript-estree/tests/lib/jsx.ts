@@ -1,3 +1,4 @@
+import filesWithKnownIssues from '@typescript-eslint/shared-fixtures/jsx-known-issues';
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { TSESTreeOptions } from '../../src/parser-options';
@@ -5,7 +6,6 @@ import {
   createSnapshotTestBlock,
   formatSnapshotName,
 } from '../../tools/test-utils';
-import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
 
 const JSX_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx';
