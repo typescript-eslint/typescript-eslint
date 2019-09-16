@@ -44,7 +44,7 @@ For example, with the following configuration:
 ```json
 {
   "rules": {
-    "typedef": [
+    "@typescript-eslint/typedef": [
       "error",
       {
         "arrowParameter": false,
