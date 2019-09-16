@@ -51,9 +51,9 @@ interface RuleTesterConfig {
   parserOptions?: ParserOptions;
 }
 
-// we don't want to have the built type defs to attempt to import eslint
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// the cast on the extends is so that we don't want to have the built type defs to attempt to import eslint
 class RuleTester extends (ESLintRuleTester as {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   new (...args: unknown[]): any;
 }) {
   constructor(config?: RuleTesterConfig) {
