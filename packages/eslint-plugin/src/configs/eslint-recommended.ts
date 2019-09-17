@@ -19,6 +19,8 @@ export default {
         'valid-typeof': 'off',
         // Checked by Typescript - ts(2588)
         'no-const-assign': 'off',
+        // Checked by Typescript - ts(2539)
+        'no-func-assign': 'off',
         // Checked by Typescript - ts(2588)
         'no-new-symbol': 'off',
         // Checked by Typescript - ts(2376)
