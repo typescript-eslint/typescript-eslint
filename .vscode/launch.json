@@ -18,6 +18,20 @@
           "sourceMaps": true,
           "console": "integratedTerminal",
           "internalConsoleOptions": "neverOpen"
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Run currently opened typescript-estree test",
+        "cwd": "${workspaceFolder}/packages/typescript-estree/",
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+        "args": [
+            "--runInBand",
+            "${relativeFile}"
+        ],
+        "sourceMaps": true,
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
       }
   ]
 }

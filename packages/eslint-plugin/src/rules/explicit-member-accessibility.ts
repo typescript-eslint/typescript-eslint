@@ -11,6 +11,7 @@ type AccessibilityLevel =
 
 interface Config {
   accessibility?: AccessibilityLevel;
+  ignoredMethodNames?: string[];
   overrides?: {
     accessors?: AccessibilityLevel;
     constructors?: AccessibilityLevel;
@@ -33,8 +34,9 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
-      category: 'Best Practices',
-      recommended: 'error',
+      category: 'Stylistic Issues',
+      // too opinionated to be recommended
+      recommended: false,
     },
     messages: {
       missingAccessibility:
@@ -56,7 +58,14 @@ export default util.createRule<Options, MessageIds>({
               properties: accessibilityLevel,
               parameterProperties: accessibilityLevel,
             },
+
             additionalProperties: false,
+          },
+          ignoredMethodNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
           },
         },
         additionalProperties: false,
@@ -73,7 +82,7 @@ export default util.createRule<Options, MessageIds>({
     const methodCheck = overrides.methods || baseCheck;
     const propCheck = overrides.properties || baseCheck;
     const paramPropCheck = overrides.parameterProperties || baseCheck;
-
+    const ignoredMethodNames = new Set(option.ignoredMethodNames || []);
     /**
      * Generates the report for rule violations
      */
@@ -82,7 +91,7 @@ export default util.createRule<Options, MessageIds>({
       nodeType: string,
       node: TSESTree.Node,
       nodeName: string,
-    ) {
+    ): void {
       context.report({
         node: node,
         messageId: messageId,
@@ -115,14 +124,16 @@ export default util.createRule<Options, MessageIds>({
           nodeType = `${methodDefinition.kind} property accessor`;
           break;
       }
-      if (check === 'off') {
-        return;
-      }
 
       const methodName = util.getNameFromClassMember(
         methodDefinition,
         sourceCode,
       );
+
+      if (check === 'off' || ignoredMethodNames.has(methodName)) {
+        return;
+      }
+
       if (
         check === 'no-public' &&
         methodDefinition.accessibility === 'public'
@@ -179,7 +190,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkParameterPropertyAccessibilityModifier(
       node: TSESTree.TSParameterProperty,
-    ) {
+    ): void {
       const nodeType = 'parameter property';
       // HAS to be an identifier or assignment or TSC will throw
       if (
@@ -195,8 +206,24 @@ export default util.createRule<Options, MessageIds>({
           : // has to be an Identifier or TSC will throw an error
             (node.parameter.left as TSESTree.Identifier).name;
 
-      if (paramPropCheck === 'no-public' && node.accessibility === 'public') {
-        reportIssue('unwantedPublicAccessibility', nodeType, node, nodeName);
+      switch (paramPropCheck) {
+        case 'explicit': {
+          if (!node.accessibility) {
+            reportIssue('missingAccessibility', nodeType, node, nodeName);
+          }
+          break;
+        }
+        case 'no-public': {
+          if (node.accessibility === 'public' && node.readonly) {
+            reportIssue(
+              'unwantedPublicAccessibility',
+              nodeType,
+              node,
+              nodeName,
+            );
+          }
+          break;
+        }
       }
     }
 

@@ -31,7 +31,7 @@ export default util.createRule<Options, MessageIds>({
 
     function binaryExp(
       node: TSESTree.BinaryExpression | TSESTree.LogicalExpression,
-    ) {
+    ): void {
       const rule = rules.BinaryExpression as (n: typeof node) => void;
 
       // makes the rule think it should skip the left or right
@@ -56,7 +56,9 @@ export default util.createRule<Options, MessageIds>({
 
       return rule(node);
     }
-    function callExp(node: TSESTree.CallExpression | TSESTree.NewExpression) {
+    function callExp(
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
+    ): void {
       const rule = rules.CallExpression as (n: typeof node) => void;
 
       if (node.callee.type === AST_NODE_TYPES.TSAsExpression) {
@@ -74,7 +76,7 @@ export default util.createRule<Options, MessageIds>({
     }
     function unaryUpdateExpression(
       node: TSESTree.UnaryExpression | TSESTree.UpdateExpression,
-    ) {
+    ): void {
       const rule = rules.UnaryExpression as (n: typeof node) => void;
 
       if (node.argument.type === AST_NODE_TYPES.TSAsExpression) {
@@ -176,6 +178,11 @@ export default util.createRule<Options, MessageIds>({
         }
 
         return rules.ForStatement(node);
+      },
+      'ForStatement > *.init:exit'(node: TSESTree.Node) {
+        if (node.type !== AST_NODE_TYPES.TSAsExpression) {
+          return rules['ForStatement > *.init:exit'](node);
+        }
       },
       // IfStatement
       LogicalExpression: binaryExp,
