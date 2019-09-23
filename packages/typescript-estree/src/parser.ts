@@ -7,7 +7,7 @@ import { astConverter } from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
-import { getFirstSemanticOrSyntacticError } from './semantic-errors';
+import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { TSESTree } from './ts-estree';
 import {
   calculateProjectParserOptions,
