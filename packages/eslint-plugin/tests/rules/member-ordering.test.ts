@@ -1217,7 +1217,8 @@ abstract class Foo {
     B: string;
     abstract A: () => {}
 }
-    `},
+    `,
+    },
     {
       code: `
 abstract class Foo {
@@ -3330,7 +3331,7 @@ type Foo = {
     {
       code: `
 abstract class Foo {
-    abstract A: () => {}
+    abstract A = () => {};
     B: string;
 }
           `,
@@ -3339,7 +3340,50 @@ abstract class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'B',
-            rank: 'method',
+            rank: 'public abstract method',
+          },
+          line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    abstract A: () => {};
+    B: string;
+    public C() {};
+    private D() {};
+    abstract E() {};
+}
+          `,
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'B',
+            rank: 'public abstract field',
+          },
+          line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    B: string;
+    abstract C = () => {};
+    abstract A: () => {};
+}
+          `,
+      options: [{ default: ['method', 'constructor', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'field',
           },
           line: 4,
           column: 5,
