@@ -117,33 +117,6 @@ function Test(props: {
       `,
       filename: 'react.tsx',
     },
-    {
-      code: `
-const React = require("react");
-
-export namespace appTest {
-  type ArtificialKey = string | number;
-  interface ReactAttributeArtificial {
-    key?: ArtificialKey;
-  }
-  type Data = {
-    id?: null | string | number;
-  };
-
-  export const Test = (props: Data) => {
-    return ChildFn({ key: props.id! });
-  };
-
-  export const Test2 = (props: Data) => {
-    return <ChildCmp key={props.id} />;
-  };
-
-  const ChildFn = (props: ReactAttributeArtificial) => "Hello";
-  const ChildCmp = () => <div>Hello</div>;
-}
-      `,
-      filename: 'react.tsx',
-    },
   ],
 
   invalid: [
@@ -353,6 +326,34 @@ class Mx {
           line: 5,
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/982
+    {
+      code: `
+const React = require("react");
+
+function Test(props: {
+  id?: string | number;
+}) {
+  return <div key={props.id!} />;
+};
+      `,
+      output: `
+const React = require("react");
+
+function Test(props: {
+  id?: string | number;
+}) {
+  return <div key={props.id} />;
+};
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 7,
+        },
+      ],
+      filename: 'react.tsx',
     },
   ],
 });
