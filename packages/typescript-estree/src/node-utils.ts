@@ -621,7 +621,7 @@ export function getNodeContainer(
   ast: ts.SourceFile,
   start: number,
   end: number,
-): ts.Node {
+): ts.Node | null {
   let container: ts.Node | null = null;
 
   /**
@@ -641,7 +641,7 @@ export function getNodeContainer(
   }
   walk(ast);
 
-  return container!;
+  return container;
 }
 
 export interface TSError {

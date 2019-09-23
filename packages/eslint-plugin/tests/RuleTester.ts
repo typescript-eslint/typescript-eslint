@@ -1,4 +1,5 @@
 import { TSESLint, ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { clearCaches } from '@typescript-eslint/parser';
 import * as path from 'path';
 
 const parser = '@typescript-eslint/parser';
@@ -33,35 +34,33 @@ class RuleTester extends TSESLint.RuleTester {
   ): void {
     const errorMessage = `Do not set the parser at the test level unless you want to use a parser other than ${parser}`;
 
-    if (this.filename) {
-      tests.valid = tests.valid.map(test => {
-        if (typeof test === 'string') {
-          return {
-            code: test,
-            filename: this.filename,
-          };
-        }
-        return test;
-      });
-    }
+    // standardise the valid tests as objects
+    tests.valid = tests.valid.map(test => {
+      if (typeof test === 'string') {
+        return {
+          code: test,
+        };
+      }
+      return test;
+    });
 
     tests.valid.forEach(test => {
       if (typeof test !== 'string') {
         if (test.parser === parser) {
           throw new Error(errorMessage);
         }
-        if (!test.filename) {
-          test.filename = this.filename;
-        }
+        test.filename = test.filename
+          ? path.join(getFixturesRootDir(), test.filename)
+          : this.filename;
       }
     });
     tests.invalid.forEach(test => {
       if (test.parser === parser) {
         throw new Error(errorMessage);
       }
-      if (!test.filename) {
-        test.filename = this.filename;
-      }
+      test.filename = test.filename
+        ? path.join(getFixturesRootDir(), test.filename)
+        : this.filename;
     });
 
     super.run(name, rule, tests);
@@ -73,5 +72,11 @@ function getFixturesRootDir(): string {
 }
 
 const { batchedSingleLineTests } = ESLintUtils;
+
+// make sure each test is completely isolated
+// otherwise the stored state may impact other tests
+afterEach(() => {
+  clearCaches();
+});
 
 export { RuleTester, getFixturesRootDir, batchedSingleLineTests };

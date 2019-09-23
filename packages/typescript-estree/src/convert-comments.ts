@@ -118,24 +118,26 @@ export function convertComments(
       case ts.SyntaxKind.GreaterThanToken:
         container = getNodeContainer(ast, start, end);
         if (
-          (container.parent &&
+          container &&
+          ((container.parent &&
             container.parent.parent &&
             // Rescan after an opening element or fragment
             (container.parent.kind === ts.SyntaxKind.JsxOpeningElement &&
               // Make sure this is the end of a tag like `<Component<number>>`
               container.parent.end === end)) ||
-          container.parent.kind === ts.SyntaxKind.JsxOpeningFragment ||
-          // Rescan after a self-closing element if it's inside another JSX element
-          (container.parent.kind === ts.SyntaxKind.JsxSelfClosingElement &&
-            (container.parent.parent.kind === ts.SyntaxKind.JsxElement ||
-              container.parent.parent.kind === ts.SyntaxKind.JsxFragment)) ||
-          // Rescan after a closing element if it's inside another JSX element
-          ((container.parent.kind === ts.SyntaxKind.JsxClosingElement ||
-            container.parent.kind === ts.SyntaxKind.JsxClosingFragment) &&
-            container.parent.parent.parent &&
-            (container.parent.parent.parent.kind === ts.SyntaxKind.JsxElement ||
-              container.parent.parent.parent.kind ===
-                ts.SyntaxKind.JsxFragment))
+            container.parent.kind === ts.SyntaxKind.JsxOpeningFragment ||
+            // Rescan after a self-closing element if it's inside another JSX element
+            (container.parent.kind === ts.SyntaxKind.JsxSelfClosingElement &&
+              (container.parent.parent.kind === ts.SyntaxKind.JsxElement ||
+                container.parent.parent.kind === ts.SyntaxKind.JsxFragment)) ||
+            // Rescan after a closing element if it's inside another JSX element
+            ((container.parent.kind === ts.SyntaxKind.JsxClosingElement ||
+              container.parent.kind === ts.SyntaxKind.JsxClosingFragment) &&
+              container.parent.parent.parent &&
+              (container.parent.parent.parent.kind ===
+                ts.SyntaxKind.JsxElement ||
+                container.parent.parent.parent.kind ===
+                  ts.SyntaxKind.JsxFragment)))
         ) {
           kind = triviaScanner.reScanJsxToken();
           continue;
@@ -146,6 +148,7 @@ export function convertComments(
 
         // Rescan after a JSX expression
         if (
+          container &&
           container.parent &&
           container.parent.kind === ts.SyntaxKind.JsxExpression &&
           container.parent.parent &&
@@ -156,8 +159,9 @@ export function convertComments(
         }
 
         if (
-          container.kind === ts.SyntaxKind.TemplateMiddle ||
-          container.kind === ts.SyntaxKind.TemplateTail
+          container &&
+          (container.kind === ts.SyntaxKind.TemplateMiddle ||
+            container.kind === ts.SyntaxKind.TemplateTail)
         ) {
           kind = triviaScanner.reScanTemplateToken();
           continue;
@@ -167,7 +171,10 @@ export function convertComments(
       case ts.SyntaxKind.SlashEqualsToken:
         container = getNodeContainer(ast, start, end);
 
-        if (container.kind === ts.SyntaxKind.RegularExpressionLiteral) {
+        if (
+          container &&
+          container.kind === ts.SyntaxKind.RegularExpressionLiteral
+        ) {
           kind = triviaScanner.reScanSlashToken();
           continue;
         }

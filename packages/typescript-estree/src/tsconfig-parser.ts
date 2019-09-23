@@ -35,8 +35,8 @@ const watchCallbackTrackingMap = new Map<string, ts.FileWatcherCallback>();
 const parsedFilesSeen = new Set<string>();
 
 /**
- * Clear tsconfig caches.
- * Primarily used for testing.
+ * Clear all of the parser caches.
+ * This should only be used in testing to ensure the parser is clean between tests.
  */
 export function clearCaches(): void {
   knownWatchProgramMap.clear();

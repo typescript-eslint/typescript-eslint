@@ -499,4 +499,5 @@ export function parseAndGenerateServices<
 }
 
 export { TSESTreeOptions, ParserServices };
+export { clearCaches } from './tsconfig-parser';
 export * from './ts-estree';
