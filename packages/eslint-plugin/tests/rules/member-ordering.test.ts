@@ -1211,12 +1211,23 @@ type Foo = {
             `,
       options: [{ default: ['method', 'constructor', 'field'] }],
     },
-    `
+    {
+      code: `
 abstract class Foo {
     B: string;
     abstract A: () => {}
 }
-    `,
+    `},
+    {
+      code: `
+abstract class Foo {
+    protected typeChecker: (data: any) => boolean;
+    public abstract required: boolean;
+    abstract verify(): void;
+}
+            `,
+      options: [{ classes: ['field', 'constructor', 'method'] }],
+    },
   ],
   invalid: [
     {

@@ -96,7 +96,7 @@ export function findFirstResult<T, U>(
  * or ClassProperty node, with handling for computed property names.
  */
 export function getNameFromClassMember(
-  methodDefinition: TSESTree.MethodDefinition | TSESTree.ClassProperty,
+  methodDefinition: TSESTree.MethodDefinition | TSESTree.ClassProperty| TSESTree.TSAbstractMethodDefinition,
   sourceCode: TSESLint.SourceCode,
 ): string {
   if (keyCanBeReadAsPropertyName(methodDefinition.key)) {
