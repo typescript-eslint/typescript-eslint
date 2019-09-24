@@ -1222,6 +1222,19 @@ abstract class Foo {
     {
       code: `
 abstract class Foo {
+    private static C: string;
+    B: string;
+    private D: string;
+    protected static F(): {};
+    public E(): {};
+    public abstract A = () => {};
+    protected abstract G(): void;
+}
+    `,
+    },
+    {
+      code: `
+abstract class Foo {
     protected typeChecker: (data: any) => boolean;
     public abstract required: boolean;
     abstract verify(): void;
@@ -3386,6 +3399,37 @@ abstract class Foo {
             rank: 'field',
           },
           line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    abstract B: string;
+    abstract A(): void;
+    public C(): {};
+
+}
+          `,
+      options: [{ default: ['method', 'constructor', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'field',
+          },
+          line: 4,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'field',
+          },
+          line: 5,
           column: 5,
         },
       ],
