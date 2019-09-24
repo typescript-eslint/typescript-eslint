@@ -99,7 +99,7 @@ Another option is to group the member types by their scope (`public`, `protected
   // Methods
   'static-method', // = ['public-static-method', 'protected-static-method', 'private-static-method'])
   'instance-method', // = ['public-instance-method', 'protected-instance-method', 'private-instance-method'])
-  'abstract-method', // = ['public-abstract-method', 'protected-abstract-method', 'private-abstract-method']
+  'abstract-method', // = ['public-abstract-method', 'protected-abstract-method', 'private-abstract-method'])
 ]
 ```
 

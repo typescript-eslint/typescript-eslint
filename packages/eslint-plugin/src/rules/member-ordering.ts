@@ -280,16 +280,16 @@ export default util.createRule<Options, MessageIds>({
         return order.length - 1;
       }
 
-    const abstract =
-      node.type === 'TSAbstractClassProperty' ||
-      node.type === 'TSAbstractMethodDefinition';
+      const abstract =
+        node.type === 'TSAbstractClassProperty' ||
+        node.type === 'TSAbstractMethodDefinition';
 
-    const scope =
-      'static' in node && node.static
-        ? 'static'
-        : abstract
-        ? 'abstract'
-        : 'instance';
+      const scope =
+        'static' in node && node.static
+          ? 'static'
+          : abstract
+          ? 'abstract'
+          : 'instance';
       const accessibility =
         'accessibility' in node && node.accessibility
           ? node.accessibility
