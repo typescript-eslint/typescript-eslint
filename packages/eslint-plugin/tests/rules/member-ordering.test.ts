@@ -1221,6 +1221,14 @@ abstract class Foo {
     },
     {
       code: `
+interface Foo {
+    public B: string;
+    [A:string]: number;
+}
+    `,
+    },
+    {
+      code: `
 abstract class Foo {
     private static C: string;
     B: string;
@@ -3399,6 +3407,37 @@ abstract class Foo {
             rank: 'field',
           },
           line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    C: number;
+    [A:string]: number;
+    public static D(): {};
+    private static [B:string]: number;
+}
+          `,
+      options: [
+        {
+          default: [
+            'field',
+            'method',
+            'public-static-method',
+            'private-static-method',
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'D',
+            rank: 'private static method',
+          },
+          line: 5,
           column: 5,
         },
       ],
