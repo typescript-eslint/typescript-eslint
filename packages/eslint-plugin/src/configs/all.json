@@ -34,6 +34,7 @@
     "@typescript-eslint/no-extra-parens": "error",
     "@typescript-eslint/no-extraneous-class": "error",
     "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/no-forgotten-func-call": "error",
     "@typescript-eslint/no-for-in-array": "error",
     "@typescript-eslint/no-inferrable-types": "error",
     "no-magic-numbers": "off",

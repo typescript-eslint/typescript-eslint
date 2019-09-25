@@ -24,6 +24,7 @@ import noExplicitAny from './no-explicit-any';
 import noExtraParens from './no-extra-parens';
 import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
+import noForgottenFuncCall from './no-forgotten-func-call';
 import noForInArray from './no-for-in-array';
 import noInferrableTypes from './no-inferrable-types';
 import noMagicNumbers from './no-magic-numbers';
@@ -90,6 +91,7 @@ export default {
   'no-extra-parens': noExtraParens,
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
+  'no-forgotten-func-call': noForgottenFuncCall,
   'no-for-in-array': noForInArray,
   'no-inferrable-types': noInferrableTypes,
   'no-magic-numbers': noMagicNumbers,
