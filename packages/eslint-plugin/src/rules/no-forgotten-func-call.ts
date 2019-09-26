@@ -21,6 +21,7 @@ type ExpressionWithTest =
 export type Options = [
   {
     allowAssignmentToAny?: boolean;
+    allowCheckAndCallExpressions?: boolean;
   },
 ];
 
@@ -43,6 +44,9 @@ export default createRule<Options, MessageId>({
           allowAssignmentToAny: {
             type: 'boolean',
           },
+          allowCheckAndCallExpressions: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -54,9 +58,10 @@ export default createRule<Options, MessageId>({
   defaultOptions: [
     {
       allowAssignmentToAny: true,
+      allowCheckAndCallExpressions: true,
     },
   ],
-  create(context, [{ allowAssignmentToAny }]) {
+  create(context, [{ allowAssignmentToAny, allowCheckAndCallExpressions }]) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
 
@@ -108,8 +113,25 @@ export default createRule<Options, MessageId>({
      * reports otherwise.
      */
     function checkLogicalExpression(node: TSESTree.LogicalExpression): void {
-      checkNode(node.left);
-      checkNode(node.right);
+      const { left, right } = node;
+      if (
+        allowCheckAndCallExpressions &&
+        isFunctionIdentifier(left) &&
+        right.type === AST_NODE_TYPES.CallExpression
+      ) {
+        const leftId =
+          left.type === AST_NODE_TYPES.Identifier ? left.name : undefined;
+        const { callee } = right;
+        const rightId =
+          callee.type === AST_NODE_TYPES.Identifier ? callee.name : undefined;
+        if (leftId === rightId) {
+          return;
+        }
+      }
+
+      // Fall through
+      checkNode(left);
+      checkNode(right);
     }
 
     /**

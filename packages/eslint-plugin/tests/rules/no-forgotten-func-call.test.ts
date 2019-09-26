@@ -50,6 +50,8 @@ if (d.e()) {}
 if (d.f) {}
 const h = {}
 h.i = () => {}
+declare const j: () => {} | undefined
+if (j && j()) {}
   `,
   ],
   invalid: [
@@ -87,6 +89,14 @@ f.g = () => {}
 `,
       options: [{ allowAssignmentToAny: false }],
       errors: [ruleError(3, 7, 'callExpected')],
+    },
+    {
+      code: `
+declare const f: () => {} | undefined
+if (f && f()) {}
+`,
+      options: [{ allowCheckAndCallExpressions: false }],
+      errors: [ruleError(3, 5, 'callExpected')],
     },
   ],
 });
