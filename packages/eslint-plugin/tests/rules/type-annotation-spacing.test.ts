@@ -3649,6 +3649,306 @@ type Foo = {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1001
+    {
+      code: 'let foo:  string;',
+      output: 'let foo: string;',
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: 'function foo():  string {}',
+      output: 'function foo(): string {}',
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 1,
+          column: 15,
+        },
+      ],
+    },
+    {
+      code: 'function foo(a:  string) {}',
+      output: 'function foo(a: string) {}',
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 1,
+          column: 15,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    name:  string;
+}
+            `,
+      output: `
+class Foo {
+    name: string;
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    constructor(message:  string);
+}
+            `,
+      output: `
+class Foo {
+    constructor(message: string);
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 24,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    greet():  string { return "hello"; }
+}
+            `,
+      output: `
+class Foo {
+    greet(): string { return "hello"; }
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    greet(name:  string):  string { return name; }
+}
+            `,
+      output: `
+class Foo {
+    greet(name: string): string { return name; }
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 15,
+        },
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 25,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+    name:  string;
+}
+            `,
+      output: `
+interface Foo {
+    name: string;
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+    greet():  string;
+}
+            `,
+      output: `
+interface Foo {
+    greet(): string;
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+    greet(name:  string):  string;
+}
+            `,
+      output: `
+interface Foo {
+    greet(name: string): string;
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 15,
+        },
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 25,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+    name:  string;
+}
+            `,
+      output: `
+type Foo = {
+    name: string;
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+    greet():  string;
+}
+            `,
+      output: `
+type Foo = {
+    greet(): string;
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+    greet(name:  string):  string;
+}
+            `,
+      output: `
+type Foo = {
+    greet(name: string): string;
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 15,
+        },
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 25,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = (name:  string) => string;',
+      output: 'type Foo = (name: string) => string;',
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 1,
+          column: 17,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+    greet:  (name:  string) =>  string;
+}
+            `,
+      options: [{ after: true }],
+      output: `
+type Foo = {
+    greet: (name: string) => string;
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 10,
+        },
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 18,
+        },
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: '=>' },
+          line: 3,
+          column: 29,
+        },
+      ],
+    },
   ],
 });
 
