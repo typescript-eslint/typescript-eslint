@@ -9,10 +9,11 @@ export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';
 
 interface SortedOrderConfig {
   memberTypes?: string[] | 'never';
-  order: 'alphabetically';
+  order: 'alphabetically' | 'as-written';
 }
 
 type OrderConfig = string[] | SortedOrderConfig | 'never';
+type Member = TSESTree.ClassElement | TSESTree.TypeElement;
 
 export type Options = [
   {
@@ -24,7 +25,37 @@ export type Options = [
   },
 ];
 
-const defaultOrder = [
+const neverConfig = {
+  type: 'string',
+  enum: ['never'],
+};
+
+const arrayConfig = (memberTypes: string[]): object => ({
+  type: 'array',
+  items: {
+    enum: memberTypes,
+  },
+});
+
+const objectConfig = (memberTypes: string[]): object => ({
+  type: 'object',
+  properties: {
+    memberTypes: {
+      oneOf: [arrayConfig(memberTypes), neverConfig],
+    },
+    order: {
+      type: 'string',
+      enum: ['alphabetically', 'as-written'],
+    },
+  },
+  additionalProperties: false,
+});
+
+export const defaultOrder = [
+  // Index signature
+  'signature',
+
+  // Fields
   'public-static-field',
   'protected-static-field',
   'private-static-field',
@@ -47,8 +78,14 @@ const defaultOrder = [
 
   'field',
 
+  // Constructors
+  'public-constructor',
+  'protected-constructor',
+  'private-constructor',
+
   'constructor',
 
+  // Methods
   'public-static-method',
   'protected-static-method',
   'private-static-method',
@@ -72,60 +109,30 @@ const defaultOrder = [
   'method',
 ];
 
-const allMemberTypes = ['field', 'method', 'constructor'].reduce<string[]>(
-  (all, type) => {
-    all.push(type);
+const allMemberTypes = ['signature', 'field', 'method', 'constructor'].reduce<
+  string[]
+>((all, type) => {
+  all.push(type);
 
-    ['public', 'protected', 'private'].forEach(accessibility => {
+  ['public', 'protected', 'private'].forEach(accessibility => {
+    if (type !== 'signature') {
       all.push(`${accessibility}-${type}`); // e.g. `public-field`
+    }
 
-      if (type !== 'constructor') {
-        // There is no `static-constructor` or `instance-constructor
-        ['static', 'instance'].forEach(scope => {
-          if (!all.includes(`${scope}-${type}`)) {
-            all.push(`${scope}-${type}`);
-          }
+    if (type !== 'constructor' && type !== 'signature') {
+      // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
+      ['static', 'instance', 'abstract'].forEach(scope => {
+        if (!all.includes(`${scope}-${type}`)) {
+          all.push(`${scope}-${type}`);
+        }
 
-          all.push(`${accessibility}-${scope}-${type}`);
-        });
-      }
-    });
+        all.push(`${accessibility}-${scope}-${type}`);
+      });
+    }
+  });
 
-    return all;
-  },
-  [],
-);
-
-const neverConfig = {
-  type: 'string',
-  enum: ['never'],
-};
-
-const allMemberTypesArrayConfig = {
-  type: 'array',
-  items: {
-    enum: allMemberTypes,
-  },
-};
-
-const allMemberTypesDefaultConfig = {
-  type: 'string',
-  enum: ['never'],
-};
-
-const allMemberTypesObjectConfig = {
-  type: 'object',
-  properties: {
-    memberTypes: {
-      oneOf: [allMemberTypesDefaultConfig, allMemberTypesArrayConfig],
-    },
-    order: {
-      type: 'string',
-      enum: ['alphabetically'],
-    },
-  },
-  additionalProperties: false,
-};
+  return all;
+}, []);
 
 const functionExpressions = [
   AST_NODE_TYPES.FunctionExpression,
@@ -134,11 +141,10 @@ const functionExpressions = [
 
 /**
  * Gets the node type.
+ *
  * @param node the node to be evaluated.
  */
-function getNodeType(
-  node: TSESTree.ClassElement | TSESTree.TypeElement,
-): string | null {
+function getNodeType(node: Member): string | null {
   // TODO: add missing TSCallSignatureDeclaration
   switch (node.type) {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
@@ -169,7 +175,7 @@ function getNodeType(
  * @param sourceCode
  */
 function getMemberName(
-  node: TSESTree.ClassElement | TSESTree.TypeElement,
+  node: Member,
   sourceCode: TSESLint.SourceCode,
 ): string | null {
   switch (node.type) {
@@ -182,33 +188,11 @@ function getMemberName(
     case AST_NODE_TYPES.MethodDefinition:
       return node.kind === 'constructor'
         ? 'constructor'
-            : util.getNameFromMember(node, sourceCode);
+        : util.getNameFromMember(node, sourceCode);
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'new';
     case AST_NODE_TYPES.TSIndexSignature:
       return util.getNameFromIndexSignature(node);
-    default:
-      return null;
-  }
-}
-
-/**
- * Gets the member identifier (null if there is no identifier).
- *
- * @param node the node to be evaluated.
- * @param sourceCode
- */
-function getIdentifier(
-  node: TSESTree.ClassElement | TSESTree.TypeElement,
-  sourceCode: TSESLint.SourceCode,
-): string | null {
-  switch (node.type) {
-    case AST_NODE_TYPES.TSPropertySignature:
-    case AST_NODE_TYPES.TSMethodSignature:
-    case AST_NODE_TYPES.ClassProperty:
-      return util.getNameFromPropertyName(node.key);
-    case AST_NODE_TYPES.MethodDefinition:
-      return util.getNameFromClassMember(node, sourceCode);
     default:
       return null;
   }
@@ -244,7 +228,7 @@ function getRankOrder(memberGroups: string[], orderConfig: string[]): number {
  * @param supportsModifiers a flag indicating whether the type supports modifiers (scope or accessibility) or not.
  */
 function getRank(
-  node: TSESTree.ClassElement | TSESTree.TypeElement,
+  node: Member,
   orderConfig: string[],
   supportsModifiers: boolean,
 ): number {
@@ -255,16 +239,16 @@ function getRank(
     return orderConfig.length - 1;
   }
 
-      const abstract =
-        node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
-        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
+  const abstract =
+    node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
+    node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
 
-      const scope =
-        'static' in node && node.static
-          ? 'static'
-          : abstract
-          ? 'abstract'
-          : 'instance';
+  const scope =
+    'static' in node && node.static
+      ? 'static'
+      : abstract
+      ? 'abstract'
+      : 'instance';
   const accessibility =
     'accessibility' in node && node.accessibility
       ? node.accessibility
@@ -345,36 +329,36 @@ export default util.createRule<Options, MessageIds>({
           default: {
             oneOf: [
               neverConfig,
-              allMemberTypesArrayConfig,
-              allMemberTypesObjectConfig,
+              arrayConfig(allMemberTypes),
+              objectConfig(allMemberTypes),
             ],
           },
           classes: {
             oneOf: [
               neverConfig,
-              allMemberTypesArrayConfig,
-              allMemberTypesObjectConfig,
+              arrayConfig(allMemberTypes),
+              objectConfig(allMemberTypes),
             ],
           },
           classExpressions: {
             oneOf: [
               neverConfig,
-              allMemberTypesArrayConfig,
-              allMemberTypesObjectConfig,
+              arrayConfig(allMemberTypes),
+              objectConfig(allMemberTypes),
             ],
           },
           interfaces: {
             oneOf: [
               neverConfig,
-              allMemberTypesArrayConfig,
-              allMemberTypesObjectConfig,
+              arrayConfig(['signature', 'field', 'method', 'constructor']),
+              objectConfig(['signature', 'field', 'method', 'constructor']),
             ],
           },
           typeLiterals: {
             oneOf: [
               neverConfig,
-              allMemberTypesArrayConfig,
-              allMemberTypesObjectConfig,
+              arrayConfig(['signature', 'field', 'method', 'constructor']),
+              objectConfig(['signature', 'field', 'method', 'constructor']),
             ],
           },
         },
@@ -389,6 +373,94 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     /**
+     * Checks if the member groups are correctly sorted.
+     *
+     * @param members Members to be validated.
+     * @param groupOrder Group order to be validated.
+     * @param supportsModifiers A flag indicating whether the type supports modifiers (scope or accessibility) or not.
+     *
+     * @return Array of member groups or null if one of the groups is not correctly sorted.
+     */
+    function checkGroupSort(
+      members: Member[],
+      groupOrder: string[],
+      supportsModifiers: boolean,
+    ): Array<Member[]> | null {
+      const previousRanks: number[] = [];
+      const memberGroups: Array<Member[]> = [];
+      let isCorrectlySorted = true;
+
+      // Find first member which isn't correctly sorted
+      members.forEach(member => {
+        const rank = getRank(member, groupOrder, supportsModifiers);
+        const name = getMemberName(member, context.getSourceCode());
+        const rankLastMember = previousRanks[previousRanks.length - 1];
+
+        if (rank !== -1) {
+          // Works for 1st item because x < undefined === false for any x (typeof string)
+          if (rank < rankLastMember) {
+            context.report({
+              node: member,
+              messageId: 'incorrectGroupOrder',
+              data: {
+                name,
+                rank: getLowestRank(previousRanks, rank, groupOrder),
+              },
+            });
+
+            isCorrectlySorted = false;
+          } else if (rank === rankLastMember) {
+            // Same member group --> Push to existing member group array
+            memberGroups[memberGroups.length - 1].push(member);
+          } else {
+            // New member group --> Create new member group array
+            previousRanks.push(rank);
+            memberGroups.push([member]);
+          }
+        }
+      });
+
+      return isCorrectlySorted ? memberGroups : null;
+    }
+
+    /**
+     * Checks if the members are alphabetically sorted.
+     *
+     * @param members Members to be validated.
+     *
+     * @return True if all members are correctly sorted.
+     */
+    function checkAlphaSort(members: Member[]): boolean {
+      let previousName = '';
+      let isCorrectlySorted = true;
+
+      // Find first member which isn't correctly sorted
+      members.forEach(member => {
+        const name = getMemberName(member, context.getSourceCode());
+
+        // Note: Not all members have names
+        if (name) {
+          if (name < previousName) {
+            context.report({
+              node: member,
+              messageId: 'incorrectOrder',
+              data: {
+                member: name,
+                beforeMember: previousName,
+              },
+            });
+
+            isCorrectlySorted = false;
+          }
+
+          previousName = name;
+        }
+      });
+
+      return isCorrectlySorted;
+    }
+
+    /**
      * Validates if all members are correctly sorted.
      *
      * @param members Members to be validated.
@@ -396,119 +468,39 @@ export default util.createRule<Options, MessageIds>({
      * @param supportsModifiers A flag indicating whether the type supports modifiers (scope or accessibility) or not.
      */
     function validateMembersOrder(
-      members: (TSESTree.ClassElement | TSESTree.TypeElement)[],
+      members: Member[],
       orderConfig: OrderConfig,
       supportsModifiers: boolean,
     ): void {
-      if (members.length > 0 && orderConfig !== 'never') {
+      if (orderConfig !== 'never') {
+        // Standardize config
+        let order = null;
+        let memberTypes;
+
         if (Array.isArray(orderConfig)) {
-          // Sort member groups (= ignore alphabetic order)
-          const memberGroupsOrder = orderConfig;
-
-          const previousRanks: number[] = [];
-
-          // Find first member which isn't correctly sorted
-          members.forEach(member => {
-            const rank = getRank(member, memberGroupsOrder, supportsModifiers);
-            const name = getMemberName(member, context.getSourceCode());
-
-            if (rank !== -1) {
-              // Make sure member types are correctly grouped
-              // Works for 1st item because x < undefined === false for any x (typeof string)
-              if (rank < previousRanks[previousRanks.length - 1]) {
-                context.report({
-                  node: member,
-                  messageId: 'incorrectGroupOrder',
-                  data: {
-                    name,
-                    rank: getLowestRank(previousRanks, rank, memberGroupsOrder),
-                  },
-                });
-              } else {
-                previousRanks.push(rank);
-              }
-            }
-          });
-        } else if (orderConfig.memberTypes === 'never') {
-          // Sort members alphabetically + ignore groups
-
-          let previousName = '';
-
-          // console.log(members)
-
-          // Find first member which isn't correctly sorted
-          members.forEach(member => {
-            const name = getIdentifier(member, context.getSourceCode());
-
-            // Same member group --> Check alphabetic order
-            if (name) {
-              // Not all members have sortable identifiers
-              if (name < previousName) {
-                context.report({
-                  node: member,
-                  messageId: 'incorrectOrder',
-                  data: {
-                    member: name,
-                    beforeMember: previousName,
-                  },
-                });
-              }
-
-              previousName = name;
-            }
-          });
+          memberTypes = orderConfig;
         } else {
-          // Sort groups + sort alphabetically within each group
-          const memberGroupsOrder = orderConfig.memberTypes || defaultOrder;
+          order = orderConfig.order;
+          memberTypes = orderConfig.memberTypes;
+        }
 
-          const previousRanks: number[] = [];
-          let previousName = '';
+        // Check order
+        if (Array.isArray(memberTypes)) {
+          const grouped = checkGroupSort(
+            members,
+            memberTypes,
+            supportsModifiers,
+          );
 
-          // Find first member which isn't correctly sorted
-          members.forEach(member => {
-            const rank = getRank(member, memberGroupsOrder, supportsModifiers);
-            const name = getIdentifier(member, context.getSourceCode());
+          if (grouped === null) {
+            return;
+          }
 
-            if (rank !== -1) {
-              // Make sure member types are correctly grouped
-              // Works for 1st item because x < undefined === false for any x (typeof string)
-              if (rank < previousRanks[previousRanks.length - 1]) {
-                context.report({
-                  node: member,
-                  messageId: 'incorrectGroupOrder',
-                  data: {
-                    name: getMemberName(member, context.getSourceCode()),
-                    rank: getLowestRank(previousRanks, rank, memberGroupsOrder),
-                  },
-                });
-              } else if (rank === previousRanks[previousRanks.length - 1]) {
-                // Same member group --> Check alphabetic order
-                if (name) {
-                  // Not all members have sortable identifiers
-                  if (previousName) {
-                    if (name < previousName) {
-                      context.report({
-                        node: member,
-                        messageId: 'incorrectOrder',
-                        data: {
-                          member: name,
-                          beforeMember: previousName,
-                        },
-                      });
-                    }
-
-                    previousName = name;
-                  }
-                }
-              } else {
-                previousRanks.push(rank);
-
-                if (name) {
-                  previousName = name;
-                }
-              }
-            }
-          });
+          if (order === 'alphabetically') {
+            grouped.some(groupMember => !checkAlphaSort(groupMember));
+          }
+        } else if (order === 'alphabetically') {
+          checkAlphaSort(members);
         }
       }
     }

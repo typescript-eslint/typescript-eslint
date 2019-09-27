@@ -7,40 +7,47 @@ A consistent ordering of fields, methods and constructors can make interfaces, t
 This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured and ordered.
 
 ### Grouping and sorting member groups
+
 It allows to group members by their type (e.g. `public-static-field`, `protected-static-field`, `private-static-field`, `public-instance-field`, ...) and enforce a certain order for these groups. By default, their order is the same inside `classes`, `classExpressions`, `interfaces` and `typeLiterals` (note: not all member types apply to `interfaces` and `typeLiterals`). It is possible to define the order for any of those individually or to change the default order for all of them by setting the `default` option.
 
 ### Sorting members
-Besides grouping the members and sorting their groups, this rule also allows to sort the members themselves. You have 2 options: Sort all of them while ignoring their type or sort them inside of the member types (e.g. sort all fields in an interface alphabetically).
+
+Besides grouping the members and sorting their groups, this rule also allows to sort the members themselves (e.g. `a`, `b`, `c`, ...). You have 2 options: Sort all of them while ignoring their type or sort them while respecting their types (e.g. sort all fields in an interface alphabetically).
 
 ## Options
+
 These options allow to specify how to group the members and sort their groups.
 
+- Sort groups, don't enforce member order: Use `memberTypes`
+- Sort members, don't enforce group order: Use `order`
+- Sort members within groups: Use `memberTypes` and `order`
+
 ```ts
+type TypeOptions<T> =
+  | {
+    memberTypes: Array<T> | 'never',
+    order?: 'alphabetically' | 'as-written',
+  }
+  | {
+    order: 'alphabetically',
+  };
+
 {
-  default?: Array<MemberType> | 'never'
+  default?: TypeOptions<MemberTypes>,
 
-  classes?: Array<MemberType> | 'never'
-  classExpressions?: Array<MemberType> | 'never'
+  classes?: TypeOptions<MemberTypes>,
+  classExpressions?: TypeOptions<MemberTypes>,
 
-  interfaces?: ['signature' | 'field' | 'method' | 'constructor'] | 'never'
-  typeLiterals?: ['signature' | 'field' | 'method' | 'constructor'] | 'never'
-}
-```
-
-If you want to enforce an alphabetic order, you have to use this form
-```ts
-{
-  default?: Array<MemberType> | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
-
-  classes?: Array<MemberType> | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
-  classExpressions?: Array<MemberType> | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
-
-  interfaces?: ['field' | 'method' | 'constructor'] | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
-  typeLiterals?: ['field' | 'method' | 'constructor'] | { memberTypes?: Array<MemberType> | 'never', order?: 'alphabetically' } | 'never'
+  interfaces?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
+  typeLiterals?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
 }
 ```
 
 See below for the possible definitions of `MemberType`.
+
+### Deprecated syntax
+
+Note: There is a deprecated syntax to specify the member types as an array.
 
 ### Member types (granular form)
 
@@ -156,57 +163,63 @@ The third grouping option is to ignore both scope and accessibility.
 
 The default configuration looks as follows:
 
-```json
+```json5
 {
-  "default": [
-    "signature",
+  default: [
+    'signature',
 
-    "public-static-field",
-    "protected-static-field",
-    "private-static-field",
+    'public-static-field',
+    'protected-static-field',
+    'private-static-field',
 
-    "public-instance-field",
-    "protected-instance-field",
-    "private-instance-field",
+    'public-instance-field',
+    'protected-instance-field',
+    'private-instance-field',
 
-    "public-abstract-field",
-    "protected-abstract-field",
-    "private-abstract-field",
+    'public-abstract-field',
+    'protected-abstract-field',
+    'private-abstract-field',
 
-    "public-field",
-    "protected-field",
-    "private-field",
+    'public-field',
+    'protected-field',
+    'private-field',
 
-    "static-field",
-    "instance-field",
-    "abstract-field",
+    'static-field',
+    'instance-field',
+    'abstract-field',
 
-    "field",
+    'field',
 
-    "constructor",
+    // Constructors
+    'public-constructor',
+    'protected-constructor',
+    'private-constructor',
 
-    "public-static-method",
-    "protected-static-method",
-    "private-static-method",
+    'constructor',
 
-    "public-instance-method",
-    "protected-instance-method",
-    "private-instance-method",
+    // Methods
+    'public-static-method',
+    'protected-static-method',
+    'private-static-method',
 
-    "public-abstract-method",
-    "protected-abstract-method",
-    "private-abstract-method",
+    'public-instance-method',
+    'protected-instance-method',
+    'private-instance-method',
 
-    "public-method",
-    "protected-method",
-    "private-method",
+    'public-abstract-method',
+    'protected-abstract-method',
+    'private-abstract-method',
 
-    "static-method",
-    "instance-method",
-    "abstract-method",
+    'public-method',
+    'protected-method',
+    'private-method',
 
-    "method"
-  ]
+    'static-method',
+    'instance-method',
+    'abstract-method',
+
+    'method',
+  ],
 }
 ```
 
@@ -733,9 +746,11 @@ type Foo = {
 ```
 
 ### Sorting alphabetically within member groups
+
 It is possible to sort all members within a group alphabetically.
 
 #### Configuration: `{ default: { order: 'alphabetically' } }`
+
 This will apply the default order (see above) and enforce an alphabetic order within each group.
 
 ##### Incorrect examples
@@ -779,6 +794,7 @@ interface Foo {
 Note: Wrong alphabetic order (should be `a(): void` --> `b(): void` --> `c(): void`).
 
 ### Sorting alphabetically while ignoring member groups
+
 It is also possible to sort all members and ignore the member groups completely.
 
 #### Configuration: `{ default: { memberTypes: 'never', order: 'alphabetically' } }`

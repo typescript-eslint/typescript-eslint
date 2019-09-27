@@ -1,7 +1,11 @@
 // TODO - migrate this test to the rule
 /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
 
-import rule, { MessageIds, Options } from '../../src/rules/member-ordering';
+import rule, {
+  defaultOrder,
+  MessageIds,
+  Options,
+} from '../../src/rules/member-ordering';
 import { RuleTester } from '../RuleTester';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 
@@ -1436,7 +1440,7 @@ interface Foo {
           column: 5,
         },
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'Z',
             rank: 'field',
@@ -1534,7 +1538,7 @@ interface Foo {
           column: 5,
         },
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'Z',
             rank: 'field',
@@ -1635,7 +1639,7 @@ interface Foo {
           column: 5,
         },
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'Z',
             rank: 'field',
@@ -1836,7 +1840,7 @@ type Foo = {
           column: 5,
         },
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'new',
             rank: 'field',
@@ -2026,7 +2030,7 @@ type Foo = {
           column: 5,
         },
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'Z',
             rank: 'field',
@@ -3342,7 +3346,6 @@ const foo = class {
         },
       ],
     },
-
     {
       code: `
 class Foo {
@@ -3373,7 +3376,7 @@ class Foo {
           column: 5,
         },
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'Z',
             rank: 'public instance method',
@@ -3521,7 +3524,7 @@ abstract class Foo {
           `,
       errors: [
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'B',
             rank: 'public abstract field',
@@ -3542,7 +3545,7 @@ abstract class Foo {
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'C',
             rank: 'field',
@@ -3574,7 +3577,7 @@ class Foo {
       ],
       errors: [
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'D',
             rank: 'signature',
@@ -3590,13 +3593,12 @@ abstract class Foo {
     abstract B: string;
     abstract A(): void;
     public C(): {};
-
 }
           `,
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'A',
             rank: 'field',
@@ -3605,7 +3607,7 @@ abstract class Foo {
           column: 5,
         },
         {
-          messageId: 'incorrectOrder',
+          messageId: 'incorrectGroupOrder',
           data: {
             name: 'C',
             rank: 'field',
@@ -3628,8 +3630,8 @@ const sortedWithoutGroupingDefaultOption: TSESLint.RunTests<
       code: `
 interface Foo {
   a : b;
+  [a: string] : number;
   b() : void;
-  [a: string] : number; // Will be ignored (no sortable identifier)
   new () : Bar; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
@@ -3664,8 +3666,8 @@ interface Foo {
       code: `
 type Foo = {
   a : b;
+  [a: string] : number;
   b() : void;
-  [a: string] : number; // Will be ignored (no sortable identifier)
   new () : Bar; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
@@ -3778,7 +3780,7 @@ const foo = class Foo {
 interface Foo {
   b() : void;
   a : b;
-  [a: string] : number; // Will be ignored (no sortable identifier)
+  [a: string] : number;
   new () : Bar; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
@@ -3829,7 +3831,7 @@ interface Foo {
 type Foo = {
   b() : void;
   a : b;
-  [a: string] : number; // Will be ignored (no sortable identifier)
+  [a: string] : number;
   new () : Bar; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
@@ -3991,10 +3993,10 @@ const sortedWithoutGroupingClassesOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
+  [a: string] : number;
   c : b;
   new () : Bar;
   b() : void;
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -4027,10 +4029,10 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
   c : b;
   new () : Bar;
   b() : void;
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -4200,10 +4202,10 @@ const sortedWithoutGroupingClassExpressionsOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
+  [a: string] : number;
   c : b;
   new () : Bar;
   b() : void;
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -4242,10 +4244,10 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
   c : b;
   new () : Bar;
   b() : void;
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -4437,9 +4439,9 @@ const sortedWithoutGroupingInterfacesOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
+  [a: string] : number;
   a : b;
   b() : void;
-  [a: string] : number; // Will be ignored (no sortable identifier)
   new () : Bar; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
@@ -4479,10 +4481,10 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
   c : b;
   new () : Bar;
   b() : void;
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -4612,7 +4614,7 @@ const foo = class Foo {
 interface Foo {
   b() : void;
   a : b;
-  [a: string] : number; // Will be ignored (no sortable identifier)
+  [a: string] : number;
   new () : Bar; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
@@ -4672,10 +4674,10 @@ const sortedWithoutGroupingTypeLiteralsOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
+  [a: string] : number;
   c : b;
   new () : Bar;
   b() : void;
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -4714,9 +4716,9 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
   a : b;
   b() : void;
-  [a: string] : number; // Will be ignored (no sortable identifier)
   new () : Bar; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
@@ -4847,7 +4849,7 @@ const foo = class Foo {
 type Foo = {
   b() : void;
   a : b;
-  [a: string] : number; // Will be ignored (no sortable identifier)
+  [a: string] : number;
   new () : Bar; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
@@ -4907,6 +4909,8 @@ const sortedWithGroupingDefaultOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
+  [a: string] : number;
+
   a : x;
   b : x;
   c : x;
@@ -4917,11 +4921,12 @@ interface Foo {
   b() : void;
   c() : void;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
     },
 
     // default option + interface + custom order + alphabetically
@@ -4938,7 +4943,7 @@ interface Foo {
   b : x;
   c : x;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
+  [a: string] : number;
   () : Baz; // Will be ignored (no sortable identifier)
 }
             `,
@@ -4956,6 +4961,8 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
+
   a : x;
   b : x;
   c : x;
@@ -4966,17 +4973,20 @@ type Foo = {
   b() : void;
   c() : void;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
     },
 
     // default option + type literal + custom order + alphabetically
     {
       code: `
 type Foo = {
+  [a: string] : number;
+
   new () : Bar;
 
   a() : void;
@@ -4987,7 +4997,6 @@ type Foo = {
   b : x;
   c : x;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 }
             `,
@@ -5016,7 +5025,9 @@ class Foo {
   constructor() {}
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
     },
 
     // default option + class + custom order + alphabetically
@@ -5059,7 +5070,9 @@ const foo = class Foo {
   constructor() {}
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
     },
 
     // default option + class expression + custom order + alphabetically
@@ -5092,6 +5105,8 @@ const foo = class Foo {
     {
       code: `
 interface Foo {
+  [a: string] : number;
+
   a : x;
   b : x;
   c : x;
@@ -5100,28 +5115,15 @@ interface Foo {
   b() : void;
   a() : void;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 
   new () : Bar;
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
       errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -5136,6 +5138,8 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
+
   a : x;
   b : x;
   c : x;
@@ -5144,28 +5148,15 @@ type Foo = {
   b() : void;
   a() : void;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 
   new () : Bar;
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
       errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -5189,27 +5180,15 @@ class Foo {
   public d: string = "";
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
       errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'd',
-            rank: 'constructor',
+            rank: 'public constructor',
           },
         },
       ],
@@ -5228,27 +5207,15 @@ const foo = class Foo {
   public d: string = "";
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
       errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'd',
-            rank: 'constructor',
+            rank: 'public constructor',
           },
         },
       ],
@@ -5265,6 +5232,8 @@ const sortedWithGroupingClassesOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
+  [a: string] : number;
+
   c : x;
   b : x;
   a : x;
@@ -5275,7 +5244,6 @@ interface Foo {
   b() : void;
   a() : void;
 
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -5286,6 +5254,8 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
+
   c : x;
   b : x;
   a : x;
@@ -5296,7 +5266,6 @@ type Foo = {
   b() : void;
   a() : void;
 
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -5318,7 +5287,9 @@ class Foo {
   constructor() {}
 }
             `,
-      options: [{ classes: { order: 'alphabetically' } }],
+      options: [
+        { classes: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
     },
 
     // classes option + class + custom order + alphabetically
@@ -5378,27 +5349,15 @@ class Foo {
   public d: string = "";
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
       errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'd',
-            rank: 'constructor',
+            rank: 'public constructor',
           },
         },
       ],
@@ -5415,6 +5374,8 @@ const sortedWithGroupingClassExpressionsOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
+  [a: string] : number;
+
   c : x;
   b : x;
   a : x;
@@ -5425,7 +5386,6 @@ interface Foo {
   b() : void;
   a() : void;
 
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -5436,6 +5396,8 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
+
   c : x;
   b : x;
   a : x;
@@ -5446,7 +5408,6 @@ type Foo = {
   b() : void;
   a() : void;
 
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -5486,7 +5447,14 @@ const foo = class Foo {
   constructor() {}
 }
             `,
-      options: [{ classExpressions: { order: 'alphabetically' } }],
+      options: [
+        {
+          classExpressions: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically',
+          },
+        },
+      ],
     },
 
     // classExpressions option + class expression + custom order + alphabetically
@@ -5528,27 +5496,15 @@ const foo = class Foo {
   public d: string = "";
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
       errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'd',
-            rank: 'constructor',
+            rank: 'public constructor',
           },
         },
       ],
@@ -5565,21 +5521,29 @@ const sortedWithGroupingInterfacesOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
+  [a: string] : number;
+
   a : x;
   b : x;
   c : x;
-
-  new () : Bar;
 
   a() : void;
   b() : void;
   c() : void;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
+  new () : Bar;
+
   () : Baz; // Will be ignored (no sortable identifier)
 }
             `,
-      options: [{ interfaces: { order: 'alphabetically' } }],
+      options: [
+        {
+          interfaces: {
+            memberTypes: ['signature', 'field', 'method', 'constructor'],
+            order: 'alphabetically',
+          },
+        },
+      ],
     },
 
     // interfaces option + interface + custom order + alphabetically
@@ -5596,7 +5560,7 @@ interface Foo {
   b : x;
   c : x;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
+  [a: string] : number;
   () : Baz; // Will be ignored (no sortable identifier)
 }
             `,
@@ -5614,6 +5578,8 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
+
   c : x;
   b : x;
   a : x;
@@ -5624,7 +5590,6 @@ type Foo = {
   b() : void;
   a() : void;
 
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -5672,6 +5637,8 @@ const foo = class Foo {
     {
       code: `
 interface Foo {
+  [a: string] : number;
+
   a : x;
   b : x;
   c : x;
@@ -5680,28 +5647,15 @@ interface Foo {
   b() : void;
   a() : void;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 
   new () : Bar;
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
       errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -5723,6 +5677,8 @@ const sortedWithGroupingTypeLiteralsOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
+  [a: string] : number;
+
   c : x;
   b : x;
   a : x;
@@ -5733,7 +5689,6 @@ interface Foo {
   b() : void;
   a() : void;
 
-  [a: string] : number;
   () : Baz;
 }
             `,
@@ -5744,21 +5699,29 @@ interface Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
+
   a : x;
   b : x;
   c : x;
-
-  new () : Bar;
 
   a() : void;
   b() : void;
   c() : void;
 
-  [a: string] : number;
+  new () : Bar;
+
   () : Baz;
 }
             `,
-      options: [{ typeLiterals: { order: 'alphabetically' } }],
+      options: [
+        {
+          typeLiterals: {
+            memberTypes: ['signature', 'field', 'method', 'constructor'],
+            order: 'alphabetically',
+          },
+        },
+      ],
     },
 
     // typeLiterals option + type literal + custom order + alphabetically
@@ -5775,7 +5738,7 @@ type Foo = {
   b : x;
   c : x;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
+  [a: string] : number;
   () : Baz; // Will be ignored (no sortable identifier)
 }
             `,
@@ -5830,6 +5793,8 @@ const foo = class Foo {
     {
       code: `
 type Foo = {
+  [a: string] : number;
+
   a : x;
   b : x;
   c : x;
@@ -5838,28 +5803,15 @@ type Foo = {
   b() : void;
   a() : void;
 
-  [a: string] : number; // Will be ignored (no sortable identifier)
   () : Baz; // Will be ignored (no sortable identifier)
 
   new () : Bar;
 }
             `,
-      options: [{ default: { order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
       errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
