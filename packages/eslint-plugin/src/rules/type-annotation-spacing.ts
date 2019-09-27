@@ -140,6 +140,20 @@ export default util.createRule<Options, MessageIds>({
             return fixer.insertTextAfter(punctuatorTokenEnd, ' ');
           },
         });
+      } else if (after && nextDelta > 1) {
+        context.report({
+          node: punctuatorTokenEnd,
+          messageId: 'expectedSpaceAfter',
+          data: {
+            type,
+          },
+          fix(fixer) {
+            return fixer.replaceTextRange(
+              [punctuatorTokenEnd.range[1], nextToken.range[0]],
+              ' ',
+            );
+          },
+        });
       } else if (!after && nextDelta > 0) {
         context.report({
           node: punctuatorTokenEnd,
