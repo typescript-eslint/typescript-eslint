@@ -949,7 +949,11 @@ export class Converter {
           result.definite = true;
         }
 
-        if (result.key.type === AST_NODE_TYPES.Literal && node.questionToken) {
+        if (
+          (result.key.type === AST_NODE_TYPES.Literal ||
+            result.key.type === AST_NODE_TYPES.Identifier) &&
+          node.questionToken
+        ) {
           result.optional = true;
         }
         return result;
