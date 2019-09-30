@@ -41,6 +41,17 @@ ruleTester.run('no-magic-numbers', rule, {
       code: 'enum foo { SECOND = 1000, NUM = "0123456789" }',
       options: [{ ignoreEnums: true }],
     },
+    {
+      code: `
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 1;
+  static readonly D = 1;
+}
+      `,
+      options: [{ ignoreReadonlyClassProperties: true }],
+    },
   ],
 
   invalid: [
@@ -163,6 +174,39 @@ ruleTester.run('no-magic-numbers', rule, {
           },
           line: 1,
           column: 21,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 1;
+  static readonly D = 1;
+}
+      `,
+      options: [{ ignoreReadonlyClassProperties: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          line: 3,
+          column: 16,
+        },
+        {
+          messageId: 'noMagic',
+          line: 4,
+          column: 16,
+        },
+        {
+          messageId: 'noMagic',
+          line: 5,
+          column: 30,
+        },
+        {
+          messageId: 'noMagic',
+          line: 6,
+          column: 23,
         },
       ],
     },

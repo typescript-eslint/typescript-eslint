@@ -29,6 +29,8 @@ const OBJECT_LITERAL_ARGUMENT_AS_CASTS = `
 print({ bar: 5 } as Foo)
 new print({ bar: 5 } as Foo)
 function foo() { throw { bar: 5 } as Foo }
+function b(x = {} as Foo.Bar) {}
+function c(x = {} as Foo) {}
 `;
 const OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS = `
 print(<Foo>{ bar: 5 })
@@ -268,6 +270,14 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 5,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 6,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 7,
         },
       ],
     }),
