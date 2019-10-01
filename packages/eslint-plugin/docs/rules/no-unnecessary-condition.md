@@ -53,9 +53,9 @@ function head<T>(items: T[]) {
 }
 ```
 
-- `checkLoops` (default `true`) - allows constant expressions in loops.
+- `allowConstantLoopConditions` (default `false`) - allows constant expressions in loops.
 
-Example of correct code for when `checkLoops` is `false`:
+Example of correct code for when `allowConstantLoopConditions` is `true`:
 
 ```ts
 while (true) {}

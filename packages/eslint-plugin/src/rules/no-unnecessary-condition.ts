@@ -50,7 +50,7 @@ type ExpressionWithTest =
 
 export type Options = [
   {
-    checkLoops?: boolean;
+    allowConstantLoopConditions?: boolean;
     ignoreRhs?: boolean;
   },
 ];
@@ -75,7 +75,7 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          checkLoops: {
+          allowConstantLoopConditions: {
             type: 'boolean',
           },
           ignoreRhs: {
@@ -95,11 +95,11 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      checkLoops: true,
+      allowConstantLoopConditions: false,
       ignoreRhs: false,
     },
   ],
-  create(context, [{ checkLoops, ignoreRhs }]) {
+  create(context, [{ allowConstantLoopConditions, ignoreRhs }]) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
 
@@ -183,7 +183,7 @@ export default createRule<Options, MessageId>({
          *   do {} while (true)
          */
         if (
-          !checkLoops &&
+          allowConstantLoopConditions &&
           isLoopStatement(node) &&
           isBooleanLiteralType(getNodeType(node.test), true)
         ) {

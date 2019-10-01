@@ -93,7 +93,7 @@ while(true) {}
 for (;true;) {}
 do {} while(true)
       `,
-      options: [{ checkLoops: false }],
+      options: [{ allowConstantLoopConditions: true }],
     },
   ],
   invalid: [
@@ -205,7 +205,7 @@ while(true) {}
 for (;true;) {}
 do {} while(true)
       `,
-      options: [{ checkLoops: true }],
+      options: [{ allowConstantLoopConditions: false }],
       errors: [
         ruleError(2, 7, 'alwaysTruthy'),
         ruleError(3, 7, 'alwaysTruthy'),
