@@ -50,6 +50,7 @@ type ExpressionWithTest =
 
 export type Options = [
   {
+    checkLoops?: boolean;
     ignoreRhs?: boolean;
   },
 ];
@@ -74,6 +75,9 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
+          checkLoops: {
+            type: 'boolean',
+          },
           ignoreRhs: {
             type: 'boolean',
           },
@@ -91,16 +95,25 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
+      checkLoops: true,
       ignoreRhs: false,
     },
   ],
-  create(context, [{ ignoreRhs }]) {
+  create(context, [{ checkLoops, ignoreRhs }]) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
 
     function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       return getConstrainedTypeAtLocation(checker, tsNode);
+    }
+
+    function isLoopStatement(node: TSESTree.Node): boolean {
+      return (
+        node.type === AST_NODE_TYPES.ForStatement ||
+        node.type === AST_NODE_TYPES.WhileStatement ||
+        node.type === AST_NODE_TYPES.DoWhileStatement
+      );
     }
 
     /**
@@ -163,6 +176,20 @@ export default createRule<Options, MessageId>({
         node.test !== null &&
         node.test.type !== AST_NODE_TYPES.LogicalExpression
       ) {
+        /**
+         * Allow:
+         *   while (true) {}
+         *   for (;true;) {}
+         *   do {} while (true)
+         */
+        if (
+          !checkLoops &&
+          isLoopStatement(node) &&
+          isBooleanLiteralType(getNodeType(node.test), true)
+        ) {
+          return;
+        }
+
         checkNode(node.test);
       }
     }

@@ -53,6 +53,16 @@ function head<T>(items: T[]) {
 }
 ```
 
+- `checkLoops` (default `true`) - allows constant expressions in loops.
+
+Example of correct code for when `checkLoops` is `false`:
+
+```ts
+while (true) {}
+for (; true; ) {}
+do {} while (true);
+```
+
 ## When Not To Use It
 
 The main downside to using this rule is the need for type information.
