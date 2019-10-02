@@ -31,22 +31,21 @@ export default util.createRule({
         member.property.type === AST_NODE_TYPES.Literal &&
         typeof member.property.value === 'string'
       ) {
-        const { value } = member.property;
-        return fixer =>
-          fixer.replaceTextRange(getTokenRange(member.property), `.${value}`);
+        return createPropertyReplacement(
+          member.property,
+          member.property.value,
+        );
       }
 
       if (member.property.type === AST_NODE_TYPES.Identifier) {
-        const { name } = member.property;
-        return fixer =>
-          fixer.replaceTextRange(getTokenRange(member.property), `.${name}`);
+        return createPropertyReplacement(member.property, member.property.name);
       }
 
       return undefined;
     }
 
     return {
-      'UnaryExpression[operator=delete]'(node: TSESTree.UnaryExpression) {
+      'UnaryExpression[operator=delete]'(node: TSESTree.UnaryExpression): void {
         if (
           node.argument.type !== AST_NODE_TYPES.MemberExpression ||
           !node.argument.computed ||
@@ -64,6 +63,14 @@ export default util.createRule({
         });
       },
     };
+
+    function createPropertyReplacement(
+      property: TSESTree.Expression,
+      replacement: string,
+    ) {
+      return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix =>
+        fixer.replaceTextRange(getTokenRange(property), `.${replacement}`);
+    }
 
     function getTokenRange(property: TSESTree.Expression): [number, number] {
       const sourceCode = context.getSourceCode();
