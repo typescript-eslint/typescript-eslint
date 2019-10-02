@@ -104,7 +104,7 @@ export default util.createRule<Options, MessageIds>({
       let previousToken = sourceCode.getTokenBefore(punctuatorTokenEnd)!;
       let type = punctuatorTokenEnd.value;
 
-      if (punctuators.indexOf(type) === -1) {
+      if (!punctuators.includes(type)) {
         return;
       }
 
@@ -185,12 +185,12 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSMappedType(node) {
+      TSMappedType(node): void {
         if (node.typeAnnotation) {
           checkTypeAnnotationSpacing(node.typeAnnotation);
         }
       },
-      TSTypeAnnotation(node) {
+      TSTypeAnnotation(node): void {
         checkTypeAnnotationSpacing(node.typeAnnotation);
       },
     };

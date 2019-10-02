@@ -12,7 +12,7 @@ type RequiredParserServices = {
  */
 export function getParserServices<
   TMessageIds extends string,
-  TOptions extends any[]
+  TOptions extends unknown[]
 >(
   context: TSESLint.RuleContext<TMessageIds, TOptions>,
 ): RequiredParserServices {

@@ -6,12 +6,12 @@ import { RuleTester as ESLintRuleTester } from 'eslint';
 import { ParserOptions } from './ParserOptions';
 import { RuleModule } from './Rule';
 
-interface ValidTestCase<TOptions extends Readonly<any[]>> {
+interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   code: string;
   options?: TOptions;
   filename?: string;
   parserOptions?: ParserOptions;
-  settings?: Record<string, any>;
+  settings?: Record<string, unknown>;
   parser?: string;
   globals?: Record<string, boolean>;
   env?: {
@@ -21,7 +21,7 @@ interface ValidTestCase<TOptions extends Readonly<any[]>> {
 
 interface InvalidTestCase<
   TMessageIds extends string,
-  TOptions extends Readonly<any[]>
+  TOptions extends Readonly<unknown[]>
 > extends ValidTestCase<TOptions> {
   errors: TestCaseError<TMessageIds>[];
   output?: string | null;
@@ -29,7 +29,7 @@ interface InvalidTestCase<
 
 interface TestCaseError<TMessageIds extends string> {
   messageId: TMessageIds;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   type?: AST_NODE_TYPES | AST_TOKEN_TYPES;
   line?: number;
   column?: number;
@@ -39,18 +39,19 @@ interface TestCaseError<TMessageIds extends string> {
 
 interface RunTests<
   TMessageIds extends string,
-  TOptions extends Readonly<any[]>
+  TOptions extends Readonly<unknown[]>
 > {
   // RuleTester.run also accepts strings for valid cases
   valid: (ValidTestCase<TOptions> | string)[];
   invalid: InvalidTestCase<TMessageIds, TOptions>[];
 }
 interface RuleTesterConfig {
-  parser: '@typescript-eslint/parser';
+  // should be require.resolve(parserPackageName)
+  parser: string;
   parserOptions?: ParserOptions;
 }
 declare interface RuleTester {
-  run<TMessageIds extends string, TOptions extends Readonly<any[]>>(
+  run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
     name: string,
     rule: RuleModule<TMessageIds, TOptions>,
     tests: RunTests<TMessageIds, TOptions>,

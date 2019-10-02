@@ -22,12 +22,13 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [],
   create(context) {
     return {
-      CallExpression(node) {
+      CallExpression(node): void {
         if (
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.callee.name === 'require' &&
           node.parent &&
-          node.parent.type === AST_NODE_TYPES.VariableDeclarator
+          (node.parent.type === AST_NODE_TYPES.VariableDeclarator ||
+            node.parent.type === AST_NODE_TYPES.CallExpression)
         ) {
           context.report({
             node,

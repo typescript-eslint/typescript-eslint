@@ -5,20 +5,23 @@ import {
 import * as util from '../util';
 
 type Delimiter = 'comma' | 'none' | 'semi';
-interface TypeOptions {
+// need type's implicit index sig for deepMerge
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type TypeOptions = {
   delimiter?: Delimiter;
   requireLast?: boolean;
-}
-interface BaseOptions {
+};
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type BaseOptions = {
   multiline?: TypeOptions;
   singleline?: TypeOptions;
-}
-interface Config extends BaseOptions {
+};
+type Config = BaseOptions & {
   overrides?: {
     typeLiteral?: BaseOptions;
     interface?: BaseOptions;
   };
-}
+};
 type Options = [Config];
 type MessageIds =
   | 'unexpectedComma'

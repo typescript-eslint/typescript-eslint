@@ -50,11 +50,51 @@ The following additional configuration options are available by specifying them 
 
 - **`project`** - default `undefined`. This option allows you to provide a path to your project's `tsconfig.json`. **This setting is required if you want to use rules which require type information**. You may want to use this setting in tandem with the `tsconfigRootDir` option below.
 
+  - Accepted values:
+
+    ```js
+    // path
+    project: './tsconfig.json';
+
+    // glob pattern
+    project: './packages/**/tsconfig.json';
+
+    // array of paths and/or glob patterns
+    project: [
+      './packages/**/tsconfig.json',
+      './separate-package/tsconfig.json',
+    ];
+    ```
+
+  - If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
+
+  - TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see #955.
+
+  - Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
+
+    ```jsonc
+    {
+      // extend your base config so you don't have to redefine your compilerOptions
+      "extends": "./tsconfig.json",
+      "include": [
+        "src/**/*.ts",
+        "test/**/*.ts",
+        "typings/**/*.ts",
+        // etc
+
+        // if you have a mixed JS/TS codebase, don't forget to include your JS files
+        "src/**/*.js"
+      ]
+    }
+    ```
+
 - **`tsconfigRootDir`** - default `undefined`. This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
 
 - **`extraFileExtensions`** - default `undefined`. This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation. E.g. a `.vue` file
 
 - **`warnOnUnsupportedTypeScriptVersion`** - default `true`. This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported
+
+- **`createDefaultProgram`** - default `false`. This option allows you to request that when the `project` setting is specified, files will be allowed when not included in the projects defined by the provided `tsconfig.json` files. **Using this option will incur significant performance costs. This option is primarily included for backwards-compatibility.** See the **`project`** section above for more information.
 
 ### .eslintrc.json
 

@@ -26,7 +26,7 @@ const allMemberTypes = ['field', 'method', 'constructor'].reduce<string[]>(
       if (type !== 'constructor') {
         // There is no `static-constructor` or `instance-constructor
         ['static', 'instance'].forEach(scope => {
-          if (all.indexOf(`${scope}-${type}`) === -1) {
+          if (!all.includes(`${scope}-${type}`)) {
             all.push(`${scope}-${type}`);
           }
 
@@ -195,7 +195,7 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'constructor';
         case AST_NODE_TYPES.ClassProperty:
-          return node.value && functionExpressions.indexOf(node.value.type) > -1
+          return node.value && functionExpressions.includes(node.value.type)
             ? 'method'
             : 'field';
         case AST_NODE_TYPES.TSPropertySignature:
@@ -364,28 +364,28 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      ClassDeclaration(node) {
+      ClassDeclaration(node): void {
         validateMembersOrder(
           node.body.body,
           options.classes || options.default!,
           true,
         );
       },
-      ClassExpression(node) {
+      ClassExpression(node): void {
         validateMembersOrder(
           node.body.body,
           options.classExpressions || options.default!,
           true,
         );
       },
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node): void {
         validateMembersOrder(
           node.body.body,
           options.interfaces || options.default!,
           false,
         );
       },
-      TSTypeLiteral(node) {
+      TSTypeLiteral(node): void {
         validateMembersOrder(
           node.members,
           options.typeLiterals || options.default!,

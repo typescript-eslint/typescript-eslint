@@ -24,6 +24,7 @@ Array [
         "endLine": 1,
         "line": 1,
         "message": "Missing semicolon (tslint:semicolon)",
+        "messageId": "failure",
         "nodeType": null,
         "ruleId": "@typescript-eslint/tslint/config",
         "severity": 2,

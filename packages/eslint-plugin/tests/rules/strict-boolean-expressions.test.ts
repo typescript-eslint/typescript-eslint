@@ -156,6 +156,24 @@ ruleTester.run('strict-boolean-expressions', rule, {
     `
       function foo<T extends boolean>(arg: T) { return !arg; }
     `,
+    {
+      options: [{ ignoreRhs: true }],
+      code: `
+const obj = {};
+const bool = false;
+const boolOrObj = bool || obj;
+const boolAndObj = bool && obj;
+`,
+    },
+    {
+      options: [{ allowNullable: true }],
+      code: `
+        const f1 = (x?: boolean) => x ? 1 : 0;
+        const f2 = (x: boolean | null) => x ? 1 : 0;
+        const f3 = (x?: true | null) => x ? 1 : 0;
+        const f4 = (x?: false) => x ? 1 : 0;
+      `,
+    },
   ],
 
   invalid: [
@@ -902,6 +920,46 @@ ruleTester.run('strict-boolean-expressions', rule, {
           column: 58,
         },
       ],
+    },
+    {
+      options: [{ ignoreRhs: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 4,
+          column: 19,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 5,
+          column: 20,
+        },
+      ],
+      code: `
+const obj = {};
+const bool = false;
+const objOrBool = obj || bool;
+const objAndBool = obj && bool;
+`,
+    },
+    {
+      options: [{ allowNullable: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 2,
+          column: 44,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 3,
+          column: 35,
+        },
+      ],
+      code: `
+        const f = (x: null | undefined) => x ? 1 : 0;
+        const f = (x?: number) => x ? 1 : 0;
+      `,
     },
   ],
 });

@@ -25,7 +25,7 @@ function stringifyTypeName(
 
 function getCustomMessage(
   bannedType: null | string | { message?: string; fixWith?: string },
-) {
+): string {
   if (bannedType === null) {
     return '';
   }
@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces that types will not to be used',
+      description: 'Bans specific types from being used',
       category: 'Best Practices',
       recommended: 'error',
     },
@@ -108,13 +108,14 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ types: bannedTypes }]) {
     return {
-      TSTypeReference({ typeName }) {
+      TSTypeReference({ typeName }): void {
         const name = stringifyTypeName(typeName, context.getSourceCode());
 
         if (name in bannedTypes) {
           const bannedType = bannedTypes[name];
           const customMessage = getCustomMessage(bannedType);
-          const fixWith = bannedType && (bannedType as any).fixWith;
+          const fixWith =
+            bannedType && typeof bannedType === 'object' && bannedType.fixWith;
 
           context.report({
             node: typeName,
@@ -123,6 +124,7 @@ export default util.createRule<Options, MessageIds>({
               name: name,
               customMessage,
             },
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             fix: fixWith ? fixer => fixer.replaceText(typeName, fixWith) : null,
           });
         }

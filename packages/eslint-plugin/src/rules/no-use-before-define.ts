@@ -245,7 +245,9 @@ export default util.createRule<Options, MessageIds>({
         context.report({
           node: reference.identifier,
           messageId: 'noUseBeforeDefine',
-          data: reference.identifier,
+          data: {
+            name: reference.identifier.name,
+          },
         });
       });
 
@@ -253,7 +255,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      Program() {
+      Program(): void {
         findVariablesInScope(context.getScope());
       },
     };

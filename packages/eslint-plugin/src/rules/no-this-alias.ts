@@ -19,7 +19,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow aliasing `this`',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     schema: [
       {
@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowDestructuring: false,
+      allowDestructuring: true,
       allowedNames: [],
     },
   ],
@@ -54,7 +54,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       "VariableDeclarator[init.type='ThisExpression']"(
         node: TSESTree.VariableDeclarator,
-      ) {
+      ): void {
         const { id } = node;
 
         if (allowDestructuring && id.type !== AST_NODE_TYPES.Identifier) {

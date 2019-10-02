@@ -1,3 +1,5 @@
+// There's lots of funny stuff due to the typing of ts.Node
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import {
   canContainDirective,
@@ -17,8 +19,10 @@ import {
   isESTreeClassMember,
   isOptional,
   unescapeStringLiteralText,
+  TSError,
 } from './node-utils';
 import { AST_NODE_TYPES, TSESTree, TSNode } from './ts-estree';
+import { ParserWeakMap } from './parser-options';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -33,12 +37,17 @@ interface ConverterOptions {
  * @param error the error object
  * @returns converted error object
  */
-export function convertError(error: any) {
+export function convertError(error: any): TSError {
   return createError(
     error.file,
     error.start,
     error.message || error.messageText,
   );
+}
+
+export interface ASTMaps {
+  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, TSNode>;
+  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node>;
 }
 
 export class Converter {
@@ -47,8 +56,8 @@ export class Converter {
   private readonly esTreeNodeToTSNodeMap = new WeakMap();
   private readonly tsNodeToESTreeNodeMap = new WeakMap();
 
-  private allowPattern: boolean = false;
-  private inTypeMode: boolean = false;
+  private allowPattern = false;
+  private inTypeMode = false;
 
   /**
    * Converts a TypeScript node into an ESTree node
@@ -58,10 +67,10 @@ export class Converter {
    */
   constructor(ast: ts.SourceFile, options: ConverterOptions) {
     this.ast = ast;
-    this.options = options;
+    this.options = { ...options };
   }
 
-  getASTMaps() {
+  getASTMaps(): ASTMaps {
     return {
       esTreeNodeToTSNodeMap: this.esTreeNodeToTSNodeMap,
       tsNodeToESTreeNodeMap: this.tsNodeToESTreeNodeMap,
@@ -166,7 +175,7 @@ export class Converter {
   private registerTSNodeInNodeMap(
     node: ts.Node,
     result: TSESTree.BaseNode | null,
-  ) {
+  ): void {
     if (result && this.options.shouldPreserveNodeMaps) {
       if (!this.tsNodeToESTreeNodeMap.has(node)) {
         this.tsNodeToESTreeNodeMap.set(node, result);
@@ -932,7 +941,11 @@ export class Converter {
           result.accessibility = accessibility;
         }
 
-        if (node.name.kind === SyntaxKind.Identifier && node.questionToken) {
+        if (
+          (node.name.kind === SyntaxKind.Identifier ||
+            node.name.kind === SyntaxKind.ComputedPropertyName) &&
+          node.questionToken
+        ) {
           result.optional = true;
         }
 
@@ -2509,7 +2522,7 @@ export class Converter {
         });
       }
       case SyntaxKind.AbstractKeyword: {
-        return this.createNode<any>(node, {
+        return this.createNode<TSESTree.TSAbstractKeyword>(node, {
           type: AST_NODE_TYPES.TSAbstractKeyword,
         });
       }

@@ -3,6 +3,7 @@
  * This is due to some really funky type conversions between different node types.
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {
   TSESTree,
@@ -89,7 +90,8 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Enforce consistent indentation',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      // too opinionated to be recommended
+      recommended: false,
     },
     fixable: 'whitespace',
     schema: baseRule.meta.schema,
@@ -342,7 +344,7 @@ export default util.createRule<Options, MessageIds>({
         ]({
           type: AST_NODE_TYPES.ClassDeclaration,
           body: node.body as any,
-          id: undefined,
+          id: null,
           // TODO: This is invalid, there can be more than one extends in interface
           superClass: node.extends![0].expression as any,
 

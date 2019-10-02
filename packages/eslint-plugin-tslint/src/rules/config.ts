@@ -18,10 +18,10 @@ export type RawRulesConfig = Record<
   | null
   | undefined
   | boolean
-  | any[]
+  | unknown[]
   | {
       severity?: RuleSeverity | 'warn' | 'none' | 'default';
-      options?: any;
+      options?: unknown;
     }
 >;
 
@@ -63,12 +63,13 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Wraps a TSLint configuration and lints the whole source using TSLint',
-      category: 'TSLint' as any,
+      // one off special category for this plugin
+      category: 'TSLint' as any, // eslint-disable-line @typescript-eslint/no-explicit-any
       recommended: false,
     },
     type: 'problem',
     messages: {
-      failure: '{{message}} (tslint:{{ruleName}})`',
+      failure: '{{message}} (tslint:{{ruleName}})',
     },
     schema: [
       {
@@ -95,7 +96,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  defaultOptions: [] as any,
+  defaultOptions: [{}],
   create(context) {
     const fileName = context.getFilename();
     const sourceCode = context.getSourceCode().text;

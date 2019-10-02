@@ -59,10 +59,11 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const rules = baseRule.create(context);
     return {
-      MethodDefinition(node) {
+      MethodDefinition(node): void {
         if (
           node.value &&
           node.value.type === AST_NODE_TYPES.FunctionExpression &&
+          node.value.body &&
           checkAccessibility(node) &&
           checkParams(node)
         ) {

@@ -20,7 +20,8 @@ export default createRule({
       description:
         'Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
+      requiresTypeChecking: true,
     },
     messages: {
       preferStartsWith: "Use 'String#startsWith' method instead.",
@@ -79,6 +80,8 @@ export default createRule({
       return (
         evaluated != null &&
         typeof evaluated.value === 'string' &&
+        // checks if the string is a character long
+        // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
         evaluated.value[0] === evaluated.value
       );
     }
@@ -508,7 +511,8 @@ export default createRule({
         }
 
         const eqNode = parentNode;
-        const negativeIndexSupported = (node.property as any).name === 'slice';
+        const negativeIndexSupported =
+          (node.property as TSESTree.Identifier).name === 'slice';
         context.report({
           node: parentNode,
           messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',

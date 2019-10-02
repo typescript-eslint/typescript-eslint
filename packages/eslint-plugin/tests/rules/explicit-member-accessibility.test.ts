@@ -11,6 +11,104 @@ ruleTester.run('explicit-member-accessibility', rule, {
       filename: 'test.ts',
       code: `
 class Test {
+  public constructor(private foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'explicit' },
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public constructor(private readonly foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'explicit' },
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public constructor(private foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public constructor(protected foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public constructor(public foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public constructor(readonly foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public constructor(private readonly foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
   protected name: string
   private x: number
   public getX () {
@@ -30,12 +128,10 @@ class Test {
             `,
     },
     {
-      filename: 'test.js',
+      filename: 'test.ts',
       code: `
 class Test {
-  getX () {
-    return 1;
-  }
+  public constructor({x, y}: {x: number; y: number;}) {}
 }
             `,
     },
@@ -150,10 +246,10 @@ class Test {
       ],
     },
     {
-      filename: 'test.js',
+      filename: 'test.ts',
       code: `
 class Test {
-  constructor(public x: number){}
+  constructor(public foo: number){}
 }
       `,
       options: [
@@ -162,8 +258,134 @@ class Test {
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public getX () {
+    return this.x
+  }
+}
+      `,
+      options: [
+        {
+          ignoredMethodNames: ['getX'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public static getX () {
+    return this.x
+  }
+}
+      `,
+      options: [
+        {
+          ignoredMethodNames: ['getX'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  get getX () {
+    return this.x
+  }
+}
+      `,
+      options: [
+        {
+          ignoredMethodNames: ['getX'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  getX () {
+    return this.x
+  }
+}
+      `,
+      options: [
+        {
+          ignoredMethodNames: ['getX'],
+        },
+      ],
+    },
   ],
   invalid: [
+    {
+      filename: 'test.ts',
+      code: `
+export class XXXX {
+  public constructor(readonly value: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'off',
+          overrides: {
+            parameterProperties: 'explicit',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingAccessibility',
+          column: 22,
+          line: 3,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export class WithParameterProperty {
+  public constructor(readonly value: string) {}
+}
+      `,
+      options: [{ accessibility: 'explicit' }],
+      errors: [{ messageId: 'missingAccessibility' }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export class XXXX {
+  public constructor(readonly samosa: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'off',
+          overrides: {
+            constructors: 'explicit',
+            parameterProperties: 'explicit',
+          },
+        },
+      ],
+      errors: [{ messageId: 'missingAccessibility' }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public constructor(readonly foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'explicit' },
+        },
+      ],
+      errors: [{ messageId: 'missingAccessibility' }],
+    },
     {
       filename: 'test.ts',
       code: `
@@ -380,26 +602,6 @@ class Test {
       code: `
 class Test {
   constructor(public x: number){}
-}
-      `,
-      errors: [
-        {
-          messageId: 'unwantedPublicAccessibility',
-          line: 3,
-          column: 15,
-        },
-      ],
-      options: [
-        {
-          accessibility: 'no-public',
-        },
-      ],
-    },
-    {
-      filename: 'test.ts',
-      code: `
-class Test {
-  constructor(public x: number){}
   public foo(): string {
     return 'foo';
   }
@@ -410,11 +612,6 @@ class Test {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
-        },
-        {
-          messageId: 'unwantedPublicAccessibility',
-          line: 3,
-          column: 15,
         },
       ],
       options: [
@@ -435,6 +632,27 @@ class Test {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  constructor(public readonly x: number){}
+}
+      `,
+      options: [
+        {
+          accessibility: 'off',
+          overrides: { parameterProperties: 'no-public' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 15,
         },
       ],
     },

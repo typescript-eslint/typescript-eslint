@@ -3,5 +3,6 @@
   "compilerOptions": {
     "outDir": "./dist"
   },
-  "include": ["src", "tests", "tools"]
+  "include": ["src", "tests", "tools"],
+  "exclude": ["tests/fixtures/**/*"]
 }

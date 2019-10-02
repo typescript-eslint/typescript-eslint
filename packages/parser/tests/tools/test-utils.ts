@@ -1,3 +1,4 @@
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as parser from '../../src/parser';
 import { ParserOptions } from '../../src/parser-options';
 import { getScopeTree } from './scope-analysis';
@@ -14,10 +15,10 @@ const defaultConfig = {
 
 /**
  * Returns a raw copy of the given AST
- * @param  {Object} ast the AST object
- * @returns {Object}     copy of the AST object
+ * @param ast the AST object
+ * @returns copy of the AST object
  */
-function getRaw(ast: any) {
+function getRaw(ast: TSESTree.Program): TSESTree.Program {
   return JSON.parse(
     JSON.stringify(ast, (key, value) => {
       if ((key === 'start' || key === 'end') && typeof value === 'number') {
@@ -31,22 +32,25 @@ function getRaw(ast: any) {
 /**
  * Returns a function which can be used as the callback of a Jest test() block,
  * and which performs an assertion on the snapshot for the given code and config.
- * @param {string} code The source code to parse
- * @param {ParserOptions} config the parser configuration
- * @returns {Function} callback for Jest test() block
+ * @param code The source code to parse
+ * @param config the parser configuration
+ * @returns callback for Jest test() block
  */
-export function createSnapshotTestBlock(code: any, config: ParserOptions = {}) {
+export function createSnapshotTestBlock(
+  code: string,
+  config: ParserOptions = {},
+): () => void {
   config = Object.assign({}, defaultConfig, config);
 
   /**
    * @returns {Object} the AST object
    */
-  function parse() {
+  function parse(): TSESTree.Program {
     const ast = parser.parseForESLint(code, config).ast;
     return getRaw(ast);
   }
 
-  return () => {
+  return (): void => {
     try {
       const result = parse();
       expect(result).toMatchSnapshot();
@@ -66,25 +70,26 @@ export function createSnapshotTestBlock(code: any, config: ParserOptions = {}) {
 /**
  * Returns a function which can be used as the callback of a Jest test() block,
  * and which performs an assertion on the snapshot for the given code and config.
- * @param {string} code The source code to parse
- * @param {ParserOptions} config the parser configuration
- * @returns {Function} callback for Jest test() block
+ * @param code The source code to parse
+ * @param config the parser configuration
+ * @returns callback for Jest test() block
  */
 export function createScopeSnapshotTestBlock(
   code: string,
   config: ParserOptions = {},
-) {
+): () => void {
   config = Object.assign({}, defaultConfig, config);
 
   /**
    * @returns {Object} the AST object
    */
-  function parse() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function parse(): any {
     const result = parser.parseForESLint(code, config);
     return getScopeTree(result.scopeManager);
   }
 
-  return () => {
+  return (): void => {
     try {
       const result = parse();
       expect(result).toMatchSnapshot();
@@ -102,11 +107,10 @@ export function createScopeSnapshotTestBlock(
 }
 
 /**
- * @param {string} code The code being parsed
- * @param {ParserOptions} config The configuration object for the parser
- * @returns {void}
+ * @param code The code being parsed
+ * @param config The configuration object for the parser
  */
-export function testServices(code: string, config: ParserOptions = {}) {
+export function testServices(code: string, config: ParserOptions = {}): void {
   config = Object.assign({}, defaultConfig, config);
 
   const services = parser.parseForESLint(code, config).services;
@@ -117,10 +121,10 @@ export function testServices(code: string, config: ParserOptions = {}) {
 }
 
 export function formatSnapshotName(
-  filename: any,
-  fixturesDir: any,
+  filename: string,
+  fixturesDir: string,
   fileExtension = '.js',
-) {
+): string {
   return `fixtures/${filename
     .replace(fixturesDir + '/', '')
     .replace(fileExtension, '')}`;

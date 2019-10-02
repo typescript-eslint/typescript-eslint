@@ -9,23 +9,16 @@ import {
 } from '@typescript-eslint/experimental-utils';
 
 /**
- * Check if the context file name is *.ts or *.tsx
- */
-export function isTypeScriptFile(fileName: string) {
-  return /\.tsx?$/i.test(fileName || '');
-}
-
-/**
  * Check if the context file name is *.d.ts or *.d.tsx
  */
-export function isDefinitionFile(fileName: string) {
+export function isDefinitionFile(fileName: string): boolean {
   return /\.d\.tsx?$/i.test(fileName || '');
 }
 
 /**
  * Upper cases the first character or the string
  */
-export function upperCaseFirst(str: string) {
+export function upperCaseFirst(str: string): string {
   return str[0].toUpperCase() + str.slice(1);
 }
 
@@ -39,7 +32,7 @@ type InferOptionsTypeFromRuleNever<T> = T extends TSESLint.RuleModule<
  * Uses type inference to fetch the TOptions type from the given RuleModule
  */
 export type InferOptionsTypeFromRule<T> = T extends TSESLint.RuleModule<
-  any,
+  string,
   infer TOptions
 >
   ? TOptions
@@ -50,7 +43,7 @@ export type InferOptionsTypeFromRule<T> = T extends TSESLint.RuleModule<
  */
 export type InferMessageIdsTypeFromRule<T> = T extends TSESLint.RuleModule<
   infer TMessageIds,
-  any
+  unknown[]
 >
   ? TMessageIds
   : unknown;
@@ -84,6 +77,20 @@ export function arraysAreEqual<T>(
   );
 }
 
+/** Returns the first non-`undefined` result. */
+export function findFirstResult<T, U>(
+  inputs: T[],
+  getResult: (t: T) => U | undefined,
+): U | undefined {
+  for (const element of inputs) {
+    const result = getResult(element);
+    if (result !== undefined) {
+      return result;
+    }
+  }
+  return undefined;
+}
+
 /**
  * Gets a string name representation of the name of the given MethodDefinition
  * or ClassProperty node, with handling for computed property names.
@@ -113,10 +120,10 @@ function keyCanBeReadAsPropertyName(
 }
 
 export type ExcludeKeys<
-  TObj extends Record<string, any>,
+  TObj extends Record<string, unknown>,
   TKeys extends keyof TObj
 > = { [k in Exclude<keyof TObj, TKeys>]: TObj[k] };
 export type RequireKeys<
-  TObj extends Record<string, any>,
+  TObj extends Record<string, unknown>,
   TKeys extends keyof TObj
 > = ExcludeKeys<TObj, TKeys> & { [k in TKeys]-?: Exclude<TObj[k], undefined> };

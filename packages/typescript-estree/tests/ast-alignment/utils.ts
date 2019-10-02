@@ -1,3 +1,5 @@
+// bablyon types are something we don't really care about
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AST_NODE_TYPES } from '../../src/ts-estree';
 import isPlainObject from 'lodash.isplainobject';
 
@@ -24,7 +26,7 @@ export function omitDeep(
   root: any,
   keysToOmit: { key: string; predicate: Function }[],
   nodes: Record<string, (node: any, parent: any) => void> = {},
-) {
+): any {
   function shouldOmit(keyName: string, val: any): boolean {
     if (keysToOmit && keysToOmit.length) {
       return keysToOmit.some(
@@ -34,13 +36,13 @@ export function omitDeep(
     return false;
   }
 
-  function visit(node: any, parent: any) {
+  function visit(node: any, parent: any): void {
     if (!node) {
       return;
     }
 
     for (const prop in node) {
-      if (node.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(node, prop)) {
         if (shouldOmit(prop, node[prop])) {
           delete node[prop];
           continue;
@@ -70,8 +72,8 @@ export function omitDeep(
 /**
  * Common predicates for Babylon AST preprocessing
  */
-const always = () => true;
-const ifNumber = (val: any) => typeof val === 'number';
+const always = (): boolean => true;
+const ifNumber = (val: any): boolean => typeof val === 'number';
 
 /**
  * - Babylon wraps the "Program" node in an extra "File" node, normalize this for simplicity for now...
@@ -288,7 +290,7 @@ export function preprocessBabylonAST(ast: any): any {
 export function removeLocationDataAndSourceTypeFromProgramNode(
   ast: any,
   ignoreSourceType: boolean,
-) {
+): any {
   delete ast.loc;
   delete ast.range;
   if (ignoreSourceType) {

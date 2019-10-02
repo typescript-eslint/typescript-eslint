@@ -18,10 +18,13 @@ const neverOptionWithoutContinuationChars: Options = [
 ];
 
 // the base rule doesn't use a message id...
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const missingSemicolon: any = {
   message: 'Missing semicolon.',
 };
 
+// the base rule doesn't use a message id...
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const extraSemicolon: any = {
   message: 'Extra semicolon.',
 };
@@ -624,16 +627,16 @@ class PanCamera extends FreeCamera {
         options: ['always'],
         errors: test.errors.map(e => ({
           ...e,
-          message: 'Missing semicolon.',
-        })) as any,
+          ...missingSemicolon,
+        })),
       });
       acc.push({
         code: test.code,
         options: ['never'],
         errors: test.errors.map(e => ({
           ...e,
-          message: 'Extra semicolon.',
-        })) as any,
+          ...extraSemicolon,
+        })),
       });
 
       return acc;

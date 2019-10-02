@@ -1,21 +1,25 @@
+import path from 'path';
 import semver from 'semver';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
-import convert from './ast-converter';
+import { sync as globSync } from 'glob';
+import isGlob from 'is-glob';
+import { astConverter } from './ast-converter';
 import { convertError } from './convert';
 import { firstDefined } from './node-utils';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
-import { getFirstSemanticOrSyntacticError } from './semantic-errors';
+import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { TSESTree } from './ts-estree';
 import {
   calculateProjectParserOptions,
   createProgram,
+  defaultCompilerOptions,
 } from './tsconfig-parser';
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.2.1 <3.6.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.2.1 <3.7.0';
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
@@ -33,7 +37,7 @@ let warnedAboutTSVersion = false;
  *
  * @param options Parser options
  */
-function getFileName({ jsx }: { jsx?: boolean }) {
+function getFileName({ jsx }: { jsx?: boolean }): string {
   return jsx ? 'estree.tsx' : 'estree.ts';
 }
 
@@ -50,7 +54,7 @@ function resetExtra(): void {
     strict: false,
     jsx: false,
     useJSXTextNode: false,
-    log: console.log,
+    log: console.log, // eslint-disable-line no-console
     projects: [],
     errorOnUnknownASTType: false,
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
@@ -58,28 +62,13 @@ function resetExtra(): void {
     tsconfigRootDir: process.cwd(),
     extraFileExtensions: [],
     preserveNodeMaps: undefined,
+    createDefaultProgram: false,
   };
 }
 
-/**
- * @param code The code of the file being linted
- * @param options The config object
- * @returns If found, returns the source file corresponding to the code and the containing program
- */
-function getASTFromProject(code: string, options: TSESTreeOptions) {
-  return firstDefined(
-    calculateProjectParserOptions(
-      code,
-      options.filePath || getFileName(options),
-      extra,
-    ),
-    currentProgram => {
-      const ast = currentProgram.getSourceFile(
-        options.filePath || getFileName(options),
-      );
-      return ast && { ast, program: currentProgram };
-    },
-  );
+interface ASTAndProgram {
+  ast: ts.SourceFile;
+  program: ts.Program | undefined;
 }
 
 /**
@@ -87,7 +76,68 @@ function getASTFromProject(code: string, options: TSESTreeOptions) {
  * @param options The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
-function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
+function getASTFromProject(
+  code: string,
+  options: TSESTreeOptions,
+  createDefaultProgram: boolean,
+): ASTAndProgram | undefined {
+  const filePath = options.filePath || getFileName(options);
+  const astAndProgram = firstDefined(
+    calculateProjectParserOptions(code, filePath, extra),
+    currentProgram => {
+      const ast = currentProgram.getSourceFile(filePath);
+      return ast && { ast, program: currentProgram };
+    },
+  );
+
+  if (!astAndProgram && !createDefaultProgram) {
+    // the file was either not matched within the tsconfig, or the extension wasn't expected
+    const errorLines = [
+      '"parserOptions.project" has been set for @typescript-eslint/parser.',
+      `The file does not match your project config: ${filePath}.`,
+    ];
+    let hasMatchedAnError = false;
+
+    const fileExtension = path.extname(filePath);
+    if (!['.ts', '.tsx', '.js', '.jsx'].includes(fileExtension)) {
+      const nonStandardExt = `The extension for the file (${fileExtension}) is non-standard`;
+      if (extra.extraFileExtensions && extra.extraFileExtensions.length > 0) {
+        if (!extra.extraFileExtensions.includes(fileExtension)) {
+          errorLines.push(
+            `${nonStandardExt}. It should be added to your existing "parserOptions.extraFileExtensions".`,
+          );
+          hasMatchedAnError = true;
+        }
+      } else {
+        errorLines.push(
+          `${nonStandardExt}. You should add "parserOptions.extraFileExtensions" to your config.`,
+        );
+        hasMatchedAnError = true;
+      }
+    }
+
+    if (!hasMatchedAnError) {
+      errorLines.push(
+        'The file must be included in at least one of the projects provided.',
+      );
+      hasMatchedAnError = true;
+    }
+
+    throw new Error(errorLines.join('\n'));
+  }
+
+  return astAndProgram;
+}
+
+/**
+ * @param code The code of the file being linted
+ * @param options The config object
+ * @returns If found, returns the source file corresponding to the code and the containing program
+ */
+function getASTAndDefaultProject(
+  code: string,
+  options: TSESTreeOptions,
+): ASTAndProgram | undefined {
   const fileName = options.filePath || getFileName(options);
   const program = createProgram(code, fileName, extra);
   const ast = program && program.getSourceFile(fileName);
@@ -98,7 +148,7 @@ function getASTAndDefaultProject(code: string, options: TSESTreeOptions) {
  * @param code The code of the file being linted
  * @returns Returns a new source file and program corresponding to the linted code
  */
-function createNewProgram(code: string) {
+function createNewProgram(code: string): ASTAndProgram {
   const FILENAME = getFileName(extra);
 
   const compilerHost: ts.CompilerHost = {
@@ -142,6 +192,7 @@ function createNewProgram(code: string) {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined,
+      ...defaultCompilerOptions,
     },
     compilerHost,
   );
@@ -161,10 +212,14 @@ function getProgramAndAST(
   code: string,
   options: TSESTreeOptions,
   shouldProvideParserServices: boolean,
-) {
+  createDefaultProgram: boolean,
+): ASTAndProgram | undefined {
   return (
-    (shouldProvideParserServices && getASTFromProject(code, options)) ||
-    (shouldProvideParserServices && getASTAndDefaultProject(code, options)) ||
+    (shouldProvideParserServices &&
+      getASTFromProject(code, options, createDefaultProgram)) ||
+    (shouldProvideParserServices &&
+      createDefaultProgram &&
+      getASTAndDefaultProject(code, options)) ||
     createNewProgram(code)
   );
 }
@@ -232,6 +287,15 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     extra.projects = options.project;
   }
 
+  // Transform glob patterns into paths
+  if (extra.projects) {
+    extra.projects = extra.projects.reduce<string[]>(
+      (projects, project) =>
+        projects.concat(isGlob(project) ? globSync(project) : project),
+      [],
+    );
+  }
+
   if (typeof options.tsconfigRootDir === 'string') {
     extra.tsconfigRootDir = options.tsconfigRootDir;
   }
@@ -254,6 +318,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   if (options.preserveNodeMaps === undefined && extra.projects.length > 0) {
     extra.preserveNodeMaps = true;
   }
+
+  extra.createDefaultProgram =
+    typeof options.createDefaultProgram === 'boolean' &&
+    options.createDefaultProgram;
 }
 
 function warnAboutTSVersion(): void {
@@ -277,7 +345,7 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
-type AST<T extends TSESTreeOptions> = TSESTree.Program &
+export type AST<T extends TSESTreeOptions> = TSESTree.Program &
   (T['range'] extends true ? { range: [number, number] } : {}) &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
@@ -312,6 +380,7 @@ export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Ensure the source code is a string, and store a reference to it
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (typeof code !== 'string' && !((code as any) instanceof String)) {
     code = String(code);
   }
@@ -339,7 +408,7 @@ export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
    */
-  const { estree } = convert(ast, extra, false);
+  const { estree } = astConverter(ast, extra, false);
   return estree as AST<T>;
 }
 
@@ -353,6 +422,7 @@ export function parseAndGenerateServices<
   /**
    * Ensure the source code is a string, and store a reference to it
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (typeof code !== 'string' && !((code as any) instanceof String)) {
     code = String(code);
   }
@@ -384,7 +454,8 @@ export function parseAndGenerateServices<
     code,
     options,
     shouldProvideParserServices,
-  );
+    extra.createDefaultProgram,
+  )!;
   /**
    * Determine whether or not two-way maps of converted AST nodes should be preserved
    * during the conversion process
@@ -397,7 +468,7 @@ export function parseAndGenerateServices<
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
    * mappings between converted and original AST nodes
    */
-  const { estree, astMaps } = convert(ast, extra, shouldPreserveNodeMaps);
+  const { estree, astMaps } = astConverter(ast, extra, shouldPreserveNodeMaps);
   /**
    * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
    * there may be other syntactic or semantic issues in the code that we can optionally report on.

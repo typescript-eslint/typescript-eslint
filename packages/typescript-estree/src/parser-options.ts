@@ -18,6 +18,7 @@ export interface Extra {
   tsconfigRootDir: string;
   extraFileExtensions: string[];
   preserveNodeMaps?: boolean;
+  createDefaultProgram: boolean;
 }
 
 export interface TSESTreeOptions {
@@ -35,13 +36,14 @@ export interface TSESTreeOptions {
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
   preserveNodeMaps?: boolean;
+  createDefaultProgram?: boolean;
 }
 
 // This lets us use generics to type the return value, and removes the need to
 // handle the undefined type in the get method
 export interface ParserWeakMap<TKey, TValueBase> {
   get<TValue extends TValueBase>(key: TKey): TValue;
-  has(key: any): boolean;
+  has(key: unknown): boolean;
 }
 
 export interface ParserServices {

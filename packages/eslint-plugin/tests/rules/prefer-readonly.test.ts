@@ -215,6 +215,59 @@ ruleTester.run('prefer-readonly', rule, {
         },
       ],
     },
+    `class TestComputedParameter {
+      public mutate() {
+        this['computed'] = 1;
+      }
+    }`,
+    {
+      code: `
+class Foo {
+  private value: number = 0
+
+  bar(newValue: { value: number }) {
+    ({ value: this.value } = newValue);
+    return this.value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  private value: Record<string, number> = {};
+
+  bar(newValue: Record<string, number>) {
+    ({ ...this.value } = newValue);
+    return this.value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  private value: number[] = []
+
+  bar(newValue: number[]) {
+    [...this.value] = newValue;
+    return this.value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  private value: number = 0;
+
+  bar(newValue: number[]) {
+    [this.value] = newValue;
+    return this.value;
+  }
+}
+      `,
+    },
   ],
   invalid: [
     {

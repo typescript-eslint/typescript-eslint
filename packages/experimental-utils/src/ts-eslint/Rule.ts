@@ -1,5 +1,5 @@
 import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
-import { JSONSchema4 } from 'json-schema';
+import { JSONSchema4 } from '../json-schema';
 import { AST } from './AST';
 import { Linter } from './Linter';
 import { Scope } from './Scope';
@@ -32,6 +32,11 @@ interface RuleMetaDataDocs {
    * The URL of the rule's docs
    */
   url: string;
+  /**
+   * Does the rule require us to create a full TypeScript Program in order for it
+   * to type-check code. This is only used for documentation purposes.
+   */
+  requiresTypeChecking?: boolean;
 }
 interface RuleMetaData<TMessageIds extends string> {
   /**
@@ -109,7 +114,7 @@ interface ReportDescriptorBase<TMessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   /**
    * The fixer function.
    */
@@ -142,7 +147,7 @@ type ReportDescriptor<TMessageIds extends string> = ReportDescriptorBase<
 
 interface RuleContext<
   TMessageIds extends string,
-  TOptions extends readonly any[]
+  TOptions extends readonly unknown[]
 > {
   /**
    * The rule ID.
@@ -270,6 +275,7 @@ interface RuleListener {
   JSXSpreadChild?: RuleFunction<TSESTree.JSXSpreadChild>;
   JSXText?: RuleFunction<TSESTree.JSXText>;
   LabeledStatement?: RuleFunction<TSESTree.LabeledStatement>;
+  Literal?: RuleFunction<TSESTree.Literal>;
   LogicalExpression?: RuleFunction<TSESTree.LogicalExpression>;
   MemberExpression?: RuleFunction<TSESTree.MemberExpression>;
   MetaProperty?: RuleFunction<TSESTree.MetaProperty>;
@@ -383,7 +389,7 @@ interface RuleListener {
 
 interface RuleModule<
   TMessageIds extends string,
-  TOptions extends readonly any[],
+  TOptions extends readonly unknown[],
   // for extending base rules
   TRuleListener extends RuleListener = RuleListener
 > {

@@ -27,7 +27,8 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Warns if a type assertion does not change the type of an expression',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
+      requiresTypeChecking: true,
     },
     fixable: 'code',
     messages: {
@@ -166,7 +167,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSNonNullExpression(node) {
+      TSNonNullExpression(node): void {
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
           ts.NonNullExpression
         >(node);
@@ -239,9 +240,9 @@ export default util.createRule<Options, MessageIds>({
         if (
           options &&
           options.typesToIgnore &&
-          options.typesToIgnore.indexOf(
+          options.typesToIgnore.includes(
             sourceCode.getText(node.typeAnnotation),
-          ) !== -1
+          )
         ) {
           return;
         }

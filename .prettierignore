@@ -1,4 +1,5 @@
 **/tests/fixtures/**/*
+**/tests/fixture-project/**/*
 **/dist
 **/coverage
 **/shared-fixtures
@@ -8,6 +9,8 @@
 packages/eslint-plugin-tslint/tests/test-tslint-rules-directory/alwaysFailRule.js
 .github
 packages/eslint-plugin/src/configs/*.json
+.all-contributorsrc
+CONTRIBUTORS.md
 
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md

@@ -4,12 +4,13 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-magic-numbers';
 import * as util from '../util';
-import { JSONSchema4 } from 'json-schema';
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const baseRuleSchema = (baseRule.meta.schema as JSONSchema4[])[0];
+const baseRuleSchema = Array.isArray(baseRule.meta.schema)
+  ? baseRule.meta.schema[0]
+  : baseRule.meta.schema;
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-magic-numbers',
@@ -32,6 +33,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreEnums: {
             type: 'boolean',
           },
+          ignoreReadonlyClassProperties: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -45,6 +49,7 @@ export default util.createRule<Options, MessageIds>({
       detectObjects: false,
       ignoreNumericLiteralTypes: false,
       ignoreEnums: false,
+      ignoreReadonlyClassProperties: false,
     },
   ],
   create(context, [options]) {
@@ -148,10 +153,31 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
+    /**
+     * Checks if the node parent is a readonly class property
+     * @param node the node to be validated.
+     * @returns true if the node parent is a readonly class property
+     * @private
+     */
+    function isParentTSReadonlyClassProperty(node: TSESTree.Node): boolean {
+      return (
+        !!node.parent &&
+        node.parent.type === AST_NODE_TYPES.ClassProperty &&
+        !!node.parent.readonly
+      );
+    }
+
     return {
-      Literal(node) {
+      Literal(node): void {
         // Check if the node is a TypeScript enum declaration
         if (options.ignoreEnums && isParentTSEnumDeclaration(node)) {
+          return;
+        }
+
+        if (
+          options.ignoreReadonlyClassProperties &&
+          isParentTSReadonlyClassProperty(node)
+        ) {
           return;
         }
 

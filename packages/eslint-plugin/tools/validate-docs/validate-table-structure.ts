@@ -3,8 +3,9 @@ import chalk from 'chalk';
 import marked from 'marked';
 import { logError } from '../log';
 
+const RULE_LINK_REGEX = /\[`@typescript-eslint\/(.+)`\]/;
 function validateTableStructure(
-  rules: Record<string, Readonly<TSESLint.RuleModule<any, any, any>>>,
+  rules: Record<string, Readonly<TSESLint.RuleModule<string, unknown[]>>>,
   rulesTable: marked.Tokens.Table,
 ): boolean {
   const ruleNames = Object.keys(rules)
@@ -13,7 +14,7 @@ function validateTableStructure(
   let hasErrors = false;
 
   rulesTable.cells.forEach((row, rowIndex) => {
-    const match = row[0].match(/\[`@typescript-eslint\/(.+)`\]/);
+    const match = RULE_LINK_REGEX.exec(row[0]);
     if (!match) {
       logError(chalk.bold(`Unable to parse link in row ${rowIndex}:`), row[0]);
       hasErrors = true;

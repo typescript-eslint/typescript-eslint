@@ -13,7 +13,14 @@ type ExpressionWithTest =
   | TSESTree.IfStatement
   | TSESTree.WhileStatement;
 
-export default util.createRule({
+type Options = [
+  {
+    ignoreRhs?: boolean;
+    allowNullable?: boolean;
+  }
+];
+
+export default util.createRule<Options, 'strictBooleanExpression'>({
   name: 'strict-boolean-expressions',
   meta: {
     type: 'suggestion',
@@ -21,14 +28,33 @@ export default util.createRule({
       description: 'Restricts the types allowed in boolean expressions',
       category: 'Best Practices',
       recommended: false,
+      requiresTypeChecking: true,
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignoreRhs: {
+            type: 'boolean',
+          },
+          allowNullable: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     messages: {
       strictBooleanExpression: 'Unexpected non-boolean in conditional.',
     },
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      ignoreRhs: false,
+      allowNullable: false,
+    },
+  ],
+  create(context, [options]) {
     const service = util.getParserServices(context);
     const checker = service.program.getTypeChecker();
 
@@ -40,7 +66,34 @@ export default util.createRule({
         node,
       );
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike);
+
+      if (tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)) {
+        return true;
+      }
+
+      // Check variants of union
+      if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Union)) {
+        let hasBoolean = false;
+        for (const ty of (type as ts.UnionType).types) {
+          if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.BooleanLike)) {
+            hasBoolean = true;
+            continue;
+          }
+          if (options.allowNullable) {
+            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Null)) {
+              continue;
+            }
+            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Undefined)) {
+              continue;
+            }
+          }
+          // Union variant is something else
+          return false;
+        }
+        return hasBoolean;
+      }
+
+      return false;
     }
 
     /**
@@ -65,7 +118,10 @@ export default util.createRule({
     function assertLocalExpressionContainsBoolean(
       node: TSESTree.LogicalExpression,
     ): void {
-      if (!isBooleanType(node.left) || !isBooleanType(node.right)) {
+      if (
+        !isBooleanType(node.left) ||
+        (!options.ignoreRhs && !isBooleanType(node.right))
+      ) {
         reportNode(node);
       }
     }
