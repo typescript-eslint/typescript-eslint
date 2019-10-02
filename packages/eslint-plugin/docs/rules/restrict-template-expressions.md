@@ -12,7 +12,7 @@ Examples of **incorrect** code:
 
 ```ts
 const arg1 = [1, 2];
-const msg1 = `arg = ${arg}`;
+const msg1 = `arg1 = ${arg1}`;
 
 const arg2 = { name: 'Foo' };
 const msg2 = `arg = ${arg || null}`;
