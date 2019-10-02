@@ -4,7 +4,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 
 type RequiredParserServices = {
-  [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>
+  [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>;
 };
 
 /**

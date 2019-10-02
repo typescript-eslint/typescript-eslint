@@ -9,7 +9,7 @@ export type Options = [
   {
     fixToUnknown?: boolean;
     ignoreRestArgs?: boolean;
-  }
+  },
 ];
 export type MessageIds = 'unexpectedAny';
 

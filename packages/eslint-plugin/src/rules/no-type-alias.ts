@@ -25,7 +25,7 @@ type Options = [
     allowLiterals?: Values;
     allowMappedTypes?: Values;
     allowTupleTypes?: Values;
-  }
+  },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
 

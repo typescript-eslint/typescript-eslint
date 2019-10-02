@@ -8,7 +8,7 @@ type Options = [
   {
     ignoreParameters?: boolean;
     ignoreProperties?: boolean;
-  }
+  },
 ];
 type MessageIds = 'noInferrableType';
 

@@ -16,7 +16,7 @@ declare module 'eslint/lib/rules/arrow-parens' {
       'always' | 'as-needed',
       {
         requireForBlockBody?: boolean;
-      }?
+      }?,
     ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
@@ -35,7 +35,7 @@ declare module 'eslint/lib/rules/camelcase' {
         allow?: string[];
         ignoreDestructuring?: boolean;
         properties?: 'always' | 'never';
-      }
+      },
     ],
     {
       Identifier(node: TSESTree.Identifier): void;
@@ -81,7 +81,7 @@ declare module 'eslint/lib/rules/indent' {
         flatTernaryExpressions?: boolean;
         ignoredNodes?: string[];
         ignoreComments?: boolean;
-      })?
+      })?,
     ],
     {
       '*:exit'(node: TSESTree.Node): void;
@@ -163,7 +163,7 @@ declare module 'eslint/lib/rules/no-empty-function' {
     [
       {
         allow?: string[];
-      }
+      },
     ],
     {
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
@@ -200,7 +200,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         ignoreNumericLiteralTypes?: boolean;
         ignoreEnums?: boolean;
         ignoreReadonlyClassProperties?: boolean;
-      }
+      },
     ],
     {
       Literal(node: TSESTree.Literal): void;
@@ -217,7 +217,7 @@ declare module 'eslint/lib/rules/no-redeclare' {
     [
       {
         builtinGlobals?: boolean;
-      }?
+      }?,
     ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
@@ -254,7 +254,7 @@ declare module 'eslint/lib/rules/no-shadow' {
         builtinGlobals?: boolean;
         hoist: 'all' | 'functions' | 'never';
         allow: string[];
-      }
+      },
     ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
@@ -271,7 +271,7 @@ declare module 'eslint/lib/rules/no-undef' {
     [
       {
         typeof?: boolean;
-      }
+      },
     ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
@@ -371,7 +371,7 @@ declare module 'eslint/lib/rules/no-extra-parens' {
         nestedBinaryExpressions?: boolean;
         ignoreJSX?: 'none' | 'all' | 'multi-line' | 'single-line';
         enforceForArrowConditionals?: boolean;
-      }?
+      }?,
     ],
     {
       ArrayExpression(node: TSESTree.ArrayExpression): void;
@@ -444,7 +444,7 @@ declare module 'eslint/lib/rules/semi' {
       {
         beforeStatementContinuationChars?: 'always' | 'any' | 'never';
         omitLastInOneLineBlock?: boolean;
-      }?
+      }?,
     ],
     {
       VariableDeclaration(node: TSESTree.VariableDeclaration): void;
@@ -474,7 +474,7 @@ declare module 'eslint/lib/rules/quotes' {
       {
         allowTemplateLiterals?: boolean;
         avoidEscape?: boolean;
-      }?
+      }?,
     ],
     {
       Literal(node: TSESTree.Literal): void;
@@ -498,7 +498,7 @@ declare module 'eslint/lib/rules/brace-style' {
       '1tbs' | 'stroustrup' | 'allman',
       {
         allowSingleLine?: boolean;
-      }?
+      }?,
     ],
     {
       BlockStatement(node: TSESTree.BlockStatement): void;

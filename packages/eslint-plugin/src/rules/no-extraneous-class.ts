@@ -9,7 +9,7 @@ type Options = [
     allowConstructorOnly?: boolean;
     allowEmpty?: boolean;
     allowStaticOnly?: boolean;
-  }
+  },
 ];
 type MessageIds = 'empty' | 'onlyStatic' | 'onlyConstructor';
 

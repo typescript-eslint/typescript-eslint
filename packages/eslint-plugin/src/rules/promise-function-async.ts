@@ -9,7 +9,7 @@ type Options = [
     checkFunctionDeclarations?: boolean;
     checkFunctionExpressions?: boolean;
     checkMethodDeclarations?: boolean;
-  }
+  },
 ];
 type MessageIds = 'missingAsync';
 

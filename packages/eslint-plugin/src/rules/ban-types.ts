@@ -12,7 +12,7 @@ type Options = [
           fixWith?: string;
         }
     >;
-  }
+  },
 ];
 type MessageIds = 'bannedTypeMessage';
 

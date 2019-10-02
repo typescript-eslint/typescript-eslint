@@ -7,7 +7,7 @@ import * as util from '../util';
 type Options = [
   {
     allowUnderscorePrefix?: boolean;
-  }
+  },
 ];
 type MessageIds = 'notPascalCased';
 

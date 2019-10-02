@@ -17,7 +17,7 @@ type Options = [
   {
     ignoreRhs?: boolean;
     allowNullable?: boolean;
-  }
+  },
 ];
 
 export default util.createRule<Options, 'strictBooleanExpression'>({

@@ -51,7 +51,7 @@ type ExpressionWithTest =
 export type Options = [
   {
     ignoreRhs?: boolean;
-  }
+  },
 ];
 
 export type MessageId =

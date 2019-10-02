@@ -16,7 +16,7 @@ import * as util from '../util';
 type Options = [
   {
     typesToIgnore?: string[];
-  }
+  },
 ];
 type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 

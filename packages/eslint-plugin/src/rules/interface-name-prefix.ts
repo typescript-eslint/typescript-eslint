@@ -18,7 +18,7 @@ type Options = [
     | {
         prefixWithI: 'always';
         allowUnderscorePrefix?: boolean;
-      }
+      },
 ];
 type MessageIds = 'noPrefix' | 'alwaysPrefix';
 

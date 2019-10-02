@@ -11,7 +11,7 @@ type Options = [
     allowTypedFunctionExpressions?: boolean;
     allowHigherOrderFunctions?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
-  }
+  },
 ];
 type MessageIds = 'missingReturnType';
 

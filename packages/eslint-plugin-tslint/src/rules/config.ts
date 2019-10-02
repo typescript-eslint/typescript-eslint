@@ -31,7 +31,7 @@ export type Options = [
     rules?: RawRulesConfig;
     rulesDirectory?: string[];
     lintFile?: string;
-  }
+  },
 ];
 
 /**

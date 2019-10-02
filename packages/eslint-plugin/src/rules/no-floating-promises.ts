@@ -6,7 +6,7 @@ import * as util from '../util';
 type Options = [
   {
     ignoreVoid?: boolean;
-  }
+  },
 ];
 
 export default util.createRule<Options, 'floating'>({

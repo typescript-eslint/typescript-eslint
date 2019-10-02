@@ -3,7 +3,7 @@ import * as util from '../util';
 type Options = [
   {
     allowSingleExtends?: boolean;
-  }
+  },
 ];
 type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
 
