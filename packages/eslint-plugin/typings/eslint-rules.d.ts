@@ -199,6 +199,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         detectObjects?: boolean;
         ignoreNumericLiteralTypes?: boolean;
         ignoreEnums?: boolean;
+        ignoreReadonlyClassProperties?: boolean;
       },
     ],
     {
@@ -387,6 +388,7 @@ declare module 'eslint/lib/rules/no-extra-parens' {
         node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
       ): void;
       ForStatement(node: TSESTree.ForStatement): void;
+      'ForStatement > *.init:exit'(node: TSESTree.Node): void;
       IfStatement(node: TSESTree.IfStatement): void;
       LogicalExpression(node: TSESTree.LogicalExpression): void;
       MemberExpression(node: TSESTree.MemberExpression): void;
@@ -457,6 +459,53 @@ declare module 'eslint/lib/rules/semi' {
       ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
       ExportDefaultDeclaration(node: TSESTree.ExportDefaultDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/quotes' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [
+      'single' | 'double' | 'backtick',
+      {
+        allowTemplateLiterals?: boolean;
+        avoidEscape?: boolean;
+      }?,
+    ],
+    {
+      Literal(node: TSESTree.Literal): void;
+      TemplateLiteral(node: TSESTree.TemplateLiteral): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/brace-style' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    | 'nextLineOpen'
+    | 'sameLineOpen'
+    | 'blockSameLine'
+    | 'nextLineClose'
+    | 'singleLineClose'
+    | 'sameLineClose',
+    [
+      '1tbs' | 'stroustrup' | 'allman',
+      {
+        allowSingleLine?: boolean;
+      }?,
+    ],
+    {
+      BlockStatement(node: TSESTree.BlockStatement): void;
+      ClassBody(node: TSESTree.ClassBody): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
+      IfStatement(node: TSESTree.IfStatement): void;
+      TryStatement(node: TSESTree.TryStatement): void;
     }
   >;
   export = rule;

@@ -67,7 +67,7 @@ export class Converter {
    */
   constructor(ast: ts.SourceFile, options: ConverterOptions) {
     this.ast = ast;
-    this.options = options;
+    this.options = { ...options };
   }
 
   getASTMaps(): ASTMaps {
@@ -941,7 +941,11 @@ export class Converter {
           result.accessibility = accessibility;
         }
 
-        if (node.name.kind === SyntaxKind.Identifier && node.questionToken) {
+        if (
+          (node.name.kind === SyntaxKind.Identifier ||
+            node.name.kind === SyntaxKind.ComputedPropertyName) &&
+          node.questionToken
+        ) {
           result.optional = true;
         }
 

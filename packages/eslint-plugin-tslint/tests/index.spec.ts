@@ -139,7 +139,7 @@ ruleTester.run('tslint/config', rule, {
           messageId: 'failure',
           data: {
             message:
-              'Operands of \'+\' operation must either be both strings or both numbers, but found 1 + "2". Consider using template literals.',
+              'Operands of \'+\' operation must either be both strings or both numbers or both bigints, but found 1 + "2". Consider using template literals.',
             ruleName: 'restrict-plus-operands',
           },
         },

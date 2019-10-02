@@ -1,6 +1,7 @@
 import path from 'path';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from './parser-options';
+import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 
 //------------------------------------------------------------------------------
 // Environment calculation
@@ -9,9 +10,12 @@ import { Extra } from './parser-options';
 /**
  * Default compiler options for program generation from single root file
  */
-const defaultCompilerOptions: ts.CompilerOptions = {
+export const defaultCompilerOptions: ts.CompilerOptions = {
   allowNonTsExtensions: true,
   allowJs: true,
+  checkJs: true,
+  noEmit: true,
+  // extendedDiagnostics: true,
 };
 
 /**
@@ -71,7 +75,7 @@ function getTsconfigPath(tsconfigPath: string, extra: Extra): string {
  * @param code The code being linted
  * @param filePath The path of the file being parsed
  * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param extra.project Provided tsconfig paths
+ * @param extra.projects Provided tsconfig paths
  * @returns The programs corresponding to the supplied tsconfig paths
  */
 export function calculateProjectParserOptions(
@@ -109,12 +113,12 @@ export function calculateProjectParserOptions(
     // create compiler host
     const watchCompilerHost = ts.createWatchCompilerHost(
       tsconfigPath,
-      /*optionsToExtend*/ { allowNonTsExtensions: true } as ts.CompilerOptions,
+      defaultCompilerOptions,
       ts.sys,
       ts.createSemanticDiagnosticsBuilderProgram,
       diagnosticReporter,
       /*reportWatchStatus*/ () => {},
-    );
+    ) as WatchCompilerHostOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>;
 
     // ensure readFile reads the code being linted instead of the copy on disk
     const oldReadFile = watchCompilerHost.readFile;
@@ -143,8 +147,7 @@ export function calculateProjectParserOptions(
     };
 
     // register callbacks to trigger program updates without using fileWatchers
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    watchCompilerHost.watchFile = (fileName, callback) => {
+    watchCompilerHost.watchFile = (fileName, callback): ts.FileWatcher => {
       const normalizedFileName = path.normalize(fileName);
       watchCallbackTrackingMap.set(normalizedFileName, callback);
       return {
@@ -155,26 +158,20 @@ export function calculateProjectParserOptions(
     };
 
     // ensure fileWatchers aren't created for directories
-    watchCompilerHost.watchDirectory = (): typeof noopFileWatcher =>
-      noopFileWatcher;
+    watchCompilerHost.watchDirectory = (): ts.FileWatcher => noopFileWatcher;
 
-    // we're using internal typescript APIs which aren't on the types
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     // allow files with custom extensions to be included in program (uses internal ts api)
-    const oldOnDirectoryStructureHostCreate = (watchCompilerHost as any)
-      .onCachedDirectoryStructureHostCreate;
-    (watchCompilerHost as any).onCachedDirectoryStructureHostCreate = (
-      host: any,
-    ): void => {
+    const oldOnDirectoryStructureHostCreate =
+      watchCompilerHost.onCachedDirectoryStructureHostCreate;
+    watchCompilerHost.onCachedDirectoryStructureHostCreate = (host): void => {
       const oldReadDirectory = host.readDirectory;
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       host.readDirectory = (
-        path: string,
-        extensions?: readonly string[],
-        exclude?: readonly string[],
-        include?: readonly string[],
-        depth?: number,
-      ) =>
+        path,
+        extensions,
+        exclude,
+        include,
+        depth,
+      ): string[] =>
         oldReadDirectory(
           path,
           !extensions
@@ -186,7 +183,6 @@ export function calculateProjectParserOptions(
         );
       oldOnDirectoryStructureHostCreate(host);
     };
-    /* eslint-enable @typescript-eslint/no-explicit-any */
 
     // create program
     const programWatch = ts.createWatchProgram(watchCompilerHost);
@@ -206,7 +202,7 @@ export function calculateProjectParserOptions(
  * @param code The code being linted
  * @param filePath The file being linted
  * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
- * @param extra.project Provided tsconfig paths
+ * @param extra.projects Provided tsconfig paths
  * @returns The program containing just the file being linted and associated library files
  */
 export function createProgram(

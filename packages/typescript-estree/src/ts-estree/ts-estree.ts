@@ -454,9 +454,9 @@ interface BinaryExpressionBase extends BaseNode {
 interface ClassDeclarationBase extends BaseNode {
   typeParameters?: TSTypeParameterDeclaration;
   superTypeParameters?: TSTypeParameterInstantiation;
-  id?: Identifier;
+  id: Identifier | null;
   body: ClassBody;
-  superClass?: LeftHandSideExpression;
+  superClass: LeftHandSideExpression | null;
   implements?: ExpressionWithTypeArguments[];
   abstract?: boolean;
   declare?: boolean;
@@ -732,7 +732,7 @@ export interface Import extends BaseNode {
 
 export interface ImportDeclaration extends BaseNode {
   type: AST_NODE_TYPES.ImportDeclaration;
-  source: Expression;
+  source: Literal;
   specifiers: ImportClause[];
 }
 
@@ -1040,6 +1040,7 @@ export interface TSConstructSignatureDeclaration extends FunctionSignatureBase {
 }
 
 export interface TSDeclareFunction extends FunctionDeclarationBase {
+  id: Identifier;
   type: AST_NODE_TYPES.TSDeclareFunction;
 }
 
@@ -1323,7 +1324,7 @@ export interface TSTypeLiteral extends BaseNode {
 export interface TSTypeOperator extends BaseNode {
   type: AST_NODE_TYPES.TSTypeOperator;
   operator: 'keyof' | 'unique' | 'readonly';
-  typeAnnotation?: TSTypeAnnotation;
+  typeAnnotation?: TypeNode;
 }
 
 export interface TSTypeParameter extends BaseNode {

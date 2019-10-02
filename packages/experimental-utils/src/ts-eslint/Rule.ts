@@ -19,10 +19,6 @@ interface RuleMetaDataDocs {
    */
   description: string;
   /**
-   * Extra information linking the rule to a tslint rule
-   */
-  extraDescription?: string[];
-  /**
    * The recommendation level for the rule.
    * Used by the build tools to generate the recommended config.
    * Set to false to not include it as a recommendation

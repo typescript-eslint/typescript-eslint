@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/typescript-eslint/typescript-eslint/compare/v2.3.1...v2.3.2) (2019-09-30)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [2.3.1](https://github.com/typescript-eslint/typescript-eslint/compare/v2.3.0...v2.3.1) (2019-09-23)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [2.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.2.0...v2.3.0) (2019-09-16)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [2.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.1.0...v2.2.0) (2019-09-09)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [2.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.0.0...v2.1.0) (2019-09-02)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
 # [2.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v1.13.0...v2.0.0) (2019-08-13)
 
 
