@@ -43,6 +43,13 @@ ruleTester.run('no-dynamic-delete', rule, {
     },
     {
       code: `const container: { [i: string]: 0 } = {};
+        delete container [  'aaa'   ] ;`,
+      errors: [{ messageId: 'dynamicDelete' }],
+      output: `const container: { [i: string]: 0 } = {};
+        delete container .aaa ;`,
+    },
+    {
+      code: `const container: { [i: string]: 0 } = {};
         delete container['aa' + 'b'];`,
       errors: [{ messageId: 'dynamicDelete' }],
     },
@@ -74,6 +81,13 @@ ruleTester.run('no-dynamic-delete', rule, {
       errors: [{ messageId: 'dynamicDelete' }],
       output: `const container: { [i: string]: 0 } = {};
         delete container.NaN;`,
+    },
+    {
+      code: `const container: { [i: string]: 0 } = {};
+        delete container    [   'NaN'  ] ;`,
+      errors: [{ messageId: 'dynamicDelete' }],
+      output: `const container: { [i: string]: 0 } = {};
+        delete container    .NaN ;`,
     },
     {
       code: `const container: { [i: string]: 0 } = {};

@@ -33,19 +33,13 @@ export default util.createRule({
       ) {
         const { value } = member.property;
         return fixer =>
-          fixer.replaceTextRange(
-            [member.property.range[0] - 1, member.property.range[1] + 1],
-            `.${value}`,
-          );
+          fixer.replaceTextRange(getTokenRange(member.property), `.${value}`);
       }
 
       if (member.property.type === AST_NODE_TYPES.Identifier) {
         const { name } = member.property;
         return fixer =>
-          fixer.replaceTextRange(
-            [member.property.range[0] - 1, member.property.range[1] + 1],
-            `.${name}`,
-          );
+          fixer.replaceTextRange(getTokenRange(member.property), `.${name}`);
       }
 
       return undefined;
@@ -70,6 +64,15 @@ export default util.createRule({
         });
       },
     };
+
+    function getTokenRange(property: TSESTree.Expression): [number, number] {
+      const sourceCode = context.getSourceCode();
+
+      return [
+        sourceCode.getTokenBefore(property)!.range[0],
+        sourceCode.getTokenAfter(property)!.range[1],
+      ];
+    }
   },
 });
 
