@@ -29,6 +29,11 @@ Examples of **incorrect** code with this rule:
 // Can be replaced with the constant equivalents, such as container.aaa
 delete container['aaa'];
 delete container['Infinity'];
+
+// Dynamic, difficult-to-reason-about lookups
+const name = 'name';
+delete container[name];
+delete container[name.toUpperCase()];
 ```
 
 ## When Not To Use It
