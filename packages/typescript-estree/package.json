@@ -61,5 +61,8 @@
     "glob": "^7.1.4",
     "lodash.isplainobject": "4.0.6",
     "typescript": "*"
+  },
+  "optionalDependencies": {
+    "typescript": "*"
   }
 }

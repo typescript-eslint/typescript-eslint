@@ -27,6 +27,8 @@ In fact, it is already used within these hyper-popular open-source projects to p
 npm install @typescript-eslint/typescript-estree --save-dev
 ```
 
+Note: `@typescript-eslint/typescript-estree` assumes you have `typescript` already installed. Please read the documentation [here](https://github.com/typescript-eslint/typescript-eslint#supported-typescript-version) for more details.
+
 ## API
 
 ### parse(code, options)

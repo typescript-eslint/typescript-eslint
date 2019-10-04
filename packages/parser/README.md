@@ -16,6 +16,8 @@
 npm install @typescript-eslint/parser --save-dev
 ```
 
+Note: `@typescript-eslint/parser` assumes you have `typescript` already installed. Please read the documentation [here](https://github.com/typescript-eslint/typescript-eslint#supported-typescript-version) for more details.
+
 ## Usage
 
 In your ESLint configuration file, set the `parser` property:

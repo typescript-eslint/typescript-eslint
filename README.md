@@ -220,7 +220,7 @@ We will always endeavor to support the latest stable version of TypeScript. Some
 
 **The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.7.0`.**
 
-This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `optionalDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
 If you use a non-supported version of TypeScript, the parser will log a warning to the console. If you want to disable this warning, you can configure this in your `parserOptions`. See: [`@typescript-eslint/parser`](./packages/parser/) and [`@typescript-eslint/typescript-estree`](./packages/typescript-estree/).
 
