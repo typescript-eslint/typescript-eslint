@@ -447,6 +447,7 @@ Object {
             ],
             "type": "Identifier",
           },
+          "optionalChain": false,
           "property": Object {
             "loc": Object {
               "end": Object {

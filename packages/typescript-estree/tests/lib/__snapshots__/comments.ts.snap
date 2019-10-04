@@ -18181,6 +18181,7 @@ Object {
             ],
             "type": "Identifier",
           },
+          "optionalChain": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -18277,6 +18278,7 @@ Object {
                                         ],
                                         "type": "Identifier",
                                       },
+                                      "optionalChain": false,
                                       "property": Object {
                                         "loc": Object {
                                           "end": Object {
@@ -18301,6 +18303,7 @@ Object {
                                       ],
                                       "type": "MemberExpression",
                                     },
+                                    "optionalChain": false,
                                     "property": Object {
                                       "left": Object {
                                         "computed": false,
@@ -18344,6 +18347,7 @@ Object {
                                             ],
                                             "type": "Identifier",
                                           },
+                                          "optionalChain": false,
                                           "property": Object {
                                             "loc": Object {
                                               "end": Object {
@@ -18368,6 +18372,7 @@ Object {
                                           ],
                                           "type": "MemberExpression",
                                         },
+                                        "optionalChain": false,
                                         "property": Object {
                                           "loc": Object {
                                             "end": Object {
@@ -18552,6 +18557,7 @@ Object {
                           ],
                           "type": "Identifier",
                         },
+                        "optionalChain": false,
                         "property": Object {
                           "loc": Object {
                             "end": Object {

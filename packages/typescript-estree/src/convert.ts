@@ -1695,6 +1695,7 @@ export class Converter {
           object: this.convertChild(node.expression),
           property: this.convertChild(node.name),
           computed: false,
+          optionalChain: node.questionDotToken !== undefined,
         });
 
       case SyntaxKind.ElementAccessExpression:
@@ -1703,6 +1704,7 @@ export class Converter {
           object: this.convertChild(node.expression),
           property: this.convertChild(node.argumentExpression),
           computed: true,
+          optionalChain: node.questionDotToken !== undefined,
         });
 
       case SyntaxKind.ConditionalExpression:
@@ -2365,18 +2367,35 @@ export class Converter {
       }
 
       case SyntaxKind.TypePredicate: {
-        const result = this.createNode<TSESTree.TSTypePredicate>(node, {
-          type: AST_NODE_TYPES.TSTypePredicate,
-          parameterName: this.convertChild(node.parameterName),
-          typeAnnotation: this.convertTypeAnnotation(node.type, node),
+        if (node.assertsModifier) {
+          const result = this.createNode<TSESTree.TSAssertsTypePredicate>(
+            node,
+            {
+              type: AST_NODE_TYPES.TSAssertsTypePredicate,
+              parameterName: this.convertChild(node.parameterName),
+            },
+          );
+          return result;
+        } else if (node.type) {
+          const result = this.createNode<TSESTree.TSIsTypePredicate>(node, {
+            type: AST_NODE_TYPES.TSIsTypePredicate,
+            parameterName: this.convertChild(node.parameterName),
+            typeAnnotation: this.convertTypeAnnotation(node.type, node),
+          });
+          /**
+           * Specific fix for type-guard location data
+           */
+          result.typeAnnotation.loc = result.typeAnnotation.typeAnnotation.loc;
+          result.typeAnnotation.range =
+            result.typeAnnotation.typeAnnotation.range;
+          return result;
+        }
+
+        // unknown predicate - probably from a new version of ts
+        // don't want to error on this, but also don't want to return anything resembling another node
+        return this.createNode<TSESTree.TSUnsupportedTypePredicate>(node, {
+          type: AST_NODE_TYPES.TSUnsupportedTypePredicate,
         });
-        /**
-         * Specific fix for type-guard location data
-         */
-        result.typeAnnotation.loc = result.typeAnnotation.typeAnnotation.loc;
-        result.typeAnnotation.range =
-          result.typeAnnotation.typeAnnotation.range;
-        return result;
       }
 
       case SyntaxKind.ImportType:

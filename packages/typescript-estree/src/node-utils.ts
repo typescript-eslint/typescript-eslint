@@ -87,6 +87,8 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
   [SyntaxKind.NewKeyword]: 'new',
   [SyntaxKind.ImportKeyword]: 'import',
   [SyntaxKind.ReadonlyKeyword]: 'readonly',
+  [SyntaxKind.QuestionQuestionToken]: '??',
+  [SyntaxKind.QuestionDotToken]: '?.',
 };
 
 /**
@@ -94,10 +96,10 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
  * @param operator the operator token
  * @returns is assignment
  */
-export function isAssignmentOperator(
-  operator: ts.Token<ts.AssignmentOperator>,
+export function isAssignmentOperator<T extends ts.SyntaxKind>(
+  operator: ts.Token<T>,
 ): boolean {
-  return ASSIGNMENT_OPERATORS.includes(operator.kind);
+  return (ASSIGNMENT_OPERATORS as ts.SyntaxKind[]).includes(operator.kind);
 }
 
 /**
@@ -105,10 +107,10 @@ export function isAssignmentOperator(
  * @param operator the operator token
  * @returns is a logical operator
  */
-export function isLogicalOperator(
-  operator: ts.Token<ts.LogicalOperator>,
+export function isLogicalOperator<T extends ts.SyntaxKind>(
+  operator: ts.Token<T>,
 ): boolean {
-  return LOGICAL_OPERATORS.includes(operator.kind);
+  return (LOGICAL_OPERATORS as ts.SyntaxKind[]).includes(operator.kind);
 }
 
 /**
@@ -195,10 +197,8 @@ export function isJSDocComment(node: ts.Node): boolean {
  * @param operator the operator token
  * @returns the binary expression type
  */
-export function getBinaryExpressionType(
-  // can be any operator
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  operator: ts.Token<any>,
+export function getBinaryExpressionType<T extends ts.SyntaxKind>(
+  operator: ts.Token<T>,
 ):
   | AST_NODE_TYPES.AssignmentExpression
   | AST_NODE_TYPES.LogicalExpression

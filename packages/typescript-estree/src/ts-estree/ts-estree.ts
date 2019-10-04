@@ -160,6 +160,7 @@ export type Node =
   | TSAnyKeyword
   | TSArrayType
   | TSAsExpression
+  | TSAssertsTypePredicate
   | TSAsyncKeyword
   | TSBigIntKeyword
   | TSBooleanKeyword
@@ -186,6 +187,7 @@ export type Node =
   | TSInterfaceBody
   | TSInterfaceHeritage
   | TSIntersectionType
+  | TSIsTypePredicate
   | TSLiteralType
   | TSMappedType
   | TSMethodSignature
@@ -220,12 +222,12 @@ export type Node =
   | TSTypeParameter
   | TSTypeParameterDeclaration
   | TSTypeParameterInstantiation
-  | TSTypePredicate
   | TSTypeQuery
   | TSTypeReference
   | TSUndefinedKeyword
   | TSUnionType
   | TSUnknownKeyword
+  | TSUnsupportedTypePredicate
   | TSVoidKeyword
   | UpdateExpression
   | UnaryExpression
@@ -400,6 +402,7 @@ export type TypeNode =
   | ThisExpression
   | TSAnyKeyword
   | TSArrayType
+  | TSAssertsTypePredicate
   | TSBigIntKeyword
   | TSBooleanKeyword
   | TSClassImplements
@@ -411,6 +414,7 @@ export type TypeNode =
   | TSInferType
   | TSInterfaceHeritage
   | TSIntersectionType
+  | TSIsTypePredicate
   | TSLiteralType
   | TSMappedType
   | TSNeverKeyword
@@ -427,7 +431,6 @@ export type TypeNode =
   | TSTypeLiteral
   | TSTypeOperator
   | TSTypeReference
-  | TSTypePredicate
   | TSTypeQuery
   | TSUndefinedKeyword
   | TSUnionType
@@ -847,7 +850,8 @@ export interface MemberExpression extends BaseNode {
   type: AST_NODE_TYPES.MemberExpression;
   object: LeftHandSideExpression;
   property: Expression | Identifier;
-  computed?: boolean;
+  computed: boolean;
+  optionalChain: boolean;
 }
 
 export interface MetaProperty extends BaseNode {
@@ -1345,9 +1349,17 @@ export interface TSTypeParameterInstantiation extends BaseNode {
 }
 
 export interface TSTypePredicate extends BaseNode {
-  type: AST_NODE_TYPES.TSTypePredicate;
   parameterName: Identifier | TSThisType;
+}
+export interface TSAssertsTypePredicate extends TSTypePredicate {
+  type: AST_NODE_TYPES.TSAssertsTypePredicate;
+}
+export interface TSIsTypePredicate extends TSTypePredicate {
+  type: AST_NODE_TYPES.TSIsTypePredicate;
   typeAnnotation: TSTypeAnnotation;
+}
+export interface TSUnsupportedTypePredicate extends BaseNode {
+  type: AST_NODE_TYPES.TSUnsupportedTypePredicate;
 }
 
 export interface TSTypeQuery extends BaseNode {

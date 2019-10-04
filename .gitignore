@@ -63,3 +63,6 @@ dist
 
 # Editor-specific metadata folders
 .vs
+
+# watchman config
+.watchmanconfig

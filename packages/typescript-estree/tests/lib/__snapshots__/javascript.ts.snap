@@ -72,6 +72,7 @@ Object {
             ],
             "type": "CallExpression",
           },
+          "optionalChain": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -11542,6 +11543,7 @@ Object {
             ],
             "type": "Identifier",
           },
+          "optionalChain": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -13162,6 +13164,7 @@ Object {
             ],
             "type": "Identifier",
           },
+          "optionalChain": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -18453,6 +18456,7 @@ Object {
                                 ],
                                 "type": "ThisExpression",
                               },
+                              "optionalChain": false,
                               "property": Object {
                                 "loc": Object {
                                   "end": Object {
@@ -38075,6 +38079,7 @@ Object {
                 ],
                 "type": "Identifier",
               },
+              "optionalChain": false,
               "property": Object {
                 "loc": Object {
                   "end": Object {
@@ -80460,6 +80465,7 @@ Object {
             ],
             "type": "CallExpression",
           },
+          "optionalChain": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -83775,6 +83781,7 @@ Object {
                     ],
                     "type": "Identifier",
                   },
+                  "optionalChain": false,
                   "property": Object {
                     "loc": Object {
                       "end": Object {
@@ -91233,6 +91240,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "optionalChain": false,
             "property": Object {
               "loc": Object {
                 "end": Object {
@@ -107221,6 +107229,7 @@ Object {
           ],
           "type": "MetaProperty",
         },
+        "optionalChain": false,
         "property": Object {
           "loc": Object {
             "end": Object {
@@ -108920,6 +108929,7 @@ Object {
                   ],
                   "type": "Identifier",
                 },
+                "optionalChain": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -122451,6 +122461,7 @@ Object {
             ],
             "type": "CallExpression",
           },
+          "optionalChain": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -142772,6 +142783,7 @@ Object {
                   ],
                   "type": "Identifier",
                 },
+                "optionalChain": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
