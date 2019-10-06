@@ -26,37 +26,37 @@ ruleTester.run('restrict-plus-operands', rule, {
     `var foo = BigInt(1) + 1n`,
     `var foo = 1n; foo + 2n`,
     `
-function test () : number { return 2; }
+function test(s: string, n: number) : number { return 2; }
 var foo = test("5.5", 10) + 10;
-            `,
+    `,
     `
 var x = 5;
 var z = 8.2;
 var foo = x + z;
-            `,
+    `,
     `
 var w = "6.5";
 var y = "10";
 var foo = y + w;
-            `,
+    `,
     'var foo = 1 + 1;',
     "var foo = '1' + '1';",
     `
 var pair: { first: number, second: string } = { first: 5, second: "10" };
 var foo = pair.first + 10;
-            `,
+    `,
     `
 var pair: { first: number, second: string } = { first: 5, second: "10" };
 var foo = pair.first + (10 as number);
-            `,
+    `,
     `
 var pair: { first: number, second: string } = { first: 5, second: "10" };
 var foo = "5.5" + pair.second;
-            `,
+    `,
     `
 var pair: { first: number, second: string } = { first: 5, second: "10" };
 var foo = ("5.5" as string) + pair.second;
-            `,
+    `,
     `const foo = 'hello' + (someBoolean ? 'a' : 'b') + (() => someBoolean ? 'c' : 'd')() + 'e';`,
     `const balls = true;`,
     `balls === true;`,

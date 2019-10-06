@@ -136,7 +136,7 @@ Please check the current list of open and known issues and ensure the issue has 
 
 A couple of years after work on this parser began, the TypeScript Team at Microsoft began [officially supporting TypeScript parsing via Babel](https://blogs.msdn.microsoft.com/typescript/2018/08/27/typescript-and-babel-7/).
 
-I work closely with TypeScript Team and we are gradually aliging the AST of this project with the one produced by Babel's parser. To that end, I have created a full test harness to compare the ASTs of the two projects which runs on every PR, please see the code for more details.
+I work closely with the TypeScript Team and we are gradually aliging the AST of this project with the one produced by Babel's parser. To that end, I have created a full test harness to compare the ASTs of the two projects which runs on every PR, please see the code for more details.
 
 ## Build/Test Commands
 

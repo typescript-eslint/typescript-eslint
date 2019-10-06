@@ -105,6 +105,30 @@ interface I {
 function f<T extends number>(x: T[]): void;
 function f<T extends string>(x: T): void;
  `,
+    // Same name, different scopes
+    `
+declare function foo(n: number): number;
+
+declare module "hello" {
+  function foo(n: number, s: string): number;
+}
+`,
+    // children of block not checked to match TSLint
+    `
+{
+    function block(): number;
+    function block(n: number): number;
+    function block(n?: number): number {
+      return 3;
+    }
+}
+`,
+    `
+export interface Foo {
+  bar(baz: string): number[];
+  bar(): string[];
+}
+`,
   ],
   invalid: [
     {
@@ -588,6 +612,40 @@ class Foo {
           },
           line: 4,
           column: 58,
+        },
+      ],
+    },
+    {
+      code: `
+export function foo(line: number): number;
+export function foo(line: number, character?: number): number;
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(line: number): number;
+export function foo(line: number, character?: number): number;
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          column: 35,
         },
       ],
     },

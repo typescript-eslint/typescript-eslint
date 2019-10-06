@@ -33,6 +33,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreEnums: {
             type: 'boolean',
           },
+          ignoreReadonlyClassProperties: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -46,6 +49,7 @@ export default util.createRule<Options, MessageIds>({
       detectObjects: false,
       ignoreNumericLiteralTypes: false,
       ignoreEnums: false,
+      ignoreReadonlyClassProperties: false,
     },
   ],
   create(context, [options]) {
@@ -149,10 +153,31 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
+    /**
+     * Checks if the node parent is a readonly class property
+     * @param node the node to be validated.
+     * @returns true if the node parent is a readonly class property
+     * @private
+     */
+    function isParentTSReadonlyClassProperty(node: TSESTree.Node): boolean {
+      return (
+        !!node.parent &&
+        node.parent.type === AST_NODE_TYPES.ClassProperty &&
+        !!node.parent.readonly
+      );
+    }
+
     return {
-      Literal(node) {
+      Literal(node): void {
         // Check if the node is a TypeScript enum declaration
         if (options.ignoreEnums && isParentTSEnumDeclaration(node)) {
+          return;
+        }
+
+        if (
+          options.ignoreReadonlyClassProperties &&
+          isParentTSReadonlyClassProperty(node)
+        ) {
           return;
         }
 
