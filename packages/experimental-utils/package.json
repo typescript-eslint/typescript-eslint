@@ -44,6 +44,6 @@
     "eslint": "*"
   },
   "devDependencies": {
-    "typescript": "beta"
+    "typescript": "*"
   }
 }

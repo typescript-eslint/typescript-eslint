@@ -60,6 +60,6 @@
     "babel-code-frame": "^6.26.0",
     "glob": "^7.1.4",
     "lodash.isplainobject": "4.0.6",
-    "typescript": "beta"
+    "typescript": "*"
   }
 }

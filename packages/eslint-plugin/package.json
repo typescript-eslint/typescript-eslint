@@ -53,7 +53,7 @@
     "chalk": "^2.4.2",
     "marked": "^0.7.0",
     "prettier": "*",
-    "typescript": "beta"
+    "typescript": "*"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^2.0.0",
