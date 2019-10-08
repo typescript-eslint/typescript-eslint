@@ -1,5 +1,4 @@
 import { TSESLint, ESLintUtils } from '@typescript-eslint/experimental-utils';
-import { clearCaches } from '@typescript-eslint/parser';
 import * as path from 'path';
 
 const parser = '@typescript-eslint/parser';
@@ -72,11 +71,5 @@ function getFixturesRootDir(): string {
 }
 
 const { batchedSingleLineTests } = ESLintUtils;
-
-// make sure each test is completely isolated
-// otherwise the stored state may impact other tests
-afterEach(() => {
-  clearCaches();
-});
 
 export { RuleTester, getFixturesRootDir, batchedSingleLineTests };

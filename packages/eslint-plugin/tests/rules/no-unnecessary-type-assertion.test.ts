@@ -1,3 +1,4 @@
+import { clearCaches } from '@typescript-eslint/parser';
 import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { RuleTester } from '../RuleTester';
@@ -10,6 +11,12 @@ const ruleTester = new RuleTester({
     project: './tsconfig.json',
   },
   parser: '@typescript-eslint/parser',
+});
+
+// make sure each test is completely isolated
+// there was some weird behaviour with the mixed ts/tsx test cases without this
+afterEach(() => {
+  clearCaches();
 });
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
