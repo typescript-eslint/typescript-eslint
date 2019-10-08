@@ -292,7 +292,7 @@ export default util.createRule<Options, MessageIds>({
                 range: moduleReference.range,
                 loc: moduleReference.loc,
               },
-            },
+            } as TSESTree.VariableDeclarator,
           ],
 
           // location data
@@ -313,6 +313,8 @@ export default util.createRule<Options, MessageIds>({
           parent: node.parent,
           range: node.range,
           loc: node.loc,
+          optional: false,
+          computed: true,
         });
       },
 
@@ -420,6 +422,8 @@ export default util.createRule<Options, MessageIds>({
           parent: node.parent,
           range: node.range,
           loc: node.loc,
+          optional: false,
+          computed: false,
         });
       },
 
