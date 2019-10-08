@@ -2428,35 +2428,22 @@ export class Converter {
       }
 
       case SyntaxKind.TypePredicate: {
-        if (node.assertsModifier) {
-          const result = this.createNode<TSESTree.TSAssertsTypePredicate>(
-            node,
-            {
-              type: AST_NODE_TYPES.TSAssertsTypePredicate,
-              parameterName: this.convertChild(node.parameterName),
-            },
-          );
-          return result;
-        } else if (node.type) {
-          const result = this.createNode<TSESTree.TSIsTypePredicate>(node, {
-            type: AST_NODE_TYPES.TSIsTypePredicate,
-            parameterName: this.convertChild(node.parameterName),
-            typeAnnotation: this.convertTypeAnnotation(node.type, node),
-          });
-          /**
-           * Specific fix for type-guard location data
-           */
+        const result = this.createNode<TSESTree.TSTypePredicate>(node, {
+          type: AST_NODE_TYPES.TSTypePredicate,
+          asserts: node.assertsModifier !== undefined,
+          parameterName: this.convertChild(node.parameterName),
+          typeAnnotation: null,
+        });
+        /**
+         * Specific fix for type-guard location data
+         */
+        if (node.type) {
+          result.typeAnnotation = this.convertTypeAnnotation(node.type, node);
           result.typeAnnotation.loc = result.typeAnnotation.typeAnnotation.loc;
           result.typeAnnotation.range =
             result.typeAnnotation.typeAnnotation.range;
-          return result;
         }
-
-        // unknown predicate - probably from a new version of ts
-        // don't want to error on this, but also don't want to return anything resembling another node
-        return this.createNode<TSESTree.TSUnsupportedTypePredicate>(node, {
-          type: AST_NODE_TYPES.TSUnsupportedTypePredicate,
-        });
+        return result;
       }
 
       case SyntaxKind.ImportType:
