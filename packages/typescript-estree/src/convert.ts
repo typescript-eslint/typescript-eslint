@@ -1689,38 +1689,90 @@ export class Converter {
         }
       }
 
-      case SyntaxKind.PropertyAccessExpression:
-        return this.createNode<TSESTree.MemberExpression>(node, {
-          type: AST_NODE_TYPES.MemberExpression,
-          object: this.convertChild(node.expression),
-          property: this.convertChild(node.name),
-          computed: false,
-          optionalChain: node.questionDotToken !== undefined,
-        });
+      case SyntaxKind.PropertyAccessExpression: {
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        const object = this.convertChild(node.expression);
+        const property = this.convertChild(node.name);
+        const computed = false;
+        if (
+          isLocallyOptional ||
+          // the optional expression should propogate up the member expression tree
+          object.type === AST_NODE_TYPES.OptionalMemberExpression ||
+          object.type === AST_NODE_TYPES.OptionalCallExpression
+        ) {
+          return this.createNode<TSESTree.OptionalMemberExpression>(node, {
+            type: AST_NODE_TYPES.OptionalMemberExpression,
+            object,
+            property,
+            computed,
+            optional: isLocallyOptional,
+          });
+        } else {
+          return this.createNode<TSESTree.MemberExpression>(node, {
+            type: AST_NODE_TYPES.MemberExpression,
+            object,
+            property,
+            computed,
+            optional: false,
+          });
+        }
+      }
 
-      case SyntaxKind.ElementAccessExpression:
-        return this.createNode<TSESTree.MemberExpression>(node, {
-          type: AST_NODE_TYPES.MemberExpression,
-          object: this.convertChild(node.expression),
-          property: this.convertChild(node.argumentExpression),
-          computed: true,
-          optionalChain: node.questionDotToken !== undefined,
-        });
-
-      case SyntaxKind.ConditionalExpression:
-        return this.createNode<TSESTree.ConditionalExpression>(node, {
-          type: AST_NODE_TYPES.ConditionalExpression,
-          test: this.convertChild(node.condition),
-          consequent: this.convertChild(node.whenTrue),
-          alternate: this.convertChild(node.whenFalse),
-        });
+      case SyntaxKind.ElementAccessExpression: {
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        const object = this.convertChild(node.expression);
+        const property = this.convertChild(node.argumentExpression);
+        const computed = true;
+        if (
+          isLocallyOptional ||
+          // the optional expression should propogate up the member expression tree
+          object.type === AST_NODE_TYPES.OptionalMemberExpression ||
+          object.type === AST_NODE_TYPES.OptionalCallExpression
+        ) {
+          return this.createNode<TSESTree.OptionalMemberExpression>(node, {
+            type: AST_NODE_TYPES.OptionalMemberExpression,
+            object,
+            property,
+            computed,
+            optional: isLocallyOptional,
+          });
+        } else {
+          return this.createNode<TSESTree.MemberExpression>(node, {
+            type: AST_NODE_TYPES.MemberExpression,
+            object,
+            property,
+            computed,
+            optional: false,
+          });
+        }
+      }
 
       case SyntaxKind.CallExpression: {
-        const result = this.createNode<TSESTree.CallExpression>(node, {
-          type: AST_NODE_TYPES.CallExpression,
-          callee: this.convertChild(node.expression),
-          arguments: node.arguments.map(el => this.convertChild(el)),
-        });
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        const callee = this.convertChild(node.expression);
+        const args = node.arguments.map(el => this.convertChild(el));
+        let result;
+        if (
+          isLocallyOptional ||
+          // the optional expression should propogate up the member expression tree
+          callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
+          callee.type === AST_NODE_TYPES.OptionalCallExpression
+        ) {
+          result = this.createNode<TSESTree.OptionalCallExpression>(node, {
+            type: AST_NODE_TYPES.OptionalCallExpression,
+            callee,
+            arguments: args,
+            optional: isLocallyOptional,
+          });
+        } else {
+          result = this.createNode<TSESTree.CallExpression>(node, {
+            type: AST_NODE_TYPES.CallExpression,
+            callee,
+            arguments: args,
+            optional: false,
+          });
+        }
+
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments,
@@ -1730,6 +1782,7 @@ export class Converter {
       }
 
       case SyntaxKind.NewExpression: {
+        // NOTE - NewExpression cannot have an optional chain in it
         const result = this.createNode<TSESTree.NewExpression>(node, {
           type: AST_NODE_TYPES.NewExpression,
           callee: this.convertChild(node.expression),
@@ -1744,6 +1797,14 @@ export class Converter {
         }
         return result;
       }
+
+      case SyntaxKind.ConditionalExpression:
+        return this.createNode<TSESTree.ConditionalExpression>(node, {
+          type: AST_NODE_TYPES.ConditionalExpression,
+          test: this.convertChild(node.condition),
+          consequent: this.convertChild(node.whenTrue),
+          alternate: this.convertChild(node.whenFalse),
+        });
 
       case SyntaxKind.MetaProperty: {
         return this.createNode<TSESTree.MetaProperty>(node, {

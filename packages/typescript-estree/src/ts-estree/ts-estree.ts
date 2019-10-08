@@ -139,6 +139,8 @@ export type Node =
   | NewExpression
   | ObjectExpression
   | ObjectPattern
+  | OptionalCallExpression
+  | OptionalMemberExpression
   | Program
   | Property
   | RestElement
@@ -325,6 +327,8 @@ export type LeftHandSideExpression =
   | FunctionExpression
   | LiteralExpression
   | MemberExpression
+  | OptionalCallExpression
+  | OptionalMemberExpression
   | PrimaryExpression
   | TaggedTemplateExpression
   | TSNonNullExpression
@@ -594,11 +598,19 @@ export interface BreakStatement extends BaseNode {
   label: Identifier | null;
 }
 
-export interface CallExpression extends BaseNode {
-  type: AST_NODE_TYPES.CallExpression;
+interface CallExpressionBase extends BaseNode {
   callee: LeftHandSideExpression;
   arguments: Expression[];
   typeParameters?: TSTypeParameterInstantiation;
+  optional: boolean;
+}
+export interface CallExpression extends CallExpressionBase {
+  type: AST_NODE_TYPES.CallExpression;
+  optional: false;
+}
+export interface OptionalCallExpression extends CallExpressionBase {
+  type: AST_NODE_TYPES.OptionalCallExpression;
+  optional: boolean;
 }
 
 export interface CatchClause extends BaseNode {
@@ -846,12 +858,19 @@ export interface LogicalExpression extends BinaryExpressionBase {
   type: AST_NODE_TYPES.LogicalExpression;
 }
 
-export interface MemberExpression extends BaseNode {
-  type: AST_NODE_TYPES.MemberExpression;
+interface MemberExpressionBase extends BaseNode {
   object: LeftHandSideExpression;
   property: Expression | Identifier;
   computed: boolean;
-  optionalChain: boolean;
+  optional: boolean;
+}
+export interface MemberExpression extends MemberExpressionBase {
+  type: AST_NODE_TYPES.MemberExpression;
+  optional: false;
+}
+export interface OptionalMemberExpression extends MemberExpressionBase {
+  type: AST_NODE_TYPES.OptionalMemberExpression;
+  optional: boolean;
 }
 
 export interface MetaProperty extends BaseNode {

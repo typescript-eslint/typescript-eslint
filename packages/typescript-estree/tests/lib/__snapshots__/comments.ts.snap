@@ -36,6 +36,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "range": Array [
               6,
               9,
@@ -11708,6 +11709,7 @@ Object {
                   "line": 2,
                 },
               },
+              "optional": false,
               "range": Array [
                 24,
                 37,
@@ -12589,6 +12591,7 @@ Object {
                   "line": 2,
                 },
               },
+              "optional": false,
               "range": Array [
                 24,
                 37,
@@ -14189,6 +14192,7 @@ Object {
                   "line": 3,
                 },
               },
+              "optional": false,
               "range": Array [
                 36,
                 41,
@@ -15965,6 +15969,7 @@ Object {
                     "line": 6,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   82,
                   88,
@@ -16485,6 +16490,7 @@ Object {
                           "line": 7,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         126,
                         132,
@@ -18181,7 +18187,7 @@ Object {
             ],
             "type": "Identifier",
           },
-          "optionalChain": false,
+          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -18278,7 +18284,7 @@ Object {
                                         ],
                                         "type": "Identifier",
                                       },
-                                      "optionalChain": false,
+                                      "optional": false,
                                       "property": Object {
                                         "loc": Object {
                                           "end": Object {
@@ -18303,7 +18309,7 @@ Object {
                                       ],
                                       "type": "MemberExpression",
                                     },
-                                    "optionalChain": false,
+                                    "optional": false,
                                     "property": Object {
                                       "left": Object {
                                         "computed": false,
@@ -18347,7 +18353,7 @@ Object {
                                             ],
                                             "type": "Identifier",
                                           },
-                                          "optionalChain": false,
+                                          "optional": false,
                                           "property": Object {
                                             "loc": Object {
                                               "end": Object {
@@ -18372,7 +18378,7 @@ Object {
                                           ],
                                           "type": "MemberExpression",
                                         },
-                                        "optionalChain": false,
+                                        "optional": false,
                                         "property": Object {
                                           "loc": Object {
                                             "end": Object {
@@ -18468,6 +18474,7 @@ Object {
                                     "line": 6,
                                   },
                                 },
+                                "optional": false,
                                 "range": Array [
                                   161,
                                   218,
@@ -18557,7 +18564,7 @@ Object {
                           ],
                           "type": "Identifier",
                         },
-                        "optionalChain": false,
+                        "optional": false,
                         "property": Object {
                           "loc": Object {
                             "end": Object {

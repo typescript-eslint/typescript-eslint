@@ -1,5 +1,7 @@
-function processOptional(s?: string) {
-  let len = s?.length;
-  let find = s?.includes('foo');
-  let element = s?.[0];
+function processOptional(one?: any) {
+  one?.two;
+  one?.two.three;
+  one.two?.three;
+  one.two?.three.four;
+  one.two?.three?.four;
 }

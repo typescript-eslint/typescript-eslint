@@ -447,7 +447,7 @@ Object {
             ],
             "type": "Identifier",
           },
-          "optionalChain": false,
+          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -482,6 +482,7 @@ Object {
             "line": 2,
           },
         },
+        "optional": false,
         "range": Array [
           37,
           51,
