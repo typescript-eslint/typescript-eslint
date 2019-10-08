@@ -132,6 +132,7 @@ tester.addFixturePatternConfig('javascript/basics', {
     // optional chaining
     'delete-expression',
     'new-with-member-expression',
+    'update-expression',
   ],
 });
 
@@ -148,6 +149,12 @@ tester.addFixturePatternConfig('comments', {
      * TODO: remove me when babel adds support
      */
     // optional chaining
+    'block-trailing-comment',
+    'jsx-with-greather-than',
+    'jsx-with-operators',
+    'surrounding-call-comments',
+    'switch-fallthrough-comment-in-function',
+    'switch-fallthrough-comment',
     'switch-no-default-comment-in-nested-functions',
   ],
 });
@@ -211,6 +218,13 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
     'error-strict-param-names',
     'error-strict-param-no-paren-arguments',
     'error-strict-param-no-paren-eval',
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
+    // optional chaining
+    'as-param-with-params',
+    'as-param',
   ],
 });
 tester.addFixturePatternConfig('javascript/function', {
@@ -234,6 +248,8 @@ tester.addFixturePatternConfig('javascript/callExpression', {
      * TODO: remove me when babel adds support
      */
     // optional chaining
+    'call-expression-with-array',
+    'call-expression-with-object',
     'mixed-expression',
   ],
 });
@@ -263,6 +279,8 @@ tester.addFixturePatternConfig('javascript/destructuring', {
      */
     // optional chaining
     'array-member',
+    'call-expression-destruction-array',
+    'call-expression-destruction-object',
   ],
 });
 tester.addFixturePatternConfig('javascript/destructuring-and-arrowFunctions');
@@ -312,11 +330,42 @@ tester.addFixturePatternConfig('javascript/forIn', {
      * SyntaxError: Invalid left-hand side in for-loop
      */
     'for-in-with-bare-assigment',
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
+    // optional chaining
+    'for-in-with-const',
+    'for-in-with-var',
   ],
 });
 
-tester.addFixturePatternConfig('javascript/forOf');
-tester.addFixturePatternConfig('javascript/generators');
+tester.addFixturePatternConfig('javascript/forOf', {
+  ignore: [
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
+    // optional chaining
+    'for-of-array',
+    'for-of-object',
+    'for-of-with-var-and-braces',
+    'for-of-with-var-and-no-braces',
+    'invalid-for-of-with-const-and-no-braces',
+    'invalid-for-of-with-let-and-no-braces',
+  ],
+});
+tester.addFixturePatternConfig('javascript/generators', {
+  ignore: [
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
+    // optional chaining
+    'async-generator-method',
+    'yield-without-value-in-call',
+  ],
+});
 tester.addFixturePatternConfig('javascript/globalReturn');
 tester.addFixturePatternConfig('javascript/hexLiterals');
 tester.addFixturePatternConfig('javascript/importMeta', {
@@ -408,7 +457,18 @@ tester.addFixturePatternConfig('javascript/regex');
 tester.addFixturePatternConfig('javascript/regexUFlag');
 tester.addFixturePatternConfig('javascript/regexYFlag');
 tester.addFixturePatternConfig('javascript/restParams');
-tester.addFixturePatternConfig('javascript/spread');
+tester.addFixturePatternConfig('javascript/spread', {
+  ignore: [
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
+    // optional chaining
+    'multi-function-call',
+    'not-final-param',
+    'simple-function-call',
+  ],
+});
 tester.addFixturePatternConfig('javascript/unicodeCodePointEscapes');
 
 /* ================================================== */
@@ -521,14 +581,17 @@ tester.addFixturePatternConfig('typescript/basics', {
      * TS 3.7 feature changes
      * TODO: remove me when babel adds support
      */
-    'nullish-coalescing',
     // optional chaining
     'optional-chain',
+    'optional-chain-call',
     'optional-chain-element-access',
+    'async-function-expression',
     'class-with-accessibility-modifiers',
+    'class-with-mixin',
     'global-this',
     'never-type-param',
     'non-null-assertion-operator',
+    'type-parameters-comments',
     // type assertion function
     'type-assertion-in-function',
     'type-assertion-in-arrow-function',
@@ -538,6 +601,10 @@ tester.addFixturePatternConfig('typescript/basics', {
     'type-guard-in-function',
     'type-guard-in-interface',
     'type-guard-in-method',
+    'type-assertion-with-guard-in-arrow-function',
+    'type-assertion-with-guard-in-function',
+    'type-assertion-with-guard-in-interface',
+    'type-assertion-with-guard-in-method',
   ],
   ignoreSourceType: [
     /**
@@ -566,9 +633,26 @@ tester.addFixturePatternConfig('typescript/decorators/accessor-decorators', {
 });
 tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
+    // optional chaining
+    'class-decorator-factory',
+  ],
 });
 tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
+    // optional chaining
+    'method-decorator-factory-instance-member',
+    'method-decorator-factory-static-member',
+  ],
 });
 tester.addFixturePatternConfig('typescript/decorators/parameter-decorators', {
   fileType: 'ts',
@@ -585,10 +669,22 @@ tester.addFixturePatternConfig('typescript/decorators/parameter-decorators', {
      */
     // optional chaining
     'parameter-decorator-constructor',
+    'parameter-decorator-decorator-instance-member',
+    'parameter-decorator-decorator-static-member',
+    'parameter-object-pattern-decorator',
   ],
 });
 tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
+    // optional chaining
+    'property-decorator-factory-instance-member',
+    'property-decorator-factory-static-member',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/expressions', {
@@ -598,6 +694,12 @@ tester.addFixturePatternConfig('typescript/expressions', {
      * there is difference in range between babel and ts-estree
      */
     'tagged-template-expression-type-arguments',
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
+    // optional chaining
+    'call-expression-type-arguments',
   ],
 });
 

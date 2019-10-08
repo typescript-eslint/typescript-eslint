@@ -20919,31 +20919,31 @@ Object {
 
 exports[`typescript fixtures/basics/nullish-coalescing.src 1`] = `
 Object {
-  "$id": 11,
+  "$id": 8,
   "block": Object {
     "range": Array [
       0,
-      118,
+      71,
     ],
     "type": "Program",
   },
   "childScopes": Array [
     Object {
-      "$id": 10,
+      "$id": 7,
       "block": Object {
         "range": Array [
           0,
-          118,
+          71,
         ],
         "type": "Program",
       },
       "childScopes": Array [
         Object {
-          "$id": 9,
+          "$id": 6,
           "block": Object {
             "range": Array [
               0,
-              117,
+              70,
             ],
             "type": "FunctionDeclaration",
           },
@@ -20952,9 +20952,9 @@ Object {
           "isStrict": true,
           "references": Array [
             Object {
-              "$id": 5,
+              "$id": 4,
               "from": Object {
-                "$ref": 9,
+                "$ref": 6,
               },
               "identifier": Object {
                 "name": "len",
@@ -20970,16 +20970,16 @@ Object {
               },
               "writeExpr": Object {
                 "range": Array [
-                  58,
-                  74,
+                  59,
+                  66,
                 ],
-                "type": "MemberExpression",
+                "type": "BinaryExpression",
               },
             },
             Object {
-              "$id": 6,
+              "$id": 5,
               "from": Object {
-                "$ref": 9,
+                "$ref": 6,
               },
               "identifier": Object {
                 "name": "s",
@@ -20995,62 +20995,15 @@ Object {
               },
               "writeExpr": undefined,
             },
-            Object {
-              "$id": 7,
-              "from": Object {
-                "$ref": 9,
-              },
-              "identifier": Object {
-                "name": "find",
-                "range": Array [
-                  82,
-                  86,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "w",
-              "resolved": Object {
-                "$ref": 4,
-              },
-              "writeExpr": Object {
-                "range": Array [
-                  89,
-                  114,
-                ],
-                "type": "CallExpression",
-              },
-            },
-            Object {
-              "$id": 8,
-              "from": Object {
-                "$ref": 9,
-              },
-              "identifier": Object {
-                "name": "s",
-                "range": Array [
-                  90,
-                  91,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": Object {
-                "$ref": 2,
-              },
-              "writeExpr": undefined,
-            },
           ],
           "throughReferences": Array [],
           "type": "function",
           "upperScope": Object {
-            "$ref": 10,
+            "$ref": 7,
           },
           "variableMap": Object {
             "arguments": Object {
               "$ref": 1,
-            },
-            "find": Object {
-              "$ref": 4,
             },
             "len": Object {
               "$ref": 3,
@@ -21060,7 +21013,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 9,
+            "$ref": 6,
           },
           "variables": Array [
             Object {
@@ -21071,7 +21024,7 @@ Object {
               "name": "arguments",
               "references": Array [],
               "scope": Object {
-                "$ref": 9,
+                "$ref": 6,
               },
             },
             Object {
@@ -21089,7 +21042,7 @@ Object {
                   "node": Object {
                     "range": Array [
                       0,
-                      117,
+                      70,
                     ],
                     "type": "FunctionDeclaration",
                   },
@@ -21111,14 +21064,11 @@ Object {
               "name": "s",
               "references": Array [
                 Object {
-                  "$ref": 6,
-                },
-                Object {
-                  "$ref": 8,
+                  "$ref": 5,
                 },
               ],
               "scope": Object {
-                "$ref": 9,
+                "$ref": 6,
               },
             },
             Object {
@@ -21136,14 +21086,14 @@ Object {
                   "node": Object {
                     "range": Array [
                       52,
-                      74,
+                      67,
                     ],
                     "type": "VariableDeclarator",
                   },
                   "parent": Object {
                     "range": Array [
                       48,
-                      75,
+                      68,
                     ],
                     "type": "VariableDeclaration",
                   },
@@ -21164,61 +21114,11 @@ Object {
               "name": "len",
               "references": Array [
                 Object {
-                  "$ref": 5,
+                  "$ref": 4,
                 },
               ],
               "scope": Object {
-                "$ref": 9,
-              },
-            },
-            Object {
-              "$id": 4,
-              "defs": Array [
-                Object {
-                  "name": Object {
-                    "name": "find",
-                    "range": Array [
-                      82,
-                      86,
-                    ],
-                    "type": "Identifier",
-                  },
-                  "node": Object {
-                    "range": Array [
-                      82,
-                      114,
-                    ],
-                    "type": "VariableDeclarator",
-                  },
-                  "parent": Object {
-                    "range": Array [
-                      78,
-                      115,
-                    ],
-                    "type": "VariableDeclaration",
-                  },
-                  "type": "Variable",
-                },
-              ],
-              "eslintUsed": undefined,
-              "identifiers": Array [
-                Object {
-                  "name": "find",
-                  "range": Array [
-                    82,
-                    86,
-                  ],
-                  "type": "Identifier",
-                },
-              ],
-              "name": "find",
-              "references": Array [
-                Object {
-                  "$ref": 7,
-                },
-              ],
-              "scope": Object {
-                "$ref": 9,
+                "$ref": 6,
               },
             },
           ],
@@ -21230,7 +21130,7 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 11,
+        "$ref": 8,
       },
       "variableMap": Object {
         "processNullishCoalesce": Object {
@@ -21238,7 +21138,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 10,
+        "$ref": 7,
       },
       "variables": Array [
         Object {
@@ -21256,7 +21156,7 @@ Object {
               "node": Object {
                 "range": Array [
                   0,
-                  117,
+                  70,
                 ],
                 "type": "FunctionDeclaration",
               },
@@ -21278,7 +21178,7 @@ Object {
           "name": "processNullishCoalesce",
           "references": Array [],
           "scope": Object {
-            "$ref": 10,
+            "$ref": 7,
           },
         },
       ],
@@ -21292,7 +21192,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 11,
+    "$ref": 8,
   },
   "variables": Array [],
 }
