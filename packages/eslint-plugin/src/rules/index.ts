@@ -37,6 +37,7 @@ import noThisAlias from './no-this-alias';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
+import useDefaultTypeParameter from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
@@ -54,6 +55,7 @@ import quotes from './quotes';
 import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
+import returnAwait from './return-await';
 import semi from './semi';
 import strictBooleanExpressions from './strict-boolean-expressions';
 import tripleSlashReference from './triple-slash-reference';
@@ -61,7 +63,6 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
-import useDefaultTypeParameter from './no-unnecessary-type-arguments';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -121,6 +122,7 @@ export default {
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
+  'return-await': returnAwait,
   semi: semi,
   'strict-boolean-expressions': strictBooleanExpressions,
   'triple-slash-reference': tripleSlashReference,
