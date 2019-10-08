@@ -52,6 +52,7 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
       class D<TD = number> extends C { }`,
     `declare const C: unknown;
       class D<TD = number> extends C { }`,
+    `let a: A<number>`,
   ],
   invalid: [
     {

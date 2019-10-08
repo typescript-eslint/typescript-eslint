@@ -54,6 +54,12 @@ class InvalidAsyncModifiers {
   public set asyncGetter(p: Promise<void>) {
     return p;
   }
+  public get asyncGetterFunc() {
+    return async () => new Promise<void>();
+  }
+  public set asyncGetterFunc(p: () => Promise<void>) {
+    return p;
+  }
 }
     `,
     `
