@@ -20,9 +20,12 @@ const ASSIGNMENT_OPERATORS: ts.AssignmentOperator[] = [
   SyntaxKind.CaretEqualsToken,
 ];
 
-const LOGICAL_OPERATORS: ts.LogicalOperator[] = [
+const LOGICAL_OPERATORS: (
+  | ts.LogicalOperator
+  | ts.SyntaxKind.QuestionQuestionToken)[] = [
   SyntaxKind.BarBarToken,
   SyntaxKind.AmpersandAmpersandToken,
+  SyntaxKind.QuestionQuestionToken,
 ];
 
 const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {

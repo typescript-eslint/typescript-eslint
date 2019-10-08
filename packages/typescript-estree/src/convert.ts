@@ -1676,7 +1676,7 @@ export class Converter {
             | TSESTree.LogicalExpression
             | TSESTree.BinaryExpression
           >(node, {
-            type: type,
+            type,
             operator: getTextForTokenKind(node.operatorToken.kind)!,
             left: this.converter(
               node.left,

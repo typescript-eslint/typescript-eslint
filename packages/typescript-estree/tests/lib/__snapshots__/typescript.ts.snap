@@ -65452,7 +65452,7 @@ Object {
                       "type": "Literal",
                       "value": "",
                     },
-                    "type": "BinaryExpression",
+                    "type": "LogicalExpression",
                   },
                   "optional": false,
                   "property": Object {
@@ -65621,7 +65621,7 @@ Object {
                         "type": "Literal",
                         "value": "",
                       },
-                      "type": "BinaryExpression",
+                      "type": "LogicalExpression",
                     },
                     "optional": false,
                     "property": Object {
