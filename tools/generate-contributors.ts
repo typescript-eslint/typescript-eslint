@@ -3,8 +3,8 @@
 // this endpoint returns a list of contributors sorted by number of contributions
 
 import * as fs from 'fs';
-import * as path from 'path';
 import 'isomorphic-fetch';
+import * as path from 'path';
 
 const IGNORED_USERS = new Set([
   'eslint[bot]',
@@ -73,7 +73,7 @@ async function main(): Promise<void> {
   const users = await Promise.all(
     githubContributors.map<Promise<User>>(async c => {
       const response = await fetch(c.url, { method: 'GET' });
-      return await response.json();
+      return response.json();
     }),
   );
 
