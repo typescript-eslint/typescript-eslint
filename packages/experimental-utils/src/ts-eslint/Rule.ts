@@ -269,7 +269,6 @@ interface RuleListener {
   JSXFragment?: RuleFunction<TSESTree.JSXFragment>;
   JSXIdentifier?: RuleFunction<TSESTree.JSXIdentifier>;
   JSXMemberExpression?: RuleFunction<TSESTree.JSXMemberExpression>;
-  // JSXNamespacedName?: RuleFunction<TSESTree.JSXNamespacedName>; see: https://github.com/Microsoft/TypeScript/issues/7411
   JSXOpeningElement?: RuleFunction<TSESTree.JSXOpeningElement>;
   JSXOpeningFragment?: RuleFunction<TSESTree.JSXOpeningFragment>;
   JSXSpreadAttribute?: RuleFunction<TSESTree.JSXSpreadAttribute>;
