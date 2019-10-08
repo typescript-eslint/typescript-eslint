@@ -95,11 +95,14 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSUnknownKeyword:
           return false;
         case AST_NODE_TYPES.TSTypeReference:
-          // Ignore `as const` and `<const>`
           return (
-            node.typeName.type === AST_NODE_TYPES.Identifier &&
-            node.typeName.name !== 'const'
+            // Ignore `as const` and `<const>`
+            (node.typeName.type === AST_NODE_TYPES.Identifier &&
+              node.typeName.name !== 'const') ||
+            // Allow qualified names which have dots between identifiers, `Foo.Bar`
+            node.typeName.type === AST_NODE_TYPES.TSQualifiedName
           );
+
         default:
           return true;
       }
@@ -115,12 +118,14 @@ export default util.createRule<Options, MessageIds>({
       ) {
         return;
       }
+
       if (
         options.objectLiteralTypeAssertions === 'allow-as-parameter' &&
         node.parent &&
         (node.parent.type === AST_NODE_TYPES.NewExpression ||
           node.parent.type === AST_NODE_TYPES.CallExpression ||
-          node.parent.type === AST_NODE_TYPES.ThrowStatement)
+          node.parent.type === AST_NODE_TYPES.ThrowStatement ||
+          node.parent.type === AST_NODE_TYPES.AssignmentPattern)
       ) {
         return;
       }
