@@ -360,7 +360,6 @@ interface RuleListener {
   TSProtectedKeyword?: RuleFunction<TSESTree.TSProtectedKeyword>;
   TSPublicKeyword?: RuleFunction<TSESTree.TSPublicKeyword>;
   TSQualifiedName?: RuleFunction<TSESTree.TSQualifiedName>;
-  // TSQuestionToken?: RuleFunction<TSESTree.TSQuestionToken>;
   TSReadonlyKeyword?: RuleFunction<TSESTree.TSReadonlyKeyword>;
   TSRestType?: RuleFunction<TSESTree.TSRestType>;
   TSStaticKeyword?: RuleFunction<TSESTree.TSStaticKeyword>;
