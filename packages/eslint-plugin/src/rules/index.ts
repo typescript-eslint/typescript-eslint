@@ -62,6 +62,7 @@ import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
 import useDefaultTypeParameter from './no-unnecessary-type-arguments';
+import noDynamicDelete from './no-dynamic-delete';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -84,6 +85,7 @@ export default {
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
   'no-array-constructor': noArrayConstructor,
+  'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
