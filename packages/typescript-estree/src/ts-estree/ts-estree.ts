@@ -465,7 +465,7 @@ interface ClassDeclarationBase extends BaseNode {
 
 interface ClassPropertyBase extends BaseNode {
   key: PropertyName;
-  value: Expression;
+  value: Expression | null;
   computed: boolean;
   static: boolean;
   readonly?: boolean;
