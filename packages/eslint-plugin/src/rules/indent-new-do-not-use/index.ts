@@ -92,7 +92,6 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.WithStatement,
   AST_NODE_TYPES.YieldExpression,
   AST_NODE_TYPES.JSXIdentifier,
-  AST_NODE_TYPES.JSXNamespacedName,
   AST_NODE_TYPES.JSXMemberExpression,
   AST_NODE_TYPES.JSXEmptyExpression,
   AST_NODE_TYPES.JSXExpressionContainer,
