@@ -160,11 +160,23 @@ export default util.createRule<Options, MessageIds>({
      * @private
      */
     function isParentTSReadonlyClassProperty(node: TSESTree.Node): boolean {
-      return (
-        !!node.parent &&
+      if (
+        node.parent &&
+        node.parent.type === AST_NODE_TYPES.UnaryExpression &&
+        ['-', '+'].includes(node.parent.operator)
+      ) {
+        node = node.parent;
+      }
+
+      if (
+        node.parent &&
         node.parent.type === AST_NODE_TYPES.ClassProperty &&
-        !!node.parent.readonly
-      );
+        node.parent.readonly
+      ) {
+        return true;
+      }
+
+      return false;
     }
 
     return {
@@ -174,19 +186,40 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (
-          options.ignoreReadonlyClassProperties &&
-          isParentTSReadonlyClassProperty(node)
-        ) {
-          return;
-        }
-
         // Check TypeScript specific nodes for Numeric Literal
         if (
           options.ignoreNumericLiteralTypes &&
           isNumber(node) &&
           isTSNumericLiteralType(node)
         ) {
+          return;
+        }
+
+        // Check if the node is a readonly class property
+        if (isNumber(node) && isParentTSReadonlyClassProperty(node)) {
+          if (options.ignoreReadonlyClassProperties) {
+            return;
+          }
+
+          let fullNumberNode:
+            | TSESTree.Literal
+            | TSESTree.UnaryExpression = node;
+          let raw = node.raw;
+
+          if (
+            node.parent &&
+            node.parent.type === AST_NODE_TYPES.UnaryExpression
+          ) {
+            fullNumberNode = node.parent;
+            raw = `${node.parent.operator}${node.raw}`;
+          }
+
+          context.report({
+            messageId: 'noMagic',
+            node: fullNumberNode,
+            data: { raw },
+          });
+
           return;
         }
 
