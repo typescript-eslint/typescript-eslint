@@ -246,6 +246,9 @@ If you use a non-supported version of TypeScript, the parser will log a warning 
 
 <br>
 
+## Supported ESLint version
+See the value of `eslint` declared in `@typescript-eslint/eslint-plugin`'s [package.json](./packages/eslint-plugin/package.json).
+
 ## License
 
 TypeScript ESLint inherits from the the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
