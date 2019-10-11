@@ -101,7 +101,6 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   TSProtectedKeyword: [],
   TSPublicKeyword: [],
   TSQualifiedName: ['left', 'right'],
-  TSQuestionToken: [],
   TSReadonlyKeyword: [],
   TSRestType: ['typeAnnotation'],
   TSStaticKeyword: [],
