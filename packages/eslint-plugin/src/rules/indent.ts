@@ -69,7 +69,7 @@ const KNOWN_NODES = new Set([
   'TSPlusToken',
   AST_NODE_TYPES.TSPropertySignature,
   AST_NODE_TYPES.TSQualifiedName,
-  AST_NODE_TYPES.TSQuestionToken,
+  'TSQuestionToken',
   AST_NODE_TYPES.TSRestType,
   AST_NODE_TYPES.TSThisType,
   AST_NODE_TYPES.TSTupleType,
@@ -90,7 +90,8 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Enforce consistent indentation',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      // too opinionated to be recommended
+      recommended: false,
     },
     fixable: 'whitespace',
     schema: baseRule.meta.schema,
@@ -343,7 +344,7 @@ export default util.createRule<Options, MessageIds>({
         ]({
           type: AST_NODE_TYPES.ClassDeclaration,
           body: node.body as any,
-          id: undefined,
+          id: null,
           // TODO: This is invalid, there can be more than one extends in interface
           superClass: node.extends![0].expression as any,
 

@@ -308,20 +308,68 @@ foo({
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+const func = (value: number) => (({ type: "X", value }) as const);
+const func = (value: number) => ({ type: "X", value } as const);
+const func = (value: number) => (x as const);
+const func = (value: number) => x as const;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+new Promise(resolve => {});
+new Foo(1, () => {});
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
       filename: 'test.ts',
       code: `
-function test() {
-    return;
+function test(
+  a: number,
+  b: number,
+) {
+  return;
 }
       `,
       errors: [
         {
           messageId: 'missingReturnType',
           line: 2,
+          endLine: 5,
           column: 1,
+          endColumn: 2,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function test() {
+  return;
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 1,
+          endColumn: 16,
         },
       ],
     },
@@ -329,14 +377,16 @@ function test() {
       filename: 'test.ts',
       code: `
 var fn = function() {
-    return 1;
+  return 1;
 };
       `,
       errors: [
         {
           messageId: 'missingReturnType',
           line: 2,
+          endLine: 2,
           column: 10,
+          endColumn: 20,
         },
       ],
     },
@@ -349,7 +399,9 @@ var arrowFn = () => 'test';
         {
           messageId: 'missingReturnType',
           line: 2,
+          endLine: 2,
           column: 15,
+          endColumn: 20,
         },
       ],
     },
@@ -366,23 +418,39 @@ class Test {
     return;
   }
   arrow = () => 'arrow';
+  private method() {
+    return;
+  }
 }
       `,
       errors: [
         {
           messageId: 'missingReturnType',
           line: 4,
-          column: 11,
+          endLine: 4,
+          column: 3,
+          endColumn: 13,
         },
         {
           messageId: 'missingReturnType',
           line: 8,
-          column: 9,
+          endLine: 8,
+          column: 3,
+          endColumn: 11,
         },
         {
           messageId: 'missingReturnType',
           line: 11,
+          endLine: 11,
           column: 11,
+          endColumn: 16,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 12,
+          endLine: 12,
+          column: 3,
+          endColumn: 19,
         },
       ],
     },
@@ -398,7 +466,9 @@ function test() {
         {
           messageId: 'missingReturnType',
           line: 2,
+          endLine: 2,
           column: 1,
+          endColumn: 16,
         },
       ],
     },
@@ -410,7 +480,9 @@ function test() {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 13,
+          endColumn: 18,
         },
       ],
     },
@@ -422,7 +494,9 @@ function test() {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 13,
+          endColumn: 23,
         },
       ],
     },
@@ -434,7 +508,9 @@ function test() {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 16,
+          endColumn: 21,
         },
       ],
     },
@@ -446,7 +522,60 @@ function test() {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 16,
+          endColumn: 26,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Foo {
+  public a = () => {};
+  public b = function () {};
+  public c = function test() {};
+
+  static d = () => {};
+  static e = function () {};
+}
+      `,
+      options: [{ allowExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 19,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          endLine: 4,
+          column: 14,
+          endColumn: 25,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 5,
+          endLine: 5,
+          column: 14,
+          endColumn: 29,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 7,
+          endLine: 7,
+          column: 14,
+          endColumn: 19,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 8,
+          endLine: 8,
+          column: 14,
+          endColumn: 25,
         },
       ],
     },
@@ -458,7 +587,9 @@ function test() {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 15,
+          endColumn: 20,
         },
       ],
     },
@@ -470,7 +601,9 @@ function test() {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 16,
+          endColumn: 26,
         },
       ],
     },
@@ -483,6 +616,9 @@ function test() {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
+          column: 12,
+          endColumn: 17,
         },
       ],
     },
@@ -499,6 +635,9 @@ const x = {
         {
           messageId: 'missingReturnType',
           line: 4,
+          endLine: 4,
+          column: 8,
+          endColumn: 13,
         },
       ],
     },
@@ -515,6 +654,9 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 4,
+          endLine: 4,
+          column: 8,
+          endColumn: 13,
         },
       ],
     },
@@ -526,7 +668,9 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 7,
+          endColumn: 12,
         },
       ],
     },
@@ -538,7 +682,9 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 7,
+          endColumn: 18,
         },
       ],
     },
@@ -550,7 +696,9 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 16,
+          endColumn: 21,
         },
       ],
     },
@@ -562,7 +710,9 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 16,
+          endColumn: 27,
         },
       ],
     },
@@ -574,7 +724,9 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 24,
+          endColumn: 29,
         },
       ],
     },
@@ -586,7 +738,9 @@ const x: Foo = {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 24,
+          endColumn: 35,
         },
       ],
     },
@@ -609,7 +763,9 @@ function FunctionDeclaration() {
         {
           messageId: 'missingReturnType',
           line: 7,
+          endLine: 7,
           column: 11,
+          endColumn: 16,
         },
       ],
     },
@@ -621,7 +777,9 @@ function FunctionDeclaration() {
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 22,
+          endColumn: 27,
         },
       ],
     },
@@ -645,22 +803,37 @@ foo(() => '')
         {
           messageId: 'missingReturnType',
           line: 3,
+          endLine: 3,
+          column: 5,
+          endColumn: 10,
         },
         {
           messageId: 'missingReturnType',
           line: 4,
+          endLine: 4,
+          column: 5,
+          endColumn: 10,
         },
         {
           messageId: 'missingReturnType',
           line: 5,
+          endLine: 5,
+          column: 5,
+          endColumn: 10,
         },
         {
           messageId: 'missingReturnType',
           line: 6,
+          endLine: 6,
+          column: 5,
+          endColumn: 10,
         },
         {
           messageId: 'missingReturnType',
           line: 7,
+          endLine: 7,
+          column: 5,
+          endColumn: 10,
         },
       ],
     },
@@ -686,7 +859,9 @@ new Accumulator().accumulate(() => 1);
         {
           messageId: 'missingReturnType',
           line: 10,
+          endLine: 10,
           column: 30,
+          endColumn: 35,
         },
       ],
     },
@@ -702,7 +877,9 @@ new Accumulator().accumulate(() => 1);
         {
           messageId: 'missingReturnType',
           line: 1,
+          endLine: 1,
           column: 2,
+          endColumn: 7,
         },
       ],
     },
@@ -735,17 +912,71 @@ foo({
         {
           messageId: 'missingReturnType',
           line: 4,
-          column: 7,
+          endLine: 4,
+          column: 3,
+          endColumn: 9,
         },
         {
           messageId: 'missingReturnType',
           line: 9,
+          endLine: 9,
           column: 9,
+          endColumn: 20,
         },
         {
           messageId: 'missingReturnType',
           line: 14,
+          endLine: 14,
           column: 9,
+          endColumn: 14,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const func = (value: number) => ({ type: "X", value } as any);
+const func = (value: number) => ({ type: "X", value } as Action);
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 14,
+          endColumn: 32,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 32,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const func = (value: number) => ({ type: "X", value } as const);
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 14,
+          endColumn: 32,
         },
       ],
     },

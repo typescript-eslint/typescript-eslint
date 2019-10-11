@@ -23,7 +23,8 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow async functions which have no `await` expression',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
+      requiresTypeChecking: true,
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
@@ -46,7 +47,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
         | TSESTree.ArrowFunctionExpression,
-    ) {
+    ): void {
       scopeInfo = {
         upper: scopeInfo,
         returnsPromise: false,
@@ -63,6 +64,15 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.ArrowFunctionExpression:
           rules.ArrowFunctionExpression(node);
+
+          // If body type is not BlockStatment, we need to check the return type here
+          if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
+            const expression = parserServices.esTreeNodeToTSNodeMap.get(
+              node.body,
+            );
+            scopeInfo.returnsPromise = isThenableType(expression);
+          }
+
           break;
       }
     }
@@ -79,7 +89,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
         | TSESTree.ArrowFunctionExpression,
-    ) {
+    ): void {
       if (scopeInfo) {
         if (!scopeInfo.returnsPromise) {
           switch (node.type) {
@@ -101,6 +111,18 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
+    /**
+     * Checks if the node returns a thenable type
+     *
+     * @param {ASTNode} node - The node to check
+     * @returns {boolean}
+     */
+    function isThenableType(node: ts.Node): boolean {
+      const type = checker.getTypeAtLocation(node);
+
+      return tsutils.isThenableType(checker, node, type);
+    }
+
     return {
       'FunctionDeclaration[async = true]': enterFunction,
       'FunctionExpression[async = true]': enterFunction,
@@ -109,7 +131,7 @@ export default util.createRule<Options, MessageIds>({
       'FunctionExpression[async = true]:exit': exitFunction,
       'ArrowFunctionExpression[async = true]:exit': exitFunction,
 
-      ReturnStatement(node: TSESTree.ReturnStatement) {
+      ReturnStatement(node): void {
         if (!scopeInfo) {
           return;
         }
@@ -121,10 +143,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const type = checker.getTypeAtLocation(expression);
-        if (tsutils.isThenableType(checker, expression, type)) {
-          scopeInfo.returnsPromise = true;
-        }
+        scopeInfo.returnsPromise = isThenableType(expression);
       },
 
       AwaitExpression: rules.AwaitExpression as TSESLint.RuleFunction<

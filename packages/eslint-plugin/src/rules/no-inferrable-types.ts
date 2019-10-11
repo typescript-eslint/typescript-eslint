@@ -44,24 +44,30 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoreParameters: true,
-      ignoreProperties: true,
+      ignoreParameters: false,
+      ignoreProperties: false,
     },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
-    function isFunctionCall(init: TSESTree.Expression, callName: string) {
+    function isFunctionCall(
+      init: TSESTree.Expression,
+      callName: string,
+    ): boolean {
       return (
         init.type === AST_NODE_TYPES.CallExpression &&
         init.callee.type === AST_NODE_TYPES.Identifier &&
         init.callee.name === callName
       );
     }
-    function isLiteral(init: TSESTree.Expression, typeName: string) {
+    function isLiteral(init: TSESTree.Expression, typeName: string): boolean {
       return (
         init.type === AST_NODE_TYPES.Literal && typeof init.value === typeName
       );
     }
-    function isIdentifier(init: TSESTree.Expression, ...names: string[]) {
+    function isIdentifier(
+      init: TSESTree.Expression,
+      ...names: string[]
+    ): boolean {
       return (
         init.type === AST_NODE_TYPES.Identifier && names.includes(init.name)
       );
@@ -244,7 +250,7 @@ export default util.createRule<Options, MessageIds>({
       // Essentially a readonly property without a type
       // will result in its value being the type, leading to
       // compile errors if the type is stripped.
-      if (ignoreProperties || node.readonly) {
+      if (ignoreProperties || node.readonly || node.optional) {
         return;
       }
       reportInferrableType(node, node.typeAnnotation, node.value);

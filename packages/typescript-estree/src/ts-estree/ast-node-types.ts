@@ -47,7 +47,6 @@ export enum AST_NODE_TYPES {
   JSXFragment = 'JSXFragment',
   JSXIdentifier = 'JSXIdentifier',
   JSXMemberExpression = 'JSXMemberExpression',
-  JSXNamespacedName = 'JSXNamespacedName', // https://github.com/Microsoft/TypeScript/issues/7411
   JSXOpeningElement = 'JSXOpeningElement',
   JSXOpeningFragment = 'JSXOpeningFragment',
   JSXSpreadAttribute = 'JSXSpreadAttribute',
@@ -135,7 +134,6 @@ export enum AST_NODE_TYPES {
   TSProtectedKeyword = 'TSProtectedKeyword',
   TSPublicKeyword = 'TSPublicKeyword',
   TSQualifiedName = 'TSQualifiedName',
-  TSQuestionToken = 'TSQuestionToken',
   TSReadonlyKeyword = 'TSReadonlyKeyword',
   TSRestType = 'TSRestType',
   TSStaticKeyword = 'TSStaticKeyword',

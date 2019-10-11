@@ -86,6 +86,7 @@ function whitelistSupportedDiagnostics(
       case 1242: // ts 3.2 "'abstract' modifier can only appear on a class, method, or property declaration."
       case 1246: // ts 3.2 "An interface property cannot have an initializer."
       case 1255: // ts 3.2 "A definite assignment assertion '!' is not permitted in this context."
+      case 1308: // ts 3.2 "'await' expression is only allowed within an async function."
       case 2364: // ts 3.2 "The left-hand side of an assignment expression must be a variable or a property access."
       case 2369: // ts 3.2 "A parameter property is only allowed in a constructor implementation."
       case 2462: // ts 3.2 "A rest element must be last in a destructuring pattern."

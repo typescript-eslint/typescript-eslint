@@ -40,7 +40,7 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ allowSingleExtends }]) {
     return {
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node): void {
         if (node.body.body.length !== 0) {
           // interface contains members --> Nothing to report
           return;

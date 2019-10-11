@@ -104,12 +104,6 @@ class Mx {
   private prop = 1;
 }
     `,
-    `
-class Mx {
-  @a(b!)
-  private prop = 1;
-}
-    `,
   ],
 
   invalid: [

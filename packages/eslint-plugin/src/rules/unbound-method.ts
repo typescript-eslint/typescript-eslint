@@ -25,7 +25,8 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       description:
         'Enforces unbound methods are called with their expected scope',
-      recommended: false,
+      recommended: 'error',
+      requiresTypeChecking: true,
     },
     messages: {
       unbound:
@@ -54,7 +55,7 @@ export default util.createRule<Options, MessageIds>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
-      [AST_NODE_TYPES.MemberExpression](node: TSESTree.MemberExpression) {
+      MemberExpression(node): void {
         if (isSafeUse(node)) {
           return;
         }
@@ -73,7 +74,7 @@ export default util.createRule<Options, MessageIds>({
   },
 });
 
-function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
+function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
     // working around https://github.com/microsoft/TypeScript/issues/31294
@@ -118,6 +119,12 @@ function isSafeUse(node: TSESTree.Node): boolean {
 
     case AST_NODE_TYPES.TaggedTemplateExpression:
       return parent.tag === node;
+
+    case AST_NODE_TYPES.UnaryExpression:
+      return parent.operator === 'typeof';
+
+    case AST_NODE_TYPES.BinaryExpression:
+      return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
 
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSAsExpression:

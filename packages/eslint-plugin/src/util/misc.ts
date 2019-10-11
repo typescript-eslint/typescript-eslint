@@ -11,14 +11,14 @@ import {
 /**
  * Check if the context file name is *.d.ts or *.d.tsx
  */
-export function isDefinitionFile(fileName: string) {
+export function isDefinitionFile(fileName: string): boolean {
   return /\.d\.tsx?$/i.test(fileName || '');
 }
 
 /**
  * Upper cases the first character or the string
  */
-export function upperCaseFirst(str: string) {
+export function upperCaseFirst(str: string): string {
   return str[0].toUpperCase() + str.slice(1);
 }
 

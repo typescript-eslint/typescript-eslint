@@ -105,7 +105,31 @@ function validateTableRules(
     const ruleFileContents = fs.readFileSync(
       path.resolve(__dirname, `../../src/rules/${ruleName}.ts`),
     );
+
     const usesTypeInformation = ruleFileContents.includes('getParserServices');
+    const tableRowHasThoughtBalloon = !!rowNeedsTypeInfo;
+    if (rule.meta.docs.requiresTypeChecking === true) {
+      if (!usesTypeInformation) {
+        errors.push(
+          'Rule has `requiresTypeChecking` set in its meta, but it does not actually use type information - fix by removing `meta.docs.requiresTypeChecking`',
+        );
+      } else if (!tableRowHasThoughtBalloon) {
+        errors.push(
+          'Rule was documented as not using type information, when it actually does - fix by updating the plugin README.md',
+        );
+      }
+    } else {
+      if (usesTypeInformation) {
+        errors.push(
+          'Rule does not have `requiresTypeChecking` set in its meta, despite using type information - fix by setting `meta.docs.requiresTypeChecking: true` in the rule',
+        );
+      } else if (tableRowHasThoughtBalloon) {
+        errors.push(
+          `Rule was documented as using type information, when it actually doesn't - fix by updating the plugin README.md`,
+        );
+      }
+    }
+
     validateTableBoolean(
       usesTypeInformation,
       rowNeedsTypeInfo,

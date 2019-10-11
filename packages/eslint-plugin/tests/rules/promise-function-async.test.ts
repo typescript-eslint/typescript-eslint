@@ -54,6 +54,12 @@ class InvalidAsyncModifiers {
   public set asyncGetter(p: Promise<void>) {
     return p;
   }
+  public get asyncGetterFunc() {
+    return async () => new Promise<void>();
+  }
+  public set asyncGetterFunc(p: () => Promise<void>) {
+    return p;
+  }
 }
     `,
     `
@@ -62,6 +68,12 @@ const invalidAsyncModifiers = {
     return new Promise<void>();
   },
   set asyncGetter(p: Promise<void>) {
+    return p;
+  },
+  get asyncGetterFunc() {
+    return async () => new Promise<void>();
+  },
+  set asyncGetterFunc(p: () => Promise<void>) {
     return p;
   }
 }
@@ -93,6 +105,26 @@ function returnsUnknown(): unknown {
           allowAny: true,
         },
       ],
+    },
+    {
+      code: `
+interface ReadableStream {}
+interface Options {
+  stream: ReadableStream;
+}
+
+type Return = ReadableStream | Promise<void>;
+const foo = (options: Options): Return => {
+  return options.stream ? asStream(options) : asPromise(options);
+}
+      `,
+    },
+    {
+      code: `
+function foo(): Promise<string> | boolean {
+  return Math.random() > 0.5 ? Promise.resolve('value') : false;
+}
+      `,
     },
   ],
   invalid: [
@@ -363,6 +395,25 @@ const returnAllowedType = () => new PromiseType();
       errors: [
         {
           line: 4,
+          messageId,
+        },
+      ],
+    },
+    {
+      code: `
+interface SPromise<T> extends Promise<T> {}
+function foo(): Promise<string> | SPromise<boolean> {
+  return Math.random() > 0.5 ? Promise.resolve('value') : Promise.resolve(false);
+}
+      `,
+      options: [
+        {
+          allowedPromiseNames: ['SPromise'],
+        },
+      ],
+      errors: [
+        {
+          line: 3,
           messageId,
         },
       ],

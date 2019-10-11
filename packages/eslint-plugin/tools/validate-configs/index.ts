@@ -1,10 +1,16 @@
 import chalk from 'chalk';
 import { checkConfigRecommended } from './checkConfigRecommended';
+import { checkConfigRecommendedRequiringTypeChecking } from './checkConfigRecommendedRequiringTypeChecking';
 import { checkConfigAll } from './checkConfigAll';
 
 let hasErrors = false;
 console.log(chalk.underline('Checking config "recommended"'));
 hasErrors = checkConfigRecommended() || hasErrors;
+
+console.log(
+  chalk.underline('Checking config "recommended-requiring-type-checking"'),
+);
+hasErrors = checkConfigRecommendedRequiringTypeChecking() || hasErrors;
 
 console.log();
 console.log(chalk.underline('Checking config "all"'));
