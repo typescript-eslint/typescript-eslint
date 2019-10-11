@@ -226,6 +226,8 @@ interface RuleListener {
   AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
   AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
   AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
+  BigIntLiteral?: RuleFunction<TSESTree.BigIntLiteral>;
+  BinaryExpression?: RuleFunction<TSESTree.BinaryExpression>;
   BlockStatement?: RuleFunction<TSESTree.BlockStatement>;
   BreakStatement?: RuleFunction<TSESTree.BreakStatement>;
   CallExpression?: RuleFunction<TSESTree.CallExpression>;
@@ -249,6 +251,8 @@ interface RuleListener {
   ForInStatement?: RuleFunction<TSESTree.ForInStatement>;
   ForOfStatement?: RuleFunction<TSESTree.ForOfStatement>;
   ForStatement?: RuleFunction<TSESTree.ForStatement>;
+  FunctionDeclaration?: RuleFunction<TSESTree.FunctionDeclaration>;
+  FunctionExpression?: RuleFunction<TSESTree.FunctionExpression>;
   Identifier?: RuleFunction<TSESTree.Identifier>;
   IfStatement?: RuleFunction<TSESTree.IfStatement>;
   Import?: RuleFunction<TSESTree.Import>;
@@ -295,6 +299,7 @@ interface RuleListener {
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
   Token?: RuleFunction<TSESTree.Token>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
+  TSAbstractClassProperty?: RuleFunction<TSESTree.TSAbstractClassProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
   TSAbstractMethodDefinition?: RuleFunction<
     TSESTree.TSAbstractMethodDefinition
@@ -308,17 +313,23 @@ interface RuleListener {
   TSCallSignatureDeclaration?: RuleFunction<
     TSESTree.TSCallSignatureDeclaration
   >;
+  TSClassImplements?: RuleFunction<TSESTree.TSClassImplements>;
   TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
+  TSConstructorType?: RuleFunction<TSESTree.TSConstructorType>;
   TSConstructSignatureDeclaration?: RuleFunction<
     TSESTree.TSConstructSignatureDeclaration
   >;
   TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
+  TSEmptyBodyFunctionExpression?: RuleFunction<
+    TSESTree.TSEmptyBodyFunctionExpression
+  >;
   TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
   TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
   TSExportKeyword?: RuleFunction<TSESTree.TSExportKeyword>;
   TSExternalModuleReference?: RuleFunction<TSESTree.TSExternalModuleReference>;
+  TSFunctionType?: RuleFunction<TSESTree.TSFunctionType>;
   TSImportEqualsDeclaration?: RuleFunction<TSESTree.TSImportEqualsDeclaration>;
   TSImportType?: RuleFunction<TSESTree.TSImportType>;
   TSIndexedAccessType?: RuleFunction<TSESTree.TSIndexedAccessType>;
@@ -326,6 +337,7 @@ interface RuleListener {
   TSInferType?: RuleFunction<TSESTree.TSInferType>;
   TSInterfaceBody?: RuleFunction<TSESTree.TSInterfaceBody>;
   TSInterfaceDeclaration?: RuleFunction<TSESTree.TSInterfaceDeclaration>;
+  TSInterfaceHeritage?: RuleFunction<TSESTree.TSInterfaceHeritage>;
   TSIntersectionType?: RuleFunction<TSESTree.TSIntersectionType>;
   TSLiteralType?: RuleFunction<TSESTree.TSLiteralType>;
   TSMappedType?: RuleFunction<TSESTree.TSMappedType>;
