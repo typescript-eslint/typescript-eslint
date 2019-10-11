@@ -16,7 +16,13 @@ const ruleTester = new RuleTester({
 ruleTester.run('return-await', rule, {
   valid: [
     `function test() {
+      return;
+    }`,
+    `function test() {
       return 1;
+    }`,
+    `async function test() {
+      return;
     }`,
     `async function test() {
       return 1;
@@ -47,10 +53,66 @@ ruleTester.run('return-await', rule, {
       }
     }`,
     {
+      options: ['in-try-catch'],
+      code: `function test() {
+        return 1;
+      }`,
+    },
+    {
+      options: ['in-try-catch'],
+      code: `async function test() {
+        return 1;
+      }`,
+    },
+    {
+      options: ['in-try-catch'],
+      code: `const test = () => 1;`,
+    },
+    {
+      options: ['in-try-catch'],
+      code: `const test = async () => 1;`,
+    },
+    {
+      options: ['in-try-catch'],
+      code: `async function test() {
+        return Promise.resolve(1);
+      }`,
+    },
+    {
+      options: ['in-try-catch'],
+      code: `async function test() {
+      try {
+        return await Promise.resolve(1);
+      } catch (e) {
+        return await Promise.resolve(2);
+      } finally {
+        console.log('cleanup');
+      }
+    }`,
+    },
+    {
+      options: ['in-try-catch'],
+      code: `async function test() {
+      try {
+        const one = await Promise.resolve(1);
+        return one;
+      } catch (e) {
+        const two = await Promise.resolve(2);
+        return two;
+      } finally {
+        console.log('cleanup');
+      }
+    }`,
+    },
+    {
       options: ['never'],
       code: `async function test() {
         return Promise.resolve(1);
       }`,
+    },
+    {
+      options: ['never'],
+      code: `const test = async () => Promise.resolve(1);`,
     },
     {
       options: ['never'],
@@ -139,6 +201,72 @@ ruleTester.run('return-await', rule, {
       ],
     },
     {
+      code: `async function test() {
+        return await Promise.resolve(1);
+      }`,
+      errors: [
+        {
+          line: 2,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['in-try-catch'],
+      code: `async function test() {
+        return await 1;
+      }`,
+      errors: [
+        {
+          line: 2,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['in-try-catch'],
+      code: `const test = async () => await 1;`,
+      errors: [
+        {
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['in-try-catch'],
+      code: `const test = async () => await Promise.resolve(1);`,
+      errors: [
+        {
+          line: 1,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['in-try-catch'],
+      code: `async function test() {
+        try {
+          return Promise.resolve(1);
+        } catch (e) {
+          return Promise.resolve(2);
+        } finally {
+          console.log('cleanup');
+        }
+      }`,
+      errors: [
+        {
+          line: 3,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['in-try-catch'],
       code: `async function test() {
         return await Promise.resolve(1);
       }`,
