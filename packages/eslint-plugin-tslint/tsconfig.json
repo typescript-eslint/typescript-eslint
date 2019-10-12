@@ -1,5 +1,9 @@
 {
   "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true
+  },
   "include": ["src", "tests"],
   "exclude": ["tests/test-project", "tests/test-tslint-rules-directory"]
 }

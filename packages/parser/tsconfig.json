@@ -1,5 +1,9 @@
 {
   "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true
+  },
   "include": ["src", "tests", "tools"],
   "exclude": ["tests/fixtures"]
 }
