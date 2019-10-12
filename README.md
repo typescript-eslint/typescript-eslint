@@ -27,6 +27,7 @@
 - [How do I configure my project to use typescript-eslint?](#how-do-i-configure-my-project-to-use-typescript-eslint)
 - [Package Versions](#package-versions)
 - [Supported TypeScript Version](#supported-typescript-version)
+- [Supported ESLint version](#supported-eslint-version)
 - [License](#license)
 - [Contributors](#contributors)
 - [Contributing Guide](#contributing-guide)
@@ -245,6 +246,10 @@ If you use a non-supported version of TypeScript, the parser will log a warning 
 **Please ensure that you are using a supported version before submitting any issues/bug reports.**
 
 <br>
+
+## Supported ESLint version
+
+See the value of `eslint` declared in `@typescript-eslint/eslint-plugin`'s [package.json](./packages/eslint-plugin/package.json).
 
 ## License
 
