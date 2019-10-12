@@ -6,7 +6,7 @@ Ensures that each function is only capable of:
 - returning a rejected promise, or
 - throwing an Error object.
 
-In contrast, non-`async` `Promise`-returning functions are technically capable of either.
+In contrast, non-`async` `Promise` - returning functions are technically capable of either.
 Code that handles the results of those functions will often need to handle both cases, which can get complex.
 This rule's practice removes a requirement for creating code to handle both cases.
 
@@ -17,18 +17,18 @@ Examples of **incorrect** code for this rule
 ```ts
 const arrowFunctionReturnsPromise = () => Promise.resolve('value');
 
-function functionDeturnsPromise() {
-  return Math.random() > 0.5 ? Promise.resolve('value') : false;
+function functionReturnsPromise() {
+  return Promise.resolve('value');
 }
 ```
 
 Examples of **correct** code for this rule
 
 ```ts
-const arrowFunctionReturnsPromise = async () => 'value';
+const arrowFunctionReturnsPromise = async () => Promise.resolve('value');
 
-async function functionDeturnsPromise() {
-  return Math.random() > 0.5 ? 'value' : false;
+async function functionReturnsPromise() {
+  return Promise.resolve('value');
 }
 ```
 

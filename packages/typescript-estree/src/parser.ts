@@ -46,23 +46,24 @@ function getFileName({ jsx }: { jsx?: boolean }): string {
  */
 function resetExtra(): void {
   extra = {
-    tokens: null,
-    range: false,
-    loc: false,
+    code: '',
     comment: false,
     comments: [],
-    strict: false,
-    jsx: false,
-    useJSXTextNode: false,
-    log: console.log, // eslint-disable-line no-console
-    projects: [],
-    errorOnUnknownASTType: false,
-    errorOnTypeScriptSyntacticAndSemanticIssues: false,
-    code: '',
-    tsconfigRootDir: process.cwd(),
-    extraFileExtensions: [],
-    preserveNodeMaps: undefined,
     createDefaultProgram: false,
+    errorOnTypeScriptSyntacticAndSemanticIssues: false,
+    errorOnUnknownASTType: false,
+    extraFileExtensions: [],
+    jsx: false,
+    loc: false,
+    log: console.log, // eslint-disable-line no-console
+    noWatch: false,
+    preserveNodeMaps: undefined,
+    projects: [],
+    range: false,
+    strict: false,
+    tokens: null,
+    tsconfigRootDir: process.cwd(),
+    useJSXTextNode: false,
   };
 }
 
@@ -225,6 +226,8 @@ function getProgramAndAST(
 }
 
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
+  extra.noWatch = typeof options.noWatch === 'boolean' && options.noWatch;
+
   /**
    * Track range information in the AST
    */
@@ -287,17 +290,23 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     extra.projects = options.project;
   }
 
+  if (typeof options.tsconfigRootDir === 'string') {
+    extra.tsconfigRootDir = options.tsconfigRootDir;
+  }
+
   // Transform glob patterns into paths
   if (extra.projects) {
     extra.projects = extra.projects.reduce<string[]>(
       (projects, project) =>
-        projects.concat(isGlob(project) ? globSync(project) : project),
+        projects.concat(
+          isGlob(project)
+            ? globSync(project, {
+                cwd: extra.tsconfigRootDir || process.cwd(),
+              })
+            : project,
+        ),
       [],
     );
-  }
-
-  if (typeof options.tsconfigRootDir === 'string') {
-    extra.tsconfigRootDir = options.tsconfigRootDir;
   }
 
   if (
@@ -501,3 +510,4 @@ export function parseAndGenerateServices<
 export { TSESTreeOptions, ParserServices };
 export { clearCaches } from './tsconfig-parser';
 export * from './ts-estree';
+export { clearCaches } from './tsconfig-parser';
