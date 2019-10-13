@@ -33,7 +33,7 @@
     "pre-push": "yarn format-check",
     "postinstall": "lerna bootstrap && yarn build && lerna link && npm run check-clean-workspace-after-install && opencollective-postinstall",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
-    "test": "lerna run test --parallel",
+    "test": "lerna run test --concurrency 1",
     "typecheck": "lerna run typecheck"
   },
   "config": {
@@ -70,7 +70,6 @@
     "lint-staged": "^9.2.5",
     "opencollective-postinstall": "^2.0.2",
     "prettier": "^1.18.2",
-    "rimraf": "^3.0.0",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.3.0",
     "tslint": "^5.19.0",
