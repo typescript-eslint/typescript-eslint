@@ -1,21 +1,22 @@
 export interface ParserOptions {
-  loc?: boolean;
   comment?: boolean;
-  range?: boolean;
-  tokens?: boolean;
-  sourceType?: 'script' | 'module';
-  ecmaVersion?: 3 | 5 | 6 | 7 | 8 | 9 | 10 | 2015 | 2016 | 2017 | 2018 | 2019;
   ecmaFeatures?: {
     globalReturn?: boolean;
     jsx?: boolean;
   };
+  ecmaVersion?: 3 | 5 | 6 | 7 | 8 | 9 | 10 | 2015 | 2016 | 2017 | 2018 | 2019;
+  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+  errorOnUnknownASTType?: boolean;
+  extraFileExtensions?: string[];
   // ts-estree specific
   filePath?: string;
+  loc?: boolean;
+  noWatch?: boolean;
   project?: string | string[];
-  useJSXTextNode?: boolean;
-  errorOnUnknownASTType?: boolean;
-  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+  range?: boolean;
+  sourceType?: 'script' | 'module';
+  tokens?: boolean;
   tsconfigRootDir?: string;
-  extraFileExtensions?: string[];
+  useJSXTextNode?: boolean;
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }
