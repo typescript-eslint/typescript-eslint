@@ -454,9 +454,9 @@ interface BinaryExpressionBase extends BaseNode {
 interface ClassDeclarationBase extends BaseNode {
   typeParameters?: TSTypeParameterDeclaration;
   superTypeParameters?: TSTypeParameterInstantiation;
-  id?: Identifier;
+  id: Identifier | null;
   body: ClassBody;
-  superClass?: LeftHandSideExpression;
+  superClass: LeftHandSideExpression | null;
   implements?: ExpressionWithTypeArguments[];
   abstract?: boolean;
   declare?: boolean;
@@ -465,7 +465,7 @@ interface ClassDeclarationBase extends BaseNode {
 
 interface ClassPropertyBase extends BaseNode {
   key: PropertyName;
-  value: Expression;
+  value: Expression | null;
   computed: boolean;
   static: boolean;
   readonly?: boolean;
