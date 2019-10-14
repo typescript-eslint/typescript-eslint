@@ -4,6 +4,7 @@
     "composite": false,
     "rootDir": "."
   },
-  "include": ["src", "tests", "tools"],
-  "exclude": ["tests/fixtures"]
+  "files": [
+    "jsx-known-issues.ts"
+  ]
 }
