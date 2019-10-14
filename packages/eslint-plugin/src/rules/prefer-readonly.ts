@@ -162,7 +162,9 @@ export default util.createRule<Options, MessageIds>({
     function getEsNodesFromViolatingNode(
       violatingNode: ParameterOrPropertyDeclaration,
     ): { esNode: TSESTree.Node; nameNode: TSESTree.Node } {
-      if (ts.isParameterPropertyDeclaration(violatingNode)) {
+      if (
+        ts.isParameterPropertyDeclaration(violatingNode, violatingNode.parent)
+      ) {
         return {
           esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
           nameNode: parserServices.tsNodeToESTreeNodeMap.get(
