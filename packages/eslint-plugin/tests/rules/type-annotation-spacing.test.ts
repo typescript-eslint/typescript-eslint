@@ -3949,6 +3949,52 @@ type Foo = {
         },
       ],
     },
+    {
+      code: 'let foo  : string;',
+      options: [{ before: true }],
+      output: 'let foo : string;',
+      errors: [
+        {
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
+          line: 1,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+    greet  : (name  : string) =>  string;
+}
+            `,
+      options: [{ after: true, before: true }],
+      output: `
+type Foo = {
+    greet : (name : string) => string;
+}
+            `,
+      errors: [
+        {
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
+          line: 3,
+          column: 12,
+        },
+        {
+          messageId: 'expectedSpaceBefore',
+          data: { type: ':' },
+          line: 3,
+          column: 21,
+        },
+        {
+          messageId: 'expectedSpaceAfter',
+          data: { type: '=>' },
+          line: 3,
+          column: 31,
+        },
+      ],
+    },
   ],
 });
 
