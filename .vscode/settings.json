@@ -22,6 +22,6 @@
   "javascript.preferences.importModuleSpecifier": "auto",
   "typescript.preferences.importModuleSpecifier": "auto",
   "javascript.preferences.quoteStyle": "single",
-"typescript.preferences.quoteStyle": "single",
-"editor.defaultFormatter": "esbenp.prettier-vscode"
+  "typescript.preferences.quoteStyle": "single",
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

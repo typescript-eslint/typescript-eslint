@@ -4,6 +4,11 @@
     "composite": false,
     "rootDir": "."
   },
-  "include": ["src", "tests", "tools"],
+  "include": [
+    "src",
+    "tests",
+    "tools",
+    "../shared-fixtures/jsx-known-issues.ts"
+  ],
   "exclude": ["tests/fixtures/**/*"]
 }
