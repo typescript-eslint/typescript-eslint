@@ -1,4 +1,4 @@
-import filesWithKnownIssues from '@typescript-eslint/shared-fixtures/jsx-known-issues';
+import filesWithKnownIssues from '@typescript-eslint/shared-fixtures/dist/jsx-known-issues';
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { TSESTreeOptions } from '../../src/parser-options';
