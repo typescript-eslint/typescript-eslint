@@ -58,5 +58,10 @@
   "peerDependencies": {
     "@typescript-eslint/parser": "^2.0.0",
     "eslint": "^5.0.0 || ^6.0.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   }
 }

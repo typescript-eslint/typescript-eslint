@@ -62,5 +62,10 @@
     "lodash.isplainobject": "4.0.6",
     "tmp": "^0.1.0",
     "typescript": "*"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   }
 }
