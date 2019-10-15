@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "main": "dist/parser.js",
   "types": "dist/parser.d.ts",
@@ -31,16 +31,15 @@
     "syntax"
   ],
   "scripts": {
-    "ast-alignment-tests": "jest spec.ts",
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist/",
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "tsc -b tsconfig.build.json --clean",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
-    "prebuild": "npm run clean",
+    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "test": "jest --coverage",
-    "typecheck": "tsc --noEmit",
-    "unit-tests": "jest \"./tests/lib/.*\""
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "chokidar": "^3.0.2",
     "glob": "^7.1.4",
     "is-glob": "^4.0.1",
     "lodash.unescape": "4.0.1",
@@ -56,10 +55,17 @@
     "@types/lodash.isplainobject": "^4.0.4",
     "@types/lodash.unescape": "^4.0.4",
     "@types/semver": "^6.0.1",
-    "@typescript-eslint/shared-fixtures": "2.3.1",
+    "@types/tmp": "^0.1.0",
+    "@typescript-eslint/shared-fixtures": "2.4.0",
     "babel-code-frame": "^6.26.0",
     "glob": "^7.1.4",
     "lodash.isplainobject": "4.0.6",
+    "tmp": "^0.1.0",
     "typescript": "*"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   }
 }
