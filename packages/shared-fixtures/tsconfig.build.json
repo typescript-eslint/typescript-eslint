@@ -3,8 +3,10 @@
   "compilerOptions": {
     "composite": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
     "resolveJsonModule": true
   },
-  "include": ["src"]
+  "files": [
+    "jsx-known-issues.ts"
+  ]
 }
