@@ -12,6 +12,7 @@
           "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
           "args": [
               "--runInBand",
+              "--no-coverage",
               // needs the '' around it so that the () are properly handled
               "'tests/(.+/)?${fileBasenameNoExtension}'"
           ],
@@ -27,6 +28,8 @@
         "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
         "args": [
             "--runInBand",
+            "--no-cache",
+            "--no-coverage",
             "${relativeFile}"
         ],
         "sourceMaps": true,

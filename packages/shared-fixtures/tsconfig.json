@@ -4,6 +4,7 @@
     "composite": false,
     "rootDir": "."
   },
-  "include": ["src", "tests"],
-  "exclude": ["tests/test-project", "tests/test-tslint-rules-directory"]
+  "files": [
+    "jsx-known-issues.ts"
+  ]
 }

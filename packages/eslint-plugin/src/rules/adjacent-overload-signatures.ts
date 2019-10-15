@@ -90,8 +90,6 @@ export default util.createRule({
         case AST_NODE_TYPES.TSTypeLiteral:
           return node.members;
       }
-
-      return [];
     }
 
     /**

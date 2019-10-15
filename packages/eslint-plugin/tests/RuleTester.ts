@@ -1,4 +1,5 @@
 import { TSESLint, ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { clearCaches } from '@typescript-eslint/parser';
 import * as path from 'path';
 
 const parser = '@typescript-eslint/parser';
@@ -73,5 +74,11 @@ function getFixturesRootDir(): string {
 }
 
 const { batchedSingleLineTests } = ESLintUtils;
+
+// make sure that the parser doesn't hold onto file handles between tests
+// on linux (i.e. our CI env), there can be very a limited number of watch handles available
+afterAll(() => {
+  clearCaches();
+});
 
 export { RuleTester, getFixturesRootDir, batchedSingleLineTests };
