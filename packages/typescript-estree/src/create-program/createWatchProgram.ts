@@ -194,7 +194,6 @@ function getProgramsForProjects(
     results.push(program);
   }
 
-  parsedFilesSeen.add(filePath);
   return results;
 }
 
@@ -216,11 +215,13 @@ function createWatchProgram(
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
-  watchCompilerHost.readFile = (filePath, encoding): string | undefined =>
-    path.normalize(filePath) ===
-    path.normalize(currentLintOperationState.filePath)
+  watchCompilerHost.readFile = (filePath, encoding): string | undefined => {
+    parsedFilesSeen.add(filePath);
+    return path.normalize(filePath) ===
+      path.normalize(currentLintOperationState.filePath)
       ? currentLintOperationState.code
       : oldReadFile(filePath, encoding);
+  };
 
   // ensure process reports error on failure instead of exiting process immediately
   watchCompilerHost.onUnRecoverableConfigFileDiagnostic = diagnosticReporter;
