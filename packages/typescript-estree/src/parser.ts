@@ -16,7 +16,7 @@ import {
   defaultCompilerOptions,
 } from './tsconfig-parser';
 
-const log = debug(`typescript-eslint:typescript-estree:parser`);
+const log = debug('typescript-eslint:typescript-estree:parser');
 
 /**
  * This needs to be kept in sync with the top-level README.md in the

@@ -5,7 +5,7 @@ import * as ts from 'typescript'; // leave this as * as ts so people using util 
 import { Extra } from './parser-options';
 import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 
-const log = debug(`typescript-eslint:typescript-estree:tsconfig-parser`);
+const log = debug('typescript-eslint:typescript-estree:tsconfig-parser');
 
 /**
  * Default compiler options for program generation from single root file
