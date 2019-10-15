@@ -15,6 +15,9 @@ const ruleTester = new RuleTester({
 ruleTester.run('unbound-method', rule, {
   valid: [
     `
+new Promise(() => {}).then(console.log)
+    `,
+    `
 class ContainsMethods {
   bound?: () => void;
   unbound?(): void;

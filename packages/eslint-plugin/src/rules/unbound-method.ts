@@ -109,6 +109,9 @@ function isSafeUse(node: TSESTree.Node): boolean {
       return true;
 
     case AST_NODE_TYPES.CallExpression:
+      if (node.type === AST_NODE_TYPES.MemberExpression) {
+        return true;
+      }
       return parent.callee === node;
 
     case AST_NODE_TYPES.ConditionalExpression:
