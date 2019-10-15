@@ -1,12 +1,11 @@
 import chokidar from 'chokidar';
+import debug from 'debug';
 import path from 'path';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from './parser-options';
 import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 
-//------------------------------------------------------------------------------
-// Environment calculation
-//------------------------------------------------------------------------------
+const log = debug(`typescript-eslint:typescript-estree:tsconfig-parser`);
 
 /**
  * Default compiler options for program generation from single root file
@@ -33,16 +32,18 @@ const knownWatchProgramMap = new Map<
  */
 const watchCallbackTrackingMap = new Map<string, Set<ts.FileWatcherCallback>>();
 
-/**
- * Tracks the ts.sys.watchFile watchers that we've opened for config files.
- * We store these so we can clean up our handles if required.
- */
-const configSystemFileWatcherTrackingSet = new Set<ts.FileWatcher>();
+interface Watcher {
+  close(): void;
+  forceClose(): void;
+  on(evt: 'add', listener: (file: string) => void): void;
+  on(evt: 'change', listener: (file: string) => void): void;
+  trackWatcher(): void;
+}
 /**
  * Tracks the ts.sys.watchDirectory watchers that we've opened for project folders.
  * We store these so we can clean up our handles if required.
  */
-const directorySystemFileWatcherTrackingSet = new Set<ts.FileWatcher>();
+const fileWatcherTrackingSet = new Map<string, Watcher>();
 
 const parsedFilesSeen = new Set<string>();
 
@@ -56,12 +57,8 @@ export function clearCaches(): void {
   parsedFilesSeen.clear();
 
   // stop tracking config files
-  configSystemFileWatcherTrackingSet.forEach(cb => cb.close());
-  configSystemFileWatcherTrackingSet.clear();
-
-  // stop tracking folders
-  directorySystemFileWatcherTrackingSet.forEach(cb => cb.close());
-  directorySystemFileWatcherTrackingSet.clear();
+  fileWatcherTrackingSet.forEach(cb => cb.forceClose());
+  fileWatcherTrackingSet.clear();
 }
 
 /**
@@ -88,34 +85,84 @@ function getTsconfigPath(tsconfigPath: string, extra: Extra): string {
     : path.join(extra.tsconfigRootDir || process.cwd(), tsconfigPath);
 }
 
-interface Watcher {
-  close(): void;
-  on(evt: 'add', listener: (file: string) => void): void;
-  on(evt: 'change', listener: (file: string) => void): void;
-}
+const EMPTY_WATCHER: Watcher = {
+  close: (): void => {},
+  forceClose: (): void => {},
+  on: (): void => {},
+  trackWatcher: (): void => {},
+};
+
 /**
  * Watches a file or directory for changes
  */
 function watch(
-  path: string,
+  watchPath: string,
   options: chokidar.WatchOptions,
   extra: Extra,
 ): Watcher {
   // an escape hatch to disable the file watchers as they can take a bit to initialise in some cases
   // this also supports an env variable so it's easy to switch on/off from the CLI
-  if (process.env.PARSER_NO_WATCH === 'true' || extra.noWatch === true) {
-    return {
-      close: (): void => {},
-      on: (): void => {},
-    };
+  const blockWatchers =
+    process.env.PARSER_NO_WATCH === 'false'
+      ? false
+      : process.env.PARSER_NO_WATCH === 'true' || extra.noWatch === true;
+  if (blockWatchers) {
+    return EMPTY_WATCHER;
   }
 
-  return chokidar.watch(path, {
-    ignoreInitial: true,
-    persistent: false,
-    useFsEvents: false,
-    ...options,
-  });
+  // reuse watchers in case typescript asks us to watch the same file/directory multiple times
+  if (fileWatcherTrackingSet.has(watchPath)) {
+    const watcher = fileWatcherTrackingSet.get(watchPath)!;
+    watcher.trackWatcher();
+    return watcher;
+  }
+
+  let fsWatcher: chokidar.FSWatcher;
+  try {
+    log('setting up watcher on path: %s', watchPath);
+    fsWatcher = chokidar.watch(watchPath, {
+      ignoreInitial: true,
+      persistent: false,
+      useFsEvents: false,
+      ...options,
+    });
+  } catch (e) {
+    log(
+      'error occurred using file watcher, setting up polling watcher instead: %s',
+      watchPath,
+    );
+    // https://github.com/microsoft/TypeScript/blob/c9d407b52ad92370cd116105c33d618195de8070/src/compiler/sys.ts#L1232-L1237
+    // Catch the exception and use polling instead
+    // Eg. on linux the number of watches are limited and one could easily exhaust watches and the exception ENOSPC is thrown when creating watcher at that point
+    // so instead of throwing error, use fs.watchFile
+    fsWatcher = chokidar.watch(watchPath, {
+      ignoreInitial: true,
+      persistent: false,
+      useFsEvents: false,
+      ...options,
+      usePolling: true,
+    });
+  }
+
+  let counter = 1;
+  const watcher = {
+    close: (): void => {
+      counter -= 1;
+      if (counter <= 0) {
+        fsWatcher.close();
+        fileWatcherTrackingSet.delete(watchPath);
+      }
+    },
+    forceClose: fsWatcher.close.bind(fsWatcher),
+    on: fsWatcher.on.bind(fsWatcher),
+    trackWatcher: (): void => {
+      counter += 1;
+    },
+  };
+
+  fileWatcherTrackingSet.set(watchPath, watcher);
+
+  return watcher;
 }
 
 /**
@@ -219,7 +266,6 @@ export function calculateProjectParserOptions(
         watcher.on('change', path => {
           callback(path, ts.FileWatcherEventKind.Changed);
         });
-        configSystemFileWatcherTrackingSet.add(watcher);
       }
 
       const normalizedFileName = path.normalize(fileName);
@@ -239,7 +285,6 @@ export function calculateProjectParserOptions(
 
           if (watcher) {
             watcher.close();
-            configSystemFileWatcherTrackingSet.delete(watcher);
           }
         },
       };
@@ -263,13 +308,9 @@ export function calculateProjectParserOptions(
       watcher.on('add', path => {
         callback(path);
       });
-      directorySystemFileWatcherTrackingSet.add(watcher);
 
       return {
-        close(): void {
-          watcher.close();
-          directorySystemFileWatcherTrackingSet.delete(watcher);
-        },
+        close: watcher.close,
       };
     };
 

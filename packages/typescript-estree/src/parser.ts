@@ -1,3 +1,4 @@
+import debug from 'debug';
 import path from 'path';
 import semver from 'semver';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
@@ -14,6 +15,8 @@ import {
   createProgram,
   defaultCompilerOptions,
 } from './tsconfig-parser';
+
+const log = debug(`typescript-eslint:typescript-estree:parser`);
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
@@ -39,6 +42,17 @@ let warnedAboutTSVersion = false;
  */
 function getFileName({ jsx }: { jsx?: boolean }): string {
   return jsx ? 'estree.tsx' : 'estree.ts';
+}
+
+function enforceString(code: unknown): string {
+  /**
+   * Ensure the source code is a string
+   */
+  if (typeof code !== 'string') {
+    return String(code);
+  }
+
+  return code;
 }
 
 /**
@@ -82,6 +96,8 @@ function getASTFromProject(
   options: TSESTreeOptions,
   createDefaultProgram: boolean,
 ): ASTAndProgram | undefined {
+  log('Attempting to get AST from project(s) for: %s', options.filePath);
+
   const filePath = options.filePath || getFileName(options);
   const astAndProgram = firstDefined(
     calculateProjectParserOptions(code, filePath, extra),
@@ -139,6 +155,11 @@ function getASTAndDefaultProject(
   code: string,
   options: TSESTreeOptions,
 ): ASTAndProgram | undefined {
+  log(
+    'Attempting to get AST from the default project(s): %s',
+    options.filePath,
+  );
+
   const fileName = options.filePath || getFileName(options);
   const program = createProgram(code, fileName, extra);
   const ast = program && program.getSourceFile(fileName);
@@ -150,6 +171,8 @@ function getASTAndDefaultProject(
  * @returns Returns a new source file and program corresponding to the linted code
  */
 function createNewProgram(code: string): ASTAndProgram {
+  log('Getting AST without type information');
+
   const FILENAME = getFileName(extra);
 
   const compilerHost: ts.CompilerHost = {
@@ -226,6 +249,9 @@ function getProgramAndAST(
 }
 
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
+  /**
+   * Turn on/off filesystem watchers
+   */
   extra.noWatch = typeof options.noWatch === 'boolean' && options.noWatch;
 
   /**
@@ -378,6 +404,7 @@ export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
    * Reset the parse configuration
    */
   resetExtra();
+
   /**
    * Ensure users do not attempt to use parse() when they need parseAndGenerateServices()
    */
@@ -386,24 +413,25 @@ export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
       `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
     );
   }
+
   /**
    * Ensure the source code is a string, and store a reference to it
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (typeof code !== 'string' && !((code as any) instanceof String)) {
-    code = String(code);
-  }
+  code = enforceString(code);
   extra.code = code;
+
   /**
    * Apply the given parser options
    */
   if (typeof options !== 'undefined') {
     applyParserOptionsToExtra(options);
   }
+
   /**
    * Warn if the user is using an unsupported version of TypeScript
    */
   warnAboutTSVersion();
+
   /**
    * Create a ts.SourceFile directly, no ts.Program is needed for a simple
    * parse
@@ -414,6 +442,7 @@ export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
     ts.ScriptTarget.Latest,
     /* setParentNodes */ true,
   );
+
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
    */
@@ -428,14 +457,13 @@ export function parseAndGenerateServices<
    * Reset the parse configuration
    */
   resetExtra();
+
   /**
    * Ensure the source code is a string, and store a reference to it
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (typeof code !== 'string' && !((code as any) instanceof String)) {
-    code = String(code);
-  }
+  code = enforceString(code);
   extra.code = code;
+
   /**
    * Apply the given parser options
    */
@@ -449,10 +477,12 @@ export function parseAndGenerateServices<
       extra.errorOnTypeScriptSyntacticAndSemanticIssues = true;
     }
   }
+
   /**
    * Warn if the user is using an unsupported version of TypeScript
    */
   warnAboutTSVersion();
+
   /**
    * Generate a full ts.Program in order to be able to provide parser
    * services, such as type-checking
@@ -465,6 +495,7 @@ export function parseAndGenerateServices<
     shouldProvideParserServices,
     extra.createDefaultProgram,
   )!;
+
   /**
    * Determine whether or not two-way maps of converted AST nodes should be preserved
    * during the conversion process
@@ -473,11 +504,13 @@ export function parseAndGenerateServices<
     extra.preserveNodeMaps !== undefined
       ? extra.preserveNodeMaps
       : shouldProvideParserServices;
+
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
    * mappings between converted and original AST nodes
    */
   const { estree, astMaps } = astConverter(ast, extra, shouldPreserveNodeMaps);
+
   /**
    * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
    * there may be other syntactic or semantic issues in the code that we can optionally report on.
@@ -488,6 +521,7 @@ export function parseAndGenerateServices<
       throw convertError(error);
     }
   }
+
   /**
    * Return the converted AST and additional parser services
    */
