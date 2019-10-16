@@ -144,6 +144,11 @@ I work closely with the TypeScript Team and we are gradually aliging the AST of 
 - `npm run unit-tests` - run only unit tests
 - `npm run ast-alignment-tests` - run only Babylon AST alignment tests
 
+## Debugging
+
+If you encounter a bug with the parser that you want to investigate, you can turn on the debug logging via setting the environment variable: `DEBUG=typescript-eslint:*`.
+I.e. in this repo you can run: `DEBUG=typescript-eslint:* yarn lint`.
+
 ## License
 
 TypeScript ESTree inherits from the the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
