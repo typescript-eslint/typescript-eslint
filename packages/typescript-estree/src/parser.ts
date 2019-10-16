@@ -364,7 +364,7 @@ function warnAboutTSVersion(): void {
     const border = '=============';
     const versionWarning = [
       border,
-      'WARNING: You are currently running a version of TypeScript which is not officially supported by typescript-estree.',
+      'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
       'You may find that it works just fine, or you may not.',
       `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
       `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
