@@ -335,8 +335,7 @@ function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   expect((nodeType as ts.ObjectType).objectFlags).toBe(
     ts.ObjectFlags.Reference,
   );
-  expect((nodeType as ts.TypeReference).typeArguments).toHaveLength(1);
-  expect((nodeType as ts.TypeReference).typeArguments![0].flags).toBe(
-    ts.TypeFlags.Number,
-  );
+  const typeArguments = checker.getTypeArguments(nodeType as ts.TypeReference);
+  expect(typeArguments).toHaveLength(1);
+  expect(typeArguments[0].flags).toBe(ts.TypeFlags.Number);
 }
