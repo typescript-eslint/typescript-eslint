@@ -57,6 +57,7 @@ function parseFile(filename: 'foo' | 'bar', tmpDir: string): void {
     project: './tsconfig.json',
     tsconfigRootDir: tmpDir,
     filePath: path.join(tmpDir, `${filename}.ts`),
+    noWatch: false,
   });
 }
 

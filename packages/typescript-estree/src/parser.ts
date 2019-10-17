@@ -70,7 +70,7 @@ function resetExtra(): void {
     jsx: false,
     loc: false,
     log: console.log, // eslint-disable-line no-console
-    noWatch: false,
+    noWatch: true,
     preserveNodeMaps: undefined,
     projects: [],
     range: false,
