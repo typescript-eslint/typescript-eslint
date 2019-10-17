@@ -535,7 +535,16 @@ export default util.createRule({
 
       // collect overloads
       TSDeclareFunction(node): void {
-        addOverload(node, node.id.name, getExportingNode(node));
+        const exportingNode = getExportingNode(node);
+
+        const key =
+          exportingNode &&
+          exportingNode.type === AST_NODE_TYPES.ExportDefaultDeclaration &&
+          node.id === null
+            ? `${exportingNode.type}_${node.type}`
+            : node.id.name;
+
+        addOverload(node, key, exportingNode);
       },
       TSCallSignatureDeclaration: addOverload,
       TSConstructSignatureDeclaration: addOverload,
