@@ -67,7 +67,7 @@ let myVar: StringOrNumber;
 
 ```json
 {
-  "no-use-before-define": ["error", { "functions": true, "classes": true }]
+  "@typescript-eslint/no-use-before-define": ["error", { "functions": true, "classes": true }]
 }
 ```
 
