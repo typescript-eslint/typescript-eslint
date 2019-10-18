@@ -13,7 +13,10 @@ import { SourceFileCache } from './SourceFileCache';
 interface CachedProgram {
   invalidated: boolean;
   program?: ts.Program;
+  timeoutId?: NodeJS.Timeout;
 }
+
+const INVALIDATION_TIMEOUT_MS = 10;
 
 class ProgramCache {
   private readonly programCache = new Map<
@@ -45,6 +48,9 @@ class ProgramCache {
     oldProgram?: ts.Program,
   ): ts.Program {
     const normalisedTSConfigPath = normaliseTSConfigPath(tsconfigPath);
+    // ensure the old program is invalidated if it exists
+    this.invalidateProgram(this.getProgramNormalised(normalisedTSConfigPath));
+
     const tsconfig = parseConfigFile(normalisedTSConfigPath);
 
     this.sourceFileCache.registerTSConfig(tsconfig, normalisedTSConfigPath);
@@ -61,6 +67,8 @@ class ProgramCache {
       invalidated: false,
     };
     this.programCache.set(normalisedTSConfigPath, entry);
+    // schedule the invalidation of the program so we can handle newly created files
+    this.scheduleInvalidateProgram(entry);
 
     return program;
   }
@@ -125,13 +133,39 @@ class ProgramCache {
       )
     ) {
       // invalidate the program because the source code changed
-      this.getProgramNormalised(normalisedTSConfigPath).invalidated = true;
+      this.invalidateProgram(this.getProgramNormalised(normalisedTSConfigPath));
     }
   }
 
   public clear(): void {
     this.programCache.clear();
     this.sourceFileCache.clear();
+  }
+
+  private scheduleInvalidateProgram(entry: CachedProgram): void {
+    if (entry.invalidated) {
+      return;
+    }
+
+    if (entry.timeoutId !== undefined) {
+      clearTimeout(entry.timeoutId);
+    }
+
+    entry.timeoutId = setTimeout(() => {
+      this.invalidateProgram(entry);
+    }, INVALIDATION_TIMEOUT_MS);
+  }
+  private invalidateProgram(entry: CachedProgram): void {
+    if (entry.invalidated) {
+      return;
+    }
+
+    if (entry.timeoutId !== undefined) {
+      clearTimeout(entry.timeoutId);
+    }
+
+    entry.invalidated = true;
+    delete entry.timeoutId;
   }
 }
 
