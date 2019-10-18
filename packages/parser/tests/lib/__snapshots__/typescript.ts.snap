@@ -7851,68 +7851,297 @@ Object {
 
 exports[`typescript fixtures/basics/class-with-optional-methods.src 1`] = `
 Object {
-  "$id": 4,
+  "$id": 21,
   "block": Object {
     "range": Array [
       0,
-      68,
+      281,
     ],
     "type": "Program",
   },
   "childScopes": Array [
     Object {
-      "$id": 3,
+      "$id": 20,
       "block": Object {
         "range": Array [
           0,
-          68,
+          281,
         ],
         "type": "Program",
       },
       "childScopes": Array [
         Object {
-          "$id": 2,
+          "$id": 19,
           "block": Object {
             "range": Array [
-              0,
-              67,
+              88,
+              280,
             ],
             "type": "ClassDeclaration",
           },
-          "childScopes": Array [],
+          "childScopes": Array [
+            Object {
+              "$id": 12,
+              "block": Object {
+                "range": Array [
+                  186,
+                  191,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 19,
+              },
+              "variableMap": Object {
+                "arguments": Object {
+                  "$ref": 11,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 12,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 11,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 12,
+                  },
+                },
+              ],
+            },
+            Object {
+              "$id": 14,
+              "block": Object {
+                "range": Array [
+                  209,
+                  214,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 19,
+              },
+              "variableMap": Object {
+                "arguments": Object {
+                  "$ref": 13,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 14,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 13,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 14,
+                  },
+                },
+              ],
+            },
+            Object {
+              "$id": 16,
+              "block": Object {
+                "range": Array [
+                  250,
+                  255,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 19,
+              },
+              "variableMap": Object {
+                "arguments": Object {
+                  "$ref": 15,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 16,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 15,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 16,
+                  },
+                },
+              ],
+            },
+            Object {
+              "$id": 18,
+              "block": Object {
+                "range": Array [
+                  272,
+                  277,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 19,
+              },
+              "variableMap": Object {
+                "arguments": Object {
+                  "$ref": 17,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 18,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 17,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 18,
+                  },
+                },
+              ],
+            },
+          ],
           "functionExpressionScope": false,
           "isStrict": true,
-          "references": Array [],
-          "throughReferences": Array [],
+          "references": Array [
+            Object {
+              "$id": 8,
+              "from": Object {
+                "$ref": 19,
+              },
+              "identifier": Object {
+                "name": "computed1",
+                "range": Array [
+                  157,
+                  166,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 0,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 9,
+              "from": Object {
+                "$ref": 19,
+              },
+              "identifier": Object {
+                "name": "computed2",
+                "range": Array [
+                  175,
+                  184,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 1,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 10,
+              "from": Object {
+                "$ref": 19,
+              },
+              "identifier": Object {
+                "name": "obj",
+                "range": Array [
+                  260,
+                  263,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [
+            Object {
+              "$ref": 8,
+            },
+            Object {
+              "$ref": 9,
+            },
+            Object {
+              "$ref": 10,
+            },
+          ],
           "type": "class",
           "upperScope": Object {
-            "$ref": 3,
+            "$ref": 20,
           },
           "variableMap": Object {
             "Foo": Object {
-              "$ref": 1,
+              "$ref": 7,
             },
           },
           "variableScope": Object {
-            "$ref": 3,
+            "$ref": 20,
           },
           "variables": Array [
             Object {
-              "$id": 1,
+              "$id": 7,
               "defs": Array [
                 Object {
                   "name": Object {
                     "name": "Foo",
                     "range": Array [
-                      6,
-                      9,
+                      94,
+                      97,
                     ],
                     "type": "Identifier",
                   },
                   "node": Object {
                     "range": Array [
-                      0,
-                      67,
+                      88,
+                      280,
                     ],
                     "type": "ClassDeclaration",
                   },
@@ -7925,8 +8154,8 @@ Object {
                 Object {
                   "name": "Foo",
                   "range": Array [
-                    6,
-                    9,
+                    94,
+                    97,
                   ],
                   "type": "Identifier",
                 },
@@ -7934,7 +8163,7 @@ Object {
               "name": "Foo",
               "references": Array [],
               "scope": Object {
-                "$ref": 2,
+                "$ref": 19,
               },
             },
           ],
@@ -7942,19 +8171,104 @@ Object {
       ],
       "functionExpressionScope": false,
       "isStrict": true,
-      "references": Array [],
+      "references": Array [
+        Object {
+          "$id": 4,
+          "from": Object {
+            "$ref": 20,
+          },
+          "identifier": Object {
+            "name": "computed1",
+            "range": Array [
+              6,
+              15,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 0,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              18,
+              24,
+            ],
+            "type": "Literal",
+          },
+        },
+        Object {
+          "$id": 5,
+          "from": Object {
+            "$ref": 20,
+          },
+          "identifier": Object {
+            "name": "computed2",
+            "range": Array [
+              32,
+              41,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 1,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              44,
+              50,
+            ],
+            "type": "Literal",
+          },
+        },
+        Object {
+          "$id": 6,
+          "from": Object {
+            "$ref": 20,
+          },
+          "identifier": Object {
+            "name": "obj",
+            "range": Array [
+              58,
+              61,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 2,
+          },
+          "writeExpr": Object {
+            "range": Array [
+              64,
+              86,
+            ],
+            "type": "ObjectExpression",
+          },
+        },
+      ],
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 4,
+        "$ref": 21,
       },
       "variableMap": Object {
         "Foo": Object {
+          "$ref": 3,
+        },
+        "computed1": Object {
           "$ref": 0,
+        },
+        "computed2": Object {
+          "$ref": 1,
+        },
+        "obj": Object {
+          "$ref": 2,
         },
       },
       "variableScope": Object {
-        "$ref": 3,
+        "$ref": 20,
       },
       "variables": Array [
         Object {
@@ -7962,17 +8276,176 @@ Object {
           "defs": Array [
             Object {
               "name": Object {
-                "name": "Foo",
+                "name": "computed1",
                 "range": Array [
                   6,
-                  9,
+                  15,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
+                  6,
+                  24,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
                   0,
-                  67,
+                  25,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "computed1",
+              "range": Array [
+                6,
+                15,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "computed1",
+          "references": Array [
+            Object {
+              "$ref": 4,
+            },
+            Object {
+              "$ref": 8,
+            },
+          ],
+          "scope": Object {
+            "$ref": 20,
+          },
+        },
+        Object {
+          "$id": 1,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "computed2",
+                "range": Array [
+                  32,
+                  41,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  32,
+                  50,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  26,
+                  51,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "computed2",
+              "range": Array [
+                32,
+                41,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "computed2",
+          "references": Array [
+            Object {
+              "$ref": 5,
+            },
+            Object {
+              "$ref": 9,
+            },
+          ],
+          "scope": Object {
+            "$ref": 20,
+          },
+        },
+        Object {
+          "$id": 2,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "obj",
+                "range": Array [
+                  58,
+                  61,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  58,
+                  86,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  52,
+                  87,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "obj",
+              "range": Array [
+                58,
+                61,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "obj",
+          "references": Array [
+            Object {
+              "$ref": 6,
+            },
+            Object {
+              "$ref": 10,
+            },
+          ],
+          "scope": Object {
+            "$ref": 20,
+          },
+        },
+        Object {
+          "$id": 3,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "Foo",
+                "range": Array [
+                  94,
+                  97,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  88,
+                  280,
                 ],
                 "type": "ClassDeclaration",
               },
@@ -7985,8 +8458,8 @@ Object {
             Object {
               "name": "Foo",
               "range": Array [
-                6,
-                9,
+                94,
+                97,
               ],
               "type": "Identifier",
             },
@@ -7994,7 +8467,7 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 3,
+            "$ref": 20,
           },
         },
       ],
@@ -8008,7 +8481,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 4,
+    "$ref": 21,
   },
   "variables": Array [],
 }

@@ -1044,7 +1044,8 @@ export class Converter {
         }
 
         if (
-          result.key.type === AST_NODE_TYPES.Identifier &&
+          (result.key.type === AST_NODE_TYPES.Identifier ||
+            result.key.type === AST_NODE_TYPES.MemberExpression) &&
           node.questionToken
         ) {
           result.key.optional = true;
