@@ -143,6 +143,16 @@ class CommunicationError {
 class CommunicationError {}
 const x = CommunicationError.prototype;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/700
+    `
+class ContainsBoundMethod {
+  constructor() {
+    this.handleSomething = this.handleSomething.bind(this);
+  }
+
+  handleSomething(): void {}
+}
+    `,
   ],
   invalid: [
     {

@@ -111,6 +111,9 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.CallExpression:
       return parent.callee === node;
 
+    case AST_NODE_TYPES.AssignmentExpression:
+      return isBindCalled(parent.right);
+
     case AST_NODE_TYPES.ConditionalExpression:
       return parent.test === node;
 
@@ -133,4 +136,13 @@ function isSafeUse(node: TSESTree.Node): boolean {
   }
 
   return false;
+}
+
+function isBindCalled(parent: TSESTree.Expression): boolean {
+  return (
+    parent.type === AST_NODE_TYPES.CallExpression &&
+    parent.callee.type === AST_NODE_TYPES.MemberExpression &&
+    parent.callee.property.type === AST_NODE_TYPES.Identifier &&
+    parent.callee.property.name === 'bind'
+  );
 }
