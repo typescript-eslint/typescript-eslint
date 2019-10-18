@@ -5,7 +5,11 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-  testRegex: './tests/(lib/.*\\.(jsx?|tsx?)|ast-alignment/spec\\.ts)$',
+  testRegex: [
+    './tests/host/.*\\.(jsx?|tsx?)$',
+    './tests/lib/.*\\.(jsx?|tsx?)$',
+    './tests/ast-alignment/spec\\.ts$',
+  ],
   collectCoverage: false,
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
