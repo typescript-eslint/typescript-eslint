@@ -334,6 +334,25 @@ new Foo(1, () => {});
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+function f() { return true }
+const g = function() { return true }
+const h = () => true
+function r(a, b, c) {
+  if (a) return
+  else { return undefined }
+  for (;;) { return void(0) }
+  return true
+}
+      `,
+      options: [
+        {
+          allowZeroOrSingleReturnStatement: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -977,6 +996,66 @@ const func = (value: number) => ({ type: "X", value } as const);
           endLine: 2,
           column: 14,
           endColumn: 32,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function f() { return true }
+const g = function() { return true }
+const h = () => true
+function r(a, b, c) {
+  if (a) return
+  else { return undefined }
+  for (;;) { return void(0) }
+  return true
+}
+function s(a) {
+  if (a) return 1
+  return true
+}
+      `,
+      options: [
+        {
+          allowZeroOrSingleReturnStatement: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 1,
+          endColumn: 13,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 21,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          endLine: 4,
+          column: 11,
+          endColumn: 16,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 5,
+          endLine: 5,
+          column: 1,
+          endColumn: 20,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 11,
+          endLine: 11,
+          column: 1,
+          endColumn: 14,
         },
       ],
     },

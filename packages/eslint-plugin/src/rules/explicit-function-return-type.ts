@@ -11,6 +11,7 @@ type Options = [
     allowTypedFunctionExpressions?: boolean;
     allowHigherOrderFunctions?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
+    allowZeroOrSingleReturnStatement?: boolean;
   },
 ];
 type MessageIds = 'missingReturnType';
@@ -44,6 +45,9 @@ export default util.createRule<Options, MessageIds>({
           allowDirectConstAssertionInArrowFunctions: {
             type: 'boolean',
           },
+          allowZeroOrSingleReturnStatement: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -55,6 +59,7 @@ export default util.createRule<Options, MessageIds>({
       allowTypedFunctionExpressions: true,
       allowHigherOrderFunctions: true,
       allowDirectConstAssertionInArrowFunctions: true,
+      allowZeroOrSingleReturnStatement: false,
     },
   ],
   create(context, [options]) {
@@ -289,6 +294,85 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
+    function getReturnStatementsRecursively(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      node: any,
+    ): TSESTree.ReturnStatement[] {
+      if (!node || !node.type) {
+        return [];
+      }
+
+      if (node.type === AST_NODE_TYPES.ReturnStatement) {
+        return [node];
+      }
+
+      if (
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        node.type === AST_NODE_TYPES.FunctionDeclaration ||
+        node.type === AST_NODE_TYPES.FunctionExpression
+      ) {
+        return [];
+      }
+
+      const results: TSESTree.ReturnStatement[] = [];
+      for (const name in node) {
+        if (name === 'loc' || name === 'range' || name == 'parent') {
+          continue;
+        }
+
+        if (typeof node[name] === 'object') {
+          results.push(...getReturnStatementsRecursively(node[name]));
+        }
+      }
+      return results;
+    }
+
+    function checkZeroOrSingleReturnStatement(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      if (!node.body) {
+        return false;
+      }
+
+      if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
+        return true;
+      }
+
+      const returnNodes = getReturnStatementsRecursively(node.body);
+      if (returnNodes.length === 0) {
+        return true;
+      }
+
+      const mainReturnNode = node.body.body.find(
+        node => node.type === AST_NODE_TYPES.ReturnStatement,
+      );
+      const earlyReturnNodes = returnNodes.filter(
+        node => node !== mainReturnNode,
+      );
+
+      if (earlyReturnNodes.length === 0) {
+        return true;
+      }
+
+      if (
+        earlyReturnNodes.every(
+          node =>
+            node.argument === null ||
+            (node.argument.type === AST_NODE_TYPES.Identifier &&
+              node.argument.name === 'undefined') ||
+            (node.argument.type === AST_NODE_TYPES.UnaryExpression &&
+              node.argument.operator === 'void'),
+        )
+      ) {
+        return true;
+      }
+
+      return false;
+    }
+
     /**
      * Checks if a function declaration/expression has a return type.
      */
@@ -309,6 +393,14 @@ export default util.createRule<Options, MessageIds>({
         node.returnType ||
         isConstructor(node.parent) ||
         isSetter(node.parent)
+      ) {
+        return;
+      }
+
+      if (
+        options.allowZeroOrSingleReturnStatement &&
+        (doesImmediatelyReturnFunctionExpression(node) ||
+          checkZeroOrSingleReturnStatement(node))
       ) {
         return;
       }

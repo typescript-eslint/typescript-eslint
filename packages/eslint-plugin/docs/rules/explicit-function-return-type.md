@@ -198,6 +198,45 @@ function fn() {
 }
 ```
 
+### allowZeroOrSingleReturnStatement
+
+This option allows you to avoid writing verbose return types only if there is zero or single non-`undefined` return statement.
+
+Examples of **incorrect** code for this rule with `{ allowZeroOrSingleReturnStatement: true }`:
+
+```ts
+// Missing a return type because there is more than one non-undefined return statements
+function fn(a: boolean) {
+  if (a) return 1;
+  return Math.random();
+}
+```
+
+Examples of **correct** code for this rule with `{ allowZeroOrSingleReturnStatement: true }`:
+
+```ts
+// Do not have to specify `void` return type because there is zero return statements
+function fn() {}
+```
+
+```ts
+// Do not have to specify `number | undefined` because `undefined` does not change the primary return type
+function fn(a: boolean, b: boolean, c: boolean) {
+  if (a) return;
+  if (b) return undefined;
+  if (c) return void 0;
+  return Math.random();
+}
+```
+
+```ts
+// Need to specify the return type because there are more than one return types.
+function fn(a: boolean): number | 'invalid' {
+  if (a) return 'invalid';
+  return Math.random();
+}
+```
+
 ## When Not To Use It
 
 If you don't wish to prevent calling code from using function return values in unexpected ways, then
