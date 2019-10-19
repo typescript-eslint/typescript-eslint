@@ -13,7 +13,6 @@ export interface Extra {
   jsx: boolean;
   loc: boolean;
   log: Function;
-  noWatch?: boolean;
   preserveNodeMaps?: boolean;
   projects: string[];
   range: boolean;
@@ -33,7 +32,6 @@ export interface TSESTreeOptions {
   jsx?: boolean;
   loc?: boolean;
   loggerFn?: Function | false;
-  noWatch?: boolean;
   preserveNodeMaps?: boolean;
   project?: string | string[];
   range?: boolean;

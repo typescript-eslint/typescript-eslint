@@ -8,8 +8,6 @@ type RuleTesterConfig = Omit<TSESLint.RuleTesterConfig, 'parser'> & {
   parser: typeof parser;
 };
 class RuleTester extends TSESLint.RuleTester {
-  private filename: string | undefined = undefined;
-
   // as of eslint 6 you have to provide an absolute path to the parser
   // but that's not as clean to type, this saves us trying to manually enforce
   // that contributors require.resolve everything

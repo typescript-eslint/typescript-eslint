@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "allowJs": true
+  },
   "include": [
     "ts/included.ts",
     "ts/included.tsx",

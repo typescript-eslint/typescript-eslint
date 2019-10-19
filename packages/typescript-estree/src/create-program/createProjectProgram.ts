@@ -17,7 +17,7 @@ function createProjectProgram(
   createDefaultProgram: boolean,
   extra: Extra,
 ): ASTAndProgram | undefined {
-  log('Attempting to get AST from project(s) for: %s', extra.filePath);
+  log('Creating project program for: %s', extra.filePath);
 
   const astAndProgram = firstDefined(
     getProgramsForProjects(code, extra.filePath, extra),
@@ -31,7 +31,10 @@ function createProjectProgram(
     // the file was either not matched within the tsconfig, or the extension wasn't expected
     const errorLines = [
       '"parserOptions.project" has been set for @typescript-eslint/parser.',
-      `The file does not match your project config: ${extra.filePath}.`,
+      `The file does not match your project config: ${path.relative(
+        process.cwd(),
+        extra.filePath,
+      )}.`,
     ];
     let hasMatchedAnError = false;
 

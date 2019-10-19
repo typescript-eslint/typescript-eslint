@@ -91,7 +91,6 @@ function resetExtra(): void {
     jsx: false,
     loc: false,
     log: console.log, // eslint-disable-line no-console
-    noWatch: false,
     preserveNodeMaps: undefined,
     projects: [],
     range: false,
@@ -103,11 +102,6 @@ function resetExtra(): void {
 }
 
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
-  /**
-   * Turn on/off filesystem watchers
-   */
-  extra.noWatch = typeof options.noWatch === 'boolean' && options.noWatch;
-
   /**
    * Track range information in the AST
    */
@@ -139,7 +133,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   /**
    * Get the file extension
    */
-  if (typeof options.filePath === 'string') {
+  if (typeof options.filePath === 'string' && options.filePath !== '<input>') {
     extra.filePath = options.filePath;
   } else {
     extra.filePath = getFileName(extra);

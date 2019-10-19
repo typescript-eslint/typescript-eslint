@@ -1,4 +1,4 @@
-import { join, resolve, relative } from 'path';
+import { join, resolve } from 'path';
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
 import { TSESTreeOptions } from '../../src/parser-options';
@@ -75,31 +75,16 @@ describe('parse()', () => {
         loc: true,
       });
 
-      expect(spy).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          code: 'let foo = bar;',
-          comment: true,
-          comments: [],
-          createDefaultProgram: false,
-          errorOnTypeScriptSyntacticAndSemanticIssues: false,
-          errorOnUnknownASTType: false,
-          extraFileExtensions: [],
-          filePath: expect.any(String),
-          jsx: false,
-          loc: true,
-          log: loggerFn,
-          noWatch: false,
-          preserveNodeMaps: false,
-          projects: [],
-          range: true,
-          strict: false,
-          tokens: expect.any(Array),
-          tsconfigRootDir: expect.any(String),
-          useJSXTextNode: false,
-        },
-        false,
-      );
+      expect(spy).toHaveBeenCalled();
+      expect(spy.mock.calls[0][1]).toMatchObject({
+        code: 'let foo = bar;',
+        comment: true,
+        comments: [],
+        loc: true,
+        log: loggerFn,
+        range: true,
+        tokens: expect.any(Array),
+      });
     });
   });
 
@@ -259,7 +244,7 @@ describe('parse()', () => {
     const testParse = (filePath: string) => (): void => {
       parser.parseAndGenerateServices(code, {
         ...config,
-        filePath: relative(process.cwd(), join(PROJECT_DIR, filePath)),
+        filePath: join(PROJECT_DIR, filePath),
       });
     };
 

@@ -1,12 +1,12 @@
-import chokidar from 'chokidar';
 import debug from 'debug';
+import fs from 'fs';
 import path from 'path';
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import ts from 'typescript';
 import { Extra } from '../parser-options';
 import { WatchCompilerHostOfConfigFile } from '../WatchCompilerHostOfConfigFile';
 import { getTsconfigPath, DEFAULT_COMPILER_OPTIONS } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:tsconfig-parser');
+const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
 
 /**
  * Maps tsconfig paths to their corresponding file contents and resulting watches
@@ -17,23 +17,17 @@ const knownWatchProgramMap = new Map<
 >();
 
 /**
- * Maps file paths to their set of corresponding watch callbacks
- * There may be more than one per file if a file is shared between projects
+ * Maps file/folder paths to their set of corresponding watch callbacks
+ * There may be more than one per file/folder if a file/folder is shared between projects
  */
-const watchCallbackTrackingMap = new Map<string, Set<ts.FileWatcherCallback>>();
-
-interface Watcher {
-  close(): void;
-  forceClose(): void;
-  on(evt: 'add', listener: (file: string) => void): void;
-  on(evt: 'change', listener: (file: string) => void): void;
-  trackWatcher(): void;
-}
-/**
- * Tracks the ts.sys.watchDirectory watchers that we've opened for project folders.
- * We store these so we can clean up our handles if required.
- */
-const fileWatcherTrackingSet = new Map<string, Watcher>();
+const fileWatchCallbackTrackingMap = new Map<
+  string,
+  Set<ts.FileWatcherCallback>
+>();
+const folderWatchCallbackTrackingMap = new Map<
+  string,
+  Set<ts.FileWatcherCallback>
+>();
 
 const parsedFilesSeen = new Set<string>();
 
@@ -43,12 +37,35 @@ const parsedFilesSeen = new Set<string>();
  */
 function clearCaches(): void {
   knownWatchProgramMap.clear();
-  watchCallbackTrackingMap.clear();
+  fileWatchCallbackTrackingMap.clear();
+  folderWatchCallbackTrackingMap.clear();
   parsedFilesSeen.clear();
+}
 
-  // stop tracking config files
-  fileWatcherTrackingSet.forEach(cb => cb.forceClose());
-  fileWatcherTrackingSet.clear();
+function saveWatchCallback(
+  trackingMap: Map<string, Set<ts.FileWatcherCallback>>,
+) {
+  return (
+    fileName: string,
+    callback: ts.FileWatcherCallback,
+  ): ts.FileWatcher => {
+    const normalizedFileName = path.normalize(fileName);
+    const watchers = ((): Set<ts.FileWatcherCallback> => {
+      let watchers = trackingMap.get(normalizedFileName);
+      if (!watchers) {
+        watchers = new Set();
+        trackingMap.set(normalizedFileName, watchers);
+      }
+      return watchers;
+    })();
+    watchers.add(callback);
+
+    return {
+      close: (): void => {
+        watchers.delete(callback);
+      },
+    };
+  };
 }
 
 /**
@@ -67,86 +84,6 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
   throw new Error(
     ts.flattenDiagnosticMessageText(diagnostic.messageText, ts.sys.newLine),
   );
-}
-
-const EMPTY_WATCHER: Watcher = {
-  close: (): void => {},
-  forceClose: (): void => {},
-  on: (): void => {},
-  trackWatcher: (): void => {},
-};
-
-/**
- * Watches a file or directory for changes
- */
-function watch(
-  watchPath: string,
-  options: chokidar.WatchOptions,
-  extra: Extra,
-): Watcher {
-  // an escape hatch to disable the file watchers as they can take a bit to initialise in some cases
-  // this also supports an env variable so it's easy to switch on/off from the CLI
-  const blockWatchers =
-    process.env.PARSER_NO_WATCH === 'false'
-      ? false
-      : process.env.PARSER_NO_WATCH === 'true' || extra.noWatch === true;
-  if (blockWatchers) {
-    return EMPTY_WATCHER;
-  }
-
-  // reuse watchers in case typescript asks us to watch the same file/directory multiple times
-  if (fileWatcherTrackingSet.has(watchPath)) {
-    const watcher = fileWatcherTrackingSet.get(watchPath)!;
-    watcher.trackWatcher();
-    return watcher;
-  }
-
-  let fsWatcher: chokidar.FSWatcher;
-  try {
-    log('setting up watcher on path: %s', watchPath);
-    fsWatcher = chokidar.watch(watchPath, {
-      ignoreInitial: true,
-      persistent: false,
-      useFsEvents: false,
-      ...options,
-    });
-  } catch (e) {
-    log(
-      'error occurred using file watcher, setting up polling watcher instead: %s',
-      watchPath,
-    );
-    // https://github.com/microsoft/TypeScript/blob/c9d407b52ad92370cd116105c33d618195de8070/src/compiler/sys.ts#L1232-L1237
-    // Catch the exception and use polling instead
-    // Eg. on linux the number of watches are limited and one could easily exhaust watches and the exception ENOSPC is thrown when creating watcher at that point
-    // so instead of throwing error, use fs.watchFile
-    fsWatcher = chokidar.watch(watchPath, {
-      ignoreInitial: true,
-      persistent: false,
-      useFsEvents: false,
-      ...options,
-      usePolling: true,
-    });
-  }
-
-  let counter = 1;
-  const watcher = {
-    close: (): void => {
-      counter -= 1;
-      if (counter <= 0) {
-        fsWatcher.close();
-        fileWatcherTrackingSet.delete(watchPath);
-      }
-    },
-    forceClose: fsWatcher.close.bind(fsWatcher),
-    on: fsWatcher.on.bind(fsWatcher),
-    trackWatcher: (): void => {
-      counter += 1;
-    },
-  };
-
-  fileWatcherTrackingSet.set(watchPath, watcher);
-
-  return watcher;
 }
 
 /**
@@ -170,13 +107,15 @@ function getProgramsForProjects(
 
   // Update file version if necessary
   // TODO: only update when necessary, currently marks as changed on every lint
-  const watchCallbacks = watchCallbackTrackingMap.get(filePath);
+  const fileWatchCallbacks = fileWatchCallbackTrackingMap.get(filePath);
   if (
     parsedFilesSeen.has(filePath) &&
-    watchCallbacks &&
-    watchCallbacks.size > 0
+    fileWatchCallbacks &&
+    fileWatchCallbacks.size > 0
   ) {
-    watchCallbacks.forEach(cb => cb(filePath, ts.FileWatcherEventKind.Changed));
+    fileWatchCallbacks.forEach(cb =>
+      cb(filePath, ts.FileWatcherEventKind.Changed),
+    );
   }
 
   for (const rawTsconfigPath of extra.projects) {
@@ -184,10 +123,18 @@ function getProgramsForProjects(
 
     const existingWatch = knownWatchProgramMap.get(tsconfigPath);
 
-    if (typeof existingWatch !== 'undefined') {
-      // get new program (updated if necessary)
-      const updatedProgram = existingWatch.getProgram().getProgram();
-      updatedProgram.getTypeChecker(); // sets parent pointers in source files
+    if (existingWatch) {
+      const updatedProgram = maybeInvalidateProgram(
+        existingWatch,
+        filePath,
+        tsconfigPath,
+      );
+      if (!updatedProgram) {
+        continue;
+      }
+
+      // sets parent pointers in source files
+      updatedProgram.getTypeChecker();
       results.push(updatedProgram);
 
       continue;
@@ -201,11 +148,6 @@ function getProgramsForProjects(
     results.push(program);
   }
 
-  // fallback case in case the file should exist within one of the projects, but doesn't because the program is cached
-  //////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////// TODO //////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////
-
   parsedFilesSeen.add(filePath);
   return results;
 }
@@ -214,6 +156,8 @@ function createWatchProgram(
   tsconfigPath: string,
   extra: Extra,
 ): ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram> {
+  log('Creating watch program for %s.', tsconfigPath);
+
   // create compiler host
   const watchCompilerHost = ts.createWatchCompilerHost(
     tsconfigPath,
@@ -249,74 +193,20 @@ function createWatchProgram(
     }
   };
 
-  // in watch mode, eslint will give us the latest file contents
-  // store the watch callback so we can trigger an update with eslint's content
-  watchCompilerHost.watchFile = (
-    fileName,
-    callback,
-    interval,
-  ): ts.FileWatcher => {
-    // specifically (and separately) watch the tsconfig file
-    // this allows us to react to changes in the tsconfig's include/exclude options
-    let watcher: Watcher | null = null;
-    if (fileName.includes(tsconfigPath)) {
-      watcher = watch(
-        fileName,
-        {
-          interval,
-        },
-        extra,
-      );
-      watcher.on('change', path => {
-        callback(path, ts.FileWatcherEventKind.Changed);
-      });
-    }
-
-    const normalizedFileName = path.normalize(fileName);
-    const watchers = ((): Set<ts.FileWatcherCallback> => {
-      let watchers = watchCallbackTrackingMap.get(normalizedFileName);
-      if (!watchers) {
-        watchers = new Set();
-        watchCallbackTrackingMap.set(normalizedFileName, watchers);
-      }
-      return watchers;
-    })();
-    watchers.add(callback);
-
-    return {
-      close: (): void => {
-        watchers.delete(callback);
-
-        if (watcher) {
-          watcher.close();
-        }
-      },
-    };
-  };
-
-  // when new files are added in watch mode, we need to tell typescript about those files
-  // if we don't then typescript will act like they don't exist.
-  watchCompilerHost.watchDirectory = (
-    dirPath,
-    callback,
-    recursive,
-  ): ts.FileWatcher => {
-    const watcher = watch(
-      dirPath,
-      {
-        depth: recursive ? 0 : undefined,
-        interval: 250,
-      },
-      extra,
-    );
-    watcher.on('add', path => {
-      callback(path);
-    });
-
-    return {
-      close: watcher.close,
-    };
-  };
+  /*
+   * From the CLI, the file watchers won't matter, as the files will be parsed once and then forgotten.
+   * When running from an IDE, these watchers will let us tell typescript about changes.
+   *
+   * ESLint IDE plugins will send us unfinished file content as the user types (before it's saved to disk).
+   * We use the file watchers to tell typescript about this latest file content.
+   *
+   * When files are created (or renamed), we won't know about them because we have no filesystem watchers attached.
+   * We use the folder watchers to tell typescript it needs to go and find new files in the project folders.
+   */
+  watchCompilerHost.watchFile = saveWatchCallback(fileWatchCallbackTrackingMap);
+  watchCompilerHost.watchDirectory = saveWatchCallback(
+    folderWatchCallbackTrackingMap,
+  );
 
   // allow files with custom extensions to be included in program (uses internal ts api)
   const oldOnDirectoryStructureHostCreate =
@@ -340,7 +230,149 @@ function createWatchProgram(
     oldOnDirectoryStructureHostCreate(host);
   };
 
+  /*
+   * The watch change callbacks TS provides us all have a 250ms delay before firing
+   * https://github.com/microsoft/TypeScript/blob/b845800bdfcc81c8c72e2ac6fdc2c1df0cdab6f9/src/compiler/watch.ts#L1013
+   *
+   * We live in a synchronous world, so we can't wait for that.
+   * This is a bit of a hack, but it lets us immediately force updates when we detect a tsconfig or directory change
+   */
+  const oldSetTimeout = watchCompilerHost.setTimeout;
+  watchCompilerHost.setTimeout = (cb, ms, ...args): unknown => {
+    if (ms === 250) {
+      cb();
+      return null;
+    }
+
+    return oldSetTimeout && oldSetTimeout(cb, ms, ...args);
+  };
+
   return ts.createWatchProgram(watchCompilerHost);
+}
+
+const tsconfigStatTimestamp = new Map<string, number>();
+function hasTSConfigChanged(tsconfigPath: string): boolean {
+  const stat = fs.statSync(tsconfigPath);
+  const lastModifiedAt = stat.mtimeMs;
+  const cachedLastModifiedAt = tsconfigStatTimestamp.get(tsconfigPath);
+
+  tsconfigStatTimestamp.set(tsconfigPath, lastModifiedAt);
+
+  if (cachedLastModifiedAt === undefined) {
+    return false;
+  }
+
+  return Math.abs(cachedLastModifiedAt - lastModifiedAt) > Number.EPSILON;
+}
+
+function maybeInvalidateProgram(
+  existingWatch: ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>,
+  filePath: string,
+  tsconfigPath: string,
+): ts.Program | null {
+  if (hasTSConfigChanged(tsconfigPath)) {
+    /*
+     * If the stat of the tsconfig has changed, that could mean the include/exclude/files lists has changed
+     * We need to make sure typescript knows this so it can update appropriately
+     */
+    log('tsconfig has changed - triggering program update. %s', tsconfigPath);
+    fileWatchCallbackTrackingMap
+      .get(tsconfigPath)!
+      .forEach(cb => cb(tsconfigPath, ts.FileWatcherEventKind.Changed));
+  }
+
+  /*
+   * By calling watchProgram.getProgram(), it will trigger a resync of the program based on
+   * whatever new file content we've given it from our input.
+   */
+  let updatedProgram = existingWatch.getProgram().getProgram();
+  let sourceFile = updatedProgram.getSourceFile(filePath);
+
+  if (sourceFile) {
+    return updatedProgram;
+  }
+  /*
+   * Missing source file means our program's folder structure might be out of date.
+   * So we need to tell typescript it needs to update the correct folder.
+   */
+  log('File was not found in program - triggering folder update. %s', filePath);
+
+  // Find the correct directory callback by climbing the folder tree
+  let current: string | null = null;
+  let next: string | null = path.dirname(filePath);
+  let hasCallback = false;
+  while (current !== next) {
+    current = next;
+    const folderWatchCallbacks = folderWatchCallbackTrackingMap.get(current);
+    if (folderWatchCallbacks) {
+      folderWatchCallbacks.forEach(cb =>
+        cb(current!, ts.FileWatcherEventKind.Changed),
+      );
+      hasCallback = true;
+      break;
+    }
+
+    next = path.dirname(current);
+  }
+  if (!hasCallback) {
+    /*
+     * No callback means the paths don't matchup - so no point returning any program
+     * this will signal to the caller to skip this program
+     */
+    log('No callback found for file, not part of this program. %s', filePath);
+    return null;
+  }
+
+  // force the immediate resync
+  updatedProgram = existingWatch.getProgram().getProgram();
+  sourceFile = updatedProgram.getSourceFile(filePath);
+  if (sourceFile) {
+    return updatedProgram;
+  }
+
+  /*
+   * At this point we're in one of two states:
+   * - The file isn't supposed to be in this program due to exclusions
+   * - The file is new, and was renamed from an old, included filename
+   *
+   * For the latter case, we need to tell typescript that the old filename is now deleted
+   */
+  log(
+    'File was still not found in program after directory update - checking file deletions. %s',
+    filePath,
+  );
+
+  const rootFilenames = updatedProgram.getRootFileNames();
+  // use find because we only need to "delete" one file to cause typescript to do a full resync
+  const deletedFile = rootFilenames.find(file => !fs.existsSync(file));
+  if (!deletedFile) {
+    // There are no deleted files, so it must be the former case of the file not belonging to this program
+    return null;
+  }
+
+  const fileWatchCallbacks = fileWatchCallbackTrackingMap.get(deletedFile);
+  if (!fileWatchCallbacks) {
+    // shouldn't happen, but just in case
+    log('Could not find watch callbacks for root file. %s', deletedFile);
+    return updatedProgram;
+  }
+
+  log('Marking file as deleted. %s', deletedFile);
+  fileWatchCallbacks.forEach(cb =>
+    cb(deletedFile, ts.FileWatcherEventKind.Deleted),
+  );
+
+  updatedProgram = existingWatch.getProgram().getProgram();
+  sourceFile = updatedProgram.getSourceFile(filePath);
+  if (sourceFile) {
+    return updatedProgram;
+  }
+
+  log(
+    'File was still not found in program after deletion check, assuming it is not part of this program. %s',
+    filePath,
+  );
+  return null;
 }
 
 export { clearCaches, createWatchProgram, getProgramsForProjects };
