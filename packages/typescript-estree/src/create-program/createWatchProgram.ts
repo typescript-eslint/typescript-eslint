@@ -29,6 +29,16 @@ const folderWatchCallbackTrackingMap = new Map<
   Set<ts.FileWatcherCallback>
 >();
 
+/**
+ * Stores the list of known files for each program
+ */
+const programFileListCache = new Map<string, Set<string>>();
+
+/**
+ * Caches the last modified time of the tsconfig files
+ */
+const tsconfigLsatModifiedTimestampCache = new Map<string, number>();
+
 const parsedFilesSeen = new Set<string>();
 
 /**
@@ -40,6 +50,8 @@ function clearCaches(): void {
   fileWatchCallbackTrackingMap.clear();
   folderWatchCallbackTrackingMap.clear();
   parsedFilesSeen.clear();
+  programFileListCache.clear();
+  tsconfigLsatModifiedTimestampCache.clear();
 }
 
 function saveWatchCallback(
@@ -118,6 +130,40 @@ function getProgramsForProjects(
     );
   }
 
+  /*
+   * before we go into the process of attempting to find and update every program
+   * see if we know of a program that contains this file
+   */
+  for (const rawTsconfigPath of extra.projects) {
+    const tsconfigPath = getTsconfigPath(rawTsconfigPath, extra);
+    const existingWatch = knownWatchProgramMap.get(tsconfigPath);
+    if (!existingWatch) {
+      continue;
+    }
+
+    let fileList = programFileListCache.get(tsconfigPath);
+    let updatedProgram: ts.Program | null = null;
+    if (!fileList) {
+      updatedProgram = existingWatch.getProgram().getProgram();
+      fileList = new Set(updatedProgram.getRootFileNames());
+      programFileListCache.set(tsconfigPath, fileList);
+    }
+
+    if (fileList.has(filePath)) {
+      log('Found existing program for file. %s', filePath);
+      return [updatedProgram || existingWatch.getProgram().getProgram()];
+    }
+  }
+  log(
+    'File did not belong to any existing programs, moving to create/update. %s',
+    filePath,
+  );
+
+  /*
+   * We don't know of a program that contains the file, this means that either:
+   * - the required program hasn't been created yet, or
+   * - the file is new/renamed, and the program hasn't been updated.
+   */
   for (const rawTsconfigPath of extra.projects) {
     const tsconfigPath = getTsconfigPath(rawTsconfigPath, extra);
 
@@ -250,13 +296,14 @@ function createWatchProgram(
   return ts.createWatchProgram(watchCompilerHost);
 }
 
-const tsconfigStatTimestamp = new Map<string, number>();
 function hasTSConfigChanged(tsconfigPath: string): boolean {
   const stat = fs.statSync(tsconfigPath);
   const lastModifiedAt = stat.mtimeMs;
-  const cachedLastModifiedAt = tsconfigStatTimestamp.get(tsconfigPath);
+  const cachedLastModifiedAt = tsconfigLsatModifiedTimestampCache.get(
+    tsconfigPath,
+  );
 
-  tsconfigStatTimestamp.set(tsconfigPath, lastModifiedAt);
+  tsconfigLsatModifiedTimestampCache.set(tsconfigPath, lastModifiedAt);
 
   if (cachedLastModifiedAt === undefined) {
     return false;
@@ -270,6 +317,12 @@ function maybeInvalidateProgram(
   filePath: string,
   tsconfigPath: string,
 ): ts.Program | null {
+  /*
+   * By calling watchProgram.getProgram(), it will trigger a resync of the program based on
+   * whatever new file content we've given it from our input.
+   */
+  let updatedProgram = existingWatch.getProgram().getProgram();
+
   if (hasTSConfigChanged(tsconfigPath)) {
     /*
      * If the stat of the tsconfig has changed, that could mean the include/exclude/files lists has changed
@@ -279,15 +332,12 @@ function maybeInvalidateProgram(
     fileWatchCallbackTrackingMap
       .get(tsconfigPath)!
       .forEach(cb => cb(tsconfigPath, ts.FileWatcherEventKind.Changed));
+
+    // tsconfig change means that the file list more than likely changed, so clear the cache
+    programFileListCache.delete(tsconfigPath);
   }
 
-  /*
-   * By calling watchProgram.getProgram(), it will trigger a resync of the program based on
-   * whatever new file content we've given it from our input.
-   */
-  let updatedProgram = existingWatch.getProgram().getProgram();
   let sourceFile = updatedProgram.getSourceFile(filePath);
-
   if (sourceFile) {
     return updatedProgram;
   }
@@ -322,6 +372,9 @@ function maybeInvalidateProgram(
     log('No callback found for file, not part of this program. %s', filePath);
     return null;
   }
+
+  // directory update means that the file list more than likely changed, so clear the cache
+  programFileListCache.delete(tsconfigPath);
 
   // force the immediate resync
   updatedProgram = existingWatch.getProgram().getProgram();
@@ -361,6 +414,9 @@ function maybeInvalidateProgram(
   fileWatchCallbacks.forEach(cb =>
     cb(deletedFile, ts.FileWatcherEventKind.Deleted),
   );
+
+  // deleted files means that the file list _has_ changed, so clear the cache
+  programFileListCache.delete(tsconfigPath);
 
   updatedProgram = existingWatch.getProgram().getProgram();
   sourceFile = updatedProgram.getSourceFile(filePath);
