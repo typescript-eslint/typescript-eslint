@@ -323,6 +323,12 @@ function maybeInvalidateProgram(
    */
   let updatedProgram = existingWatch.getProgram().getProgram();
 
+  // In case this change causes problems in larger real world codebases
+  // Provide an escape hatch so people don't _have_ to revert to an older version
+  if (process.env.TSESTREE_NO_INVALIDATION === 'true') {
+    return updatedProgram;
+  }
+
   if (hasTSConfigChanged(tsconfigPath)) {
     /*
      * If the stat of the tsconfig has changed, that could mean the include/exclude/files lists has changed
