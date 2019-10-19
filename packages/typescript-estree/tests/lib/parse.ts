@@ -85,6 +85,7 @@ describe('parse()', () => {
           errorOnTypeScriptSyntacticAndSemanticIssues: false,
           errorOnUnknownASTType: false,
           extraFileExtensions: [],
+          filePath: expect.any(String),
           jsx: false,
           loc: true,
           log: loggerFn,

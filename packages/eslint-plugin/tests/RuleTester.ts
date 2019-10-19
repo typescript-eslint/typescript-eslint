@@ -13,15 +13,27 @@ class RuleTester extends TSESLint.RuleTester {
   // as of eslint 6 you have to provide an absolute path to the parser
   // but that's not as clean to type, this saves us trying to manually enforce
   // that contributors require.resolve everything
-  constructor(options: RuleTesterConfig) {
+  constructor(private readonly options: RuleTesterConfig) {
     super({
       ...options,
       parser: require.resolve(options.parser),
     });
+  }
+  private getFilename(options?: TSESLint.ParserOptions): string {
+    if (options) {
+      const filename = `file.ts${
+        options.ecmaFeatures && options.ecmaFeatures.jsx ? 'x' : ''
+      }`;
+      if (options.project) {
+        return path.join(getFixturesRootDir(), filename);
+      }
 
-    if (options.parserOptions && options.parserOptions.project) {
-      this.filename = path.join(getFixturesRootDir(), 'file.ts');
+      return filename;
+    } else if (this.options.parserOptions) {
+      return this.getFilename(this.options.parserOptions);
     }
+
+    return 'file.ts';
   }
 
   // as of eslint 6 you have to provide an absolute path to the parser
@@ -34,17 +46,14 @@ class RuleTester extends TSESLint.RuleTester {
   ): void {
     const errorMessage = `Do not set the parser at the test level unless you want to use a parser other than ${parser}`;
 
-    if (this.filename) {
-      tests.valid = tests.valid.map(test => {
-        if (typeof test === 'string') {
-          return {
-            code: test,
-            filename: this.filename,
-          };
-        }
-        return test;
-      });
-    }
+    tests.valid = tests.valid.map(test => {
+      if (typeof test === 'string') {
+        return {
+          code: test,
+        };
+      }
+      return test;
+    });
 
     tests.valid.forEach(test => {
       if (typeof test !== 'string') {
@@ -52,7 +61,7 @@ class RuleTester extends TSESLint.RuleTester {
           throw new Error(errorMessage);
         }
         if (!test.filename) {
-          test.filename = this.filename;
+          test.filename = this.getFilename(test.parserOptions);
         }
       }
     });
@@ -61,7 +70,7 @@ class RuleTester extends TSESLint.RuleTester {
         throw new Error(errorMessage);
       }
       if (!test.filename) {
-        test.filename = this.filename;
+        test.filename = this.getFilename(test.parserOptions);
       }
     });
 

@@ -9,6 +9,7 @@ export interface Extra {
   errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
   errorOnUnknownASTType: boolean;
   extraFileExtensions: string[];
+  filePath: string;
   jsx: boolean;
   loc: boolean;
   log: Function;

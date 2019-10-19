@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
-import { parseAndGenerateServices } from '../../src/parser';
-import { clearCaches } from '../../src/tsconfig-parser';
+import { clearCaches, parseAndGenerateServices } from '../../src/parser';
 
 const tsConfigExcludeBar = {
   include: ['./*.ts'],
