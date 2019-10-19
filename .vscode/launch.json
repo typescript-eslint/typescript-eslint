@@ -35,6 +35,22 @@
         "sourceMaps": true,
         "console": "integratedTerminal",
         "internalConsoleOptions": "neverOpen"
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Run currently opened parser test",
+        "cwd": "${workspaceFolder}/packages/parser/",
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+        "args": [
+            "--runInBand",
+            "--no-cache",
+            "--no-coverage",
+            "${relativeFile}"
+        ],
+        "sourceMaps": true,
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
       }
   ]
 }
