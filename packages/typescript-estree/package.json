@@ -39,7 +39,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "chokidar": "^3.0.2",
     "debug": "^4.1.1",
     "glob": "^7.1.4",
     "is-glob": "^4.0.1",
