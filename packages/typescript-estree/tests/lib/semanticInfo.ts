@@ -236,7 +236,7 @@ describe('semanticInfo', () => {
         `function M() { return Base }`,
         createOptions('<input>'),
       ),
-    ).toThrow(/The file does not match your project config: <input>/);
+    ).toThrow(/The file does not match your project config: estree.ts/);
   });
 
   it('non-existent project file', () => {
