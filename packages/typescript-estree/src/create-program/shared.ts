@@ -18,10 +18,29 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   // extendedDiagnostics: true,
 };
 
-function getTsconfigPath(tsconfigPath: string, extra: Extra): string {
-  return path.isAbsolute(tsconfigPath)
-    ? tsconfigPath
-    : path.join(extra.tsconfigRootDir || process.cwd(), tsconfigPath);
+// This narrows the type so we can be sure we're passing canonical names in the correct places
+type CanonicalPath = string & { __brand: unknown };
+const getCanonicalFileName = ts.sys.useCaseSensitiveFileNames
+  ? (path: string): CanonicalPath => path as CanonicalPath
+  : (path: string): CanonicalPath => path.toLowerCase() as CanonicalPath;
+
+function getTsconfigPath(tsconfigPath: string, extra: Extra): CanonicalPath {
+  return getCanonicalFileName(
+    path.isAbsolute(tsconfigPath)
+      ? tsconfigPath
+      : path.join(extra.tsconfigRootDir || process.cwd(), tsconfigPath),
+  );
 }
 
-export { ASTAndProgram, DEFAULT_COMPILER_OPTIONS, getTsconfigPath };
+function canonicalDirname(p: CanonicalPath): CanonicalPath {
+  return path.dirname(p) as CanonicalPath;
+}
+
+export {
+  ASTAndProgram,
+  canonicalDirname,
+  CanonicalPath,
+  DEFAULT_COMPILER_OPTIONS,
+  getCanonicalFileName,
+  getTsconfigPath,
+};

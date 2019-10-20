@@ -4,7 +4,13 @@ import path from 'path';
 import ts from 'typescript';
 import { Extra } from '../parser-options';
 import { WatchCompilerHostOfConfigFile } from '../WatchCompilerHostOfConfigFile';
-import { getTsconfigPath, DEFAULT_COMPILER_OPTIONS } from './shared';
+import {
+  canonicalDirname,
+  CanonicalPath,
+  getTsconfigPath,
+  DEFAULT_COMPILER_OPTIONS,
+  getCanonicalFileName,
+} from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
 
@@ -12,7 +18,7 @@ const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
  * Maps tsconfig paths to their corresponding file contents and resulting watches
  */
 const knownWatchProgramMap = new Map<
-  string,
+  CanonicalPath,
   ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>
 >();
 
@@ -21,25 +27,25 @@ const knownWatchProgramMap = new Map<
  * There may be more than one per file/folder if a file/folder is shared between projects
  */
 const fileWatchCallbackTrackingMap = new Map<
-  string,
+  CanonicalPath,
   Set<ts.FileWatcherCallback>
 >();
 const folderWatchCallbackTrackingMap = new Map<
-  string,
+  CanonicalPath,
   Set<ts.FileWatcherCallback>
 >();
 
 /**
  * Stores the list of known files for each program
  */
-const programFileListCache = new Map<string, Set<string>>();
+const programFileListCache = new Map<CanonicalPath, Set<string>>();
 
 /**
  * Caches the last modified time of the tsconfig files
  */
-const tsconfigLsatModifiedTimestampCache = new Map<string, number>();
+const tsconfigLastModifiedTimestampCache = new Map<CanonicalPath, number>();
 
-const parsedFilesSeen = new Set<string>();
+const parsedFilesSeen = new Set<CanonicalPath>();
 
 /**
  * Clear all of the parser caches.
@@ -51,7 +57,7 @@ function clearCaches(): void {
   folderWatchCallbackTrackingMap.clear();
   parsedFilesSeen.clear();
   programFileListCache.clear();
-  tsconfigLsatModifiedTimestampCache.clear();
+  tsconfigLastModifiedTimestampCache.clear();
 }
 
 function saveWatchCallback(
@@ -61,7 +67,7 @@ function saveWatchCallback(
     fileName: string,
     callback: ts.FileWatcherCallback,
   ): ts.FileWatcher => {
-    const normalizedFileName = path.normalize(fileName);
+    const normalizedFileName = getCanonicalFileName(path.normalize(fileName));
     const watchers = ((): Set<ts.FileWatcherCallback> => {
       let watchers = trackingMap.get(normalizedFileName);
       if (!watchers) {
@@ -83,9 +89,9 @@ function saveWatchCallback(
 /**
  * Holds information about the file currently being linted
  */
-const currentLintOperationState = {
+const currentLintOperationState: { code: string; filePath: CanonicalPath } = {
   code: '',
-  filePath: '',
+  filePath: '' as CanonicalPath,
 };
 
 /**
@@ -101,16 +107,17 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
 /**
  * Calculate project environments using options provided by consumer and paths from config
  * @param code The code being linted
- * @param filePath The path of the file being parsed
+ * @param filePathIn The path of the file being parsed
  * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
  * @param extra.projects Provided tsconfig paths
  * @returns The programs corresponding to the supplied tsconfig paths
  */
 function getProgramsForProjects(
   code: string,
-  filePath: string,
+  filePathIn: string,
   extra: Extra,
 ): ts.Program[] {
+  const filePath = getCanonicalFileName(filePathIn);
   const results = [];
 
   // preserve reference to code and file being linted
@@ -215,7 +222,8 @@ function createWatchProgram(
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
-  watchCompilerHost.readFile = (filePath, encoding): string | undefined => {
+  watchCompilerHost.readFile = (filePathIn, encoding): string | undefined => {
+    const filePath = getCanonicalFileName(filePathIn);
     parsedFilesSeen.add(filePath);
     return path.normalize(filePath) ===
       path.normalize(currentLintOperationState.filePath)
@@ -297,14 +305,14 @@ function createWatchProgram(
   return ts.createWatchProgram(watchCompilerHost);
 }
 
-function hasTSConfigChanged(tsconfigPath: string): boolean {
+function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
   const stat = fs.statSync(tsconfigPath);
   const lastModifiedAt = stat.mtimeMs;
-  const cachedLastModifiedAt = tsconfigLsatModifiedTimestampCache.get(
+  const cachedLastModifiedAt = tsconfigLastModifiedTimestampCache.get(
     tsconfigPath,
   );
 
-  tsconfigLsatModifiedTimestampCache.set(tsconfigPath, lastModifiedAt);
+  tsconfigLastModifiedTimestampCache.set(tsconfigPath, lastModifiedAt);
 
   if (cachedLastModifiedAt === undefined) {
     return false;
@@ -315,8 +323,8 @@ function hasTSConfigChanged(tsconfigPath: string): boolean {
 
 function maybeInvalidateProgram(
   existingWatch: ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>,
-  filePath: string,
-  tsconfigPath: string,
+  filePath: CanonicalPath,
+  tsconfigPath: CanonicalPath,
 ): ts.Program | null {
   /*
    * By calling watchProgram.getProgram(), it will trigger a resync of the program based on
@@ -355,21 +363,22 @@ function maybeInvalidateProgram(
   log('File was not found in program - triggering folder update. %s', filePath);
 
   // Find the correct directory callback by climbing the folder tree
-  let current: string | null = null;
-  let next: string | null = path.dirname(filePath);
+  const currentDir = canonicalDirname(filePath);
+  let current: CanonicalPath | null = null;
+  let next = currentDir;
   let hasCallback = false;
   while (current !== next) {
     current = next;
     const folderWatchCallbacks = folderWatchCallbackTrackingMap.get(current);
     if (folderWatchCallbacks) {
       folderWatchCallbacks.forEach(cb =>
-        cb(current!, ts.FileWatcherEventKind.Changed),
+        cb(currentDir, ts.FileWatcherEventKind.Changed),
       );
       hasCallback = true;
       break;
     }
 
-    next = path.dirname(current);
+    next = canonicalDirname(current);
   }
   if (!hasCallback) {
     /*
@@ -410,7 +419,9 @@ function maybeInvalidateProgram(
     return null;
   }
 
-  const fileWatchCallbacks = fileWatchCallbackTrackingMap.get(deletedFile);
+  const fileWatchCallbacks = fileWatchCallbackTrackingMap.get(
+    getCanonicalFileName(deletedFile),
+  );
   if (!fileWatchCallbacks) {
     // shouldn't happen, but just in case
     log('Could not find watch callbacks for root file. %s', deletedFile);
