@@ -38,7 +38,7 @@ const folderWatchCallbackTrackingMap = new Map<
 /**
  * Stores the list of known files for each program
  */
-const programFileListCache = new Map<CanonicalPath, Set<string>>();
+const programFileListCache = new Map<CanonicalPath, Set<CanonicalPath>>();
 
 /**
  * Caches the last modified time of the tsconfig files
@@ -152,7 +152,9 @@ function getProgramsForProjects(
     let updatedProgram: ts.Program | null = null;
     if (!fileList) {
       updatedProgram = existingWatch.getProgram().getProgram();
-      fileList = new Set(updatedProgram.getRootFileNames());
+      fileList = new Set(
+        updatedProgram.getRootFileNames().map(f => getCanonicalFileName(f)),
+      );
       programFileListCache.set(tsconfigPath, fileList);
     }
 
