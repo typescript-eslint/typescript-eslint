@@ -224,7 +224,11 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
 }
 
 function warnAboutTSVersion(): void {
-  if (!isRunningSupportedTypeScriptVersion && !warnedAboutTSVersion) {
+  if (
+    !isRunningSupportedTypeScriptVersion &&
+    !warnedAboutTSVersion &&
+    process.stdout.isTTY
+  ) {
     const border = '=============';
     const versionWarning = [
       border,
