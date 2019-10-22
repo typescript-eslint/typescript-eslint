@@ -12,6 +12,8 @@ function createSourceFile(code: string, extra: Extra): ts.SourceFile {
     code,
     ts.ScriptTarget.Latest,
     /* setParentNodes */ true,
+    // force typescript to ignore the file extension
+    extra.jsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
   );
 }
 

@@ -12,3 +12,6 @@ docker-compose -f tests/integration/docker-compose.yml up --build --abort-on-con
 
 # recommended-does-not-require-program
 docker-compose -f tests/integration/docker-compose.yml up --build --abort-on-container-exit recommended-does-not-require-program
+
+# markdown
+docker-compose -f tests/integration/docker-compose.yml up --build --abort-on-container-exit markdown

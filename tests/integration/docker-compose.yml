@@ -3,7 +3,7 @@ version: '3'
 services:
   typescript-and-tslint-plugins-together:
     build: ./fixtures/typescript-and-tslint-plugins-together
-    container_name: "typescript-and-tslint-plugins-together"
+    container_name: 'typescript-and-tslint-plugins-together'
     volumes:
       # Runtime link to the relevant built @typescript-eslint packages and integration test utils,
       # but apply an empty volume for the package tests, we don't need those.
@@ -22,7 +22,7 @@ services:
 
   vue-sfc:
     build: ./fixtures/vue-sfc
-    container_name: "vue-sfc"
+    container_name: 'vue-sfc'
     volumes:
       # Runtime link to the relevant built @typescript-eslint packages and integration test utils,
       # but apply an empty volume for the package tests, we don't need those.
@@ -39,7 +39,7 @@ services:
 
   recommended-does-not-require-program:
     build: ./fixtures/recommended-does-not-require-program
-    container_name: "recommended-does-not-require-program"
+    container_name: 'recommended-does-not-require-program'
     volumes:
       # Runtime link to the relevant built @typescript-eslint packages and integration test utils,
       # but apply an empty volume for the package tests, we don't need those.
@@ -53,3 +53,20 @@ services:
       - /usr/eslint-plugin/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/recommended-does-not-require-program:/usr/linked
+
+  markdown:
+    build: ./fixtures/markdown
+    container_name: 'markdown'
+    volumes:
+      # Runtime link to the relevant built @typescript-eslint packages and integration test utils,
+      # but apply an empty volume for the package tests, we don't need those.
+      - ../../package.json/:/usr/root-package.json
+      - ./utils/:/usr/utils
+      - ../../packages/parser/:/usr/parser
+      - /usr/parser/tests
+      - ../../packages/typescript-estree/:/usr/typescript-estree
+      - /usr/typescript-estree/tests
+      - ../../packages/eslint-plugin/:/usr/eslint-plugin
+      - /usr/eslint-plugin/tests
+      # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
+      - ./fixtures/markdown:/usr/linked
