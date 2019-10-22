@@ -14,6 +14,9 @@ npm install $(npm pack /usr/eslint-plugin | tail -1)
 # Install the latest vue-eslint-parser (this may break us occassionally, but it's probably good to get that feedback early)
 npm install vue-eslint-parser@latest
 
+# Install the latest eslint-plugin-vue (this may break us occassionally, but it's probably good to get that feedback early)
+npm install eslint-plugin-vue@latest
+
 # Run the linting
 # (the "|| true" helps make sure that we run our tests on failed linting runs as well)
 npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.yml /usr/linked/**/*.vue || true
