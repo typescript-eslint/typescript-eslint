@@ -612,41 +612,6 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
   return result;
 }
 
-/**
- * Get container token node between range
- * @param ast the AST object
- * @param start The index at which the comment starts.
- * @param end The index at which the comment ends.
- * @returns typescript container token
- * @private
- */
-export function getNodeContainer(
-  ast: ts.SourceFile,
-  start: number,
-  end: number,
-): ts.Node | null {
-  let container: ts.Node | null = null;
-
-  /**
-   * @param node the ts.Node
-   */
-  function walk(node: ts.Node): void {
-    const nodeStart = node.pos;
-    const nodeEnd = node.end;
-
-    if (start >= nodeStart && end <= nodeEnd) {
-      if (isToken(node)) {
-        container = node;
-      } else {
-        node.getChildren().forEach(walk);
-      }
-    }
-  }
-  walk(ast);
-
-  return container;
-}
-
 export interface TSError {
   index: number;
   lineNumber: number;
