@@ -254,7 +254,10 @@ describe('semanticInfo', () => {
     badConfig.project = '.';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
-    ).toThrow(/File .+semanticInfo' not found/);
+    ).toThrow(
+      // case insensitive because unix based systems are case insensitive
+      /File .+semanticInfo' not found/i,
+    );
   });
 
   it('malformed project file', () => {
