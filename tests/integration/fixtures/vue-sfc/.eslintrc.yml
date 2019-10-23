@@ -15,8 +15,6 @@ parserOptions:
   project: /usr/linked/tsconfig.json
   sourceType: module
   extraFileExtensions: ['.vue']
-  ecmaFeatures:
-    jsx: true
 
 plugins:
 # Local version of @typescript-eslint/eslint-plugin
