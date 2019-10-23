@@ -40,12 +40,16 @@ function renameFile(dirName: string, src: 'bar', dest: 'baz/bar'): void {
   );
 }
 
-function setup(tsconfig: Record<string, unknown>, writeBar = true): string {
+function createTmpDir(): tmp.DirResult {
   const tmpDir = tmp.dirSync({
     keep: false,
     unsafeCleanup: true,
   });
   tmpDirs.add(tmpDir);
+  return tmpDir;
+}
+function setup(tsconfig: Record<string, unknown>, writeBar = true): string {
+  const tmpDir = createTmpDir();
 
   writeTSConfig(tmpDir.name, tsconfig);
 
@@ -141,4 +145,34 @@ describe('persistent lint session', () => {
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
     expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
   });
+
+  it('handles tsconfigs with no includes/excludes (single level)', () => {
+    const PROJECT_DIR = setup({}, false);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, 'bar');
+
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  it('handles tsconfigs with no includes/excludes (nested)', () => {
+    const PROJECT_DIR = setup({}, false);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).toThrow();
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, 'baz/bar');
+
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  // TODO - support the complex monorepo case with a tsconfig with no include/exclude
 });
