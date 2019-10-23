@@ -1,20 +1,20 @@
 import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
-import { parseAndGenerateServices } from '../../src/parser';
-import { clearCaches } from '../../src/tsconfig-parser';
+import { clearCaches, parseAndGenerateServices } from '../../src/parser';
 
 const tsConfigExcludeBar = {
-  include: ['./*.ts'],
-  exclude: ['./bar.ts'],
+  include: ['src'],
+  exclude: ['./src/bar.ts'],
 };
 const tsConfigIncludeAll = {
-  include: ['./*.ts'],
+  include: ['src'],
   exclude: [],
 };
 const CONTENTS = {
   foo: 'console.log("foo")',
   bar: 'console.log("bar")',
+  'baz/bar': 'console.log("baz bar")',
 };
 
 const tmpDirs = new Set<tmp.DirResult>();
@@ -27,56 +27,46 @@ afterEach(() => {
   tmpDirs.clear();
 });
 
-function writeTSConfig(
-  dirName: string,
-  config: Record<string, string[]>,
-): void {
+function writeTSConfig(dirName: string, config: Record<string, unknown>): void {
   fs.writeFileSync(path.join(dirName, 'tsconfig.json'), JSON.stringify(config));
 }
-function writeFile(dirName: string, file: 'foo' | 'bar'): void {
-  fs.writeFileSync(path.join(dirName, `${file}.ts`), CONTENTS[file]);
+function writeFile(dirName: string, file: 'foo' | 'bar' | 'baz/bar'): void {
+  fs.writeFileSync(path.join(dirName, 'src', `${file}.ts`), CONTENTS[file]);
+}
+function renameFile(dirName: string, src: 'bar', dest: 'baz/bar'): void {
+  fs.renameSync(
+    path.join(dirName, 'src', `${src}.ts`),
+    path.join(dirName, 'src', `${dest}.ts`),
+  );
 }
 
-function setup(tsconfig: Record<string, string[]>, writeBar = true): string {
+function createTmpDir(): tmp.DirResult {
   const tmpDir = tmp.dirSync({
     keep: false,
     unsafeCleanup: true,
   });
   tmpDirs.add(tmpDir);
+  return tmpDir;
+}
+function setup(tsconfig: Record<string, unknown>, writeBar = true): string {
+  const tmpDir = createTmpDir();
 
   writeTSConfig(tmpDir.name, tsconfig);
 
+  fs.mkdirSync(path.join(tmpDir.name, 'src'));
+  fs.mkdirSync(path.join(tmpDir.name, 'src', 'baz'));
   writeFile(tmpDir.name, 'foo');
   writeBar && writeFile(tmpDir.name, 'bar');
 
   return tmpDir.name;
 }
 
-function parseFile(filename: 'foo' | 'bar', tmpDir: string): void {
+function parseFile(filename: 'foo' | 'bar' | 'baz/bar', tmpDir: string): void {
   parseAndGenerateServices(CONTENTS.foo, {
     project: './tsconfig.json',
     tsconfigRootDir: tmpDir,
-    filePath: path.join(tmpDir, `${filename}.ts`),
+    filePath: path.join(tmpDir, 'src', `${filename}.ts`),
   });
-}
-
-// https://github.com/microsoft/TypeScript/blob/a4bacf3bfaf77213c1ef4ddecaf3689837e20ac5/src/compiler/sys.ts#L46-L50
-enum PollingInterval {
-  High = 2000,
-  Medium = 500,
-  Low = 250,
-}
-async function runTimer(interval: PollingInterval): Promise<void> {
-  // would love to use jest fake timers, but ts stores references to the standard timeout functions
-  // so we can't switch to fake timers on the fly :(
-  await new Promise((resolve): void => {
-    setTimeout(resolve, interval);
-  });
-}
-async function waitForChokidar(): Promise<void> {
-  // wait for chokidar to be ready
-  // this isn't won't be a problem when running the eslint CLI in watch mode because the init takes a few hundred ms
-  await runTimer(PollingInterval.Medium);
 }
 
 describe('persistent lint session', () => {
@@ -94,26 +84,7 @@ describe('persistent lint session', () => {
     expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
   });
 
-  it('reacts to changes in the tsconfig', async () => {
-    const PROJECT_DIR = setup(tsConfigExcludeBar);
-
-    // parse once to: assert the config as correct, and to make sure the program is setup
-    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-    expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
-
-    await waitForChokidar();
-
-    // change the config file so it now includes all files
-    writeTSConfig(PROJECT_DIR, tsConfigIncludeAll);
-
-    // wait for TS to pick up the change to the config file
-    await runTimer(PollingInterval.High);
-
-    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-    expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
-  });
-
-  it('allows parsing of new files', async () => {
+  it('allows parsing of new files', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll, false);
 
     // parse once to: assert the config as correct, and to make sure the program is setup
@@ -121,16 +92,87 @@ describe('persistent lint session', () => {
     // bar should throw because it doesn't exist yet
     expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
 
-    await waitForChokidar();
-
     // write a new file and attempt to parse it
     writeFile(PROJECT_DIR, 'bar');
-
-    // wait for TS to pick up the new file
-    await runTimer(PollingInterval.Medium);
 
     // both files should parse fine now
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
     expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
   });
+
+  it('allows parsing of deeply nested new files', () => {
+    const PROJECT_DIR = setup(tsConfigIncludeAll, false);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    // bar should throw because it doesn't exist yet
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).toThrow();
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, 'baz/bar');
+
+    // both files should parse fine now
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  it('allows renaming of files', () => {
+    const PROJECT_DIR = setup(tsConfigIncludeAll, true);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    // bar should throw because it doesn't exist yet
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).toThrow();
+
+    // write a new file and attempt to parse it
+    renameFile(PROJECT_DIR, 'bar', 'baz/bar');
+
+    // both files should parse fine now
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  it('reacts to changes in the tsconfig', () => {
+    const PROJECT_DIR = setup(tsConfigExcludeBar);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
+
+    // change the config file so it now includes all files
+    writeTSConfig(PROJECT_DIR, tsConfigIncludeAll);
+
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  it('handles tsconfigs with no includes/excludes (single level)', () => {
+    const PROJECT_DIR = setup({}, false);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, 'bar');
+
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  it('handles tsconfigs with no includes/excludes (nested)', () => {
+    const PROJECT_DIR = setup({}, false);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).toThrow();
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, 'baz/bar');
+
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  // TODO - support the complex monorepo case with a tsconfig with no include/exclude
 });
