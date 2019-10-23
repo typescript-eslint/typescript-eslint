@@ -10,7 +10,11 @@ const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
  * @returns Returns a new source file and program corresponding to the linted code
  */
 function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
-  log('Getting isolated program for: %s', extra.filePath);
+  log(
+    'Getting isolated program in %s mode for: %s',
+    extra.jsx ? 'TSX' : 'TS',
+    extra.filePath,
+  );
 
   const compilerHost: ts.CompilerHost = {
     fileExists() {
@@ -34,7 +38,14 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
       return '\n';
     },
     getSourceFile(filename: string) {
-      return ts.createSourceFile(filename, code, ts.ScriptTarget.Latest, true);
+      return ts.createSourceFile(
+        filename,
+        code,
+        ts.ScriptTarget.Latest,
+        true,
+        // force typescript to ignore the file extension
+        extra.jsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+      );
     },
     readFile() {
       return undefined;

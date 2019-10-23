@@ -20,7 +20,7 @@ function MyComp() {
 
 expected no-explicit-any error:
 expected no-console error:
-```tsx
+```jsx
 import { Button } from 'antd';
 
 function MyComp(): any {
@@ -46,7 +46,25 @@ function foo() {
 
 expected no-explicit-any error:
 expected no-console error:
-```ts
+```js
+function foo(): any {
+  console.log('test');
+}
+```
+
+
+expected no-explicit-any error:
+expected no-console error:
+```javascript
+function foo(): any {
+  console.log('test');
+}
+```
+
+
+expected no-explicit-any error:
+expected no-console error:
+```node
 function foo(): any {
   console.log('test');
 }
