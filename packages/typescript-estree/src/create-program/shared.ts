@@ -42,23 +42,23 @@ function getScriptKind(
   extra: Extra,
   filePath: string = extra.filePath,
 ): ts.ScriptKind {
-  const extension = path.extname(filePath);
+  const extension = path.extname(filePath).toLowerCase();
   // note - we respect the user's extension when it is known  we could override it and force it to match their
   // jsx setting, but that could create weird situations where we throw parse errors when TSC doesn't
-  switch (extension.toLowerCase()) {
-    case 'ts':
+  switch (extension) {
+    case '.ts':
       return ts.ScriptKind.TS;
 
-    case 'tsx':
+    case '.tsx':
       return ts.ScriptKind.TSX;
 
-    case 'js':
+    case '.js':
       return ts.ScriptKind.JS;
 
-    case 'jsx':
+    case '.jsx':
       return ts.ScriptKind.JSX;
 
-    case 'json':
+    case '.json':
       return ts.ScriptKind.JSON;
 
     default:
