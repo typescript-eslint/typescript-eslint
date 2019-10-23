@@ -1,7 +1,11 @@
 import debug from 'debug';
 import ts from 'typescript';
 import { Extra } from '../parser-options';
-import { ASTAndProgram, DEFAULT_COMPILER_OPTIONS } from './shared';
+import {
+  ASTAndProgram,
+  DEFAULT_COMPILER_OPTIONS,
+  getScriptKind,
+} from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
 
@@ -43,8 +47,7 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
         code,
         ts.ScriptTarget.Latest,
         true,
-        // force typescript to ignore the file extension
-        extra.jsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+        getScriptKind(extra, filename),
       );
     },
     readFile() {
