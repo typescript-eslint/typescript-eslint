@@ -926,6 +926,7 @@ export class Converter {
           computed: isComputedProperty(node.name),
           static: hasModifier(SyntaxKind.StaticKeyword, node),
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
+          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
         });
 
         if (node.type) {

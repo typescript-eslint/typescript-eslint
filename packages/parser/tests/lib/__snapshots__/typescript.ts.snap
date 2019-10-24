@@ -932,6 +932,171 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/abstract-class-with-declare-properties.src 1`] = `
+Object {
+  "$id": 4,
+  "block": Object {
+    "range": Array [
+      0,
+      230,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 3,
+      "block": Object {
+        "range": Array [
+          0,
+          230,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 2,
+          "block": Object {
+            "range": Array [
+              0,
+              229,
+            ],
+            "type": "ClassDeclaration",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "class",
+          "upperScope": Object {
+            "$ref": 3,
+          },
+          "variableMap": Object {
+            "AbstractDeclProps": Object {
+              "$ref": 1,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 3,
+          },
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "AbstractDeclProps",
+                    "range": Array [
+                      15,
+                      32,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      0,
+                      229,
+                    ],
+                    "type": "ClassDeclaration",
+                  },
+                  "parent": undefined,
+                  "type": "ClassName",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "AbstractDeclProps",
+                  "range": Array [
+                    15,
+                    32,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "AbstractDeclProps",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 2,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 4,
+      },
+      "variableMap": Object {
+        "AbstractDeclProps": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 3,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "AbstractDeclProps",
+                "range": Array [
+                  15,
+                  32,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  229,
+                ],
+                "type": "ClassDeclaration",
+              },
+              "parent": null,
+              "type": "ClassName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "AbstractDeclProps",
+              "range": Array [
+                15,
+                32,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "AbstractDeclProps",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 3,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 4,
+  },
+  "variables": Array [],
+}
+`;
+
 exports[`typescript fixtures/basics/abstract-class-with-optional-method.src 1`] = `
 Object {
   "$id": 4,
@@ -4600,6 +4765,171 @@ Object {
   "variableMap": Object {},
   "variableScope": Object {
     "$ref": 8,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/class-with-declare-properties.src 1`] = `
+Object {
+  "$id": 4,
+  "block": Object {
+    "range": Array [
+      0,
+      271,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 3,
+      "block": Object {
+        "range": Array [
+          0,
+          271,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 2,
+          "block": Object {
+            "range": Array [
+              0,
+              270,
+            ],
+            "type": "ClassDeclaration",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "class",
+          "upperScope": Object {
+            "$ref": 3,
+          },
+          "variableMap": Object {
+            "DeclProps": Object {
+              "$ref": 1,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 3,
+          },
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "DeclProps",
+                    "range": Array [
+                      6,
+                      15,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      0,
+                      270,
+                    ],
+                    "type": "ClassDeclaration",
+                  },
+                  "parent": undefined,
+                  "type": "ClassName",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "DeclProps",
+                  "range": Array [
+                    6,
+                    15,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "DeclProps",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 2,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 4,
+      },
+      "variableMap": Object {
+        "DeclProps": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 3,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "DeclProps",
+                "range": Array [
+                  6,
+                  15,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  270,
+                ],
+                "type": "ClassDeclaration",
+              },
+              "parent": null,
+              "type": "ClassName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "DeclProps",
+              "range": Array [
+                6,
+                15,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "DeclProps",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 3,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 4,
   },
   "variables": Array [],
 }
