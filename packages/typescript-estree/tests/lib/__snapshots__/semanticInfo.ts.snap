@@ -1254,6 +1254,7 @@ Object {
         "body": Array [
           Object {
             "computed": true,
+            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
