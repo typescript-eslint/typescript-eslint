@@ -59,5 +59,13 @@ export default Vue.extend({
 ",
     "warningCount": 0,
   },
+  Object {
+    "errorCount": 0,
+    "filePath": "/usr/linked/World.vue",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [],
+    "warningCount": 0,
+  },
 ]
 `;

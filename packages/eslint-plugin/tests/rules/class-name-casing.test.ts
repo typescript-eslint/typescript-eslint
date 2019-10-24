@@ -18,11 +18,22 @@ ruleTester.run('class-name-casing', rule, {
       code: 'class _NameWithUnderscore {}',
       options: [{ allowUnderscorePrefix: true }],
     },
+    {
+      code: 'class Foo {}',
+      options: [{ allowUnderscorePrefix: true }],
+    },
+    {
+      code: 'class _ÈFoo {}',
+      options: [{ allowUnderscorePrefix: true }],
+    },
     'var Foo = class {};',
     'interface SomeInterface {}',
     'class ClassNameWithDigit2 {}',
     'abstract class ClassNameWithDigit2 {}',
     'var ba_zz = class Foo {};',
+    'class ClassNameWithUnicodeÈ {}',
+    'class ÈClassNameWithUnicode {}',
+    'class ClassNameWithæUnicode {}',
   ],
 
   invalid: [
@@ -149,6 +160,20 @@ ruleTester.run('class-name-casing', rule, {
           },
           line: 1,
           column: 15,
+        },
+      ],
+    },
+    {
+      code: `class æInvalidClassNameWithUnicode {}`,
+      errors: [
+        {
+          messageId: 'notPascalCased',
+          data: {
+            friendlyName: 'Class',
+            name: 'æInvalidClassNameWithUnicode',
+          },
+          line: 1,
+          column: 7,
         },
       ],
     },

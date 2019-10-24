@@ -322,6 +322,18 @@ const func = (value: number) => x as const;
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+new Promise(resolve => {});
+new Foo(1, () => {});
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {

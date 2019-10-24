@@ -31,6 +31,8 @@ function parseWithBabelParser(text: string, jsx = true): any {
     'estree',
     'bigInt',
     'importMeta',
+    'optionalChaining',
+    'nullishCoalescingOperator',
   ];
   if (jsx) {
     plugins.push('jsx');
