@@ -1691,16 +1691,19 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAccessExpression: {
-        const isLocallyOptional = node.questionDotToken !== undefined;
         const object = this.convertChild(node.expression);
         const property = this.convertChild(node.name);
         const computed = false;
-        if (
-          isLocallyOptional ||
-          // the optional expression should propogate up the member expression tree
-          object.type === AST_NODE_TYPES.OptionalMemberExpression ||
-          object.type === AST_NODE_TYPES.OptionalCallExpression
-        ) {
+
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        // the optional expression should propogate up the member expression tree
+        const isChildOptional =
+          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
+            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          // (x?.y).z is semantically different, and as such .z is no longer optional
+          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+
+        if (isLocallyOptional || isChildOptional) {
           return this.createNode<TSESTree.OptionalMemberExpression>(node, {
             type: AST_NODE_TYPES.OptionalMemberExpression,
             object,
@@ -1720,16 +1723,19 @@ export class Converter {
       }
 
       case SyntaxKind.ElementAccessExpression: {
-        const isLocallyOptional = node.questionDotToken !== undefined;
         const object = this.convertChild(node.expression);
         const property = this.convertChild(node.argumentExpression);
         const computed = true;
-        if (
-          isLocallyOptional ||
-          // the optional expression should propogate up the member expression tree
-          object.type === AST_NODE_TYPES.OptionalMemberExpression ||
-          object.type === AST_NODE_TYPES.OptionalCallExpression
-        ) {
+
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        // the optional expression should propogate up the member expression tree
+        const isChildOptional =
+          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
+            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          // (x?.y).z is semantically different, and as such .z is no longer optional
+          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+
+        if (isLocallyOptional || isChildOptional) {
           return this.createNode<TSESTree.OptionalMemberExpression>(node, {
             type: AST_NODE_TYPES.OptionalMemberExpression,
             object,
@@ -1749,16 +1755,19 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
-        const isLocallyOptional = node.questionDotToken !== undefined;
         const callee = this.convertChild(node.expression);
         const args = node.arguments.map(el => this.convertChild(el));
         let result;
-        if (
-          isLocallyOptional ||
-          // the optional expression should propogate up the member expression tree
-          callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
-          callee.type === AST_NODE_TYPES.OptionalCallExpression
-        ) {
+
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        // the optional expression should propogate up the member expression tree
+        const isChildOptional =
+          (callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
+            callee.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          // (x?.y).z() is semantically different, and as such .z() is no longer optional
+          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+
+        if (isLocallyOptional || isChildOptional) {
           result = this.createNode<TSESTree.OptionalCallExpression>(node, {
             type: AST_NODE_TYPES.OptionalCallExpression,
             callee,
