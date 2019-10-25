@@ -18,17 +18,17 @@ type Options = [Config];
 
 type MessageIds = 'unbound';
 
-enum MethodsWithThisArg {
-  From = 'from',
-  Every = 'every',
-  Filter = 'filter',
-  Find = 'find',
-  FindIndex = 'findIndex',
-  FlatMap = 'flatMap',
-  ForEach = 'forEach',
-  Map = 'map',
-  Some = 'some',
-}
+const methodsWithThisArg = new Set([
+  'from',
+  'every',
+  'filter',
+  'find',
+  'findIndex',
+  'flatMap',
+  'forEach',
+  'map',
+  'some',
+]);
 
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
@@ -127,7 +127,7 @@ function isSafeUse(node: TSESTree.Node): boolean {
         const method = parent.callee.property.name;
         const args = parent.arguments;
 
-        if (Object.values(MethodsWithThisArg).includes(method)) {
+        if (methodsWithThisArg.has(method)) {
           const thisArg = getThisArgArgument(method, args);
           if (!thisArg) {
             break;
@@ -156,5 +156,5 @@ function isSafeUse(node: TSESTree.Node): boolean {
 }
 
 function getThisArgArgument(method: string, args: TSESTree.Expression[]) {
-  return method === MethodsWithThisArg.From ? args[2] : args[1];
+  return method === 'from' ? args[2] : args[1];
 }

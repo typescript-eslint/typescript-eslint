@@ -15,22 +15,6 @@ const ruleTester = new RuleTester({
 ruleTester.run('unbound-method', rule, {
   valid: [
     `
-class ContainsMethods {
-  bound?: () => void;
-  unbound?(): void;
-
-  static boundStatic?: () => void;
-  static unboundStatic?(): void;
-}
-
-let instance = new ContainsMethods();
-
-instance.bound();
-instance.unbound();
-
-ContainsMethods.boundStatic();
-ContainsMethods.unboundStatic();
-
 class A {
     visit(node: any): void {}
     foo(nodes: any[]) {
