@@ -255,7 +255,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      Program() {
+      Program(): void {
         findVariablesInScope(context.getScope());
       },
     };

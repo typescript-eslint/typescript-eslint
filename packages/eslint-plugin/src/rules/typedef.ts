@@ -55,7 +55,7 @@ export default util.createRule<[Options], MessageIds>({
     },
   ],
   create(context, [options]) {
-    function report(location: TSESTree.Node, name?: string) {
+    function report(location: TSESTree.Node, name?: string): void {
       context.report({
         node: location,
         messageId: name ? 'expectedTypedefNamed' : 'expectedTypedef',
@@ -63,11 +63,13 @@ export default util.createRule<[Options], MessageIds>({
       });
     }
 
-    function getNodeName(node: TSESTree.Parameter | TSESTree.PropertyName) {
+    function getNodeName(
+      node: TSESTree.Parameter | TSESTree.PropertyName,
+    ): string | undefined {
       return node.type === AST_NODE_TYPES.Identifier ? node.name : undefined;
     }
 
-    function checkParameters(params: TSESTree.Parameter[]) {
+    function checkParameters(params: TSESTree.Parameter[]): void {
       for (const param of params) {
         let annotationNode: TSESTree.Node | undefined;
 
@@ -77,6 +79,15 @@ export default util.createRule<[Options], MessageIds>({
             break;
           case AST_NODE_TYPES.TSParameterProperty:
             annotationNode = param.parameter;
+
+            // Check TS parameter property with default value like `constructor(private param: string = 'something') {}`
+            if (
+              annotationNode &&
+              annotationNode.type === AST_NODE_TYPES.AssignmentPattern
+            ) {
+              annotationNode = annotationNode.left;
+            }
+
             break;
           default:
             annotationNode = param;
@@ -90,17 +101,17 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     return {
-      ArrayPattern(node) {
+      ArrayPattern(node): void {
         if (options[OptionKeys.ArrayDestructuring] && !node.typeAnnotation) {
           report(node);
         }
       },
-      ArrowFunctionExpression(node) {
+      ArrowFunctionExpression(node): void {
         if (options[OptionKeys.ArrowParameter]) {
           checkParameters(node.params);
         }
       },
-      ClassProperty(node) {
+      ClassProperty(node): void {
         if (
           options[OptionKeys.MemberVariableDeclaration] &&
           !node.typeAnnotation
@@ -115,19 +126,19 @@ export default util.createRule<[Options], MessageIds>({
       },
       'FunctionDeclaration, FunctionExpression'(
         node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
-      ) {
+      ): void {
         if (options[OptionKeys.Parameter]) {
           checkParameters(node.params);
         }
       },
-      ObjectPattern(node) {
+      ObjectPattern(node): void {
         if (options[OptionKeys.ObjectDestructuring] && !node.typeAnnotation) {
           report(node);
         }
       },
       'TSIndexSignature, TSPropertySignature'(
         node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
-      ) {
+      ): void {
         if (options[OptionKeys.PropertyDeclaration] && !node.typeAnnotation) {
           report(
             node,
@@ -137,38 +148,37 @@ export default util.createRule<[Options], MessageIds>({
           );
         }
       },
-      VariableDeclarator(node) {
+      VariableDeclarator(node): void {
         if (
-          options[OptionKeys.VariableDeclaration] &&
-          !node.id.typeAnnotation
+          !options[OptionKeys.VariableDeclaration] ||
+          node.id.typeAnnotation ||
+          (node.id.type === AST_NODE_TYPES.ArrayPattern &&
+            !options[OptionKeys.ArrayDestructuring]) ||
+          (node.id.type === AST_NODE_TYPES.ObjectPattern &&
+            !options[OptionKeys.ObjectDestructuring])
         ) {
-          // Are we inside a context that does not allow type annotations?
-          let typeAnnotationRequired = true;
+          return;
+        }
 
-          let current: TSESTree.Node | undefined = node.parent;
-          while (current) {
-            switch (current.type) {
-              case AST_NODE_TYPES.VariableDeclaration:
-                // Keep looking upwards
-                current = current.parent;
-                break;
-              case AST_NODE_TYPES.ForOfStatement:
-              case AST_NODE_TYPES.ForInStatement:
-                // Stop traversing and don't report an error
-                typeAnnotationRequired = false;
-                current = undefined;
-                break;
-              default:
-                // Stop traversing
-                current = undefined;
-                break;
-            }
-          }
-
-          if (typeAnnotationRequired) {
-            report(node, getNodeName(node.id));
+        let current: TSESTree.Node | undefined = node.parent;
+        while (current) {
+          switch (current.type) {
+            case AST_NODE_TYPES.VariableDeclaration:
+              // Keep looking upwards
+              current = current.parent;
+              break;
+            case AST_NODE_TYPES.ForOfStatement:
+            case AST_NODE_TYPES.ForInStatement:
+              // Stop traversing and don't report an error
+              return;
+            default:
+              // Stop traversing
+              current = undefined;
+              break;
           }
         }
+
+        report(node, getNodeName(node.id));
       },
     };
   },

@@ -54,14 +54,26 @@ instance.unbound\`\`;
 if (instance.bound) { }
 if (instance.unbound) { }
 
+if (instance.bound !== undefined) { }
+if (instance.unbound !== undefined) { }
+
 if (ContainsMethods.boundStatic) { }
 if (ContainsMethods.unboundStatic) { }
+
+if (ContainsMethods.boundStatic !== undefined) { }
+if (ContainsMethods.unboundStatic !== undefined) { }
 
 while (instance.bound) { }
 while (instance.unbound) { }
 
+while (instance.bound !== undefined) { }
+while (instance.unbound !== undefined) { }
+
 while (ContainsMethods.boundStatic) { }
 while (ContainsMethods.unboundStatic) { }
+
+while (ContainsMethods.boundStatic !== undefined) { }
+while (ContainsMethods.unboundStatic !== undefined) { }
 
 instance.bound as any;
 ContainsMethods.boundStatic as any;
@@ -99,6 +111,12 @@ instane.boundStatic && 0;
 
 ContainsMethods.boundStatic ? 1 : 0;
 ContainsMethods.unboundStatic ? 1 : 0;
+
+typeof instance.bound === 'function';
+typeof instance.unbound === 'function';
+
+typeof ContainsMethods.boundStatic === 'function';
+typeof ContainsMethods.unboundStatic === 'function';
     `,
     `interface RecordA {
   readonly type: "A"
