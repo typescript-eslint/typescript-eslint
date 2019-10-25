@@ -608,6 +608,20 @@ tester.addFixturePatternConfig('typescript/basics', {
     'type-assertion-with-guard-in-function',
     'type-assertion-with-guard-in-interface',
     'type-assertion-with-guard-in-method',
+    // declare class properties
+    'abstract-class-with-abstract-properties',
+    'abstract-class-with-abstract-readonly-property',
+    'abstract-class-with-declare-properties',
+    'class-with-declare-properties',
+    'class-with-definite-assignment',
+    'class-with-optional-computed-property',
+    'class-with-optional-properties',
+    'class-with-optional-property-undefined',
+    'class-with-property-function',
+    'class-with-property-values',
+    'class-with-readonly-property',
+    'object-with-escaped-properties',
+    'type-reference-comments',
   ],
   ignoreSourceType: [
     /**
@@ -687,6 +701,9 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
     // optional chaining
     'property-decorator-factory-instance-member',
     'property-decorator-factory-static-member',
+    // declare class properties
+    'property-decorator-instance-member',
+    'property-decorator-static-member',
   ],
 });
 

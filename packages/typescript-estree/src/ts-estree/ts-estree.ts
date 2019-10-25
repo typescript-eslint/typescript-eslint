@@ -472,6 +472,7 @@ interface ClassPropertyBase extends BaseNode {
   value: Expression | null;
   computed: boolean;
   static: boolean;
+  declare: boolean;
   readonly?: boolean;
   decorators?: Decorator[];
   accessibility?: Accessibility;
