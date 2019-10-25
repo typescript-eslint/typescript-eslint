@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import ts from 'typescript';
 import { Extra } from '../parser-options';
-import { WatchCompilerHostOfConfigFile } from '../WatchCompilerHostOfConfigFile';
+import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 import {
   canonicalDirname,
   CanonicalPath,
@@ -160,7 +160,13 @@ function getProgramsForProjects(
 
     if (fileList.has(filePath)) {
       log('Found existing program for file. %s', filePath);
-      return [updatedProgram || existingWatch.getProgram().getProgram()];
+
+      updatedProgram =
+        updatedProgram || existingWatch.getProgram().getProgram();
+      // sets parent pointers in source files
+      updatedProgram.getTypeChecker();
+
+      return [updatedProgram];
     }
   }
   log(
