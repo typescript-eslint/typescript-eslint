@@ -583,8 +583,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     // optional chaining
     'optional-chain',
+    'optional-chain-with-parens',
     'optional-chain-call',
+    'optional-chain-call-with-parens',
     'optional-chain-element-access',
+    'optional-chain-element-access-with-parens',
     'async-function-expression',
     'class-with-accessibility-modifiers',
     'class-with-mixin',
