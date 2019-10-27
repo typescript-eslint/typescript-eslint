@@ -31,9 +31,16 @@ const isPossiblyFalsy = (type: ts.Type): boolean =>
 const isPossiblyTruthy = (type: ts.Type): boolean =>
   unionTypeParts(type).some(type => !isFalsyType(type));
 
+// Nullish utilities
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+const isNullishType = (type: ts.Type): boolean =>
+  isTypeFlagSet(type, nullishFlag);
+
 const isPossiblyNullish = (type: ts.Type): boolean =>
-  unionTypeParts(type).some(type => isTypeFlagSet(type, nullishFlag));
+  unionTypeParts(type).some(isNullishType);
+
+const isAlwaysNullish = (type: ts.Type): boolean =>
+  unionTypeParts(type).every(isNullishType);
 
 // isLiteralType only covers numbers and strings, this is a more exhaustive check.
 const isLiteral = (type: ts.Type): boolean =>
@@ -62,6 +69,7 @@ export type MessageId =
   | 'alwaysTruthy'
   | 'alwaysFalsy'
   | 'neverNullish'
+  | 'alwaysNullish'
   | 'literalBooleanExpression'
   | 'never';
 export default createRule<Options, MessageId>({
@@ -91,6 +99,8 @@ export default createRule<Options, MessageId>({
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
+      alwaysNullish:
+        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`',
       literalBooleanExpression:
         'Unnecessary conditional, both sides of the expression are literal values',
       never: 'Unnecessary conditional, value is `never`',
@@ -144,6 +154,8 @@ export default createRule<Options, MessageId>({
         ? 'never'
         : !isPossiblyNullish(type)
         ? 'neverNullish'
+        : isAlwaysNullish(type)
+        ? 'alwaysNullish'
         : undefined;
 
       if (messageId) {

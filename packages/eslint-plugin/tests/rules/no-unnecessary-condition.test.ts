@@ -196,6 +196,13 @@ function test(a: string | false) {
 }`,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
+    {
+      code: `
+function test(a: null) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'alwaysNullish')],
+    },
 
     // Still errors on in the expected locations when ignoring RHS
     {
