@@ -107,19 +107,23 @@ export default createRule<Options, MessageId>({
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
      */
-    function checkNode(node: TSESTree.Node): void {
+    function checkNode(node: TSESTree.Node, expectNullish = false): void {
       const type = getNodeType(node);
 
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeFlagSet(type, TypeFlags.Any | TypeFlags.Unknown)) {
         return;
       }
-      if (isTypeFlagSet(type, TypeFlags.Never)) {
-        context.report({ node, messageId: 'never' });
-      } else if (!isPossiblyTruthy(type)) {
-        context.report({ node, messageId: 'alwaysFalsy' });
-      } else if (!isPossiblyFalsy(type)) {
-        context.report({ node, messageId: 'alwaysTruthy' });
+      const messageId = isTypeFlagSet(type, TypeFlags.Never)
+        ? 'never'
+        : !isPossiblyTruthy(type)
+        ? 'alwaysFalsy'
+        : !isPossiblyFalsy(type)
+        ? 'alwaysTruthy'
+        : undefined;
+
+      if (messageId) {
+        context.report({ node, messageId });
       }
     }
 
