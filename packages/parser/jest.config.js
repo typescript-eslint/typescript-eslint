@@ -5,9 +5,10 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-  testRegex: './tests/lib/.+\\.ts$',
+  testRegex: './tests/.*\\.test\\.ts$',
   collectCoverage: false,
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   coverageReporters: ['text-summary', 'lcov'],
+  modulePaths: ['<rootDir>/tests/shared-fixtures'],
 };

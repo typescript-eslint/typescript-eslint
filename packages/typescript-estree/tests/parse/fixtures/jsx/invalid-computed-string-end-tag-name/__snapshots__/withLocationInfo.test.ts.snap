@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/jsx/invalid-computed-string-end-tag-name.src.js parses with location information 1`] = `"Identifier expected."`;

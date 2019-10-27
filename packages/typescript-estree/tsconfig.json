@@ -1,7 +1,11 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "composite": false,
+    "paths": {
+      "test-fixture": ["./tests/parse/test-fixture.ts"]
+    },
     "rootDir": "."
   },
   "include": ["src", "tests", "tools"],

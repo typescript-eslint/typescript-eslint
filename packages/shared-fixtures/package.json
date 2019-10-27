@@ -5,6 +5,11 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "generate-tests": "ts-node ./tools/generate-tests.ts"
+  },
+  "devDependencies": {
+    "@types/mkdirp": "^0.5.2",
+    "mkdirp": "^0.5.1"
   }
 }

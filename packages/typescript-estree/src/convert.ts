@@ -361,8 +361,10 @@ export class Converter {
    * For nodes that are copied directly from the TypeScript AST into
    * ESTree mostly as-is. The only difference is the addition of a type
    * property instead of a kind property. Recursively copies all children.
+   *
+   * @internal - this is only exposed for testing purposes
    */
-  private deeplyCopy(node: ts.Node): any {
+  public deeplyCopy(node: ts.Node): any {
     const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
     /**
      * If the "errorOnUnknownASTType" option is set to true, throw an error,

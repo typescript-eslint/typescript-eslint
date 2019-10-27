@@ -2,7 +2,7 @@
 **/tests/fixture-project/**/*
 **/dist
 **/coverage
-**/shared-fixtures
+**/shared-fixtures/fixtures/**/*
 **/tests/integration/fixtures/**/*
 **/.vscode
 **/.nyc_output

@@ -1,9 +1,8 @@
 import jsxKnownIssues from '@typescript-eslint/shared-fixtures/dist/jsx-known-issues';
+import { isJSXFileType } from '@typescript-eslint/shared-fixtures/dist/test-utils';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
-
-import { isJSXFileType } from '../../tools/test-utils';
 
 interface Fixture {
   filename: string;

@@ -11,7 +11,6 @@ import { TSESTree } from './ts-estree';
  * @param startLoc The location at which the comment starts.
  * @param endLoc The location at which the comment ends.
  * @returns The comment object.
- * @internal
  */
 function convertTypeScriptCommentToEsprimaComment(
   block: boolean,

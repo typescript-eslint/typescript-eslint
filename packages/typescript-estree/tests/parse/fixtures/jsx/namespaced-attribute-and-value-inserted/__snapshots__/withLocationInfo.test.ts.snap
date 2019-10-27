@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/jsx/namespaced-attribute-and-value-inserted.src.js parses with location information 1`] = `"Identifier expected."`;

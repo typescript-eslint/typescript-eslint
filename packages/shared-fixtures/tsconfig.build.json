@@ -6,7 +6,5 @@
     "rootDir": ".",
     "resolveJsonModule": true
   },
-  "files": [
-    "jsx-known-issues.ts"
-  ]
+  "files": ["jsx-known-issues.ts", "test-utils.ts"]
 }

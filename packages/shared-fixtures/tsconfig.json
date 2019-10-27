@@ -4,7 +4,5 @@
     "composite": false,
     "rootDir": "."
   },
-  "files": [
-    "jsx-known-issues.ts"
-  ]
+  "include": ["jsx-known-issues.ts", "test-utils.ts", "tools"]
 }

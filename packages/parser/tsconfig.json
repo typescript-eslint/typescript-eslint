@@ -1,9 +1,14 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "composite": false,
+    "paths": {
+      "test-fixture": ["./tests/shared-fixtures/test-fixture.ts"]
+    },
     "rootDir": "."
   },
   "include": ["src", "tests", "tools"],
-  "exclude": ["tests/fixtures"]
+  "exclude": ["tests/fixtures"],
+  "references": [{ "path": "../shared-fixtures/tsconfig.build.json" }]
 }
