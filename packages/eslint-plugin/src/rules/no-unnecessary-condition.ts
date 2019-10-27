@@ -31,6 +31,10 @@ const isPossiblyFalsy = (type: ts.Type): boolean =>
 const isPossiblyTruthy = (type: ts.Type): boolean =>
   unionTypeParts(type).some(type => !isFalsyType(type));
 
+const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+const isPossiblyNullish = (type: ts.Type): boolean =>
+  unionTypeParts(type).some(type => isTypeFlagSet(type, nullishFlag));
+
 // isLiteralType only covers numbers and strings, this is a more exhaustive check.
 const isLiteral = (type: ts.Type): boolean =>
   isBooleanLiteralType(type, true) ||
@@ -57,6 +61,7 @@ export type Options = [
 export type MessageId =
   | 'alwaysTruthy'
   | 'alwaysFalsy'
+  | 'neverNullish'
   | 'literalBooleanExpression'
   | 'never';
 export default createRule<Options, MessageId>({
@@ -84,6 +89,8 @@ export default createRule<Options, MessageId>({
     messages: {
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
+      neverNullish:
+        'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
       literalBooleanExpression:
         'Unnecessary conditional, both sides of the expression are literal values',
       never: 'Unnecessary conditional, value is `never`',
@@ -107,7 +114,7 @@ export default createRule<Options, MessageId>({
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
      */
-    function checkNode(node: TSESTree.Node, expectNullish = false): void {
+    function checkNode(node: TSESTree.Node): void {
       const type = getNodeType(node);
 
       // Conditional is always necessary if it involves `any` or `unknown`
@@ -120,6 +127,23 @@ export default createRule<Options, MessageId>({
         ? 'alwaysFalsy'
         : !isPossiblyFalsy(type)
         ? 'alwaysTruthy'
+        : undefined;
+
+      if (messageId) {
+        context.report({ node, messageId });
+      }
+    }
+
+    function checkNodeForNullish(node: TSESTree.Node): void {
+      const type = getNodeType(node);
+      // Conditional is always necessary if it involves `any` or `unknown`
+      if (isTypeFlagSet(type, TypeFlags.Any | TypeFlags.Unknown)) {
+        return;
+      }
+      const messageId = isTypeFlagSet(type, TypeFlags.Never)
+        ? 'never'
+        : !isPossiblyNullish(type)
+        ? 'neverNullish'
         : undefined;
 
       if (messageId) {
@@ -177,6 +201,10 @@ export default createRule<Options, MessageId>({
     function checkLogicalExpressionForUnnecessaryConditionals(
       node: TSESTree.LogicalExpression,
     ): void {
+      if (node.operator === '??') {
+        checkNodeForNullish(node.left);
+        return;
+      }
       checkNode(node.left);
       if (!ignoreRhs) {
         checkNode(node.right);
