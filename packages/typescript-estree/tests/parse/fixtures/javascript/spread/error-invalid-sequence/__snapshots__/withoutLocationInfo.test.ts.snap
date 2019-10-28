@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/javascript/spread/error-invalid-sequence.src.js parses without location information 1`] = `"Expression expected."`;

@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/javascript/modules/invalid-import-default-after-named-after-default.src.js parses without location information 1`] = `"'from' expected."`;

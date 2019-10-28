@@ -1,6 +1,7 @@
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 import path from 'path';
+import jsxKnownIssues from '../jsx-known-issues';
 
 function main(): void {
   const fixtureFolder = 'fixtures';
@@ -16,7 +17,9 @@ function main(): void {
       const fileOrSubGroupPath = path.join(groupFolder, fileOrSubGroupName);
       if (fs.statSync(fileOrSubGroupPath).isDirectory()) {
         handleGroup(fileOrSubGroupPath);
-      } else {
+      } else if (
+        !jsxKnownIssues.some(jsxName => fileOrSubGroupPath.endsWith(jsxName))
+      ) {
         createTest(fileOrSubGroupPath, 'typescript-estree');
         createTest(fileOrSubGroupPath, 'parser');
       }
