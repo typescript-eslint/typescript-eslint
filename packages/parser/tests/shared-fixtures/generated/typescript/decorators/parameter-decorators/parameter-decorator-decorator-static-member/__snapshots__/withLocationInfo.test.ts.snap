@@ -1,0 +1,284 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/typescript/decorators/parameter-decorators/parameter-decorator-decorator-static-member.src.ts parses with location information 1`] = `
+Object {
+  "$id": 8,
+  "block": Object {
+    "range": Array [
+      0,
+      66,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 7,
+      "block": Object {
+        "range": Array [
+          0,
+          66,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 6,
+          "block": Object {
+            "range": Array [
+              0,
+              65,
+            ],
+            "type": "ClassDeclaration",
+          },
+          "childScopes": Array [
+            Object {
+              "$id": 5,
+              "block": Object {
+                "range": Array [
+                  32,
+                  63,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [
+                Object {
+                  "$id": 4,
+                  "from": Object {
+                    "$ref": 5,
+                  },
+                  "identifier": Object {
+                    "name": "special",
+                    "range": Array [
+                      34,
+                      41,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "kind": "r",
+                  "resolved": null,
+                  "writeExpr": undefined,
+                },
+              ],
+              "throughReferences": Array [
+                Object {
+                  "$ref": 4,
+                },
+              ],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 6,
+              },
+              "variableMap": Object {
+                "arguments": Object {
+                  "$ref": 2,
+                },
+                "baz": Object {
+                  "$ref": 3,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 5,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 2,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 5,
+                  },
+                },
+                Object {
+                  "$id": 3,
+                  "defs": Array [
+                    Object {
+                      "name": Object {
+                        "name": "baz",
+                        "range": Array [
+                          48,
+                          59,
+                        ],
+                        "type": "Identifier",
+                      },
+                      "node": Object {
+                        "range": Array [
+                          32,
+                          63,
+                        ],
+                        "type": "FunctionExpression",
+                      },
+                      "parent": null,
+                      "type": "Parameter",
+                    },
+                  ],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [
+                    Object {
+                      "name": "baz",
+                      "range": Array [
+                        48,
+                        59,
+                      ],
+                      "type": "Identifier",
+                    },
+                  ],
+                  "name": "baz",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 5,
+                  },
+                },
+              ],
+            },
+          ],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [
+            Object {
+              "$ref": 4,
+            },
+          ],
+          "type": "class",
+          "upperScope": Object {
+            "$ref": 7,
+          },
+          "variableMap": Object {
+            "StaticFoo": Object {
+              "$ref": 1,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 7,
+          },
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "StaticFoo",
+                    "range": Array [
+                      6,
+                      15,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      0,
+                      65,
+                    ],
+                    "type": "ClassDeclaration",
+                  },
+                  "parent": undefined,
+                  "type": "ClassName",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "StaticFoo",
+                  "range": Array [
+                    6,
+                    15,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "StaticFoo",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 6,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 4,
+        },
+      ],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 8,
+      },
+      "variableMap": Object {
+        "StaticFoo": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 7,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "StaticFoo",
+                "range": Array [
+                  6,
+                  15,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  65,
+                ],
+                "type": "ClassDeclaration",
+              },
+              "parent": null,
+              "type": "ClassName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "StaticFoo",
+              "range": Array [
+                6,
+                15,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "StaticFoo",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 7,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 4,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 8,
+  },
+  "variables": Array [],
+}
+`;

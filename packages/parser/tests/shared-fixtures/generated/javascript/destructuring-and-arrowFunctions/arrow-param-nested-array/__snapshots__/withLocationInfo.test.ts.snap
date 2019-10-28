@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/javascript/destructuring-and-arrowFunctions/arrow-param-nested-array.src.js parses with location information 1`] = `
+Object {
+  "$id": 5,
+  "block": Object {
+    "range": Array [
+      0,
+      16,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 4,
+      "block": Object {
+        "range": Array [
+          0,
+          16,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 3,
+          "block": Object {
+            "range": Array [
+              0,
+              15,
+            ],
+            "type": "ArrowFunctionExpression",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [
+            Object {
+              "$id": 2,
+              "from": Object {
+                "$ref": 3,
+              },
+              "identifier": Object {
+                "name": "x",
+                "range": Array [
+                  14,
+                  15,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 1,
+              },
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [],
+          "type": "function",
+          "upperScope": Object {
+            "$ref": 4,
+          },
+          "variableMap": Object {
+            "x": Object {
+              "$ref": 1,
+            },
+            "y": Object {
+              "$ref": 0,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 3,
+          },
+          "variables": Array [
+            Object {
+              "$id": 0,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "y",
+                    "range": Array [
+                      2,
+                      3,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      0,
+                      15,
+                    ],
+                    "type": "ArrowFunctionExpression",
+                  },
+                  "parent": null,
+                  "type": "Parameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "y",
+                  "range": Array [
+                    2,
+                    3,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "y",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 3,
+              },
+            },
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "x",
+                    "range": Array [
+                      6,
+                      7,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      0,
+                      15,
+                    ],
+                    "type": "ArrowFunctionExpression",
+                  },
+                  "parent": null,
+                  "type": "Parameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "x",
+                  "range": Array [
+                    6,
+                    7,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "x",
+              "references": Array [
+                Object {
+                  "$ref": 2,
+                },
+              ],
+              "scope": Object {
+                "$ref": 3,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 5,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 4,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 5,
+  },
+  "variables": Array [],
+}
+`;

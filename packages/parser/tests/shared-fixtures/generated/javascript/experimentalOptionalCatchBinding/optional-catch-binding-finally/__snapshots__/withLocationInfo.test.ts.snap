@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/javascript/experimentalOptionalCatchBinding/optional-catch-binding-finally.src.js parses with location information 1`] = `
+Object {
+  "$id": 5,
+  "block": Object {
+    "range": Array [
+      0,
+      27,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 4,
+      "block": Object {
+        "range": Array [
+          0,
+          27,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 0,
+          "block": Object {
+            "range": Array [
+              4,
+              6,
+            ],
+            "type": "BlockStatement",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "block",
+          "upperScope": Object {
+            "$ref": 4,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 4,
+          },
+          "variables": Array [],
+        },
+        Object {
+          "$id": 2,
+          "block": Object {
+            "range": Array [
+              7,
+              15,
+            ],
+            "type": "CatchClause",
+          },
+          "childScopes": Array [
+            Object {
+              "$id": 1,
+              "block": Object {
+                "range": Array [
+                  13,
+                  15,
+                ],
+                "type": "BlockStatement",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "block",
+              "upperScope": Object {
+                "$ref": 2,
+              },
+              "variableMap": Object {},
+              "variableScope": Object {
+                "$ref": 4,
+              },
+              "variables": Array [],
+            },
+          ],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "catch",
+          "upperScope": Object {
+            "$ref": 4,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 4,
+          },
+          "variables": Array [],
+        },
+        Object {
+          "$id": 3,
+          "block": Object {
+            "range": Array [
+              24,
+              26,
+            ],
+            "type": "BlockStatement",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "block",
+          "upperScope": Object {
+            "$ref": 4,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 4,
+          },
+          "variables": Array [],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 5,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 4,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 5,
+  },
+  "variables": Array [],
+}
+`;

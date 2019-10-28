@@ -1,0 +1,162 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/javascript/forOf/for-of-with-rest.src.js parses with location information 1`] = `
+Object {
+  "$id": 5,
+  "block": Object {
+    "range": Array [
+      0,
+      42,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 4,
+      "block": Object {
+        "range": Array [
+          0,
+          42,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 3,
+          "block": Object {
+            "range": Array [
+              38,
+              41,
+            ],
+            "type": "BlockStatement",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "block",
+          "upperScope": Object {
+            "$ref": 4,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 4,
+          },
+          "variables": Array [],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 0,
+          "from": Object {
+            "$ref": 4,
+          },
+          "identifier": Object {
+            "name": "xx",
+            "range": Array [
+              10,
+              12,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": null,
+          "writeExpr": Object {
+            "name": "array",
+            "range": Array [
+              31,
+              36,
+            ],
+            "type": "Identifier",
+          },
+        },
+        Object {
+          "$id": 1,
+          "from": Object {
+            "$ref": 4,
+          },
+          "identifier": Object {
+            "name": "rrestOff",
+            "range": Array [
+              17,
+              25,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": null,
+          "writeExpr": Object {
+            "name": "array",
+            "range": Array [
+              31,
+              36,
+            ],
+            "type": "Identifier",
+          },
+        },
+        Object {
+          "$id": 2,
+          "from": Object {
+            "$ref": 4,
+          },
+          "identifier": Object {
+            "name": "array",
+            "range": Array [
+              31,
+              36,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 0,
+        },
+        Object {
+          "$ref": 1,
+        },
+        Object {
+          "$ref": 2,
+        },
+      ],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 5,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 4,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 0,
+    },
+    Object {
+      "$ref": 1,
+    },
+    Object {
+      "$ref": 2,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 5,
+  },
+  "variables": Array [],
+}
+`;

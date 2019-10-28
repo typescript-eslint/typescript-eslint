@@ -1,0 +1,617 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/typescript/basics/optional-chain-call.src.ts parses with location information 1`] = `
+Object {
+  "$id": 23,
+  "block": Object {
+    "range": Array [
+      0,
+      194,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 22,
+      "block": Object {
+        "range": Array [
+          0,
+          194,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 21,
+          "block": Object {
+            "range": Array [
+              0,
+              193,
+            ],
+            "type": "FunctionDeclaration",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [
+            Object {
+              "$id": 3,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "one",
+                "range": Array [
+                  44,
+                  47,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 4,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "fn",
+                "range": Array [
+                  49,
+                  51,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 5,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "one",
+                "range": Array [
+                  57,
+                  60,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 6,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "two",
+                "range": Array [
+                  62,
+                  65,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 7,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "fn",
+                "range": Array [
+                  66,
+                  68,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 8,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "one",
+                "range": Array [
+                  74,
+                  77,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 9,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "fn",
+                "range": Array [
+                  83,
+                  85,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 10,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "one",
+                "range": Array [
+                  91,
+                  94,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 11,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "three",
+                "range": Array [
+                  100,
+                  105,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 12,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "fn",
+                "range": Array [
+                  106,
+                  108,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 13,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "one",
+                "range": Array [
+                  114,
+                  117,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 14,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "three",
+                "range": Array [
+                  123,
+                  128,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 15,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "fn",
+                "range": Array [
+                  130,
+                  132,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 16,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "one",
+                "range": Array [
+                  139,
+                  142,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 17,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "one",
+                "range": Array [
+                  150,
+                  153,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 18,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "one",
+                "range": Array [
+                  163,
+                  166,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 19,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "one",
+                "range": Array [
+                  179,
+                  182,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+            Object {
+              "$id": 20,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "two",
+                "range": Array [
+                  187,
+                  190,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": null,
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [
+            Object {
+              "$ref": 4,
+            },
+            Object {
+              "$ref": 6,
+            },
+            Object {
+              "$ref": 7,
+            },
+            Object {
+              "$ref": 9,
+            },
+            Object {
+              "$ref": 11,
+            },
+            Object {
+              "$ref": 12,
+            },
+            Object {
+              "$ref": 14,
+            },
+            Object {
+              "$ref": 15,
+            },
+            Object {
+              "$ref": 20,
+            },
+          ],
+          "type": "function",
+          "upperScope": Object {
+            "$ref": 22,
+          },
+          "variableMap": Object {
+            "arguments": Object {
+              "$ref": 1,
+            },
+            "one": Object {
+              "$ref": 2,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 21,
+          },
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [],
+              "eslintUsed": undefined,
+              "identifiers": Array [],
+              "name": "arguments",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 21,
+              },
+            },
+            Object {
+              "$id": 2,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "one",
+                    "range": Array [
+                      29,
+                      38,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      0,
+                      193,
+                    ],
+                    "type": "FunctionDeclaration",
+                  },
+                  "parent": null,
+                  "type": "Parameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "one",
+                  "range": Array [
+                    29,
+                    38,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "one",
+              "references": Array [
+                Object {
+                  "$ref": 3,
+                },
+                Object {
+                  "$ref": 5,
+                },
+                Object {
+                  "$ref": 8,
+                },
+                Object {
+                  "$ref": 10,
+                },
+                Object {
+                  "$ref": 13,
+                },
+                Object {
+                  "$ref": 16,
+                },
+                Object {
+                  "$ref": 17,
+                },
+                Object {
+                  "$ref": 18,
+                },
+                Object {
+                  "$ref": 19,
+                },
+              ],
+              "scope": Object {
+                "$ref": 21,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [
+        Object {
+          "$ref": 4,
+        },
+        Object {
+          "$ref": 6,
+        },
+        Object {
+          "$ref": 7,
+        },
+        Object {
+          "$ref": 9,
+        },
+        Object {
+          "$ref": 11,
+        },
+        Object {
+          "$ref": 12,
+        },
+        Object {
+          "$ref": 14,
+        },
+        Object {
+          "$ref": 15,
+        },
+        Object {
+          "$ref": 20,
+        },
+      ],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 23,
+      },
+      "variableMap": Object {
+        "processOptionalCall": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 22,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "processOptionalCall",
+                "range": Array [
+                  9,
+                  28,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  193,
+                ],
+                "type": "FunctionDeclaration",
+              },
+              "parent": null,
+              "type": "FunctionName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "processOptionalCall",
+              "range": Array [
+                9,
+                28,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "processOptionalCall",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 22,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 4,
+    },
+    Object {
+      "$ref": 6,
+    },
+    Object {
+      "$ref": 7,
+    },
+    Object {
+      "$ref": 9,
+    },
+    Object {
+      "$ref": 11,
+    },
+    Object {
+      "$ref": 12,
+    },
+    Object {
+      "$ref": 14,
+    },
+    Object {
+      "$ref": 15,
+    },
+    Object {
+      "$ref": 20,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 23,
+  },
+  "variables": Array [],
+}
+`;

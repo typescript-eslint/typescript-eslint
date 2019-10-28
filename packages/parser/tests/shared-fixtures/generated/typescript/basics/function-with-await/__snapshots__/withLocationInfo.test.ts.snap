@@ -1,0 +1,204 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/typescript/basics/function-with-await.src.ts parses with location information 1`] = `
+Object {
+  "$id": 6,
+  "block": Object {
+    "range": Array [
+      0,
+      50,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 5,
+      "block": Object {
+        "range": Array [
+          0,
+          50,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 4,
+          "block": Object {
+            "range": Array [
+              0,
+              49,
+            ],
+            "type": "FunctionDeclaration",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [
+            Object {
+              "$id": 3,
+              "from": Object {
+                "$ref": 4,
+              },
+              "identifier": Object {
+                "name": "future",
+                "range": Array [
+                  40,
+                  46,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "r",
+              "resolved": Object {
+                "$ref": 2,
+              },
+              "writeExpr": undefined,
+            },
+          ],
+          "throughReferences": Array [],
+          "type": "function",
+          "upperScope": Object {
+            "$ref": 5,
+          },
+          "variableMap": Object {
+            "arguments": Object {
+              "$ref": 1,
+            },
+            "future": Object {
+              "$ref": 2,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 4,
+          },
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [],
+              "eslintUsed": undefined,
+              "identifiers": Array [],
+              "name": "arguments",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 4,
+              },
+            },
+            Object {
+              "$id": 2,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "future",
+                    "range": Array [
+                      20,
+                      26,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      0,
+                      49,
+                    ],
+                    "type": "FunctionDeclaration",
+                  },
+                  "parent": null,
+                  "type": "Parameter",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "future",
+                  "range": Array [
+                    20,
+                    26,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "future",
+              "references": Array [
+                Object {
+                  "$ref": 3,
+                },
+              ],
+              "scope": Object {
+                "$ref": 4,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 6,
+      },
+      "variableMap": Object {
+        "hope": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 5,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "hope",
+                "range": Array [
+                  15,
+                  19,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  49,
+                ],
+                "type": "FunctionDeclaration",
+              },
+              "parent": null,
+              "type": "FunctionName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "hope",
+              "range": Array [
+                15,
+                19,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "hope",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 5,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 6,
+  },
+  "variables": Array [],
+}
+`;

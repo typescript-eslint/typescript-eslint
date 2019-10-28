@@ -18,5 +18,5 @@ module.exports = {
       },
     },
   },
-  modulePaths: ['<rootDir>/tests/parse'],
+  modulePaths: ['<rootDir>/tests/shared-fixtures'],
 };

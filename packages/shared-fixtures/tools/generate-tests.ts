@@ -18,8 +18,7 @@ function main(): void {
         handleGroup(fileOrSubGroupPath);
       } else {
         createTest(fileOrSubGroupPath, 'typescript-estree');
-        // TODO - in another PR (to reduce the diff size)
-        // createTest(fileOrSubGroupPath, 'parser');
+        createTest(fileOrSubGroupPath, 'parser');
       }
     });
   }
@@ -33,7 +32,7 @@ function createTest(
     // fixtures all end in /.src.[jt]sx?/
     .substring(0, fixturePath.indexOf('.'))
     // mark them as generated
-    .replace(/\/fixtures\//, 'generated');
+    .replace('fixtures/', 'generated/');
 
   const testDir = path.resolve(
     __dirname,

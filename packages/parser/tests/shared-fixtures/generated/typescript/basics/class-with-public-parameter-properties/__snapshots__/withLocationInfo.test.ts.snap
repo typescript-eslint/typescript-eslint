@@ -1,0 +1,438 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/typescript/basics/class-with-public-parameter-properties.src.ts parses with location information 1`] = `
+Object {
+  "$id": 12,
+  "block": Object {
+    "range": Array [
+      0,
+      199,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 11,
+      "block": Object {
+        "range": Array [
+          0,
+          199,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 10,
+          "block": Object {
+            "range": Array [
+              0,
+              199,
+            ],
+            "type": "ClassDeclaration",
+          },
+          "childScopes": Array [
+            Object {
+              "$id": 9,
+              "block": Object {
+                "range": Array [
+                  25,
+                  197,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [
+                Object {
+                  "$id": 7,
+                  "from": Object {
+                    "$ref": 9,
+                  },
+                  "identifier": Object {
+                    "name": "age",
+                    "range": Array [
+                      121,
+                      132,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "kind": "w",
+                  "resolved": Object {
+                    "$ref": 5,
+                  },
+                  "writeExpr": Object {
+                    "range": Array [
+                      135,
+                      137,
+                    ],
+                    "type": "Literal",
+                  },
+                },
+                Object {
+                  "$id": 8,
+                  "from": Object {
+                    "$ref": 9,
+                  },
+                  "identifier": Object {
+                    "name": "student",
+                    "range": Array [
+                      169,
+                      185,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "kind": "w",
+                  "resolved": Object {
+                    "$ref": 6,
+                  },
+                  "writeExpr": Object {
+                    "range": Array [
+                      188,
+                      193,
+                    ],
+                    "type": "Literal",
+                  },
+                },
+              ],
+              "throughReferences": Array [],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 10,
+              },
+              "variableMap": Object {
+                "age": Object {
+                  "$ref": 5,
+                },
+                "arguments": Object {
+                  "$ref": 2,
+                },
+                "firstName": Object {
+                  "$ref": 3,
+                },
+                "lastName": Object {
+                  "$ref": 4,
+                },
+                "student": Object {
+                  "$ref": 6,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 9,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 2,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 9,
+                  },
+                },
+                Object {
+                  "$id": 3,
+                  "defs": Array [
+                    Object {
+                      "name": Object {
+                        "name": "firstName",
+                        "range": Array [
+                          33,
+                          50,
+                        ],
+                        "type": "Identifier",
+                      },
+                      "node": Object {
+                        "range": Array [
+                          25,
+                          197,
+                        ],
+                        "type": "FunctionExpression",
+                      },
+                      "parent": null,
+                      "type": "Parameter",
+                    },
+                  ],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [
+                    Object {
+                      "name": "firstName",
+                      "range": Array [
+                        33,
+                        50,
+                      ],
+                      "type": "Identifier",
+                    },
+                  ],
+                  "name": "firstName",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 9,
+                  },
+                },
+                Object {
+                  "$id": 4,
+                  "defs": Array [
+                    Object {
+                      "name": Object {
+                        "name": "lastName",
+                        "range": Array [
+                          82,
+                          98,
+                        ],
+                        "type": "Identifier",
+                      },
+                      "node": Object {
+                        "range": Array [
+                          25,
+                          197,
+                        ],
+                        "type": "FunctionExpression",
+                      },
+                      "parent": null,
+                      "type": "Parameter",
+                    },
+                  ],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [
+                    Object {
+                      "name": "lastName",
+                      "range": Array [
+                        82,
+                        98,
+                      ],
+                      "type": "Identifier",
+                    },
+                  ],
+                  "name": "lastName",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 9,
+                  },
+                },
+                Object {
+                  "$id": 5,
+                  "defs": Array [
+                    Object {
+                      "name": Object {
+                        "name": "age",
+                        "range": Array [
+                          121,
+                          132,
+                        ],
+                        "type": "Identifier",
+                      },
+                      "node": Object {
+                        "range": Array [
+                          25,
+                          197,
+                        ],
+                        "type": "FunctionExpression",
+                      },
+                      "parent": null,
+                      "type": "Parameter",
+                    },
+                  ],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [
+                    Object {
+                      "name": "age",
+                      "range": Array [
+                        121,
+                        132,
+                      ],
+                      "type": "Identifier",
+                    },
+                  ],
+                  "name": "age",
+                  "references": Array [
+                    Object {
+                      "$ref": 7,
+                    },
+                  ],
+                  "scope": Object {
+                    "$ref": 9,
+                  },
+                },
+                Object {
+                  "$id": 6,
+                  "defs": Array [
+                    Object {
+                      "name": Object {
+                        "name": "student",
+                        "range": Array [
+                          169,
+                          185,
+                        ],
+                        "type": "Identifier",
+                      },
+                      "node": Object {
+                        "range": Array [
+                          25,
+                          197,
+                        ],
+                        "type": "FunctionExpression",
+                      },
+                      "parent": null,
+                      "type": "Parameter",
+                    },
+                  ],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [
+                    Object {
+                      "name": "student",
+                      "range": Array [
+                        169,
+                        185,
+                      ],
+                      "type": "Identifier",
+                    },
+                  ],
+                  "name": "student",
+                  "references": Array [
+                    Object {
+                      "$ref": 8,
+                    },
+                  ],
+                  "scope": Object {
+                    "$ref": 9,
+                  },
+                },
+              ],
+            },
+          ],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "class",
+          "upperScope": Object {
+            "$ref": 11,
+          },
+          "variableMap": Object {
+            "Foo": Object {
+              "$ref": 1,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 11,
+          },
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "Foo",
+                    "range": Array [
+                      6,
+                      9,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      0,
+                      199,
+                    ],
+                    "type": "ClassDeclaration",
+                  },
+                  "parent": undefined,
+                  "type": "ClassName",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "Foo",
+                  "range": Array [
+                    6,
+                    9,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "Foo",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 10,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 12,
+      },
+      "variableMap": Object {
+        "Foo": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 11,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "Foo",
+                "range": Array [
+                  6,
+                  9,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  0,
+                  199,
+                ],
+                "type": "ClassDeclaration",
+              },
+              "parent": null,
+              "type": "ClassName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "Foo",
+              "range": Array [
+                6,
+                9,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "Foo",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 11,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 12,
+  },
+  "variables": Array [],
+}
+`;

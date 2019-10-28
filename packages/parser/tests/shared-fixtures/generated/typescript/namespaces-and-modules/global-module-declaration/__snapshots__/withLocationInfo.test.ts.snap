@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/typescript/namespaces-and-modules/global-module-declaration.src.ts parses with location information 1`] = `
+Object {
+  "$id": 4,
+  "block": Object {
+    "range": Array [
+      0,
+      92,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 1,
+      "block": Object {
+        "range": Array [
+          0,
+          92,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 4,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 1,
+      },
+      "variables": Array [],
+    },
+    Object {
+      "$id": 2,
+      "block": Object {
+        "range": Array [
+          43,
+          51,
+        ],
+        "type": "TSModuleBlock",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": false,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "block",
+      "upperScope": Object {
+        "$ref": 4,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 4,
+      },
+      "variables": Array [],
+    },
+    Object {
+      "$id": 3,
+      "block": Object {
+        "range": Array [
+          81,
+          89,
+        ],
+        "type": "TSModuleBlock",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": false,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "block",
+      "upperScope": Object {
+        "$ref": 4,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 4,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {
+    "global": Object {
+      "$ref": 0,
+    },
+  },
+  "variableScope": Object {
+    "$ref": 4,
+  },
+  "variables": Array [
+    Object {
+      "$id": 0,
+      "defs": Array [
+        Object {
+          "name": Object {
+            "name": "global",
+            "range": Array [
+              36,
+              42,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              21,
+              51,
+            ],
+            "type": "TSModuleDeclaration",
+          },
+          "parent": null,
+          "type": "NamespaceName",
+        },
+        Object {
+          "name": Object {
+            "name": "global",
+            "range": Array [
+              74,
+              80,
+            ],
+            "type": "Identifier",
+          },
+          "node": Object {
+            "range": Array [
+              56,
+              89,
+            ],
+            "type": "TSModuleDeclaration",
+          },
+          "parent": null,
+          "type": "NamespaceName",
+        },
+      ],
+      "eslintUsed": true,
+      "identifiers": Array [
+        Object {
+          "name": "global",
+          "range": Array [
+            36,
+            42,
+          ],
+          "type": "Identifier",
+        },
+        Object {
+          "name": "global",
+          "range": Array [
+            74,
+            80,
+          ],
+          "type": "Identifier",
+        },
+      ],
+      "name": "global",
+      "references": Array [],
+      "scope": Object {
+        "$ref": 4,
+      },
+    },
+  ],
+}
+`;

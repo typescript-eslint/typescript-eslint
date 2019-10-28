@@ -1,0 +1,262 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/javascript/forIn/for-in-destruction.src.js parses with location information 1`] = `
+Object {
+  "$id": 7,
+  "block": Object {
+    "range": Array [
+      0,
+      34,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 6,
+      "block": Object {
+        "range": Array [
+          0,
+          34,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 5,
+          "block": Object {
+            "range": Array [
+              31,
+              33,
+            ],
+            "type": "BlockStatement",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "block",
+          "upperScope": Object {
+            "$ref": 6,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 6,
+          },
+          "variables": Array [],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 2,
+          "from": Object {
+            "$ref": 6,
+          },
+          "identifier": Object {
+            "name": "name",
+            "range": Array [
+              10,
+              14,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 0,
+          },
+          "writeExpr": Object {
+            "name": "obj",
+            "range": Array [
+              26,
+              29,
+            ],
+            "type": "Identifier",
+          },
+        },
+        Object {
+          "$id": 3,
+          "from": Object {
+            "$ref": 6,
+          },
+          "identifier": Object {
+            "name": "value",
+            "range": Array [
+              16,
+              21,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "w",
+          "resolved": Object {
+            "$ref": 1,
+          },
+          "writeExpr": Object {
+            "name": "obj",
+            "range": Array [
+              26,
+              29,
+            ],
+            "type": "Identifier",
+          },
+        },
+        Object {
+          "$id": 4,
+          "from": Object {
+            "$ref": 6,
+          },
+          "identifier": Object {
+            "name": "obj",
+            "range": Array [
+              26,
+              29,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 4,
+        },
+      ],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 7,
+      },
+      "variableMap": Object {
+        "name": Object {
+          "$ref": 0,
+        },
+        "value": Object {
+          "$ref": 1,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 6,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "name",
+                "range": Array [
+                  10,
+                  14,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  9,
+                  22,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  5,
+                  22,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "name",
+              "range": Array [
+                10,
+                14,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "name",
+          "references": Array [
+            Object {
+              "$ref": 2,
+            },
+          ],
+          "scope": Object {
+            "$ref": 6,
+          },
+        },
+        Object {
+          "$id": 1,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "value",
+                "range": Array [
+                  16,
+                  21,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  9,
+                  22,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  5,
+                  22,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "value",
+              "range": Array [
+                16,
+                21,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "value",
+          "references": Array [
+            Object {
+              "$ref": 3,
+            },
+          ],
+          "scope": Object {
+            "$ref": 6,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 4,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 7,
+  },
+  "variables": Array [],
+}
+`;

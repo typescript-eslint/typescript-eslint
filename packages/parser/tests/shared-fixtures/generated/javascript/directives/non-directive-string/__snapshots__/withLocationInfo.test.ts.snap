@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/javascript/directives/non-directive-string.src.js parses with location information 1`] = `
+Object {
+  "$id": 6,
+  "block": Object {
+    "range": Array [
+      0,
+      172,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 5,
+      "block": Object {
+        "range": Array [
+          0,
+          172,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 0,
+          "block": Object {
+            "range": Array [
+              10,
+              30,
+            ],
+            "type": "BlockStatement",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "block",
+          "upperScope": Object {
+            "$ref": 5,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 5,
+          },
+          "variables": Array [],
+        },
+        Object {
+          "$id": 3,
+          "block": Object {
+            "range": Array [
+              32,
+              136,
+            ],
+            "type": "SwitchStatement",
+          },
+          "childScopes": Array [
+            Object {
+              "$id": 1,
+              "block": Object {
+                "range": Array [
+                  64,
+                  92,
+                ],
+                "type": "BlockStatement",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "block",
+              "upperScope": Object {
+                "$ref": 3,
+              },
+              "variableMap": Object {},
+              "variableScope": Object {
+                "$ref": 5,
+              },
+              "variables": Array [],
+            },
+            Object {
+              "$id": 2,
+              "block": Object {
+                "range": Array [
+                  106,
+                  134,
+                ],
+                "type": "BlockStatement",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "block",
+              "upperScope": Object {
+                "$ref": 3,
+              },
+              "variableMap": Object {},
+              "variableScope": Object {
+                "$ref": 5,
+              },
+              "variables": Array [],
+            },
+          ],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "switch",
+          "upperScope": Object {
+            "$ref": 5,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 5,
+          },
+          "variables": Array [],
+        },
+        Object {
+          "$id": 4,
+          "block": Object {
+            "range": Array [
+              151,
+              171,
+            ],
+            "type": "BlockStatement",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "block",
+          "upperScope": Object {
+            "$ref": 5,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 5,
+          },
+          "variables": Array [],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 6,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 5,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 6,
+  },
+  "variables": Array [],
+}
+`;
