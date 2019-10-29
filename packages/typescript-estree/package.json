@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
+    "eslint-visitor-keys": "^1.1.0",
     "glob": "^7.1.4",
     "is-glob": "^4.0.1",
     "lodash.unescape": "4.0.1",
