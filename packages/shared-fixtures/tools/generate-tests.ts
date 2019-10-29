@@ -3,6 +3,8 @@ import mkdirp from 'mkdirp';
 import path from 'path';
 import jsxKnownIssues from '../jsx-known-issues';
 
+const jsxFilesWithKnownIssues = jsxKnownIssues.map(f => `${f}.src.js`);
+
 function main(): void {
   const fixtureFolder = 'fixtures';
   const fixtureGroups = fs.readdirSync(fixtureFolder);
@@ -18,7 +20,9 @@ function main(): void {
       if (fs.statSync(fileOrSubGroupPath).isDirectory()) {
         handleGroup(fileOrSubGroupPath);
       } else if (
-        !jsxKnownIssues.some(jsxName => fileOrSubGroupPath.endsWith(jsxName))
+        !jsxFilesWithKnownIssues.some(jsxName =>
+          fileOrSubGroupPath.endsWith(jsxName),
+        )
       ) {
         createTest(fileOrSubGroupPath, 'typescript-estree');
         createTest(fileOrSubGroupPath, 'parser');

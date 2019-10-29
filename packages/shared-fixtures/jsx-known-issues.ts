@@ -7,4 +7,4 @@ export default [
   'jsx/namespaced-attribute-and-value-inserted', // https://github.com/Microsoft/TypeScript/issues/7411
   'jsx/namespaced-name-and-attribute', // https://github.com/Microsoft/TypeScript/issues/7411
   'jsx/invalid-namespace-value-with-dots', // https://github.com/Microsoft/TypeScript/issues/7411
-].map(f => `${f}.src.js`);
+];
