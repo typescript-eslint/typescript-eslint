@@ -51,6 +51,7 @@
     "@types/marked": "^0.6.5",
     "@types/prettier": "^1.18.2",
     "chalk": "^2.4.2",
+    "eslint-config-airbnb-base": "^14.0.0",
     "marked": "^0.7.0",
     "prettier": "*",
     "typescript": "*"
