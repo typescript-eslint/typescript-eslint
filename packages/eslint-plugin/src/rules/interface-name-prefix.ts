@@ -7,6 +7,7 @@ type ParsedOptions =
   | {
       prefixWithI: 'always';
       allowUnderscorePrefix: boolean;
+      replacePrefixI: string;
     };
 type Options = [
 
@@ -18,6 +19,7 @@ type Options = [
     | {
         prefixWithI: 'always';
         allowUnderscorePrefix?: boolean;
+        replacePrefixI?: string;
       },
 ];
 type MessageIds = 'noPrefix' | 'alwaysPrefix';
@@ -26,13 +28,19 @@ type MessageIds = 'noPrefix' | 'alwaysPrefix';
  * Parses a given value as options.
  */
 export function parseOptions([options]: Options): ParsedOptions {
+  const replacePrefixI = 'I';
   if (options === 'always') {
-    return { prefixWithI: 'always', allowUnderscorePrefix: false };
+    return {
+      prefixWithI: 'always',
+      allowUnderscorePrefix: false,
+      replacePrefixI,
+    };
   }
   if (options !== 'never' && options.prefixWithI === 'always') {
     return {
       prefixWithI: 'always',
       allowUnderscorePrefix: !!options.allowUnderscorePrefix,
+      replacePrefixI: options.replacePrefixI || replacePrefixI,
     };
   }
   return { prefixWithI: 'never' };
@@ -52,7 +60,7 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       noPrefix: 'Interface name must not be prefixed with "I".',
-      alwaysPrefix: 'Interface name must be prefixed with "I".',
+      alwaysPrefix: 'Interface name must be prefixed with "{{prefix}}".',
     },
     schema: [
       {
@@ -85,6 +93,9 @@ export default util.createRule<Options, MessageIds>({
               allowUnderscorePrefix: {
                 type: 'boolean',
               },
+              replacePrefixI: {
+                type: 'string',
+              },
             },
             required: ['prefixWithI'], // required to select this "oneOf" alternative
             additionalProperties: false,
@@ -98,27 +109,29 @@ export default util.createRule<Options, MessageIds>({
     const parsedOptions = parseOptions([options]);
 
     /**
-     * Checks if a string is prefixed with "I".
+     * Checks if a string is prefixed with "@param prefix".
      * @param name The string to check
+     * @param prefix Check prefix
      */
-    function isPrefixedWithI(name: string): boolean {
+    function isPrefixedWithI(name: string, prefix = 'I'): boolean {
       if (typeof name !== 'string') {
         return false;
       }
 
-      return /^I[A-Z]/.test(name);
+      return new RegExp(`^${prefix}[A-Z]`).test(name);
     }
 
     /**
-     * Checks if a string is prefixed with "I" or "_I".
+     * Checks if a string is prefixed with "@param prefix" or "_@param prefix".
      * @param name The string to check
+     * @param prefix Check prefix
      */
-    function isPrefixedWithIOrUnderscoreI(name: string): boolean {
+    function isPrefixedWithIOrUnderscoreI(name: string, prefix = 'I'): boolean {
       if (typeof name !== 'string') {
         return false;
       }
 
-      return /^_?I[A-Z]/.test(name);
+      return new RegExp(`^_?${prefix}[A-Z]`).test(name);
     }
 
     return {
@@ -128,21 +141,35 @@ export default util.createRule<Options, MessageIds>({
             context.report({
               node: node.id,
               messageId: 'noPrefix',
+              data: {
+                prefix: 'I',
+              },
             });
           }
         } else {
           if (parsedOptions.allowUnderscorePrefix) {
-            if (!isPrefixedWithIOrUnderscoreI(node.id.name)) {
+            if (
+              !isPrefixedWithIOrUnderscoreI(
+                node.id.name,
+                parsedOptions.replacePrefixI,
+              )
+            ) {
               context.report({
                 node: node.id,
                 messageId: 'alwaysPrefix',
+                data: {
+                  prefix: parsedOptions.replacePrefixI || 'I',
+                },
               });
             }
           } else {
-            if (!isPrefixedWithI(node.id.name)) {
+            if (!isPrefixedWithI(node.id.name, parsedOptions.replacePrefixI)) {
               context.report({
                 node: node.id,
                 messageId: 'alwaysPrefix',
+                data: {
+                  prefix: parsedOptions.replacePrefixI || 'I',
+                },
               });
             }
           }

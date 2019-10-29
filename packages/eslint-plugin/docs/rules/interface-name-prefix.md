@@ -19,6 +19,8 @@ This rule has an object option:
 - `{ "prefixWithI": "always" }`: requires all interfaces be prefixed with `"I"` (but does not allow `"_I"`)
 - `{ "prefixWithI": "always", "allowUnderscorePrefix": true }`: requires all interfaces be prefixed with
   either `"I"` or `"_I"`
+- `{ "prefixWithI": "always", "allowUnderscorePrefix": true, replacePrefixI: "A" }`: requires all interfaces be prefixed with
+  either `"A"` or `"_A"`
 
 For backwards compatibility, this rule supports a string option instead:
 
@@ -119,6 +121,34 @@ interface IIguana {
 }
 
 interface _IAnimal {
+  name: string;
+}
+```
+
+### always and replace default prefix
+
+**Configuration:** `{ "prefixWithI": "always", "replacePrefixI": "A" }`
+
+The following patterns are considered warnings:
+
+```ts
+interface IAnimal {
+  name: string;
+}
+
+interface IPeople {
+  name: string;
+}
+```
+
+The following patterns are not warnings:
+
+```ts
+interface AAnimal {
+  name: string;
+}
+
+interface APeople {
   name: string;
 }
 ```

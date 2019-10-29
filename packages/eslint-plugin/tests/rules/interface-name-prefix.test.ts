@@ -8,6 +8,7 @@ describe('interface-name-prefix', () => {
     assert.deepEqual(parseOptions(['always']), {
       prefixWithI: 'always',
       allowUnderscorePrefix: false,
+      replacePrefixI: 'I',
     });
     assert.deepEqual(parseOptions([{}]), { prefixWithI: 'never' });
     assert.deepEqual(parseOptions([{ prefixWithI: 'never' }]), {
@@ -16,10 +17,23 @@ describe('interface-name-prefix', () => {
     assert.deepEqual(parseOptions([{ prefixWithI: 'always' }]), {
       prefixWithI: 'always',
       allowUnderscorePrefix: false,
+      replacePrefixI: 'I',
     });
     assert.deepEqual(
       parseOptions([{ prefixWithI: 'always', allowUnderscorePrefix: true }]),
-      { prefixWithI: 'always', allowUnderscorePrefix: true },
+      {
+        prefixWithI: 'always',
+        allowUnderscorePrefix: true,
+        replacePrefixI: 'I',
+      },
+    );
+    assert.deepEqual(
+      parseOptions([{ prefixWithI: 'always', replacePrefixI: 'T' }]),
+      {
+        prefixWithI: 'always',
+        allowUnderscorePrefix: false,
+        replacePrefixI: 'T',
+      },
     );
   });
 });
@@ -82,6 +96,28 @@ interface I18n {
 }
             `,
       options: ['never'],
+    },
+    {
+      code: `
+interface AAnimal {
+    name: string;
+}
+            `,
+      options: [{ prefixWithI: 'always', replacePrefixI: 'A' }],
+    },
+    {
+      code: `
+interface _AAnimal {
+    name: string;
+}
+            `,
+      options: [
+        {
+          prefixWithI: 'always',
+          replacePrefixI: 'A',
+          allowUnderscorePrefix: true,
+        },
+      ],
     },
   ],
   invalid: [
@@ -184,6 +220,27 @@ interface _IAnimal {
       errors: [
         {
           messageId: 'noPrefix',
+          line: 2,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+interface IAnimal {
+    name: string;
+}
+            `,
+      options: [
+        {
+          prefixWithI: 'always',
+          allowUnderscorePrefix: true,
+          replacePrefixI: 'A',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'alwaysPrefix',
           line: 2,
           column: 11,
         },
