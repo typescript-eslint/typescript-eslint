@@ -30,8 +30,6 @@ interface ConverterOptions {
   errorOnUnknownASTType: boolean;
   useJSXTextNode: boolean;
   shouldPreserveNodeMaps: boolean;
-  range: boolean;
-  loc: boolean;
 }
 
 /**
@@ -83,16 +81,6 @@ export class Converter {
     return this.converter(this.ast) as TSESTree.Program;
   }
 
-  private applyExtraOptions(node: TSESTree.Node): any {
-    if (!this.options.range) {
-      delete node.range;
-    }
-    if (!this.options.loc) {
-      delete node.loc;
-    }
-    return node;
-  }
-
   /**
    * Converts a TypeScript node into an ESTree node.
    * @param node the child ts.Node
@@ -123,10 +111,7 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    let result = this.convertNode(node as TSNode, parent || node.parent);
-    if (result) {
-      result = this.applyExtraOptions(result);
-    }
+    const result = this.convertNode(node as TSNode, parent || node.parent);
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -902,13 +887,11 @@ export class Converter {
           return this.createNode<TSESTree.Property>(node, {
             type: AST_NODE_TYPES.Property,
             key: this.convertChild(node.name),
-            value: this.applyExtraOptions(
-              this.createNode<TSESTree.AssignmentPattern>(node, {
-                type: AST_NODE_TYPES.AssignmentPattern,
-                left: this.convertPattern(node.name),
-                right: this.convertChild(node.objectAssignmentInitializer),
-              }),
-            ),
+            value: this.createNode<TSESTree.AssignmentPattern>(node, {
+              type: AST_NODE_TYPES.AssignmentPattern,
+              left: this.convertPattern(node.name),
+              right: this.convertChild(node.objectAssignmentInitializer),
+            }),
             computed: false,
             method: false,
             shorthand: true,
@@ -1439,13 +1422,11 @@ export class Converter {
         >(node, {
           type: classNodeType,
           id: this.convertChild(node.name),
-          body: this.applyExtraOptions(
-            this.createNode<TSESTree.ClassBody>(node, {
-              type: AST_NODE_TYPES.ClassBody,
-              body: [],
-              range: [node.members.pos - 1, node.end],
-            }),
-          ),
+          body: this.createNode<TSESTree.ClassBody>(node, {
+            type: AST_NODE_TYPES.ClassBody,
+            body: [],
+            range: [node.members.pos - 1, node.end],
+          }),
           superClass:
             superClass && superClass.types[0]
               ? this.convertChild(superClass.types[0].expression)
@@ -2399,13 +2380,11 @@ export class Converter {
         const interfaceHeritageClauses = node.heritageClauses || [];
         const result = this.createNode<TSESTree.TSInterfaceDeclaration>(node, {
           type: AST_NODE_TYPES.TSInterfaceDeclaration,
-          body: this.applyExtraOptions(
-            this.createNode<TSESTree.TSInterfaceBody>(node, {
-              type: AST_NODE_TYPES.TSInterfaceBody,
-              body: node.members.map(member => this.convertChild(member)),
-              range: [node.members.pos - 1, node.end],
-            }),
-          ),
+          body: this.createNode<TSESTree.TSInterfaceBody>(node, {
+            type: AST_NODE_TYPES.TSInterfaceBody,
+            body: node.members.map(member => this.convertChild(member)),
+            range: [node.members.pos - 1, node.end],
+          }),
           id: this.convertChild(node.name),
         });
 

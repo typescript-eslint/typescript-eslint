@@ -28,8 +28,6 @@ export function astConverter(
     errorOnUnknownASTType: extra.errorOnUnknownASTType || false,
     useJSXTextNode: extra.useJSXTextNode || false,
     shouldPreserveNodeMaps,
-    range: extra.range || false,
-    loc: extra.loc || false,
   });
 
   const estree = instance.convertProgram();
