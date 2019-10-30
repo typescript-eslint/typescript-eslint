@@ -59,6 +59,6 @@ The main downside to using this rule is the need for type information.
 
 ## Related To
 
-- ESLint: [no-constant-condition](https://eslint.org/docs/rules/no-constant-condition) - this rule is essentially a stronger versison
+- ESLint: [no-constant-condition](https://eslint.org/docs/rules/no-constant-condition) - `no-unnecessary-condition` is essentially a stronger version of `no-constant-condition`, but requires type information.
 
-- [strict-boolean-expression](./strict-boolean-expressions.md) - a stricter alternative to this rule.
+- [strict-boolean-expressions](./strict-boolean-expressions.md) - a more opinionated version of `no-unnecessary-condition`. `strict-boolean-expressions` enforces a specific code style, while `no-unnecessary-condition` is about correctness.

@@ -37,6 +37,9 @@ There are multiple ways to specify the member types. The most explicit and granu
   'public-instance-field',
   'protected-instance-field',
   'private-instance-field',
+  'public-abstract-field',
+  'protected-abstract-field',
+  'private-abstract-field',
 
   // Constructors
   'public-constructor',
@@ -50,6 +53,9 @@ There are multiple ways to specify the member types. The most explicit and granu
   'public-instance-method',
   'protected-instance-method',
   'private-instance-method',
+  'public-abstract-method',
+  'protected-abstract-method',
+  'private-abstract-method',
 ]
 ```
 
@@ -57,7 +63,7 @@ Note: If you only specify some of the possible types, the non-specified ones can
 
 ### Member group types (with accessibility, ignoring scope)
 
-It is also possible to group member types by their accessibility (`static`, `instance`), ignoring their scope.
+It is also possible to group member types by their accessibility (`static`, `instance`, `abstract`), ignoring their scope.
 
 ```json5
 [
@@ -85,13 +91,15 @@ Another option is to group the member types by their scope (`public`, `protected
   // Fields
   'static-field', // = ['public-static-field', 'protected-static-field', 'private-static-field'])
   'instance-field', // = ['public-instance-field', 'protected-instance-field', 'private-instance-field'])
+  'abstract-field', // = ['public-abstract-field', 'protected-abstract-field', 'private-abstract-field'])
 
   // Constructors
   'constructor', // = ['public-constructor', 'protected-constructor', 'private-constructor'])
 
   // Methods
   'static-method', // = ['public-static-method', 'protected-static-method', 'private-static-method'])
-  'instance-method', // = ['public-instance-method', 'protected-instance-method', 'private-instance-method']
+  'instance-method', // = ['public-instance-method', 'protected-instance-method', 'private-instance-method'])
+  'abstract-method', // = ['public-abstract-method', 'protected-abstract-method', 'private-abstract-method'])
 ]
 ```
 
@@ -102,13 +110,15 @@ The third grouping option is to ignore both scope and accessibility.
 ```json5
 [
   // Fields
-  'field', // = ['public-static-field', 'protected-static-field', 'private-static-field', 'public-instance-field', 'protected-instance-field', 'private-instance-field'])
+  'field', // = ['public-static-field', 'protected-static-field', 'private-static-field', 'public-instance-field', 'protected-instance-field', 'private-instance-field',
+  //              'public-abstract-field', 'protected-abstract-field', private-abstract-field'])
 
   // Constructors
   // Only the accessibility of constructors is configurable. See above.
 
   // Methods
-  'method', // = ['public-static-method', 'protected-static-method', 'private-static-method', 'public-instance-method', 'protected-instance-method', 'private-instance-method'])
+  'method', // = ['public-static-method', 'protected-static-method', 'private-static-method', 'public-instance-method', 'protected-instance-method', 'private-instance-method',
+  //                'public-abstract-method', 'protected-abstract-method', 'private-abstract-method'])
 ]
 ```
 
@@ -127,12 +137,17 @@ The default configuration looks as follows:
     "protected-instance-field",
     "private-instance-field",
 
+    "public-abstract-field",
+    "protected-abstract-field",
+    "private-abstract-field",
+
     "public-field",
     "protected-field",
     "private-field",
 
     "static-field",
     "instance-field",
+    "abstract-field",
 
     "field",
 
@@ -146,12 +161,17 @@ The default configuration looks as follows:
     "protected-instance-method",
     "private-instance-method",
 
+    "public-abstract-method",
+    "protected-abstract-method",
+    "private-abstract-method",
+
     "public-method",
     "protected-method",
     "private-method",
 
     "static-method",
     "instance-method",
+    "abstract-method",
 
     "method"
   ]

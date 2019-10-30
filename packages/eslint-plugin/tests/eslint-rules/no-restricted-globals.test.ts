@@ -24,6 +24,12 @@ export default class Test {
       `,
       options: ['status'],
     },
+    {
+      code: `
+type Handler = (event: string) => any
+      `,
+      options: ['event'],
+    },
   ],
   invalid: [],
 });

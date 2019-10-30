@@ -35,6 +35,7 @@ module.exports = {
     //
 
     'comma-dangle': ['error', 'always-multiline'],
+    'constructor-super': 'off',
     curly: ['error', 'all'],
     'no-mixed-operators': 'error',
     'no-console': 'error',
@@ -113,7 +114,8 @@ module.exports = {
     ecmaFeatures: {
       jsx: false,
     },
-    project: './tsconfig.base.json',
+    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+    tsconfigRootDir: __dirname,
   },
   overrides: [
     {

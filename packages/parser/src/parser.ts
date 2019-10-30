@@ -115,3 +115,4 @@ export function parseForESLint(
 }
 
 export { ParserServices, ParserOptions };
+export { clearCaches } from '@typescript-eslint/typescript-estree';
