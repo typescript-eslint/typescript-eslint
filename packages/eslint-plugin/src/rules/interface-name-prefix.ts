@@ -114,7 +114,7 @@ export default util.createRule<Options, MessageIds>({
      * @param prefix Check prefix
      */
     function isPrefixedWithI(name: string, prefix = 'I'): boolean {
-      if (typeof name !== 'string') {
+      if (typeof name !== 'string' || typeof prefix !== 'string') {
         return false;
       }
 
@@ -127,7 +127,7 @@ export default util.createRule<Options, MessageIds>({
      * @param prefix Check prefix
      */
     function isPrefixedWithIOrUnderscoreI(name: string, prefix = 'I'): boolean {
-      if (typeof name !== 'string') {
+      if (typeof name !== 'string' || typeof prefix !== 'string') {
         return false;
       }
 
