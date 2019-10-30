@@ -6,6 +6,7 @@ function processOptionalCall(one?: any) {
   one.two?.three?.fn();
 
   one?.();
+  one?.()();
   one?.()?.();
 
   one?.().two;

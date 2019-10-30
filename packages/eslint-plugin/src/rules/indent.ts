@@ -163,6 +163,7 @@ export default util.createRule<Options, MessageIds>({
           type,
           static: false,
           readonly: false,
+          declare: false,
           ...base,
         } as TSESTree.ClassProperty;
       }

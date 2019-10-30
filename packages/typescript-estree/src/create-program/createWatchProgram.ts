@@ -1,9 +1,9 @@
 import debug from 'debug';
 import fs from 'fs';
 import path from 'path';
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from '../parser-options';
-import { WatchCompilerHostOfConfigFile } from '../WatchCompilerHostOfConfigFile';
+import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 import {
   canonicalDirname,
   CanonicalPath,
@@ -160,7 +160,13 @@ function getProgramsForProjects(
 
     if (fileList.has(filePath)) {
       log('Found existing program for file. %s', filePath);
-      return [updatedProgram || existingWatch.getProgram().getProgram()];
+
+      updatedProgram =
+        updatedProgram || existingWatch.getProgram().getProgram();
+      // sets parent pointers in source files
+      updatedProgram.getTypeChecker();
+
+      return [updatedProgram];
     }
   }
   log(

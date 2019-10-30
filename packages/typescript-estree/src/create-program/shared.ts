@@ -1,5 +1,5 @@
 import path from 'path';
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from '../parser-options';
 
 interface ASTAndProgram {
@@ -20,7 +20,10 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
 
 // This narrows the type so we can be sure we're passing canonical names in the correct places
 type CanonicalPath = string & { __brand: unknown };
-const getCanonicalFileName = ts.sys.useCaseSensitiveFileNames
+// typescript doesn't provide a ts.sys implementation for browser environments
+const useCaseSensitiveFileNames =
+  ts.sys !== undefined ? ts.sys.useCaseSensitiveFileNames : true;
+const getCanonicalFileName = useCaseSensitiveFileNames
   ? (filePath: string): CanonicalPath =>
       path.normalize(filePath) as CanonicalPath
   : (filePath: string): CanonicalPath =>
