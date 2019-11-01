@@ -11,6 +11,9 @@
   },
   "devDependencies": {
     "@types/mkdirp": "^0.5.2",
-    "mkdirp": "^0.5.1"
+    "@types/rimraf": "^2.0.3",
+    "chalk": "^2.4.2",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^3.0.0"
   }
 }
