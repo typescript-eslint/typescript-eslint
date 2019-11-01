@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/typescript/errorRecovery/interface-property-protected.src.ts parses with location information 1`] = `
+exports[`../shared-fixtures/fixtures/typescript/errorRecovery/interface-property-protected.src.ts parses with location information 1`] = `
 Object {
   "body": Array [
     Object {

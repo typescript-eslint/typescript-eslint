@@ -27,7 +27,7 @@ function testWithLocation(
   fixturePath: string,
   options: Partial<ParserOptions>,
 ): void {
-  describe(fixturePath, () => {
+  describe(path.relative(process.cwd(), fixturePath), () => {
     it(`parses with location information`, () => {
       readParseAndSnapshot(fixturePath, {
         ...options,
@@ -42,7 +42,7 @@ function testWithoutLocation(
   fixturePath: string,
   options: Partial<ParserOptions>,
 ): void {
-  describe(fixturePath, () => {
+  describe(path.relative(process.cwd(), fixturePath), () => {
     it(`parses without location information`, () => {
       readParseAndSnapshot(fixturePath, {
         ...options,

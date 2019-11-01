@@ -22,6 +22,7 @@
     "cz": "git-cz",
     "check:docs": "lerna run check:docs",
     "check:configs": "lerna run check:configs",
+    "check:tests": "lerna run check:tests",
     "generate-contributors": "yarn ts-node ./tools/generate-contributors.ts && yarn all-contributors generate",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
     "format-check": "prettier --list-different \"./**/*.{ts,js,json,md}\"",

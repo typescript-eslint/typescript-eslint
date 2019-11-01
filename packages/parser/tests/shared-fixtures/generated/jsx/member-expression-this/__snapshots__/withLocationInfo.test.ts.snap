@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/jsx/member-expression-this.src.js parses with location information 1`] = `
+exports[`../shared-fixtures/fixtures/jsx/member-expression-this.src.js parses with location information 1`] = `
 Object {
   "$id": 1,
   "block": Object {

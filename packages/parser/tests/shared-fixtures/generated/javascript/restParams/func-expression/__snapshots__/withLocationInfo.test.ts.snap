@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/javascript/restParams/func-expression.src.js parses with location information 1`] = `
+exports[`../shared-fixtures/fixtures/javascript/restParams/func-expression.src.js parses with location information 1`] = `
 Object {
   "$id": 6,
   "block": Object {

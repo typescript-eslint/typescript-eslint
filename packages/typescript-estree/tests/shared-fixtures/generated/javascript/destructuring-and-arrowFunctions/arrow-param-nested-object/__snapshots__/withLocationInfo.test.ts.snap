@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/Users/bradzacher/github/typescript-eslint/packages/shared-fixtures/fixtures/javascript/destructuring-and-arrowFunctions/arrow-param-nested-object.src.js parses with location information 1`] = `
+exports[`../shared-fixtures/fixtures/javascript/destructuring-and-arrowFunctions/arrow-param-nested-object.src.js parses with location information 1`] = `
 Object {
   "body": Array [
     Object {

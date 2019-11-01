@@ -32,7 +32,7 @@ function testWithLocation(
   fixturePath: string,
   options: Partial<TSESTreeOptions>,
 ): void {
-  describe(fixturePath, () => {
+  describe(path.relative(process.cwd(), fixturePath), () => {
     it(`parses with location information`, () => {
       readParseAndSnapshot(
         fixturePath,
@@ -51,7 +51,7 @@ function testWithoutLocation(
   fixturePath: string,
   options: Partial<TSESTreeOptions>,
 ): void {
-  describe(fixturePath, () => {
+  describe(path.relative(process.cwd(), fixturePath), () => {
     it(`parses without location information`, () => {
       readParseAndSnapshot(
         fixturePath,
