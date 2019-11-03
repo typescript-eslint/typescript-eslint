@@ -188,5 +188,4 @@ describe('convert', () => {
     );
     checkMaps(ast);
   });
-
 });
