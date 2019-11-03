@@ -43,7 +43,8 @@
     "glob": "^7.1.4",
     "is-glob": "^4.0.1",
     "lodash.unescape": "4.0.1",
-    "semver": "^6.3.0"
+    "semver": "^6.3.0",
+    "tsutils": "^3.17.1"
   },
   "devDependencies": {
     "@babel/code-frame": "7.5.5",
