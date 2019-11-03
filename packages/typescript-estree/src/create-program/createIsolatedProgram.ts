@@ -1,7 +1,11 @@
 import debug from 'debug';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from '../parser-options';
-import { ASTAndProgram, DEFAULT_COMPILER_OPTIONS } from './shared';
+import {
+  ASTAndProgram,
+  DEFAULT_COMPILER_OPTIONS,
+  getScriptKind,
+} from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
 
@@ -10,7 +14,11 @@ const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
  * @returns Returns a new source file and program corresponding to the linted code
  */
 function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
-  log('Getting isolated program for: %s', extra.filePath);
+  log(
+    'Getting isolated program in %s mode for: %s',
+    extra.jsx ? 'TSX' : 'TS',
+    extra.filePath,
+  );
 
   const compilerHost: ts.CompilerHost = {
     fileExists() {
@@ -34,7 +42,13 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
       return '\n';
     },
     getSourceFile(filename: string) {
-      return ts.createSourceFile(filename, code, ts.ScriptTarget.Latest, true);
+      return ts.createSourceFile(
+        filename,
+        code,
+        ts.ScriptTarget.Latest,
+        true,
+        getScriptKind(extra, filename),
+      );
     },
     readFile() {
       return undefined;
