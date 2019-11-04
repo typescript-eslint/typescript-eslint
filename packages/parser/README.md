@@ -42,9 +42,16 @@ The following additional configuration options are available by specifying them 
 
 - **`ecmaFeatures.jsx`** - default `false`. Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-  - It's `false` on `*.ts` files regardless of this option.
-  - It's `true` on `*.tsx` files regardless of this option.
-  - Otherwise, it respects this option.
+  NOTE: this setting does not effect known file types (.js, .jsx, .ts, .tsx, .json) because the typescript compiler has its own internal handling for known file extensions. The exact behaviour is as follows:
+
+  - if `parserOptions.project` is _not_ provided:
+    - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.
+    - `.ts` files are parsed as if this is false.
+    - unknown extensions (`.md`, `.vue`) will respect this setting.
+  - if `parserOptions.project` is provided (i.e. you are using rules with type information):
+    - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.
+    - `.ts` files are parsed as if this is false.
+    - "unknown" extensions (`.md`, `.vue`) **are parsed as if this is false**.
 
 - **`useJSXTextNode`** - default `true`. Please set `false` if you use this parser on ESLint v4. If this is `false`, the parser creates the AST of JSX texts as the legacy style.
 

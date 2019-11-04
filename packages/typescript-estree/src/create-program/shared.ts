@@ -41,11 +41,41 @@ function canonicalDirname(p: CanonicalPath): CanonicalPath {
   return path.dirname(p) as CanonicalPath;
 }
 
+function getScriptKind(
+  extra: Extra,
+  filePath: string = extra.filePath,
+): ts.ScriptKind {
+  const extension = path.extname(filePath).toLowerCase();
+  // note - we respect the user's extension when it is known  we could override it and force it to match their
+  // jsx setting, but that could create weird situations where we throw parse errors when TSC doesn't
+  switch (extension) {
+    case '.ts':
+      return ts.ScriptKind.TS;
+
+    case '.tsx':
+      return ts.ScriptKind.TSX;
+
+    case '.js':
+      return ts.ScriptKind.JS;
+
+    case '.jsx':
+      return ts.ScriptKind.JSX;
+
+    case '.json':
+      return ts.ScriptKind.JSON;
+
+    default:
+      // unknown extension, force typescript to ignore the file extension, and respect the user's setting
+      return extra.jsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
+  }
+}
+
 export {
   ASTAndProgram,
   canonicalDirname,
   CanonicalPath,
   DEFAULT_COMPILER_OPTIONS,
   getCanonicalFileName,
+  getScriptKind,
   getTsconfigPath,
 };
