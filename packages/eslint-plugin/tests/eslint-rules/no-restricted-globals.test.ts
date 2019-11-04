@@ -30,6 +30,11 @@ type Handler = (event: string) => any
       `,
       options: ['event'],
     },
+    {
+      code: `
+        const a = foo?.bar?.name ?? "foobar"
+      `,
+    },
   ],
   invalid: [],
 });

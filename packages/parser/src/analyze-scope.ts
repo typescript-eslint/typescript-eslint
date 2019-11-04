@@ -344,6 +344,13 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     node.arguments.forEach(this.visit, this);
   }
 
+  OptionalMemberExpression(node: TSESTree.MemberExpression): void {
+    this.visit(node.object);
+    if (node.computed) {
+      this.visit(node.property);
+    }
+  }
+
   /**
    * Define the variable of this function declaration only once.
    * Because to avoid confusion of `no-redeclare` rule by overloading.
