@@ -41,7 +41,9 @@ export default util.createRule<Options, MessageIds>({
   create(context, [options]) {
     const ignoredMethods = new Set(options.ignoredMethods);
 
-    function isPublicMethod(node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition): boolean {
+    function isPublicMethod(
+      node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition,
+    ): boolean {
       return node.accessibility === 'public' || !node.accessibility;
     }
 
@@ -49,7 +51,23 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition,
       ignoredMethods: Set<string>,
     ): boolean {
-      return ignoredMethods.has((node.key as TSESTree.Identifier).name);
+      if (
+        node.key.type === AST_NODE_TYPES.Literal &&
+        typeof node.key.value === 'string'
+      ) {
+        return ignoredMethods.has(node.key.value);
+      }
+      if (
+        node.key.type === AST_NODE_TYPES.TemplateLiteral &&
+        node.key.expressions.length === 0
+      ) {
+        return ignoredMethods.has(node.key.quasis[0].value.raw);
+      }
+      if (node.key.type === AST_NODE_TYPES.Identifier && !node.computed) {
+        return ignoredMethods.has(node.key.name);
+      }
+
+      return false;
     }
 
     function isParamTyped(node: TSESTree.Identifier): boolean {
@@ -72,7 +90,9 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      'TSAbstractMethodDefinition, MethodDefinition'(node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition): void {
+      'TSAbstractMethodDefinition, MethodDefinition'(
+        node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition,
+      ): void {
         if (isPublicMethod(node) && !isIgnoredMethod(node, ignoredMethods)) {
           const paramIdentifiers = node.value.params.filter(
             param => param.type === AST_NODE_TYPES.Identifier,

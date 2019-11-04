@@ -52,6 +52,24 @@ ruleTester.run('no-untyped-public-signature', rule, {
     {
       code: `
              class A {
+                ['b'](c):void {
+
+                }
+            }`,
+      options: [{ ignoredMethods: ['b'] }],
+    },
+    {
+      code: `
+             class A {
+                [\`b\`](c):void {
+
+                }
+            }`,
+      options: [{ ignoredMethods: ['b'] }],
+    },
+    {
+      code: `
+             class A {
                 b(...c):void {
                 
                 }
@@ -77,7 +95,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
     {
       code: `class A {
                 public b(c: any):void {
-                
+
                 }
             }`,
       errors: [{ messageId: 'untypedParameter' }],
@@ -86,7 +104,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
     {
       code: `class A {
                 b(c):void {
-                
+
                 }
             }`,
       errors: [{ messageId: 'untypedParameter' }],
@@ -111,7 +129,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
     {
       code: `class A {
                 public b(c) {
-                
+
                 }
             }`,
       errors: [
@@ -123,7 +141,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
     {
       code: `class A {
                 public b(c: number): any {
-                
+
                 }
             }`,
       errors: [{ messageId: 'noReturnType' }],
@@ -132,13 +150,52 @@ ruleTester.run('no-untyped-public-signature', rule, {
     {
       code: `class A {
                 public b(c: number): any {
-                
+
                 }
-                
+
                 c() {
                 }
             }`,
       options: [{ ignoredMethods: ['c'] }],
+      errors: [{ messageId: 'noReturnType' }],
+    },
+    {
+      code: `
+          let c = 'd';
+          class A {
+                [methodName]() {
+                }
+            }`,
+      options: [{ ignoredMethods: ['methodName'] }],
+      errors: [{ messageId: 'noReturnType' }],
+    },
+    {
+      code: `
+          class A {
+                [1]() {
+                }
+            }`,
+      options: [{ ignoredMethods: ['1'] }],
+      errors: [{ messageId: 'noReturnType' }],
+    },
+    {
+      code: `
+          let c = 'C';
+          class A {
+                [\`methodName\${c}\`]() {
+                }
+            }`,
+      options: [{ ignoredMethods: ['methodNameC', 'methodNamec'] }],
+      errors: [{ messageId: 'noReturnType' }],
+    },
+    {
+      code: `
+          let c = '1';
+          class A {
+                [(c as number)]() {
+                }
+            }`,
+      options: [{ ignoredMethods: ['1'] }],
       errors: [{ messageId: 'noReturnType' }],
     },
   ],
