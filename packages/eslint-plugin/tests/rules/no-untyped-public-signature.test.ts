@@ -198,5 +198,13 @@ ruleTester.run('no-untyped-public-signature', rule, {
       options: [{ ignoredMethods: ['1'] }],
       errors: [{ messageId: 'noReturnType' }],
     },
+    {
+      code: `
+          class A {
+                abstract c() {
+                }
+            }`,
+      errors: [{ messageId: 'noReturnType' }],
+    },
   ],
 });
