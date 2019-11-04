@@ -344,7 +344,11 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     node.arguments.forEach(this.visit, this);
   }
 
-  OptionalMemberExpression(node: TSESTree.MemberExpression): void {
+  /**
+   * Visit optional member expression.
+   * @param node The OptionalMemberExpression node to visit.
+   */
+  OptionalMemberExpression(node: TSESTree.OptionalMemberExpression): void {
     this.visit(node.object);
     if (node.computed) {
       this.visit(node.property);
