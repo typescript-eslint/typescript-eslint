@@ -13,8 +13,16 @@ The following patterns are considered warnings:
 public foo(param1): void {
 }
 
+// untyped parameter
+public foo(param1: any): void {
+}
+
 // untyped return type
 public foo(param1: string) {
+}
+
+// untyped return type
+public foo(param1: string): any {
 }
 ```
 

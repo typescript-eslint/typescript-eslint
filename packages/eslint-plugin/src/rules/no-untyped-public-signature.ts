@@ -38,16 +38,18 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
   },
   defaultOptions: [{ ignoredMethods: [] }],
-  create(context, [{ ignoredMethods }]) {
-    function isPublicMethod(node: TSESTree.MethodDefinition): boolean {
+  create(context, [options]) {
+    const ignoredMethods = new Set(options.ignoredMethods);
+
+    function isPublicMethod(node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition): boolean {
       return node.accessibility === 'public' || !node.accessibility;
     }
 
     function isIgnoredMethod(
-      node: TSESTree.MethodDefinition,
-      ignoredMethods: string[],
+      node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition,
+      ignoredMethods: Set<string>,
     ): boolean {
-      return ignoredMethods.includes((node.key as TSESTree.Identifier).name);
+      return ignoredMethods.has((node.key as TSESTree.Identifier).name);
     }
 
     function isParamTyped(node: TSESTree.Identifier): boolean {
@@ -70,7 +72,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      MethodDefinition(node: TSESTree.MethodDefinition): void {
+      'TSAbstractMethodDefinition, MethodDefinition'(node: TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition): void {
         if (isPublicMethod(node) && !isIgnoredMethod(node, ignoredMethods)) {
           const paramIdentifiers = node.value.params.filter(
             param => param.type === AST_NODE_TYPES.Identifier,
