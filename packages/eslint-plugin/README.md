@@ -10,7 +10,7 @@
 
 ## Installation
 
-Make sure you have TypeScript and @typescript-eslint/parser installed, then install the plugin:
+Make sure you have TypeScript and `@typescript-eslint/parser` installed, then install the plugin:
 
 ```sh
 npm i @typescript-eslint/eslint-plugin --save-dev
