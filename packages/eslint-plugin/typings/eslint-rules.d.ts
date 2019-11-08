@@ -318,7 +318,7 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
           allowTaggedTemplates?: boolean;
         })[],
     {
-      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      ExpressionStatement(node: TSESTree.ExpressionStatement): void;
     }
   >;
   export = rule;
