@@ -27,6 +27,21 @@ ruleTester.run('no-unused-expressions', rule, {
     `
       test.age?.toLocaleString();
     `,
+    `
+      let a = (a?.b).c;
+    `,
+    `
+      let b = a?.['b'];
+    `,
+    `
+      let c = one[2]?.[3][4];
+    `,
+    `
+      one[2]?.[3][4]?.();
+    `,
+    `
+      a?.['b']?.c();
+    `,
   ],
   invalid: [
     {
@@ -65,6 +80,94 @@ a, b()
     {
       code: `
 a() && function namedFunctionInExpressionContext () {f();}
+        `,
+      errors: error([
+        {
+          line: 2,
+          column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+a?.b
+        `,
+      errors: error([
+        {
+          line: 2,
+          column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+(a?.b).c
+        `,
+      errors: error([
+        {
+          line: 2,
+          column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+a?.['b']
+        `,
+      errors: error([
+        {
+          line: 2,
+          column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+(a?.['b']).c
+        `,
+      errors: error([
+        {
+          line: 2,
+          column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+a?.b()?.c
+        `,
+      errors: error([
+        {
+          line: 2,
+          column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+(a?.b()).c
+        `,
+      errors: error([
+        {
+          line: 2,
+          column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+one[2]?.[3][4];
+        `,
+      errors: error([
+        {
+          line: 2,
+          column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+one.two?.three.four;
         `,
       errors: error([
         {
