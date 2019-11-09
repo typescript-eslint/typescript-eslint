@@ -86,5 +86,39 @@ function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
       a?.b();
     `,
   ],
-  invalid: [],
+  invalid: [
+    {
+      code: 'a = 5;',
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'a',
+          },
+        },
+      ],
+    },
+    {
+      code: 'a?.b = 5;',
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'a',
+          },
+        },
+      ],
+    },
+    {
+      code: 'a()?.b = 5;',
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'a',
+          },
+        },
+      ],
+    },
+  ],
 });
