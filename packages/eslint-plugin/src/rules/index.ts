@@ -39,6 +39,7 @@ import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnusedVars from './no-unused-vars';
+import noUnusedExpressions from './no-unused-expressions';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
@@ -106,6 +107,7 @@ export default {
   'no-unnecessary-type-arguments': useDefaultTypeParameter,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unused-vars': noUnusedVars,
+  'no-unused-expressions': noUnusedExpressions,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
