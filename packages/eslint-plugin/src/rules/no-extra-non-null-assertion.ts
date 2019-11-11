@@ -1,7 +1,3 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -20,29 +16,9 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    /**
-     * checks if node has extra non null assertion
-     * @param node the node to be validated
-     */
-    function hasExtraNonNullAssertion(
-      node: TSESTree.TSNonNullExpression,
-    ): boolean {
-      const parent = node.parent;
-      if (!parent) {
-        return false;
-      }
-
-      return (
-        parent.type === AST_NODE_TYPES.TSNonNullExpression &&
-        node.expression.type !== AST_NODE_TYPES.TSNonNullExpression
-      );
-    }
-
     return {
-      TSNonNullExpression(node): void {
-        if (hasExtraNonNullAssertion(node)) {
-          context.report({ messageId: 'noExtraNonNullAssertion', node });
-        }
+      'TSNonNullExpression > TSNonNullExpression'(node): void {
+        context.report({ messageId: 'noExtraNonNullAssertion', node });
       },
     };
   },

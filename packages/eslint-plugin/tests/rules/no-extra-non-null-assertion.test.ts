@@ -24,9 +24,21 @@ function foo(bar: number | undefined) {
     {
       code: `
 const foo: { bar: number } | null = null;
-const bar = foo!!!.bar;
+const bar = foo!!!!.bar;
       `,
       errors: [
+        {
+          messageId: 'noExtraNonNullAssertion',
+          endColumn: 19,
+          column: 13,
+          line: 3,
+        },
+        {
+          messageId: 'noExtraNonNullAssertion',
+          endColumn: 18,
+          column: 13,
+          line: 3,
+        },
         {
           messageId: 'noExtraNonNullAssertion',
           endColumn: 17,
