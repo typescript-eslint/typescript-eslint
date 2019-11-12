@@ -37,6 +37,22 @@ describe('parse()', () => {
       'output tokens, comments, locs, and ranges when called with those options',
       createSnapshotTestBlock(code, config),
     );
+
+    it(
+      'output should not contain loc',
+      createSnapshotTestBlock(code, {
+        range: true,
+        loc: false,
+      }),
+    );
+
+    it(
+      'output should not contain range',
+      createSnapshotTestBlock(code, {
+        range: false,
+        loc: true,
+      }),
+    );
   });
 
   describe('non string code', () => {
