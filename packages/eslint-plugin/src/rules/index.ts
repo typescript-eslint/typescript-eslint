@@ -18,6 +18,7 @@ import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import noArrayConstructor from './no-array-constructor';
+import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
@@ -85,6 +86,7 @@ export default {
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
   'no-array-constructor': noArrayConstructor,
+  'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
