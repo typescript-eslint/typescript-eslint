@@ -347,6 +347,3819 @@ The file does not match your project config: tests/fixtures/invalidFileErrors/js
 The file must be included in at least one of the projects provided."
 `;
 
+exports[`parse() isolated parsing should parse .js file - with JSX content - parserOptions.jsx = false 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "children": Array [],
+              "closingElement": null,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "openingElement": Object {
+                "attributes": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                },
+                "name": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "div",
+                  "range": Array [
+                    11,
+                    14,
+                  ],
+                  "type": "JSXIdentifier",
+                },
+                "range": Array [
+                  10,
+                  17,
+                ],
+                "selfClosing": true,
+                "type": "JSXOpeningElement",
+                "typeParameters": undefined,
+              },
+              "range": Array [
+                10,
+                17,
+              ],
+              "type": "JSXElement",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              17,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          18,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 18,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      18,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Punctuator",
+        "value": "<",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          11,
+          14,
+        ],
+        "type": "JSXIdentifier",
+        "value": "div",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 15,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          15,
+          16,
+        ],
+        "type": "Punctuator",
+        "value": "/",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          16,
+          17,
+        ],
+        "type": "Punctuator",
+        "value": ">",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 17,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          17,
+          18,
+        ],
+        "type": "Punctuator",
+        "value": ";",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .js file - with JSX content - parserOptions.jsx = true 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "children": Array [],
+              "closingElement": null,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "openingElement": Object {
+                "attributes": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                },
+                "name": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "div",
+                  "range": Array [
+                    11,
+                    14,
+                  ],
+                  "type": "JSXIdentifier",
+                },
+                "range": Array [
+                  10,
+                  17,
+                ],
+                "selfClosing": true,
+                "type": "JSXOpeningElement",
+                "typeParameters": undefined,
+              },
+              "range": Array [
+                10,
+                17,
+              ],
+              "type": "JSXElement",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              17,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          18,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 18,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      18,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Punctuator",
+        "value": "<",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          11,
+          14,
+        ],
+        "type": "JSXIdentifier",
+        "value": "div",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 15,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          15,
+          16,
+        ],
+        "type": "Punctuator",
+        "value": "/",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          16,
+          17,
+        ],
+        "type": "Punctuator",
+        "value": ">",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 17,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          17,
+          18,
+        ],
+        "type": "Punctuator",
+        "value": ";",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .js file - without JSX content - parserOptions.jsx = false 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .js file - without JSX content - parserOptions.jsx = true 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .jsx file - with JSX content - parserOptions.jsx = false 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "children": Array [],
+              "closingElement": null,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "openingElement": Object {
+                "attributes": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                },
+                "name": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "div",
+                  "range": Array [
+                    11,
+                    14,
+                  ],
+                  "type": "JSXIdentifier",
+                },
+                "range": Array [
+                  10,
+                  17,
+                ],
+                "selfClosing": true,
+                "type": "JSXOpeningElement",
+                "typeParameters": undefined,
+              },
+              "range": Array [
+                10,
+                17,
+              ],
+              "type": "JSXElement",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              17,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          18,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 18,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      18,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Punctuator",
+        "value": "<",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          11,
+          14,
+        ],
+        "type": "JSXIdentifier",
+        "value": "div",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 15,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          15,
+          16,
+        ],
+        "type": "Punctuator",
+        "value": "/",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          16,
+          17,
+        ],
+        "type": "Punctuator",
+        "value": ">",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 17,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          17,
+          18,
+        ],
+        "type": "Punctuator",
+        "value": ";",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .jsx file - with JSX content - parserOptions.jsx = true 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "children": Array [],
+              "closingElement": null,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "openingElement": Object {
+                "attributes": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                },
+                "name": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "div",
+                  "range": Array [
+                    11,
+                    14,
+                  ],
+                  "type": "JSXIdentifier",
+                },
+                "range": Array [
+                  10,
+                  17,
+                ],
+                "selfClosing": true,
+                "type": "JSXOpeningElement",
+                "typeParameters": undefined,
+              },
+              "range": Array [
+                10,
+                17,
+              ],
+              "type": "JSXElement",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              17,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          18,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 18,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      18,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Punctuator",
+        "value": "<",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          11,
+          14,
+        ],
+        "type": "JSXIdentifier",
+        "value": "div",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 15,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          15,
+          16,
+        ],
+        "type": "Punctuator",
+        "value": "/",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          16,
+          17,
+        ],
+        "type": "Punctuator",
+        "value": ">",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 17,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          17,
+          18,
+        ],
+        "type": "Punctuator",
+        "value": ";",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .jsx file - without JSX content - parserOptions.jsx = false 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .jsx file - without JSX content - parserOptions.jsx = true 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .ts file - without JSX content - parserOptions.jsx = false 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .ts file - without JSX content - parserOptions.jsx = true 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .tsx file - with JSX content - parserOptions.jsx = false 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "children": Array [],
+              "closingElement": null,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "openingElement": Object {
+                "attributes": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                },
+                "name": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "div",
+                  "range": Array [
+                    11,
+                    14,
+                  ],
+                  "type": "JSXIdentifier",
+                },
+                "range": Array [
+                  10,
+                  17,
+                ],
+                "selfClosing": true,
+                "type": "JSXOpeningElement",
+                "typeParameters": undefined,
+              },
+              "range": Array [
+                10,
+                17,
+              ],
+              "type": "JSXElement",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              17,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          18,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 18,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      18,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Punctuator",
+        "value": "<",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          11,
+          14,
+        ],
+        "type": "JSXIdentifier",
+        "value": "div",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 15,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          15,
+          16,
+        ],
+        "type": "Punctuator",
+        "value": "/",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          16,
+          17,
+        ],
+        "type": "Punctuator",
+        "value": ">",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 17,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          17,
+          18,
+        ],
+        "type": "Punctuator",
+        "value": ";",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .tsx file - with JSX content - parserOptions.jsx = true 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "children": Array [],
+              "closingElement": null,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "openingElement": Object {
+                "attributes": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                },
+                "name": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "div",
+                  "range": Array [
+                    11,
+                    14,
+                  ],
+                  "type": "JSXIdentifier",
+                },
+                "range": Array [
+                  10,
+                  17,
+                ],
+                "selfClosing": true,
+                "type": "JSXOpeningElement",
+                "typeParameters": undefined,
+              },
+              "range": Array [
+                10,
+                17,
+              ],
+              "type": "JSXElement",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              17,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          18,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 18,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      18,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Punctuator",
+        "value": "<",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          11,
+          14,
+        ],
+        "type": "JSXIdentifier",
+        "value": "div",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 15,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          15,
+          16,
+        ],
+        "type": "Punctuator",
+        "value": "/",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          16,
+          17,
+        ],
+        "type": "Punctuator",
+        "value": ">",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 17,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          17,
+          18,
+        ],
+        "type": "Punctuator",
+        "value": ";",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .tsx file - without JSX content - parserOptions.jsx = false 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .tsx file - without JSX content - parserOptions.jsx = true 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .vue file - with JSX content - parserOptions.jsx = true 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "children": Array [],
+              "closingElement": null,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "openingElement": Object {
+                "attributes": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                },
+                "name": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 14,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "div",
+                  "range": Array [
+                    11,
+                    14,
+                  ],
+                  "type": "JSXIdentifier",
+                },
+                "range": Array [
+                  10,
+                  17,
+                ],
+                "selfClosing": true,
+                "type": "JSXOpeningElement",
+                "typeParameters": undefined,
+              },
+              "range": Array [
+                10,
+                17,
+              ],
+              "type": "JSXElement",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              17,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          18,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 18,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      18,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Punctuator",
+        "value": "<",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          11,
+          14,
+        ],
+        "type": "JSXIdentifier",
+        "value": "div",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 15,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          15,
+          16,
+        ],
+        "type": "Punctuator",
+        "value": "/",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          16,
+          17,
+        ],
+        "type": "Punctuator",
+        "value": ">",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 17,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          17,
+          18,
+        ],
+        "type": "Punctuator",
+        "value": ";",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .vue file - without JSX content - parserOptions.jsx = false 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
+exports[`parse() isolated parsing should parse .vue file - without JSX content - parserOptions.jsx = true 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "declarations": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                6,
+                7,
+              ],
+              "type": "Identifier",
+            },
+            "init": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              11,
+            ],
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          11,
+        ],
+        "type": "VariableDeclaration",
+      },
+    ],
+    "comments": Array [],
+    "loc": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "range": Array [
+      0,
+      11,
+    ],
+    "sourceType": "script",
+    "tokens": Array [
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          5,
+        ],
+        "type": "Keyword",
+        "value": "const",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+        "value": "x",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          9,
+        ],
+        "type": "Punctuator",
+        "value": "=",
+      },
+      Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          11,
+        ],
+        "type": "Numeric",
+        "value": "1",
+      },
+    ],
+    "type": "Program",
+  },
+  "services": Object {
+    "esTreeNodeToTSNodeMap": undefined,
+    "program": undefined,
+    "tsNodeToESTreeNodeMap": undefined,
+  },
+}
+`;
+
 exports[`parse() non string code should correctly convert code to a string for parse() 1`] = `
 Object {
   "body": Array [

@@ -47,7 +47,17 @@ Parses the given string of code with the options provided and returns an ESTree-
   // create a top-level comments array containing all comments
   comment: false,
 
-  // enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
+  /*
+   * enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
+   *
+   * NOTE: this setting does not effect known file types (.js, .jsx, .ts, .tsx, .json) because the
+   * typescript compiler has its own internal handling for known file extensions.
+   *
+   * Exact behaviour:
+   * - .js, .jsx, .tsx files are parsed as if this is true
+   * - .ts files are parsed as if this is false
+   * - unknown extensions (.md, .vue) will respect this setting
+   */
   jsx: false,
 
   /*

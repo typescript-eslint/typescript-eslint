@@ -22070,7 +22070,7 @@ Object {
 
 exports[`typescript fixtures/basics/optional-chain.src 1`] = `
 Object {
-  "$id": 18,
+  "$id": 10,
   "block": Object {
     "range": Array [
       0,
@@ -22080,7 +22080,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 17,
+      "$id": 9,
       "block": Object {
         "range": Array [
           0,
@@ -22090,7 +22090,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 16,
+          "$id": 8,
           "block": Object {
             "range": Array [
               0,
@@ -22105,7 +22105,7 @@ Object {
             Object {
               "$id": 3,
               "from": Object {
-                "$ref": 16,
+                "$ref": 8,
               },
               "identifier": Object {
                 "name": "one",
@@ -22124,24 +22124,7 @@ Object {
             Object {
               "$id": 4,
               "from": Object {
-                "$ref": 16,
-              },
-              "identifier": Object {
-                "name": "two",
-                "range": Array [
-                  45,
-                  48,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 5,
-              "from": Object {
-                "$ref": 16,
+                "$ref": 8,
               },
               "identifier": Object {
                 "name": "one",
@@ -22158,43 +22141,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 6,
+              "$id": 5,
               "from": Object {
-                "$ref": 16,
-              },
-              "identifier": Object {
-                "name": "two",
-                "range": Array [
-                  57,
-                  60,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 7,
-              "from": Object {
-                "$ref": 16,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  61,
-                  66,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 8,
-              "from": Object {
-                "$ref": 16,
+                "$ref": 8,
               },
               "identifier": Object {
                 "name": "one",
@@ -22211,26 +22160,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 9,
+              "$id": 6,
               "from": Object {
-                "$ref": 16,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  79,
-                  84,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 10,
-              "from": Object {
-                "$ref": 16,
+                "$ref": 8,
               },
               "identifier": Object {
                 "name": "one",
@@ -22247,43 +22179,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 11,
+              "$id": 7,
               "from": Object {
-                "$ref": 16,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  97,
-                  102,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 12,
-              "from": Object {
-                "$ref": 16,
-              },
-              "identifier": Object {
-                "name": "four",
-                "range": Array [
-                  103,
-                  107,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 13,
-              "from": Object {
-                "$ref": 16,
+                "$ref": 8,
               },
               "identifier": Object {
                 "name": "one",
@@ -22299,70 +22197,11 @@ Object {
               },
               "writeExpr": undefined,
             },
-            Object {
-              "$id": 14,
-              "from": Object {
-                "$ref": 16,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  120,
-                  125,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 15,
-              "from": Object {
-                "$ref": 16,
-              },
-              "identifier": Object {
-                "name": "four",
-                "range": Array [
-                  127,
-                  131,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
           ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 4,
-            },
-            Object {
-              "$ref": 6,
-            },
-            Object {
-              "$ref": 7,
-            },
-            Object {
-              "$ref": 9,
-            },
-            Object {
-              "$ref": 11,
-            },
-            Object {
-              "$ref": 12,
-            },
-            Object {
-              "$ref": 14,
-            },
-            Object {
-              "$ref": 15,
-            },
-          ],
+          "throughReferences": Array [],
           "type": "function",
           "upperScope": Object {
-            "$ref": 17,
+            "$ref": 9,
           },
           "variableMap": Object {
             "arguments": Object {
@@ -22373,7 +22212,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 16,
+            "$ref": 8,
           },
           "variables": Array [
             Object {
@@ -22384,7 +22223,7 @@ Object {
               "name": "arguments",
               "references": Array [],
               "scope": Object {
-                "$ref": 16,
+                "$ref": 8,
               },
             },
             Object {
@@ -22427,20 +22266,20 @@ Object {
                   "$ref": 3,
                 },
                 Object {
+                  "$ref": 4,
+                },
+                Object {
                   "$ref": 5,
                 },
                 Object {
-                  "$ref": 8,
+                  "$ref": 6,
                 },
                 Object {
-                  "$ref": 10,
-                },
-                Object {
-                  "$ref": 13,
+                  "$ref": 7,
                 },
               ],
               "scope": Object {
-                "$ref": 16,
+                "$ref": 8,
               },
             },
           ],
@@ -22449,35 +22288,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 4,
-        },
-        Object {
-          "$ref": 6,
-        },
-        Object {
-          "$ref": 7,
-        },
-        Object {
-          "$ref": 9,
-        },
-        Object {
-          "$ref": 11,
-        },
-        Object {
-          "$ref": 12,
-        },
-        Object {
-          "$ref": 14,
-        },
-        Object {
-          "$ref": 15,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 18,
+        "$ref": 10,
       },
       "variableMap": Object {
         "processOptional": Object {
@@ -22485,7 +22299,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 17,
+        "$ref": 9,
       },
       "variables": Array [
         Object {
@@ -22525,7 +22339,7 @@ Object {
           "name": "processOptional",
           "references": Array [],
           "scope": Object {
-            "$ref": 17,
+            "$ref": 9,
           },
         },
       ],
@@ -22534,37 +22348,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 4,
-    },
-    Object {
-      "$ref": 6,
-    },
-    Object {
-      "$ref": 7,
-    },
-    Object {
-      "$ref": 9,
-    },
-    Object {
-      "$ref": 11,
-    },
-    Object {
-      "$ref": 12,
-    },
-    Object {
-      "$ref": 14,
-    },
-    Object {
-      "$ref": 15,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 18,
+    "$ref": 10,
   },
   "variables": Array [],
 }
@@ -22572,7 +22361,7 @@ Object {
 
 exports[`typescript fixtures/basics/optional-chain-call.src 1`] = `
 Object {
-  "$id": 23,
+  "$id": 14,
   "block": Object {
     "range": Array [
       0,
@@ -22582,7 +22371,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 22,
+      "$id": 13,
       "block": Object {
         "range": Array [
           0,
@@ -22592,7 +22381,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 21,
+          "$id": 12,
           "block": Object {
             "range": Array [
               0,
@@ -22607,7 +22396,7 @@ Object {
             Object {
               "$id": 3,
               "from": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -22626,24 +22415,7 @@ Object {
             Object {
               "$id": 4,
               "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "fn",
-                "range": Array [
-                  49,
-                  51,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 5,
-              "from": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -22660,43 +22432,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 6,
+              "$id": 5,
               "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "two",
-                "range": Array [
-                  62,
-                  65,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 7,
-              "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "fn",
-                "range": Array [
-                  66,
-                  68,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 8,
-              "from": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -22713,26 +22451,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 9,
+              "$id": 6,
               "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "fn",
-                "range": Array [
-                  83,
-                  85,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 10,
-              "from": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -22749,43 +22470,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 11,
+              "$id": 7,
               "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  100,
-                  105,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 12,
-              "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "fn",
-                "range": Array [
-                  106,
-                  108,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 13,
-              "from": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -22802,43 +22489,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 14,
+              "$id": 8,
               "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  123,
-                  128,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 15,
-              "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "fn",
-                "range": Array [
-                  130,
-                  132,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 16,
-              "from": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -22855,9 +22508,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 17,
+              "$id": 9,
               "from": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -22874,9 +22527,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 18,
+              "$id": 10,
               "from": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -22893,9 +22546,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 19,
+              "$id": 11,
               "from": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -22911,56 +22564,11 @@ Object {
               },
               "writeExpr": undefined,
             },
-            Object {
-              "$id": 20,
-              "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "two",
-                "range": Array [
-                  187,
-                  190,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
           ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 4,
-            },
-            Object {
-              "$ref": 6,
-            },
-            Object {
-              "$ref": 7,
-            },
-            Object {
-              "$ref": 9,
-            },
-            Object {
-              "$ref": 11,
-            },
-            Object {
-              "$ref": 12,
-            },
-            Object {
-              "$ref": 14,
-            },
-            Object {
-              "$ref": 15,
-            },
-            Object {
-              "$ref": 20,
-            },
-          ],
+          "throughReferences": Array [],
           "type": "function",
           "upperScope": Object {
-            "$ref": 22,
+            "$ref": 13,
           },
           "variableMap": Object {
             "arguments": Object {
@@ -22971,7 +22579,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 21,
+            "$ref": 12,
           },
           "variables": Array [
             Object {
@@ -22982,7 +22590,7 @@ Object {
               "name": "arguments",
               "references": Array [],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
             },
             Object {
@@ -23025,32 +22633,32 @@ Object {
                   "$ref": 3,
                 },
                 Object {
+                  "$ref": 4,
+                },
+                Object {
                   "$ref": 5,
+                },
+                Object {
+                  "$ref": 6,
+                },
+                Object {
+                  "$ref": 7,
                 },
                 Object {
                   "$ref": 8,
                 },
                 Object {
+                  "$ref": 9,
+                },
+                Object {
                   "$ref": 10,
                 },
                 Object {
-                  "$ref": 13,
-                },
-                Object {
-                  "$ref": 16,
-                },
-                Object {
-                  "$ref": 17,
-                },
-                Object {
-                  "$ref": 18,
-                },
-                Object {
-                  "$ref": 19,
+                  "$ref": 11,
                 },
               ],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 12,
               },
             },
           ],
@@ -23059,38 +22667,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 4,
-        },
-        Object {
-          "$ref": 6,
-        },
-        Object {
-          "$ref": 7,
-        },
-        Object {
-          "$ref": 9,
-        },
-        Object {
-          "$ref": 11,
-        },
-        Object {
-          "$ref": 12,
-        },
-        Object {
-          "$ref": 14,
-        },
-        Object {
-          "$ref": 15,
-        },
-        Object {
-          "$ref": 20,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 23,
+        "$ref": 14,
       },
       "variableMap": Object {
         "processOptionalCall": Object {
@@ -23098,7 +22678,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 22,
+        "$ref": 13,
       },
       "variables": Array [
         Object {
@@ -23138,7 +22718,7 @@ Object {
           "name": "processOptionalCall",
           "references": Array [],
           "scope": Object {
-            "$ref": 22,
+            "$ref": 13,
           },
         },
       ],
@@ -23147,40 +22727,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 4,
-    },
-    Object {
-      "$ref": 6,
-    },
-    Object {
-      "$ref": 7,
-    },
-    Object {
-      "$ref": 9,
-    },
-    Object {
-      "$ref": 11,
-    },
-    Object {
-      "$ref": 12,
-    },
-    Object {
-      "$ref": 14,
-    },
-    Object {
-      "$ref": 15,
-    },
-    Object {
-      "$ref": 20,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 23,
+    "$ref": 14,
   },
   "variables": Array [],
 }
@@ -23188,7 +22740,7 @@ Object {
 
 exports[`typescript fixtures/basics/optional-chain-call-with-parens.src 1`] = `
 Object {
-  "$id": 20,
+  "$id": 14,
   "block": Object {
     "range": Array [
       0,
@@ -23198,7 +22750,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 19,
+      "$id": 13,
       "block": Object {
         "range": Array [
           0,
@@ -23208,7 +22760,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 18,
+          "$id": 12,
           "block": Object {
             "range": Array [
               0,
@@ -23223,7 +22775,7 @@ Object {
             Object {
               "$id": 3,
               "from": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -23242,24 +22794,7 @@ Object {
             Object {
               "$id": 4,
               "from": Object {
-                "$ref": 18,
-              },
-              "identifier": Object {
-                "name": "fn",
-                "range": Array [
-                  56,
-                  58,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 5,
-              "from": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -23276,26 +22811,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 6,
+              "$id": 5,
               "from": Object {
-                "$ref": 18,
-              },
-              "identifier": Object {
-                "name": "two",
-                "range": Array [
-                  71,
-                  74,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 7,
-              "from": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -23312,26 +22830,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 8,
+              "$id": 6,
               "from": Object {
-                "$ref": 18,
-              },
-              "identifier": Object {
-                "name": "fn",
-                "range": Array [
-                  94,
-                  96,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 9,
-              "from": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -23348,26 +22849,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 10,
+              "$id": 7,
               "from": Object {
-                "$ref": 18,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  113,
-                  118,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 11,
-              "from": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -23384,43 +22868,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 12,
+              "$id": 8,
               "from": Object {
-                "$ref": 18,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  138,
-                  143,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 13,
-              "from": Object {
-                "$ref": 18,
-              },
-              "identifier": Object {
-                "name": "fn",
-                "range": Array [
-                  145,
-                  147,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 14,
-              "from": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -23437,9 +22887,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 15,
+              "$id": 9,
               "from": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -23456,9 +22906,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 16,
+              "$id": 10,
               "from": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -23475,9 +22925,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 17,
+              "$id": 11,
               "from": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
               "identifier": Object {
                 "name": "one",
@@ -23494,29 +22944,10 @@ Object {
               "writeExpr": undefined,
             },
           ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 4,
-            },
-            Object {
-              "$ref": 6,
-            },
-            Object {
-              "$ref": 8,
-            },
-            Object {
-              "$ref": 10,
-            },
-            Object {
-              "$ref": 12,
-            },
-            Object {
-              "$ref": 13,
-            },
-          ],
+          "throughReferences": Array [],
           "type": "function",
           "upperScope": Object {
-            "$ref": 19,
+            "$ref": 13,
           },
           "variableMap": Object {
             "arguments": Object {
@@ -23527,7 +22958,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 18,
+            "$ref": 12,
           },
           "variables": Array [
             Object {
@@ -23538,7 +22969,7 @@ Object {
               "name": "arguments",
               "references": Array [],
               "scope": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
             },
             Object {
@@ -23581,32 +23012,32 @@ Object {
                   "$ref": 3,
                 },
                 Object {
+                  "$ref": 4,
+                },
+                Object {
                   "$ref": 5,
+                },
+                Object {
+                  "$ref": 6,
                 },
                 Object {
                   "$ref": 7,
                 },
                 Object {
+                  "$ref": 8,
+                },
+                Object {
                   "$ref": 9,
+                },
+                Object {
+                  "$ref": 10,
                 },
                 Object {
                   "$ref": 11,
                 },
-                Object {
-                  "$ref": 14,
-                },
-                Object {
-                  "$ref": 15,
-                },
-                Object {
-                  "$ref": 16,
-                },
-                Object {
-                  "$ref": 17,
-                },
               ],
               "scope": Object {
-                "$ref": 18,
+                "$ref": 12,
               },
             },
           ],
@@ -23615,29 +23046,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 4,
-        },
-        Object {
-          "$ref": 6,
-        },
-        Object {
-          "$ref": 8,
-        },
-        Object {
-          "$ref": 10,
-        },
-        Object {
-          "$ref": 12,
-        },
-        Object {
-          "$ref": 13,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 20,
+        "$ref": 14,
       },
       "variableMap": Object {
         "processOptionalCallParens": Object {
@@ -23645,7 +23057,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 19,
+        "$ref": 13,
       },
       "variables": Array [
         Object {
@@ -23685,7 +23097,7 @@ Object {
           "name": "processOptionalCallParens",
           "references": Array [],
           "scope": Object {
-            "$ref": 19,
+            "$ref": 13,
           },
         },
       ],
@@ -23694,31 +23106,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 4,
-    },
-    Object {
-      "$ref": 6,
-    },
-    Object {
-      "$ref": 8,
-    },
-    Object {
-      "$ref": 10,
-    },
-    Object {
-      "$ref": 12,
-    },
-    Object {
-      "$ref": 13,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 20,
+    "$ref": 14,
   },
   "variables": Array [],
 }
@@ -24352,7 +23745,7 @@ Object {
 
 exports[`typescript fixtures/basics/optional-chain-with-parens.src 1`] = `
 Object {
-  "$id": 19,
+  "$id": 11,
   "block": Object {
     "range": Array [
       0,
@@ -24362,7 +23755,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 18,
+      "$id": 10,
       "block": Object {
         "range": Array [
           0,
@@ -24372,7 +23765,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 17,
+          "$id": 9,
           "block": Object {
             "range": Array [
               0,
@@ -24387,7 +23780,7 @@ Object {
             Object {
               "$id": 3,
               "from": Object {
-                "$ref": 17,
+                "$ref": 9,
               },
               "identifier": Object {
                 "name": "one",
@@ -24406,24 +23799,7 @@ Object {
             Object {
               "$id": 4,
               "from": Object {
-                "$ref": 17,
-              },
-              "identifier": Object {
-                "name": "two",
-                "range": Array [
-                  52,
-                  55,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 5,
-              "from": Object {
-                "$ref": 17,
+                "$ref": 9,
               },
               "identifier": Object {
                 "name": "one",
@@ -24440,26 +23816,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 6,
+              "$id": 5,
               "from": Object {
-                "$ref": 17,
-              },
-              "identifier": Object {
-                "name": "two",
-                "range": Array [
-                  66,
-                  69,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 7,
-              "from": Object {
-                "$ref": 17,
+                "$ref": 9,
               },
               "identifier": Object {
                 "name": "one",
@@ -24476,26 +23835,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 8,
+              "$id": 6,
               "from": Object {
-                "$ref": 17,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  90,
-                  95,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 9,
-              "from": Object {
-                "$ref": 17,
+                "$ref": 9,
               },
               "identifier": Object {
                 "name": "one",
@@ -24512,26 +23854,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 10,
+              "$id": 7,
               "from": Object {
-                "$ref": 17,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  110,
-                  115,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 11,
-              "from": Object {
-                "$ref": 17,
+                "$ref": 9,
               },
               "identifier": Object {
                 "name": "one",
@@ -24548,43 +23873,9 @@ Object {
               "writeExpr": undefined,
             },
             Object {
-              "$id": 12,
+              "$id": 8,
               "from": Object {
-                "$ref": 17,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  135,
-                  140,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 13,
-              "from": Object {
-                "$ref": 17,
-              },
-              "identifier": Object {
-                "name": "four",
-                "range": Array [
-                  142,
-                  146,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 14,
-              "from": Object {
-                "$ref": 17,
+                "$ref": 9,
               },
               "identifier": Object {
                 "name": "one",
@@ -24600,70 +23891,11 @@ Object {
               },
               "writeExpr": undefined,
             },
-            Object {
-              "$id": 15,
-              "from": Object {
-                "$ref": 17,
-              },
-              "identifier": Object {
-                "name": "three",
-                "range": Array [
-                  161,
-                  166,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
-            Object {
-              "$id": 16,
-              "from": Object {
-                "$ref": 17,
-              },
-              "identifier": Object {
-                "name": "four",
-                "range": Array [
-                  168,
-                  172,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "r",
-              "resolved": null,
-              "writeExpr": undefined,
-            },
           ],
-          "throughReferences": Array [
-            Object {
-              "$ref": 4,
-            },
-            Object {
-              "$ref": 6,
-            },
-            Object {
-              "$ref": 8,
-            },
-            Object {
-              "$ref": 10,
-            },
-            Object {
-              "$ref": 12,
-            },
-            Object {
-              "$ref": 13,
-            },
-            Object {
-              "$ref": 15,
-            },
-            Object {
-              "$ref": 16,
-            },
-          ],
+          "throughReferences": Array [],
           "type": "function",
           "upperScope": Object {
-            "$ref": 18,
+            "$ref": 10,
           },
           "variableMap": Object {
             "arguments": Object {
@@ -24674,7 +23906,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 17,
+            "$ref": 9,
           },
           "variables": Array [
             Object {
@@ -24685,7 +23917,7 @@ Object {
               "name": "arguments",
               "references": Array [],
               "scope": Object {
-                "$ref": 17,
+                "$ref": 9,
               },
             },
             Object {
@@ -24728,23 +23960,23 @@ Object {
                   "$ref": 3,
                 },
                 Object {
+                  "$ref": 4,
+                },
+                Object {
                   "$ref": 5,
+                },
+                Object {
+                  "$ref": 6,
                 },
                 Object {
                   "$ref": 7,
                 },
                 Object {
-                  "$ref": 9,
-                },
-                Object {
-                  "$ref": 11,
-                },
-                Object {
-                  "$ref": 14,
+                  "$ref": 8,
                 },
               ],
               "scope": Object {
-                "$ref": 17,
+                "$ref": 9,
               },
             },
           ],
@@ -24753,35 +23985,10 @@ Object {
       "functionExpressionScope": false,
       "isStrict": true,
       "references": Array [],
-      "throughReferences": Array [
-        Object {
-          "$ref": 4,
-        },
-        Object {
-          "$ref": 6,
-        },
-        Object {
-          "$ref": 8,
-        },
-        Object {
-          "$ref": 10,
-        },
-        Object {
-          "$ref": 12,
-        },
-        Object {
-          "$ref": 13,
-        },
-        Object {
-          "$ref": 15,
-        },
-        Object {
-          "$ref": 16,
-        },
-      ],
+      "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 19,
+        "$ref": 11,
       },
       "variableMap": Object {
         "processOptionalParens": Object {
@@ -24789,7 +23996,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 18,
+        "$ref": 10,
       },
       "variables": Array [
         Object {
@@ -24829,7 +24036,7 @@ Object {
           "name": "processOptionalParens",
           "references": Array [],
           "scope": Object {
-            "$ref": 18,
+            "$ref": 10,
           },
         },
       ],
@@ -24838,37 +24045,12 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [
-    Object {
-      "$ref": 4,
-    },
-    Object {
-      "$ref": 6,
-    },
-    Object {
-      "$ref": 8,
-    },
-    Object {
-      "$ref": 10,
-    },
-    Object {
-      "$ref": 12,
-    },
-    Object {
-      "$ref": 13,
-    },
-    Object {
-      "$ref": 15,
-    },
-    Object {
-      "$ref": 16,
-    },
-  ],
+  "throughReferences": Array [],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 19,
+    "$ref": 11,
   },
   "variables": Array [],
 }
