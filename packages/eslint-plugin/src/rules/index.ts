@@ -18,6 +18,7 @@ import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import noArrayConstructor from './no-array-constructor';
+import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
@@ -39,6 +40,8 @@ import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnusedVars from './no-unused-vars';
+import noUntypedPublicSignature from './no-untyped-public-signature';
+import noUnusedExpressions from './no-unused-expressions';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
@@ -85,6 +88,7 @@ export default {
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
   'no-array-constructor': noArrayConstructor,
+  'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
@@ -106,7 +110,9 @@ export default {
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': useDefaultTypeParameter,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
+  'no-untyped-public-signature': noUntypedPublicSignature,
   'no-unused-vars': noUnusedVars,
+  'no-unused-expressions': noUnusedExpressions,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
