@@ -20,9 +20,12 @@ const ASSIGNMENT_OPERATORS: ts.AssignmentOperator[] = [
   SyntaxKind.CaretEqualsToken,
 ];
 
-const LOGICAL_OPERATORS: ts.LogicalOperator[] = [
+const LOGICAL_OPERATORS: (
+  | ts.LogicalOperator
+  | ts.SyntaxKind.QuestionQuestionToken)[] = [
   SyntaxKind.BarBarToken,
   SyntaxKind.AmpersandAmpersandToken,
+  SyntaxKind.QuestionQuestionToken,
 ];
 
 const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
@@ -87,6 +90,8 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
   [SyntaxKind.NewKeyword]: 'new',
   [SyntaxKind.ImportKeyword]: 'import',
   [SyntaxKind.ReadonlyKeyword]: 'readonly',
+  [SyntaxKind.QuestionQuestionToken]: '??',
+  [SyntaxKind.QuestionDotToken]: '?.',
 };
 
 /**
@@ -94,10 +99,10 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
  * @param operator the operator token
  * @returns is assignment
  */
-export function isAssignmentOperator(
-  operator: ts.Token<ts.AssignmentOperator>,
+export function isAssignmentOperator<T extends ts.SyntaxKind>(
+  operator: ts.Token<T>,
 ): boolean {
-  return ASSIGNMENT_OPERATORS.includes(operator.kind);
+  return (ASSIGNMENT_OPERATORS as ts.SyntaxKind[]).includes(operator.kind);
 }
 
 /**
@@ -105,10 +110,10 @@ export function isAssignmentOperator(
  * @param operator the operator token
  * @returns is a logical operator
  */
-export function isLogicalOperator(
-  operator: ts.Token<ts.LogicalOperator>,
+export function isLogicalOperator<T extends ts.SyntaxKind>(
+  operator: ts.Token<T>,
 ): boolean {
-  return LOGICAL_OPERATORS.includes(operator.kind);
+  return (LOGICAL_OPERATORS as ts.SyntaxKind[]).includes(operator.kind);
 }
 
 /**
@@ -195,10 +200,8 @@ export function isJSDocComment(node: ts.Node): boolean {
  * @param operator the operator token
  * @returns the binary expression type
  */
-export function getBinaryExpressionType(
-  // can be any operator
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  operator: ts.Token<any>,
+export function getBinaryExpressionType<T extends ts.SyntaxKind>(
+  operator: ts.Token<T>,
 ):
   | AST_NODE_TYPES.AssignmentExpression
   | AST_NODE_TYPES.LogicalExpression
@@ -607,41 +610,6 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
   }
   walk(ast);
   return result;
-}
-
-/**
- * Get container token node between range
- * @param ast the AST object
- * @param start The index at which the comment starts.
- * @param end The index at which the comment ends.
- * @returns typescript container token
- * @private
- */
-export function getNodeContainer(
-  ast: ts.SourceFile,
-  start: number,
-  end: number,
-): ts.Node {
-  let container: ts.Node | null = null;
-
-  /**
-   * @param node the ts.Node
-   */
-  function walk(node: ts.Node): void {
-    const nodeStart = node.pos;
-    const nodeEnd = node.end;
-
-    if (start >= nodeStart && end <= nodeEnd) {
-      if (isToken(node)) {
-        container = node;
-      } else {
-        node.getChildren().forEach(walk);
-      }
-    }
-  }
-  walk(ast);
-
-  return container!;
 }
 
 export interface TSError {

@@ -1,4 +1,4 @@
-import { join, resolve, relative } from 'path';
+import { join, resolve } from 'path';
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
 import { TSESTreeOptions } from '../../src/parser-options';
@@ -75,29 +75,16 @@ describe('parse()', () => {
         loc: true,
       });
 
-      expect(spy).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          code: 'let foo = bar;',
-          comment: true,
-          comments: [],
-          errorOnTypeScriptSyntacticAndSemanticIssues: false,
-          errorOnUnknownASTType: false,
-          extraFileExtensions: [],
-          jsx: false,
-          loc: true,
-          log: loggerFn,
-          projects: [],
-          range: true,
-          strict: false,
-          tokens: expect.any(Array),
-          tsconfigRootDir: expect.any(String),
-          useJSXTextNode: false,
-          preserveNodeMaps: false,
-          createDefaultProgram: false,
-        },
-        false,
-      );
+      expect(spy).toHaveBeenCalled();
+      expect(spy.mock.calls[0][1]).toMatchObject({
+        code: 'let foo = bar;',
+        comment: true,
+        comments: [],
+        loc: true,
+        log: loggerFn,
+        range: true,
+        tokens: expect.any(Array),
+      });
     });
   });
 
@@ -242,6 +229,156 @@ describe('parse()', () => {
     });
   });
 
+  describe('isolated parsing', () => {
+    const config: TSESTreeOptions = {
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true,
+    };
+    const testParse = ({
+      ext,
+      jsxContent,
+      jsxSetting,
+      shouldThrow = false,
+    }: {
+      ext: '.js' | '.jsx' | '.ts' | '.tsx' | '.vue';
+      jsxContent: boolean;
+      jsxSetting: boolean;
+      shouldThrow?: boolean;
+    }): void => {
+      const code = jsxContent ? 'const x = <div />;' : 'const x = 1';
+      it(`should parse ${ext} file - ${
+        jsxContent ? 'with' : 'without'
+      } JSX content - parserOptions.jsx = ${jsxSetting}`, () => {
+        let result;
+        let exp = expect(() => {
+          result = parser.parseAndGenerateServices(code, {
+            ...config,
+            jsx: jsxSetting,
+            filePath: join(FIXTURES_DIR, `file${ext}`),
+          });
+        });
+        if (!shouldThrow) {
+          exp = exp.not;
+        }
+        exp.toThrow();
+
+        if (!shouldThrow) {
+          expect(result).toMatchSnapshot();
+        }
+      });
+    };
+
+    testParse({
+      ext: '.js',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.js',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.js',
+      jsxContent: true,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.js',
+      jsxContent: true,
+      jsxSetting: true,
+    });
+
+    testParse({
+      ext: '.jsx',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.jsx',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.jsx',
+      jsxContent: true,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.jsx',
+      jsxContent: true,
+      jsxSetting: true,
+    });
+
+    testParse({
+      ext: '.ts',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.ts',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.ts',
+      jsxContent: true,
+      jsxSetting: false,
+      shouldThrow: true, // Typescript does not allow JSX in a .ts file
+    });
+    testParse({
+      ext: '.ts',
+      jsxContent: true,
+      jsxSetting: true,
+      shouldThrow: true,
+    });
+
+    testParse({
+      ext: '.tsx',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.tsx',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.tsx',
+      jsxContent: true,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.tsx',
+      jsxContent: true,
+      jsxSetting: true,
+    });
+
+    testParse({
+      ext: '.vue',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.vue',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.vue',
+      jsxContent: true,
+      jsxSetting: false,
+      shouldThrow: true, // "Unknown" filetype means we respect the JSX setting
+    });
+    testParse({
+      ext: '.vue',
+      jsxContent: true,
+      jsxSetting: true,
+    });
+  });
+
   describe('invalid file error messages', () => {
     const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
     const code = 'var a = true';
@@ -257,7 +394,7 @@ describe('parse()', () => {
     const testParse = (filePath: string) => (): void => {
       parser.parseAndGenerateServices(code, {
         ...config,
-        filePath: relative(process.cwd(), join(PROJECT_DIR, filePath)),
+        filePath: join(PROJECT_DIR, filePath),
       });
     };
 
