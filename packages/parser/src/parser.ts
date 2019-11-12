@@ -5,10 +5,10 @@ import {
   ParserServices,
   TSESTreeOptions,
   TSESTree,
+  simpleTraverse,
+  visitorKeys,
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
-import { simpleTraverse } from './simple-traverse';
-import { visitorKeys } from './visitor-keys';
 
 type ParserOptions = TSESLint.ParserOptions;
 
