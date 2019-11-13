@@ -169,7 +169,7 @@
 | [`number-literal-format`]           | 🛑  | N/A                                                                                 |
 | [`object-literal-key-quotes`]       | 🌟  | [`quote-props`][quote-props]                                                        |
 | [`object-literal-shorthand`]        | 🌟  | [`object-shorthand`][object-shorthand]                                              |
-| [`one-line`]                        | 🛑  | N/A                                                                                 |
+| [`one-line`]                        | 🌟  | [`brace-style`][brace-style] or [Prettier]                                          |
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
 | [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
 | [`prefer-function-over-method`]     | 🌟  | [`class-methods-use-this`][class-methods-use-this]                                  |
@@ -545,6 +545,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-undef-init]: https://eslint.org/docs/rules/no-undef-init
 [quote-props]: https://eslint.org/docs/rules/quote-props
 [object-shorthand]: https://eslint.org/docs/rules/object-shorthand
+[brace-style]: https://eslint.org/docs/rules/brace-style
 [one-var]: https://eslint.org/docs/rules/one-var
 [class-methods-use-this]: https://eslint.org/docs/rules/class-methods-use-this
 [prefer-template]: https://eslint.org/docs/rules/prefer-template
