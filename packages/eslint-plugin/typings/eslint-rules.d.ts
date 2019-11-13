@@ -304,6 +304,26 @@ declare module 'eslint/lib/rules/no-unused-vars' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-unused-expressions' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'expected',
+    (
+      | 'all'
+      | 'local'
+      | {
+          allowShortCircuit?: boolean;
+          allowTernary?: boolean;
+          allowTaggedTemplates?: boolean;
+        })[],
+    {
+      ExpressionStatement(node: TSESTree.ExpressionStatement): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-use-before-define' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
