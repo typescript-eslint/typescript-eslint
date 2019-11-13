@@ -91,6 +91,10 @@ function test(a: string | undefined) {
 function test(a: string | null | undefined) {
   return a ?? "default";
 }`,
+    `
+function test(a: unknown) {
+  return a ?? "default";
+}`,
     // Supports ignoring the RHS
     {
       code: `
@@ -202,6 +206,13 @@ function test(a: null) {
   return a ?? 'default';
 }`,
       errors: [ruleError(3, 10, 'alwaysNullish')],
+    },
+    {
+      code: `
+function test(a: never) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'never')],
     },
 
     // Still errors on in the expected locations when ignoring RHS
