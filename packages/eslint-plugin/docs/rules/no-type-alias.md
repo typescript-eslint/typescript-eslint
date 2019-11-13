@@ -84,6 +84,7 @@ or more of the following you may pass an object with the options set as follows:
 
 - `allowAliases` set to `"always"` will allow you to do aliasing (Defaults to `"never"`).
 - `allowCallbacks` set to `"always"` will allow you to use type aliases with callbacks (Defaults to `"never"`)
+- `allowConstructors` set to `"always"` will allow you to use type aliases with constructors (Defaults to `"never"`)
 - `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
 - `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
 - `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
@@ -246,6 +247,20 @@ class Person {}
 type Foo = (name: string, age: number) => string | Person;
 
 type Foo = (name: string, age: number) => string & Person;
+```
+
+### allowConstructors
+
+This applies to constructor types.
+
+The setting accepts the following values:
+
+- `"always"` or `"never"` to active or deactivate the feature.
+
+Examples of **correct** code for the `{ "allowConstructors": "always" }` option:
+
+```ts
+type Foo = new () => void;
 ```
 
 ### allowLiterals

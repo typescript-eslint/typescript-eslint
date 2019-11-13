@@ -7,7 +7,7 @@ import { getKeys as fallback } from 'eslint-visitor-keys';
 
 import { ParserOptions } from './parser-options';
 import { ScopeManager } from './scope/scope-manager';
-import { visitorKeys as childVisitorKeys } from './visitor-keys';
+import { visitorKeys as childVisitorKeys } from '@typescript-eslint/typescript-estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.

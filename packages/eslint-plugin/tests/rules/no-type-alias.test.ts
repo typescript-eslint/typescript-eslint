@@ -439,6 +439,10 @@ type Foo<T> = {
         'type Foo = [string] & [number, number] | keyof [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
+    {
+      code: 'type Foo = new (bar: number) => string | null;',
+      options: [{ allowConstructors: 'always' }],
+    },
   ],
   invalid: [
     {
@@ -3173,6 +3177,20 @@ type Foo<T> = {
       errors: [
         {
           messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = new (bar: number) => string | null;',
+      options: [{ allowConstructors: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'constructors',
+            line: 1,
+            column: 12,
+          },
         },
       ],
     },
