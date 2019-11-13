@@ -3,14 +3,6 @@ import path from 'path';
 import tmp from 'tmp';
 import { clearCaches, parseAndGenerateServices } from '../../src/parser';
 
-const tsConfigExcludeBar = {
-  include: ['src'],
-  exclude: ['./src/bar.ts'],
-};
-const tsConfigIncludeAll = {
-  include: ['src'],
-  exclude: [],
-};
 const CONTENTS = {
   foo: 'console.log("foo")',
   bar: 'console.log("bar")',
@@ -70,6 +62,15 @@ function parseFile(filename: 'foo' | 'bar' | 'baz/bar', tmpDir: string): void {
 }
 
 describe('persistent lint session', () => {
+  const tsConfigExcludeBar = {
+    include: ['src'],
+    exclude: ['./src/bar.ts'],
+  };
+  const tsConfigIncludeAll = {
+    include: ['src'],
+    exclude: [],
+  };
+
   it('parses both files successfully when included', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll);
 
@@ -175,4 +176,65 @@ describe('persistent lint session', () => {
   });
 
   // TODO - support the complex monorepo case with a tsconfig with no include/exclude
+});
+
+/*
+If the includes ends in a slash, typescript will ask for watchers ending in a slash.
+These tests ensure the normalisation code works as expected in this case.
+*/
+describe('includes ending in a slash', () => {
+  const tsConfigExcludeBar = {
+    include: ['src/'],
+    exclude: ['./src/bar.ts'],
+  };
+  const tsConfigIncludeAll = {
+    include: ['src/'],
+    exclude: [],
+  };
+
+  it('parses both files successfully when included', () => {
+    const PROJECT_DIR = setup(tsConfigIncludeAll);
+
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  it('parses included files, and throws on excluded files', () => {
+    const PROJECT_DIR = setup(tsConfigExcludeBar);
+
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
+  });
+
+  it('allows parsing of new files', () => {
+    const PROJECT_DIR = setup(tsConfigIncludeAll, false);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    // bar should throw because it doesn't exist yet
+    expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, 'bar');
+
+    // both files should parse fine now
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  it('allows parsing of deeply nested new files', () => {
+    const PROJECT_DIR = setup(tsConfigIncludeAll, false);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    // bar should throw because it doesn't exist yet
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).toThrow();
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, 'baz/bar');
+
+    // both files should parse fine now
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile('baz/bar', PROJECT_DIR)).not.toThrow();
+  });
 });

@@ -246,8 +246,7 @@ function createWatchProgram(
   watchCompilerHost.readFile = (filePathIn, encoding): string | undefined => {
     const filePath = getCanonicalFileName(filePathIn);
     const fileContent =
-      path.normalize(filePath) ===
-      path.normalize(currentLintOperationState.filePath)
+      filePath === currentLintOperationState.filePath
         ? currentLintOperationState.code
         : oldReadFile(filePath, encoding);
     if (fileContent) {
