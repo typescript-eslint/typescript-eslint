@@ -258,6 +258,7 @@ Examples of **correct** code for the `{ "allowConditionalTypes": "always" }` opt
 
 ```ts
 type Foo<T> = T extends number ? number : null;
+```
 
 ### allowConstructors
 
