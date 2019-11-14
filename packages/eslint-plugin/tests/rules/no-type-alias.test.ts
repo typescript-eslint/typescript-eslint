@@ -3194,7 +3194,7 @@ type Foo<T> = {
             alias: 'constructors',
           },
           line: 1,
-          column: 18,
+          column: 12,
         },
       ],
     },
