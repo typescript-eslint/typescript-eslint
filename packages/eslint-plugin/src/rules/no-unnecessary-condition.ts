@@ -9,6 +9,7 @@ import {
   isFalsyType,
   isBooleanLiteralType,
   isLiteralType,
+  getCallSignaturesOfType,
 } from 'tsutils';
 import {
   createRule,
@@ -45,12 +46,15 @@ export type Options = [
   {
     allowConstantLoopConditions?: boolean;
     ignoreRhs?: boolean;
+    checkArrayPredicates?: boolean;
   },
 ];
 
 export type MessageId =
   | 'alwaysTruthy'
   | 'alwaysFalsy'
+  | 'alwaysTruthyFunc'
+  | 'alwaysFalsyFunc'
   | 'literalBooleanExpression'
   | 'never';
 export default createRule<Options, MessageId>({
@@ -74,6 +78,9 @@ export default createRule<Options, MessageId>({
           ignoreRhs: {
             type: 'boolean',
           },
+          checkArrayPredicates: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -81,6 +88,10 @@ export default createRule<Options, MessageId>({
     messages: {
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
+      alwaysTruthyFunc:
+        'This callback should return a conditional, but return is always truthy',
+      alwaysFalsyFunc:
+        'This callback should return a conditional, but return is always falsy',
       literalBooleanExpression:
         'Unnecessary conditional, both sides of the expression are literal values',
       never: 'Unnecessary conditional, value is `never`',
@@ -90,15 +101,26 @@ export default createRule<Options, MessageId>({
     {
       allowConstantLoopConditions: false,
       ignoreRhs: false,
+      checkArrayPredicates: false,
     },
   ],
-  create(context, [{ allowConstantLoopConditions, ignoreRhs }]) {
+  create(
+    context,
+    [{ allowConstantLoopConditions, checkArrayPredicates, ignoreRhs }],
+  ) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
 
     function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       return getConstrainedTypeAtLocation(checker, tsNode);
+    }
+
+    function nodeIsArrayType(node: TSESTree.Node): boolean {
+      const type = getNodeType(node);
+      // TODO: is there a better way to determine if this is an array type?
+      //    Currently just checking for a `lastIndexOf` method.
+      return !!type.getProperty('lastIndexOf');
     }
 
     /**
@@ -216,8 +238,80 @@ export default createRule<Options, MessageId>({
       checkNode(node.test);
     }
 
+    const ARRAY_PREDICATE_FUNCTIONS = new Set([
+      'filter',
+      'find',
+      'some',
+      'every',
+    ]);
+    function shouldCheckCallback(node: TSESTree.CallExpression): boolean {
+      const { callee } = node;
+      return (
+        // option is on
+        !!checkArrayPredicates &&
+        // looks like `something.filter` or `something.find`
+        callee.type === AST_NODE_TYPES.MemberExpression &&
+        callee.property.type === AST_NODE_TYPES.Identifier &&
+        ARRAY_PREDICATE_FUNCTIONS.has(callee.property.name) &&
+        // and the left-hand side is an array, according to the types
+        nodeIsArrayType(callee.object)
+      );
+    }
+    function checkCallExpression(node: TSESTree.CallExpression): void {
+      const {
+        arguments: [callback],
+      } = node;
+      if (callback && shouldCheckCallback(node)) {
+        // Inline defined functions
+        if (
+          (callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+            callback.type === AST_NODE_TYPES.FunctionExpression) &&
+          callback.body
+        ) {
+          // Two special cases, where we can directly check the node that's returned:
+          // () => something
+          if (callback.body.type !== AST_NODE_TYPES.BlockStatement) {
+            return checkNode(callback.body);
+          }
+          // () => { return something; }
+          const callbackBody = callback.body.body;
+          if (
+            callbackBody.length === 1 &&
+            callbackBody[0].type === AST_NODE_TYPES.ReturnStatement &&
+            callbackBody[0].argument
+          ) {
+            return checkNode(callbackBody[0].argument);
+          }
+          // Potential enhancement: could use code-path analysis to check
+          //   any function with a single return statement
+          // (Value to complexity ratio is dubious however)
+        }
+        // Otherwise just do type analysis on the function as a whole.
+        const returnTypes = getCallSignaturesOfType(
+          getNodeType(callback),
+        ).map(sig => sig.getReturnType());
+        /* istanbul ignore if */ if (returnTypes.length === 0) {
+          // Not a callable function
+          return;
+        }
+        if (!returnTypes.some(isPossiblyFalsy)) {
+          return context.report({
+            node: callback,
+            messageId: 'alwaysTruthyFunc',
+          });
+        }
+        if (!returnTypes.some(isPossiblyTruthy)) {
+          return context.report({
+            node: callback,
+            messageId: 'alwaysFalsyFunc',
+          });
+        }
+      }
+    }
+
     return {
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
+      CallExpression: checkCallExpression,
       ConditionalExpression: checkIfTestExpressionIsNecessaryConditional,
       DoWhileStatement: checkIfLoopIsNecessaryConditional,
       ForStatement: checkIfLoopIsNecessaryConditional,
