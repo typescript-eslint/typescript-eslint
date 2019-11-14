@@ -68,7 +68,7 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (ts.isDeleteExpression(parent)) {
+      if (ts.isDeleteExpression(parent) || isDestructuringAssignment(node)) {
         classScope.addVariableModification(node);
         return;
       }
@@ -108,6 +108,35 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
+    function isDestructuringAssignment(
+      node: ts.PropertyAccessExpression,
+    ): boolean {
+      let current: ts.Node = node.parent;
+
+      while (current) {
+        const parent = current.parent;
+
+        if (
+          ts.isObjectLiteralExpression(parent) ||
+          ts.isArrayLiteralExpression(parent) ||
+          ts.isSpreadAssignment(parent) ||
+          (ts.isSpreadElement(parent) &&
+            ts.isArrayLiteralExpression(parent.parent))
+        ) {
+          current = parent;
+        } else if (ts.isBinaryExpression(parent)) {
+          return (
+            parent.left === current &&
+            parent.operatorToken.kind === ts.SyntaxKind.EqualsToken
+          );
+        } else {
+          break;
+        }
+      }
+
+      return false;
+    }
+
     function isConstructor(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.MethodDefinition &&
@@ -133,7 +162,9 @@ export default util.createRule<Options, MessageIds>({
     function getEsNodesFromViolatingNode(
       violatingNode: ParameterOrPropertyDeclaration,
     ): { esNode: TSESTree.Node; nameNode: TSESTree.Node } {
-      if (ts.isParameterPropertyDeclaration(violatingNode)) {
+      if (
+        ts.isParameterPropertyDeclaration(violatingNode, violatingNode.parent)
+      ) {
         return {
           esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
           nameNode: parserServices.tsNodeToESTreeNodeMap.get(

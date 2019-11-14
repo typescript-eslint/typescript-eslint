@@ -3,6 +3,7 @@ import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsIgnore from './ban-ts-ignore';
 import banTypes from './ban-types';
+import braceStyle from './brace-style';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
 import consistentTypeAssertions from './consistent-type-assertions';
@@ -17,6 +18,7 @@ import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import noArrayConstructor from './no-array-constructor';
+import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
@@ -34,9 +36,12 @@ import noParameterProperties from './no-parameter-properties';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
 import noTypeAlias from './no-type-alias';
+import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnusedVars from './no-unused-vars';
+import noUntypedPublicSignature from './no-untyped-public-signature';
+import noUnusedExpressions from './no-unused-expressions';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
@@ -53,6 +58,7 @@ import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import semi from './semi';
+import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
 import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
@@ -67,6 +73,7 @@ export default {
   'await-thenable': awaitThenable,
   'ban-ts-ignore': banTsIgnore,
   'ban-types': banTypes,
+  'brace-style': braceStyle,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
   'consistent-type-assertions': consistentTypeAssertions,
@@ -81,6 +88,7 @@ export default {
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
   'no-array-constructor': noArrayConstructor,
+  'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
@@ -98,10 +106,13 @@ export default {
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,
   'no-type-alias': noTypeAlias,
+  'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': useDefaultTypeParameter,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
+  'no-untyped-public-signature': noUntypedPublicSignature,
   'no-unused-vars': noUnusedVars,
+  'no-unused-expressions': noUnusedExpressions,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
@@ -118,6 +129,7 @@ export default {
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
   semi: semi,
+  'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,

@@ -1,6 +1,6 @@
+import filesWithKnownIssues from '@typescript-eslint/shared-fixtures/dist/jsx-known-issues';
 import fs from 'fs';
 import glob from 'glob';
-import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
 import {
   createScopeSnapshotTestBlock,
   formatSnapshotName,

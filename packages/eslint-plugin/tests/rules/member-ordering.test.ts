@@ -1211,12 +1211,45 @@ type Foo = {
             `,
       options: [{ default: ['method', 'constructor', 'field'] }],
     },
-    `
+    {
+      code: `
 abstract class Foo {
     B: string;
     abstract A: () => {}
 }
     `,
+    },
+    {
+      code: `
+interface Foo {
+    public B: string;
+    [A:string]: number;
+}
+    `,
+    },
+    {
+      code: `
+abstract class Foo {
+    private static C: string;
+    B: string;
+    private D: string;
+    protected static F(): {};
+    public E(): {};
+    public abstract A = () => {};
+    protected abstract G(): void;
+}
+    `,
+    },
+    {
+      code: `
+abstract class Foo {
+    protected typeChecker: (data: any) => boolean;
+    public abstract required: boolean;
+    abstract verify(): void;
+}
+            `,
+      options: [{ classes: ['field', 'constructor', 'method'] }],
+    },
   ],
   invalid: [
     {
@@ -3319,7 +3352,7 @@ type Foo = {
     {
       code: `
 abstract class Foo {
-    abstract A: () => {}
+    abstract A = () => {};
     B: string;
 }
           `,
@@ -3328,9 +3361,114 @@ abstract class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'B',
-            rank: 'method',
+            rank: 'public abstract method',
           },
           line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    abstract A: () => {};
+    B: string;
+    public C() {};
+    private D() {};
+    abstract E() {};
+}
+          `,
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'B',
+            rank: 'public abstract field',
+          },
+          line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    B: string;
+    abstract C = () => {};
+    abstract A: () => {};
+}
+          `,
+      options: [{ default: ['method', 'constructor', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'field',
+          },
+          line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    C: number;
+    [A:string]: number;
+    public static D(): {};
+    private static [B:string]: number;
+}
+          `,
+      options: [
+        {
+          default: [
+            'field',
+            'method',
+            'public-static-method',
+            'private-static-method',
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'D',
+            rank: 'private static method',
+          },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    abstract B: string;
+    abstract A(): void;
+    public C(): {};
+
+}
+          `,
+      options: [{ default: ['method', 'constructor', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'field',
+          },
+          line: 4,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'field',
+          },
+          line: 5,
           column: 5,
         },
       ],

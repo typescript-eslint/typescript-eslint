@@ -69,7 +69,7 @@ const KNOWN_NODES = new Set([
   'TSPlusToken',
   AST_NODE_TYPES.TSPropertySignature,
   AST_NODE_TYPES.TSQualifiedName,
-  AST_NODE_TYPES.TSQuestionToken,
+  'TSQuestionToken',
   AST_NODE_TYPES.TSRestType,
   AST_NODE_TYPES.TSThisType,
   AST_NODE_TYPES.TSTupleType,
@@ -163,6 +163,7 @@ export default util.createRule<Options, MessageIds>({
           type,
           static: false,
           readonly: false,
+          declare: false,
           ...base,
         } as TSESTree.ClassProperty;
       }
@@ -292,7 +293,7 @@ export default util.createRule<Options, MessageIds>({
                 range: moduleReference.range,
                 loc: moduleReference.loc,
               },
-            },
+            } as TSESTree.VariableDeclarator,
           ],
 
           // location data
@@ -313,6 +314,8 @@ export default util.createRule<Options, MessageIds>({
           parent: node.parent,
           range: node.range,
           loc: node.loc,
+          optional: false,
+          computed: true,
         });
       },
 
@@ -344,7 +347,7 @@ export default util.createRule<Options, MessageIds>({
         ]({
           type: AST_NODE_TYPES.ClassDeclaration,
           body: node.body as any,
-          id: undefined,
+          id: null,
           // TODO: This is invalid, there can be more than one extends in interface
           superClass: node.extends![0].expression as any,
 
@@ -420,6 +423,8 @@ export default util.createRule<Options, MessageIds>({
           parent: node.parent,
           range: node.range,
           loc: node.loc,
+          optional: false,
+          computed: false,
         });
       },
 

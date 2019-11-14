@@ -23,6 +23,7 @@ type Options = [
     allowAliases?: Values;
     allowCallbacks?: 'always' | 'never';
     allowConditionalTypes?: 'always' | 'never';
+    allowConstructors?: 'always' | 'never';
     allowLiterals?: Values;
     allowMappedTypes?: Values;
     allowTupleTypes?: Values;
@@ -66,6 +67,9 @@ export default util.createRule<Options, MessageIds>({
           allowConditionalTypes: {
             enum: ['always', 'never'],
           },
+          allowConstructors: {
+            enum: ['always', 'never'],
+          },
           allowLiterals: {
             enum: enumValues,
           },
@@ -85,6 +89,7 @@ export default util.createRule<Options, MessageIds>({
       allowAliases: 'never',
       allowCallbacks: 'never',
       allowConditionalTypes: 'never',
+      allowConstructors: 'never',
       allowLiterals: 'never',
       allowMappedTypes: 'never',
       allowTupleTypes: 'never',
@@ -97,6 +102,7 @@ export default util.createRule<Options, MessageIds>({
         allowAliases,
         allowCallbacks,
         allowConditionalTypes,
+        allowConstructors,
         allowLiterals,
         allowMappedTypes,
         allowTupleTypes,
@@ -234,6 +240,15 @@ export default util.createRule<Options, MessageIds>({
             type.compositionType,
             isTopLevel,
             'Conditional types',
+          );
+        }
+      } else if (type.node.type === AST_NODE_TYPES.TSConstructorType) {
+        if (allowConstructors === 'never') {
+          reportError(
+            type.node,
+            type.compositionType,
+            isTopLevel,
+            'Constructors',
           );
         }
       } else if (type.node.type === AST_NODE_TYPES.TSTypeLiteral) {

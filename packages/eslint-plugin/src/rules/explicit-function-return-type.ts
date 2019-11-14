@@ -153,6 +153,15 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if a node belongs to:
+     * new Foo(() => {})
+     *         ^^^^^^^^
+     */
+    function isConstructorArgument(parent: TSESTree.Node): boolean {
+      return parent.type === AST_NODE_TYPES.NewExpression;
+    }
+
+    /**
      * Checks if a node is a type cast
      * `(() => {}) as Foo`
      * `<Foo>(() => {})`
@@ -325,7 +334,8 @@ export default util.createRule<Options, MessageIds>({
             isVariableDeclaratorWithTypeAnnotation(node.parent) ||
             isClassPropertyWithTypeAnnotation(node.parent) ||
             isPropertyOfObjectWithType(node.parent) ||
-            isFunctionArgument(node.parent, node)
+            isFunctionArgument(node.parent, node) ||
+            isConstructorArgument(node.parent)
           ) {
             return;
           }
@@ -335,7 +345,8 @@ export default util.createRule<Options, MessageIds>({
           options.allowExpressions &&
           node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
           node.parent.type !== AST_NODE_TYPES.MethodDefinition &&
-          node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration
+          node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
+          node.parent.type !== AST_NODE_TYPES.ClassProperty
         ) {
           return;
         }

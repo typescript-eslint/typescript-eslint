@@ -322,6 +322,18 @@ const func = (value: number) => x as const;
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+new Promise(resolve => {});
+new Foo(1, () => {});
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -513,6 +525,57 @@ function test() {
           endLine: 1,
           column: 16,
           endColumn: 26,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Foo {
+  public a = () => {};
+  public b = function () {};
+  public c = function test() {};
+
+  static d = () => {};
+  static e = function () {};
+}
+      `,
+      options: [{ allowExpressions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 19,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          endLine: 4,
+          column: 14,
+          endColumn: 25,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 5,
+          endLine: 5,
+          column: 14,
+          endColumn: 29,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 7,
+          endLine: 7,
+          column: 14,
+          endColumn: 19,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 8,
+          endLine: 8,
+          column: 14,
+          endColumn: 25,
         },
       ],
     },

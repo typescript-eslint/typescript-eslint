@@ -4,6 +4,7 @@
 
 <p align="center">
     <a href="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_build/latest?definitionId=1&branchName=master"><img src="https://img.shields.io/azure-devops/build/typescript-eslint/TypeScript%20ESLint/1/master.svg?label=%F0%9F%9A%80%20Azure%20Pipelines&style=flat-square" alt="Azure Pipelines"/></a>
+    <a href="https://opencollective.com/typescript-eslint" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/typescript-eslint/all/badge.svg?label=financial+contributors&style=flat-square" /></a>
     <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
     <a href="https://www.npmjs.com/package/@typescript-eslint/typescript-estree"><img src="https://img.shields.io/npm/dm/@typescript-eslint/typescript-estree.svg?style=flat-square" alt="NPM Downloads" /></a>
     <a href="https://codecov.io/gh/typescript-eslint/typescript-eslint"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/typescript-eslint/typescript-eslint.svg?style=flat-square"></a>
@@ -11,6 +12,25 @@
 </p>
 
 <br>
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [What are ESLint and TypeScript, and how do they compare?](#what-are-eslint-and-typescript-and-how-do-they-compare)
+- [Why does this project exist?](#why-does-this-project-exist)
+- [What about TSLint?](#what-about-tslint)
+- [How does typescript-eslint work and why do you have multiple packages?](#how-does-typescript-eslint-work-and-why-do-you-have-multiple-packages)
+- [Can I use all of the existing ESLint plugins and rules without any changes?](#can-i-use-all-of-the-existing-eslint-plugins-and-rules-without-any-changes)
+- [Can we write rules which leverage type information?](#can-we-write-rules-which-leverage-type-information)
+- [What about Babel and babel-eslint?](#what-about-babel-and-babel-eslint)
+- [How can I help?](#how-can-i-help)
+- [How do I configure my project to use typescript-eslint?](#how-do-i-configure-my-project-to-use-typescript-eslint)
+- [Package Versions](#package-versions)
+- [Supported TypeScript Version](#supported-typescript-version)
+- [Supported ESLint version](#supported-eslint-version)
+- [License](#license)
+- [Contributors](#contributors)
+- [Contributing Guide](#contributing-guide)
 
 ## Getting Started
 
@@ -59,6 +79,14 @@ One advantage is there is no tooling required to reconcile differences between A
 Palantir, the backers behind TSLint announced earlier this year that **they would be deprecating TSLint in favor of supporting `typescript-eslint`** in order to benefit the community. You can read more about that here: https://medium.com/palantir/tslint-in-2019-1a144c2317a9
 
 The TypeScript Team themselves also announced their plans to move the TypeScript codebase from TSLint to `typescript-eslint`, and they have been big supporters of this project. More details at https://github.com/microsoft/TypeScript/issues/30553
+
+### Migrating from TSLint to ESLint
+
+If you are looking for help in migrating from TSLint to ESLint, you can check out this project: https://github.com/typescript-eslint/tslint-to-eslint-config
+
+You can look at [`the plugin ROADMAP.md`](./packages/eslint-plugin/ROADMAP.md) for an up to date overview of how TSLint rules compare to the ones in this package.
+
+There is also the ultimate fallback option of using both linters together for a while during your transition if you absolutely have to by using TSLint _within_ ESLint. For this option, check out [`@typescript-eslint/eslint-plugin-tslint`](./packages/eslint-plugin-tslint/).
 
 <br>
 
@@ -161,6 +189,8 @@ See an issue? Report it in as much detail as possible, ideally with a clear and 
 
 If you have the time and the inclination, you can even take it a step further and submit a PR to improve the project.
 
+There are also financial ways to contribute, please see [Financial Contributors](#Financial-Contributors) for more details.
+
 All positive contributions are welcome here!
 
 <br>
@@ -205,9 +235,9 @@ The latest version under the `canary` tag **(latest commit to master)** is:
 
 ## Supported TypeScript Version
 
-We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
+We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript. In some cases, we may even be able to support additional pre-releases (i.e. betas and release candidates) of TypeScript, but only if doing so does not require us to compromise on support for the latest stable version.
 
-**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.6.0`.**
+**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.8.0`.**
 
 This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
@@ -217,15 +247,54 @@ If you use a non-supported version of TypeScript, the parser will log a warning 
 
 <br>
 
+## Supported ESLint version
+
+See the value of `eslint` declared in `@typescript-eslint/eslint-plugin`'s [package.json](./packages/eslint-plugin/package.json).
+
 ## License
 
 TypeScript ESLint inherits from the the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
 
 <br>
 
-## Contributors
+## Code Contributors
 
-Thanks goes to the wonderful people listed in [`CONTRIBUTORS.md`](./CONTRIBUTORS.md).
+This project exists thanks to every one of the awesome people who contribute code and documentation:
+
+<br>
+
+<a href="https://github.com/typescript-eslint/typescript-eslint/graphs/contributors"><img src="https://opencollective.com/typescript-eslint/contributors.svg?width=890&button=false" /></a>
+
+<br>
+
+🙏 An extra special thanks goes out to the wonderful people listed in [`CONTRIBUTORS.md`](./CONTRIBUTORS.md)
+
+<br>
+
+## Financial Contributors
+
+In addition to submitting code and documentation updates, you can help us sustain our community by becoming a financial contributor [[Click here to contribute - every little helps!](https://opencollective.com/typescript-eslint/contribute)]
+
+<br>
+
+### Individuals
+
+<a href="https://opencollective.com/typescript-eslint"><img src="https://opencollective.com/typescript-eslint/individuals.svg?width=890"></a>
+
+### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Click here to contribute - every little helps!](https://opencollective.com/typescript-eslint/contribute)]
+
+<a href="https://opencollective.com/typescript-eslint/organization/0/website"><img src="https://opencollective.com/typescript-eslint/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/1/website"><img src="https://opencollective.com/typescript-eslint/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/2/website"><img src="https://opencollective.com/typescript-eslint/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/3/website"><img src="https://opencollective.com/typescript-eslint/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/4/website"><img src="https://opencollective.com/typescript-eslint/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/5/website"><img src="https://opencollective.com/typescript-eslint/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/6/website"><img src="https://opencollective.com/typescript-eslint/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/7/website"><img src="https://opencollective.com/typescript-eslint/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/8/website"><img src="https://opencollective.com/typescript-eslint/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/typescript-eslint/organization/9/website"><img src="https://opencollective.com/typescript-eslint/organization/9/avatar.svg"></a>
 
 <br>
 
