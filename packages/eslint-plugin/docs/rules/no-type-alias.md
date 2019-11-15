@@ -489,7 +489,7 @@ type Foo = [number] | [number, number];
 
 type Foo = [number] & [number, number];
 
-type Foo = [number] | [number, number] & [string, string];
+type Foo = [number] | ([number, number] & [string, string]);
 ```
 
 Examples of **incorrect** code for the `{ "allowTupleTypes": "in-unions" }` option:

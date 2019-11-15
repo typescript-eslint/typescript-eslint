@@ -238,7 +238,8 @@ export default util.createRule<Options, MessageIds>({
           type: AST_NODE_TYPES.ObjectExpression,
           properties: (node.members as (
             | TSESTree.TSEnumMember
-            | TSESTree.TypeElement)[]).map(
+            | TSESTree.TypeElement
+          )[]).map(
             member =>
               TSPropertySignatureToProperty(member) as TSESTree.Property,
           ),

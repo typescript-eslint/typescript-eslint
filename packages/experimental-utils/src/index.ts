@@ -16,6 +16,4 @@ export {
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/typescript-estree/dist/ts-estree';
-export {
-  ParserServices,
-} from '@typescript-eslint/typescript-estree/dist/parser-options';
+export { ParserServices } from '@typescript-eslint/typescript-estree/dist/parser-options';
