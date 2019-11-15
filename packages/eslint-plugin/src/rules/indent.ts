@@ -81,6 +81,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSTypeParameterInstantiation,
   AST_NODE_TYPES.TSTypeReference,
   AST_NODE_TYPES.TSUnionType,
+  AST_NODE_TYPES.Decorator,
 ]);
 
 export default util.createRule<Options, MessageIds>({

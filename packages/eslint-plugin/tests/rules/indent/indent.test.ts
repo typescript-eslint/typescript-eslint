@@ -1722,5 +1722,26 @@ declare module "Validation" {
         },
       ],
     },
+    {
+      code: `
+    @Decorator()
+class Foo {}
+            `,
+      output: `
+@Decorator()
+class Foo {}
+            `,
+      errors: [
+        {
+          messageId: 'wrongIndentation',
+          data: {
+            expected: '0 spaces',
+            actual: 4,
+          },
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
