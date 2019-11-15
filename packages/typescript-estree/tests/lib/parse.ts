@@ -268,7 +268,7 @@ describe('parse()', () => {
         jsxContent ? 'with' : 'without'
       } JSX content - parserOptions.jsx = ${jsxSetting}`, () => {
         let result;
-        let exp = expect(() => {
+        const exp = expect(() => {
           result = parser.parseAndGenerateServices(code, {
             ...config,
             jsx: jsxSetting,
@@ -276,9 +276,10 @@ describe('parse()', () => {
           });
         });
         if (!shouldThrow) {
-          exp = exp.not;
+          exp.not.toThrow();
+        } else {
+          exp.toThrow();
         }
-        exp.toThrow();
 
         if (!shouldThrow) {
           expect(result).toMatchSnapshot();
