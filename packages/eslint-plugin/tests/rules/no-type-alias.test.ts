@@ -440,6 +440,10 @@ type Foo<T> = {
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
     {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'always' }],
+    },
+    {
       code: 'type Foo = new (bar: number) => string | null;',
       options: [{ allowConstructors: 'always' }],
     },
@@ -3188,9 +3192,36 @@ type Foo<T> = {
           messageId: 'noTypeAlias',
           data: {
             alias: 'constructors',
-            line: 1,
-            column: 12,
           },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
         },
       ],
     },

@@ -22,7 +22,8 @@ const ASSIGNMENT_OPERATORS: ts.AssignmentOperator[] = [
 
 const LOGICAL_OPERATORS: (
   | ts.LogicalOperator
-  | ts.SyntaxKind.QuestionQuestionToken)[] = [
+  | ts.SyntaxKind.QuestionQuestionToken
+)[] = [
   SyntaxKind.BarBarToken,
   SyntaxKind.AmpersandAmpersandToken,
   SyntaxKind.QuestionQuestionToken,

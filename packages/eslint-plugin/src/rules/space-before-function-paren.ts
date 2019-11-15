@@ -9,13 +9,12 @@ type Option = 'never' | 'always';
 type FuncOption = Option | 'ignore';
 
 export type Options = [
-
-    | Option
-    | Partial<{
-        anonymous: FuncOption;
-        named: FuncOption;
-        asyncArrow: FuncOption;
-      }>,
+  | Option
+  | Partial<{
+      anonymous: FuncOption;
+      named: FuncOption;
+      asyncArrow: FuncOption;
+    }>,
 ];
 export type MessageIds = 'unexpected' | 'missing';
 
