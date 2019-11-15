@@ -146,9 +146,13 @@ export default util.createRule<Options, MessageIds>({
         scopeInfo.returnsPromise = isThenableType(expression);
       },
 
-      AwaitExpression: rules.AwaitExpression as TSESLint.RuleFunction<
-        TSESTree.Node
-      >,
+      AwaitExpression(node): void {
+        if (!scopeInfo) {
+          return;
+        }
+
+        rules.AwaitExpression(node);
+      },
       ForOfStatement: rules.ForOfStatement as TSESLint.RuleFunction<
         TSESTree.Node
       >,

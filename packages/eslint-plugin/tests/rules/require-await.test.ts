@@ -128,6 +128,9 @@ ruleTester.run('require-await', rule, {
         return Promise.resolve(x);
       }`,
     },
+    {
+      code: `declare let Foo = (await import ('foo')).Foo;`,
+    },
   ],
 
   invalid: [
