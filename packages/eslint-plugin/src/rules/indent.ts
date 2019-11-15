@@ -442,6 +442,10 @@ export default util.createRule<Options, MessageIds>({
       },
 
       TSTypeParameterDeclaration(node: TSESTree.TSTypeParameterDeclaration) {
+        if (!node.params.length) {
+          return;
+        }
+
         const [name, ...attributes] = node.params;
 
         // JSX is about the closest we can get because the angle brackets
