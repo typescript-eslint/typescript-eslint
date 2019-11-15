@@ -202,4 +202,16 @@ describe('persistent parse', () => {
 
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
   });
+
+  /*
+  If there is no includes, then typescript will ask for a slightly different set of watchers.
+  */
+  describe('tsconfig with no includes / files', () => {
+    const tsConfigExcludeBar = {
+      exclude: ['./src/bar.ts'],
+    };
+    const tsConfigIncludeAll = {};
+
+    baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
+  });
 });
