@@ -238,7 +238,7 @@ if (x === Foo.a) {}
       options: [{ checkArrayPredicates: true }],
       code: `
 [1,3,5].filter(() => true);
-[1,2,3].find(() => false);
+[1,2,3].find(() => { return false; });
 
 // with non-literal array
 function nothing(x: string[]) {
@@ -251,7 +251,7 @@ function nothing2(x: readonly string[]) {
 `,
       errors: [
         ruleError(2, 22, 'alwaysTruthy'),
-        ruleError(3, 20, 'alwaysFalsy'),
+        ruleError(3, 29, 'alwaysFalsy'),
         ruleError(7, 25, 'alwaysFalsy'),
         ruleError(11, 25, 'alwaysFalsy'),
       ],
