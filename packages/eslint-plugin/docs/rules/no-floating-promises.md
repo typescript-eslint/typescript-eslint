@@ -31,7 +31,10 @@ await promise;
 async function returnsPromise() {
   return 'value';
 }
-returnsPromise().then(() => {}, () => {});
+returnsPromise().then(
+  () => {},
+  () => {},
+);
 
 Promise.reject('value').catch(() => {});
 ```

@@ -84,6 +84,7 @@ or more of the following you may pass an object with the options set as follows:
 
 - `allowAliases` set to `"always"` will allow you to do aliasing (Defaults to `"never"`).
 - `allowCallbacks` set to `"always"` will allow you to use type aliases with callbacks (Defaults to `"never"`)
+- `allowConditionalTypes` set to `"always"` will allow you to use type aliases with conditional types (Defaults to `"never"`)
 - `allowConstructors` set to `"always"` will allow you to use type aliases with constructors (Defaults to `"never"`)
 - `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
 - `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
@@ -247,6 +248,16 @@ class Person {}
 type Foo = (name: string, age: number) => string | Person;
 
 type Foo = (name: string, age: number) => string & Person;
+```
+
+### allowConditionalTypes
+
+This applies to conditional types.
+
+Examples of **correct** code for the `{ "allowConditionalTypes": "always" }` option:
+
+```ts
+type Foo<T> = T extends number ? number : null;
 ```
 
 ### allowConstructors
@@ -489,7 +500,7 @@ type Foo = [number] | [number, number];
 
 type Foo = [number] & [number, number];
 
-type Foo = [number] | [number, number] & [string, string];
+type Foo = [number] | ([number, number] & [string, string]);
 ```
 
 Examples of **incorrect** code for the `{ "allowTupleTypes": "in-unions" }` option:
