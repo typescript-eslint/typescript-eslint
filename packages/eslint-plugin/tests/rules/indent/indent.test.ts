@@ -770,6 +770,11 @@ const div: JQuery<HTMLElement> = $('<div>')
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/441
     `const;`,
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1115
+    {
+      code: `const foo = function<> (): void {}`,
+    },
   ],
   invalid: [
     ...individualNodeTests.invalid,
