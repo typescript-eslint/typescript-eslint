@@ -63,4 +63,4 @@ Options may be provided as an object with:
 
 - TSLint: [strict-boolean-expressions](https://palantir.github.io/tslint/rules/strict-boolean-expressions)
 
-- [no-unnecessary-condition](./no-unnecessary-condition.md) - a looser alternative to this rule.
+- [no-unnecessary-condition](./no-unnecessary-condition.md) - essentially a less opinionated alternative to this rule. `strict-boolean-expressions` enforces a specific code style, while `no-unnecessary-condition` is about correctness.
