@@ -41,16 +41,16 @@
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "2.7.0",
-    "eslint-utils": "^1.4.2",
+    "eslint-utils": "^1.4.3",
     "functional-red-black-tree": "^1.0.1",
-    "regexpp": "^2.0.1",
+    "regexpp": "^3.0.0",
     "tsutils": "^3.17.1"
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.3",
-    "@types/marked": "^0.6.5",
+    "@types/marked": "^0.7.1",
     "@types/prettier": "^1.18.2",
-    "chalk": "^2.4.2",
+    "chalk": "^3.0.0",
     "marked": "^0.7.0",
     "prettier": "*",
     "typescript": "*"
