@@ -37,6 +37,22 @@ describe('parse()', () => {
       'output tokens, comments, locs, and ranges when called with those options',
       createSnapshotTestBlock(code, config),
     );
+
+    it(
+      'output should not contain loc',
+      createSnapshotTestBlock(code, {
+        range: true,
+        loc: false,
+      }),
+    );
+
+    it(
+      'output should not contain range',
+      createSnapshotTestBlock(code, {
+        range: false,
+        loc: true,
+      }),
+    );
   });
 
   describe('non string code', () => {
@@ -252,7 +268,7 @@ describe('parse()', () => {
         jsxContent ? 'with' : 'without'
       } JSX content - parserOptions.jsx = ${jsxSetting}`, () => {
         let result;
-        let exp = expect(() => {
+        const exp = expect(() => {
           result = parser.parseAndGenerateServices(code, {
             ...config,
             jsx: jsxSetting,
@@ -260,9 +276,10 @@ describe('parse()', () => {
           });
         });
         if (!shouldThrow) {
-          exp = exp.not;
+          exp.not.toThrow();
+        } else {
+          exp.toThrow();
         }
-        exp.toThrow();
 
         if (!shouldThrow) {
           expect(result).toMatchSnapshot();

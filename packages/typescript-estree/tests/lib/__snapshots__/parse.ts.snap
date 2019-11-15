@@ -1,5 +1,127 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`parse() general output should not contain loc 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "name": "foo",
+            "range": Array [
+              4,
+              7,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "name": "bar",
+            "range": Array [
+              10,
+              13,
+            ],
+            "type": "Identifier",
+          },
+          "range": Array [
+            4,
+            13,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "let",
+      "range": Array [
+        0,
+        14,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "range": Array [
+    0,
+    14,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`parse() general output should not contain range 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "foo",
+            "type": "Identifier",
+          },
+          "init": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 13,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 10,
+                "line": 1,
+              },
+            },
+            "name": "bar",
+            "type": "Identifier",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 13,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "let",
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "type": "VariableDeclaration",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 14,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
 exports[`parse() general output tokens, comments, locs, and ranges when called with those options 1`] = `
 Object {
   "body": Array [

@@ -60,7 +60,7 @@
 | [`no-duplicate-super`]               | 🌟  | [`constructor-super`][constructor-super]                              |
 | [`no-duplicate-switch-case`]         | 🌟  | [`no-duplicate-case`][no-duplicate-case]                              |
 | [`no-duplicate-variable`]            | 🌟  | [`no-redeclare`][no-redeclare]                                        |
-| [`no-dynamic-delete`]                | 🛑  | N/A                                                                   |
+| [`no-dynamic-delete`]                | ✅  | [`@typescript-eslint/no-dynamic-delete`]                              |
 | [`no-empty`]                         | 🌟  | [`no-empty`][no-empty]                                                |
 | [`no-eval`]                          | 🌟  | [`no-eval`][no-eval]                                                  |
 | [`no-floating-promises`]             | ✅  | [`@typescript-eslint/no-floating-promises`]                           |
@@ -169,7 +169,7 @@
 | [`number-literal-format`]           | 🛑  | N/A                                                                                 |
 | [`object-literal-key-quotes`]       | 🌟  | [`quote-props`][quote-props]                                                        |
 | [`object-literal-shorthand`]        | 🌟  | [`object-shorthand`][object-shorthand]                                              |
-| [`one-line`]                        | 🛑  | N/A                                                                                 |
+| [`one-line`]                        | 🌟  | [`brace-style`][brace-style] or [Prettier]                                          |
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
 | [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
 | [`prefer-function-over-method`]     | 🌟  | [`class-methods-use-this`][class-methods-use-this]                                  |
@@ -545,6 +545,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-undef-init]: https://eslint.org/docs/rules/no-undef-init
 [quote-props]: https://eslint.org/docs/rules/quote-props
 [object-shorthand]: https://eslint.org/docs/rules/object-shorthand
+[brace-style]: https://eslint.org/docs/rules/brace-style
 [one-var]: https://eslint.org/docs/rules/one-var
 [class-methods-use-this]: https://eslint.org/docs/rules/class-methods-use-this
 [prefer-template]: https://eslint.org/docs/rules/prefer-template
@@ -613,6 +614,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/member-delimiter-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-delimiter-style.md
 [`@typescript-eslint/prefer-for-of`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-for-of.md
 [`@typescript-eslint/no-array-constructor`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-array-constructor.md
+[`@typescript-eslint/no-dynamic-delete`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-dynamic-delete.md
 [`@typescript-eslint/prefer-function-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-function-type.md
 [`@typescript-eslint/prefer-readonly`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-readonly.md
 [`@typescript-eslint/require-await`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/require-await.md
