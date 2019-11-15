@@ -37,6 +37,7 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'no-useless-constructor',
   'require-await',
   'semi',
+  'space-before-function-paren',
 ]);
 // list of rules from the base plugin that we think should be turned on for typescript code
 const BASE_RULES_THAT_ARE_RECOMMENDED = new Set([
