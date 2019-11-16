@@ -183,5 +183,10 @@ ruleTester.run('prefer-optional-chain', rule, {
       code: `${c.code} && bing`,
       output: `${c.output} && bing`,
     })),
+    ...baseCases.map(c => ({
+      ...c,
+      code: `${c.code} && bing.bong`,
+      output: `${c.output} && bing.bong`,
+    })),
   ],
 });

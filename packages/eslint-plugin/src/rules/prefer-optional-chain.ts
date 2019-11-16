@@ -99,6 +99,7 @@ export default util.createRule({
             optionallyChainedCode += `?${needsDot ? '.' : ''}${diff}`;
           }
 
+          /* istanbul ignore if: this shouldn't ever happen, but types */
           if (!current.parent) {
             break;
           }
