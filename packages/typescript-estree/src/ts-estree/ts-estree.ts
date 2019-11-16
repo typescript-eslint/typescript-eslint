@@ -1061,7 +1061,6 @@ export interface TSConstructSignatureDeclaration extends FunctionSignatureBase {
 }
 
 export interface TSDeclareFunction extends FunctionDeclarationBase {
-  id: Identifier;
   type: AST_NODE_TYPES.TSDeclareFunction;
 }
 

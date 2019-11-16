@@ -535,7 +535,8 @@ export default util.createRule({
 
       // collect overloads
       TSDeclareFunction(node): void {
-        addOverload(node, node.id.name, getExportingNode(node));
+        const exportingNode = getExportingNode(node);
+        addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
       },
       TSCallSignatureDeclaration: addOverload,
       TSConstructSignatureDeclaration: addOverload,
