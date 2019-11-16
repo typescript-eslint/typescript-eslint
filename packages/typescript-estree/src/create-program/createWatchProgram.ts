@@ -1,6 +1,5 @@
 import debug from 'debug';
 import fs from 'fs';
-import path from 'path';
 import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from '../parser-options';
 import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
@@ -67,7 +66,7 @@ function saveWatchCallback(
     fileName: string,
     callback: ts.FileWatcherCallback,
   ): ts.FileWatcher => {
-    const normalizedFileName = getCanonicalFileName(path.normalize(fileName));
+    const normalizedFileName = getCanonicalFileName(fileName);
     const watchers = ((): Set<ts.FileWatcherCallback> => {
       let watchers = trackingMap.get(normalizedFileName);
       if (!watchers) {
@@ -246,8 +245,7 @@ function createWatchProgram(
   watchCompilerHost.readFile = (filePathIn, encoding): string | undefined => {
     const filePath = getCanonicalFileName(filePathIn);
     const fileContent =
-      path.normalize(filePath) ===
-      path.normalize(currentLintOperationState.filePath)
+      filePath === currentLintOperationState.filePath
         ? currentLintOperationState.code
         : oldReadFile(filePath, encoding);
     if (fileContent) {
