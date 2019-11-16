@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from './ts-estree';
 import { visitorKeys } from './visitor-keys';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

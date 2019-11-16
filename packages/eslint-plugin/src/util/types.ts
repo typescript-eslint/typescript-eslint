@@ -8,9 +8,9 @@ import ts from 'typescript';
 /**
  * @param type Type being checked by name.
  * @param allowedNames Symbol names checking on the type.
- * @returns Whether the type is, extends, or contains any of the allowed names.
+ * @returns Whether the type is, extends, or contains all of the allowed names.
  */
-export function containsTypeByName(
+export function containsAllTypesByName(
   type: ts.Type,
   allowAny: boolean,
   allowedNames: Set<string>,
@@ -31,13 +31,16 @@ export function containsTypeByName(
   }
 
   if (isUnionOrIntersectionType(type)) {
-    return type.types.some(t => containsTypeByName(t, allowAny, allowedNames));
+    return type.types.every(t =>
+      containsAllTypesByName(t, allowAny, allowedNames),
+    );
   }
 
   const bases = type.getBaseTypes();
   return (
     typeof bases !== 'undefined' &&
-    bases.some(t => containsTypeByName(t, allowAny, allowedNames))
+    bases.length > 0 &&
+    bases.every(t => containsAllTypesByName(t, allowAny, allowedNames))
   );
 }
 

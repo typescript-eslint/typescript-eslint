@@ -129,6 +129,14 @@ export interface Foo {
   bar(): string[];
 }
 `,
+    `
+declare module "foo" {
+  export default function(foo: number): string[];
+}
+`,
+    `
+export default function(foo: number): string[];
+`,
   ],
   invalid: [
     {
@@ -646,6 +654,34 @@ export function foo(line: number, character?: number): number;
           },
           line: 3,
           column: 35,
+        },
+      ],
+    },
+    {
+      code: `
+declare module "foo" {
+  export default function(foo: number): string[];
+  export default function(foo: number, bar?: string): string[];
+}
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          line: 4,
+          column: 40,
+        },
+      ],
+    },
+    {
+      code: `
+export default function(foo: number): string[];
+export default function(foo: number, bar?: string): string[];
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          line: 3,
+          column: 38,
         },
       ],
     },

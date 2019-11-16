@@ -47,7 +47,17 @@ Parses the given string of code with the options provided and returns an ESTree-
   // create a top-level comments array containing all comments
   comment: false,
 
-  // enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
+  /*
+   * enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
+   *
+   * NOTE: this setting does not effect known file types (.js, .jsx, .ts, .tsx, .json) because the
+   * typescript compiler has its own internal handling for known file extensions.
+   *
+   * Exact behaviour:
+   * - .js, .jsx, .tsx files are parsed as if this is true
+   * - .ts files are parsed as if this is false
+   * - unknown extensions (.md, .vue) will respect this setting
+   */
   jsx: false,
 
   /*
@@ -143,6 +153,11 @@ I work closely with the TypeScript Team and we are gradually aliging the AST of 
 - `npm test` - run all tests
 - `npm run unit-tests` - run only unit tests
 - `npm run ast-alignment-tests` - run only Babylon AST alignment tests
+
+## Debugging
+
+If you encounter a bug with the parser that you want to investigate, you can turn on the debug logging via setting the environment variable: `DEBUG=typescript-eslint:*`.
+I.e. in this repo you can run: `DEBUG=typescript-eslint:* yarn lint`.
 
 ## License
 

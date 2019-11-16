@@ -31,11 +31,13 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'no-extra-parens',
   'no-magic-numbers',
   'quotes',
+  'no-unused-expressions',
   'no-unused-vars',
   'no-use-before-define',
   'no-useless-constructor',
   'require-await',
   'semi',
+  'space-before-function-paren',
 ]);
 // list of rules from the base plugin that we think should be turned on for typescript code
 const BASE_RULES_THAT_ARE_RECOMMENDED = new Set([
