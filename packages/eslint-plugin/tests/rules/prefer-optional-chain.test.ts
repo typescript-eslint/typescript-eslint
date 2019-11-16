@@ -188,5 +188,36 @@ ruleTester.run('prefer-optional-chain', rule, {
       code: `${c.code} && bing.bong`,
       output: `${c.output} && bing.bong`,
     })),
+    // strict nullish equality checks x !== null && x.y !== null
+    ...baseCases.map(c => ({
+      ...c,
+      code: c.code.replace(/&&/g, ' !== null &&'),
+    })),
+    ...baseCases.map(c => ({
+      ...c,
+      code: c.code.replace(/&&/g, ' != null &&'),
+    })),
+    ...baseCases.map(c => ({
+      ...c,
+      code: c.code.replace(/&&/g, ' !== undefined &&'),
+    })),
+    ...baseCases.map(c => ({
+      ...c,
+      code: c.code.replace(/&&/g, ' != undefined &&'),
+    })),
+    {
+      // case with inconsistent checks
+      code: `
+        foo && foo.bar != null && foo.bar.baz && foo.bar.baz.buzz !== undefined
+      `,
+      output: `
+        foo?.bar?.baz?.buzz
+      `,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+        },
+      ],
+    },
   ],
 });

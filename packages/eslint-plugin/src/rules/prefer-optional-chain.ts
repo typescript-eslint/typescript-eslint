@@ -43,23 +43,31 @@ export default util.createRule({
   create(context) {
     const sourceCode = context.getSourceCode();
     return {
-      'LogicalExpression[operator="&&"] > Identifier'(
-        identifier: TSESTree.Identifier,
+      [[
+        'LogicalExpression[operator="&&"] > Identifier',
+        'LogicalExpression[operator="&&"] > BinaryExpression[operator="!=="]',
+        'LogicalExpression[operator="&&"] > BinaryExpression[operator="!="]',
+      ].join(',')](
+        initialIdentifierOrNotEqualsExpr:
+          | TSESTree.BinaryExpression
+          | TSESTree.Identifier,
       ): void {
-        const expression = identifier.parent as TSESTree.LogicalExpression;
-        if (expression.left !== identifier) {
+        // selector guarantees this cast
+        const initialExpression = initialIdentifierOrNotEqualsExpr.parent as TSESTree.LogicalExpression;
+
+        if (initialExpression.left !== initialIdentifierOrNotEqualsExpr) {
           // the identifier is not the deepest left node
           return;
         }
-        if (!isValidRightChainTarget(expression.right)) {
+        if (!isValidRightChainTarget(initialExpression.right)) {
           // there is nothing to chain with on the right so we can short-circuit the process
           return;
         }
 
         // walk up the tree to figure out how many logical expressions we can include
-        let previous: TSESTree.LogicalExpression = expression;
-        let current: TSESTree.Node = expression;
-        let previousLeftText = getText(identifier);
+        let previous: TSESTree.LogicalExpression = initialExpression;
+        let current: TSESTree.Node = initialExpression;
+        let previousLeftText = getText(initialIdentifierOrNotEqualsExpr);
         let optionallyChainedCode = previousLeftText;
         while (current.type === AST_NODE_TYPES.LogicalExpression) {
           if (!isValidRightChainTarget(current.right)) {
@@ -75,24 +83,29 @@ export default util.createRule({
           if (rightText !== leftText) {
             previousLeftText = rightText;
 
-            // diff the left and right text to construct the fix string
             /*
-            There are three possible cases:
+            Diff the left and right text to construct the fix string
+            There are the following cases:
 
             1)
             rightText === 'foo.bar.baz.buzz'
             leftText === 'foo.bar.baz'
-            rightText.replace(leftText, '') === '.buzz'
+            diff === '.buzz'
 
             2)
             rightText === 'foo.bar.baz.buzz()'
             leftText === 'foo.bar.baz'
-            rightText.replace(leftText, '') === '.buzz()'
+            diff === '.buzz()'
 
             3)
             rightText === 'foo.bar.baz.buzz()'
             leftText === 'foo.bar.baz.buzz'
-            rightText.replace(leftText, '') === '()'
+            diff === '()'
+
+            4)
+            rightText === 'foo.bar.baz[buzz]'
+            leftText === 'foo.bar.baz'
+            diff === '[buzz]'
             */
             const diff = rightText.replace(leftText, '');
             const needsDot = diff.startsWith('(') || diff.startsWith('[');
@@ -117,28 +130,61 @@ export default util.createRule({
       },
     };
 
-    /**
-     * Removes spaces from the source code for the given node:
-     * ```
-     * foo
-     *   .bar
-     * ```
-     * transformed to
-     * ```
-     * foo.bar
-     * ```
-     */
-    function getText(node: TSESTree.Node): string {
-      return sourceCode.getText(node).replace(WHITESPACE_REGEX, '');
+    function getText(
+      node:
+        | TSESTree.BinaryExpression
+        | TSESTree.CallExpression
+        | TSESTree.Identifier
+        | TSESTree.MemberExpression,
+    ): string {
+      const text = sourceCode.getText(
+        node.type === AST_NODE_TYPES.BinaryExpression ? node.left : node,
+      );
+
+      // Removes spaces from the source code for the given node
+      return text.replace(WHITESPACE_REGEX, '');
     }
   },
 });
 
 function isValidRightChainTarget(
   node: TSESTree.Node,
-): node is TSESTree.MemberExpression | TSESTree.CallExpression {
-  return (
+): node is
+  | TSESTree.BinaryExpression
+  | TSESTree.CallExpression
+  | TSESTree.MemberExpression {
+  if (
     node.type === AST_NODE_TYPES.MemberExpression ||
     node.type === AST_NODE_TYPES.CallExpression
-  );
+  ) {
+    return true;
+  }
+
+  /*
+  special case for the following, where we only want the left
+  - foo !== null
+  - foo != null
+  - foo !== undefined
+  - foo != undefined
+  */
+  if (
+    node.type === AST_NODE_TYPES.BinaryExpression &&
+    ['!==', '!='].includes(node.operator) &&
+    isValidRightChainTarget(node.left)
+  ) {
+    if (
+      node.right.type === AST_NODE_TYPES.Identifier &&
+      node.right.name === 'undefined'
+    ) {
+      return true;
+    }
+    if (
+      node.right.type === AST_NODE_TYPES.Literal &&
+      node.right.value === null
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }

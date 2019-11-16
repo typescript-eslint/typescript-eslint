@@ -50,6 +50,14 @@ Examples of **incorrect** code for this rule:
 foo && foo.a && foo.a.b && foo.a.b.c;
 foo && foo['a'] && foo['a'].b && foo['a'].b.c;
 foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
+
+// this rule also supports converting chained strict nullish checks:
+foo &&
+  foo.a != null &&
+  foo.a.b !== null &&
+  foo.a.b.c != undefined &&
+  foo.a.b.c.d !== undefined &&
+  foo.a.b.c.d.e;
 ```
 
 Examples of **correct** code for this rule:
@@ -58,6 +66,8 @@ Examples of **correct** code for this rule:
 foo?.a?.b?.c;
 foo?.['a']?.b?.c;
 foo?.a?.b?.method?.();
+
+foo?.a?.b?.c?.d?.e;
 ```
 
 ## When Not To Use It
