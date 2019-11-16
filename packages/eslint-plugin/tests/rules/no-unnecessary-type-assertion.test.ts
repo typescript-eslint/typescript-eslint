@@ -104,6 +104,17 @@ class Mx {
   private prop = 1;
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1199
+    `
+function testFunction(_param: string | undefined): void { /* noop */ }
+const value = 'test' as string | null | undefined
+testFunction(value!)
+    `,
+    `
+function testFunction(_param: string | null): void { /* noop */ }
+const value = 'test' as string | null | undefined
+testFunction(value!)
+    `,
   ],
 
   invalid: [
