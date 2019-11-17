@@ -53,6 +53,8 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
     `declare const C: unknown;
       class D<TD = number> extends C { }`,
     `let a: A<number>`,
+    `class Foo<T> {}
+      const foo = new Foo<number>();`,
     `type Foo<T> = import('foo').Foo<T>;`,
   ],
   invalid: [
@@ -123,6 +125,17 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
       ],
       output: `interface I<T = number> { }
         class Impl implements I { }`,
+    },
+    {
+      code: `class Foo<T = number> {}
+        const foo = new Foo<number>();`,
+      errors: [
+        {
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `class Foo<T = number> {}
+        const foo = new Foo();`,
     },
   ],
 });
