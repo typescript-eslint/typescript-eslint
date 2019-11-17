@@ -53,6 +53,7 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
     `declare const C: unknown;
       class D<TD = number> extends C { }`,
     `let a: A<number>`,
+    `type Foo<T> = import('foo').Foo<T>;`,
   ],
   invalid: [
     {
