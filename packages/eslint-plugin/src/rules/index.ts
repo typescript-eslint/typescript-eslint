@@ -57,6 +57,7 @@ import quotes from './quotes';
 import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
+import restrictTemplateExpressions from './restrict-template-expressions';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -128,6 +129,7 @@ export default {
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
+  'restrict-template-expressions': restrictTemplateExpressions,
   semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
