@@ -128,6 +128,15 @@ ruleTester.run('require-await', rule, {
         return Promise.resolve(x);
       }`,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1188
+    `
+async function testFunction(): Promise<void> {
+  await Promise.all([1, 2, 3].map(
+    // this should not trigger an error on the parent function
+    async value => Promise.resolve(value)
+  ))
+}
+    `,
   ],
 
   invalid: [

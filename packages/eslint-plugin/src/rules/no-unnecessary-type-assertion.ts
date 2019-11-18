@@ -216,10 +216,17 @@ export default util.createRule<Options, MessageIds>({
               contextualType,
               ts.TypeFlags.Null,
             );
-            if (
-              (typeIncludesUndefined && contextualTypeIncludesUndefined) ||
-              (typeIncludesNull && contextualTypeIncludesNull)
-            ) {
+
+            // make sure that the parent accepts the same types
+            // i.e. assigning `string | null | undefined` to `string | undefined` is invalid
+            const isValidUndefined = typeIncludesUndefined
+              ? contextualTypeIncludesUndefined
+              : true;
+            const isValidNull = typeIncludesNull
+              ? contextualTypeIncludesNull
+              : true;
+
+            if (isValidUndefined && isValidNull) {
               context.report({
                 node,
                 messageId: 'contextuallyUnnecessary',

@@ -79,6 +79,22 @@ ruleTester.run('camelcase', rule, {
       code: 'abstract class Foo { abstract bar: number = 0; }',
       options: [{ properties: 'always' }],
     },
+    {
+      code: 'const foo = foo?.baz;',
+    },
+    {
+      code: 'const foo = foo?.foo_bar?.foo_bar_baz;',
+    },
+    {
+      code: 'const foo = foo.bar?.foo_bar_baz;',
+    },
+    {
+      code: 'const foo = (foo?.bar?.baz)?.foo_bar_baz;',
+    },
+    {
+      code: 'const foo = foo_bar?.foo;',
+      options: [{ properties: 'never' }],
+    },
   ],
 
   invalid: [
@@ -191,6 +207,34 @@ ruleTester.run('camelcase', rule, {
           },
           line: 1,
           column: 31,
+        },
+      ],
+    },
+    {
+      code: 'const foo = foo_bar?.foo;',
+      options: [{ properties: 'always' }],
+      errors: [
+        {
+          messageId: 'notCamelCase',
+          data: {
+            name: 'foo_bar',
+          },
+          line: 1,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: 'const foo = (foo_test?.bar)?.baz;',
+      options: [{ properties: 'always' }],
+      errors: [
+        {
+          messageId: 'notCamelCase',
+          data: {
+            name: 'foo_test',
+          },
+          line: 1,
+          column: 14,
         },
       ],
     },
