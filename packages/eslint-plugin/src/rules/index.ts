@@ -18,9 +18,11 @@ import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import noArrayConstructor from './no-array-constructor';
+import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
+import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
 import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
@@ -40,6 +42,8 @@ import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import useDefaultTypeParameter from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnusedVars from './no-unused-vars';
+import noUntypedPublicSignature from './no-untyped-public-signature';
+import noUnusedExpressions from './no-unused-expressions';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
@@ -55,8 +59,10 @@ import quotes from './quotes';
 import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
+import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import semi from './semi';
+import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
 import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
@@ -85,9 +91,11 @@ export default {
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
   'no-array-constructor': noArrayConstructor,
+  'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
+  'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extra-parens': noExtraParens,
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
@@ -106,7 +114,9 @@ export default {
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': useDefaultTypeParameter,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
+  'no-untyped-public-signature': noUntypedPublicSignature,
   'no-unused-vars': noUnusedVars,
+  'no-unused-expressions': noUnusedExpressions,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
@@ -122,8 +132,10 @@ export default {
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
+  'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
   semi: semi,
+  'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,

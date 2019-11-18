@@ -9,16 +9,15 @@ type ParsedOptions =
       allowUnderscorePrefix: boolean;
     };
 type Options = [
-
-    | 'never'
-    | 'always'
-    | {
-        prefixWithI?: 'never';
-      }
-    | {
-        prefixWithI: 'always';
-        allowUnderscorePrefix?: boolean;
-      },
+  | 'never'
+  | 'always'
+  | {
+      prefixWithI?: 'never';
+    }
+  | {
+      prefixWithI: 'always';
+      allowUnderscorePrefix?: boolean;
+    },
 ];
 type MessageIds = 'noPrefix' | 'alwaysPrefix';
 

@@ -41,7 +41,13 @@ async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
     const response = await fetch(`${contributorsApiUrl}&page=${page}`, {
       method: 'GET',
     });
-    const contributors: Contributor[] = await response.json();
+    const contributors:
+      | Contributor[]
+      | { message: string } = await response.json();
+
+    if (!Array.isArray(contributors)) {
+      throw new Error(contributors.message);
+    }
 
     const thresholdedContributors = contributors.filter(
       user => user.contributions >= COMPLETELY_ARBITRARY_CONTRIBUTION_COUNT,
@@ -81,13 +87,15 @@ async function main(): Promise<void> {
     // remove ignored users
     .filter(u => !IGNORED_USERS.has(u.login))
     // fetch the in-depth information for each user
-    .map<AllContributorsUser>(u => ({
-      login: u.login,
-      name: u.name,
-      avatar_url: u.avatar_url, // eslint-disable-line @typescript-eslint/camelcase
-      profile: u.html_url,
-      contributions: [],
-    }));
+    .map<AllContributorsUser>(usr => {
+      return {
+        login: usr.login,
+        name: usr.name || usr.login,
+        avatar_url: usr.avatar_url, // eslint-disable-line @typescript-eslint/camelcase
+        profile: usr.html_url,
+        contributions: [],
+      };
+    });
 
   // build + write the .all-contributorsrc
   const allContributorsConfig = {

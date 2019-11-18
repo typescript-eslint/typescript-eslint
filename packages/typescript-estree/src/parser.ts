@@ -419,5 +419,7 @@ export {
   TSESTreeOptions,
   version,
 };
+export { simpleTraverse } from './simple-traverse';
+export { visitorKeys } from './visitor-keys';
 export * from './ts-estree';
 export { clearCaches } from './create-program/createWatchProgram';
