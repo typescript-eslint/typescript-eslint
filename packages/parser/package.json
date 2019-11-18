@@ -50,6 +50,6 @@
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@typescript-eslint/shared-fixtures": "2.7.0",
-    "glob": "^7.1.4"
+    "glob": "*"
   }
 }

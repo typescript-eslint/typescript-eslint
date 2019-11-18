@@ -78,6 +78,8 @@
     "@typescript-eslint/restrict-plus-operands": "error",
     "semi": "off",
     "@typescript-eslint/semi": "error",
+    "space-before-function-paren": "off",
+    "@typescript-eslint/space-before-function-paren": "error",
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/triple-slash-reference": "error",
     "@typescript-eslint/type-annotation-spacing": "error",
