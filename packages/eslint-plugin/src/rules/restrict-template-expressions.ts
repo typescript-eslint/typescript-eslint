@@ -70,7 +70,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     return {
-      TemplateLiteral(node: TSESTree.TemplateLiteral) {
+      TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         // don't check tagged template literals
         if (node.parent!.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;
