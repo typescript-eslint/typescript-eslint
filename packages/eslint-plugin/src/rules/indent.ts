@@ -81,6 +81,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSTypeParameterInstantiation,
   AST_NODE_TYPES.TSTypeReference,
   AST_NODE_TYPES.TSUnionType,
+  AST_NODE_TYPES.Decorator,
 ]);
 
 export default util.createRule<Options, MessageIds>({
@@ -163,6 +164,7 @@ export default util.createRule<Options, MessageIds>({
           type,
           static: false,
           readonly: false,
+          declare: false,
           ...base,
         } as TSESTree.ClassProperty;
       }
@@ -237,7 +239,8 @@ export default util.createRule<Options, MessageIds>({
           type: AST_NODE_TYPES.ObjectExpression,
           properties: (node.members as (
             | TSESTree.TSEnumMember
-            | TSESTree.TypeElement)[]).map(
+            | TSESTree.TypeElement
+          )[]).map(
             member =>
               TSPropertySignatureToProperty(member) as TSESTree.Property,
           ),
@@ -441,6 +444,10 @@ export default util.createRule<Options, MessageIds>({
       },
 
       TSTypeParameterDeclaration(node: TSESTree.TSTypeParameterDeclaration) {
+        if (!node.params.length) {
+          return;
+        }
+
         const [name, ...attributes] = node.params;
 
         // JSX is about the closest we can get because the angle brackets

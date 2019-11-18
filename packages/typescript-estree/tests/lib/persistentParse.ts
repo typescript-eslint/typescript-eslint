@@ -3,14 +3,6 @@ import path from 'path';
 import tmp from 'tmp';
 import { clearCaches, parseAndGenerateServices } from '../../src/parser';
 
-const tsConfigExcludeBar = {
-  include: ['src'],
-  exclude: ['./src/bar.ts'],
-};
-const tsConfigIncludeAll = {
-  include: ['src'],
-  exclude: [],
-};
 const CONTENTS = {
   foo: 'console.log("foo")',
   bar: 'console.log("bar")',
@@ -69,7 +61,10 @@ function parseFile(filename: 'foo' | 'bar' | 'baz/bar', tmpDir: string): void {
   });
 }
 
-describe('persistent lint session', () => {
+function baseTests(
+  tsConfigExcludeBar: Record<string, unknown>,
+  tsConfigIncludeAll: Record<string, unknown>,
+): void {
   it('parses both files successfully when included', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll);
 
@@ -175,4 +170,48 @@ describe('persistent lint session', () => {
   });
 
   // TODO - support the complex monorepo case with a tsconfig with no include/exclude
+}
+
+describe('persistent parse', () => {
+  describe('includes not ending in a slash', () => {
+    const tsConfigExcludeBar = {
+      include: ['src'],
+      exclude: ['./src/bar.ts'],
+    };
+    const tsConfigIncludeAll = {
+      include: ['src'],
+      exclude: [],
+    };
+
+    baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
+  });
+
+  /*
+  If the includes ends in a slash, typescript will ask for watchers ending in a slash.
+  These tests ensure the normalisation code works as expected in this case.
+  */
+  describe('includes ending in a slash', () => {
+    const tsConfigExcludeBar = {
+      include: ['src/'],
+      exclude: ['./src/bar.ts'],
+    };
+    const tsConfigIncludeAll = {
+      include: ['src/'],
+      exclude: [],
+    };
+
+    baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
+  });
+
+  /*
+  If there is no includes, then typescript will ask for a slightly different set of watchers.
+  */
+  describe('tsconfig with no includes / files', () => {
+    const tsConfigExcludeBar = {
+      exclude: ['./src/bar.ts'],
+    };
+    const tsConfigIncludeAll = {};
+
+    baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
+  });
 });

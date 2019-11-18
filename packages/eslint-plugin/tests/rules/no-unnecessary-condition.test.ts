@@ -72,6 +72,16 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
 function test<T extends string>(t: T) {
   return t ? 'yes' : 'no'
 }`,
+    `
+// Naked type param
+function test<T>(t: T) {
+  return t ? 'yes' : 'no'
+}`,
+    `
+// Naked type param in union
+function test<T>(t: T | []) {
+  return t ? 'yes' : 'no'
+}`,
 
     // Boolean expressions
     `

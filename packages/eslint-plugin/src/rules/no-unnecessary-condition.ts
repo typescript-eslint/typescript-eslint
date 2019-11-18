@@ -123,8 +123,16 @@ export default createRule<Options, MessageId>({
     function checkNode(node: TSESTree.Node): void {
       const type = getNodeType(node);
 
-      // Conditional is always necessary if it involves `any` or `unknown`
-      if (isTypeFlagSet(type, TypeFlags.Any | TypeFlags.Unknown)) {
+      // Conditional is always necessary if it involves:
+      //    `any` or `unknown` or a naked type parameter
+      if (
+        unionTypeParts(type).some(part =>
+          isTypeFlagSet(
+            part,
+            TypeFlags.Any | TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+          ),
+        )
+      ) {
         return;
       }
       if (isTypeFlagSet(type, TypeFlags.Never)) {

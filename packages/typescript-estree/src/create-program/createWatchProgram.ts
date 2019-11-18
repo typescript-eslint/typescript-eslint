@@ -1,9 +1,8 @@
 import debug from 'debug';
 import fs from 'fs';
-import path from 'path';
-import ts from 'typescript';
+import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
 import { Extra } from '../parser-options';
-import { WatchCompilerHostOfConfigFile } from '../WatchCompilerHostOfConfigFile';
+import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 import {
   canonicalDirname,
   CanonicalPath,
@@ -45,7 +44,7 @@ const programFileListCache = new Map<CanonicalPath, Set<CanonicalPath>>();
  */
 const tsconfigLastModifiedTimestampCache = new Map<CanonicalPath, number>();
 
-const parsedFilesSeen = new Set<CanonicalPath>();
+const parsedFilesSeenHash = new Map<CanonicalPath, string>();
 
 /**
  * Clear all of the parser caches.
@@ -55,7 +54,7 @@ function clearCaches(): void {
   knownWatchProgramMap.clear();
   fileWatchCallbackTrackingMap.clear();
   folderWatchCallbackTrackingMap.clear();
-  parsedFilesSeen.clear();
+  parsedFilesSeenHash.clear();
   programFileListCache.clear();
   tsconfigLastModifiedTimestampCache.clear();
 }
@@ -67,7 +66,7 @@ function saveWatchCallback(
     fileName: string,
     callback: ts.FileWatcherCallback,
   ): ts.FileWatcher => {
-    const normalizedFileName = getCanonicalFileName(path.normalize(fileName));
+    const normalizedFileName = getCanonicalFileName(fileName);
     const watchers = ((): Set<ts.FileWatcherCallback> => {
       let watchers = trackingMap.get(normalizedFileName);
       if (!watchers) {
@@ -105,6 +104,19 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
 }
 
 /**
+ * Hash content for compare content.
+ * @param content hashed contend
+ * @returns hashed result
+ */
+function createHash(content: string): string {
+  // No ts.sys in browser environments.
+  if (ts.sys && ts.sys.createHash) {
+    return ts.sys.createHash(content);
+  }
+  return content;
+}
+
+/**
  * Calculate project environments using options provided by consumer and paths from config
  * @param code The code being linted
  * @param filePathIn The path of the file being parsed
@@ -125,10 +137,10 @@ function getProgramsForProjects(
   currentLintOperationState.filePath = filePath;
 
   // Update file version if necessary
-  // TODO: only update when necessary, currently marks as changed on every lint
   const fileWatchCallbacks = fileWatchCallbackTrackingMap.get(filePath);
+  const codeHash = createHash(code);
   if (
-    parsedFilesSeen.has(filePath) &&
+    parsedFilesSeenHash.get(filePath) !== codeHash &&
     fileWatchCallbacks &&
     fileWatchCallbacks.size > 0
   ) {
@@ -160,7 +172,13 @@ function getProgramsForProjects(
 
     if (fileList.has(filePath)) {
       log('Found existing program for file. %s', filePath);
-      return [updatedProgram || existingWatch.getProgram().getProgram()];
+
+      updatedProgram =
+        updatedProgram || existingWatch.getProgram().getProgram();
+      // sets parent pointers in source files
+      updatedProgram.getTypeChecker();
+
+      return [updatedProgram];
     }
   }
   log(
@@ -226,11 +244,14 @@ function createWatchProgram(
   const oldReadFile = watchCompilerHost.readFile;
   watchCompilerHost.readFile = (filePathIn, encoding): string | undefined => {
     const filePath = getCanonicalFileName(filePathIn);
-    parsedFilesSeen.add(filePath);
-    return path.normalize(filePath) ===
-      path.normalize(currentLintOperationState.filePath)
-      ? currentLintOperationState.code
-      : oldReadFile(filePath, encoding);
+    const fileContent =
+      filePath === currentLintOperationState.filePath
+        ? currentLintOperationState.code
+        : oldReadFile(filePath, encoding);
+    if (fileContent) {
+      parsedFilesSeenHash.set(filePath, createHash(fileContent));
+    }
+    return fileContent;
   };
 
   // ensure process reports error on failure instead of exiting process immediately

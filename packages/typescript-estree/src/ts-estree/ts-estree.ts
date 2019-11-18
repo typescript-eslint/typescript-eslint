@@ -472,6 +472,7 @@ interface ClassPropertyBase extends BaseNode {
   value: Expression | null;
   computed: boolean;
   static: boolean;
+  declare: boolean;
   readonly?: boolean;
   decorators?: Decorator[];
   accessibility?: Accessibility;
@@ -1060,7 +1061,6 @@ export interface TSConstructSignatureDeclaration extends FunctionSignatureBase {
 }
 
 export interface TSDeclareFunction extends FunctionDeclarationBase {
-  id: Identifier;
   type: AST_NODE_TYPES.TSDeclareFunction;
 }
 
