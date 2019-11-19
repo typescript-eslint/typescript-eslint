@@ -1,8 +1,3 @@
-/**
- * @fileoverview Disallows the use of require statements except in import statements.
- * @author Macklin Underdown
- */
-
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as util from '../util';
 
@@ -10,21 +5,20 @@ type Options = [];
 type MessageIds = 'sourceOrder' | 'namedOrder';
 
 export default util.createRule<Options, MessageIds>({
-  name: 'import-order',
+  name: 'organize-imports',
   meta: {
     type: 'problem',
     docs: {
-      description: 'Specifiers the ordering of import statements',
-      // tslintRuleName: 'ordered-imports',
+      description: 'Specifies the ordering of import statements',
       category: 'Stylistic Issues',
 
-      recommended: 'error'
+      recommended: 'error',
     },
     messages: {
       sourceOrder: 'Import sources must be alphabetized.',
-      namedOrder: 'Named imports must be alphabetized.'
+      namedOrder: 'Named imports must be alphabetized.',
     },
-    schema: []
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -44,8 +38,8 @@ export default util.createRule<Options, MessageIds>({
             messageId: 'namedOrder',
             loc: {
               start: first.loc.start,
-              end: second.loc.end
-            }
+              end: second.loc.end,
+            },
           });
         }
 
@@ -63,21 +57,21 @@ export default util.createRule<Options, MessageIds>({
               messageId: 'sourceOrder',
               loc: {
                 start: previousNode.loc.start,
-                end: node.loc.end
-              }
+                end: node.loc.end,
+              },
             });
           }
         }
 
         previousNode = node;
-      }
+      },
     };
-  }
+  },
 });
 
 function spefifiersOutOfOrder(specifiers: TSESTree.Identifier[]) {
   return pairwise(specifiers).find(
-    ([first, second]) => second.name.toUpperCase() < first.name.toUpperCase()
+    ([first, second]) => second.name.toUpperCase() < first.name.toUpperCase(),
   );
 }
 
