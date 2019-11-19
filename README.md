@@ -108,7 +108,7 @@ This is not valid JavaScript code, because it contains a so-called type annotati
 
 However, we can leverage the fact that ESLint has been designed with these use-cases in mind!
 
-It turns out that ESLint is not just comprised of one library, instead it is comprised of a few important moving parts. One of those moving parts is **the parser**. ESLint ships with a parser built in (called [`espree`](https://github.com/eslint/espree)), and so if you only ever write standard JavaScript, you don't need to care about this implementation detail.
+It turns out that ESLint is not just one library. Instead it is composed of a few important moving parts. One of those moving parts is **the parser**. ESLint ships with a parser built in (called [`espree`](https://github.com/eslint/espree)), and so if you only ever write standard JavaScript, you don't need to care about this implementation detail.
 
 The great thing is, though, if we want to support non-standard JavaScript syntax, all we need to do is provide ESLint with an alternative parser to use - that is a first-class use-case offered by ESLint.
 
