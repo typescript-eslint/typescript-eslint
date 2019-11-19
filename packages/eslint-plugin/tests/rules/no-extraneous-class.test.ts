@@ -132,5 +132,17 @@ export class AClass {
         },
       ],
     },
+    {
+      code: `
+@FooDecorator
+class Foo {}
+      `,
+      options: [{ allowWithDecorator: false }],
+      errors: [
+        {
+          messageId: 'empty',
+        },
+      ],
+    },
   ],
 });
