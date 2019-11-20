@@ -27,22 +27,22 @@ ruleTester.run('organize-imports', rule, {
      import a from 'b';
     `,
     `import b from 'b';
-     import c from './c';
      import a from '../a';
+     import c from './c';
     `,
     `import c from 'c';
-     import d from './d';
-     import b from '../b';
      import a from '../../a';
+     import b from '../b';
+     import d from './d';
     `,
     `import a from 'a';
      import { b, c } from 'bc';
      import d from 'd';
     `,
     `import a from 'a';
-     import { b, e } from './be';
-     import { d } from '../d';
      import c from '../../c';
+     import { d } from '../d';
+     import { b, e } from './be';
     `,
   ],
   invalid: [

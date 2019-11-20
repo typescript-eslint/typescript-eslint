@@ -70,16 +70,16 @@ import d from 'd';
 /* eslint @typescript-eslint/organize-imports: "error" */
 
 import b from 'b';
-import c from './c';
 import a from '../a';
+import c from './c';
 ```
 
 ```js
 /* eslint @typescript-eslint/organize-imports: "error" */
 
-import c from './c';
-import { d, e } from '../de';
 import { a, b } from '../../ab';
+import { d, e } from '../de';
+import c from './c';
 ```
 
 ## When Not To Use It
