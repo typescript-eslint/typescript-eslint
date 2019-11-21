@@ -41,13 +41,6 @@ const isLiteral = (type: ts.Type): boolean =>
   isLiteralType(type);
 // #endregion
 
-type ExpressionWithTest =
-  | TSESTree.ConditionalExpression
-  | TSESTree.DoWhileStatement
-  | TSESTree.ForStatement
-  | TSESTree.IfStatement
-  | TSESTree.WhileStatement;
-
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
@@ -106,14 +99,6 @@ export default createRule<Options, MessageId>({
     function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       return getConstrainedTypeAtLocation(checker, tsNode);
-    }
-
-    function isLoopStatement(node: TSESTree.Node): boolean {
-      return (
-        node.type === AST_NODE_TYPES.ForStatement ||
-        node.type === AST_NODE_TYPES.WhileStatement ||
-        node.type === AST_NODE_TYPES.DoWhileStatement
-      );
     }
 
     /**
@@ -178,28 +163,13 @@ export default createRule<Options, MessageId>({
      * Filters all LogicalExpressions to prevent some duplicate reports.
      */
     function checkIfTestExpressionIsNecessaryConditional(
-      node: ExpressionWithTest,
+      node: TSESTree.ConditionalExpression | TSESTree.IfStatement,
     ): void {
-      if (
-        node.test !== null &&
-        node.test.type !== AST_NODE_TYPES.LogicalExpression
-      ) {
-        /**
-         * Allow:
-         *   while (true) {}
-         *   for (;true;) {}
-         *   do {} while (true)
-         */
-        if (
-          allowConstantLoopConditions &&
-          isLoopStatement(node) &&
-          isBooleanLiteralType(getNodeType(node.test), true)
-        ) {
-          return;
-        }
-
-        checkNode(node.test);
+      if (node.test.type === AST_NODE_TYPES.LogicalExpression) {
+        return;
       }
+
+      checkNode(node.test);
     }
 
     /**
@@ -214,14 +184,46 @@ export default createRule<Options, MessageId>({
       }
     }
 
+    /**
+     * Checks that a testable expression of a loop is necessarily conditional, reports otherwise.
+     */
+    function checkIfLoopIsNecessaryConditional(
+      node:
+        | TSESTree.DoWhileStatement
+        | TSESTree.ForStatement
+        | TSESTree.WhileStatement,
+    ): void {
+      if (
+        node.test === null ||
+        node.test.type === AST_NODE_TYPES.LogicalExpression
+      ) {
+        return;
+      }
+
+      /**
+       * Allow:
+       *   while (true) {}
+       *   for (;true;) {}
+       *   do {} while (true)
+       */
+      if (
+        allowConstantLoopConditions &&
+        isBooleanLiteralType(getNodeType(node.test), true)
+      ) {
+        return;
+      }
+
+      checkNode(node.test);
+    }
+
     return {
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       ConditionalExpression: checkIfTestExpressionIsNecessaryConditional,
-      DoWhileStatement: checkIfTestExpressionIsNecessaryConditional,
-      ForStatement: checkIfTestExpressionIsNecessaryConditional,
+      DoWhileStatement: checkIfLoopIsNecessaryConditional,
+      ForStatement: checkIfLoopIsNecessaryConditional,
       IfStatement: checkIfTestExpressionIsNecessaryConditional,
-      WhileStatement: checkIfTestExpressionIsNecessaryConditional,
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
+      WhileStatement: checkIfLoopIsNecessaryConditional,
     };
   },
 });
