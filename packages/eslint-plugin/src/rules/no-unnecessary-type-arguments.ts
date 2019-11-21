@@ -114,14 +114,23 @@ function getTypeParametersFromNode(
     return getTypeParametersFromType(node.typeName, checker);
   }
 
-  return getTypeParametersFromCall(node, checker);
+  if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
+    return getTypeParametersFromCall(node, checker);
+  }
+
+  return undefined;
 }
 
 function getTypeParametersFromType(
   type: ts.EntityName | ts.Expression | ts.ClassDeclaration,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
-  const sym = getAliasedSymbol(checker.getSymbolAtLocation(type)!, checker);
+  const symAtLocation = checker.getSymbolAtLocation(type);
+  if (symAtLocation === undefined) {
+    return undefined;
+  }
+
+  const sym = getAliasedSymbol(symAtLocation, checker);
   if (sym === undefined || sym.declarations === undefined) {
     return undefined;
   }

@@ -73,9 +73,31 @@ type Options = {
 
 const defaults = {
   allowExpressions: false,
-  allowTypedFunctionExpressions: false,
-  allowHigherOrderFunctions: false,
+  allowTypedFunctionExpressions: true,
+  allowHigherOrderFunctions: true,
 };
+```
+
+### Configuring in a mixed JS/TS codebase
+
+If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.jsx` files.
+
+```jsonc
+{
+  "rules": {
+    // disable the rule for all files
+    "@typescript-eslint/explicit-function-return-type": "off"
+  },
+  "overrides": [
+    {
+      // enable the rule specifically for TypeScript files
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": ["error"]
+      }
+    }
+  ]
+}
 ```
 
 ### allowExpressions

@@ -52,10 +52,10 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ lib, path, types }]) {
     let programNode: TSESTree.Node;
     const sourceCode = context.getSourceCode();
-    const references: ({
+    const references: {
       comment: TSESTree.Comment;
       importName: string;
-    })[] = [];
+    }[] = [];
 
     function hasMatchingReference(source: TSESTree.Literal): void {
       references.forEach(reference => {
@@ -73,8 +73,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       ImportDeclaration(node): void {
         if (programNode) {
-          const source = node.source as TSESTree.Literal;
-          hasMatchingReference(source);
+          hasMatchingReference(node.source);
         }
       },
       TSImportEqualsDeclaration(node): void {

@@ -98,14 +98,19 @@ export default util.createRule<Options, MessageIds>({
       const returnType = checker.getReturnTypeOfSignature(signatures[0]);
 
       if (
-        !util.containsTypeByName(returnType, allowAny!, allAllowedPromiseNames)
+        !util.containsAllTypesByName(
+          returnType,
+          allowAny!,
+          allAllowedPromiseNames,
+        )
       ) {
         return;
       }
 
       if (
         node.parent &&
-        node.parent.type === 'Property' &&
+        (node.parent.type === 'Property' ||
+          node.parent.type === 'MethodDefinition') &&
         (node.parent.kind === 'get' || node.parent.kind === 'set')
       ) {
         return;

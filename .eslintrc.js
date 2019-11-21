@@ -23,6 +23,7 @@ module.exports = {
     //
 
     '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+    '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
@@ -34,6 +35,7 @@ module.exports = {
     //
 
     'comma-dangle': ['error', 'always-multiline'],
+    'constructor-super': 'off',
     curly: ['error', 'all'],
     'no-mixed-operators': 'error',
     'no-console': 'error',
@@ -112,7 +114,8 @@ module.exports = {
     ecmaFeatures: {
       jsx: false,
     },
-    project: './tsconfig.base.json',
+    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+    tsconfigRootDir: __dirname,
   },
   overrides: [
     {

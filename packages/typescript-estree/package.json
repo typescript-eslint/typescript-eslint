@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "2.0.0",
+  "version": "2.8.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "main": "dist/parser.js",
   "types": "dist/parser.d.ts",
@@ -31,35 +31,43 @@
     "syntax"
   ],
   "scripts": {
-    "ast-alignment-tests": "jest spec.ts",
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist/",
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "tsc -b tsconfig.build.json --clean",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
-    "prebuild": "npm run clean",
+    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "test": "jest --coverage",
-    "typecheck": "tsc --noEmit",
-    "unit-tests": "jest \"./tests/lib/.*\""
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "glob": "^7.1.4",
+    "debug": "^4.1.1",
+    "eslint-visitor-keys": "^1.1.0",
+    "glob": "^7.1.6",
     "is-glob": "^4.0.1",
     "lodash.unescape": "4.0.1",
-    "semver": "^6.2.0"
+    "semver": "^6.3.0",
+    "tsutils": "^3.17.1"
   },
   "devDependencies": {
-    "@babel/code-frame": "7.0.0",
-    "@babel/parser": "7.3.2",
+    "@babel/code-frame": "7.5.5",
+    "@babel/parser": "7.5.5",
     "@babel/types": "^7.3.2",
     "@types/babel-code-frame": "^6.20.1",
+    "@types/debug": "^4.1.5",
     "@types/glob": "^7.1.1",
     "@types/is-glob": "^4.0.1",
     "@types/lodash.isplainobject": "^4.0.4",
     "@types/lodash.unescape": "^4.0.4",
-    "@types/semver": "^6.0.1",
-    "@typescript-eslint/shared-fixtures": "2.0.0",
+    "@types/semver": "^6.2.0",
+    "@types/tmp": "^0.1.0",
+    "@typescript-eslint/shared-fixtures": "2.8.0",
     "babel-code-frame": "^6.26.0",
-    "glob": "^7.1.4",
     "lodash.isplainobject": "4.0.6",
+    "tmp": "^0.1.0",
     "typescript": "*"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   }
 }

@@ -41,6 +41,34 @@ Examples of **correct** code for the `{ "ignoreNumericLiteralTypes": true }` opt
 type SmallPrimes = 2 | 3 | 5 | 7 | 11;
 ```
 
+### ignoreReadonlyClassProperties
+
+Examples of **incorrect** code for the `{ "ignoreReadonlyClassProperties": false }` option:
+
+```ts
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreReadonlyClassProperties": false }]*/
+
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 1;
+  static readonly D = 1;
+}
+```
+
+Examples of **correct** code for the `{ "ignoreReadonlyClassProperties": true }` option:
+
+```ts
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreReadonlyClassProperties": true }]*/
+
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 1;
+  static readonly D = 1;
+}
+```
+
 ### ignoreEnums
 
 A boolean to specify if enums used in Typescript are considered okay. `false` by default.

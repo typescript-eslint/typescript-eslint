@@ -31,9 +31,42 @@ await promise;
 async function returnsPromise() {
   return 'value';
 }
-returnsPromise().then(() => {}, () => {});
+returnsPromise().then(
+  () => {},
+  () => {},
+);
 
 Promise.reject('value').catch(() => {});
+```
+
+## Options
+
+The rule accepts an options object with the following properties:
+
+```ts
+type Options = {
+  // if true, checking void expresions will be skipped
+  ignoreVoid?: boolean;
+};
+
+const defaults = {
+  ignoreVoid: false,
+};
+```
+
+### ignoreVoid
+
+This allows to easily suppress false-positives with void operator.
+
+Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
+
+```ts
+async function returnsPromise() {
+  return 'value';
+}
+void returnsPromise();
+
+void Promise.reject('value');
 ```
 
 ## When Not To Use It

@@ -24,6 +24,77 @@ export default class Test {
       `,
       options: ['status'],
     },
+    {
+      code: `
+type Handler = (event: string) => any
+      `,
+      options: ['event'],
+    },
+    {
+      code: `
+        const a = foo?.bar?.name
+      `,
+    },
+    {
+      code: `
+        const a = foo?.bar?.name ?? "foobar"
+      `,
+    },
+    {
+      code: `
+        const a = foo()?.bar;
+      `,
+    },
+    {
+      code: `
+        const a = foo()?.bar ?? true;
+      `,
+    },
   ],
-  invalid: [],
+  invalid: [
+    {
+      code: `
+function onClick() {
+  console.log(event);
+}
+
+fdescribe("foo", function() {
+});
+    `,
+      options: ['event'],
+      errors: [
+        {
+          message: "Unexpected use of 'event'.",
+          // the base rule doesn't use messageId
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
+      ],
+    },
+    {
+      code: `
+confirm("TEST");
+    `,
+      options: ['confirm'],
+      errors: [
+        {
+          message: "Unexpected use of 'confirm'.",
+          // the base rule doesn't use messageId
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
+      ],
+    },
+    {
+      code: `
+var a = confirm("TEST")?.a;
+    `,
+      options: ['confirm'],
+      errors: [
+        {
+          message: "Unexpected use of 'confirm'.",
+          // the base rule doesn't use messageId
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
+      ],
+    },
+  ],
 });

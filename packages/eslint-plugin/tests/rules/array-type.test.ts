@@ -1071,5 +1071,35 @@ class Foo<T = Bar[][]> extends Bar<T, T[]> implements Baz<T[]> {
       `let a: readonly Array<number>[] = []`,
       'array',
     );
+    testOutput(
+      'generic',
+      `type T = readonly(string)[]`,
+      `type T = ReadonlyArray<string>`,
+      'generic',
+    );
+    testOutput(
+      'generic',
+      `let a: readonly(readonly string[])[] = []`,
+      `let a: ReadonlyArray<ReadonlyArray<string>> = []`,
+      'generic',
+    );
+    testOutput(
+      'generic',
+      `type T = readonly(readonly string[])[]`,
+      `type T = ReadonlyArray<ReadonlyArray<string>>`,
+      'generic',
+    );
+    testOutput(
+      'generic',
+      `type T = readonly (readonly string[])[]`,
+      `type T = ReadonlyArray<ReadonlyArray<string>>`,
+      'generic',
+    );
+    testOutput(
+      'generic',
+      `type T = readonly    (readonly string[])[]`,
+      `type T = ReadonlyArray<ReadonlyArray<string>>`,
+      'generic',
+    );
   });
 });

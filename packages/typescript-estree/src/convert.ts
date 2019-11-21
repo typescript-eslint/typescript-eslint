@@ -926,6 +926,7 @@ export class Converter {
           computed: isComputedProperty(node.name),
           static: hasModifier(SyntaxKind.StaticKeyword, node),
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
+          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
         });
 
         if (node.type) {
@@ -941,7 +942,11 @@ export class Converter {
           result.accessibility = accessibility;
         }
 
-        if (node.name.kind === SyntaxKind.Identifier && node.questionToken) {
+        if (
+          (node.name.kind === SyntaxKind.Identifier ||
+            node.name.kind === SyntaxKind.ComputedPropertyName) &&
+          node.questionToken
+        ) {
           result.optional = true;
         }
 
@@ -1672,7 +1677,7 @@ export class Converter {
             | TSESTree.LogicalExpression
             | TSESTree.BinaryExpression
           >(node, {
-            type: type,
+            type,
             operator: getTextForTokenKind(node.operatorToken.kind)!,
             left: this.converter(
               node.left,
@@ -1685,36 +1690,99 @@ export class Converter {
         }
       }
 
-      case SyntaxKind.PropertyAccessExpression:
-        return this.createNode<TSESTree.MemberExpression>(node, {
-          type: AST_NODE_TYPES.MemberExpression,
-          object: this.convertChild(node.expression),
-          property: this.convertChild(node.name),
-          computed: false,
-        });
+      case SyntaxKind.PropertyAccessExpression: {
+        const object = this.convertChild(node.expression);
+        const property = this.convertChild(node.name);
+        const computed = false;
 
-      case SyntaxKind.ElementAccessExpression:
-        return this.createNode<TSESTree.MemberExpression>(node, {
-          type: AST_NODE_TYPES.MemberExpression,
-          object: this.convertChild(node.expression),
-          property: this.convertChild(node.argumentExpression),
-          computed: true,
-        });
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        // the optional expression should propogate up the member expression tree
+        const isChildOptional =
+          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
+            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          // (x?.y).z is semantically different, and as such .z is no longer optional
+          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
 
-      case SyntaxKind.ConditionalExpression:
-        return this.createNode<TSESTree.ConditionalExpression>(node, {
-          type: AST_NODE_TYPES.ConditionalExpression,
-          test: this.convertChild(node.condition),
-          consequent: this.convertChild(node.whenTrue),
-          alternate: this.convertChild(node.whenFalse),
-        });
+        if (isLocallyOptional || isChildOptional) {
+          return this.createNode<TSESTree.OptionalMemberExpression>(node, {
+            type: AST_NODE_TYPES.OptionalMemberExpression,
+            object,
+            property,
+            computed,
+            optional: isLocallyOptional,
+          });
+        } else {
+          return this.createNode<TSESTree.MemberExpression>(node, {
+            type: AST_NODE_TYPES.MemberExpression,
+            object,
+            property,
+            computed,
+            optional: false,
+          });
+        }
+      }
+
+      case SyntaxKind.ElementAccessExpression: {
+        const object = this.convertChild(node.expression);
+        const property = this.convertChild(node.argumentExpression);
+        const computed = true;
+
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        // the optional expression should propogate up the member expression tree
+        const isChildOptional =
+          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
+            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          // (x?.y).z is semantically different, and as such .z is no longer optional
+          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+
+        if (isLocallyOptional || isChildOptional) {
+          return this.createNode<TSESTree.OptionalMemberExpression>(node, {
+            type: AST_NODE_TYPES.OptionalMemberExpression,
+            object,
+            property,
+            computed,
+            optional: isLocallyOptional,
+          });
+        } else {
+          return this.createNode<TSESTree.MemberExpression>(node, {
+            type: AST_NODE_TYPES.MemberExpression,
+            object,
+            property,
+            computed,
+            optional: false,
+          });
+        }
+      }
 
       case SyntaxKind.CallExpression: {
-        const result = this.createNode<TSESTree.CallExpression>(node, {
-          type: AST_NODE_TYPES.CallExpression,
-          callee: this.convertChild(node.expression),
-          arguments: node.arguments.map(el => this.convertChild(el)),
-        });
+        const callee = this.convertChild(node.expression);
+        const args = node.arguments.map(el => this.convertChild(el));
+        let result;
+
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        // the optional expression should propogate up the member expression tree
+        const isChildOptional =
+          (callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
+            callee.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          // (x?.y).z() is semantically different, and as such .z() is no longer optional
+          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+
+        if (isLocallyOptional || isChildOptional) {
+          result = this.createNode<TSESTree.OptionalCallExpression>(node, {
+            type: AST_NODE_TYPES.OptionalCallExpression,
+            callee,
+            arguments: args,
+            optional: isLocallyOptional,
+          });
+        } else {
+          result = this.createNode<TSESTree.CallExpression>(node, {
+            type: AST_NODE_TYPES.CallExpression,
+            callee,
+            arguments: args,
+            optional: false,
+          });
+        }
+
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments,
@@ -1724,6 +1792,7 @@ export class Converter {
       }
 
       case SyntaxKind.NewExpression: {
+        // NOTE - NewExpression cannot have an optional chain in it
         const result = this.createNode<TSESTree.NewExpression>(node, {
           type: AST_NODE_TYPES.NewExpression,
           callee: this.convertChild(node.expression),
@@ -1738,6 +1807,14 @@ export class Converter {
         }
         return result;
       }
+
+      case SyntaxKind.ConditionalExpression:
+        return this.createNode<TSESTree.ConditionalExpression>(node, {
+          type: AST_NODE_TYPES.ConditionalExpression,
+          test: this.convertChild(node.condition),
+          consequent: this.convertChild(node.whenTrue),
+          alternate: this.convertChild(node.whenFalse),
+        });
 
       case SyntaxKind.MetaProperty: {
         return this.createNode<TSESTree.MetaProperty>(node, {
@@ -2363,15 +2440,19 @@ export class Converter {
       case SyntaxKind.TypePredicate: {
         const result = this.createNode<TSESTree.TSTypePredicate>(node, {
           type: AST_NODE_TYPES.TSTypePredicate,
+          asserts: node.assertsModifier !== undefined,
           parameterName: this.convertChild(node.parameterName),
-          typeAnnotation: this.convertTypeAnnotation(node.type, node),
+          typeAnnotation: null,
         });
         /**
          * Specific fix for type-guard location data
          */
-        result.typeAnnotation.loc = result.typeAnnotation.typeAnnotation.loc;
-        result.typeAnnotation.range =
-          result.typeAnnotation.typeAnnotation.range;
+        if (node.type) {
+          result.typeAnnotation = this.convertTypeAnnotation(node.type, node);
+          result.typeAnnotation.loc = result.typeAnnotation.typeAnnotation.loc;
+          result.typeAnnotation.range =
+            result.typeAnnotation.typeAnnotation.range;
+        }
         return result;
       }
 

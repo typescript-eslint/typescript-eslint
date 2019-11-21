@@ -140,6 +140,20 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
+        if (parent && parent.type === AST_NODE_TYPES.OptionalMemberExpression) {
+          // Report underscored object names
+          if (
+            properties === 'always' &&
+            parent.object.type === AST_NODE_TYPES.Identifier &&
+            parent.object.name === node.name &&
+            isUnderscored(name)
+          ) {
+            report(node);
+          }
+
+          return;
+        }
+
         // Let the base rule deal with the rest
         rules.Identifier(node);
       },

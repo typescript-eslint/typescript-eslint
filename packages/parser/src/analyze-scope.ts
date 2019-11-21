@@ -7,7 +7,7 @@ import { getKeys as fallback } from 'eslint-visitor-keys';
 
 import { ParserOptions } from './parser-options';
 import { ScopeManager } from './scope/scope-manager';
-import { visitorKeys as childVisitorKeys } from './visitor-keys';
+import { visitorKeys as childVisitorKeys } from '@typescript-eslint/typescript-estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -337,6 +337,29 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
    * @param node The CallExpression node to visit.
    */
   CallExpression(node: TSESTree.CallExpression): void {
+    this.visitTypeParameters(node);
+
+    this.visit(node.callee);
+
+    node.arguments.forEach(this.visit, this);
+  }
+
+  /**
+   * Visit optional member expression.
+   * @param node The OptionalMemberExpression node to visit.
+   */
+  OptionalMemberExpression(node: TSESTree.OptionalMemberExpression): void {
+    this.visit(node.object);
+    if (node.computed) {
+      this.visit(node.property);
+    }
+  }
+
+  /**
+   * Visit optional call expression.
+   * @param node The OptionalMemberExpression node to visit.
+   */
+  OptionalCallExpression(node: TSESTree.OptionalCallExpression): void {
     this.visitTypeParameters(node);
 
     this.visit(node.callee);

@@ -1,6 +1,7 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -57,6 +58,53 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
+    const sourceCode = context.getSourceCode();
+
+    /**
+     * Returns start column position
+     * @param node
+     */
+    function getLocStart(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): TSESTree.LineAndColumnData {
+      /* highlight method name */
+      const parent = node.parent;
+      if (
+        parent &&
+        (parent.type === AST_NODE_TYPES.MethodDefinition ||
+          (parent.type === AST_NODE_TYPES.Property && parent.method))
+      ) {
+        return parent.loc.start;
+      }
+
+      return node.loc.start;
+    }
+
+    /**
+     * Returns end column position
+     * @param node
+     */
+    function getLocEnd(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): TSESTree.LineAndColumnData {
+      /* highlight `=>` */
+      if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+        return sourceCode.getTokenBefore(
+          node.body,
+          token =>
+            token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=>',
+        )!.loc.end;
+      }
+
+      return sourceCode.getTokenBefore(node.body!)!.loc.end;
+    }
+
     /**
      * Checks if a node is a constructor.
      * @param node The node to check
@@ -102,6 +150,15 @@ export default util.createRule<Options, MessageIds>({
       return (
         node.type === AST_NODE_TYPES.ClassProperty && !!node.typeAnnotation
       );
+    }
+
+    /**
+     * Checks if a node belongs to:
+     * new Foo(() => {})
+     *         ^^^^^^^^
+     */
+    function isConstructorArgument(parent: TSESTree.Node): boolean {
+      return parent.type === AST_NODE_TYPES.NewExpression;
     }
 
     /**
@@ -258,6 +315,7 @@ export default util.createRule<Options, MessageIds>({
 
       context.report({
         node,
+        loc: { start: getLocStart(node), end: getLocEnd(node) },
         messageId: 'missingReturnType',
       });
     }
@@ -276,7 +334,8 @@ export default util.createRule<Options, MessageIds>({
             isVariableDeclaratorWithTypeAnnotation(node.parent) ||
             isClassPropertyWithTypeAnnotation(node.parent) ||
             isPropertyOfObjectWithType(node.parent) ||
-            isFunctionArgument(node.parent, node)
+            isFunctionArgument(node.parent, node) ||
+            isConstructorArgument(node.parent)
           ) {
             return;
           }
@@ -286,7 +345,8 @@ export default util.createRule<Options, MessageIds>({
           options.allowExpressions &&
           node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
           node.parent.type !== AST_NODE_TYPES.MethodDefinition &&
-          node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration
+          node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
+          node.parent.type !== AST_NODE_TYPES.ClassProperty
         ) {
           return;
         }
