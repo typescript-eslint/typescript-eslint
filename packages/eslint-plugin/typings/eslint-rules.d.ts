@@ -35,6 +35,7 @@ declare module 'eslint/lib/rules/camelcase' {
         allow?: string[];
         ignoreDestructuring?: boolean;
         properties?: 'always' | 'never';
+        genericType?: 'never' | 'always';
       },
     ],
     {
