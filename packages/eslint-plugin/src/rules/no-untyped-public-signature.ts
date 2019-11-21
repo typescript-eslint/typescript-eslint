@@ -106,7 +106,10 @@ export default util.createRule<Options, MessageIds>({
             });
           }
 
-          if (!isReturnTyped(node.value.returnType)) {
+          if (
+            node.kind !== 'constructor' &&
+            !isReturnTyped(node.value.returnType)
+          ) {
             context.report({
               node,
               messageId: 'noReturnType',
