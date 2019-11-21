@@ -81,10 +81,28 @@ function foo<T extends 1>(a: T) {
     return a + 1;
 }
     `,
-    `
+    {
+      code: `
 let foo: number = 0;
 foo += 1;
     `,
+      options: [
+        {
+          checkCompoundAssignments: false,
+        },
+      ],
+    },
+    {
+      code: `
+let foo: number = 0;
+foo += "string";
+    `,
+      options: [
+        {
+          checkCompoundAssignments: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -392,6 +410,29 @@ function foo<T extends 1>(a: T) {
 let foo: string | undefined;
 foo += "some data";
       `,
+      options: [
+        {
+          checkCompoundAssignments: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 3,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = '';
+foo += 0;
+      `,
+      options: [
+        {
+          checkCompoundAssignments: true,
+        },
+      ],
       errors: [
         {
           messageId: 'notStrings',

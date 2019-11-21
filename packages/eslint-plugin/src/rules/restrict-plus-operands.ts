@@ -2,7 +2,14 @@ import { TSESTree } from '@typescript-eslint/experimental-utils';
 import ts from 'typescript';
 import * as util from '../util';
 
-export default util.createRule({
+type Options = [
+  {
+    checkCompoundAssignments?: boolean;
+  },
+];
+type MessageIds = 'notNumbers' | 'notStrings' | 'notBigInts';
+
+export default util.createRule<Options, MessageIds>({
   name: 'restrict-plus-operands',
   meta: {
     type: 'problem',
@@ -20,12 +27,25 @@ export default util.createRule({
         "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal.",
       notBigInts: "Operands of '+' operation must be both bigints.",
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          checkCompoundAssignments: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      checkCompoundAssignments: false,
+    },
+  ],
+  create(context, [{ checkCompoundAssignments }]) {
     const service = util.getParserServices(context);
-
     const typeChecker = service.program.getTypeChecker();
 
     type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid';
@@ -115,7 +135,11 @@ export default util.createRule({
 
     return {
       "BinaryExpression[operator='+']": checkPlusOperands,
-      "AssignmentExpression[operator='+=']": checkPlusOperands,
+      "AssignmentExpression[operator='+=']"(node): void {
+        if (checkCompoundAssignments) {
+          checkPlusOperands(node);
+        }
+      },
     };
   },
 });
