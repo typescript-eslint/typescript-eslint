@@ -8,6 +8,19 @@ import * as util from '../util';
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const schema = util.deepMerge(
+  Array.isArray(baseRule.meta.schema)
+    ? baseRule.meta.schema[0]
+    : baseRule.meta.schema,
+  {
+    properties: {
+      genericType: {
+        enum: ['always', 'never'],
+      },
+    },
+  },
+);
+
 export default util.createRule<Options, MessageIds>({
   name: 'camelcase',
   meta: {
@@ -17,7 +30,7 @@ export default util.createRule<Options, MessageIds>({
       category: 'Stylistic Issues',
       recommended: 'error',
     },
-    schema: baseRule.meta.schema,
+    schema: [schema],
     messages: baseRule.meta.messages,
   },
   defaultOptions: [
@@ -25,6 +38,7 @@ export default util.createRule<Options, MessageIds>({
       allow: ['^UNSAFE_'],
       ignoreDestructuring: false,
       properties: 'never',
+      genericType: 'never',
     },
   ],
   create(context, [options]) {
@@ -36,6 +50,7 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSAbstractClassProperty,
     ];
 
+    const genericType = options.genericType;
     const properties = options.properties;
     const allow = (options.allow || []).map(entry => ({
       name: entry,
@@ -111,6 +126,14 @@ export default util.createRule<Options, MessageIds>({
         const parent = node.parent;
         if (parent && isTSPropertyType(parent)) {
           if (properties === 'always' && isUnderscored(name)) {
+            report(node);
+          }
+
+          return;
+        }
+
+        if (parent && parent.type === AST_NODE_TYPES.TSTypeParameter) {
+          if (genericType === 'always' && isUnderscored(name)) {
             report(node);
           }
 

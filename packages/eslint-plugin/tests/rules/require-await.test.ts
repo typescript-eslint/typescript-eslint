@@ -28,106 +28,87 @@ const noAwaitAsyncFunctionExpression: any = {
 
 ruleTester.run('require-await', rule, {
   valid: [
-    {
-      // Non-async function declaration
-      code: `function numberOne(): number {
-        return 1;
-      }`,
-    },
-    {
-      // Non-async function expression
-      code: `const numberOne = function(): number {
-        return 1;
-      }`,
-    },
-    {
-      // Non-async arrow function expression (concise-body)
-      code: `const numberOne = (): number => 1;`,
-    },
-    {
-      // Non-async arrow function expression (block-body)
-      code: `const numberOne = (): number => {
-        return 1;
-      };`,
-    },
-    {
-      // Async function declaration with await
-      code: `async function numberOne(): Promise<number> {
-        return await 1;
-      }`,
-    },
-    {
-      // Async function expression with await
-      code: `const numberOne = async function(): Promise<number> {
-        return await 1;
-      }`,
-    },
-    {
-      // Async arrow function expression with await (concise-body)
-      code: `const numberOne = async (): Promise<number> => await 1;`,
-    },
-    {
-      // Async arrow function expression with await (block-body)
-      code: `const numberOne = async (): Promise<number> => {
-        return await 1;
-      };`,
-    },
-    {
-      // Async function declaration with promise return
-      code: `async function numberOne(): Promise<number> {
-        return Promise.resolve(1);
-      }`,
-    },
-    {
-      // Async function expression with promise return
-      code: `const numberOne = async function(): Promise<number> {
-        return Promise.resolve(1);
-      }`,
-    },
-    {
-      // Async arrow function with promise return (concise-body)
-      code: `const numberOne = async (): Promise<number> => Promise.resolve(1);`,
-    },
-    {
-      // Async arrow function with promise return (block-body)
-      code: `const numberOne = async (): Promise<number> => {
-        return Promise.resolve(1);
-      };`,
-    },
-    {
-      // Async function declaration with async function return
-      code: `async function numberOne(): Promise<number> {
-        return getAsyncNumber(1);
-      }
-      async function getAsyncNumber(x: number): Promise<number> {
-        return Promise.resolve(x);
-      }`,
-    },
-    {
-      // Async function expression with async function return
-      code: `const numberOne = async function(): Promise<number> {
-        return getAsyncNumber(1);
-      }
-      const getAsyncNumber = async function(x: number): Promise<number> {
-        return Promise.resolve(x);
-      }`,
-    },
-    {
-      // Async arrow function with async function return (concise-body)
-      code: `const numberOne = async (): Promise<number> => getAsyncNumber(1);
-      const getAsyncNumber = async function(x: number): Promise<number> {
-        return Promise.resolve(x);
-      }`,
-    },
-    {
-      // Async arrow function with async function return (block-body)
-      code: `const numberOne = async (): Promise<number> => {
-        return getAsyncNumber(1);
-      };
-      const getAsyncNumber = async function(x: number): Promise<number> {
-        return Promise.resolve(x);
-      }`,
-    },
+    // Non-async function declaration
+    `function numberOne(): number {
+      return 1;
+    }`,
+    // Non-async function expression
+    `const numberOne = function(): number {
+      return 1;
+    }`,
+    // Non-async arrow function expression (concise-body)
+    `const numberOne = (): number => 1;`,
+    // Non-async arrow function expression (block-body)
+    `const numberOne = (): number => {
+      return 1;
+    };`,
+    // Non-async function that returns a promise
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1226
+    `
+function delay() {
+  return Promise.resolve();
+}
+    `,
+    `
+const delay = () => {
+  return Promise.resolve();
+}
+    `,
+    `const delay = () => Promise.resolve();`,
+    // Async function declaration with await
+    `async function numberOne(): Promise<number> {
+      return await 1;
+    }`,
+    // Async function expression with await
+    `const numberOne = async function(): Promise<number> {
+      return await 1;
+    }`,
+    // Async arrow function expression with await (concise-body)
+    `const numberOne = async (): Promise<number> => await 1;`,
+    // Async arrow function expression with await (block-body)
+    `const numberOne = async (): Promise<number> => {
+      return await 1;
+    };`,
+    // Async function declaration with promise return
+    `async function numberOne(): Promise<number> {
+      return Promise.resolve(1);
+    }`,
+    // Async function expression with promise return
+    `const numberOne = async function(): Promise<number> {
+      return Promise.resolve(1);
+    }`,
+    // Async arrow function with promise return (concise-body)
+    `const numberOne = async (): Promise<number> => Promise.resolve(1);`,
+    // Async arrow function with promise return (block-body)
+    `const numberOne = async (): Promise<number> => {
+      return Promise.resolve(1);
+    };`,
+    // Async function declaration with async function return
+    `async function numberOne(): Promise<number> {
+      return getAsyncNumber(1);
+    }
+    async function getAsyncNumber(x: number): Promise<number> {
+      return Promise.resolve(x);
+    }`,
+    // Async function expression with async function return
+    `const numberOne = async function(): Promise<number> {
+      return getAsyncNumber(1);
+    }
+    const getAsyncNumber = async function(x: number): Promise<number> {
+      return Promise.resolve(x);
+    }`,
+    // Async arrow function with async function return (concise-body)
+    `const numberOne = async (): Promise<number> => getAsyncNumber(1);
+    const getAsyncNumber = async function(x: number): Promise<number> {
+      return Promise.resolve(x);
+    }`,
+    // Async arrow function with async function return (block-body)
+    `const numberOne = async (): Promise<number> => {
+      return getAsyncNumber(1);
+    };
+    const getAsyncNumber = async function(x: number): Promise<number> {
+      return Promise.resolve(x);
+    }`,
     // https://github.com/typescript-eslint/typescript-eslint/issues/1188
     `
 async function testFunction(): Promise<void> {
