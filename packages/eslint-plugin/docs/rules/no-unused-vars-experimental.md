@@ -4,18 +4,16 @@ Variables that are declared and not used anywhere in the code are most likely an
 
 ## Rule Details
 
-This rule leverages the typescript compiler's unused variable checks to report. This means that with all rule options set to `false`, it should report the same errors as if you used both the `noUnusedLocals` and `noUnusedParameters` compiler options.
+This rule leverages the TypeScript compiler's unused variable checks to report. This means that with all rule options set to `false`, it should report the same errors as if you used both the `noUnusedLocals` and `noUnusedParameters` compiler options.
 
 This rule is vastly different to, and maintains no compatability with the base eslint version of the rule.
 
-**_NOTE:_** you must disable the base rule as it can report incorrect errors
+### Limitations
 
-```json
-{
-  "no-unused-vars": "off",
-  "@typescript-eslint/no-unused-vars": ["error"]
-}
-```
+There are two limitations to this rule when compared with eslint's `no-unused-vars` rule, which are imposed by the fact that it directly uses TypeScript's implementation.
+
+1. This rule only works on files that TypeScript deems is a module (i.e. it has an `import` or an `export` statement).
+2. The rule is significantly less configurable, as it cannot deviate too far from the base implementation.
 
 ## Supported Nodes
 
@@ -40,6 +38,11 @@ This rule supports checks on the following features:
 type Options = {
   ignoredNamesRegex?: string | boolean;
   ignoreArgsIfArgsAfterAreUsed?: boolean;
+};
+
+const defaultOptions: Options = {
+  ignoredNamesRegex: '^_',
+  ignoreArgsIfArgsAfterAreUsed: false,
 };
 ```
 
@@ -67,7 +70,7 @@ interface _UnusedInterface {}
 type _UnusedType = {};
 ```
 
-**_NOTE:_** The typescript compiler automatically ignores imports, function arguments, type parameter declarations, and object destructuring variables prefixed with an underscore.
+**_NOTE:_** The TypeScript compiler automatically ignores imports, function arguments, type parameter declarations, and object destructuring variables prefixed with an underscore.
 As this is hard-coded into the compiler, we cannot change this.
 
 Examples of valid code based on the unchangable compiler settings
