@@ -1,5 +1,3 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import * as parser from '@typescript-eslint/parser';
 import rule from '../../src/rules/no-empty-interface';
 import { RuleTester } from '../RuleTester';
 
@@ -75,65 +73,63 @@ interface Bar extends Foo {}
         },
       ],
     },
-  ],
-});
-
-describe('no-empty-interface | "noEmptyWithSuper" fixer', () => {
-  const linter = new TSESLint.Linter();
-  linter.defineRule('no-empty-interface', rule);
-  linter.defineParser('@typescript-eslint/parser', parser);
-
-  function testOutput(
-    code: string,
-    output: string,
-    allowSingleExtends = false,
-  ) {
-    it(code, () => {
-      const result = linter.verifyAndFix(
-        code,
+    {
+      code: 'interface Foo extends Array<number> {}',
+      output: 'type Foo = Array<number>',
+      errors: [
         {
-          rules: { 'no-empty-interface': [2, { allowSingleExtends }] },
-          parser: '@typescript-eslint/parser',
+          messageId: 'noEmptyWithSuper',
+          line: 1,
+          column: 11,
         },
-        { fix: true },
-      );
-
-      expect(result.messages).toHaveLength(0);
-      expect(result.output).toBe(output);
-    });
-  }
-
-  testOutput(
-    'interface Foo extends Array<number> {}',
-    'type Foo = Array<number>',
-  );
-
-  testOutput(
-    'interface Foo extends Array<number | {}> { }',
-    'type Foo = Array<number | {}>',
-  );
-
-  testOutput(
-    `
+      ],
+    },
+    {
+      code: 'interface Foo extends Array<number | {}> { }',
+      output: 'type Foo = Array<number | {}>',
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 1,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
 interface Bar {
   bar: string;
 }
 interface Foo extends Array<Bar> {}
 `,
-    `
+      output: `
 interface Bar {
   bar: string;
 }
 type Foo = Array<Bar>
 `,
-  );
-
-  testOutput(
-    `
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 5,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
 type R = Record<string, unknown>;
 interface Foo extends R {   };`,
-    `
+      output: `
 type R = Record<string, unknown>;
 type Foo = R;`,
-  );
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 3,
+          column: 11,
+        },
+      ],
+    },
+  ],
 });
