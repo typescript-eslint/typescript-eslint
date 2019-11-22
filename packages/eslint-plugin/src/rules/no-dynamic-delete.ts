@@ -33,12 +33,8 @@ export default util.createRule({
       ) {
         return createPropertyReplacement(
           member.property,
-          member.property.value,
+          `.${member.property.value}`,
         );
-      }
-
-      if (member.property.type === AST_NODE_TYPES.Identifier) {
-        return createPropertyReplacement(member.property, member.property.name);
       }
 
       return undefined;
@@ -69,7 +65,7 @@ export default util.createRule({
       replacement: string,
     ) {
       return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix =>
-        fixer.replaceTextRange(getTokenRange(property), `.${replacement}`);
+        fixer.replaceTextRange(getTokenRange(property), replacement);
     }
 
     function getTokenRange(property: TSESTree.Expression): [number, number] {

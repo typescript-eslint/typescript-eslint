@@ -53,6 +53,16 @@ function head<T>(items: T[]) {
 }
 ```
 
+- `allowConstantLoopConditions` (default `false`) - allows constant expressions in loops.
+
+Example of correct code for when `allowConstantLoopConditions` is `true`:
+
+```ts
+while (true) {}
+for (; true; ) {}
+do {} while (true);
+```
+
 ## When Not To Use It
 
 The main downside to using this rule is the need for type information.
