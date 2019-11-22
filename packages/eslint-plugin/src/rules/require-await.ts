@@ -42,13 +42,12 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      'FunctionDeclaration[async = true]': rules.FunctionDeclaration,
-      'FunctionExpression[async = true]': rules.FunctionExpression,
+      FunctionDeclaration: rules.FunctionDeclaration,
+      FunctionExpression: rules.FunctionExpression,
+      ArrowFunctionExpression: rules.ArrowFunctionExpression,
       'ArrowFunctionExpression[async = true]'(
         node: TSESTree.ArrowFunctionExpression,
       ): void {
-        rules.ArrowFunctionExpression(node);
-
         // If body type is not BlockStatment, we need to check the return type here
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
           const expression = parserServices.esTreeNodeToTSNodeMap.get(
@@ -56,15 +55,13 @@ export default util.createRule<Options, MessageIds>({
           );
           if (expression && isThenableType(expression)) {
             // tell the base rule to mark the scope as having an await so it ignores it
-            rules.AwaitExpression(node as never);
+            rules.AwaitExpression();
           }
         }
       },
-      'FunctionDeclaration[async = true]:exit':
-        rules['FunctionDeclaration:exit'],
-      'FunctionExpression[async = true]:exit': rules['FunctionExpression:exit'],
-      'ArrowFunctionExpression[async = true]:exit':
-        rules['ArrowFunctionExpression:exit'],
+      'FunctionDeclaration:exit': rules['FunctionDeclaration:exit'],
+      'FunctionExpression:exit': rules['FunctionExpression:exit'],
+      'ArrowFunctionExpression:exit': rules['ArrowFunctionExpression:exit'],
       AwaitExpression: rules.AwaitExpression,
       ForOfStatement: rules.ForOfStatement,
 
@@ -74,7 +71,7 @@ export default util.createRule<Options, MessageIds>({
         >(node);
         if (expression && isThenableType(expression)) {
           // tell the base rule to mark the scope as having an await so it ignores it
-          rules.AwaitExpression(node as never);
+          rules.AwaitExpression();
         }
       },
     };
