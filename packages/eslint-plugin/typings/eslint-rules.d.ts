@@ -35,6 +35,7 @@ declare module 'eslint/lib/rules/camelcase' {
         allow?: string[];
         ignoreDestructuring?: boolean;
         properties?: 'always' | 'never';
+        genericType?: 'never' | 'always';
       },
     ],
     {
@@ -451,7 +452,7 @@ declare module 'eslint/lib/rules/require-await' {
         node: TSESTree.ArrowFunctionExpression,
       ): void;
       ReturnStatement(node: TSESTree.ReturnStatement): void;
-      AwaitExpression(node: TSESTree.AwaitExpression): void;
+      AwaitExpression(): void;
       ForOfStatement(node: TSESTree.ForOfStatement): void;
     }
   >;

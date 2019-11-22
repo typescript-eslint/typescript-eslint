@@ -1,4 +1,4 @@
-import eslintVisitorKeys from 'eslint-visitor-keys';
+import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
 export const visitorKeys = eslintVisitorKeys.unionWith({
   // Additional estree nodes.

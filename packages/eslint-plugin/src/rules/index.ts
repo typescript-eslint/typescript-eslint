@@ -22,6 +22,7 @@ import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
+import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
 import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
@@ -58,6 +59,7 @@ import quotes from './quotes';
 import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
+import restrictTemplateExpressions from './restrict-template-expressions';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -93,6 +95,7 @@ export default {
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
+  'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extra-parens': noExtraParens,
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
@@ -130,6 +133,7 @@ export default {
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
+  'restrict-template-expressions': restrictTemplateExpressions,
   semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
