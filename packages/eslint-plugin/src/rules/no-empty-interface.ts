@@ -42,6 +42,8 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node): void {
+        const sourceCode = context.getSourceCode();
+
         if (node.body.body.length !== 0) {
           // interface contains members --> Nothing to report
           return;
@@ -62,25 +64,13 @@ export default util.createRule<Options, MessageIds>({
               messageId: 'noEmptyWithSuper',
               fix(fixer) {
                 if (node.extends && node.extends.length) {
-                  const {
-                    id,
-                    extends: [extend],
-                    body,
-                  } = node;
-
                   return [
-                    // replace `interface` keyword to `type`
-                    fixer.replaceTextRange(
-                      [id.parent?.range[0] || 0, id.range[0]],
-                      'type ',
+                    fixer.replaceText(
+                      node,
+                      `type ${sourceCode.getText(
+                        node.id,
+                      )} = ${sourceCode.getText(node.extends[0])}`,
                     ),
-                    // replace `extends` keyword to `=` symbol
-                    fixer.replaceTextRange(
-                      [id.range[1], extend.range[0]],
-                      ' = ',
-                    ),
-                    // remove brackets `{}`
-                    fixer.removeRange([body.range[0] - 1, body.range[1]]),
                   ];
                 }
 
