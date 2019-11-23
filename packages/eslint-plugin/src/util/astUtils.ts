@@ -1,6 +1,7 @@
 import {
   TSESTree,
   AST_TOKEN_TYPES,
+  AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
 
 const LINEBREAK_MATCHER = /\r\n|[\r\n\u2028\u2029]/;
@@ -16,8 +17,23 @@ function isNotOptionalChainPunctuator(
   return !isOptionalChainPunctuator(token);
 }
 
+/**
+ * Returns true if and only if the node represents: foo?.() or foo.bar?.()
+ */
+function isOptionalOptionalChain(
+  node: TSESTree.Node,
+): node is TSESTree.OptionalCallExpression {
+  return (
+    node.type === AST_NODE_TYPES.OptionalCallExpression &&
+    // this flag means the call expression itself is option
+    // i.e. it is foo.bar?.() and not foo?.bar()
+    node.optional
+  );
+}
+
 export {
   LINEBREAK_MATCHER,
   isNotOptionalChainPunctuator,
   isOptionalChainPunctuator,
+  isOptionalOptionalChain,
 };

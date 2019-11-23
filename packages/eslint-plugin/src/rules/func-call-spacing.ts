@@ -81,11 +81,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.OptionalCallExpression
         | TSESTree.NewExpression,
     ): void {
-      const isOptionalCall =
-        node.type === AST_NODE_TYPES.OptionalCallExpression &&
-        // this flag means the call expression itself is option
-        // i.e. it is foo.bar?.() and not foo?.bar()
-        node.optional;
+      const isOptionalCall = util.isOptionalOptionalChain(node);
 
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
