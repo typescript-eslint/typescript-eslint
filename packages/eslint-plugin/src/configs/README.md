@@ -1,6 +1,6 @@
 # Premade configs
 
-These configs exist for your convenience. They contain configuration intended to save you time and effort when configuring your project by disabling rules known to conflict with this repository, or cause issues in typesript codebases.
+These configs exist for your convenience. They contain configuration intended to save you time and effort when configuring your project by disabling rules known to conflict with this repository, or cause issues in TypeScript codebases.
 
 ## All
 
@@ -26,7 +26,7 @@ The recommended set is an **_opinionated_** set of rules that we think you shoul
 1. They help you adhere to TypeScript best practices.
 2. They help catch probable issue vectors in your code.
 
-That being said, it is not the only way to use `@typescript-eslint/eslint-plugin`, nor is it the way that will necesasrily work 100% for your project/company. It has been built based off of two main things:
+That being said, it is not the only way to use `@typescript-eslint/eslint-plugin`, nor is it the way that will necessarily work 100% for your project/company. It has been built based off of two main things:
 
 1. TypeScript best practices collected and collated from places like:
    - [TypeScript repo](https://github.com/Microsoft/TypeScript).
