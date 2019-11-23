@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { isOpeningParenToken } from 'eslint-utils';
 import * as util from '../util';
 
