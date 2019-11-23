@@ -29,6 +29,30 @@ Array [
         "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                51,
+                54,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                51,
+                54,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
       },
       Object {
         "column": 3,
@@ -62,6 +86,30 @@ Array [
         "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
       },
       Object {
         "column": 3,
@@ -84,6 +132,30 @@ Array [
         "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
       },
       Object {
         "column": 3,
@@ -106,6 +178,30 @@ Array [
         "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
       },
       Object {
         "column": 3,

@@ -14,5 +14,5 @@ These tests are setup to run within docker containers to ensure that each test i
 1. Copy+paste the `test.sh` from an existing fixture, and adjust the `eslint` command as required.
 1. Add a new entry to `docker-compose.yml` by copy+pasting an existing section, and changing the name to match your new folder.
 1. Add a new entry to `run-all-tests.sh` by copy+pasting an existing command, and changing the name to match your new folder.
-1. Run your integration test by running the single command you copied in .
+1. Run your integration test by running the single command you copied in the previous step.
    - If your test finishes successfully, a `test.js.snap` will be created.
