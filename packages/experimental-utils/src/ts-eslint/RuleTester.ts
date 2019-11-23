@@ -19,6 +19,16 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   };
 }
 
+interface SuggestionOutput<TMessageIds extends string> {
+  messageId: TMessageIds;
+  data?: Record<string, unknown>;
+  /**
+   * NOTE: Suggestions will be applied as a stand-alone change, without triggering multipass fixes.
+   * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
+   */
+  output: string;
+}
+
 interface InvalidTestCase<
   TMessageIds extends string,
   TOptions extends Readonly<unknown[]>
@@ -35,6 +45,7 @@ interface TestCaseError<TMessageIds extends string> {
   column?: number;
   endLine?: number;
   endColumn?: number;
+  suggestions?: SuggestionOutput<TMessageIds>[];
 }
 
 interface RunTests<
@@ -79,6 +90,7 @@ class RuleTester extends (ESLintRuleTester as {
 
 export {
   InvalidTestCase,
+  SuggestionOutput,
   RuleTester,
   RuleTesterConfig,
   RunTests,
