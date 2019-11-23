@@ -1,8 +1,12 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import path from 'path';
 import rule from '../../src/rules/prefer-includes';
+import * as util from '../../src/util';
 import { RuleTester } from '../RuleTester';
 
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+
+type MessageIds = util.InferMessageIdsTypeFromRule<typeof rule>;
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -12,8 +16,31 @@ const ruleTester = new RuleTester({
   },
 });
 
+type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, never>;
+type ValidTestCase = TSESLint.ValidTestCase<never> | string;
+function addOptional(cases: ValidTestCase[]): ValidTestCase[];
+function addOptional(cases: InvalidTestCase[]): InvalidTestCase[];
+function addOptional(
+  cases: (ValidTestCase | InvalidTestCase)[],
+): (ValidTestCase | InvalidTestCase)[] {
+  return cases.reduce<(ValidTestCase | InvalidTestCase)[]>((acc, c) => {
+    acc.push(c);
+    if (typeof c === 'string') {
+      acc.push(c.replace('.', '?.'));
+    } else {
+      acc.push({
+        ...c,
+        code: c.code.replace('.', '?.'),
+        output: 'output' in c ? c.output?.replace('.', '?.') : null,
+      });
+    }
+
+    return acc;
+  }, []);
+}
+
 ruleTester.run('prefer-includes', rule, {
-  valid: [
+  valid: addOptional([
     `
       function f(a: string): void {
         a.indexOf(b)
@@ -89,8 +116,8 @@ ruleTester.run('prefer-includes', rule, {
         something.test(a)
       }
     `,
-  ],
-  invalid: [
+  ]),
+  invalid: addOptional([
     // positive
     {
       code: `
@@ -435,5 +462,5 @@ ruleTester.run('prefer-includes', rule, {
       `,
       errors: [{ messageId: 'preferIncludes' }],
     },
-  ],
+  ]),
 });
