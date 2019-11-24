@@ -298,6 +298,8 @@ interface RuleListener {
   NewExpression?: RuleFunction<TSESTree.NewExpression>;
   ObjectExpression?: RuleFunction<TSESTree.ObjectExpression>;
   ObjectPattern?: RuleFunction<TSESTree.ObjectPattern>;
+  OptionalCallExpression?: RuleFunction<TSESTree.OptionalCallExpression>;
+  OptionalMemberExpression?: RuleFunction<TSESTree.OptionalMemberExpression>;
   Program?: RuleFunction<TSESTree.Program>;
   Property?: RuleFunction<TSESTree.Property>;
   RestElement?: RuleFunction<TSESTree.RestElement>;
