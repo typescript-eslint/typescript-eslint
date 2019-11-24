@@ -41,6 +41,7 @@ import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnusedVars from './no-unused-vars';
+import noUnusedVarsExperimental from './no-unused-vars-experimental';
 import noUntypedPublicSignature from './no-untyped-public-signature';
 import noUnusedExpressions from './no-unused-expressions';
 import noUseBeforeDefine from './no-use-before-define';
@@ -116,6 +117,7 @@ export default {
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-untyped-public-signature': noUntypedPublicSignature,
   'no-unused-vars': noUnusedVars,
+  'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-unused-expressions': noUnusedExpressions,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,

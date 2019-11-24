@@ -16,6 +16,8 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   checkJs: true,
   noEmit: true,
   // extendedDiagnostics: true,
+  noUnusedLocals: true,
+  noUnusedParameters: true,
 };
 
 // This narrows the type so we can be sure we're passing canonical names in the correct places
