@@ -111,7 +111,7 @@ export function getConstrainedTypeAtLocation(
   const nodeType = checker.getTypeAtLocation(node);
   const constrained = checker.getBaseConstraintOfType(nodeType);
 
-  return constrained || nodeType;
+  return constrained ?? nodeType;
 }
 
 /**

@@ -879,7 +879,7 @@ export function analyzeScope(
         parserOptions.ecmaFeatures.globalReturn) === true,
     impliedStrict: false,
     sourceType: parserOptions.sourceType,
-    ecmaVersion: parserOptions.ecmaVersion || 2018,
+    ecmaVersion: parserOptions.ecmaVersion ?? 2018,
     childVisitorKeys,
     fallback,
   };

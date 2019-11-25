@@ -40,7 +40,7 @@ export default util.createRule({
     }
 
     function symbolIsNamespaceInScope(symbol: ts.Symbol): boolean {
-      const symbolDeclarations = symbol.getDeclarations() || [];
+      const symbolDeclarations = symbol.getDeclarations() ?? [];
 
       if (
         symbolDeclarations.some(decl =>

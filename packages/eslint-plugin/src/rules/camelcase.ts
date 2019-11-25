@@ -52,10 +52,11 @@ export default util.createRule<Options, MessageIds>({
 
     const genericType = options.genericType;
     const properties = options.properties;
-    const allow = (options.allow || []).map(entry => ({
-      name: entry,
-      regex: new RegExp(entry),
-    }));
+    const allow =
+      options.allow?.map(entry => ({
+        name: entry,
+        regex: new RegExp(entry),
+      })) ?? [];
 
     /**
      * Checks if a string contains an underscore and isn't all upper-case

@@ -1009,7 +1009,7 @@ const test = <T extends Partial<never>>() => {};
         suggestions: e.suggestions ?? suggestions(testCase.code),
       })),
     });
-    const options = testCase.options || [];
+    const options = testCase.options ?? [];
     const code = `// fixToUnknown: true\n${testCase.code}`;
     acc.push({
       code,
