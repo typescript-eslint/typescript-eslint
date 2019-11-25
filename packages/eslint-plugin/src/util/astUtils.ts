@@ -17,6 +17,17 @@ function isNotOptionalChainPunctuator(
   return !isOptionalChainPunctuator(token);
 }
 
+function isNonNullAssertionPunctuator(
+  token: TSESTree.Token | TSESTree.Comment,
+): boolean {
+  return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '!';
+}
+function isNotNonNullAssertionPunctuator(
+  token: TSESTree.Token | TSESTree.Comment,
+): boolean {
+  return !isNonNullAssertionPunctuator(token);
+}
+
 /**
  * Returns true if and only if the node represents: foo?.() or foo.bar?.()
  */
@@ -32,8 +43,10 @@ function isOptionalOptionalChain(
 }
 
 export {
-  LINEBREAK_MATCHER,
+  isNonNullAssertionPunctuator,
+  isNotNonNullAssertionPunctuator,
   isNotOptionalChainPunctuator,
   isOptionalChainPunctuator,
   isOptionalOptionalChain,
+  LINEBREAK_MATCHER,
 };
