@@ -322,7 +322,7 @@ function createWatchProgram(
       return null;
     }
 
-    return oldSetTimeout && oldSetTimeout(cb, ms, ...args);
+    return oldSetTimeout?.(cb, ms, ...args);
   };
 
   return ts.createWatchProgram(watchCompilerHost);
