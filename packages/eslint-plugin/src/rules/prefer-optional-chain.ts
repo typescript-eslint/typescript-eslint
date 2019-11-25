@@ -59,8 +59,7 @@ export default util.createRule({
           // the identifier is not the deepest left node
           return;
         }
-        if (!isValidRightChainTarget(initialExpression.right)) {
-          // there is nothing to chain with on the right so we can short-circuit the process
+        if (!isValidChainTarget(initialIdentifierOrNotEqualsExpr, true)) {
           return;
         }
 
@@ -69,8 +68,9 @@ export default util.createRule({
         let current: TSESTree.Node = initialExpression;
         let previousLeftText = getText(initialIdentifierOrNotEqualsExpr);
         let optionallyChainedCode = previousLeftText;
+        let expressionCount = 1;
         while (current.type === AST_NODE_TYPES.LogicalExpression) {
-          if (!isValidRightChainTarget(current.right)) {
+          if (!isValidChainTarget(current.right)) {
             break;
           }
 
@@ -79,6 +79,8 @@ export default util.createRule({
           if (!rightText.startsWith(leftText)) {
             break;
           }
+          expressionCount += 1;
+
           // omit weird doubled up expression that make no sense like foo.bar && foo.bar
           if (rightText !== leftText) {
             previousLeftText = rightText;
@@ -120,13 +122,15 @@ export default util.createRule({
           current = current.parent;
         }
 
-        context.report({
-          node: previous,
-          messageId: 'preferOptionalChain',
-          fix(fixer) {
-            return fixer.replaceText(previous, optionallyChainedCode);
-          },
-        });
+        if (expressionCount > 1) {
+          context.report({
+            node: previous,
+            messageId: 'preferOptionalChain',
+            fix(fixer) {
+              return fixer.replaceText(previous, optionallyChainedCode);
+            },
+          });
+        }
       },
     };
 
@@ -147,8 +151,9 @@ export default util.createRule({
   },
 });
 
-function isValidRightChainTarget(
+function isValidChainTarget(
   node: TSESTree.Node,
+  allowIdentifier = false,
 ): node is
   | TSESTree.BinaryExpression
   | TSESTree.CallExpression
@@ -157,6 +162,9 @@ function isValidRightChainTarget(
     node.type === AST_NODE_TYPES.MemberExpression ||
     node.type === AST_NODE_TYPES.CallExpression
   ) {
+    return true;
+  }
+  if (allowIdentifier && node.type === AST_NODE_TYPES.Identifier) {
     return true;
   }
 
@@ -170,7 +178,7 @@ function isValidRightChainTarget(
   if (
     node.type === AST_NODE_TYPES.BinaryExpression &&
     ['!==', '!='].includes(node.operator) &&
-    isValidRightChainTarget(node.left)
+    isValidChainTarget(node.left, allowIdentifier)
   ) {
     if (
       node.right.type === AST_NODE_TYPES.Identifier &&
