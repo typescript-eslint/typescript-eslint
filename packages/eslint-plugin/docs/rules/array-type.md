@@ -74,7 +74,7 @@ Incorrect code for `"array-simple"`:
 
 ```ts
 const a: (string | number)[] = ['a', 'b'];
-const b: ({ prop: string })[] = [{ prop: 'a' }];
+const b: { prop: string }[] = [{ prop: 'a' }];
 const c: (() => void)[] = [() => {}];
 const d: Array<MyType> = ['a', 'b'];
 const e: Array<string> = ['a', 'b'];

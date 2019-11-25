@@ -37,8 +37,12 @@ function validateTableStructure(
       console.error(
         chalk.bold.red('✗'),
         chalk.bold('Sorting:'),
-        'Incorrect line number for',
+        'Incorrect row index for',
         chalk.bold(rowRuleName),
+        'expected',
+        ruleIndex,
+        'got',
+        rowIndex,
       );
       hasErrors = true;
       return;

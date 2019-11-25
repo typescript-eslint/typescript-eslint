@@ -13,6 +13,25 @@
 
 <br>
 
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [What are ESLint and TypeScript, and how do they compare?](#what-are-eslint-and-typescript-and-how-do-they-compare)
+- [Why does this project exist?](#why-does-this-project-exist)
+- [What about TSLint?](#what-about-tslint)
+- [How does typescript-eslint work and why do you have multiple packages?](#how-does-typescript-eslint-work-and-why-do-you-have-multiple-packages)
+- [Can I use all of the existing ESLint plugins and rules without any changes?](#can-i-use-all-of-the-existing-eslint-plugins-and-rules-without-any-changes)
+- [Can we write rules which leverage type information?](#can-we-write-rules-which-leverage-type-information)
+- [What about Babel and babel-eslint?](#what-about-babel-and-babel-eslint)
+- [How can I help?](#how-can-i-help)
+- [How do I configure my project to use typescript-eslint?](#how-do-i-configure-my-project-to-use-typescript-eslint)
+- [Package Versions](#package-versions)
+- [Supported TypeScript Version](#supported-typescript-version)
+- [Supported ESLint version](#supported-eslint-version)
+- [License](#license)
+- [Contributors](#contributors)
+- [Contributing Guide](#contributing-guide)
+
 ## Getting Started
 
 The following sections will give you an overview of what this project is, why it exists and how it works at a high level.
@@ -89,7 +108,7 @@ This is not valid JavaScript code, because it contains a so-called type annotati
 
 However, we can leverage the fact that ESLint has been designed with these use-cases in mind!
 
-It turns out that ESLint is not just comprised of one library, instead it is comprised of a few important moving parts. One of those moving parts is **the parser**. ESLint ships with a parser built in (called [`espree`](https://github.com/eslint/espree)), and so if you only ever write standard JavaScript, you don't need to care about this implementation detail.
+It turns out that ESLint is not just one library. Instead it is composed of a few important moving parts. One of those moving parts is **the parser**. ESLint ships with a parser built in (called [`espree`](https://github.com/eslint/espree)), and so if you only ever write standard JavaScript, you don't need to care about this implementation detail.
 
 The great thing is, though, if we want to support non-standard JavaScript syntax, all we need to do is provide ESLint with an alternative parser to use - that is a first-class use-case offered by ESLint.
 
@@ -216,9 +235,9 @@ The latest version under the `canary` tag **(latest commit to master)** is:
 
 ## Supported TypeScript Version
 
-We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
+We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript. In some cases, we may even be able to support additional pre-releases (i.e. betas and release candidates) of TypeScript, but only if doing so does not require us to compromise on support for the latest stable version.
 
-**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.7.0`.**
+**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.8.0`.**
 
 This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
@@ -227,6 +246,10 @@ If you use a non-supported version of TypeScript, the parser will log a warning 
 **Please ensure that you are using a supported version before submitting any issues/bug reports.**
 
 <br>
+
+## Supported ESLint version
+
+See the value of `eslint` declared in `@typescript-eslint/eslint-plugin`'s [package.json](./packages/eslint-plugin/package.json).
 
 ## License
 

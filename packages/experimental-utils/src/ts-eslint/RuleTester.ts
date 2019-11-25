@@ -19,6 +19,16 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   };
 }
 
+interface SuggestionOutput<TMessageIds extends string> {
+  messageId: TMessageIds;
+  data?: Record<string, unknown>;
+  /**
+   * NOTE: Suggestions will be applied as a stand-alone change, without triggering multipass fixes.
+   * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
+   */
+  output: string;
+}
+
 interface InvalidTestCase<
   TMessageIds extends string,
   TOptions extends Readonly<unknown[]>
@@ -35,6 +45,7 @@ interface TestCaseError<TMessageIds extends string> {
   column?: number;
   endLine?: number;
   endColumn?: number;
+  suggestions?: SuggestionOutput<TMessageIds>[];
 }
 
 interface RunTests<
@@ -50,19 +61,36 @@ interface RuleTesterConfig {
   parser: string;
   parserOptions?: ParserOptions;
 }
-declare interface RuleTester {
+
+// the cast on the extends is so that we don't want to have the built type defs to attempt to import eslint
+class RuleTester extends (ESLintRuleTester as {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  new (...args: unknown[]): any;
+}) {
+  constructor(config?: RuleTesterConfig) {
+    super(config);
+
+    // nobody will ever need watching in tests
+    // so we can give everyone a perf win by disabling watching
+    if (config && config.parserOptions && config.parserOptions.project) {
+      config.parserOptions.noWatch =
+        typeof config.parserOptions.noWatch === 'boolean' || true;
+    }
+  }
+
   run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
     name: string,
     rule: RuleModule<TMessageIds, TOptions>,
     tests: RunTests<TMessageIds, TOptions>,
-  ): void;
+  ): void {
+    // this method is only defined here because we lazily type the eslint import with `any`
+    super.run(name, rule, tests);
+  }
 }
-const RuleTester = ESLintRuleTester as {
-  new (config?: RuleTesterConfig): RuleTester;
-};
 
 export {
   InvalidTestCase,
+  SuggestionOutput,
   RuleTester,
   RuleTesterConfig,
   RunTests,

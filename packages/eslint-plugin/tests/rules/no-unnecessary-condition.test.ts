@@ -72,6 +72,16 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
 function test<T extends string>(t: T) {
   return t ? 'yes' : 'no'
 }`,
+    `
+// Naked type param
+function test<T>(t: T) {
+  return t ? 'yes' : 'no'
+}`,
+    `
+// Naked type param in union
+function test<T>(t: T | []) {
+  return t ? 'yes' : 'no'
+}`,
 
     // Boolean expressions
     `
@@ -86,6 +96,14 @@ declare const b1: boolean;
 declare const b2: true;
 if(b1 && b2) {}`,
       options: [{ ignoreRhs: true }],
+    },
+    {
+      code: `
+while(true) {}
+for (;true;) {}
+do {} while(true)
+      `,
+      options: [{ allowConstantLoopConditions: true }],
     },
   ],
   invalid: [
@@ -189,6 +207,19 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
         ruleError(7, 7, 'alwaysTruthy'),
         ruleError(8, 18, 'alwaysTruthy'),
         ruleError(9, 13, 'alwaysTruthy'),
+      ],
+    },
+    {
+      code: `
+while(true) {}
+for (;true;) {}
+do {} while(true)
+      `,
+      options: [{ allowConstantLoopConditions: false }],
+      errors: [
+        ruleError(2, 7, 'alwaysTruthy'),
+        ruleError(3, 7, 'alwaysTruthy'),
+        ruleError(4, 13, 'alwaysTruthy'),
       ],
     },
   ],
