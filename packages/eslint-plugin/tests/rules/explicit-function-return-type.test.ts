@@ -266,6 +266,22 @@ foo(() => '')
     {
       filename: 'test.ts',
       code: `
+declare function foo(arg: () => void): void
+foo?.(() => 1)
+foo?.bar(() => {})
+foo?.bar?.(() => null)
+foo.bar?.(() => true)
+foo?.(() => '')
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
 class Accumulator {
   private count: number = 0;
 

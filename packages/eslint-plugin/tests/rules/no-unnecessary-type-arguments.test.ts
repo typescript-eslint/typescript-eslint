@@ -18,6 +18,10 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
       f();`,
     `function f<T = number>() { }
       f<string>();`,
+    `declare const f: (<T = number>() => void) | null;
+      f?.();`,
+    `declare const f: (<T = number>() => void) | null;
+      f?.<string>();`,
     `declare const f: any;
       f();`,
     `declare const f: any;

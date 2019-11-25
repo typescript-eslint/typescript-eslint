@@ -277,8 +277,7 @@ export class Converter {
           const child = this.convertChild(statement);
           if (allowDirectives) {
             if (
-              child &&
-              child.expression &&
+              child?.expression &&
               ts.isExpressionStatement(statement) &&
               ts.isStringLiteral(statement.expression)
             ) {
@@ -1427,10 +1426,9 @@ export class Converter {
             body: [],
             range: [node.members.pos - 1, node.end],
           }),
-          superClass:
-            superClass && superClass.types[0]
-              ? this.convertChild(superClass.types[0].expression)
-              : null,
+          superClass: superClass?.types[0]
+            ? this.convertChild(superClass.types[0].expression)
+            : null,
         });
 
         if (superClass) {

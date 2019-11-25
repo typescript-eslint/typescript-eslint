@@ -380,8 +380,8 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     // Ignore this if other overloadings have already existed.
     if (id) {
       const variable = upperScope.set.get(id.name);
-      const defs = variable && variable.defs;
-      const existed = defs && defs.some(d => d.type === 'FunctionName');
+      const defs = variable?.defs;
+      const existed = defs?.some((d): boolean => d.type === 'FunctionName');
       if (!existed) {
         upperScope.__define(
           id,
