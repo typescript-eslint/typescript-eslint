@@ -270,13 +270,7 @@ declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 a || b && c;
-      `,
-      output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-a ?? b && c;
-      `,
+      `.trimRight(),
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
@@ -285,6 +279,17 @@ a ?? b && c;
           column: 3,
           endLine: 5,
           endColumn: 5,
+          suggestions: [
+            {
+              messageId: 'preferNullish',
+              output: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type} | ${nullish};
+declare const c: ${type} | ${nullish};
+a ?? b && c;
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),
@@ -295,14 +300,7 @@ declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
 a || b || c && d;
-      `,
-      output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
-a ?? b ?? c && d;
-      `,
+      `.trimRight(),
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
@@ -311,6 +309,18 @@ a ?? b ?? c && d;
           column: 3,
           endLine: 6,
           endColumn: 5,
+          suggestions: [
+            {
+              messageId: 'preferNullish',
+              output: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type} | ${nullish};
+declare const c: ${type} | ${nullish};
+declare const d: ${type} | ${nullish};
+a ?? b || c && d;
+              `.trimRight(),
+            },
+          ],
         },
         {
           messageId: 'preferNullish',
@@ -318,6 +328,18 @@ a ?? b ?? c && d;
           column: 8,
           endLine: 6,
           endColumn: 10,
+          suggestions: [
+            {
+              messageId: 'preferNullish',
+              output: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type} | ${nullish};
+declare const c: ${type} | ${nullish};
+declare const d: ${type} | ${nullish};
+a || b ?? c && d;
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),
@@ -328,14 +350,7 @@ declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
 a && b || c || d;
-      `,
-      output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
-a && b ?? c ?? d;
-      `,
+      `.trimRight(),
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
@@ -344,6 +359,18 @@ a && b ?? c ?? d;
           column: 8,
           endLine: 6,
           endColumn: 10,
+          suggestions: [
+            {
+              messageId: 'preferNullish',
+              output: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type} | ${nullish};
+declare const c: ${type} | ${nullish};
+declare const d: ${type} | ${nullish};
+a && b ?? c || d;
+              `.trimRight(),
+            },
+          ],
         },
         {
           messageId: 'preferNullish',
@@ -351,6 +378,18 @@ a && b ?? c ?? d;
           column: 13,
           endLine: 6,
           endColumn: 15,
+          suggestions: [
+            {
+              messageId: 'preferNullish',
+              output: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type} | ${nullish};
+declare const c: ${type} | ${nullish};
+declare const d: ${type} | ${nullish};
+a && b || c ?? d;
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),

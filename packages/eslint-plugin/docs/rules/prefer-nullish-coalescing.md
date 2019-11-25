@@ -99,8 +99,6 @@ Setting this option to `true` (the default) will cause the rule to ignore any lo
 
 Generally expressions within mixed logical expressions intentionally use the falsey fallthrough behaviour of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
-**_Note that option will make the rule's fixer unsafe to run on an existing codebase. You should manually fix up existing violations before running the autofixer._**
-
 If you're looking to enforce stricter conditional tests, you should consider using the `strict-boolean-expressions` rule.
 
 Incorrect code for `ignoreMixedLogicalExpressions: false`, and correct code for `ignoreMixedLogicalExpressions: true`:
@@ -130,6 +128,8 @@ a ?? (b && c);
 a ?? (b && c) ?? d;
 a ?? (b && c && d);
 ```
+
+**_NOTE:_** Errors for this specific case will be presented as suggestions, instead of fixes. This is because it is not always safe to automatically convert `||` to `??` within a mixed logical expression, as we cannot tell the intended precedence of the operator. Note that by design, `??` requires parentheses when used with `&&` or `||` in the same expression.
 
 ## When Not To Use It
 
