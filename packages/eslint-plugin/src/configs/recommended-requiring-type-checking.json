@@ -10,7 +10,6 @@
     "@typescript-eslint/prefer-string-starts-ends-with": "error",
     "require-await": "off",
     "@typescript-eslint/require-await": "error",
-    "@typescript-eslint/return-await": "error",
     "@typescript-eslint/unbound-method": "error",
     "no-var": "error",
     "prefer-const": "error",

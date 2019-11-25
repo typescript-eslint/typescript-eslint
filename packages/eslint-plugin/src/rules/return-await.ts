@@ -12,7 +12,7 @@ export default util.createRule({
     docs: {
       description: 'Rules for awaiting returned promises',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
       requiresTypeChecking: true,
     },
     type: 'problem',
