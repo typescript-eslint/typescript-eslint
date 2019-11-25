@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.8.0...v2.9.0) (2019-11-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-dynamic-delete] correct invalid fixer for identifiers ([#1244](https://github.com/typescript-eslint/typescript-eslint/issues/1244)) ([5b1300d](https://github.com/typescript-eslint/typescript-eslint/commit/5b1300d))
+* **eslint-plugin:** [no-untyped-pub-sig] constructor return ([#1231](https://github.com/typescript-eslint/typescript-eslint/issues/1231)) ([6cfd468](https://github.com/typescript-eslint/typescript-eslint/commit/6cfd468))
+* **eslint-plugin:** [prefer-optional-chain] unhandled cases ([b1a065f](https://github.com/typescript-eslint/typescript-eslint/commit/b1a065f))
+* **eslint-plugin:** [req-await] crash on nonasync promise return ([#1228](https://github.com/typescript-eslint/typescript-eslint/issues/1228)) ([56c00b3](https://github.com/typescript-eslint/typescript-eslint/commit/56c00b3))
+
+
+### Features
+
+* **eslint-plugin:** [camelcase] add genericType option ([#925](https://github.com/typescript-eslint/typescript-eslint/issues/925)) ([d785c61](https://github.com/typescript-eslint/typescript-eslint/commit/d785c61))
+* **eslint-plugin:** [no-empty-interface] noEmptyWithSuper fixer ([#1247](https://github.com/typescript-eslint/typescript-eslint/issues/1247)) ([b91b0ba](https://github.com/typescript-eslint/typescript-eslint/commit/b91b0ba))
+* **eslint-plugin:** [no-extran-class] add allowWithDecorator opt ([#886](https://github.com/typescript-eslint/typescript-eslint/issues/886)) ([f1ab9a2](https://github.com/typescript-eslint/typescript-eslint/commit/f1ab9a2))
+* **eslint-plugin:** [no-unnece-cond] Add allowConstantLoopConditions ([#1029](https://github.com/typescript-eslint/typescript-eslint/issues/1029)) ([ceb6f1c](https://github.com/typescript-eslint/typescript-eslint/commit/ceb6f1c))
+* **eslint-plugin:** [restrict-plus-operands] check += ([#892](https://github.com/typescript-eslint/typescript-eslint/issues/892)) ([fa88cb9](https://github.com/typescript-eslint/typescript-eslint/commit/fa88cb9))
+* suggestion types, suggestions for no-explicit-any ([#1250](https://github.com/typescript-eslint/typescript-eslint/issues/1250)) ([b16a4b6](https://github.com/typescript-eslint/typescript-eslint/commit/b16a4b6))
+* **eslint-plugin:** add no-extra-non-null-assertion ([#1183](https://github.com/typescript-eslint/typescript-eslint/issues/1183)) ([2b3b5d6](https://github.com/typescript-eslint/typescript-eslint/commit/2b3b5d6))
+* **eslint-plugin:** add no-unused-vars-experimental ([#688](https://github.com/typescript-eslint/typescript-eslint/issues/688)) ([05ebea5](https://github.com/typescript-eslint/typescript-eslint/commit/05ebea5))
+* **eslint-plugin:** add prefer-nullish-coalescing ([#1069](https://github.com/typescript-eslint/typescript-eslint/issues/1069)) ([a9cd399](https://github.com/typescript-eslint/typescript-eslint/commit/a9cd399))
+* **eslint-plugin:** add return-await rule ([#1050](https://github.com/typescript-eslint/typescript-eslint/issues/1050)) ([0ff4620](https://github.com/typescript-eslint/typescript-eslint/commit/0ff4620))
+* **eslint-plugin:** add rule prefer-optional-chain ([#1213](https://github.com/typescript-eslint/typescript-eslint/issues/1213)) ([ad7e1a7](https://github.com/typescript-eslint/typescript-eslint/commit/ad7e1a7))
+* **eslint-plugin:** optional chain support in rules (part 1) ([#1253](https://github.com/typescript-eslint/typescript-eslint/issues/1253)) ([f5c0e02](https://github.com/typescript-eslint/typescript-eslint/commit/f5c0e02))
+
+
+
+
+
 # [2.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.7.0...v2.8.0) (2019-11-18)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.8.0...v2.9.0) (2019-11-25)
+
+
+### Bug Fixes
+
+* **typescript-estree:** fix synthetic default import ([#1245](https://github.com/typescript-eslint/typescript-eslint/issues/1245)) ([d97f809](https://github.com/typescript-eslint/typescript-eslint/commit/d97f809))
+
+
+### Features
+
+* **eslint-plugin:** add no-unused-vars-experimental ([#688](https://github.com/typescript-eslint/typescript-eslint/issues/688)) ([05ebea5](https://github.com/typescript-eslint/typescript-eslint/commit/05ebea5))
+
+
+
+
+
 # [2.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.7.0...v2.8.0) (2019-11-18)
 
 
