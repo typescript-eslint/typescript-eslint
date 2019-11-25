@@ -165,6 +165,8 @@ ruleTester.run('prefer-optional-chain', rule, {
     'foo ?? bar',
     'foo || foo.bar',
     'foo ?? foo.bar',
+    "file !== 'index.ts' && file.endsWith('.ts')",
+    'nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken)',
   ],
   invalid: [
     ...baseCases,

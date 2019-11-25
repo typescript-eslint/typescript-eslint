@@ -72,7 +72,7 @@ class RuleTester extends (ESLintRuleTester as {
 
     // nobody will ever need watching in tests
     // so we can give everyone a perf win by disabling watching
-    if (config && config.parserOptions && config.parserOptions.project) {
+    if (config?.parserOptions?.project) {
       config.parserOptions.noWatch =
         typeof config.parserOptions.noWatch === 'boolean' || true;
     }

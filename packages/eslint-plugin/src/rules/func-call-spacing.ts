@@ -73,8 +73,13 @@ export default util.createRule<Options, MessageIds>({
      * @private
      */
     function checkSpacing(
-      node: TSESTree.CallExpression | TSESTree.NewExpression,
+      node:
+        | TSESTree.CallExpression
+        | TSESTree.OptionalCallExpression
+        | TSESTree.NewExpression,
     ): void {
+      const isOptionalCall = util.isOptionalOptionalChain(node);
+
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
         node.typeParameters || node.callee,
@@ -88,7 +93,10 @@ export default util.createRule<Options, MessageIds>({
         // new expression with no parens...
         return;
       }
-      const lastCalleeToken = sourceCode.getTokenBefore(openingParenToken)!;
+      const lastCalleeToken = sourceCode.getTokenBefore(
+        openingParenToken,
+        util.isNotOptionalChainPunctuator,
+      )!;
 
       const textBetweenTokens = text
         .slice(lastCalleeToken.range[1], openingParenToken.range[0])
@@ -108,7 +116,11 @@ export default util.createRule<Options, MessageIds>({
                * Only autofix if there is no newline
                * https://github.com/eslint/eslint/issues/7787
                */
-              if (!hasNewline) {
+              if (
+                !hasNewline &&
+                // don't fix optional calls
+                !isOptionalCall
+              ) {
                 return fixer.removeRange([
                   lastCalleeToken.range[1],
                   openingParenToken.range[0],
@@ -117,6 +129,18 @@ export default util.createRule<Options, MessageIds>({
 
               return null;
             },
+          });
+        }
+      } else if (isOptionalCall) {
+        // disallow:
+        // foo?. ();
+        // foo ?.();
+        // foo ?. ();
+        if (hasWhitespace || hasNewline) {
+          context.report({
+            node,
+            loc: lastCalleeToken.loc.start,
+            messageId: 'unexpected',
           });
         }
       } else {
@@ -147,6 +171,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       CallExpression: checkSpacing,
+      OptionalCallExpression: checkSpacing,
       NewExpression: checkSpacing,
     };
   },
