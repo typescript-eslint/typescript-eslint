@@ -36,7 +36,7 @@ export default util.createRule({
             node: node.id,
             messageId: 'interfaceOverType',
             fix(fixer) {
-              const typeNode = node.typeParameters || node.id;
+              const typeNode = node.typeParameters ?? node.id;
               const fixes: TSESLint.RuleFix[] = [];
 
               const firstToken = sourceCode.getFirstToken(node);
@@ -70,7 +70,7 @@ export default util.createRule({
             node: node.id,
             messageId: 'typeOverInterface',
             fix(fixer) {
-              const typeNode = node.typeParameters || node.id;
+              const typeNode = node.typeParameters ?? node.id;
               const fixes: TSESLint.RuleFix[] = [];
 
               const firstToken = sourceCode.getFirstToken(node);

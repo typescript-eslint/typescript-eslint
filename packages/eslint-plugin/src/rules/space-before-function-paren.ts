@@ -108,14 +108,14 @@ export default util.createRule<Options, MessageIds>({
           node.async &&
           isOpeningParenToken(sourceCode.getFirstToken(node, { skip: 1 })!)
         ) {
-          return overrideConfig.asyncArrow || baseConfig;
+          return overrideConfig.asyncArrow ?? baseConfig;
         }
       } else if (isNamedFunction(node)) {
-        return overrideConfig.named || baseConfig;
+        return overrideConfig.named ?? baseConfig;
 
         // `generator-star-spacing` should warn anonymous generators. E.g. `function* () {}`
       } else if (!node.generator) {
-        return overrideConfig.anonymous || baseConfig;
+        return overrideConfig.anonymous ?? baseConfig;
       }
 
       return 'ignore';

@@ -500,7 +500,7 @@ export default util.createRule({
       key?: string,
       containingNode?: ContainingNode,
     ): void {
-      key = key || getOverloadKey(signature);
+      key = key ?? getOverloadKey(signature);
       if (
         currentScope &&
         (containingNode || signature).parent === currentScope.parent
