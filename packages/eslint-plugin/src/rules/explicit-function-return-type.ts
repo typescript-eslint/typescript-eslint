@@ -259,7 +259,8 @@ export default util.createRule<Options, MessageIds>({
       callee?: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): boolean {
       return (
-        parent.type === AST_NODE_TYPES.CallExpression &&
+        (parent.type === AST_NODE_TYPES.CallExpression ||
+          parent.type === AST_NODE_TYPES.OptionalCallExpression) &&
         // make sure this isn't an IIFE
         parent.callee !== callee
       );

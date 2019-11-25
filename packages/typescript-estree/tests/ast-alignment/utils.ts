@@ -28,7 +28,7 @@ export function omitDeep(
   nodes: Record<string, (node: any, parent: any) => void> = {},
 ): any {
   function shouldOmit(keyName: string, val: any): boolean {
-    if (keysToOmit && keysToOmit.length) {
+    if (keysToOmit?.length) {
       return keysToOmit.some(
         keyConfig => keyConfig.key === keyName && keyConfig.predicate(val),
       );

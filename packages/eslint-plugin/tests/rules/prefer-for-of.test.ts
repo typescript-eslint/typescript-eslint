@@ -149,6 +149,32 @@ for (let i = 0; i < arr.length; i++) {
   ({ foo: arr[i] }) = { foo: 0 };
 }
 `,
+    `
+for (let i = 0; i < arr1?.length; i++) {
+  const x = arr1[i] === arr2[i];
+}
+    `,
+    `
+for (let i = 0; i < arr?.length; i++) {
+  arr[i] = 0;
+}
+    `,
+    `
+for (var c = 0; c < arr?.length; c++) {
+  doMath(c);
+}
+    `,
+    `
+for (var d = 0; d < arr?.length; d++) doMath(d);
+    `,
+    `
+for (var c = 0; c < arr.length; c++) {
+  doMath?.(c);
+}
+    `,
+    `
+for (var d = 0; d < arr.length; d++) doMath?.(d);
+    `,
   ],
   invalid: [
     {
@@ -177,6 +203,28 @@ for (var b = 0; b < arr.length; b++) console.log(arr[b]);
       code: `
 for (let a = 0; a < arr.length; a++) {
   console.log(arr[a]);
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (var b = 0; b < arr.length; b++) console?.log(arr[b]);
+        `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let a = 0; a < arr.length; a++) {
+  console?.log(arr[a]);
 }
         `,
       errors: [
