@@ -16,6 +16,7 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       recommended: 'error',
     },
+    fixable: 'code',
     messages: {
       noEmpty: 'An empty interface is equivalent to `{}`.',
       noEmptyWithSuper:
@@ -41,6 +42,8 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node): void {
+        const sourceCode = context.getSourceCode();
+
         if (node.body.body.length !== 0) {
           // interface contains members --> Nothing to report
           return;
@@ -59,6 +62,20 @@ export default util.createRule<Options, MessageIds>({
             context.report({
               node: node.id,
               messageId: 'noEmptyWithSuper',
+              fix(fixer) {
+                if (node.extends && node.extends.length) {
+                  return [
+                    fixer.replaceText(
+                      node,
+                      `type ${sourceCode.getText(
+                        node.id,
+                      )} = ${sourceCode.getText(node.extends[0])}`,
+                    ),
+                  ];
+                }
+
+                return null;
+              },
             });
           }
         }
