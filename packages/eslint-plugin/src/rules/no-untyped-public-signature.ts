@@ -108,6 +108,7 @@ export default util.createRule<Options, MessageIds>({
 
           if (
             node.kind !== 'constructor' &&
+            node.kind !== 'set' &&
             !isReturnTyped(node.value.returnType)
           ) {
             context.report({
