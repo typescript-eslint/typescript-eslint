@@ -334,9 +334,15 @@ function isValidChainTarget(
   ) {
     const isObjectValid =
       ALLOWED_MEMBER_OBJECT_TYPES.has(node.object.type) &&
+      // make sure to validate the expression is of our expected structure
       isValidChainTarget(node.object, true);
     const isPropertyValid = node.computed
-      ? ALLOWED_COMPUTED_PROP_TYPES.has(node.property.type)
+      ? ALLOWED_COMPUTED_PROP_TYPES.has(node.property.type) &&
+        // make sure to validate the member expression is of our expected structure
+        (node.property.type === AST_NODE_TYPES.MemberExpression ||
+        node.property.type === AST_NODE_TYPES.OptionalMemberExpression
+          ? isValidChainTarget(node.property, allowIdentifier)
+          : true)
       : ALLOWED_NON_COMPUTED_PROP_TYPES.has(node.property.type);
 
     return isObjectValid && isPropertyValid;

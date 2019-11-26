@@ -116,8 +116,6 @@ const baseCases = [
 
 ruleTester.run('prefer-optional-chain', rule, {
   valid: [
-    'x["y"] !== undefined && x["y"] !== null',
-    'result && this.options.shouldPreserveNodeMaps',
     'foo && bar',
     'foo && foo',
     'foo || bar',
@@ -126,8 +124,10 @@ ruleTester.run('prefer-optional-chain', rule, {
     'foo ?? foo.bar',
     "file !== 'index.ts' && file.endsWith('.ts')",
     'nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken)',
+    'result && this.options.shouldPreserveNodeMaps',
     'foo && fooBar.baz',
     'foo !== null && foo !== undefined',
+    'x["y"] !== undefined && x["y"] !== null',
     // currently do not handle complex computed properties
     'foo && foo[bar as string] && foo[bar as string].baz',
     'foo && foo[1 + 2] && foo[1 + 2].baz',
