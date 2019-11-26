@@ -101,6 +101,34 @@ class Foo {
   abstract constructor(c: string) {}
 }
     `,
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1263
+    `
+class Foo {
+  private _x: string;
+
+  public get x(): string {
+    return this._x;
+  }
+
+  public set x(x: string) {
+    this._x = x;
+  }
+}
+    `,
+    `
+class Foo {
+  private _x: string;
+
+  get x(): string {
+    return this._x;
+  }
+
+  set x(x: string) {
+    this._x = x;
+  }
+}
+    `,
   ],
   invalid: [
     //untyped parameter
@@ -240,6 +268,40 @@ class Foo {
       code: `
 class Foo {
   abstract constructor(c) {}
+}
+      `,
+      errors: [{ messageId: 'untypedParameter' }],
+    },
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1263
+    {
+      code: `
+class Foo {
+  private _x: string;
+
+  public get x(): string {
+    return this._x;
+  }
+
+  public set x(x) {
+    this._x = x;
+  }
+}
+      `,
+      errors: [{ messageId: 'untypedParameter' }],
+    },
+    {
+      code: `
+class Foo {
+  private _x: string;
+
+  get x(): string {
+    return this._x;
+  }
+
+  set x(x) {
+    this._x = x;
+  }
 }
       `,
       errors: [{ messageId: 'untypedParameter' }],
