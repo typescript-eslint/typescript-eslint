@@ -8,6 +8,32 @@ import * as util from '../util';
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const schema = util.deepMerge(
+  Array.isArray(baseRule.meta.schema)
+    ? baseRule.meta.schema[0]
+    : baseRule.meta.schema,
+  {
+    properties: {
+      allow: {
+        items: {
+          enum: [
+            'functions',
+            'arrowFunctions',
+            'generatorFunctions',
+            'methods',
+            'generatorMethods',
+            'getters',
+            'setters',
+            'constructors',
+            'private-constructors',
+            'protected-constructors',
+          ],
+        },
+      },
+    },
+  },
+);
+
 export default util.createRule<Options, MessageIds>({
   name: 'no-empty-function',
   meta: {
@@ -17,7 +43,7 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       recommended: 'error',
     },
-    schema: baseRule.meta.schema,
+    schema: [schema],
     messages: baseRule.meta.messages,
   },
   defaultOptions: [
@@ -25,24 +51,13 @@ export default util.createRule<Options, MessageIds>({
       allow: [],
     },
   ],
-  create(context) {
+  create(context, [{ allow = [] }]) {
     const rules = baseRule.create(context);
 
-    /**
-     * Checks if the node is a constructor
-     * @param node the node to ve validated
-     * @returns true if the node is a constructor
-     * @private
-     */
-    function isConstructor(
-      node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
-    ): boolean {
-      return !!(
-        node.parent &&
-        node.parent.type === 'MethodDefinition' &&
-        node.parent.kind === 'constructor'
-      );
-    }
+    const isAllowedProtectedConstructors = allow.includes(
+      'protected-constructors',
+    );
+    const isAllowedPrivateConstructors = allow.includes('private-constructors');
 
     /**
      * Check if the method body is empty
@@ -74,30 +89,45 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Checks if the method is a concise constructor (no function body, but has parameter properties)
      * @param node the node to be validated
-     * @returns true if the method is a concise constructor
+     * @returns true if the constructor is allowed to be empty
      * @private
      */
-    function isConciseConstructor(
+    function isAllowedEmptyConstructor(
       node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
     ): boolean {
-      // Check TypeScript specific nodes
-      return (
-        isConstructor(node) && isBodyEmpty(node) && hasParameterProperties(node)
-      );
+      const parent = node.parent;
+      if (
+        isBodyEmpty(node) &&
+        parent &&
+        parent.type === 'MethodDefinition' &&
+        parent.kind === 'constructor'
+      ) {
+        const { accessibility } = parent;
+
+        return (
+          // allow protected constructors
+          (accessibility === 'protected' && isAllowedProtectedConstructors) ||
+          // allow private constructors
+          (accessibility === 'private' && isAllowedPrivateConstructors) ||
+          // allow constructors which have parameter properties
+          hasParameterProperties(node)
+        );
+      }
+
+      return false;
     }
 
     return {
       FunctionDeclaration(node): void {
-        if (!isConciseConstructor(node)) {
-          rules.FunctionDeclaration(node);
-        }
+        rules.FunctionDeclaration(node);
       },
       FunctionExpression(node): void {
-        if (!isConciseConstructor(node)) {
-          rules.FunctionExpression(node);
+        if (isAllowedEmptyConstructor(node)) {
+          return;
         }
+
+        rules.FunctionExpression(node);
       },
     };
   },
