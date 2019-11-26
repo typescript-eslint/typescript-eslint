@@ -4,6 +4,7 @@ export * from './astUtils';
 export * from './createRule';
 export * from './getParserServices';
 export * from './misc';
+export * from './nullThrows';
 export * from './types';
 
 // this is done for convenience - saves migrating all of the old rules
