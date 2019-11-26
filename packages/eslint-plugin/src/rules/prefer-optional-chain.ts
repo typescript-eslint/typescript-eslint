@@ -10,7 +10,9 @@ type ValidChainTarget =
   | TSESTree.CallExpression
   | TSESTree.MemberExpression
   | TSESTree.OptionalCallExpression
-  | TSESTree.OptionalMemberExpression;
+  | TSESTree.OptionalMemberExpression
+  | TSESTree.Identifier
+  | TSESTree.ThisExpression;
 
 /*
 The AST is always constructed such the first element is always the deepest element.
@@ -173,7 +175,7 @@ export default util.createRule({
       },
     };
 
-    function getText(node: ValidChainTarget | TSESTree.Identifier): string {
+    function getText(node: ValidChainTarget): string {
       if (node.type === AST_NODE_TYPES.BinaryExpression) {
         return getText(
           // isValidChainTarget ensures this is type safe
@@ -218,6 +220,10 @@ export default util.createRule({
         return node.name;
       }
 
+      if (node.type === AST_NODE_TYPES.ThisExpression) {
+        return 'this';
+      }
+
       return getMemberExpressionText(node);
     }
 
@@ -240,6 +246,10 @@ export default util.createRule({
         case AST_NODE_TYPES.MemberExpression:
         case AST_NODE_TYPES.OptionalMemberExpression:
           objectText = getMemberExpressionText(node.object);
+          break;
+
+        case AST_NODE_TYPES.ThisExpression:
+          objectText = getText(node.object);
           break;
 
         /* istanbul ignore next */
@@ -300,6 +310,7 @@ const ALLOWED_MEMBER_OBJECT_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.MemberExpression,
   AST_NODE_TYPES.OptionalCallExpression,
   AST_NODE_TYPES.OptionalMemberExpression,
+  AST_NODE_TYPES.ThisExpression,
 ]);
 const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.BigIntLiteral,
@@ -316,12 +327,14 @@ const ALLOWED_NON_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
 function isValidChainTarget(
   node: TSESTree.Node,
   allowIdentifier: boolean,
-): node is ValidChainTarget | TSESTree.Identifier {
+): node is ValidChainTarget {
   if (
     node.type === AST_NODE_TYPES.MemberExpression ||
     node.type === AST_NODE_TYPES.OptionalMemberExpression
   ) {
-    const isObjectValid = ALLOWED_MEMBER_OBJECT_TYPES.has(node.object.type);
+    const isObjectValid =
+      ALLOWED_MEMBER_OBJECT_TYPES.has(node.object.type) &&
+      isValidChainTarget(node.object, true);
     const isPropertyValid = node.computed
       ? ALLOWED_COMPUTED_PROP_TYPES.has(node.property.type)
       : ALLOWED_NON_COMPUTED_PROP_TYPES.has(node.property.type);
@@ -336,7 +349,11 @@ function isValidChainTarget(
     return isValidChainTarget(node.callee, allowIdentifier);
   }
 
-  if (allowIdentifier && node.type === AST_NODE_TYPES.Identifier) {
+  if (
+    allowIdentifier &&
+    (node.type === AST_NODE_TYPES.Identifier ||
+      node.type === AST_NODE_TYPES.ThisExpression)
+  ) {
     return true;
   }
 

@@ -116,6 +116,8 @@ const baseCases = [
 
 ruleTester.run('prefer-optional-chain', rule, {
   valid: [
+    'x["y"] !== undefined && x["y"] !== null',
+    'result && this.options.shouldPreserveNodeMaps',
     'foo && bar',
     'foo && foo',
     'foo || bar',
@@ -125,6 +127,7 @@ ruleTester.run('prefer-optional-chain', rule, {
     "file !== 'index.ts' && file.endsWith('.ts')",
     'nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken)',
     'foo && fooBar.baz',
+    'foo !== null && foo !== undefined',
     // currently do not handle complex computed properties
     'foo && foo[bar as string] && foo[bar as string].baz',
     'foo && foo[1 + 2] && foo[1 + 2].baz',
@@ -207,6 +210,24 @@ ruleTester.run('prefer-optional-chain', rule, {
     {
       code: 'foo && foo["some long string"] && foo["some long string"].baz',
       output: 'foo?.["some long string"]?.baz',
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+        },
+      ],
+    },
+    {
+      code: 'foo && foo[`some long string`] && foo[`some long string`].baz',
+      output: 'foo?.[`some long string`]?.baz',
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+        },
+      ],
+    },
+    {
+      code: "foo && foo['some long string'] && foo['some long string'].baz",
+      output: "foo?.['some long string']?.baz",
       errors: [
         {
           messageId: 'preferOptionalChain',
