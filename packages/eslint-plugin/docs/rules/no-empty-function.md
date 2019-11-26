@@ -51,6 +51,7 @@ This rule has an object option:
 - `allow` (`string[]`)
   - `"protected-constructors"` - Protected class constructors.
   - `"private-constructors"` - Private class constructors.
+  - [See the other options allowed](https://github.com/eslint/eslint/blob/master/docs/rules/no-empty-function.md#options)
 
 #### allow: protected-constructors
 
