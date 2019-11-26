@@ -42,6 +42,25 @@ const isLiteral = (type: ts.Type): boolean =>
   isLiteralType(type);
 // #endregion
 
+// Array type utilities
+// #region
+function isTypeReference(type: ts.Type): type is ts.TypeReference {
+  return !!(
+    type.getFlags() & ts.TypeFlags.Object &&
+    (type as ts.ObjectType).objectFlags & ts.ObjectFlags.Reference
+  );
+}
+
+// There's a built-in checker.isArrayType, but it's marked as internal.
+function isArrayType(type: ts.Type): boolean {
+  return (
+    isTypeReference(type) &&
+    (type.target.symbol.name === 'Array' ||
+      type.target.symbol.name === 'ReadonlyArray')
+  );
+}
+// #endregion
+
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
@@ -117,10 +136,7 @@ export default createRule<Options, MessageId>({
     }
 
     function nodeIsArrayType(node: TSESTree.Node): boolean {
-      const type = getNodeType(node);
-      // TODO: is there a better way to determine if this is an array type?
-      //    Currently just checking for a `lastIndexOf` method.
-      return !!type.getProperty('lastIndexOf');
+      return isArrayType(getNodeType(node));
     }
 
     /**
