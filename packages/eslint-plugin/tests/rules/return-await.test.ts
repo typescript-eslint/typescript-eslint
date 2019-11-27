@@ -148,6 +148,16 @@ ruleTester.run('return-await', rule, {
         }
       }`,
     },
+    {
+      code: `async function test(): Promise<string> {
+        const res = await Promise.resolve('{}');
+        try {
+          return JSON.parse(res);
+        } catch (error) {
+          return res;
+        }
+      }`,
+    },
   ],
   invalid: [
     {
