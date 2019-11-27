@@ -118,9 +118,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      FunctionDeclaration(node): void {
-        rules.FunctionDeclaration(node);
-      },
+      ...rules,
       FunctionExpression(node): void {
         if (isAllowedEmptyConstructor(node)) {
           return;
