@@ -28,6 +28,7 @@ import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noInferrableTypes from './no-inferrable-types';
+import noImplicitThisMethods from './no-implicit-this-methods';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
@@ -104,6 +105,7 @@ export default {
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
   'no-inferrable-types': noInferrableTypes,
+  'no-implicit-this-methods': noImplicitThisMethods,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
