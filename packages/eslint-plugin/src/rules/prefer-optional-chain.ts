@@ -95,7 +95,7 @@ export default util.createRule({
             `^${
               // escape regex characters
               leftText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-            }[^a-zA-Z0-9_]`,
+            }[^a-zA-Z0-9_$]`,
           );
           if (
             !matchRegex.test(rightText) &&
