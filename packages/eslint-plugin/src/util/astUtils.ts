@@ -31,9 +31,20 @@ function isOptionalOptionalChain(
   );
 }
 
+/**
+ * Determines whether two adjacent tokens are on the same line
+ */
+function isTokenOnSameLine(
+  left: TSESTree.Token,
+  right: TSESTree.Token,
+): boolean {
+  return left.loc.end.line === right.loc.start.line;
+}
+
 export {
   LINEBREAK_MATCHER,
   isNotOptionalChainPunctuator,
   isOptionalChainPunctuator,
   isOptionalOptionalChain,
+  isTokenOnSameLine,
 };
