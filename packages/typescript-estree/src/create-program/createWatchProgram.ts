@@ -174,7 +174,7 @@ function getProgramsForProjects(
       log('Found existing program for file. %s', filePath);
 
       updatedProgram =
-        updatedProgram || existingWatch.getProgram().getProgram();
+        updatedProgram ?? existingWatch.getProgram().getProgram();
       // sets parent pointers in source files
       updatedProgram.getTypeChecker();
 
@@ -322,7 +322,7 @@ function createWatchProgram(
       return null;
     }
 
-    return oldSetTimeout && oldSetTimeout(cb, ms, ...args);
+    return oldSetTimeout?.(cb, ms, ...args);
   };
 
   return ts.createWatchProgram(watchCompilerHost);

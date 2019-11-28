@@ -245,9 +245,7 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
       ): void {
         if (
-          options &&
-          options.typesToIgnore &&
-          options.typesToIgnore.includes(
+          options?.typesToIgnore?.includes(
             sourceCode.getText(node.typeAnnotation),
           )
         ) {

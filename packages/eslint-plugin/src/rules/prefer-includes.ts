@@ -1,4 +1,7 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import { getStaticValue } from 'eslint-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
 import ts from 'typescript';
@@ -119,11 +122,18 @@ export default createRule({
     }
 
     return {
-      "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]"(
-        node: TSESTree.MemberExpression,
+      [[
+        "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]",
+        "BinaryExpression > OptionalCallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]",
+        "BinaryExpression > CallExpression.left > OptionalMemberExpression.callee[property.name='indexOf'][computed=false]",
+        "BinaryExpression > OptionalCallExpression.left > OptionalMemberExpression.callee[property.name='indexOf'][computed=false]",
+      ].join(', ')](
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
         // Check if the comparison is equivalent to `includes()`.
-        const callNode = node.parent as TSESTree.CallExpression;
+        const callNode = node.parent as
+          | TSESTree.CallExpression
+          | TSESTree.OptionalCallExpression;
         const compareNode = callNode.parent as TSESTree.BinaryExpression;
         const negative = isNegativeCheck(compareNode);
         if (!negative && !isPositiveCheck(compareNode)) {
@@ -171,10 +181,17 @@ export default createRule({
       },
 
       // /bar/.test(foo)
-      'CallExpression > MemberExpression.callee[property.name="test"][computed=false]'(
-        node: TSESTree.MemberExpression,
+      [[
+        'CallExpression > MemberExpression.callee[property.name="test"][computed=false]',
+        'OptionalCallExpression > MemberExpression.callee[property.name="test"][computed=false]',
+        'CallExpression > OptionalMemberExpression.callee[property.name="test"][computed=false]',
+        'OptionalCallExpression > OptionalMemberExpression.callee[property.name="test"][computed=false]',
+      ].join(', ')](
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        const callNode = node.parent as TSESTree.CallExpression;
+        const callNode = node.parent as
+          | TSESTree.CallExpression
+          | TSESTree.OptionalCallExpression;
         const text =
           callNode.arguments.length === 1 ? parseRegExp(node.object) : null;
         if (text == null) {
@@ -191,7 +208,9 @@ export default createRule({
               argNode.type !== 'TemplateLiteral' &&
               argNode.type !== 'Identifier' &&
               argNode.type !== 'MemberExpression' &&
-              argNode.type !== 'CallExpression';
+              argNode.type !== 'OptionalMemberExpression' &&
+              argNode.type !== 'CallExpression' &&
+              argNode.type !== 'OptionalCallExpression';
 
             yield fixer.removeRange([callNode.range[0], argNode.range[0]]);
             if (needsParen) {
@@ -200,7 +219,11 @@ export default createRule({
             }
             yield fixer.insertTextAfter(
               argNode,
-              `.includes(${JSON.stringify(text)}`,
+              `${
+                callNode.type === AST_NODE_TYPES.OptionalCallExpression
+                  ? '?.'
+                  : '.'
+              }includes(${JSON.stringify(text)}`,
             );
           },
         });

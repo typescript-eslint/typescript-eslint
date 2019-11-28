@@ -39,10 +39,12 @@ import noThisAlias from './no-this-alias';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
+import useDefaultTypeParameter from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
-import noUnusedVars from './no-unused-vars';
 import noUntypedPublicSignature from './no-untyped-public-signature';
 import noUnusedExpressions from './no-unused-expressions';
+import noUnusedVars from './no-unused-vars';
+import noUnusedVarsExperimental from './no-unused-vars-experimental';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
@@ -50,6 +52,8 @@ import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
 import preferNamespaceKeyword from './prefer-namespace-keyword';
+import preferNullishCoalescing from './prefer-nullish-coalescing';
+import preferOptionalChain from './prefer-optional-chain';
 import preferReadonly from './prefer-readonly';
 import preferRegexpExec from './prefer-regexp-exec';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
@@ -59,6 +63,7 @@ import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
+import returnAwait from './return-await';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -67,7 +72,6 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
-import useDefaultTypeParameter from './no-unnecessary-type-arguments';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -115,6 +119,7 @@ export default {
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-untyped-public-signature': noUntypedPublicSignature,
   'no-unused-vars': noUnusedVars,
+  'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-unused-expressions': noUnusedExpressions,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
@@ -123,6 +128,8 @@ export default {
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,
   'prefer-namespace-keyword': preferNamespaceKeyword,
+  'prefer-nullish-coalescing': preferNullishCoalescing,
+  'prefer-optional-chain': preferOptionalChain,
   'prefer-readonly': preferReadonly,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
@@ -132,6 +139,7 @@ export default {
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
   'restrict-template-expressions': restrictTemplateExpressions,
+  'return-await': returnAwait,
   semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
