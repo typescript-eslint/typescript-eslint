@@ -78,7 +78,7 @@ export default util.createRule<Options, MessageIds>({
           ? new RegExp(userOptions.ignoredNamesRegex)
           : null,
       ignoreArgsIfArgsAfterAreUsed:
-        userOptions.ignoreArgsIfArgsAfterAreUsed || false,
+        userOptions.ignoreArgsIfArgsAfterAreUsed ?? false,
     };
 
     function handleIdentifier(identifier: ts.Identifier): void {

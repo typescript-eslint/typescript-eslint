@@ -68,11 +68,7 @@ export default util.createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-
-      const isThenable =
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) ||
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
-        tsutils.isThenableType(checker, expression, type);
+      const isThenable = tsutils.isThenableType(checker, expression, type);
 
       if (!isAwait && !isThenable) {
         return;
