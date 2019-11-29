@@ -150,7 +150,7 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
       ForStatement: assertTestExpressionContainsBoolean,
       IfStatement: assertTestExpressionContainsBoolean,
       WhileStatement: assertTestExpressionContainsBoolean,
-      LogicalExpression: assertLocalExpressionContainsBoolean,
+      'LogicalExpression[operator!="??"]': assertLocalExpressionContainsBoolean,
       'UnaryExpression[operator="!"]': assertUnaryExpressionContainsBoolean,
     };
   },
