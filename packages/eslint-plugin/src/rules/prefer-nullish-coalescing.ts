@@ -11,6 +11,7 @@ export type Options = [
   {
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
+    forceSuggestionFixer?: boolean;
   },
 ];
 export type MessageIds = 'preferNullish';
@@ -41,6 +42,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
           },
+          forceSuggestionFixer: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -50,9 +54,19 @@ export default util.createRule<Options, MessageIds>({
     {
       ignoreConditionalTests: true,
       ignoreMixedLogicalExpressions: true,
+      forceSuggestionFixer: false,
     },
   ],
-  create(context, [{ ignoreConditionalTests, ignoreMixedLogicalExpressions }]) {
+  create(
+    context,
+    [
+      {
+        ignoreConditionalTests,
+        ignoreMixedLogicalExpressions,
+        forceSuggestionFixer,
+      },
+    ],
+  ) {
     const parserServices = util.getParserServices(context);
     const sourceCode = context.getSourceCode();
     const checker = parserServices.program.getTypeChecker();
@@ -79,30 +93,34 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const barBarOperator = sourceCode.getTokenAfter(
-          node.left,
-          token =>
-            token.type === AST_TOKEN_TYPES.Punctuator &&
-            token.value === node.operator,
-        )!; // there _must_ be an operator
+        const barBarOperator = util.nullThrows(
+          sourceCode.getTokenAfter(
+            node.left,
+            token =>
+              token.type === AST_TOKEN_TYPES.Punctuator &&
+              token.value === node.operator,
+          ),
+          util.NullThrowsReasons.MissingToken('operator', node.type),
+        );
 
-        const fixer = isMixedLogical
-          ? // suggestion instead for cases where we aren't sure if the fixer is completely safe
-            ({
-              suggest: [
-                {
-                  messageId: 'preferNullish',
-                  fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-                    return fixer.replaceText(barBarOperator, '??');
+        const fixer =
+          isMixedLogical || forceSuggestionFixer
+            ? // suggestion instead for cases where we aren't sure if the fixer is completely safe
+              ({
+                suggest: [
+                  {
+                    messageId: 'preferNullish',
+                    fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+                      return fixer.replaceText(barBarOperator, '??');
+                    },
                   },
+                ],
+              } as const)
+            : {
+                fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+                  return fixer.replaceText(barBarOperator, '??');
                 },
-              ],
-            } as const)
-          : {
-              fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-                return fixer.replaceText(barBarOperator, '??');
-              },
-            };
+              };
 
         context.report({
           node: barBarOperator,

@@ -435,5 +435,33 @@ if (function werid() { return x ?? 'foo' }) {}
         },
       ],
     })),
+
+    // testing the suggestion fixer option
+    {
+      code: `
+declare const x: string | null;
+x || 'foo';
+      `.trimRight(),
+      output: null,
+      options: [{ forceSuggestionFixer: true }],
+      errors: [
+        {
+          messageId: 'preferNullish',
+          line: 3,
+          column: 3,
+          endLine: 3,
+          endColumn: 5,
+          suggestions: [
+            {
+              messageId: 'preferNullish',
+              output: `
+declare const x: string | null;
+x ?? 'foo';
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
