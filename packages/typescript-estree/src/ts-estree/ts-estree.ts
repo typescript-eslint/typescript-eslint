@@ -718,6 +718,7 @@ export interface ForStatement extends BaseNode {
 
 export interface FunctionDeclaration extends FunctionDeclarationBase {
   type: AST_NODE_TYPES.FunctionDeclaration;
+  body: BlockStatement;
 }
 
 export interface FunctionExpression extends FunctionDeclarationBase {
