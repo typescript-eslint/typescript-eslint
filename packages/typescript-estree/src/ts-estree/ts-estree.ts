@@ -691,6 +691,7 @@ export interface ExportSpecifier extends BaseNode {
 export interface ExpressionStatement extends BaseNode {
   type: AST_NODE_TYPES.ExpressionStatement;
   expression: Expression;
+  directive?: string;
 }
 
 export interface ForInStatement extends BaseNode {

@@ -1,3 +1,4 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-unused-expressions';
 import { RuleTester } from '../RuleTester';
 
@@ -10,9 +11,11 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
+type TestCaseError = Omit<TSESLint.TestCaseError<string>, 'messageId'>;
+
 // the base rule doesn't have messageIds
 function error(
-  messages: { line: number; column: number }[],
+  messages: TestCaseError[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any[] {
   return messages.map(message => ({
@@ -41,6 +44,26 @@ ruleTester.run('no-unused-expressions', rule, {
     `,
     `
       a?.['b']?.c();
+    `,
+    `
+      module Foo {
+        'use strict';
+      }
+    `,
+    `
+      namespace Foo {
+        'use strict';
+
+        export class Foo {}
+        export class Bar {}
+      }
+    `,
+    `
+      function foo() {
+        'use strict';
+
+        return null;
+      }
     `,
   ],
   invalid: [
@@ -173,6 +196,57 @@ one.two?.three.four;
         {
           line: 2,
           column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+module Foo {
+  const foo = true;
+  'use strict';
+}
+      `,
+      errors: error([
+        {
+          line: 4,
+          endLine: 4,
+          column: 3,
+          endColumn: 16,
+        },
+      ]),
+    },
+    {
+      code: `
+namespace Foo {
+  export class Foo {}
+  export class Bar {}
+
+  'use strict';
+}
+      `,
+      errors: error([
+        {
+          line: 6,
+          endLine: 6,
+          column: 3,
+          endColumn: 16,
+        },
+      ]),
+    },
+    {
+      code: `
+function foo() {
+  const foo = true;
+
+  'use strict';
+}
+      `,
+      errors: error([
+        {
+          line: 5,
+          endLine: 5,
+          column: 3,
+          endColumn: 16,
         },
       ]),
     },
