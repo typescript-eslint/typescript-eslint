@@ -5,7 +5,6 @@ import {
   ParserServices,
   TSESTreeOptions,
   TSESTree,
-  simpleTraverse,
   visitorKeys,
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
@@ -94,21 +93,6 @@ export function parseForESLint(
 
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
-
-  simpleTraverse(ast, {
-    enter(node) {
-      switch (node.type) {
-        // Function#body cannot be null in ESTree spec.
-        case AST_NODE_TYPES.FunctionExpression:
-          if (!node.body) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            node.type = `TSEmptyBody${node.type}` as any;
-          }
-          break;
-        // no default
-      }
-    },
-  });
 
   const scopeManager = analyzeScope(ast, options);
   return { ast, services, scopeManager, visitorKeys };
