@@ -75,14 +75,14 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
     const sourceCode = context.getSourceCode();
-    const baseCheck: AccessibilityLevel = option.accessibility || 'explicit';
-    const overrides = option.overrides || {};
-    const ctorCheck = overrides.constructors || baseCheck;
-    const accessorCheck = overrides.accessors || baseCheck;
-    const methodCheck = overrides.methods || baseCheck;
-    const propCheck = overrides.properties || baseCheck;
-    const paramPropCheck = overrides.parameterProperties || baseCheck;
-    const ignoredMethodNames = new Set(option.ignoredMethodNames || []);
+    const baseCheck: AccessibilityLevel = option.accessibility ?? 'explicit';
+    const overrides = option.overrides ?? {};
+    const ctorCheck = overrides.constructors ?? baseCheck;
+    const accessorCheck = overrides.accessors ?? baseCheck;
+    const methodCheck = overrides.methods ?? baseCheck;
+    const propCheck = overrides.properties ?? baseCheck;
+    const paramPropCheck = overrides.parameterProperties ?? baseCheck;
+    const ignoredMethodNames = new Set(option.ignoredMethodNames ?? []);
     /**
      * Generates the report for rule violations
      */

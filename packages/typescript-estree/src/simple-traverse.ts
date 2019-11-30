@@ -11,7 +11,7 @@ function getVisitorKeysForNode(
   node: TSESTree.Node,
 ): readonly string[] {
   const keys = allVisitorKeys[node.type];
-  return keys || [];
+  return keys ?? [];
 }
 
 interface SimpleTraverseOptions {

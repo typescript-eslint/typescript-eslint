@@ -12,10 +12,7 @@ export default util.createRule({
       recommended: false,
     },
     schema: baseRule.meta.schema,
-    messages: {
-      expected:
-        'Expected an assignment or function call and instead saw an expression.',
-    },
+    messages: {},
   },
   defaultOptions: [],
   create(context) {
@@ -23,9 +20,13 @@ export default util.createRule({
 
     return {
       ExpressionStatement(node): void {
-        if (node.expression.type === AST_NODE_TYPES.OptionalCallExpression) {
+        if (
+          node.directive ||
+          node.expression.type === AST_NODE_TYPES.OptionalCallExpression
+        ) {
           return;
         }
+
         rules.ExpressionStatement(node);
       },
     };

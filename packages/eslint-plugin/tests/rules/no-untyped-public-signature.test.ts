@@ -28,7 +28,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
       code: `
             class A {
                 public b(c: string):void {
-                
+
                 }
             }`,
     },
@@ -36,7 +36,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
       code: `
              class A {
                 public b(...c):void {
-                
+
                 }
             }`,
     },
@@ -44,7 +44,7 @@ ruleTester.run('no-untyped-public-signature', rule, {
       code: `
              class A {
                 b(c):void {
-                
+
                 }
             }`,
       options: [{ ignoredMethods: ['b'] }],
@@ -71,22 +71,71 @@ ruleTester.run('no-untyped-public-signature', rule, {
       code: `
              class A {
                 b(...c):void {
-                
+
                 }
-                
+
                 d(c):void {
-                
+
                 }
             }`,
       options: [{ ignoredMethods: ['b', 'd'] }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1229
+    `
+class Foo {
+  constructor() {}
+}
+    `,
+    `
+class Foo {
+  abstract constructor() {}
+}
+    `,
+    `
+class Foo {
+  constructor(c: string) {}
+}
+    `,
+    `
+class Foo {
+  abstract constructor(c: string) {}
+}
+    `,
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1263
+    `
+class Foo {
+  private _x: string;
+
+  public get x(): string {
+    return this._x;
+  }
+
+  public set x(x: string) {
+    this._x = x;
+  }
+}
+    `,
+    `
+class Foo {
+  private _x: string;
+
+  get x(): string {
+    return this._x;
+  }
+
+  set x(x: string) {
+    this._x = x;
+  }
+}
+    `,
   ],
   invalid: [
     //untyped parameter
     {
       code: `class A {
                 public b(c):void {
-                
+
                 }
             }`,
       errors: [{ messageId: 'untypedParameter' }],
@@ -205,6 +254,57 @@ ruleTester.run('no-untyped-public-signature', rule, {
                 }
             }`,
       errors: [{ messageId: 'noReturnType' }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1229
+    {
+      code: `
+class Foo {
+  constructor(c) {}
+}
+      `,
+      errors: [{ messageId: 'untypedParameter' }],
+    },
+    {
+      code: `
+class Foo {
+  abstract constructor(c) {}
+}
+      `,
+      errors: [{ messageId: 'untypedParameter' }],
+    },
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1263
+    {
+      code: `
+class Foo {
+  private _x: string;
+
+  public get x(): string {
+    return this._x;
+  }
+
+  public set x(x) {
+    this._x = x;
+  }
+}
+      `,
+      errors: [{ messageId: 'untypedParameter' }],
+    },
+    {
+      code: `
+class Foo {
+  private _x: string;
+
+  get x(): string {
+    return this._x;
+  }
+
+  set x(x) {
+    this._x = x;
+  }
+}
+      `,
+      errors: [{ messageId: 'untypedParameter' }],
     },
   ],
 });

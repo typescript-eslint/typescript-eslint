@@ -111,7 +111,7 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    const result = this.convertNode(node as TSNode, parent || node.parent);
+    const result = this.convertNode(node as TSNode, parent ?? node.parent);
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -277,8 +277,7 @@ export class Converter {
           const child = this.convertChild(statement);
           if (allowDirectives) {
             if (
-              child &&
-              child.expression &&
+              child?.expression &&
               ts.isExpressionStatement(statement) &&
               ts.isStringLiteral(statement.expression)
             ) {
@@ -1194,12 +1193,12 @@ export class Converter {
           if (node.dotDotDotToken) {
             result = this.createNode<TSESTree.RestElement>(node, {
               type: AST_NODE_TYPES.RestElement,
-              argument: this.convertChild(node.propertyName || node.name),
+              argument: this.convertChild(node.propertyName ?? node.name),
             });
           } else {
             result = this.createNode<TSESTree.Property>(node, {
               type: AST_NODE_TYPES.Property,
-              key: this.convertChild(node.propertyName || node.name),
+              key: this.convertChild(node.propertyName ?? node.name),
               value: this.convertChild(node.name),
               computed: Boolean(
                 node.propertyName &&
@@ -1388,7 +1387,7 @@ export class Converter {
         if (node.modifiers) {
           return this.createNode<TSESTree.TSParameterProperty>(node, {
             type: AST_NODE_TYPES.TSParameterProperty,
-            accessibility: getTSNodeAccessibility(node) || undefined,
+            accessibility: getTSNodeAccessibility(node) ?? undefined,
             readonly:
               hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
             static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
@@ -1403,7 +1402,7 @@ export class Converter {
 
       case SyntaxKind.ClassDeclaration:
       case SyntaxKind.ClassExpression: {
-        const heritageClauses = node.heritageClauses || [];
+        const heritageClauses = node.heritageClauses ?? [];
         const classNodeType =
           node.kind === SyntaxKind.ClassDeclaration
             ? AST_NODE_TYPES.ClassDeclaration
@@ -1427,10 +1426,9 @@ export class Converter {
             body: [],
             range: [node.members.pos - 1, node.end],
           }),
-          superClass:
-            superClass && superClass.types[0]
-              ? this.convertChild(superClass.types[0].expression)
-              : null,
+          superClass: superClass?.types[0]
+            ? this.convertChild(superClass.types[0].expression)
+            : null,
         });
 
         if (superClass) {
@@ -1535,7 +1533,7 @@ export class Converter {
         return this.createNode<TSESTree.ImportSpecifier>(node, {
           type: AST_NODE_TYPES.ImportSpecifier,
           local: this.convertChild(node.name),
-          imported: this.convertChild(node.propertyName || node.name),
+          imported: this.convertChild(node.propertyName ?? node.name),
         });
 
       case SyntaxKind.ImportClause:
@@ -1565,7 +1563,7 @@ export class Converter {
       case SyntaxKind.ExportSpecifier:
         return this.createNode<TSESTree.ExportSpecifier>(node, {
           type: AST_NODE_TYPES.ExportSpecifier,
-          local: this.convertChild(node.propertyName || node.name),
+          local: this.convertChild(node.propertyName ?? node.name),
           exported: this.convertChild(node.name),
         });
 
@@ -1586,7 +1584,7 @@ export class Converter {
 
       case SyntaxKind.PrefixUnaryExpression:
       case SyntaxKind.PostfixUnaryExpression: {
-        const operator = (getTextForTokenKind(node.operator) || '') as any;
+        const operator = (getTextForTokenKind(node.operator) ?? '') as any;
         /**
          * ESTree uses UpdateExpression for ++/--
          */
@@ -2377,7 +2375,7 @@ export class Converter {
       }
 
       case SyntaxKind.InterfaceDeclaration: {
-        const interfaceHeritageClauses = node.heritageClauses || [];
+        const interfaceHeritageClauses = node.heritageClauses ?? [];
         const result = this.createNode<TSESTree.TSInterfaceDeclaration>(node, {
           type: AST_NODE_TYPES.TSInterfaceDeclaration,
           body: this.createNode<TSESTree.TSInterfaceBody>(node, {

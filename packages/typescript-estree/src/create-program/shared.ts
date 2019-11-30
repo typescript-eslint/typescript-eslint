@@ -16,18 +16,27 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   checkJs: true,
   noEmit: true,
   // extendedDiagnostics: true,
+  noUnusedLocals: true,
+  noUnusedParameters: true,
 };
 
 // This narrows the type so we can be sure we're passing canonical names in the correct places
 type CanonicalPath = string & { __brand: unknown };
+
 // typescript doesn't provide a ts.sys implementation for browser environments
 const useCaseSensitiveFileNames =
   ts.sys !== undefined ? ts.sys.useCaseSensitiveFileNames : true;
-const getCanonicalFileName = useCaseSensitiveFileNames
-  ? (filePath: string): CanonicalPath =>
-      path.normalize(filePath) as CanonicalPath
-  : (filePath: string): CanonicalPath =>
-      path.normalize(filePath).toLowerCase() as CanonicalPath;
+const correctPathCasing = useCaseSensitiveFileNames
+  ? (filePath: string): string => filePath
+  : (filePath: string): string => filePath.toLowerCase();
+
+function getCanonicalFileName(filePath: string): CanonicalPath {
+  let normalized = path.normalize(filePath);
+  if (normalized.endsWith('/')) {
+    normalized = normalized.substr(0, normalized.length - 1);
+  }
+  return correctPathCasing(normalized) as CanonicalPath;
+}
 
 function getTsconfigPath(tsconfigPath: string, extra: Extra): CanonicalPath {
   return getCanonicalFileName(

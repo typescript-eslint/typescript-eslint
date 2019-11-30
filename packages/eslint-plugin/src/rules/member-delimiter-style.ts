@@ -104,7 +104,7 @@ export default util.createRule<Options, MessageIds>({
 
     // use the base options as the defaults for the cases
     const baseOptions = options;
-    const overrides = baseOptions.overrides || {};
+    const overrides = baseOptions.overrides ?? {};
     const interfaceOptions: BaseOptions = util.deepMerge(
       baseOptions,
       overrides.interface,
@@ -227,7 +227,7 @@ export default util.createRule<Options, MessageIds>({
       const opts = isSingleLine ? typeOpts.singleline : typeOpts.multiline;
 
       members.forEach((member, index) => {
-        checkLastToken(member, opts || {}, index === members.length - 1);
+        checkLastToken(member, opts ?? {}, index === members.length - 1);
       });
     }
 

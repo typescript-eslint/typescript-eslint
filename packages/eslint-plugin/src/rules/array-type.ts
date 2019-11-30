@@ -127,7 +127,7 @@ export default util.createRule<Options, MessageIds>({
     const sourceCode = context.getSourceCode();
 
     const defaultOption = options.default;
-    const readonlyOption = options.readonly || defaultOption;
+    const readonlyOption = options.readonly ?? defaultOption;
 
     const isArraySimpleOption =
       defaultOption === 'array-simple' && readonlyOption === 'array-simple';

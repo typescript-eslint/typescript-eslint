@@ -388,28 +388,28 @@ export default util.createRule<Options, MessageIds>({
       ClassDeclaration(node): void {
         validateMembersOrder(
           node.body.body,
-          options.classes || options.default!,
+          options.classes ?? options.default!,
           true,
         );
       },
       ClassExpression(node): void {
         validateMembersOrder(
           node.body.body,
-          options.classExpressions || options.default!,
+          options.classExpressions ?? options.default!,
           true,
         );
       },
       TSInterfaceDeclaration(node): void {
         validateMembersOrder(
           node.body.body,
-          options.interfaces || options.default!,
+          options.interfaces ?? options.default!,
           false,
         );
       },
       TSTypeLiteral(node): void {
         validateMembersOrder(
           node.members,
-          options.typeLiterals || options.default!,
+          options.typeLiterals ?? options.default!,
           false,
         );
       },
