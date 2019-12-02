@@ -1,7 +1,66 @@
-// @ts-check
-const { typedConfig } = require('@typescript-eslint/typed-config');
+/**
+ * TEST FILE TODO DELETE THIS BEFORE FINAL COMMIT
+ */
 
-module.exports = typedConfig({
+import {
+  typedConfig,
+  ESLintConfig as ESLintConfigBase,
+} from './packages/typed-config/dist/index';
+
+declare global {
+  namespace ESLintConfig {
+    interface Rules {
+      myRule?:
+        | ESLintConfigBase.RuleLevelAndNoOptions
+        | [ESLintConfigBase.RuleLevel, { test: string }];
+    }
+  }
+}
+
+// eslint-plugin-eslint-comments
+// some hand-crafted types for the smallest plugin we have installed
+declare global {
+  namespace ESLintConfig {
+    interface Rules {
+      'eslint-comments/disable-enable-pair'?:
+        | ESLintConfigBase.RuleLevelAndNoOptions
+        | [
+            ESLintConfigBase.RuleLevel,
+            {
+              allowWholeFile?: boolean;
+            },
+          ];
+      'eslint-comments/no-aggregating-enable'?: ESLintConfigBase.RuleLevelAndNoOptions;
+      'eslint-comments/no-duplicate-disable'?: ESLintConfigBase.RuleLevelAndNoOptions;
+      'eslint-comments/no-restricted-disable'?:
+        | ESLintConfigBase.RuleLevelAndNoOptions
+        | [ESLintConfigBase.RuleLevel, ...string[]];
+      'eslint-comments/no-unlimited-disable'?: ESLintConfigBase.RuleLevelAndNoOptions;
+      'eslint-comments/no-unused-disable'?: ESLintConfigBase.RuleLevelAndNoOptions;
+      'eslint-comments/no-unused-enable'?: ESLintConfigBase.RuleLevelAndNoOptions;
+      'eslint-comments/no-use'?:
+        | ESLintConfigBase.RuleLevelAndNoOptions
+        | [
+            ESLintConfigBase.RuleLevel,
+            {
+              allow?: (
+                | 'eslint'
+                | 'eslint-disable'
+                | 'eslint-disable-line'
+                | 'eslint-disable-next-line'
+                | 'eslint-enable'
+                | 'eslint-env'
+                | 'exported'
+                | 'global'
+                | 'globals'
+              )[];
+            },
+          ];
+    }
+  }
+}
+
+export = typedConfig({
   root: true,
   plugins: [
     'eslint-plugin',
@@ -9,6 +68,7 @@ module.exports = typedConfig({
     'jest',
     'import',
     'eslint-comments',
+    1, // expected error: Type 'number' is not assignable to type 'string'.
   ],
   env: {
     es6: true,
@@ -19,8 +79,15 @@ module.exports = typedConfig({
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    1, // expected error: Type 'number' is not assignable to type 'string'.
   ],
   rules: {
+    myRule: [
+      // expected error: Type 'string[]' is missing the following properties from type '[RuleLevel, { test: string; }]': 0, 1
+      'error',
+      'foo',
+    ],
+
     //
     // our plugin :D
     //
