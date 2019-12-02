@@ -15,10 +15,10 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Enforces that object and class methods have this annotations',
+        'Requires explicit this type annotations for class and object methods',
       category: 'Best Practices',
       recommended: false,
-      requiresTypeChecking: true,
+      requiresTypeChecking: false,
     },
     schema: [],
     messages: {
