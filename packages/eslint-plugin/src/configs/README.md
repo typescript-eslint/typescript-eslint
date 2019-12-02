@@ -8,7 +8,7 @@ TODO when all config is added.
 
 ## eslint-recommended
 
-The `eslint-recommended` ruleset is meant to be used after extending `eslint:recommended`. It disables rules that are already checked by the Typescript compiler and enables rules that promote using more the more modern constructs Typescript allows for.
+The `eslint-recommended` ruleset is meant to be used after extending `eslint:recommended`. It disables rules that are already checked by the Typescript compiler and enables rules that promote using the more modern constructs Typescript allows for.
 
 ```cjson
 {
