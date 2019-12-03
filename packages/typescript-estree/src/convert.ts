@@ -111,7 +111,7 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    const result = this.convertNode(node as TSNode, parent || node.parent);
+    const result = this.convertNode(node as TSNode, parent ?? node.parent);
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -277,8 +277,7 @@ export class Converter {
           const child = this.convertChild(statement);
           if (allowDirectives) {
             if (
-              child &&
-              child.expression &&
+              child?.expression &&
               ts.isExpressionStatement(statement) &&
               ts.isStringLiteral(statement.expression)
             ) {
@@ -926,6 +925,7 @@ export class Converter {
           computed: isComputedProperty(node.name),
           static: hasModifier(SyntaxKind.StaticKeyword, node),
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
+          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
         });
 
         if (node.type) {
@@ -1193,12 +1193,12 @@ export class Converter {
           if (node.dotDotDotToken) {
             result = this.createNode<TSESTree.RestElement>(node, {
               type: AST_NODE_TYPES.RestElement,
-              argument: this.convertChild(node.propertyName || node.name),
+              argument: this.convertChild(node.propertyName ?? node.name),
             });
           } else {
             result = this.createNode<TSESTree.Property>(node, {
               type: AST_NODE_TYPES.Property,
-              key: this.convertChild(node.propertyName || node.name),
+              key: this.convertChild(node.propertyName ?? node.name),
               value: this.convertChild(node.name),
               computed: Boolean(
                 node.propertyName &&
@@ -1387,7 +1387,7 @@ export class Converter {
         if (node.modifiers) {
           return this.createNode<TSESTree.TSParameterProperty>(node, {
             type: AST_NODE_TYPES.TSParameterProperty,
-            accessibility: getTSNodeAccessibility(node) || undefined,
+            accessibility: getTSNodeAccessibility(node) ?? undefined,
             readonly:
               hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
             static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
@@ -1402,7 +1402,7 @@ export class Converter {
 
       case SyntaxKind.ClassDeclaration:
       case SyntaxKind.ClassExpression: {
-        const heritageClauses = node.heritageClauses || [];
+        const heritageClauses = node.heritageClauses ?? [];
         const classNodeType =
           node.kind === SyntaxKind.ClassDeclaration
             ? AST_NODE_TYPES.ClassDeclaration
@@ -1426,10 +1426,9 @@ export class Converter {
             body: [],
             range: [node.members.pos - 1, node.end],
           }),
-          superClass:
-            superClass && superClass.types[0]
-              ? this.convertChild(superClass.types[0].expression)
-              : null,
+          superClass: superClass?.types[0]
+            ? this.convertChild(superClass.types[0].expression)
+            : null,
         });
 
         if (superClass) {
@@ -1534,7 +1533,7 @@ export class Converter {
         return this.createNode<TSESTree.ImportSpecifier>(node, {
           type: AST_NODE_TYPES.ImportSpecifier,
           local: this.convertChild(node.name),
-          imported: this.convertChild(node.propertyName || node.name),
+          imported: this.convertChild(node.propertyName ?? node.name),
         });
 
       case SyntaxKind.ImportClause:
@@ -1564,7 +1563,7 @@ export class Converter {
       case SyntaxKind.ExportSpecifier:
         return this.createNode<TSESTree.ExportSpecifier>(node, {
           type: AST_NODE_TYPES.ExportSpecifier,
-          local: this.convertChild(node.propertyName || node.name),
+          local: this.convertChild(node.propertyName ?? node.name),
           exported: this.convertChild(node.name),
         });
 
@@ -1585,7 +1584,7 @@ export class Converter {
 
       case SyntaxKind.PrefixUnaryExpression:
       case SyntaxKind.PostfixUnaryExpression: {
-        const operator = (getTextForTokenKind(node.operator) || '') as any;
+        const operator = (getTextForTokenKind(node.operator) ?? '') as any;
         /**
          * ESTree uses UpdateExpression for ++/--
          */
@@ -1690,16 +1689,19 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAccessExpression: {
-        const isLocallyOptional = node.questionDotToken !== undefined;
         const object = this.convertChild(node.expression);
         const property = this.convertChild(node.name);
         const computed = false;
-        if (
-          isLocallyOptional ||
-          // the optional expression should propogate up the member expression tree
-          object.type === AST_NODE_TYPES.OptionalMemberExpression ||
-          object.type === AST_NODE_TYPES.OptionalCallExpression
-        ) {
+
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        // the optional expression should propogate up the member expression tree
+        const isChildOptional =
+          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
+            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          // (x?.y).z is semantically different, and as such .z is no longer optional
+          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+
+        if (isLocallyOptional || isChildOptional) {
           return this.createNode<TSESTree.OptionalMemberExpression>(node, {
             type: AST_NODE_TYPES.OptionalMemberExpression,
             object,
@@ -1719,16 +1721,19 @@ export class Converter {
       }
 
       case SyntaxKind.ElementAccessExpression: {
-        const isLocallyOptional = node.questionDotToken !== undefined;
         const object = this.convertChild(node.expression);
         const property = this.convertChild(node.argumentExpression);
         const computed = true;
-        if (
-          isLocallyOptional ||
-          // the optional expression should propogate up the member expression tree
-          object.type === AST_NODE_TYPES.OptionalMemberExpression ||
-          object.type === AST_NODE_TYPES.OptionalCallExpression
-        ) {
+
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        // the optional expression should propogate up the member expression tree
+        const isChildOptional =
+          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
+            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          // (x?.y).z is semantically different, and as such .z is no longer optional
+          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+
+        if (isLocallyOptional || isChildOptional) {
           return this.createNode<TSESTree.OptionalMemberExpression>(node, {
             type: AST_NODE_TYPES.OptionalMemberExpression,
             object,
@@ -1748,16 +1753,19 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
-        const isLocallyOptional = node.questionDotToken !== undefined;
         const callee = this.convertChild(node.expression);
         const args = node.arguments.map(el => this.convertChild(el));
         let result;
-        if (
-          isLocallyOptional ||
-          // the optional expression should propogate up the member expression tree
-          callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
-          callee.type === AST_NODE_TYPES.OptionalCallExpression
-        ) {
+
+        const isLocallyOptional = node.questionDotToken !== undefined;
+        // the optional expression should propogate up the member expression tree
+        const isChildOptional =
+          (callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
+            callee.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          // (x?.y).z() is semantically different, and as such .z() is no longer optional
+          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+
+        if (isLocallyOptional || isChildOptional) {
           result = this.createNode<TSESTree.OptionalCallExpression>(node, {
             type: AST_NODE_TYPES.OptionalCallExpression,
             callee,
@@ -2367,7 +2375,7 @@ export class Converter {
       }
 
       case SyntaxKind.InterfaceDeclaration: {
-        const interfaceHeritageClauses = node.heritageClauses || [];
+        const interfaceHeritageClauses = node.heritageClauses ?? [];
         const result = this.createNode<TSESTree.TSInterfaceDeclaration>(node, {
           type: AST_NODE_TYPES.TSInterfaceDeclaration,
           body: this.createNode<TSESTree.TSInterfaceBody>(node, {

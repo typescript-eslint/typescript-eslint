@@ -30,8 +30,10 @@ variable that will be imported into the local module scope.
 
 This rule has an object option:
 
-- `"properties": "always"` (default) enforces camelcase style for property names
-- `"properties": "never"` does not check property names
+- `"properties": "never"` (default) does not check property names
+- `"properties": "always"` enforces camelcase style for property names
+- `"genericType": "never"` (default) does not check generic identifiers
+- `"genericType": "always"` enforces camelcase style for generic identifiers
 - `"ignoreDestructuring": false` (default) enforces camelcase style for destructured identifiers
 - `"ignoreDestructuring": true` does not check destructured identifiers
 - `allow` (`string[]`) list of properties to accept. Accept regex.
@@ -127,6 +129,100 @@ Examples of **correct** code for this rule with the `{ "properties": "never" }` 
 var obj = {
   my_pref: 1,
 };
+```
+
+### genericType: "always"
+
+Examples of **incorrect** code for this rule with the default `{ "genericType": "always" }` option:
+
+```typescript
+/* eslint @typescript-eslint/camelcase: ["error", { "genericType": "always" }] */
+
+interface Foo<t_foo> {}
+function foo<t_foo>() {}
+class Foo<t_foo> {}
+type Foo<t_foo> = {};
+class Foo {
+  method<t_foo>() {}
+}
+
+interface Foo<t_foo extends object> {}
+function foo<t_foo extends object>() {}
+class Foo<t_foo extends object> {}
+type Foo<t_foo extends object> = {};
+class Foo {
+  method<t_foo extends object>() {}
+}
+
+interface Foo<t_foo = object> {}
+function foo<t_foo = object>() {}
+class Foo<t_foo = object> {}
+type Foo<t_foo = object> = {};
+class Foo {
+  method<t_foo = object>() {}
+}
+```
+
+Examples of **correct** code for this rule with the default `{ "genericType": "always" }` option:
+
+```typescript
+/* eslint @typescript-eslint/camelcase: ["error", { "genericType": "always" }] */
+
+interface Foo<T> {}
+function foo<t>() {}
+class Foo<T> {}
+type Foo<T> = {};
+class Foo {
+  method<T>() {}
+}
+
+interface Foo<T extends object> {}
+function foo<T extends object>() {}
+class Foo<T extends object> {}
+type Foo<T extends object> = {};
+class Foo {
+  method<T extends object>() {}
+}
+
+interface Foo<T = object> {}
+function foo<T = object>() {}
+class Foo<T = object> {}
+type Foo<T = object> = {};
+class Foo {
+  method<T = object>() {}
+}
+```
+
+### genericType: "never"
+
+Examples of **correct** code for this rule with the `{ "genericType": "never" }` option:
+
+```typescript
+/* eslint @typescript-eslint/camelcase: ["error", { "genericType": "never" }] */
+
+interface Foo<t_foo> {}
+function foo<t_foo>() {}
+class Foo<t_foo> {}
+type Foo<t_foo> = {};
+class Foo {
+  method<t_foo>() {}
+}
+
+interface Foo<t_foo extends object> {}
+function foo<t_foo extends object>() {}
+class Foo<t_foo extends object> {}
+type Foo<t_foo extends object> = {};
+class Foo {
+  method<t_foo extends object>() {}
+}
+
+interface Foo<t_foo = object> {}
+function foo<t_foo = object>() {}
+class Foo<t_foo = object> {}
+type Foo<t_foo = object> = {};
+class Foo {
+  method<t_foo = object>() {}
+}
 ```
 
 ### ignoreDestructuring: false

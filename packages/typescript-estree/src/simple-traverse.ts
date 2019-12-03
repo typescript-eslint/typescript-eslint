@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from './ts-estree';
 import { visitorKeys } from './visitor-keys';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,7 +11,7 @@ function getVisitorKeysForNode(
   node: TSESTree.Node,
 ): readonly string[] {
   const keys = allVisitorKeys[node.type];
-  return keys || [];
+  return keys ?? [];
 }
 
 interface SimpleTraverseOptions {

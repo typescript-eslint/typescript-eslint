@@ -176,4 +176,5 @@ export type TSNode = ts.Node &
     | ts.Bundle
     | ts.InputFiles
     | ts.UnparsedSource
-    | ts.JsonMinusNumericLiteral);
+    | ts.JsonMinusNumericLiteral
+  );

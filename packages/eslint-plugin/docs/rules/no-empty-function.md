@@ -44,4 +44,37 @@ See the [ESLint documentation](https://eslint.org/docs/rules/no-empty-function) 
 }
 ```
 
+## Options
+
+This rule has an object option:
+
+- `allow` (`string[]`)
+  - `"protected-constructors"` - Protected class constructors.
+  - `"private-constructors"` - Private class constructors.
+  - [See the other options allowed](https://github.com/eslint/eslint/blob/master/docs/rules/no-empty-function.md#options)
+
+#### allow: protected-constructors
+
+Examples of **correct** code for the `{ "allow": ["protected-constructors"] }` option:
+
+```ts
+/*eslint @typescript-eslint/no-empty-function: ["error", { "allow": ["protected-constructors"] }]*/
+
+class Foo {
+  protected constructor() {}
+}
+```
+
+#### allow: private-constructors
+
+Examples of **correct** code for the `{ "allow": ["private-constructors"] }` option:
+
+```ts
+/*eslint @typescript-eslint/no-empty-function: ["error", { "allow": ["private-constructors"] }]*/
+
+class Foo {
+  private constructor() {}
+}
+```
+
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-empty-function.md)</sup>

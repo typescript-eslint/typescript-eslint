@@ -770,6 +770,11 @@ const div: JQuery<HTMLElement> = $('<div>')
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/441
     `const;`,
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1115
+    {
+      code: `const foo = function<> (): void {}`,
+    },
   ],
   invalid: [
     ...individualNodeTests.invalid,
@@ -1713,6 +1718,27 @@ declare module "Validation" {
             actual: 0,
           },
           line: 5,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+    @Decorator()
+class Foo {}
+            `,
+      output: `
+@Decorator()
+class Foo {}
+            `,
+      errors: [
+        {
+          messageId: 'wrongIndentation',
+          data: {
+            expected: '0 spaces',
+            actual: 4,
+          },
+          line: 2,
           column: 1,
         },
       ],

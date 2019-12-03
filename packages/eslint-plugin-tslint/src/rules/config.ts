@@ -47,8 +47,8 @@ const tslintConfig = memoize(
       return Configuration.loadConfigurationFromPath(lintFile);
     }
     return Configuration.parseConfigFile({
-      rules: tslintRules || {},
-      rulesDirectory: tslintRulesDirectory || [],
+      rules: tslintRules ?? {},
+      rulesDirectory: tslintRulesDirectory ?? [],
     });
   },
   (lintFile: string | undefined, tslintRules = {}, tslintRulesDirectory = []) =>
