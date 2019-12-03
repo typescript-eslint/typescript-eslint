@@ -10,26 +10,6 @@ const ruleTester = new RuleTester({ parser: '@typescript-eslint/parser' });
 ruleTester.run('unified-signatures', rule, {
   valid: [
     `
-function p(key: string): Promise<string | undefined>
-function p(key: string, defaultValue: string): Promise<string>
-function p(key: string, defaultValue?: string): Promise<string | undefined>
-{
-  const obj: Record<string, string> = { }
-  return obj[key] || defaultValue
-}
-  `,
-    `
-interface I {
-    p<T>(x: T): Promise<T>;
-    p(x: number): Promise<number>;
-}
-  `,
-    `
-function rest(...xs: number[]): Promise<number[]>;
-function rest(xs: number[], y: string): Promise<string>;
-async function rest(...args: any[], y?: string): Promise<number[] | string> { return y || args }
-`,
-    `
 function g(): void;
 function g(a: number, b: number): void;
 function g(a?: number, b?: number): void {}
@@ -156,6 +136,27 @@ declare module "foo" {
 `,
     `
 export default function(foo: number): string[];
+`,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/740
+    `
+function p(key: string): Promise<string | undefined>
+function p(key: string, defaultValue: string): Promise<string>
+function p(key: string, defaultValue?: string): Promise<string | undefined>
+{
+  const obj: Record<string, string> = { }
+  return obj[key] || defaultValue
+}
+  `,
+    `
+interface I {
+    p<T>(x: T): Promise<T>;
+    p(x: number): Promise<number>;
+}
+  `,
+    `
+function rest(...xs: number[]): Promise<number[]>;
+function rest(xs: number[], y: string): Promise<string>;
+async function rest(...args: any[], y?: string): Promise<number[] | string> { return y || args }
 `,
   ],
   invalid: [
