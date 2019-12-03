@@ -76,7 +76,7 @@ export default util.createRule<Options, MessageIds>({
     const punctuators = [':', '=>'];
     const sourceCode = context.getSourceCode();
 
-    const overrides = options!.overrides || { colon: {}, arrow: {} };
+    const overrides = options?.overrides ?? { colon: {}, arrow: {} };
 
     const colonOptions = Object.assign(
       {},

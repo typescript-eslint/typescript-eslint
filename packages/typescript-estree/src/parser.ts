@@ -282,7 +282,7 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Ensure users do not attempt to use parse() when they need parseAndGenerateServices()
    */
-  if (options && options.errorOnTypeScriptSyntacticAndSemanticIssues) {
+  if (options?.errorOnTypeScriptSyntacticAndSemanticIssues) {
     throw new Error(
       `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
     );
@@ -419,5 +419,7 @@ export {
   TSESTreeOptions,
   version,
 };
+export { simpleTraverse } from './simple-traverse';
+export { visitorKeys } from './visitor-keys';
 export * from './ts-estree';
 export { clearCaches } from './create-program/createWatchProgram';

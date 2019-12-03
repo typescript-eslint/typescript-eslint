@@ -159,11 +159,11 @@ ruleTester.run('strict-boolean-expressions', rule, {
     {
       options: [{ ignoreRhs: true }],
       code: `
-const obj = {};
-const bool = false;
-const boolOrObj = bool || obj;
-const boolAndObj = bool && obj;
-`,
+        const obj = {};
+        const bool = false;
+        const boolOrObj = bool || obj;
+        const boolAndObj = bool && obj;
+      `,
     },
     {
       options: [{ allowNullable: true }],
@@ -174,6 +174,10 @@ const boolAndObj = bool && obj;
         const f4 = (x?: false) => x ? 1 : 0;
       `,
     },
+    `
+      declare const x: string | null;
+      y = x ?? 'foo';
+    `,
   ],
 
   invalid: [

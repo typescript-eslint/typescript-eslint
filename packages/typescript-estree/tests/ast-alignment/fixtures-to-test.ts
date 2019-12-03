@@ -57,9 +57,9 @@ class FixturesTester {
       }
     }
 
-    const ignore = config.ignore || [];
-    const fileType = config.fileType || 'js';
-    const ignoreSourceType = config.ignoreSourceType || [];
+    const ignore = config.ignore ?? [];
+    const fileType = config.fileType ?? 'js';
+    const ignoreSourceType = config.ignoreSourceType ?? [];
     const jsx = isJSXFileType(fileType);
 
     /**

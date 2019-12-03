@@ -54,7 +54,8 @@ export default util.createRule<Options, MessageIds>({
       callName: string,
     ): boolean {
       return (
-        init.type === AST_NODE_TYPES.CallExpression &&
+        (init.type === AST_NODE_TYPES.CallExpression ||
+          init.type === AST_NODE_TYPES.OptionalCallExpression) &&
         init.callee.type === AST_NODE_TYPES.Identifier &&
         init.callee.name === callName
       );

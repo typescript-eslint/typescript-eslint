@@ -9,7 +9,6 @@ function parseReadme(): marked.Tokens.Table {
   );
   const readme = marked.lexer(readmeRaw, {
     gfm: true,
-    tables: true,
     silent: false,
   });
 
