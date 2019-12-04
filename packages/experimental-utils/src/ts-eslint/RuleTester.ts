@@ -45,7 +45,7 @@ interface TestCaseError<TMessageIds extends string> {
   column?: number;
   endLine?: number;
   endColumn?: number;
-  suggestions?: SuggestionOutput<TMessageIds>[];
+  suggestions?: SuggestionOutput<TMessageIds>[] | null;
 }
 
 interface RunTests<

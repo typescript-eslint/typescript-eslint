@@ -105,9 +105,9 @@ interface RuleFixer {
 type ReportFixFunction = (
   fixer: RuleFixer,
 ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
-type ReportSuggestionArray<TMessageIds extends string> = Readonly<
-  ReportDescriptorBase<TMessageIds>[]
->;
+type ReportSuggestionArray<TMessageIds extends string> = ReportDescriptorBase<
+  TMessageIds
+>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -132,7 +132,7 @@ interface ReportDescriptorWithSuggestion<TMessageIds extends string>
   /**
    * 6.7's Suggestions API
    */
-  suggest?: ReportSuggestionArray<TMessageIds> | null;
+  suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
 }
 
 interface ReportDescriptorNodeOptionalLoc {

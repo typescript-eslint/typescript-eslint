@@ -137,6 +137,27 @@ declare module "foo" {
     `
 export default function(foo: number): string[];
 `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/740
+    `
+function p(key: string): Promise<string | undefined>
+function p(key: string, defaultValue: string): Promise<string>
+function p(key: string, defaultValue?: string): Promise<string | undefined>
+{
+  const obj: Record<string, string> = { }
+  return obj[key] || defaultValue
+}
+  `,
+    `
+interface I {
+    p<T>(x: T): Promise<T>;
+    p(x: number): Promise<number>;
+}
+  `,
+    `
+function rest(...xs: number[]): Promise<number[]>;
+function rest(xs: number[], y: string): Promise<string>;
+async function rest(...args: any[], y?: string): Promise<number[] | string> { return y || args }
+`,
   ],
   invalid: [
     {
