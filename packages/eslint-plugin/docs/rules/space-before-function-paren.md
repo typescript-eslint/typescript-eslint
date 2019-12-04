@@ -4,7 +4,7 @@ When formatting a function, whitespace is allowed between the function name or `
 
 <!-- prettier-ignore -->
 ```ts
-function withoutSpace (x) {
+function withoutSpace(x) {
   // ...
 }
 
@@ -12,7 +12,7 @@ function withSpace (x) {
   // ...
 }
 
-var anonymousWithoutSpace = function () {};
+var anonymousWithoutSpace = function() {};
 
 var anonymousWithSpace = function () {};
 ```

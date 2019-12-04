@@ -31,6 +31,17 @@ const isPossiblyFalsy = (type: ts.Type): boolean =>
 const isPossiblyTruthy = (type: ts.Type): boolean =>
   unionTypeParts(type).some(type => !isFalsyType(type));
 
+// Nullish utilities
+const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+const isNullishType = (type: ts.Type): boolean =>
+  isTypeFlagSet(type, nullishFlag);
+
+const isPossiblyNullish = (type: ts.Type): boolean =>
+  unionTypeParts(type).some(isNullishType);
+
+const isAlwaysNullish = (type: ts.Type): boolean =>
+  unionTypeParts(type).every(isNullishType);
+
 // isLiteralType only covers numbers and strings, this is a more exhaustive check.
 const isLiteral = (type: ts.Type): boolean =>
   isBooleanLiteralType(type, true) ||
@@ -51,6 +62,8 @@ export type Options = [
 export type MessageId =
   | 'alwaysTruthy'
   | 'alwaysFalsy'
+  | 'neverNullish'
+  | 'alwaysNullish'
   | 'literalBooleanExpression'
   | 'never';
 export default createRule<Options, MessageId>({
@@ -81,6 +94,10 @@ export default createRule<Options, MessageId>({
     messages: {
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
+      neverNullish:
+        'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
+      alwaysNullish:
+        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`',
       literalBooleanExpression:
         'Unnecessary conditional, both sides of the expression are literal values',
       never: 'Unnecessary conditional, value is `never`',
@@ -120,12 +137,35 @@ export default createRule<Options, MessageId>({
       ) {
         return;
       }
-      if (isTypeFlagSet(type, TypeFlags.Never)) {
-        context.report({ node, messageId: 'never' });
-      } else if (!isPossiblyTruthy(type)) {
-        context.report({ node, messageId: 'alwaysFalsy' });
-      } else if (!isPossiblyFalsy(type)) {
-        context.report({ node, messageId: 'alwaysTruthy' });
+      const messageId = isTypeFlagSet(type, TypeFlags.Never)
+        ? 'never'
+        : !isPossiblyTruthy(type)
+        ? 'alwaysFalsy'
+        : !isPossiblyFalsy(type)
+        ? 'alwaysTruthy'
+        : undefined;
+
+      if (messageId) {
+        context.report({ node, messageId });
+      }
+    }
+
+    function checkNodeForNullish(node: TSESTree.Node): void {
+      const type = getNodeType(node);
+      // Conditional is always necessary if it involves `any` or `unknown`
+      if (isTypeFlagSet(type, TypeFlags.Any | TypeFlags.Unknown)) {
+        return;
+      }
+      const messageId = isTypeFlagSet(type, TypeFlags.Never)
+        ? 'never'
+        : !isPossiblyNullish(type)
+        ? 'neverNullish'
+        : isAlwaysNullish(type)
+        ? 'alwaysNullish'
+        : undefined;
+
+      if (messageId) {
+        context.report({ node, messageId });
       }
     }
 
@@ -178,6 +218,10 @@ export default createRule<Options, MessageId>({
     function checkLogicalExpressionForUnnecessaryConditionals(
       node: TSESTree.LogicalExpression,
     ): void {
+      if (node.operator === '??') {
+        checkNodeForNullish(node.left);
+        return;
+      }
       checkNode(node.left);
       if (!ignoreRhs) {
         checkNode(node.right);

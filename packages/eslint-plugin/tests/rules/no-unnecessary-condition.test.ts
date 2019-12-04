@@ -88,7 +88,23 @@ function test<T>(t: T | []) {
 function test(a: string) {
   return a === "a"
 }`,
-
+    // Nullish coalescing operator
+    `
+function test(a: string | null) {
+  return a ?? "default";
+}`,
+    `
+function test(a: string | undefined) {
+  return a ?? "default";
+}`,
+    `
+function test(a: string | null | undefined) {
+  return a ?? "default";
+}`,
+    `
+function test(a: unknown) {
+  return a ?? "default";
+}`,
     // Supports ignoring the RHS
     {
       code: `
@@ -186,6 +202,35 @@ const x = Foo.a;
 if (x === Foo.a) {}
 `,
       errors: [ruleError(8, 5, 'literalBooleanExpression')],
+    },
+    // Nullish coalescing operator
+    {
+      code: `
+function test(a: string) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'neverNullish')],
+    },
+    {
+      code: `
+function test(a: string | false) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'neverNullish')],
+    },
+    {
+      code: `
+function test(a: null) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'alwaysNullish')],
+    },
+    {
+      code: `
+function test(a: never) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'never')],
     },
 
     // Still errors on in the expected locations when ignoring RHS

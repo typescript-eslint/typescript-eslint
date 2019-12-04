@@ -1,14 +1,16 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/brace-style';
-import * as util from '../util';
+import {
+  InferOptionsTypeFromRule,
+  InferMessageIdsTypeFromRule,
+  createRule,
+  isTokenOnSameLine,
+} from '../util';
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'brace-style',
   meta: {
     type: 'layout',
@@ -23,23 +25,117 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: ['1tbs'],
   create(context) {
+    const [
+      style,
+      { allowSingleLine } = { allowSingleLine: false },
+    ] = context.options;
+
+    const isAllmanStyle = style === 'allman';
+    const sourceCode = context.getSourceCode();
     const rules = baseRule.create(context);
-    const checkBlockStatement = (
-      node: TSESTree.TSModuleBlock | TSESTree.TSInterfaceBody,
-    ): void => {
-      rules.BlockStatement({
-        type: AST_NODE_TYPES.BlockStatement,
-        parent: node.parent,
-        range: node.range,
-        body: node.body as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-        loc: node.loc,
-      });
-    };
+
+    /**
+     * Checks a pair of curly brackets based on the user's config
+     */
+    function validateCurlyPair(
+      openingCurlyToken: TSESTree.Token,
+      closingCurlyToken: TSESTree.Token,
+    ): void {
+      if (
+        allowSingleLine &&
+        isTokenOnSameLine(openingCurlyToken, closingCurlyToken)
+      ) {
+        return;
+      }
+
+      const tokenBeforeOpeningCurly = sourceCode.getTokenBefore(
+        openingCurlyToken,
+      )!;
+      const tokenBeforeClosingCurly = sourceCode.getTokenBefore(
+        closingCurlyToken,
+      )!;
+      const tokenAfterOpeningCurly = sourceCode.getTokenAfter(
+        openingCurlyToken,
+      )!;
+
+      if (
+        !isAllmanStyle &&
+        !isTokenOnSameLine(tokenBeforeOpeningCurly, openingCurlyToken)
+      ) {
+        context.report({
+          node: openingCurlyToken,
+          messageId: 'nextLineOpen',
+          fix: fixer => {
+            const textRange: TSESTree.Range = [
+              tokenBeforeOpeningCurly.range[1],
+              openingCurlyToken.range[0],
+            ];
+            const textBetween = sourceCode.text.slice(
+              textRange[0],
+              textRange[1],
+            );
+
+            if (textBetween.trim()) {
+              return null;
+            }
+
+            return fixer.replaceTextRange(textRange, ' ');
+          },
+        });
+      }
+
+      if (
+        isAllmanStyle &&
+        isTokenOnSameLine(tokenBeforeOpeningCurly, openingCurlyToken)
+      ) {
+        context.report({
+          node: openingCurlyToken,
+          messageId: 'sameLineOpen',
+          fix: fixer => fixer.insertTextBefore(openingCurlyToken, '\n'),
+        });
+      }
+
+      if (
+        isTokenOnSameLine(openingCurlyToken, tokenAfterOpeningCurly) &&
+        tokenAfterOpeningCurly !== closingCurlyToken
+      ) {
+        context.report({
+          node: openingCurlyToken,
+          messageId: 'blockSameLine',
+          fix: fixer => fixer.insertTextAfter(openingCurlyToken, '\n'),
+        });
+      }
+
+      if (
+        isTokenOnSameLine(tokenBeforeClosingCurly, closingCurlyToken) &&
+        tokenBeforeClosingCurly !== openingCurlyToken
+      ) {
+        context.report({
+          node: closingCurlyToken,
+          messageId: 'singleLineClose',
+          fix: fixer => fixer.insertTextBefore(closingCurlyToken, '\n'),
+        });
+      }
+    }
 
     return {
       ...rules,
-      TSInterfaceBody: checkBlockStatement,
-      TSModuleBlock: checkBlockStatement,
+      'TSInterfaceBody, TSModuleBlock'(
+        node: TSESTree.TSModuleBlock | TSESTree.TSInterfaceBody,
+      ): void {
+        const openingCurly = sourceCode.getFirstToken(node)!;
+        const closingCurly = sourceCode.getLastToken(node)!;
+
+        validateCurlyPair(openingCurly, closingCurly);
+      },
+      TSEnumDeclaration(node): void {
+        const closingCurly = sourceCode.getLastToken(node)!;
+        const openingCurly = sourceCode.getTokenBefore(
+          node.members.length ? node.members[0] : closingCurly,
+        )!;
+
+        validateCurlyPair(openingCurly, closingCurly);
+      },
     };
   },
 });

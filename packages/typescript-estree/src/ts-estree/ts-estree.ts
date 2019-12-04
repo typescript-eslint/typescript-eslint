@@ -691,6 +691,7 @@ export interface ExportSpecifier extends BaseNode {
 export interface ExpressionStatement extends BaseNode {
   type: AST_NODE_TYPES.ExpressionStatement;
   expression: Expression;
+  directive?: string;
 }
 
 export interface ForInStatement extends BaseNode {
@@ -718,6 +719,7 @@ export interface ForStatement extends BaseNode {
 
 export interface FunctionDeclaration extends FunctionDeclarationBase {
   type: AST_NODE_TYPES.FunctionDeclaration;
+  body: BlockStatement;
 }
 
 export interface FunctionExpression extends FunctionDeclarationBase {

@@ -49,6 +49,19 @@ type InferMessageIdsTypeFromRule<T> = T extends TSESLint.RuleModule<
   : unknown;
 
 /**
+ * Gets a string representation of the name of the index signature.
+ */
+export function getNameFromIndexSignature(
+  node: TSESTree.TSIndexSignature,
+): string {
+  const propName: TSESTree.PropertyName | undefined = node.parameters.find(
+    (parameter: TSESTree.Parameter): parameter is TSESTree.Identifier =>
+      parameter.type === AST_NODE_TYPES.Identifier,
+  );
+  return propName ? getNameFromPropertyName(propName) : '(index signature)';
+}
+
+/**
  * Gets a string name representation of the given PropertyName node
  */
 function getNameFromPropertyName(propertyName: TSESTree.PropertyName): string {

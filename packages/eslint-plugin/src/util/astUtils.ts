@@ -17,6 +17,17 @@ function isNotOptionalChainPunctuator(
   return !isOptionalChainPunctuator(token);
 }
 
+function isNonNullAssertionPunctuator(
+  token: TSESTree.Token | TSESTree.Comment,
+): boolean {
+  return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '!';
+}
+function isNotNonNullAssertionPunctuator(
+  token: TSESTree.Token | TSESTree.Comment,
+): boolean {
+  return !isNonNullAssertionPunctuator(token);
+}
+
 /**
  * Returns true if and only if the node represents: foo?.() or foo.bar?.()
  */
@@ -31,9 +42,22 @@ function isOptionalOptionalChain(
   );
 }
 
+/**
+ * Determines whether two adjacent tokens are on the same line
+ */
+function isTokenOnSameLine(
+  left: TSESTree.Token,
+  right: TSESTree.Token,
+): boolean {
+  return left.loc.end.line === right.loc.start.line;
+}
+
 export {
-  LINEBREAK_MATCHER,
+  isNonNullAssertionPunctuator,
+  isNotNonNullAssertionPunctuator,
   isNotOptionalChainPunctuator,
   isOptionalChainPunctuator,
   isOptionalOptionalChain,
+  isTokenOnSameLine,
+  LINEBREAK_MATCHER,
 };

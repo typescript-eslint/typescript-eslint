@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.9.0...v2.10.0) (2019-12-02)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unused-expressions] ignore directives ([#1285](https://github.com/typescript-eslint/typescript-eslint/issues/1285)) ([ce4c803](https://github.com/typescript-eslint/typescript-eslint/commit/ce4c803))
+* **typescript-estree:** make FunctionDeclaration.body non-null ([#1288](https://github.com/typescript-eslint/typescript-eslint/issues/1288)) ([dc73510](https://github.com/typescript-eslint/typescript-eslint/commit/dc73510))
+
+
+
+
+
 # [2.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.8.0...v2.9.0) (2019-11-25)
 
 
