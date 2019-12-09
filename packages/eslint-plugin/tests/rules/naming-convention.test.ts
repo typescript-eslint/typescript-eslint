@@ -514,6 +514,15 @@ const cases: Cases = [
     },
   },
   // #endregion accessor
+
+  // #region enumMember
+  {
+    code: ['enum Ignored { % }', 'enum Ignored { "%" }'],
+    options: {
+      selector: 'enumMember',
+    },
+  },
+  // #endregion enumMember
 ];
 
 ruleTester.run('naming-convention', rule, {

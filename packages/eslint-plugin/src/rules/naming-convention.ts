@@ -490,6 +490,25 @@ export default util.createRule<Options, MessageIds>({
       },
 
       // #endregion accessor
+
+      // #region enumMember
+
+      TSEnumMember(node): void {
+        const validator = validators.enumMember;
+        if (!validator) {
+          return;
+        }
+
+        const id = node.id;
+        /* istanbul ignore if */ if (!util.isLiteralOrIdentifier(id)) {
+          // shouldn't happen in reality because it's not semantically valid code
+          return;
+        }
+
+        validator(id);
+      },
+
+      // #endregion enumMember
     };
   },
 });
