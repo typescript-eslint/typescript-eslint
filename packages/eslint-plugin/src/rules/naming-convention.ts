@@ -78,9 +78,9 @@ type Options = (
   | Selector<'parameter'>
   | Selector<'property'>
   | Selector<'parameterProperty'>
-  | Selector<'enumMember'>
   | Selector<'method'>
   | Selector<'accessor'>
+  | Selector<'enumMember'>
   | Selector<'class'>
   | Selector<'interface'>
   | Selector<'typeAlias'>
@@ -203,7 +203,6 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'public',
         'readonly',
       ]),
-      ...selectorSchema('enumMember', false),
       ...selectorSchema('method', false, [
         'private',
         'protected',
@@ -218,6 +217,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'static',
         'abstract',
       ]),
+      ...selectorSchema('enumMember', false),
       ...selectorSchema('class', false, ['abstract']),
       ...selectorSchema('interface', false),
       ...selectorSchema('typeAlias', false),
@@ -270,7 +270,31 @@ export default util.createRule<Options, MessageIds>({
 
       const key = node.key;
       /* istanbul ignore if */ if (!util.isLiteralOrIdentifier(key)) {
-        // shouldn't happen due to selector
+        // shouldn't happen due to the selectors that are used
+        return;
+      }
+
+      validator(key, modifiers);
+    }
+
+    function handleMethod(
+      node:
+        | TSESTree.Property
+        | TSESTree.ClassProperty
+        | TSESTree.TSAbstractClassProperty
+        | TSESTree.MethodDefinition
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSMethodSignature,
+      modifiers: Set<Modifiers>,
+    ): void {
+      const validator = validators.method;
+      if (!validator) {
+        return;
+      }
+
+      const key = node.key;
+      /* istanbul ignore if */ if (!util.isLiteralOrIdentifier(key)) {
+        // shouldn't happen due to the selectors that are used
         return;
       }
 
@@ -278,7 +302,8 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      // variable
+      // #region variable
+
       VariableDeclarator(node: TSESTree.VariableDeclarator): void {
         const validator = validators.variable;
         if (!validator) {
@@ -293,7 +318,10 @@ export default util.createRule<Options, MessageIds>({
         });
       },
 
-      // function
+      // #endregion
+
+      // #region function
+
       'FunctionDeclaration, TSDeclareFunction, FunctionExpression'(
         node:
           | TSESTree.FunctionDeclaration
@@ -308,7 +336,10 @@ export default util.createRule<Options, MessageIds>({
         validator(node.id);
       },
 
-      // parameter
+      // #endregion function
+
+      // #region parameter
+
       'FunctionDeclaration, TSDeclareFunction, FunctionExpression, ArrowFunctionExpression'(
         node:
           | TSESTree.FunctionDeclaration
@@ -334,7 +365,10 @@ export default util.createRule<Options, MessageIds>({
         });
       },
 
-      // parameterProperty
+      // #endregion parameter
+
+      // #region parameterProperty
+
       TSParameterProperty(node): void {
         const validator = validators.parameterProperty;
         if (!validator) {
@@ -359,19 +393,28 @@ export default util.createRule<Options, MessageIds>({
         });
       },
 
-      // property
-      'Property[computed = false][method = false][kind = "init"][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"]'(
+      // #endregion parameterProperty
+
+      // #region property
+
+      'Property[computed = false][kind = "init"][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]'(
         node: TSESTree.Property,
       ): void {
         const modifiers = new Set<Modifiers>(['public']);
         handleProperty(node, modifiers);
       },
-      'ClassProperty[computed = false], TSAbstractClassProperty[computed = false]'(
+
+      [[
+        'ClassProperty[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]',
+        'TSAbstractClassProperty[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]',
+      ].join(', ')](
         node: TSESTree.ClassProperty | TSESTree.TSAbstractClassProperty,
       ): void {
         const modifiers = new Set<Modifiers>();
         if (node.accessibility) {
           modifiers.add(node.accessibility);
+        } else {
+          modifiers.add('public');
         }
         if (node.readonly) {
           modifiers.add('readonly');
@@ -385,16 +428,70 @@ export default util.createRule<Options, MessageIds>({
 
         handleProperty(node, modifiers);
       },
+
       'TSPropertySignature[computed = false]'(
         node: TSESTree.TSPropertySignature,
       ): void {
-        const modifiers = new Set<Modifiers>();
+        const modifiers = new Set<Modifiers>(['public']);
         if (node.readonly) {
           modifiers.add('readonly');
         }
 
         handleProperty(node, modifiers);
       },
+
+      // #endregion property
+
+      // #region method
+
+      [[
+        'Property[computed = false][kind = "init"][value.type = "ArrowFunctionExpression"]',
+        'Property[computed = false][kind = "init"][value.type = "FunctionExpression"]',
+        'Property[computed = false][kind = "init"][value.type = "TSEmptyBodyFunctionExpression"]',
+        'TSMethodSignature[computed = false]',
+      ].join(', ')](
+        node: TSESTree.Property | TSESTree.TSMethodSignature,
+      ): void {
+        const modifiers = new Set<Modifiers>(['public']);
+        handleMethod(node, modifiers);
+      },
+
+      [[
+        'ClassProperty[computed = false][value.type = "ArrowFunctionExpression"]',
+        'ClassProperty[computed = false][value.type = "FunctionExpression"]',
+        'ClassProperty[computed = false][value.type = "TSEmptyBodyFunctionExpression"]',
+        'TSAbstractClassProperty[computed = false][value.type = "ArrowFunctionExpression"]',
+        'TSAbstractClassProperty[computed = false][value.type = "FunctionExpression"]',
+        'TSAbstractClassProperty[computed = false][value.type = "TSEmptyBodyFunctionExpression"]',
+        'MethodDefinition[computed = false][kind = "method"]',
+        'TSAbstractMethodDefinition[computed = false][kind = "method"]',
+      ].join(', ')](
+        node:
+          | TSESTree.ClassProperty
+          | TSESTree.TSAbstractClassProperty
+          | TSESTree.MethodDefinition
+          | TSESTree.TSAbstractMethodDefinition,
+      ): void {
+        const modifiers = new Set<Modifiers>();
+        if (node.accessibility) {
+          modifiers.add(node.accessibility);
+        } else {
+          modifiers.add('public');
+        }
+        if (node.static) {
+          modifiers.add('static');
+        }
+        if (
+          node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
+          node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
+        ) {
+          modifiers.add('abstract');
+        }
+
+        handleMethod(node, modifiers);
+      },
+
+      // #endregion method
     };
   },
 });

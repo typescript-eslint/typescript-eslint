@@ -337,54 +337,8 @@ function createInvalidTestCases(
   return newCases;
 }
 
-const variableCases = [
-  'const % = 1;',
-  'let % = 1;',
-  'var % = 1;',
-  'const {%} = {ignored: 1};',
-  'const {% = 2} = {ignored: 1};',
-  'const {...%} = {ignored: 1};',
-  'const [%] = [1];',
-  'const [% = 1] = [1];',
-  'const [...%] = [1];',
-];
-const functionCases = [
-  'function % () {}',
-  '(function % () {});',
-  'declare function % ();',
-];
-const parameterCases = [
-  'function ignored(%) {}',
-  '(function (%) {});',
-  'declare function ignored(%);',
-  'function ignored({%}) {}',
-  'function ignored(...%) {}',
-  'function ignored({% = 1}) {}',
-  'function ignored({...%}) {}',
-  'function ignored([%]) {}',
-  'function ignored([% = 1]) {}',
-  'function ignored([...%]) {}',
-];
-const propertyCases = [
-  'const ignored = { %: 1 };',
-  'const ignored = { "%": 1 };',
-  'interface Ignored { %: string }',
-  'interface Ignored { "%": string }',
-  'type Ignored = { %: string }',
-  'type Ignored = { "%": string }',
-  'class Ignored { private % = 1 }',
-  'class Ignored { private "%" = 1 }',
-  'class Ignored { private readonly % = 1 }',
-  'class Ignored { private static % = 1 }',
-  'class Ignored { private static readonly % = 1 }',
-];
-const parameterPropertyCases = [
-  'class Ignored { constructor(private %) {} }',
-  'class Ignored { constructor(readonly %) {} }',
-  'class Ignored { constructor(private readonly %) {} }',
-];
-
 const cases: Cases = [
+  // #region default
   {
     code: [
       'const % = 1;',
@@ -401,39 +355,73 @@ const cases: Cases = [
       filter: '[iI]gnored',
     },
   },
+  // #endregion default
+
+  // #region variable
   {
-    code: variableCases,
+    code: [
+      'const % = 1;',
+      'let % = 1;',
+      'var % = 1;',
+      'const {%} = {ignored: 1};',
+      'const {% = 2} = {ignored: 1};',
+      'const {...%} = {ignored: 1};',
+      'const [%] = [1];',
+      'const [% = 1] = [1];',
+      'const [...%] = [1];',
+    ],
     options: {
       selector: 'variable',
     },
   },
+  // #endregion variable
+
+  // #region function
   {
-    code: functionCases,
+    code: ['function % () {}', '(function % () {});', 'declare function % ();'],
     options: {
       selector: 'function',
     },
   },
+  // #endregion function
+
+  // #region parameter
   {
-    code: parameterCases,
+    code: [
+      'function ignored(%) {}',
+      '(function (%) {});',
+      'declare function ignored(%);',
+      'function ignored({%}) {}',
+      'function ignored(...%) {}',
+      'function ignored({% = 1}) {}',
+      'function ignored({...%}) {}',
+      'function ignored([%]) {}',
+      'function ignored([% = 1]) {}',
+      'function ignored([...%]) {}',
+    ],
     options: {
       selector: 'parameter',
     },
   },
+  // #endregion parameter
+
+  // #region property
   {
-    code: parameterPropertyCases,
-    options: {
-      selector: 'parameterProperty',
-    },
-  },
-  {
-    code: ['class Ignored { constructor(private readonly %) {} }'],
-    options: {
-      selector: 'parameterProperty',
-      modifiers: ['readonly'],
-    },
-  },
-  {
-    code: propertyCases,
+    code: [
+      'const ignored = { % };',
+      'const ignored = { "%": 1 };',
+      'interface Ignored { % }',
+      'interface Ignored { "%": string }',
+      'type Ignored = { % }',
+      'type Ignored = { "%": string }',
+      'class Ignored { private % }',
+      'class Ignored { private "%" = 1 }',
+      'class Ignored { private readonly % = 1 }',
+      'class Ignored { private static % }',
+      'class Ignored { private static readonly % = 1 }',
+      'class Ignored { abstract % = 1 }',
+      'class Ignored { declare % }',
+    ],
     options: {
       selector: 'property',
     },
@@ -447,6 +435,61 @@ const cases: Cases = [
       modifiers: ['static', 'readonly'],
     },
   },
+  // #endregion property
+
+  // #region parameterProperty
+  {
+    code: [
+      'class Ignored { constructor(private %) {} }',
+      'class Ignored { constructor(readonly %) {} }',
+      'class Ignored { constructor(private readonly %) {} }',
+    ],
+    options: {
+      selector: 'parameterProperty',
+    },
+  },
+  {
+    code: ['class Ignored { constructor(private readonly %) {} }'],
+    options: {
+      selector: 'parameterProperty',
+      modifiers: ['readonly'],
+    },
+  },
+  // #endregion parameterProperty
+
+  // #region method
+  {
+    code: [
+      'const ignored = { %() {} };',
+      'const ignored = { "%"() {} };',
+      'const ignored = { %: () => {} };',
+      'interface Ignored { %(): string }',
+      'interface Ignored { "%"(): string }',
+      'type Ignored = { %(): string }',
+      'type Ignored = { "%"(): string }',
+      'class Ignored { private %() {} }',
+      'class Ignored { private "%"() {} }',
+      'class Ignored { private readonly %() {} }',
+      'class Ignored { private static %() {} }',
+      'class Ignored { private static readonly %() {} }',
+      'class Ignored { private % = () => {} }',
+      'class Ignored { abstract %() }',
+      'class Ignored { declare %() }',
+    ],
+    options: {
+      selector: 'method',
+    },
+  },
+  {
+    code: [
+      'class Ignored { abstract private static %() {}; ignoredDueToModifiers() {}; }',
+    ],
+    options: {
+      selector: 'method',
+      modifiers: ['abstract', 'static'],
+    },
+  },
+  // #endregion method
 ];
 
 ruleTester.run('naming-convention', rule, {
