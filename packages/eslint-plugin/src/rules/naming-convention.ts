@@ -66,6 +66,8 @@ type Selector<TType extends Selectors> = FormatOptions &
 type NormalizedSelector<TType extends Selectors> = FormatOptions &
   SelectorBase<TType> & {
     filter: RegExp | null;
+    // calculated ordering weight based on modifiers
+    weight: number;
   };
 
 // Note that this intentionally does not strictly type the modifiers/types properties.
@@ -617,6 +619,9 @@ function createValidator(
   context: Context,
   configs: Config[],
 ): (node: TSESTree.Identifier | TSESTree.Literal) => void {
+  // make sure the "highest priority" configs are checked first
+  configs = [...configs].sort((a, b) => b.weight - a.weight);
+
   return (
     node: TSESTree.Identifier | TSESTree.Literal,
     modifiers: Set<Modifiers> = new Set<Modifiers>(),
@@ -663,7 +668,8 @@ function createValidator(
         return;
       }
 
-      // it's valid for this config!
+      // it's valid for this config, so we don't need to check any more configs
+      return;
     }
   };
 
@@ -946,12 +952,41 @@ function selectorTypeToMessageString(selectorType: Selectors): string {
   return notCamelCase.charAt(0).toUpperCase() + notCamelCase.slice(1);
 }
 
+const ModifierWeight = ((): Readonly<
+  Record<Modifiers | TypeModifiers, number>
+> => {
+  let i = 0;
+  return {
+    // Modifiers
+    readonly: 1 << i++,
+    static: 1 << i++,
+    public: 1 << i++,
+    protected: 1 << i++,
+    private: 1 << i++,
+    abstract: 1 << i++,
+    // TypeModifiers
+    boolean: 1 << i++,
+    string: 1 << i++,
+    number: 1 << i++,
+    function: 1 << i++,
+    array: 1 << i++,
+  };
+})();
 function normalizeOption<TType extends Selectors>(
   option: Selector<TType>,
 ): NormalizedSelector<TType> {
+  let weight = 0;
+  option.modifiers?.forEach(mod => {
+    weight |= ModifierWeight[mod];
+  });
+  option.types?.forEach(mod => {
+    weight |= ModifierWeight[mod];
+  });
+
   return {
     ...option,
     filter: option.filter !== undefined ? new RegExp(option.filter) : null,
+    weight,
   };
 }
 
