@@ -490,6 +490,30 @@ const cases: Cases = [
     },
   },
   // #endregion method
+
+  // #region accessor
+  {
+    code: [
+      'const ignored = { get %() {} };',
+      'const ignored = { set "%"(ignored) {} };',
+      'class Ignored { private get %() {} }',
+      'class Ignored { private set "%"(ignored) {} }',
+      'class Ignored { private static get %() {} }',
+    ],
+    options: {
+      selector: 'accessor',
+    },
+  },
+  {
+    code: [
+      'class Ignored { private static get %() {}; get ignoredDueToModifiers() {}; }',
+    ],
+    options: {
+      selector: 'accessor',
+      modifiers: ['private', 'static'],
+    },
+  },
+  // #endregion accessor
 ];
 
 ruleTester.run('naming-convention', rule, {

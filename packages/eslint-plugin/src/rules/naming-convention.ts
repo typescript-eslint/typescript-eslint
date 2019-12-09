@@ -255,15 +255,18 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const validators = parseOptions(context);
 
-    function handleProperty(
+    function handleMember(
+      validator: ValidatiorFunction | null,
       node:
-        | TSESTree.TSPropertySignature
         | TSESTree.Property
         | TSESTree.ClassProperty
-        | TSESTree.TSAbstractClassProperty,
+        | TSESTree.TSAbstractClassProperty
+        | TSESTree.TSPropertySignature
+        | TSESTree.MethodDefinition
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSMethodSignature,
       modifiers: Set<Modifiers>,
     ): void {
-      const validator = validators.property;
       if (!validator) {
         return;
       }
@@ -277,28 +280,33 @@ export default util.createRule<Options, MessageIds>({
       validator(key, modifiers);
     }
 
-    function handleMethod(
+    function getMemberModifiers(
       node:
-        | TSESTree.Property
         | TSESTree.ClassProperty
         | TSESTree.TSAbstractClassProperty
         | TSESTree.MethodDefinition
-        | TSESTree.TSAbstractMethodDefinition
-        | TSESTree.TSMethodSignature,
-      modifiers: Set<Modifiers>,
-    ): void {
-      const validator = validators.method;
-      if (!validator) {
-        return;
+        | TSESTree.TSAbstractMethodDefinition,
+    ): Set<Modifiers> {
+      const modifiers = new Set<Modifiers>();
+      if (node.accessibility) {
+        modifiers.add(node.accessibility);
+      } else {
+        modifiers.add('public');
+      }
+      if (node.static) {
+        modifiers.add('static');
+      }
+      if ('readonly' in node && node.readonly) {
+        modifiers.add('readonly');
+      }
+      if (
+        node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
+        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
+      ) {
+        modifiers.add('abstract');
       }
 
-      const key = node.key;
-      /* istanbul ignore if */ if (!util.isLiteralOrIdentifier(key)) {
-        // shouldn't happen due to the selectors that are used
-        return;
-      }
-
-      validator(key, modifiers);
+      return modifiers;
     }
 
     return {
@@ -401,7 +409,7 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.Property,
       ): void {
         const modifiers = new Set<Modifiers>(['public']);
-        handleProperty(node, modifiers);
+        handleMember(validators.property, node, modifiers);
       },
 
       [[
@@ -410,23 +418,8 @@ export default util.createRule<Options, MessageIds>({
       ].join(', ')](
         node: TSESTree.ClassProperty | TSESTree.TSAbstractClassProperty,
       ): void {
-        const modifiers = new Set<Modifiers>();
-        if (node.accessibility) {
-          modifiers.add(node.accessibility);
-        } else {
-          modifiers.add('public');
-        }
-        if (node.readonly) {
-          modifiers.add('readonly');
-        }
-        if (node.static) {
-          modifiers.add('static');
-        }
-        if (node.type === AST_NODE_TYPES.TSAbstractClassProperty) {
-          modifiers.add('abstract');
-        }
-
-        handleProperty(node, modifiers);
+        const modifiers = getMemberModifiers(node);
+        handleMember(validators.property, node, modifiers);
       },
 
       'TSPropertySignature[computed = false]'(
@@ -437,7 +430,7 @@ export default util.createRule<Options, MessageIds>({
           modifiers.add('readonly');
         }
 
-        handleProperty(node, modifiers);
+        handleMember(validators.property, node, modifiers);
       },
 
       // #endregion property
@@ -453,7 +446,7 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.Property | TSESTree.TSMethodSignature,
       ): void {
         const modifiers = new Set<Modifiers>(['public']);
-        handleMethod(node, modifiers);
+        handleMember(validators.method, node, modifiers);
       },
 
       [[
@@ -472,26 +465,31 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.MethodDefinition
           | TSESTree.TSAbstractMethodDefinition,
       ): void {
-        const modifiers = new Set<Modifiers>();
-        if (node.accessibility) {
-          modifiers.add(node.accessibility);
-        } else {
-          modifiers.add('public');
-        }
-        if (node.static) {
-          modifiers.add('static');
-        }
-        if (
-          node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
-          node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
-        ) {
-          modifiers.add('abstract');
-        }
-
-        handleMethod(node, modifiers);
+        const modifiers = getMemberModifiers(node);
+        handleMember(validators.method, node, modifiers);
       },
 
       // #endregion method
+
+      // #region accessor
+
+      [[
+        'Property[computed = false][kind = "get"]',
+        'Property[computed = false][kind = "set"]',
+      ].join(', ')](node: TSESTree.Property): void {
+        const modifiers = new Set<Modifiers>(['public']);
+        handleMember(validators.accessor, node, modifiers);
+      },
+
+      [[
+        'MethodDefinition[computed = false][kind = "get"]',
+        'MethodDefinition[computed = false][kind = "set"]',
+      ].join(', ')](node: TSESTree.MethodDefinition): void {
+        const modifiers = getMemberModifiers(node);
+        handleMember(validators.accessor, node, modifiers);
+      },
+
+      // #endregion accessor
     };
   },
 });
@@ -547,14 +545,11 @@ function getIdentifiersFromPattern(
   }
 }
 
-type ParsedOptions = Record<
-  NonDefaultSelectors,
-  | null
-  | ((
-      node: TSESTree.Identifier | TSESTree.Literal,
-      modifiers?: Set<Modifiers>,
-    ) => void)
->;
+type ValidatiorFunction = (
+  node: TSESTree.Identifier | TSESTree.Literal,
+  modifiers?: Set<Modifiers>,
+) => void;
+type ParsedOptions = Record<NonDefaultSelectors, null | ValidatiorFunction>;
 type Context = TSESLint.RuleContext<MessageIds, Options>;
 type Config = NormalizedSelector<Selectors>;
 function parseOptions(context: Context): ParsedOptions {
