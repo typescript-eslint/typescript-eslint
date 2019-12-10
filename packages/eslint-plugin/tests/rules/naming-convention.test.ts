@@ -2,9 +2,8 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule, {
   MessageIds,
   Options,
-  PredefinedFormats,
+  PredefinedFormatsString,
   Selector,
-  Selectors,
   selectorTypeToMessageString,
 } from '../../src/rules/naming-convention';
 import { RuleTester } from '../RuleTester';
@@ -14,7 +13,7 @@ const ruleTester = new RuleTester({
 });
 
 const formatTestNames: Readonly<Record<
-  PredefinedFormats,
+  PredefinedFormatsString,
   Record<'valid' | 'invalid', string[]>
 >> = {
   camelCase: {
@@ -84,11 +83,11 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
 
   for (const test of cases) {
     for (const [formatLoose, names] of Object.entries(formatTestNames)) {
-      const format = [formatLoose as PredefinedFormats];
+      const format = [formatLoose as PredefinedFormatsString];
       for (const name of names.valid) {
         const createCase = (
           preparedName: string,
-          options: Selector<Selectors>,
+          options: Selector,
         ): TSESLint.ValidTestCase<Options> => ({
           options: [
             {
@@ -188,17 +187,17 @@ function createInvalidTestCases(
 
   for (const test of cases) {
     for (const [formatLoose, names] of Object.entries(formatTestNames)) {
-      const format = [formatLoose as PredefinedFormats];
+      const format = [formatLoose as PredefinedFormatsString];
       for (const name of names.invalid) {
         const createCase = (
           preparedName: string,
-          options: Selector<Selectors>,
+          options: Selector,
           messageId: MessageIds,
           data: Record<string, unknown> = {},
         ): TSESLint.InvalidTestCase<MessageIds, Options> => ({
           options: [
             {
-              ...(options as Options[0]),
+              ...options,
               filter: '[iI]gnored',
             },
           ],
@@ -207,7 +206,10 @@ function createInvalidTestCases(
             .join('\n')}`,
           errors: test.code.map(() => ({
             messageId,
-            ...(test.options.selector !== 'default'
+            ...(test.options.selector !== 'default' &&
+            test.options.selector !== 'variableLike' &&
+            test.options.selector !== 'memberLike' &&
+            test.options.selector !== 'typeLike'
               ? {
                   data: {
                     type: selectorTypeToMessageString(test.options.selector),
@@ -215,7 +217,7 @@ function createInvalidTestCases(
                     ...data,
                   },
                 }
-              : // default will use the correct selector, so don't assert on data
+              : // meta-types will use the correct selector, so don't assert on data shape
                 {}),
           })),
         });

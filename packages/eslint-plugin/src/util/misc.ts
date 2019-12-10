@@ -139,11 +139,16 @@ type RequireKeys<
   TKeys extends keyof TObj
 > = ExcludeKeys<TObj, TKeys> & { [k in TKeys]-?: Exclude<TObj[k], undefined> };
 
+function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
+  return Object.keys(myEnum).filter(x => isNaN(parseInt(x))) as T[];
+}
+
 export {
   arraysAreEqual,
   Equal,
   ExcludeKeys,
   findFirstResult,
+  getEnumNames,
   getNameFromMember,
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,

@@ -14,67 +14,129 @@ type MessageIds =
 
 // #region Options Type Config
 
-type PredefinedFormats =
-  | 'camelCase'
-  | 'strictCamelCase'
-  | 'PascalCase'
-  | 'StrictPascalCase'
-  | 'UPPER_CASE'
-  | 'snake_case';
-type UnderscroreOptions = 'forbid' | 'allow' | 'require';
-interface FormatOptions {
-  leadingUnderscore?: UnderscroreOptions;
-  trailingUnderscore?: UnderscroreOptions;
+enum PredefinedFormats {
+  camelCase = 1 << 0,
+  strictCamelCase = 1 << 1,
+  PascalCase = 1 << 2,
+  StrictPascalCase = 1 << 3,
+  UPPER_CASE = 1 << 4,
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  snake_case = 1 << 5,
+}
+type PredefinedFormatsString = keyof typeof PredefinedFormats;
+
+enum UnderscroreOptions {
+  forbid = 1 << 0,
+  allow = 1 << 1,
+  require = 1 << 2,
+}
+type UnderscroreOptionsString = keyof typeof UnderscroreOptions;
+
+enum Selectors {
+  // variableLike
+  variable = 1 << 0,
+  function = 1 << 1,
+  parameter = 1 << 2,
+
+  // memberLike
+  property = 1 << 3,
+  parameterProperty = 1 << 4,
+  enumMember = 1 << 5,
+  method = 1 << 6,
+  accessor = 1 << 7,
+
+  // typeLike
+  class = 1 << 8,
+  interface = 1 << 9,
+  typeAlias = 1 << 10,
+  enum = 1 << 11,
+  typeParameter = 1 << 12,
+}
+type SelectorsString = keyof typeof Selectors;
+
+enum MetaSelectors {
+  default = -1,
+  variableLike = 0 |
+    Selectors.variable |
+    Selectors.function |
+    Selectors.parameter,
+  memberLike = 0 |
+    Selectors.property |
+    Selectors.parameterProperty |
+    Selectors.enumMember |
+    Selectors.method |
+    Selectors.accessor,
+  typeLike = 0 |
+    Selectors.class |
+    Selectors.interface |
+    Selectors.typeAlias |
+    Selectors.enum |
+    Selectors.typeParameter,
+}
+type MetaSelectorsString = keyof typeof MetaSelectors;
+type IndividualAndMetaSelectorsString = SelectorsString | MetaSelectorsString;
+
+enum Modifiers {
+  readonly = 1 << 0,
+  static = 1 << 1,
+  public = 1 << 2,
+  protected = 1 << 3,
+  private = 1 << 4,
+  abstract = 1 << 5,
+}
+type ModifiersString = keyof typeof Modifiers;
+
+enum TypeModifiers {
+  boolean = 1 << 10,
+  string = 1 << 11,
+  number = 1 << 12,
+  function = 1 << 13,
+  array = 1 << 14,
+}
+type TypeModifiersString = keyof typeof TypeModifiers;
+
+interface Selector<
+  TType extends IndividualAndMetaSelectorsString = IndividualAndMetaSelectorsString
+> {
+  // format options
+  leadingUnderscore?: UnderscroreOptionsString;
+  trailingUnderscore?: UnderscroreOptionsString;
   prefix?: string[];
   suffix?: string[];
-  format: PredefinedFormats[];
-}
-
-type NonDefaultSelectors =
-  | 'variable'
-  | 'function'
-  | 'parameter'
-  | 'property'
-  | 'parameterProperty'
-  | 'enumMember'
-  | 'method'
-  | 'accessor'
-  | 'class'
-  | 'interface'
-  | 'typeAlias'
-  | 'typeParameter'
-  | 'enum';
-type Selectors = 'default' | NonDefaultSelectors;
-type Modifiers =
-  | 'readonly'
-  | 'static'
-  | 'public'
-  | 'protected'
-  | 'private'
-  | 'abstract';
-type TypeModifiers = 'boolean' | 'string' | 'number' | 'function' | 'array';
-
-interface SelectorBase<TType extends Selectors> {
+  format: PredefinedFormatsString[];
+  // selector options
   selector: TType;
-  modifiers?: Modifiers[];
-  types?: TypeModifiers[];
+  modifiers?: ModifiersString[];
+  types?: TypeModifiersString[];
+  filter?: string;
 }
-type Selector<TType extends Selectors> = FormatOptions &
-  SelectorBase<TType> & {
-    filter?: string;
-  };
-type NormalizedSelector<TType extends Selectors> = FormatOptions &
-  SelectorBase<TType> & {
-    filter: RegExp | null;
-    // calculated ordering weight based on modifiers
-    weight: number;
-  };
+interface NormalizedSelector {
+  // format options
+  leadingUnderscore: UnderscroreOptions | null;
+  trailingUnderscore: UnderscroreOptions | null;
+  prefix: string[] | null;
+  suffix: string[] | null;
+  format: PredefinedFormats[];
+  // selector options
+  selector: Selectors | MetaSelectors;
+  modifiers: Modifiers[] | null;
+  types: TypeModifiers[] | null;
+  filter: RegExp | null;
+  // calculated ordering weight based on modifiers
+  modifierWeight: number;
+}
 
 // Note that this intentionally does not strictly type the modifiers/types properties.
 // This is because doing so creates a huge headache, as the rule's code doesn't need to care.
 // The JSON Schema strictly types these properties, so we know the user won't input invalid config.
 type Options = (
-  | Selector<'default'>
+  | // meta selectors
+  Selector<'default'>
+  | Selector<'variableLike'>
+  | Selector<'memberLike'>
+  | Selector<'typeLike'>
+
+  // individual selectors
   | Selector<'variable'>
   | Selector<'function'>
   | Selector<'parameter'>
@@ -86,8 +148,8 @@ type Options = (
   | Selector<'class'>
   | Selector<'interface'>
   | Selector<'typeAlias'>
-  | Selector<'typeParameter'>
   | Selector<'enum'>
+  | Selector<'typeParameter'>
 )[];
 
 // #endregion Options Type Config
@@ -96,7 +158,7 @@ type Options = (
 
 const UNDERSCORE_SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'string',
-  enum: ['forbid', 'allow', 'require'],
+  enum: util.getEnumNames(UnderscroreOptions),
 };
 const PREFIX_SUFFIX_SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'array',
@@ -117,40 +179,30 @@ const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
     type: 'array',
     items: {
       type: 'string',
-      enum: [
-        'camelCase',
-        'strictCamelCase',
-        'PascalCase',
-        'StrictPascalCase',
-        'UPPER_CASE',
-        'snake_case',
-      ],
+      enum: util.getEnumNames(PredefinedFormats),
     },
     minItems: 1,
     additionalItems: false,
-  },
-};
-const SELECTOR_BASE: JSONSchemaProperties = {
-  filter: {
-    type: 'string',
-    minLength: 1,
   },
 };
 const TYPE_MODIFIERS_SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'array',
   items: {
     type: 'string',
-    enum: ['boolean', 'string', 'number', 'function', 'array'],
+    enum: util.getEnumNames(TypeModifiers),
   },
   additionalItems: false,
 };
 function selectorSchema(
-  type: Selectors,
+  type: IndividualAndMetaSelectorsString,
   types: boolean,
-  modifiers?: Modifiers[],
+  modifiers?: ModifiersString[],
 ): JSONSchema.JSONSchema4[] {
   const selector: JSONSchemaProperties = {
-    ...SELECTOR_BASE,
+    filter: {
+      type: 'string',
+      minLength: 1,
+    },
     selector: {
       type: 'string',
       enum: [type],
@@ -187,10 +239,21 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
   minItems: 1,
   items: {
     oneOf: [
-      ...selectorSchema('default', false),
+      ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
+
+      ...selectorSchema('variableLike', false),
       ...selectorSchema('variable', true),
       ...selectorSchema('function', false),
       ...selectorSchema('parameter', true),
+
+      ...selectorSchema('memberLike', false, [
+        'private',
+        'protected',
+        'public',
+        'static',
+        'readonly',
+        'abstract',
+      ]),
       ...selectorSchema('property', true, [
         'private',
         'protected',
@@ -220,11 +283,13 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'abstract',
       ]),
       ...selectorSchema('enumMember', false),
+
+      ...selectorSchema('typeLike', false, ['abstract']),
       ...selectorSchema('class', false, ['abstract']),
       ...selectorSchema('interface', false),
       ...selectorSchema('typeAlias', false),
-      ...selectorSchema('typeParameter', false),
       ...selectorSchema('enum', false),
+      ...selectorSchema('typeParameter', false),
     ],
   },
   additionalItems: false,
@@ -291,21 +356,21 @@ export default util.createRule<Options, MessageIds>({
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
       if (node.accessibility) {
-        modifiers.add(node.accessibility);
+        modifiers.add(Modifiers[node.accessibility]);
       } else {
-        modifiers.add('public');
+        modifiers.add(Modifiers.public);
       }
       if (node.static) {
-        modifiers.add('static');
+        modifiers.add(Modifiers.static);
       }
       if ('readonly' in node && node.readonly) {
-        modifiers.add('readonly');
+        modifiers.add(Modifiers.readonly);
       }
       if (
         node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
       ) {
-        modifiers.add('abstract');
+        modifiers.add(Modifiers.abstract);
       }
 
       return modifiers;
@@ -387,12 +452,12 @@ export default util.createRule<Options, MessageIds>({
 
         const modifiers = new Set<Modifiers>();
         if (node.accessibility !== undefined) {
-          modifiers.add(node.accessibility);
+          modifiers.add(Modifiers[node.accessibility]);
         } else {
-          modifiers.add('public');
+          modifiers.add(Modifiers.public);
         }
         if (node.readonly) {
-          modifiers.add('readonly');
+          modifiers.add(Modifiers.readonly);
         }
 
         const identifiers: TSESTree.Identifier[] = [];
@@ -410,7 +475,7 @@ export default util.createRule<Options, MessageIds>({
       'Property[computed = false][kind = "init"][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]'(
         node: TSESTree.Property,
       ): void {
-        const modifiers = new Set<Modifiers>(['public']);
+        const modifiers = new Set<Modifiers>([Modifiers.public]);
         handleMember(validators.property, node, modifiers);
       },
 
@@ -427,9 +492,9 @@ export default util.createRule<Options, MessageIds>({
       'TSPropertySignature[computed = false]'(
         node: TSESTree.TSPropertySignature,
       ): void {
-        const modifiers = new Set<Modifiers>(['public']);
+        const modifiers = new Set<Modifiers>([Modifiers.public]);
         if (node.readonly) {
-          modifiers.add('readonly');
+          modifiers.add(Modifiers.readonly);
         }
 
         handleMember(validators.property, node, modifiers);
@@ -447,7 +512,7 @@ export default util.createRule<Options, MessageIds>({
       ].join(', ')](
         node: TSESTree.Property | TSESTree.TSMethodSignature,
       ): void {
-        const modifiers = new Set<Modifiers>(['public']);
+        const modifiers = new Set<Modifiers>([Modifiers.public]);
         handleMember(validators.method, node, modifiers);
       },
 
@@ -479,7 +544,7 @@ export default util.createRule<Options, MessageIds>({
         'Property[computed = false][kind = "get"]',
         'Property[computed = false][kind = "set"]',
       ].join(', ')](node: TSESTree.Property): void {
-        const modifiers = new Set<Modifiers>(['public']);
+        const modifiers = new Set<Modifiers>([Modifiers.public]);
         handleMember(validators.accessor, node, modifiers);
       },
 
@@ -570,67 +635,50 @@ type ValidatiorFunction = (
   node: TSESTree.Identifier | TSESTree.Literal,
   modifiers?: Set<Modifiers>,
 ) => void;
-type ParsedOptions = Record<NonDefaultSelectors, null | ValidatiorFunction>;
+type ParsedOptions = Record<SelectorsString, null | ValidatiorFunction>;
 type Context = TSESLint.RuleContext<MessageIds, Options>;
-type Config = NormalizedSelector<Selectors>;
 function parseOptions(context: Context): ParsedOptions {
-  const groupedOptions = new Map<NonDefaultSelectors, Config[]>();
-  const defaultConfig: NormalizedSelector<'default'>[] = [];
-  context.options.forEach(option => {
-    const normalized = normalizeOption(option);
-    if (option.selector === 'default') {
-      defaultConfig.push(normalized as NormalizedSelector<'default'>);
-    } else {
-      const selectors = groupedOptions.get(option.selector) ?? [];
-      selectors.push(normalized);
-      groupedOptions.set(option.selector, selectors);
-    }
-  });
-
-  const parsedOptions: ParsedOptions = {
-    variable: null,
-    function: null,
-    parameter: null,
-    property: null,
-    parameterProperty: null,
-    enumMember: null,
-    method: null,
-    accessor: null,
-    class: null,
-    interface: null,
-    typeAlias: null,
-    typeParameter: null,
-    enum: null,
-  };
-  const selectorTypes = Object.keys(parsedOptions) as NonDefaultSelectors[];
-  selectorTypes.forEach(type => {
-    const validators = groupedOptions.get(type);
-    if (validators) {
-      parsedOptions[type] = createValidator(type, context, validators);
-    } else if (defaultConfig.length > 0) {
-      parsedOptions[type] = createValidator(type, context, defaultConfig);
-    }
-  });
+  const normalizedOptions = context.options.map(opt => normalizeOption(opt));
+  const parsedOptions = util.getEnumNames(Selectors).reduce((acc, k) => {
+    acc[k] = createValidator(k, context, normalizedOptions);
+    return acc;
+  }, {} as ParsedOptions);
 
   return parsedOptions;
 }
 function createValidator(
-  type: Selectors,
+  type: SelectorsString,
   context: Context,
-  configs: Config[],
+  allConfigs: NormalizedSelector[],
 ): (node: TSESTree.Identifier | TSESTree.Literal) => void {
   // make sure the "highest priority" configs are checked first
-  configs = [...configs].sort((a, b) => b.weight - a.weight);
+  const selectorType = Selectors[type];
+  const configs = allConfigs
+    // gather all of the applicable selectors
+    .filter(
+      c =>
+        (c.selector & selectorType) !== 0 ||
+        c.selector === MetaSelectors.default,
+    )
+    .sort((a, b) => {
+      if (a.selector === b.selector) {
+        // in the event of the same selector, order by modifier collection
+        return b.modifierWeight - a.modifierWeight;
+      }
+
+      // check the meta selectors last
+      return b.selector - a.selector;
+    });
 
   return (
     node: TSESTree.Identifier | TSESTree.Literal,
     modifiers: Set<Modifiers> = new Set<Modifiers>(),
   ): void => {
-    // return will break the loop and stop checking configs
-    // it is only used when the name is known to have failed a config.
     const originalName =
       node.type === AST_NODE_TYPES.Identifier ? node.name : `${node.value}`;
 
+    // return will break the loop and stop checking configs
+    // it is only used when the name is known to have failed a config.
     for (const config of configs) {
       if (config.filter?.test(originalName)) {
         // name does not match the filter
@@ -673,12 +721,33 @@ function createValidator(
     }
   };
 
+  // centralises the logic for formatting the report data
+  function formatReportData({
+    affixes,
+    formats,
+    originalName,
+    position,
+  }: {
+    affixes?: string[];
+    formats?: PredefinedFormats[];
+    originalName: string;
+    position?: 'leading' | 'trailing' | 'prefix' | 'suffix';
+  }): Record<string, unknown> {
+    return {
+      type: selectorTypeToMessageString(type),
+      name: originalName,
+      position,
+      affixes: affixes?.join(', '),
+      formats: formats?.map(f => PredefinedFormats[f]).join(', '),
+    };
+  }
+
   /**
    * @returns the name with the underscore removed, if it is valid according to the specified underscore option, null otherwise
    */
   function validateUnderscore(
     position: 'leading' | 'trailing',
-    config: Config,
+    config: NormalizedSelector,
     name: string,
     node: TSESTree.Identifier | TSESTree.Literal,
     originalName: string,
@@ -699,35 +768,33 @@ function createValidator(
         : (): string => name.slice(0, -1);
 
     switch (option) {
-      case 'allow':
+      case UnderscroreOptions.allow:
         // no check - the user doesn't care if it's there or not
         break;
 
-      case 'forbid':
+      case UnderscroreOptions.forbid:
         if (hasUnderscore) {
           context.report({
             node,
             messageId: 'unexpectedUnderscore',
-            data: {
-              type: selectorTypeToMessageString(type),
-              name: originalName,
+            data: formatReportData({
+              originalName,
               position,
-            },
+            }),
           });
           return null;
         }
         break;
 
-      case 'require':
+      case UnderscroreOptions.require:
         if (!hasUnderscore) {
           context.report({
             node,
             messageId: 'missingUnderscore',
-            data: {
-              type: selectorTypeToMessageString(type),
-              name: originalName,
+            data: formatReportData({
+              originalName,
               position,
-            },
+            }),
           });
           return null;
         }
@@ -741,23 +808,23 @@ function createValidator(
    */
   function validateAffix(
     position: 'prefix' | 'suffix',
-    config: Config,
+    config: NormalizedSelector,
     name: string,
     node: TSESTree.Identifier | TSESTree.Literal,
     originalName: string,
   ): string | null {
-    const options = config[position];
-    if (!options || options.length === 0) {
+    const affixes = config[position];
+    if (!affixes || affixes.length === 0) {
       return name;
     }
 
-    for (const option of options) {
+    for (const affix of affixes) {
       const hasAffix =
-        position === 'prefix' ? name.startsWith(option) : name.endsWith(option);
+        position === 'prefix' ? name.startsWith(affix) : name.endsWith(affix);
       const trimAffix =
         position === 'prefix'
-          ? (): string => name.slice(option.length)
-          : (): string => name.slice(0, -option.length);
+          ? (): string => name.slice(affix.length)
+          : (): string => name.slice(0, -affix.length);
 
       if (hasAffix) {
         // matches, so trim it and return
@@ -768,12 +835,11 @@ function createValidator(
     context.report({
       node,
       messageId: 'missingAffix',
-      data: {
-        type: selectorTypeToMessageString(type),
-        name: originalName,
+      data: formatReportData({
+        originalName,
         position,
-        affixes: options.join(', '),
-      },
+        affixes,
+      }),
     });
     return null;
   }
@@ -782,48 +848,49 @@ function createValidator(
    * @returns true if the name is valid according to the `format` option, false otherwise
    */
   function validatePredefinedFormat(
-    config: Config,
+    config: NormalizedSelector,
     name: string,
     node: TSESTree.Identifier | TSESTree.Literal,
     originalName: string,
   ): boolean {
-    if (config.format.length === 0) {
+    const formats = config.format;
+    if (formats.length === 0) {
       return true;
     }
 
-    for (const format of config.format) {
+    for (const format of formats) {
       switch (format) {
-        case 'PascalCase':
+        case PredefinedFormats.PascalCase:
           if (isPascalCase(name)) {
             return true;
           }
           break;
 
-        case 'StrictPascalCase':
+        case PredefinedFormats.StrictPascalCase:
           if (isStrictPascalCase(name)) {
             return true;
           }
           break;
 
-        case 'camelCase':
+        case PredefinedFormats.camelCase:
           if (isCamelCase(name)) {
             return true;
           }
           break;
 
-        case 'strictCamelCase':
+        case PredefinedFormats.strictCamelCase:
           if (isStrictCamelCase(name)) {
             return true;
           }
           break;
 
-        case 'UPPER_CASE':
+        case PredefinedFormats.UPPER_CASE:
           if (isUpperCase(name)) {
             return true;
           }
           break;
 
-        case 'snake_case':
+        case PredefinedFormats.snake_case:
           if (isSnakeCase(name)) {
             return true;
           }
@@ -834,11 +901,10 @@ function createValidator(
     context.report({
       node,
       messageId: 'doesNotMatchFormat',
-      data: {
-        type: selectorTypeToMessageString(type),
-        name: originalName,
-        formats: config.format.join(', '),
-      },
+      data: formatReportData({
+        originalName,
+        formats,
+      }),
     });
     return false;
   }
@@ -947,58 +1013,56 @@ function validateUnderscores(name: string): boolean {
 }
 // #endregion Predefined Format Functions
 
-function selectorTypeToMessageString(selectorType: Selectors): string {
+function selectorTypeToMessageString(selectorType: SelectorsString): string {
   const notCamelCase = selectorType.replace(/([A-Z])/g, ' $1');
   return notCamelCase.charAt(0).toUpperCase() + notCamelCase.slice(1);
 }
 
-const ModifierWeight = ((): Readonly<
-  Record<Modifiers | TypeModifiers, number>
-> => {
-  let i = 0;
-  return {
-    // Modifiers
-    readonly: 1 << i++,
-    static: 1 << i++,
-    public: 1 << i++,
-    protected: 1 << i++,
-    private: 1 << i++,
-    abstract: 1 << i++,
-    // TypeModifiers
-    boolean: 1 << i++,
-    string: 1 << i++,
-    number: 1 << i++,
-    function: 1 << i++,
-    array: 1 << i++,
-  };
-})();
-function normalizeOption<TType extends Selectors>(
-  option: Selector<TType>,
-): NormalizedSelector<TType> {
+function isMetaSelector(
+  selector: IndividualAndMetaSelectorsString,
+): selector is MetaSelectorsString {
+  return selector in MetaSelectors;
+}
+function normalizeOption(
+  option: Selector<IndividualAndMetaSelectorsString>,
+): NormalizedSelector {
   let weight = 0;
   option.modifiers?.forEach(mod => {
-    weight |= ModifierWeight[mod];
+    weight |= Modifiers[mod];
   });
   option.types?.forEach(mod => {
-    weight |= ModifierWeight[mod];
+    weight |= TypeModifiers[mod];
   });
 
   return {
-    ...option,
+    // format options
+    leadingUnderscore:
+      option.leadingUnderscore !== undefined
+        ? UnderscroreOptions[option.leadingUnderscore]
+        : null,
+    trailingUnderscore:
+      option.trailingUnderscore !== undefined
+        ? UnderscroreOptions[option.trailingUnderscore]
+        : null,
+    prefix: option.prefix ?? null,
+    suffix: option.suffix ?? null,
+    format: option.format.map(f => PredefinedFormats[f]),
+    // selector options
+    selector: isMetaSelector(option.selector)
+      ? MetaSelectors[option.selector]
+      : Selectors[option.selector],
+    modifiers: option.modifiers?.map(m => Modifiers[m]) ?? null,
+    types: option.types?.map(t => TypeModifiers[t]) ?? null,
     filter: option.filter !== undefined ? new RegExp(option.filter) : null,
-    weight,
+    // calculated ordering weight based on modifiers
+    modifierWeight: weight,
   };
 }
 
 export {
   MessageIds,
-  Modifiers,
-  NonDefaultSelectors,
-  NormalizedSelector,
   Options,
-  PredefinedFormats,
+  PredefinedFormatsString,
   Selector,
-  Selectors,
   selectorTypeToMessageString,
-  TypeModifiers,
 };
