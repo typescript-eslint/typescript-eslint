@@ -19,9 +19,9 @@ enum PredefinedFormats {
   strictCamelCase = 1 << 1,
   PascalCase = 1 << 2,
   StrictPascalCase = 1 << 3,
-  UPPER_CASE = 1 << 4,
   // eslint-disable-next-line @typescript-eslint/camelcase
-  snake_case = 1 << 5,
+  snake_case = 1 << 4,
+  UPPER_CASE = 1 << 5,
 }
 type PredefinedFormatsString = keyof typeof PredefinedFormats;
 
@@ -95,17 +95,15 @@ enum TypeModifiers {
 }
 type TypeModifiersString = keyof typeof TypeModifiers;
 
-interface Selector<
-  TType extends IndividualAndMetaSelectorsString = IndividualAndMetaSelectorsString
-> {
+interface Selector {
   // format options
+  format: PredefinedFormatsString[];
   leadingUnderscore?: UnderscroreOptionsString;
   trailingUnderscore?: UnderscroreOptionsString;
   prefix?: string[];
   suffix?: string[];
-  format: PredefinedFormatsString[];
   // selector options
-  selector: TType;
+  selector: IndividualAndMetaSelectorsString;
   modifiers?: ModifiersString[];
   types?: TypeModifiersString[];
   filter?: string;
@@ -129,28 +127,7 @@ interface NormalizedSelector {
 // Note that this intentionally does not strictly type the modifiers/types properties.
 // This is because doing so creates a huge headache, as the rule's code doesn't need to care.
 // The JSON Schema strictly types these properties, so we know the user won't input invalid config.
-type Options = (
-  | // meta selectors
-  Selector<'default'>
-  | Selector<'variableLike'>
-  | Selector<'memberLike'>
-  | Selector<'typeLike'>
-
-  // individual selectors
-  | Selector<'variable'>
-  | Selector<'function'>
-  | Selector<'parameter'>
-  | Selector<'property'>
-  | Selector<'parameterProperty'>
-  | Selector<'method'>
-  | Selector<'accessor'>
-  | Selector<'enumMember'>
-  | Selector<'class'>
-  | Selector<'interface'>
-  | Selector<'typeAlias'>
-  | Selector<'enum'>
-  | Selector<'typeParameter'>
-)[];
+type Options = Selector[];
 
 // #endregion Options Type Config
 
@@ -302,8 +279,11 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       category: 'Variables',
-      description: '',
+      description:
+        'Enforces naming conventions for everything across a codebase',
       recommended: false,
+      // technically only requires type checkin if the user uses "type" modifiers
+      requiresTypeChecking: true,
     },
     type: 'suggestion',
     messages: {
@@ -662,12 +642,13 @@ function createValidator(
     )
     .sort((a, b) => {
       if (a.selector === b.selector) {
-        // in the event of the same selector, order by modifier collection
+        // in the event of the same selector, order by modifier weight
+        // sort ascending - the type modifiers are "more important"
         return b.modifierWeight - a.modifierWeight;
       }
 
-      // check the meta selectors last
-      return b.selector - a.selector;
+      // sort descending - the meta selectors are "least important"
+      return a.selector - b.selector;
     });
 
   return (
@@ -1023,9 +1004,7 @@ function isMetaSelector(
 ): selector is MetaSelectorsString {
   return selector in MetaSelectors;
 }
-function normalizeOption(
-  option: Selector<IndividualAndMetaSelectorsString>,
-): NormalizedSelector {
+function normalizeOption(option: Selector): NormalizedSelector {
   let weight = 0;
   option.modifiers?.forEach(mod => {
     weight |= Modifiers[mod];
@@ -1033,6 +1012,10 @@ function normalizeOption(
   option.types?.forEach(mod => {
     weight |= TypeModifiers[mod];
   });
+  // give selectors with a filter the _highest_ priority
+  if (option.filter) {
+    weight |= 1 << 30;
+  }
 
   return {
     // format options

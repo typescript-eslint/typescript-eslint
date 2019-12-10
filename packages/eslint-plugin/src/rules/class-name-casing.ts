@@ -20,6 +20,8 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       recommended: 'error',
     },
+    deprecated: true,
+    replacedBy: ['naming-convention'],
     messages: {
       notPascalCased: "{{friendlyName}} '{{name}}' must be PascalCased.",
     },

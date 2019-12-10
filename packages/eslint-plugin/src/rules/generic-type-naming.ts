@@ -13,6 +13,8 @@ export default util.createRule<Options, MessageIds>({
       // too opinionated to be recommended
       recommended: false,
     },
+    deprecated: true,
+    replacedBy: ['naming-convention'],
     messages: {
       paramNotMatchRule:
         'Type parameter {{name}} does not match rule {{rule}}.',

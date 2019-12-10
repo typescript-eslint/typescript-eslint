@@ -17,6 +17,7 @@ import interfaceNamePrefix from './interface-name-prefix';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
+import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
@@ -93,6 +94,7 @@ export default {
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
+  'naming-convention': namingConvention,
   'no-array-constructor': noArrayConstructor,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,

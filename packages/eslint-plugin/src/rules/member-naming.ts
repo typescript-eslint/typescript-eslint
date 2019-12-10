@@ -23,6 +23,8 @@ export default util.createRule<Options, MessageIds>({
       category: 'Stylistic Issues',
       recommended: false,
     },
+    deprecated: true,
+    replacedBy: ['naming-convention'],
     messages: {
       incorrectName:
         '{{accessibility}} property {{name}} should match {{convention}}.',

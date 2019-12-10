@@ -30,6 +30,8 @@ export default util.createRule<Options, MessageIds>({
       category: 'Stylistic Issues',
       recommended: 'error',
     },
+    deprecated: true,
+    replacedBy: ['naming-convention'],
     schema: [schema],
     messages: baseRule.meta.messages,
   },
