@@ -11,6 +11,7 @@ import consistentTypeDefinitions from './consistent-type-definitions';
 import defaultParamLast from './default-param-last';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
+import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
 import funcCallSpacing from './func-call-spacing';
 import genericTypeNaming from './generic-type-naming';
 import indent from './indent';
@@ -92,6 +93,7 @@ export default {
   'default-param-last': defaultParamLast,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
+  'explicit-module-boundary-types': explicitModuleBoundaryTypes,
   'func-call-spacing': funcCallSpacing,
   'generic-type-naming': genericTypeNaming,
   indent: indent,
