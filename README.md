@@ -24,7 +24,7 @@
 - [Can we write rules which leverage type information?](#can-we-write-rules-which-leverage-type-information)
 - [What about Babel and babel-eslint?](#what-about-babel-and-babel-eslint)
 - [How can I help?](#how-can-i-help)
-- [How do I configure my project to use typescript-eslint?](#how-do-i-configure-my-project-to-use-typescript-eslint)
+- [Packages included in this project?](#packages-included-in-this-project)
 - [Package Versions](#package-versions)
 - [Supported TypeScript Version](#supported-typescript-version)
 - [Supported ESLint version](#supported-eslint-version)
@@ -34,11 +34,11 @@
 
 ## Getting Started
 
-The following sections will give you an overview of what this project is, why it exists and how it works at a high level.
+**[You can find our Getting Started Docs Here](./docs/getting-started/README.md)**
 
-**It is very important that you are familiar with these concepts before reporting issues**, so please read them and let us know if you have any feedback.
+The documentation below will give you an overview of what this project is, why it exists and how it works at a high level.
 
-If you are ready to get started you can jump to the package READMEs from here: [#how-do-i-configure-my-project-to-use-typescript-eslint](#how-do-i-configure-my-project-to-use-typescript-eslint)
+**It is very important that you are familiar with these concepts before reporting issues**, so it is a good idea to read them before raising issues.
 
 <br>
 
@@ -195,11 +195,9 @@ All positive contributions are welcome here!
 
 <br>
 
-## How do I configure my project to use `typescript-eslint`?
+## Packages included in this project
 
 Please follow the links below for the packages you care about.
-
-If you are interested in using TypeScript and ESLint together, you will want to check out [`@typescript-eslint/parser`](./packages/parser/) and [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin/) at the very least:
 
 - [`@typescript-eslint/typescript-estree`](./packages/typescript-estree/) - An entirely generic TypeScript parser which takes TypeScript source code and produces an <a href="https://github.com/estree/estree">ESTree</a>-compatible AST</p>
 
