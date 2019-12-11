@@ -10,7 +10,7 @@ There are many different rules that have existed over time, but they have had th
 This rule allows you to enforce conventions for any identifier, using granular selectors to create a fine-grained style guide.
 By default, it enforces nothing.
 
-### Note - this rule only needs type information in specfic cases, detailed below
+### Note - this rule only needs type information in specific cases, detailed below
 
 ## Options
 
@@ -35,9 +35,10 @@ type Options = {
 
   // selector options
   selector: Selector;
+  filter?: string;
+  // the allowed values for these are dependent on the selector - see below
   modifiers?: Modifiers<Selector>[];
   types?: Types<Selector>[];
-  filter?: string;
 }[];
 
 const defaultOptions: Options = [];
@@ -54,7 +55,7 @@ When the format of an identifier is checked, it is checked in the following orde
 1. validate suffix
 1. validate format
 
-At each step, if the identifier matches the options, it the matching part will be removed.
+At each step, if the identifier matches the option, the matching part will be removed.
 For example, if you provide the following formating option: `{ leadingUnderscore: 'allow', prefix: ['I'], format: ['StrictPascalCase'] }`, for the identifier `_IMyInterface`, then the following checks will occur:
 
 1. `name = _IMyInterface`
@@ -65,6 +66,8 @@ For example, if you provide the following formating option: `{ leadingUnderscore
    - Trim prefix - `name = MyInterface`
 1. validate suffix - no check
 1. validate format - pass
+
+One final note is that if the name were to become empty via this trimming process, it is considered to match all `format`s. An example of where this might be useful is for generic type parameters, where you want all names to be prefixed with `T`, but also want to allow for the single character `T` name.
 
 #### `format`
 
@@ -83,7 +86,7 @@ The `leadingUnderscore` / `trailingUnderscore` options control whether leading/t
 
 - `forbid` - a leading/trailing underscore is not allowed at all.
 - `allow` - existence of a leading/trailing underscore is not explicitly enforced.
-- `require` - a leading/trailing underscores must be included.
+- `require` - a leading/trailing underscore must be included.
 
 #### `prefix` / `suffix`
 
@@ -93,19 +96,39 @@ If these are provided, the identifier must start with one of the provided values
 
 ### Selector Options
 
-The selector options determine which names that the formatting options will apply to.
-Each value for `selector` has a set of `types` and `modifiers` that are allowed to be used with it, which are explained below.
+- `selector` (see "Allowed Selectors, Modifiers and Types" below).
+- `filter` accepts a regular expression (anything accepted into `new RegExp(filter)`). It allows you to limit the scope of this configuration to names that match this regex.
+- `modifiers` allows you to specify which modifiers to granularly apply to, such as the accessibility (`private`/`public`/`protected`), or if the thing is `static`, etc.
+  - The name must match _all_ of the modifiers.
+  - For example, if you provide `{ modifiers: ['private', 'static', 'readonly'] }`, then it will only match something that is `private static readonly`, and something that is just `private` will not match.
+- `types` allows you to specify which types to match. This option supports simple, primitive types only (`boolean`, `string`, `number`, `array`, `function`). This lets you do things like enforce that `boolean` variables are prefixed with a verb.
+  - **_NOTE - Using this option will require that you lint with type information._**
+  - `boolean` matches any type assignable to `boolean | null | undefined`
+  - `string` matches any type assignable to `string | null | undefined`
+  - `number` matches any type assignable to `number | null | undefined`
+  - `array` matches any type assignable to `Array<unknown> | null | undefined`
+  - `function` matches any type asignable to `Function | null | undefined`
 
-`modifiers` allows you to specify which modifiers to granularly apply to, such as the accessibility (`private`/`public`/`protected`), or if the thing is `static`, etc. The name must match _all_ of the modifiers. For example, if you provide `{ modifiers: ['private', 'static', 'readonly'] }`, then it will only match something that is `private static readonly`, and something that is just `private` will not match.
+The ordering of selectors does not matter. The implementation will automatically sort the selectors to ensure they match from most-specific to least specific. It will keep checking selectors in that order until it finds one that matches the name.
 
-`types` allows you to specify which types to match. This option supports simple, primitive types only (`boolean`, `string`, `number`, `function`, `array`). This lets you do things like enforce that `boolean` variables are prefixed with a verb.
-**_NOTE - Using this option will require that you lint with type information._**
+For example, if you provide the following config:
 
-`filter` accepts a regular expression (anything accepted into `new RegExp(filter)`). It allows you to limit the scope of this configuration to names that match this regex.
+```ts
+[
+  /* 1 */ { selector: 'default', format: ['camelCase'] },
+  /* 2 */ { selector: 'variable', format: ['snake_case'] },
+  /* 3 */ { selector: 'variable', type: ['boolean'], format: ['UPPER_CASE'] },
+  /* 4 */ { selector: 'variableLike', format: ['PascalCase'] },
+];
+```
 
-#### Allowed Selectors
+Then for the code `const x = 1`, the rule will validate the selectors in the following order: `3`, `2`, `4`, `1`.
+
+#### Allowed Selectors, Modifiers and Types
 
 There are two types of selectors, individual selectors, and grouped selectors.
+
+##### Individual Selectors
 
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
@@ -149,6 +172,8 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
   - Allowed `modifiers`: none.
   - Allowed `types`: none.
 
+##### Group Selectors
+
 Group Selectors are provided for convenience, and essentially bundle up sets of individual selectors.
 
 - `default` - matches everything.
@@ -163,21 +188,6 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 - `typeLike` - matches the same as `class`, `interface`, `typeAlias`, `enum`, `typeParameter`.
   - Allowed `modifiers`: `abstract`.
   - Allowed `types`: none.
-
-The ordering of selectors does not matter. The implementation will automatically sort the selectors to ensure they match from most-specific to least specific. It will keep checking selectors in that order until it finds one that matches the name.
-
-For example, if you provide the following config:
-
-```ts
-[
-  /* 1 */ { selector: 'default', format: ['camelCase'] },
-  /* 2 */ { selector: 'variable', format: ['snake_case'] },
-  /* 3 */ { selector: 'variable', type: ['boolean'], format: ['UPPER_CASE'] },
-  /* 4 */ { selector: 'variableLike', format: ['PascalCase'] },
-];
-```
-
-Then the rule will validate the selectors in the following order: `3`, `2`, `4`, `1`.
 
 ## When Not To Use It
 
