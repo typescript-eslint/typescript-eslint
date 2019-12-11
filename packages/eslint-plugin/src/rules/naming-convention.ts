@@ -162,17 +162,9 @@ const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
     additionalItems: false,
   },
 };
-const TYPE_MODIFIERS_SCHEMA: JSONSchema.JSONSchema4 = {
-  type: 'array',
-  items: {
-    type: 'string',
-    enum: util.getEnumNames(TypeModifiers),
-  },
-  additionalItems: false,
-};
 function selectorSchema(
-  type: IndividualAndMetaSelectorsString,
-  types: boolean,
+  selectorString: IndividualAndMetaSelectorsString,
+  allowType: boolean,
   modifiers?: ModifiersString[],
 ): JSONSchema.JSONSchema4[] {
   const selector: JSONSchemaProperties = {
@@ -182,7 +174,7 @@ function selectorSchema(
     },
     selector: {
       type: 'string',
-      enum: [type],
+      enum: [selectorString],
     },
   };
   if (modifiers && modifiers.length > 0) {
@@ -195,8 +187,15 @@ function selectorSchema(
       additionalItems: false,
     };
   }
-  if (types) {
-    selector.types = TYPE_MODIFIERS_SCHEMA;
+  if (allowType) {
+    selector.types = {
+      type: 'array',
+      items: {
+        type: 'string',
+        enum: util.getEnumNames(TypeModifiers),
+      },
+      additionalItems: false,
+    };
   }
 
   return [
@@ -671,6 +670,11 @@ function createValidator(
         continue;
       }
 
+      if (!isCorrectType(node, config, context)) {
+        // is not the correct type
+        continue;
+      }
+
       let name: string | null = originalName;
 
       name = validateUnderscore('leading', config, name, node, originalName);
@@ -1012,6 +1016,7 @@ function normalizeOption(option: Selector): NormalizedSelector {
   option.types?.forEach(mod => {
     weight |= TypeModifiers[mod];
   });
+
   // give selectors with a filter the _highest_ priority
   if (option.filter) {
     weight |= 1 << 30;
@@ -1035,11 +1040,58 @@ function normalizeOption(option: Selector): NormalizedSelector {
       ? MetaSelectors[option.selector]
       : Selectors[option.selector],
     modifiers: option.modifiers?.map(m => Modifiers[m]) ?? null,
-    types: option.types?.map(t => TypeModifiers[t]) ?? null,
+    types: option.types?.map(m => TypeModifiers[m]) ?? null,
     filter: option.filter !== undefined ? new RegExp(option.filter) : null,
     // calculated ordering weight based on modifiers
     modifierWeight: weight,
   };
+}
+
+function isCorrectType(
+  node: TSESTree.Node,
+  config: NormalizedSelector,
+  context: Context,
+): boolean {
+  if (config.types === null) {
+    return true;
+  }
+
+  const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
+  const checker = program.getTypeChecker();
+  const tsNode = esTreeNodeToTSNodeMap.get(node);
+  const type = checker.getTypeAtLocation(tsNode);
+  const typeString = checker.typeToString(
+    // this will resolve things like true => boolean, 'a' => string and 1 => number
+    checker.getWidenedType(checker.getBaseTypeOfLiteralType(type)),
+  );
+
+  for (const allowedType of config.types) {
+    switch (allowedType) {
+      case TypeModifiers.array:
+        // TODO
+        break;
+
+      case TypeModifiers.function:
+        // TODO
+        break;
+
+      case TypeModifiers.boolean:
+      case TypeModifiers.number:
+      case TypeModifiers.string: {
+        const allowedTypeString = TypeModifiers[allowedType];
+        if (
+          typeString === `${allowedTypeString}` ||
+          typeString === `${allowedTypeString} | null` ||
+          typeString === `${allowedTypeString} | null | undefined`
+        ) {
+          return true;
+        }
+        break;
+      }
+    }
+  }
+
+  return false;
 }
 
 export {

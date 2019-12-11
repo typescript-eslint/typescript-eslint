@@ -6,11 +6,18 @@ import rule, {
   Selector,
   selectorTypeToMessageString,
 } from '../../src/rules/naming-convention';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
+
+// only need parserOptions for the `type` option tests
+const rootDir = getFixturesRootDir();
+const parserOptions = {
+  tsconfigRootDir: rootDir,
+  project: './tsconfig.json',
+};
 
 const formatTestNames: Readonly<Record<
   PredefinedFormatsString,
@@ -91,7 +98,7 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
         ): TSESLint.ValidTestCase<Options> => ({
           options: [
             {
-              ...(options as Options[0]),
+              ...options,
               filter: '[iI]gnored',
             },
           ],
@@ -528,6 +535,97 @@ const cases: Cases = [
 ];
 
 ruleTester.run('naming-convention', rule, {
-  valid: createValidTestCases(cases),
-  invalid: createInvalidTestCases(cases),
+  valid: [
+    ...createValidTestCases(cases),
+    {
+      code: `
+        declare const string_camelCase: string;
+        declare const string_camelCase: string | null;
+        declare const string_camelCase: string | null | undefined;
+        declare const string_camelCase: 'a' | null | undefined;
+        declare const string_camelCase: string | 'a' | null | undefined;
+
+        declare const number_camelCase: number;
+        declare const number_camelCase: number | null;
+        declare const number_camelCase: number | null | undefined;
+        declare const number_camelCase: 1 | null | undefined;
+        declare const number_camelCase: number | 2 | null | undefined;
+
+        declare const boolean_camelCase: boolean;
+        declare const boolean_camelCase: boolean | null;
+        declare const boolean_camelCase: boolean | null | undefined;
+        declare const boolean_camelCase: true | null | undefined;
+        declare const boolean_camelCase: false | null | undefined;
+        declare const boolean_camelCase: true | false | null | undefined;
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'variable',
+          types: ['string'],
+          format: ['camelCase'],
+          prefix: ['string_'],
+        },
+        {
+          selector: 'variable',
+          types: ['number'],
+          format: ['camelCase'],
+          prefix: ['number_'],
+        },
+        {
+          selector: 'variable',
+          types: ['boolean'],
+          format: ['camelCase'],
+          prefix: ['boolean_'],
+        },
+      ],
+    },
+  ],
+  invalid: [
+    ...createInvalidTestCases(cases),
+    {
+      code: `
+        declare const string_camelCase: string;
+        declare const string_camelCase: string | null;
+        declare const string_camelCase: string | null | undefined;
+        declare const string_camelCase: 'a' | null | undefined;
+        declare const string_camelCase: string | 'a' | null | undefined;
+
+        declare const number_camelCase: number;
+        declare const number_camelCase: number | null;
+        declare const number_camelCase: number | null | undefined;
+        declare const number_camelCase: 1 | null | undefined;
+        declare const number_camelCase: number | 2 | null | undefined;
+
+        declare const boolean_camelCase: boolean;
+        declare const boolean_camelCase: boolean | null;
+        declare const boolean_camelCase: boolean | null | undefined;
+        declare const boolean_camelCase: true | null | undefined;
+        declare const boolean_camelCase: false | null | undefined;
+        declare const boolean_camelCase: true | false | null | undefined;
+      `,
+      options: [
+        {
+          selector: 'variable',
+          types: ['string'],
+          format: ['snake_case'],
+          prefix: ['string_'],
+        },
+        {
+          selector: 'variable',
+          types: ['number'],
+          format: ['snake_case'],
+          prefix: ['number_'],
+        },
+        {
+          selector: 'variable',
+          types: ['boolean'],
+          format: ['snake_case'],
+          prefix: ['boolean_'],
+        },
+      ],
+      parserOptions,
+      errors: Array(16).fill({ messageId: 'doesNotMatchFormat' }),
+    },
+  ],
 });
