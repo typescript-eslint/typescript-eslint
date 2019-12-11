@@ -652,24 +652,24 @@ ruleTester.run('naming-convention', rule, {
     ...createInvalidTestCases(cases),
     {
       code: `
-        declare const string_camelCase: string;
-        declare const string_camelCase: string | null;
-        declare const string_camelCase: string | null | undefined;
-        declare const string_camelCase: 'a' | null | undefined;
-        declare const string_camelCase: string | 'a' | null | undefined;
+        declare const string_camelCase01: string;
+        declare const string_camelCase02: string | null;
+        declare const string_camelCase03: string | null | undefined;
+        declare const string_camelCase04: 'a' | null | undefined;
+        declare const string_camelCase05: string | 'a' | null | undefined;
 
-        declare const number_camelCase: number;
-        declare const number_camelCase: number | null;
-        declare const number_camelCase: number | null | undefined;
-        declare const number_camelCase: 1 | null | undefined;
-        declare const number_camelCase: number | 2 | null | undefined;
+        declare const number_camelCase06: number;
+        declare const number_camelCase07: number | null;
+        declare const number_camelCase08: number | null | undefined;
+        declare const number_camelCase09: 1 | null | undefined;
+        declare const number_camelCase10: number | 2 | null | undefined;
 
-        declare const boolean_camelCase: boolean;
-        declare const boolean_camelCase: boolean | null;
-        declare const boolean_camelCase: boolean | null | undefined;
-        declare const boolean_camelCase: true | null | undefined;
-        declare const boolean_camelCase: false | null | undefined;
-        declare const boolean_camelCase: true | false | null | undefined;
+        declare const boolean_camelCase11: boolean;
+        declare const boolean_camelCase12: boolean | null;
+        declare const boolean_camelCase13: boolean | null | undefined;
+        declare const boolean_camelCase14: true | null | undefined;
+        declare const boolean_camelCase15: false | null | undefined;
+        declare const boolean_camelCase16: true | false | null | undefined;
       `,
       options: [
         {
@@ -693,6 +693,47 @@ ruleTester.run('naming-convention', rule, {
       ],
       parserOptions,
       errors: Array(16).fill({ messageId: 'doesNotMatchFormat' }),
+    },
+    {
+      code: `
+        declare const function_camelCase1: (() => void);
+        declare const function_camelCase2: (() => void) | null;
+        declare const function_camelCase3: (() => void) | null | undefined;
+        declare const function_camelCase4: (() => void) | (() => string) | null | undefined;
+      `,
+      options: [
+        {
+          selector: 'variable',
+          types: ['function'],
+          format: ['snake_case'],
+          prefix: ['function_'],
+        },
+      ],
+      parserOptions,
+      errors: Array(4).fill({ messageId: 'doesNotMatchFormat' }),
+    },
+    {
+      code: `
+        declare const array_camelCase1: Array<number>;
+        declare const array_camelCase2: ReadonlyArray<number> | null;
+        declare const array_camelCase3: number[] | null | undefined;
+        declare const array_camelCase4: readonly number[] | null | undefined;
+        declare const array_camelCase5: number[] | (number | string)[] | null | undefined;
+        declare const array_camelCase6: [] | null | undefined;
+        declare const array_camelCase7: [number] | null | undefined;
+
+        declare const array_camelCase8: readonly number[] | Array<string> | [boolean] | null | undefined;
+      `,
+      options: [
+        {
+          selector: 'variable',
+          types: ['array'],
+          format: ['snake_case'],
+          prefix: ['array_'],
+        },
+      ],
+      parserOptions,
+      errors: Array(8).fill({ messageId: 'doesNotMatchFormat' }),
     },
   ],
 });

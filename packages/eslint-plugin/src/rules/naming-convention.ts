@@ -4,6 +4,7 @@ import {
   TSESTree,
   TSESLint,
 } from '@typescript-eslint/experimental-utils';
+import ts from 'typescript';
 import * as util from '../util';
 
 type MessageIds =
@@ -1138,31 +1139,39 @@ function isCorrectType(
   const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
   const checker = program.getTypeChecker();
   const tsNode = esTreeNodeToTSNodeMap.get(node);
-  const type = checker.getTypeAtLocation(tsNode);
-  const typeString = checker.typeToString(
-    // this will resolve things like true => boolean, 'a' => string and 1 => number
-    checker.getWidenedType(checker.getBaseTypeOfLiteralType(type)),
-  );
+  const type = checker
+    .getTypeAtLocation(tsNode)
+    // remove null and undefined from the type, as we don't care about it here
+    .getNonNullableType();
 
   for (const allowedType of config.types) {
     switch (allowedType) {
       case TypeModifiers.array:
-        // TODO
+        if (
+          isAllTypesMatch(
+            type,
+            t => checker.isArrayType(t) || checker.isTupleType(t),
+          )
+        ) {
+          return true;
+        }
         break;
 
       case TypeModifiers.function:
-        // TODO
+        if (isAllTypesMatch(type, t => t.getCallSignatures().length > 0)) {
+          return true;
+        }
         break;
 
       case TypeModifiers.boolean:
       case TypeModifiers.number:
       case TypeModifiers.string: {
+        const typeString = checker.typeToString(
+          // this will resolve things like true => boolean, 'a' => string and 1 => number
+          checker.getWidenedType(checker.getBaseTypeOfLiteralType(type)),
+        );
         const allowedTypeString = TypeModifiers[allowedType];
-        if (
-          typeString === `${allowedTypeString}` ||
-          typeString === `${allowedTypeString} | null` ||
-          typeString === `${allowedTypeString} | null | undefined`
-        ) {
+        if (typeString === allowedTypeString) {
           return true;
         }
         break;
@@ -1171,6 +1180,20 @@ function isCorrectType(
   }
 
   return false;
+}
+
+/**
+ * @returns `true` if the type (or all union types) in the given type return true for the callback
+ */
+function isAllTypesMatch(
+  type: ts.Type,
+  cb: (type: ts.Type) => boolean,
+): boolean {
+  if (type.isUnion()) {
+    return type.types.every(t => cb(t));
+  }
+
+  return cb(type);
 }
 
 export {
