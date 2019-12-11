@@ -358,6 +358,16 @@ const cases: Cases = [
       'interface Ignored { %: string }',
       'type Ignored = { %: string }',
       'class Ignored { private % = 1 }',
+      'class Ignored { constructor(private %) {} }',
+      'class Ignored { private %() {} }',
+      'const ignored = { %() {} };',
+      'class Ignored { private get %() {} }',
+      'enum Ignored { % }',
+      'abstract class % {}',
+      'interface % { }',
+      'type % = { };',
+      'enum % {}',
+      'interface Ignored<%> extends Ignored<string> {}',
     ],
     options: {
       selector: 'default',
@@ -532,6 +542,63 @@ const cases: Cases = [
     },
   },
   // #endregion enumMember
+
+  // #region class
+  {
+    code: ['class % {}', 'abstract class % {}', 'const ignored = class % {}'],
+    options: {
+      selector: 'class',
+    },
+  },
+  {
+    code: ['abstract class % {}; class ignoredDueToModifier {}'],
+    options: {
+      selector: 'class',
+      modifiers: ['abstract'],
+    },
+  },
+  // #endregion class
+
+  // #region interface
+  {
+    code: ['interface % {}'],
+    options: {
+      selector: 'interface',
+    },
+  },
+  // #endregion interface
+
+  // #region typeAlias
+  {
+    code: ['type % = {};', 'type % = 1;'],
+    options: {
+      selector: 'typeAlias',
+    },
+  },
+  // #endregion typeAlias
+
+  // #region enum
+  {
+    code: ['enum % {}'],
+    options: {
+      selector: 'enum',
+    },
+  },
+  // #endregion enum
+
+  // #region typeParameter
+  {
+    code: [
+      'class Ignored<%> {}',
+      'function ignored<%>() {}',
+      'type Ignored<%> = { ignored: % };',
+      'interface Ignored<%> extends Ignored<string> {}',
+    ],
+    options: {
+      selector: 'typeParameter',
+    },
+  },
+  // #endregion typeParameter
 ];
 
 ruleTester.run('naming-convention', rule, {

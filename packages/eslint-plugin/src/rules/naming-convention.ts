@@ -41,9 +41,9 @@ enum Selectors {
   // memberLike
   property = 1 << 3,
   parameterProperty = 1 << 4,
-  enumMember = 1 << 5,
-  method = 1 << 6,
-  accessor = 1 << 7,
+  method = 1 << 5,
+  accessor = 1 << 6,
+  enumMember = 1 << 7,
 
   // typeLike
   class = 1 << 8,
@@ -555,6 +555,85 @@ export default util.createRule<Options, MessageIds>({
       },
 
       // #endregion enumMember
+
+      // #region class
+
+      'ClassDeclaration, ClassExpression'(
+        node: TSESTree.ClassDeclaration | TSESTree.ClassDeclaration,
+      ): void {
+        const validator = validators.class;
+        if (!validator) {
+          return;
+        }
+
+        const id = node.id;
+        if (id === null) {
+          return;
+        }
+
+        const modifiers = new Set<Modifiers>();
+        if (node.abstract) {
+          modifiers.add(Modifiers.abstract);
+        }
+
+        validator(id, modifiers);
+      },
+
+      // #endregion class
+
+      // #region interface
+
+      TSInterfaceDeclaration(node): void {
+        const validator = validators.interface;
+        if (!validator) {
+          return;
+        }
+
+        validator(node.id);
+      },
+
+      // #endregion interface
+
+      // #region typeAlias
+
+      TSTypeAliasDeclaration(node): void {
+        const validator = validators.typeAlias;
+        if (!validator) {
+          return;
+        }
+
+        validator(node.id);
+      },
+
+      // #endregion typeAlias
+
+      // #region enum
+
+      TSEnumDeclaration(node): void {
+        const validator = validators.enum;
+        if (!validator) {
+          return;
+        }
+
+        validator(node.id);
+      },
+
+      // #endregion enum
+
+      // #region typeParameter
+
+      'TSTypeParameterDeclaration > TSTypeParameter'(
+        node: TSESTree.TSTypeParameter,
+      ): void {
+        const validator = validators.typeParameter;
+        if (!validator) {
+          return;
+        }
+
+        validator(node.name);
+      },
+
+      // #endregion typeParameter
     };
   },
 });
