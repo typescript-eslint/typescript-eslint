@@ -101,8 +101,10 @@ If these are provided, the identifier must start with one of the provided values
 - `modifiers` allows you to specify which modifiers to granularly apply to, such as the accessibility (`private`/`public`/`protected`), or if the thing is `static`, etc.
   - The name must match _all_ of the modifiers.
   - For example, if you provide `{ modifiers: ['private', 'static', 'readonly'] }`, then it will only match something that is `private static readonly`, and something that is just `private` will not match.
-- `types` allows you to specify which types to match. This option supports simple, primitive types only (`boolean`, `string`, `number`, `array`, `function`). This lets you do things like enforce that `boolean` variables are prefixed with a verb.
+- `types` allows you to specify which types to match. This option supports simple, primitive types only (`boolean`, `string`, `number`, `array`, `function`).
+  - The name must match _one_ of the types.
   - **_NOTE - Using this option will require that you lint with type information._**
+  - For example, this lets you do things like enforce that `boolean` variables are prefixed with a verb.
   - `boolean` matches any type assignable to `boolean | null | undefined`
   - `string` matches any type assignable to `string | null | undefined`
   - `number` matches any type assignable to `number | null | undefined`
@@ -188,6 +190,124 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 - `typeLike` - matches the same as `class`, `interface`, `typeAlias`, `enum`, `typeParameter`.
   - Allowed `modifiers`: `abstract`.
   - Allowed `types`: none.
+
+## Examples
+
+### Enforce that all variables, functions and properties follow are camelCase
+
+```json
+{
+  "@typescript-eslint/naming-conventions": [
+    "error",
+    { "selector": "variableLike", "format": ["camelCase"] }
+  ]
+}
+```
+
+### Enforce that private members are prefixed with an underscore
+
+```json
+{
+  "@typescript-eslint/naming-conventions": [
+    "error",
+    {
+      "selector": "memberLike",
+      "modifier": ["private"],
+      "format": ["camelCase"],
+      "leadingUnderscore": "require"
+    }
+  ]
+}
+```
+
+### Enforce that boolean variables are prefixed with an allowed verb
+
+```json
+{
+  "@typescript-eslint/naming-conventions": [
+    "error",
+    {
+      "selector": "variable",
+      "types": ["boolean"],
+      "format": ["PascalCase"],
+      "prefix": ["is", "should", "has", "can", "did", "will"]
+    }
+  ]
+}
+```
+
+### Enforce that all variables are either in camelCase or UPPER_CASE
+
+```json
+{
+  "@typescript-eslint/naming-conventions": [
+    "error",
+    {
+      "selector": "variable",
+      "format": ["camelCase", "UPPER_CASE"]
+    }
+  ]
+}
+```
+
+### Enforce that type parameters (generics) are prefixed with `T`
+
+```json
+{
+  "@typescript-eslint/naming-conventions": [
+    "error",
+    {
+      "selector": "typeParameter",
+      "format": ["PascalCase"],
+      "prefix": ["T"]
+    }
+  ]
+}
+```
+
+### Enforce the codebase follows eslint's `camelcase` conventions
+
+```json
+{
+  "@typescript-eslint/naming-conventions": [
+    "error",
+    {
+      "selector": "default",
+      "format": ["camelCase"]
+    },
+
+    {
+      "selector": "variableLike",
+      "format": ["camelCase"]
+    },
+    {
+      "selector": "variable",
+      "format": ["camelCase", "UPPER_CASE"]
+    },
+    {
+      "selector": "parameter",
+      "format": ["camelCase"],
+      "leadingUnderscore": "allow"
+    },
+
+    {
+      "selector": "memberLike",
+      "format": ["camelCase"]
+    },
+    {
+      "selector": "memberLike",
+      "modifiers": ["private"],
+      "format": ["camelCase"],
+      "leadingUnderscore": "require"
+    },
+
+    {
+      "selector": "typeLike",
+      "format": ["PascalCase"]
+    }
+  ]
+}
+```
 
 ## When Not To Use It
 
