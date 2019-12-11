@@ -51,5 +51,10 @@
     "@types/glob": "^7.1.1",
     "@typescript-eslint/shared-fixtures": "2.11.0",
     "glob": "*"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   }
 }
