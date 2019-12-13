@@ -34,7 +34,7 @@
 
 ## Getting Started
 
-**[You can find our Getting Started Docs Here](./docs/getting-started/README.md)**
+**[You can find our Getting Started docs here](./docs/getting-started/README.md)**
 
 The documentation below will give you an overview of what this project is, why it exists and how it works at a high level.
 

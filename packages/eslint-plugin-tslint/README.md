@@ -13,7 +13,7 @@
 ## Installation
 
 ```sh
-npm i @typescript-eslint/eslint-plugin-tslint --save-dev
+yarn add -D @typescript-eslint/eslint-plugin-tslint
 ```
 
 ## Usage

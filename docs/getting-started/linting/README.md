@@ -14,11 +14,14 @@ $ yarn add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
 
 Next, create a `.eslintrc.js` config file in the root of your project, and populate it with the following:
 
+<!-- prettier-ignore -->
 ```js
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: [
+    '@typescript-eslint',
+  ],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -75,75 +78,90 @@ That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within t
 
 You can also get results in realtime inside most IDEs via a plugin - just search your IDE's extension store.
 
-## Getting advanced with type-aware rules
+## Next Steps
 
-The parser you configured earlier has a little secret. Under the hood, it actually just uses TypeScript's own APIs to parse the files. This means that in the right circumstance, we can access all of the type information that TypeScript knows about your codebase.
+With that configured you can now start to delve into the wide and extensive ESLint ecosystem of plugins and configs.
 
-So how can we tap into this? There are two small changes you need to make to your config file:
+### Extending your TypeScript linting with Type-Aware Rules
 
-```diff
- module.exports = {
-   root: true,
-   parser: '@typescript-eslint/parser',
-+  parserOptions: {
-+    tsconfigRootDir: __dirname,
-+    project: ['./tsconfig.json'],
-+  },
-   plugins: ['@typescript-eslint'],
-   extends: [
-     'eslint:recommended',
-     'plugin:@typescript-eslint/eslint-recommended',
-     'plugin:@typescript-eslint/recommended',
-+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-   ],
- };
-```
+We have a lot of awesome rules which utilise the power of TypeScript's type information. They require a little bit of extra setup beyond this first step, [so visit the next page to see how to set this up.](./TYPED_LINTING.md)
 
-The first change is adding the `parserOptions` configuration:
+### ESLint Configs
 
-- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory.
-- `parserOptions.project` tells our parser the relative path where your project's `tsconfig.json` is.
-  - If you have a complex setup with multiple tsconfigs, such as in a monorepo, see [our docs on configuring a monorepo](./MONOREPO.md).
-- `plugin:@typescript-eslint/recommended-requiring-type-checking` is another recommended configuration we provide. This one contains rules that specifically require type information.
+There are many configuration packages in the ecosystem - these packages that exist solely to provide a comprehensive base config for you, with the intention that you add the config and it gives you an opinionated setup. A few popular all-in-one-configs are:
 
-With that done, simply run the same lint command you ran before. You will see new rules reporting errors based on type information!
+- Airbnb's eslint config - [`eslint-config-airbnb-typescript`](https://www.npmjs.com/package/eslint-config-airbnb-typescript).
+- Standard - [`eslint-config-standard-with-typescript`](https://www.npmjs.com/package/eslint-config-standard-with-typescript).
 
-_But wait_ - I hear you exclaim - _why would you ever not want type-aware rules?_
-
-Well (for full disclosure) there is a catch; by including `parserOptions.project` in your config, you are essentially asking TypeScript to do a build of your project before ESLint can do its linting. For small projects this takes a negligable amount of time (a few seconds); for large projects, it can take longer (30s or more).
-
-Most of our users are fine with this, as they think the power of type-aware static analysis is worth it.
-Additionally, most users primarily consume lint errors via IDE plugins which, through some caching magic, do not suffer the same penalties. This means that generally they usually only run a complete lint before a push, or via their CI, where the extra time really doesn't matter.
-
-We strongly recommend you do use it, but the above information is included so that you can make your own, informed decision.
-
-### Troubleshooting / FAQ
-
-#### I get errors telling me "The file must be included in at least one of the projects provided"
-
-This error means that the file that's being linted is not included in any of the tsconfig files you provided us. A lot of the time this happens when users have test files or similar that are not included.
-
-To fix this, simply make sure the `include` option in your tsconfig includes every single file you want to lint.
-
-One way to easily fix this is to create a new tsconfig file, called `tsconfig.eslint.json`, which looks something like the following config. Make sure to update your `.eslintrc.js` so it points at this tsconfig!
-
-```jsonc
-{
-  // extend the base config to share compilerOptions
-  "extends": "./tsconfig.json",
-  // include all files to be linted
-  "include": ["src", "tests", "tools"]
-}
-```
-
-#### I use a framework (like Vue) that requires custom extensions, how can I make it work?
-
-You can use `parserOptions.extraFileExtensions` to specify an array of non-typescript extensions to allow, for example:
+To use one of these complete config packages, you would replace the `extends` with one of these, for example:
 
 ```diff
- parserOptions: {
-   tsconfigRootDir: __dirname,
-   project: ['./tsconfig.json'],
-+  extraFileExtensions: ['.vue'],
- },
+  module.exports = {
+    root: true,
+    parser: '@typescript-eslint/parser',
+    plugins: [
+      '@typescript-eslint',
+    ],
+    extends: [
+-     'eslint:recommended',
+-     'plugin:@typescript-eslint/eslint-recommended',
+-     'plugin:@typescript-eslint/recommended',
++     'airbnb-typescript',
+    ],
+  };
 ```
+
+#### Usage with prettier
+
+If you use [`prettier`](https://www.npmjs.com/package/prettier), there is also a helpful config to help ensure ESLint doesn't report on formatting issues that prettier will fix: [`eslint-config-prettier`](https://www.npmjs.com/package/eslint-config-prettier).
+
+Using this config is as simple as adding it to the end of your `extends`:
+
+```diff
+  module.exports = {
+    root: true,
+    parser: '@typescript-eslint/parser',
+    plugins: [
+      '@typescript-eslint',
+    ],
+    extends: [
+      'eslint:recommended',
+      'plugin:@typescript-eslint/eslint-recommended',
+      'plugin:@typescript-eslint/recommended',
++     'prettier/@typescript-eslint',
+    ],
+  };
+```
+
+### Plugins
+
+There are many plugins, each covering a different slice of the JS development world. Below are just a few examples, but there are [many, many more](https://www.npmjs.com/search?q=eslint-plugin).
+
+- Jest testing: [`eslint-plugin-jest`](https://www.npmjs.com/package/eslint-plugin-jest)
+- ESLint comment restrictions: [`eslint-plugin-eslint-comments`](https://www.npmjs.com/package/eslint-plugin-eslint-comments)
+- Import/export conventions : [`eslint-plugin-eslint-comments`](https://www.npmjs.com/package/eslint-plugin-import)
+- React best practices: [`eslint-plugin-react`](https://www.npmjs.com/package/eslint-plugin-react) and [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks)
+- NodeJS best practices: [`eslint-plugin-node`](https://www.npmjs.com/package/eslint-plugin-node)
+
+Every plugin that is out there includes documentation on the various rules they offer, as well as recommended their own recommended configurations (just like we provide). You can add a plugin and a recommended config as follows:
+
+```diff
+  module.exports = {
+    root: true,
+    parser: '@typescript-eslint/parser',
+    plugins: [
+      '@typescript-eslint',
++     'jest',
+    ],
+    extends: [
+      'eslint:recommended',
+      'plugin:@typescript-eslint/eslint-recommended',
+      'plugin:@typescript-eslint/recommended',
++     'plugin:jest/recommended',
+    ],
+  };
+```
+
+## FAQ
+
+If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](./FAQ.md).
