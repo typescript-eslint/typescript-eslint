@@ -102,7 +102,7 @@
 | [`use-default-type-parameter`]       | ✅  | [`@typescript-eslint/no-unnecessary-type-arguments`]                  |
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                              |
 
-<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)<br>
+<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parentheses (`if ((foo = bar)) {}`)<br>
 
 ### Maintainability
 

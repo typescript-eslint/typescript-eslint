@@ -42,7 +42,7 @@ The core rules built into ESLint, such as `indent` have no knowledge of such con
 
 Instead, you also need to make use of one more plugins which will add or extend rules with TypeScript-specific features.
 
-By far the most common case will be installing the [@typescript-eslint/eslint-plugin](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin) plugin, but there are also other relevant options available such a [@typescript-eslint/eslint-plugin-tslint](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin-tslint).
+By far the most common case will be installing the [`@typescript-eslint/eslint-plugin`](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin) plugin, but there are also other relevant options available such a [`@typescript-eslint/eslint-plugin-tslint`](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin-tslint).
 
 ## Configuration
 
@@ -66,7 +66,7 @@ Default `false`.
 
 Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-**NOTE:** this setting does not affect known file types (.js, .jsx, .ts, .tsx, .json) because the typescript compiler has its own internal handling for known file extensions. The exact behaviour is as follows:
+**NOTE:** this setting does not affect known file types (`.js`, `.jsx`, `.ts`, `.tsx`, `.json`) because the typescript compiler has its own internal handling for known file extensions. The exact behavior is as follows:
 
 - if `parserOptions.project` is _not_ provided:
   - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.
@@ -144,7 +144,7 @@ This option allows you to request that when the `project` setting is specified, 
 
 ## Supported TypeScript Version
 
-Please see [typescript-eslint](https://github.com/typescript-eslint/typescript-eslint) for the supported TypeScript version.
+Please see [`typescript-eslint`](https://github.com/typescript-eslint/typescript-eslint) for the supported TypeScript version.
 
 **Please ensure that you are using a supported version before submitting any issues/bug reports.**
 

@@ -52,7 +52,7 @@ Finally, this rule can enforce separate delimiter syntax for single line declara
 
 ## Rule Details
 
-This rule aims to standardise the way interface and type literal members are delimited.
+This rule aims to standardize the way interface and type literal members are delimited.
 
 ## Options
 

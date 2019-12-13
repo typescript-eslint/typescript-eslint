@@ -50,11 +50,11 @@ You can also enable all the recommended rules for our plugin. Add `plugin:@types
 }
 ```
 
-**Note: Make sure to use `eslint --ext .js,.ts` since by [default](https://eslint.org/docs/user-guide/command-line-interface#--ext) `eslint` will only search for .js files.**
+**Note: Make sure to use `eslint --ext .js,.ts` since by [default](https://eslint.org/docs/user-guide/command-line-interface#--ext) `eslint` will only search for `.js` files.**
 
 ### Recommended Configs
 
-You can also use [eslint:recommended](https://eslint.org/docs/rules/) (the set of rules which are recommended for all projects by the ESLint Team) with this plugin. As noted in the root README, not all eslint core rules are compatible with TypeScript, so you need to add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended` (which will adjust the one from eslint appropriately for TypeScript) to your config:
+You can also use [`eslint:recommended`](https://eslint.org/docs/rules/) (the set of rules which are recommended for all projects by the ESLint Team) with this plugin. As noted in the root README, not all ESLint core rules are compatible with TypeScript, so you need to add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended` (which will adjust the one from ESLint appropriately for TypeScript) to your config:
 
 ```json
 {

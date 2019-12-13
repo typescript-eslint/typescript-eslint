@@ -313,7 +313,7 @@ class Animal {
 
 ### Except specific methods
 
-If you want to ignore some specific methods, you can do it by specifing method names. Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
+If you want to ignore some specific methods, you can do it by specifying method names. Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
 e.g. `[ { ignoredMethodNames: ['specificMethod', 'whateverMethod'] } ]`
 
 ```ts

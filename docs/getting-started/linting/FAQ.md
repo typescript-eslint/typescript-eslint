@@ -4,7 +4,7 @@
 
 - [My linting seems really slow](#my-linting-seems-really-slow)
 - [I get errors telling me "The file must be included in at least one of the projects provided"](#i-get-errors-telling-me-"the-file-must-be-included-in-at-least-one-of-the-projects-provided")
-- [I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add "parserOptions.extraFileExtensions" to your config"](<#i-use-a-framework-(like-vue)-that-requires-custom-file-extensions,-and-I-get-errors-like-"You-should-add-"parserOptions.extraFileExtensions"-to-your-config">)
+- [I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add "`parserOptions.extraFileExtensions`" to your config"](<#i-use-a-framework-(like-vue)-that-requires-custom-file-extensions,-and-I-get-errors-like-"You-should-add-"`parserOptions.extraFileExtensions`"-to-your-config">)
 
 ---
 
@@ -18,9 +18,9 @@ If you're experiencing times much slower than that, then there are a few common 
 
 When using type-aware linting, you provide us with one or more tsconfigs. We then will pre-parse all files so that full and complete type information is available.
 
-If you provide very wide globs in your `include` (like `**/*`), it can cause many more files than you expect to be included in this pre-parse. Additionally, if you provide _no_ `include` in your tsconfig, then it is the same as providing the widest glob.
+If you provide very wide globs in your `include` (like `**/*`), it can cause many more files than you expect to be included in this pre-parse. Additionally, if you provide no `include` in your tsconfig, then it is the same as providing the widest glob.
 
-Wide globs can cause TypeScript to parse things like build artefacts, which can heavily impact performance. Always ensure you provide globs targetted at the folders you are specifically wanting to lint.
+Wide globs can cause TypeScript to parse things like build artifacts, which can heavily impact performance. Always ensure you provide globs targeted at the folders you are specifically wanting to lint.
 
 ### `eslint-plugin-prettier`
 
@@ -54,9 +54,9 @@ The following rules do not have equivalent checks in TypeScript, so we recommend
 
 ### The `indent` / `@typescript-eslint/indent` rules
 
-This rule helps ensure your codebase follows a consistent indentation pattern. However this involves a _lot_ of computations across every single token in a file. Across a large codebase, these can add up, and severely impact performace.
+This rule helps ensure your codebase follows a consistent indentation pattern. However this involves a _lot_ of computations across every single token in a file. Across a large codebase, these can add up, and severely impact performance.
 
-We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/) to enforce a standardised formatting.
+We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/) to enforce a standardized formatting.
 
 ---
 
@@ -68,9 +68,9 @@ To fix this, simply make sure the `include` option in your tsconfig includes eve
 
 ---
 
-## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add "parserOptions.extraFileExtensions" to your config"
+## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add "`parserOptions.extraFileExtensions`" to your config"
 
-You can use `parserOptions.extraFileExtensions` to specify an array of non-typescript extensions to allow, for example:
+You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
 
 ```diff
  parserOptions: {

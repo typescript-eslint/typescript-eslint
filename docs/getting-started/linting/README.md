@@ -1,6 +1,6 @@
 # Getting Started - Linting your TypeScript Codebase
 
-Whether you're adding linting to a new TypeScript codebase, adding TypeScript to an old codebase, or migraing from the deprecated [tslint](https://www.npmjs.com/package/tslint), the steps aren't a whole lot different.
+Whether you're adding linting to a new TypeScript codebase, adding TypeScript to an old codebase, or migrating from the deprecated [TSLint](https://www.npmjs.com/package/tslint), the steps aren't a whole lot different.
 
 ## Installation
 
@@ -84,13 +84,13 @@ With that configured you can now start to delve into the wide and extensive ESLi
 
 ### Extending your TypeScript linting with Type-Aware Rules
 
-We have a lot of awesome rules which utilise the power of TypeScript's type information. They require a little bit of extra setup beyond this first step, [so visit the next page to see how to set this up.](./TYPED_LINTING.md)
+We have a lot of awesome rules which utilize the power of TypeScript's type information. They require a little bit of extra setup beyond this first step, [so visit the next page to see how to set this up.](./TYPED_LINTING.md)
 
 ### ESLint Configs
 
 There are many configuration packages in the ecosystem - these packages that exist solely to provide a comprehensive base config for you, with the intention that you add the config and it gives you an opinionated setup. A few popular all-in-one-configs are:
 
-- Airbnb's eslint config - [`eslint-config-airbnb-typescript`](https://www.npmjs.com/package/eslint-config-airbnb-typescript).
+- Airbnb's ESLint config - [`eslint-config-airbnb-typescript`](https://www.npmjs.com/package/eslint-config-airbnb-typescript).
 - Standard - [`eslint-config-standard-with-typescript`](https://www.npmjs.com/package/eslint-config-standard-with-typescript).
 
 To use one of these complete config packages, you would replace the `extends` with one of these, for example:
