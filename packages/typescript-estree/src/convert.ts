@@ -268,7 +268,7 @@ export class Converter {
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
     parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
-  ): any[] {
+  ): TSESTree.Statement[] {
     let allowDirectives = canContainDirective(parent);
 
     return (
@@ -400,7 +400,7 @@ export class Converter {
             : null;
         } else if (key === 'decorators') {
           if (node.decorators && node.decorators.length) {
-            result.decorators = node.decorators.map((el: any) =>
+            result.decorators = node.decorators.map(el =>
               this.convertChild(el),
             );
           }
