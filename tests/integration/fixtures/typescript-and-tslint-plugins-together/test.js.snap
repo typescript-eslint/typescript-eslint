@@ -22,6 +22,13 @@ Array [
         "column": 20,
         "endColumn": 20,
         "endLine": 1,
+        "fix": Object {
+          "range": Array [
+            19,
+            19,
+          ],
+          "text": ";",
+        },
         "line": 1,
         "message": "Missing semicolon (tslint:semicolon)",
         "messageId": "failure",
