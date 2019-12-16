@@ -5,7 +5,8 @@ Any expression being used as a condition must be able to evaluate as truthy or f
 The following expressions are checked:
 
 - Arguments to the `&&`, `||` and `?:` (ternary) operators
-- Conditions for `if`, `for`, `while`, and `do-while` statements.
+- Conditions for `if`, `for`, `while`, and `do-while` statements
+- Base values of optional chain expressions
 
 Examples of **incorrect** code for this rule:
 
@@ -21,6 +22,11 @@ function foo(arg: 'bar' | 'baz') {
   // arg is never nullable or empty string, so this is unnecessary
   if (arg) {
   }
+}
+
+function bar<T>(arg: string) {
+  // arg can never be nullish, so ?. is unnecessary
+  return arg?.length;
 }
 ```
 
@@ -38,6 +44,11 @@ function foo(arg: string) {
   // Necessary, since foo might be ''.
   if (arg) {
   }
+}
+
+function bar(arg?: string | null) {
+  // Necessary, since arg might be nullish
+  return arg?.length;
 }
 ```
 
