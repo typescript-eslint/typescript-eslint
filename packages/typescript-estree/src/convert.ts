@@ -1588,7 +1588,7 @@ export class Converter {
         /**
          * ESTree uses UpdateExpression for ++/--
          */
-        if (/^(?:\+\+|--)$/.test(operator)) {
+        if (operator === '++' || operator === '--') {
           return this.createNode<TSESTree.UpdateExpression>(node, {
             type: AST_NODE_TYPES.UpdateExpression,
             operator,
