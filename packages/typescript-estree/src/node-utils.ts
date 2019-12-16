@@ -454,7 +454,7 @@ export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
 ): AST_TOKEN_TYPES {
   // Need two checks for keywords since some are also identifiers
-  if ('originalKeywordKind' in token) {
+  if ('originalKeywordKind' in token && token.originalKeywordKind) {
     switch (token.originalKeywordKind) {
       case SyntaxKind.NullKeyword:
         return AST_TOKEN_TYPES.Null;
