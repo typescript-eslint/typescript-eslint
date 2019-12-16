@@ -103,6 +103,24 @@ export default util.createRule<Options, MessageIds>({
           util.NullThrowsReasons.MissingToken('operator', node.type),
         );
 
+        function* fix(
+          fixer: TSESLint.RuleFixer,
+        ): IterableIterator<TSESLint.RuleFix> {
+          if (node.parent && util.isLogicalOrOperator(node.parent)) {
+            // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
+            if (
+              node.left.type === AST_NODE_TYPES.LogicalExpression &&
+              !util.isLogicalOrOperator(node.left.left)
+            ) {
+              yield fixer.insertTextBefore(node.left.right, '(');
+            } else {
+              yield fixer.insertTextBefore(node.left, '(');
+            }
+            yield fixer.insertTextAfter(node.right, ')');
+          }
+          yield fixer.replaceText(barBarOperator, '??');
+        }
+
         const fixer =
           isMixedLogical || forceSuggestionFixer
             ? // suggestion instead for cases where we aren't sure if the fixer is completely safe
@@ -110,17 +128,11 @@ export default util.createRule<Options, MessageIds>({
                 suggest: [
                   {
                     messageId: 'preferNullish',
-                    fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-                      return fixer.replaceText(barBarOperator, '??');
-                    },
+                    fix,
                   },
                 ],
               } as const)
-            : {
-                fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-                  return fixer.replaceText(barBarOperator, '??');
-                },
-              };
+            : { fix };
 
         context.report({
           node: barBarOperator,
