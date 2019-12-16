@@ -1,7 +1,7 @@
 import {
-  TSESTree,
-  AST_TOKEN_TYPES,
   AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 
 const LINEBREAK_MATCHER = /\r\n|[\r\n\u2028\u2029]/;
@@ -43,6 +43,15 @@ function isOptionalOptionalChain(
 }
 
 /**
+ * Returns true if and only if the node represents logical OR
+ */
+function isLogicalOrOperator(node: TSESTree.Node): boolean {
+  return (
+    node.type === AST_NODE_TYPES.LogicalExpression && node.operator === '||'
+  );
+}
+
+/**
  * Determines whether two adjacent tokens are on the same line
  */
 function isTokenOnSameLine(
@@ -59,5 +68,6 @@ export {
   isOptionalChainPunctuator,
   isOptionalOptionalChain,
   isTokenOnSameLine,
+  isLogicalOrOperator,
   LINEBREAK_MATCHER,
 };
