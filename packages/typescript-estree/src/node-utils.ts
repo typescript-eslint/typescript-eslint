@@ -122,10 +122,9 @@ export function isLogicalOperator<T extends ts.SyntaxKind>(
  * @param kind the token's SyntaxKind
  * @returns the token applicable token as a string
  */
-export function getTextForTokenKind<
-  T extends ts.SyntaxKind,
-  TT = typeof TOKEN_TO_TEXT
->(kind: T): T extends keyof TT ? TT[T] : undefined {
+export function getTextForTokenKind<T extends ts.SyntaxKind>(
+  kind: T,
+): T extends keyof typeof TOKEN_TO_TEXT ? typeof TOKEN_TO_TEXT[T] : undefined {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return kind in TOKEN_TO_TEXT ? (TOKEN_TO_TEXT as any)[kind] : undefined;
 }
