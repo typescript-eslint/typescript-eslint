@@ -1340,7 +1340,7 @@ export class Converter {
       }
 
       case SyntaxKind.Parameter: {
-        let parameter: any;
+        let parameter: TSESTree.RestElement | TSESTree.BindingName;
         let result: TSESTree.RestElement | TSESTree.AssignmentPattern;
 
         if (node.dotDotDotToken) {
@@ -1349,7 +1349,7 @@ export class Converter {
             argument: this.convertChild(node.name),
           });
         } else if (node.initializer) {
-          parameter = this.convertChild(node.name);
+          parameter = this.convertChild(node.name) as TSESTree.BindingName;
           result = this.createNode<TSESTree.AssignmentPattern>(node, {
             type: AST_NODE_TYPES.AssignmentPattern,
             left: parameter,
@@ -1584,7 +1584,7 @@ export class Converter {
 
       case SyntaxKind.PrefixUnaryExpression:
       case SyntaxKind.PostfixUnaryExpression: {
-        const operator = (getTextForTokenKind(node.operator) ?? '') as any;
+        const operator = getTextForTokenKind(node.operator) ?? '';
         /**
          * ESTree uses UpdateExpression for ++/--
          */
