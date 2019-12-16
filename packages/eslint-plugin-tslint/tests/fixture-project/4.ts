@@ -1,1 +1,1 @@
-var foo = true // semicolon
+var foo = true; // semicolon
