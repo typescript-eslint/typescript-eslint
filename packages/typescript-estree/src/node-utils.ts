@@ -38,7 +38,7 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
   [SyntaxKind.CloseBracketToken]: ']',
   [SyntaxKind.DotToken]: '.',
   [SyntaxKind.DotDotDotToken]: '...',
-  [SyntaxKind.SemicolonToken]: ',',
+  [SyntaxKind.SemicolonToken]: ';',
   [SyntaxKind.CommaToken]: ',',
   [SyntaxKind.LessThanToken]: '<',
   [SyntaxKind.GreaterThanToken]: '>',
