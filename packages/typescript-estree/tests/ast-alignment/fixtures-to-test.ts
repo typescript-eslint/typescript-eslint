@@ -386,14 +386,6 @@ tester.addFixturePatternConfig('javascript/modules', {
      * Expected babel parse errors - ts-estree is not currently throwing
      */
     'invalid-export-named-default', // babel parse errors
-
-    // babel does not recognise these as modules
-    'export-named-as-default',
-    'export-named-as-specifier',
-    'export-named-as-specifiers',
-    'export-named-specifier',
-    'export-named-specifiers-comma',
-    'export-named-specifiers',
     /**
      * TS 3.7 feature changes
      * TODO: remove me when babel adds support
@@ -406,6 +398,13 @@ tester.addFixturePatternConfig('javascript/modules', {
     // 'error-strict',
     'error-delete',
     'invalid-await',
+    // babel does not recognise these as modules
+    'export-named-as-default',
+    'export-named-as-specifier',
+    'export-named-as-specifiers',
+    'export-named-specifier',
+    'export-named-specifiers-comma',
+    'export-named-specifiers',
   ],
 });
 
@@ -556,11 +555,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'directive-in-module',
     'directive-in-namespace',
-    /**
-     * Babel parses this incorrectly
-     * https://github.com/babel/babel/issues/9324
-     */
-    'type-assertion-arrow-function',
     /**
      * PR for optional parameters in arrow function has been merged into Babel: https://github.com/babel/babel/pull/9463
      * TODO: remove me in next babel > 7.3.2
@@ -751,14 +745,6 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
 tester.addFixturePatternConfig('typescript/types', {
   fileType: 'ts',
   ignore: [
-    /**
-     * AST difference
-     */
-    'literal-number-negative',
-    /**
-     * Babel parse error: https://github.com/babel/babel/pull/9431
-     */
-    'function-with-array-destruction',
     /**
      * TS 3.7 feature changes
      * TODO: remove me when babel adds support
