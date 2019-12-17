@@ -450,11 +450,11 @@ export function isOptional(node: {
  * @param token the ts.Token
  * @returns the token type
  */
-// ts.Node types are ugly
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getTokenType(token: any): AST_TOKEN_TYPES {
+export function getTokenType(
+  token: ts.Identifier | ts.Token<ts.SyntaxKind>,
+): AST_TOKEN_TYPES {
   // Need two checks for keywords since some are also identifiers
-  if (token.originalKeywordKind) {
+  if ('originalKeywordKind' in token && token.originalKeywordKind) {
     switch (token.originalKeywordKind) {
       case SyntaxKind.NullKeyword:
         return AST_TOKEN_TYPES.Null;
@@ -572,7 +572,7 @@ export function convertToken(
     loc: getLocFor(start, end, ast),
   };
 
-  if (newToken.type === 'RegularExpression') {
+  if (newToken.type === AST_TOKEN_TYPES.RegularExpression) {
     newToken.regex = {
       pattern: value.slice(1, value.lastIndexOf('/')),
       flags: value.slice(value.lastIndexOf('/') + 1),
