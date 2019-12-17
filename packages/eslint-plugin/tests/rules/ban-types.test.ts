@@ -27,6 +27,8 @@ const options: InferOptionsTypeFromRule<typeof rule> = [
 ruleTester.run('ban-types', rule, {
   valid: [
     'let f = Object();', // Should not fail if there is no options set
+    'let f: {} = {};',
+    'let f: { x: number, y: number } = { x: 1, y: 1 };',
     {
       code: 'let f = Object();',
       options,
@@ -294,6 +296,31 @@ let b: Foo<NS.Good>;
         },
       ],
       options,
+    },
+    {
+      code: `let foo: {} = {};`,
+      output: `let foo: object = {};`,
+      options: [
+        {
+          types: {
+            '{}': {
+              message: 'Use object instead.',
+              fixWith: 'object',
+            },
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '{}',
+            customMessage: ' Use object instead.',
+          },
+          line: 1,
+          column: 10,
+        },
+      ],
     },
   ],
 });
