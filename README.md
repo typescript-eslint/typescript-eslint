@@ -35,6 +35,7 @@
 ## Getting Started
 
 **[You can find our Getting Started docs here](./docs/getting-started/README.md)**
+**[You can find our Linting FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
 
 The documentation below will give you an overview of what this project is, why it exists and how it works at a high level.
 

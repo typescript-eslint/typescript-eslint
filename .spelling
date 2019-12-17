@@ -63,6 +63,7 @@ linebreak
 linters
 MDN
 monorepo
+monorepos
 multiline
 namespace
 namespaces
@@ -70,6 +71,8 @@ natively
 NodeJS
 npm
 nullish
+OOM
+OOMs
 onboard
 OSS
 package.json
