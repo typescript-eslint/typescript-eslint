@@ -1584,11 +1584,11 @@ export class Converter {
 
       case SyntaxKind.PrefixUnaryExpression:
       case SyntaxKind.PostfixUnaryExpression: {
-        const operator = getTextForTokenKind(node.operator) ?? '';
+        const operator = getTextForTokenKind(node.operator);
         /**
          * ESTree uses UpdateExpression for ++/--
          */
-        if (/^(?:\+\+|--)$/.test(operator)) {
+        if (operator === '++' || operator === '--') {
           return this.createNode<TSESTree.UpdateExpression>(node, {
             type: AST_NODE_TYPES.UpdateExpression,
             operator,
@@ -1632,7 +1632,7 @@ export class Converter {
       case SyntaxKind.TypeOperator:
         return this.createNode<TSESTree.TSTypeOperator>(node, {
           type: AST_NODE_TYPES.TSTypeOperator,
-          operator: getTextForTokenKind(node.operator) as any,
+          operator: getTextForTokenKind(node.operator),
           typeAnnotation: this.convertChild(node.type),
         });
 
@@ -1676,7 +1676,7 @@ export class Converter {
             | TSESTree.BinaryExpression
           >(node, {
             type,
-            operator: getTextForTokenKind(node.operatorToken.kind)!,
+            operator: getTextForTokenKind(node.operatorToken.kind),
             left: this.converter(
               node.left,
               node,
@@ -1819,7 +1819,7 @@ export class Converter {
           type: AST_NODE_TYPES.MetaProperty,
           meta: this.createNode<TSESTree.Identifier>(node.getFirstToken()!, {
             type: AST_NODE_TYPES.Identifier,
-            name: getTextForTokenKind(node.keywordToken)!,
+            name: getTextForTokenKind(node.keywordToken),
           }),
           property: this.convertChild(node.name),
         });
@@ -2173,9 +2173,7 @@ export class Converter {
           if (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword) {
             result.readonly = true;
           } else {
-            result.readonly = getTextForTokenKind(node.readonlyToken.kind) as
-              | '+'
-              | '-';
+            result.readonly = getTextForTokenKind(node.readonlyToken.kind);
           }
         }
 
@@ -2183,9 +2181,7 @@ export class Converter {
           if (node.questionToken.kind === SyntaxKind.QuestionToken) {
             result.optional = true;
           } else {
-            result.optional = getTextForTokenKind(node.questionToken.kind) as
-              | '+'
-              | '-';
+            result.optional = getTextForTokenKind(node.questionToken.kind);
           }
         }
 
