@@ -1,6 +1,7 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import ts, { TypeFlags } from 'typescript';
 import {
@@ -14,6 +15,9 @@ import {
   createRule,
   getParserServices,
   getConstrainedTypeAtLocation,
+  isNullableType,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 // Truthiness utilities
@@ -65,7 +69,8 @@ export type MessageId =
   | 'neverNullish'
   | 'alwaysNullish'
   | 'literalBooleanExpression'
-  | 'never';
+  | 'never'
+  | 'neverOptionalChain';
 export default createRule<Options, MessageId>({
   name: 'no-unnecessary-conditionals',
   meta: {
@@ -91,6 +96,7 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
       },
     ],
+    fixable: 'code',
     messages: {
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
@@ -101,6 +107,7 @@ export default createRule<Options, MessageId>({
       literalBooleanExpression:
         'Unnecessary conditional, both sides of the expression are literal values',
       never: 'Unnecessary conditional, value is `never`',
+      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value',
     },
   },
   defaultOptions: [
@@ -112,6 +119,7 @@ export default createRule<Options, MessageId>({
   create(context, [{ allowConstantLoopConditions, ignoreRhs }]) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
@@ -260,6 +268,57 @@ export default createRule<Options, MessageId>({
       checkNode(node.test);
     }
 
+    function checkOptionalChain(
+      node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
+      beforeOperator: TSESTree.Node,
+      fix: '' | '.',
+    ): void {
+      // We only care if this step in the chain is optional. If just descend
+      // from an optional chain, then that's fine.
+      if (!node.optional) {
+        return;
+      }
+
+      const type = getNodeType(node);
+      if (
+        isTypeFlagSet(type, ts.TypeFlags.Any) ||
+        isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
+        isNullableType(type, { allowUndefined: true })
+      ) {
+        return;
+      }
+
+      const questionDotOperator = nullThrows(
+        sourceCode.getTokenAfter(
+          beforeOperator,
+          token =>
+            token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.',
+        ),
+        NullThrowsReasons.MissingToken('operator', node.type),
+      );
+
+      context.report({
+        node,
+        loc: questionDotOperator.loc,
+        messageId: 'neverOptionalChain',
+        fix(fixer) {
+          return fixer.replaceText(questionDotOperator, fix);
+        },
+      });
+    }
+
+    function checkOptionalMemberExpression(
+      node: TSESTree.OptionalMemberExpression,
+    ): void {
+      checkOptionalChain(node, node.object, '.');
+    }
+
+    function checkOptionalCallExpression(
+      node: TSESTree.OptionalCallExpression,
+    ): void {
+      checkOptionalChain(node, node.callee, '');
+    }
+
     return {
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       ConditionalExpression: checkIfTestExpressionIsNecessaryConditional,
@@ -268,6 +327,8 @@ export default createRule<Options, MessageId>({
       IfStatement: checkIfTestExpressionIsNecessaryConditional,
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
       WhileStatement: checkIfLoopIsNecessaryConditional,
+      OptionalMemberExpression: checkOptionalMemberExpression,
+      OptionalCallExpression: checkOptionalCallExpression,
     };
   },
 });

@@ -33,7 +33,6 @@ ruleTester.run('quotes', rule, {
     {
       code: `declare module '*.html' {}`,
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `
@@ -42,7 +41,6 @@ ruleTester.run('quotes', rule, {
         }
       `,
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
 
     /** ESLint */
@@ -85,7 +83,6 @@ ruleTester.run('quotes', rule, {
       code: `var foo = <>Hello world</>;`,
       options: ['single'],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -95,7 +92,6 @@ ruleTester.run('quotes', rule, {
       code: `var foo = <>Hello world</>;`,
       options: ['double'],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -110,7 +106,6 @@ ruleTester.run('quotes', rule, {
         },
       ],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -120,7 +115,6 @@ ruleTester.run('quotes', rule, {
       code: `var foo = <>Hello world</>;`,
       options: ['backtick'],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -130,7 +124,6 @@ ruleTester.run('quotes', rule, {
       code: `var foo = <div>Hello world</div>;`,
       options: ['single'],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -140,7 +133,6 @@ ruleTester.run('quotes', rule, {
       code: `var foo = <div id="foo"></div>;`,
       options: ['single'],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -150,7 +142,6 @@ ruleTester.run('quotes', rule, {
       code: `var foo = <div>Hello world</div>;`,
       options: ['double'],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -165,7 +156,6 @@ ruleTester.run('quotes', rule, {
         },
       ],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -174,17 +164,14 @@ ruleTester.run('quotes', rule, {
     {
       code: 'var foo = `bar`;',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: "var foo = `bar 'baz'`;",
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = `bar "baz"`;',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `var foo = 1;`,
@@ -203,7 +190,6 @@ ruleTester.run('quotes', rule, {
       code: `var foo = <div id="foo"></div>;`,
       options: ['backtick'],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -213,7 +199,6 @@ ruleTester.run('quotes', rule, {
       code: `var foo = <div>Hello world</div>;`,
       options: ['backtick'],
       parserOptions: {
-        ecmaVersion: 6,
         ecmaFeatures: {
           jsx: true,
         },
@@ -224,47 +209,38 @@ ruleTester.run('quotes', rule, {
     {
       code: 'var foo = `back\ntick`;',
       options: ['single'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = `back\rtick`;',
       options: ['single'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = `back\u2028tick`;',
       options: ['single'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = `back\u2029tick`;',
       options: ['single'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = `back\\\\\ntick`;', // 2 backslashes followed by a newline
       options: ['single'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = `back\\\\\\\\\ntick`;',
       options: ['single'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = `\n`;',
       options: ['single'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = `back${x}tick`;',
       options: ['double'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = tag`backtick`;',
       options: ['double'],
-      parserOptions: { ecmaVersion: 6 },
     },
 
     // Backticks are also okay if allowTemplateLiterals
@@ -276,7 +252,6 @@ ruleTester.run('quotes', rule, {
           allowTemplateLiterals: true,
         },
       ],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo = `bar \'foo\' baz` + "bar";',
@@ -286,7 +261,6 @@ ruleTester.run('quotes', rule, {
           allowTemplateLiterals: true,
         },
       ],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: "var foo = `bar 'foo' baz` + `bar`;",
@@ -296,80 +270,92 @@ ruleTester.run('quotes', rule, {
           allowTemplateLiterals: true,
         },
       ],
-      parserOptions: { ecmaVersion: 6 },
     },
 
     // `backtick` should not warn the directive prologues.
     {
       code: '"use strict"; var foo = `backtick`;',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: '"use strict"; \'use strong\'; "use asm"; var foo = `backtick`;',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code:
         'function foo() { "use strict"; "use strong"; "use asm"; var foo = `backtick`; }',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code:
         "(function() { 'use strict'; 'use strong'; 'use asm'; var foo = `backtick`; })();",
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code:
         '(() => { "use strict"; "use strong"; "use asm"; var foo = `backtick`; })();',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
 
     // `backtick` should not warn import/export sources.
     {
       code: `import "a"; import 'b';`,
       options: ['backtick'],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
     },
     {
       code: `import a from "a"; import b from 'b';`,
       options: ['backtick'],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
     },
     {
       code: `export * from "a"; export * from 'b';`,
       options: ['backtick'],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
     },
 
     // `backtick` should not warn property/method names (not computed).
     {
       code: `var obj = {"key0": 0, 'key1': 1};`,
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `class Foo { 'bar'(){} }`,
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `class Foo { static ''(){} }`,
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
+    },
+
+    {
+      code: `
+interface Foo {
+  a: number;
+  b: string;
+  "a-b": boolean;
+  "a-b-c": boolean;
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  a: number;
+  b: string;
+  'a-b': boolean;
+  'a-b-c': boolean;
+}
+      `,
+      options: ['single'],
+    },
+    {
+      code: `
+interface Foo {
+  a: number;
+  b: string;
+  'a-b': boolean;
+  'a-b-c': boolean;
+}
+      `,
+      options: ['backtick'],
     },
   ],
 
@@ -389,7 +375,6 @@ ruleTester.run('quotes', rule, {
       code: 'var foo = `bar`;',
       output: `var foo = 'bar';`,
       options: ['single'],
-      parserOptions: { ecmaVersion: 6 },
       errors: [useSingleQuote],
     },
     {
@@ -416,7 +401,6 @@ ruleTester.run('quotes', rule, {
       code: 'var foo = `bar`;',
       output: `var foo = "bar";`,
       options: ['double'],
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
     {
@@ -478,21 +462,18 @@ ruleTester.run('quotes', rule, {
       code: `var foo = 'bar';`,
       output: 'var foo = `bar`;',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 2015 },
       errors: [useBacktick],
     },
     {
       code: "var foo = 'b${x}a$r';",
       output: 'var foo = `b\\${x}a$r`;',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 2015 },
       errors: [useBacktick],
     },
     {
       code: 'var foo = "bar";',
       output: 'var foo = `bar`;',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 2015 },
       errors: [useBacktick],
     },
     {
@@ -504,7 +485,6 @@ ruleTester.run('quotes', rule, {
           avoidEscape: true,
         },
       ],
-      parserOptions: { ecmaVersion: 2015 },
       errors: [useBacktick],
     },
     {
@@ -516,7 +496,6 @@ ruleTester.run('quotes', rule, {
           avoidEscape: true,
         },
       ],
-      parserOptions: { ecmaVersion: 2015 },
       errors: [useBacktick],
     },
 
@@ -525,21 +504,18 @@ ruleTester.run('quotes', rule, {
       code: 'var foo = `backtick`; "use strict";',
       output: 'var foo = `backtick`; `use strict`;',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
       errors: [useBacktick],
     },
     {
       code: '{ "use strict"; var foo = `backtick`; }',
       output: '{ `use strict`; var foo = `backtick`; }',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
       errors: [useBacktick],
     },
     {
       code: 'if (1) { "use strict"; var foo = `backtick`; }',
       output: 'if (1) { `use strict`; var foo = `backtick`; }',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
       errors: [useBacktick],
     },
 
@@ -555,7 +531,6 @@ ruleTester.run('quotes', rule, {
       code: `class Foo { ['a'](){} static ['b'](){} }`,
       output: 'class Foo { [`a`](){} static [`b`](){} }',
       options: ['backtick'],
-      parserOptions: { ecmaVersion: 6 },
       errors: [useBacktick, useBacktick],
     },
 
@@ -590,7 +565,6 @@ ruleTester.run('quotes', rule, {
         ecmaFeatures: {
           jsx: true,
         },
-        ecmaVersion: 2015,
       },
       errors: [useBacktick],
     },
@@ -599,37 +573,31 @@ ruleTester.run('quotes', rule, {
     {
       code: '`use strict`;',
       output: null,
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
     {
       code: 'function foo() { `use strict`; foo(); }',
       output: null,
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
     {
       code: 'foo = function() { `use strict`; foo(); }',
       output: null,
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
     {
       code: '() => { `use strict`; foo(); }',
       output: null,
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
     {
       code: '() => { foo(); `use strict`; }',
       output: `() => { foo(); "use strict"; }`,
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
     {
       code: 'foo(); `use strict`;',
       output: 'foo(); "use strict";',
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
 
@@ -637,26 +605,84 @@ ruleTester.run('quotes', rule, {
     {
       code: 'var foo = `foo\\nbar`;',
       output: 'var foo = "foo\\nbar";',
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
     {
       code: 'var foo = `foo\\\nbar`;', // 1 backslash followed by a newline
       output: 'var foo = "foo\\\nbar";',
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
     {
       code: 'var foo = `foo\\\\\\\nbar`;', // 3 backslashes followed by a newline
       output: 'var foo = "foo\\\\\\\nbar";',
-      parserOptions: { ecmaVersion: 6 },
       errors: [useDoubleQuote],
     },
     {
       code: '````',
       output: '""``',
-      parserOptions: { ecmaVersion: 6 },
       errors: [{ ...useDoubleQuote, line: 1, column: 1 }],
+    },
+
+    {
+      code: `
+interface Foo {
+  a: number;
+  b: string;
+  'a-b': boolean;
+  'a-b-c': boolean;
+}
+      `,
+      output: `
+interface Foo {
+  a: number;
+  b: string;
+  "a-b": boolean;
+  "a-b-c": boolean;
+}
+      `,
+      errors: [
+        {
+          ...useDoubleQuote,
+          line: 5,
+          column: 3,
+        },
+        {
+          ...useDoubleQuote,
+          line: 6,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  a: number;
+  b: string;
+  "a-b": boolean;
+  "a-b-c": boolean;
+}
+      `,
+      output: `
+interface Foo {
+  a: number;
+  b: string;
+  'a-b': boolean;
+  'a-b-c': boolean;
+}
+      `,
+      errors: [
+        {
+          ...useSingleQuote,
+          line: 5,
+          column: 3,
+        },
+        {
+          ...useSingleQuote,
+          line: 6,
+          column: 3,
+        },
+      ],
+      options: ['single'],
     },
   ],
 });
