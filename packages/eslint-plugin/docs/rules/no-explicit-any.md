@@ -105,7 +105,7 @@ const defaults = {
 };
 ```
 
-### ignoreRestArgs
+### `ignoreRestArgs`
 
 A boolean to specify if arrays from the rest operator are considered okay. `false` by default.
 

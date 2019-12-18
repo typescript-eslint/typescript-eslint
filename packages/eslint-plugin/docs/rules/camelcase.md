@@ -1,8 +1,8 @@
-# Enforce camelCase naming convention (camelcase)
+# Enforce camelCase naming convention (`camelcase`)
 
 When it comes to naming variables, style guides generally fall into one of two
-camps: camelcase (`variableName`) and underscores (`variable_name`). This rule
-focuses on using the camelcase approach. If your style guide calls for
+camps: camelCase (`variableName`) and underscores (`variable_name`). This rule
+focuses on using the camelCase approach. If your style guide calls for
 camelCasing your variable names, then this rule is for you!
 
 ## Rule Details
@@ -31,10 +31,10 @@ variable that will be imported into the local module scope.
 This rule has an object option:
 
 - `"properties": "never"` (default) does not check property names
-- `"properties": "always"` enforces camelcase style for property names
+- `"properties": "always"` enforces camelCase style for property names
 - `"genericType": "never"` (default) does not check generic identifiers
-- `"genericType": "always"` enforces camelcase style for generic identifiers
-- `"ignoreDestructuring": false` (default) enforces camelcase style for destructured identifiers
+- `"genericType": "always"` enforces camelCase style for generic identifiers
+- `"ignoreDestructuring": false` (default) enforces camelCase style for destructured identifiers
 - `"ignoreDestructuring": true` does not check destructured identifiers
 - `allow` (`string[]`) list of properties to accept. Accept regex.
 
@@ -119,7 +119,7 @@ var { foo: isCamelCased } = bar;
 var { foo: isCamelCased = 1 } = quz;
 ```
 
-### properties: "never"
+### `properties: "never"`
 
 Examples of **correct** code for this rule with the `{ "properties": "never" }` option:
 
@@ -131,7 +131,7 @@ var obj = {
 };
 ```
 
-### genericType: "always"
+### `genericType: "always"`
 
 Examples of **incorrect** code for this rule with the default `{ "genericType": "always" }` option:
 
@@ -193,7 +193,7 @@ class Foo {
 }
 ```
 
-### genericType: "never"
+### `genericType: "never"`
 
 Examples of **correct** code for this rule with the `{ "genericType": "never" }` option:
 
@@ -225,7 +225,7 @@ class Foo {
 }
 ```
 
-### ignoreDestructuring: false
+### `ignoreDestructuring: false`
 
 Examples of **incorrect** code for this rule with the default `{ "ignoreDestructuring": false }` option:
 
@@ -243,7 +243,7 @@ var { category_id: category_alias } = query;
 var { category_id: categoryId, ...other_props } = query;
 ```
 
-### ignoreDestructuring: true
+### `ignoreDestructuring: true`
 
 Examples of **incorrect** code for this rule with the `{ "ignoreDestructuring": true }` option:
 
