@@ -125,10 +125,7 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      const methodName = util.getNameFromClassMember(
-        methodDefinition,
-        sourceCode,
-      );
+      const methodName = util.getNameFromMember(methodDefinition, sourceCode);
 
       if (check === 'off' || ignoredMethodNames.has(methodName)) {
         return;
@@ -163,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const nodeType = 'class property';
 
-      const propertyName = util.getNameFromPropertyName(classProperty.key);
+      const propertyName = util.getNameFromMember(classProperty, sourceCode);
       if (
         propCheck === 'no-public' &&
         classProperty.accessibility === 'public'

@@ -99,7 +99,7 @@ export default util.createRule<Options, MessageIds>({
 
       validate(
         node.key,
-        util.getNameFromClassMember(node, sourceCode),
+        util.getNameFromMember(node, sourceCode),
         node.accessibility,
       );
     }
