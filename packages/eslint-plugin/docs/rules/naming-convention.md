@@ -8,7 +8,6 @@ There are many different rules that have existed over time, but they have had th
 ## Rule Details
 
 This rule allows you to enforce conventions for any identifier, using granular selectors to create a fine-grained style guide.
-By default, it enforces nothing.
 
 ### Note - this rule only needs type information in specific cases, detailed below
 
@@ -41,7 +40,35 @@ type Options = {
   types?: Types<Selector>[];
 }[];
 
-const defaultOptions: Options = [];
+// the default config essentially does the same thing as ESLint's camelcase rule
+const defaultOptions: Options = [
+  {
+    selector: 'default',
+    format: ['camelCase'],
+  },
+
+  {
+    selector: 'variable',
+    format: ['camelCase', 'UPPER_CASE'],
+  },
+  {
+    selector: 'parameter',
+    format: ['camelCase'],
+    leadingUnderscore: 'allow',
+  },
+
+  {
+    selector: 'memberLike',
+    modifiers: ['private'],
+    format: ['camelCase'],
+    leadingUnderscore: 'require',
+  },
+
+  {
+    selector: 'typeLike',
+    format: ['PascalCase'],
+  },
+];
 ```
 
 ### Format Options
@@ -277,10 +304,6 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
     },
 
     {
-      "selector": "variableLike",
-      "format": ["camelCase"]
-    },
-    {
       "selector": "variable",
       "format": ["camelCase", "UPPER_CASE"]
     },
@@ -290,10 +313,6 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
       "leadingUnderscore": "allow"
     },
 
-    {
-      "selector": "memberLike",
-      "format": ["camelCase"]
-    },
     {
       "selector": "memberLike",
       "modifiers": ["private"],

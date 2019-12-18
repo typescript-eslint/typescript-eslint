@@ -274,6 +274,33 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
 
 // #endregion Schema Config
 
+const defaultCamelCaseAllTheThingsConfig: Options = [
+  {
+    selector: 'default',
+    format: ['camelCase'],
+  },
+
+  {
+    selector: 'variable',
+    format: ['camelCase', 'UPPER_CASE'],
+  },
+  {
+    selector: 'parameter',
+    format: ['camelCase'],
+    leadingUnderscore: 'allow',
+  },
+
+  {
+    selector: 'memberLike',
+    format: ['camelCase'],
+  },
+
+  {
+    selector: 'typeLike',
+    format: ['PascalCase'],
+  },
+];
+
 export default util.createRule<Options, MessageIds>({
   name: 'naming-convention',
   meta: {
@@ -298,8 +325,18 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: SCHEMA,
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: defaultCamelCaseAllTheThingsConfig,
+  create(contextWithoutDefaults) {
+    const context: Context = contextWithoutDefaults.options
+      ? contextWithoutDefaults
+      : // only apply the defaults when the user provides no config
+        Object.setPrototypeOf(
+          {
+            options: defaultCamelCaseAllTheThingsConfig,
+          },
+          contextWithoutDefaults,
+        );
+
     const validators = parseOptions(context);
 
     function handleMember(
@@ -332,7 +369,8 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.ClassProperty
         | TSESTree.TSAbstractClassProperty
         | TSESTree.MethodDefinition
-        | TSESTree.TSAbstractMethodDefinition,
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSParameterProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
       if (node.accessibility) {
@@ -430,15 +468,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const modifiers = new Set<Modifiers>();
-        if (node.accessibility !== undefined) {
-          modifiers.add(Modifiers[node.accessibility]);
-        } else {
-          modifiers.add(Modifiers.public);
-        }
-        if (node.readonly) {
-          modifiers.add(Modifiers.readonly);
-        }
+        const modifiers = getMemberModifiers(node);
 
         const identifiers: TSESTree.Identifier[] = [];
         getIdentifiersFromPattern(node.parameter, identifiers);
@@ -738,7 +768,7 @@ function createValidator(
       node.type === AST_NODE_TYPES.Identifier ? node.name : `${node.value}`;
 
     // return will break the loop and stop checking configs
-    // it is only used when the name is known to have failed a config.
+    // it is only used when the name is known to have failed or succeeded a config.
     for (const config of configs) {
       if (config.filter?.test(originalName)) {
         // name does not match the filter
@@ -759,21 +789,25 @@ function createValidator(
 
       name = validateUnderscore('leading', config, name, node, originalName);
       if (name === null) {
+        // fail
         return;
       }
 
       name = validateUnderscore('trailing', config, name, node, originalName);
       if (name === null) {
+        // fail
         return;
       }
 
       name = validateAffix('prefix', config, name, node, originalName);
       if (name === null) {
+        // fail
         return;
       }
 
       name = validateAffix('suffix', config, name, node, originalName);
       if (name === null) {
+        // fail
         return;
       }
 
@@ -924,42 +958,9 @@ function createValidator(
     }
 
     for (const format of formats) {
-      switch (format) {
-        case PredefinedFormats.PascalCase:
-          if (isPascalCase(name)) {
-            return true;
-          }
-          break;
-
-        case PredefinedFormats.StrictPascalCase:
-          if (isStrictPascalCase(name)) {
-            return true;
-          }
-          break;
-
-        case PredefinedFormats.camelCase:
-          if (isCamelCase(name)) {
-            return true;
-          }
-          break;
-
-        case PredefinedFormats.strictCamelCase:
-          if (isStrictCamelCase(name)) {
-            return true;
-          }
-          break;
-
-        case PredefinedFormats.UPPER_CASE:
-          if (isUpperCase(name)) {
-            return true;
-          }
-          break;
-
-        case PredefinedFormats.snake_case:
-          if (isSnakeCase(name)) {
-            return true;
-          }
-          break;
+      const checker = PredefinedFormatToCheckFunction[format];
+      if (checker(name)) {
+        return true;
       }
     }
 
@@ -1022,6 +1023,10 @@ function isStrictCamelCase(name: string): boolean {
 }
 
 function hasStrictCamelHumps(name: string, isUpper: boolean): boolean {
+  function isUppercaseChar(char: string): boolean {
+    return char === char.toUpperCase() && char !== char.toLowerCase();
+  }
+
   if (name.startsWith('_')) {
     return false;
   }
@@ -1038,10 +1043,6 @@ function hasStrictCamelHumps(name: string, isUpper: boolean): boolean {
     }
   }
   return true;
-}
-
-function isUppercaseChar(char: string): boolean {
-  return char === char.toUpperCase() && char !== char.toLowerCase();
 }
 
 function isSnakeCase(name: string): boolean {
@@ -1076,6 +1077,19 @@ function validateUnderscores(name: string): boolean {
   }
   return !wasUnderscore;
 }
+
+const PredefinedFormatToCheckFunction: Readonly<Record<
+  PredefinedFormats,
+  (name: string) => boolean
+>> = {
+  [PredefinedFormats.PascalCase]: isPascalCase,
+  [PredefinedFormats.StrictPascalCase]: isStrictPascalCase,
+  [PredefinedFormats.camelCase]: isCamelCase,
+  [PredefinedFormats.strictCamelCase]: isStrictCamelCase,
+  [PredefinedFormats.UPPER_CASE]: isUpperCase,
+  [PredefinedFormats.snake_case]: isSnakeCase,
+};
+
 // #endregion Predefined Format Functions
 
 function selectorTypeToMessageString(selectorType: SelectorsString): string {
