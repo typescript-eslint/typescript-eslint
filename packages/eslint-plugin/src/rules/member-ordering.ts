@@ -231,12 +231,12 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSMethodSignature:
         case AST_NODE_TYPES.TSAbstractClassProperty:
         case AST_NODE_TYPES.ClassProperty:
-          return util.getNameFromPropertyName(node.key);
+          return util.getNameFromMember(node, sourceCode);
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind === 'constructor'
             ? 'constructor'
-            : util.getNameFromClassMember(node, sourceCode);
+            : util.getNameFromMember(node, sourceCode);
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
         case AST_NODE_TYPES.TSIndexSignature:

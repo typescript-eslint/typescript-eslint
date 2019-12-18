@@ -1,12 +1,12 @@
-# Disallow Empty Functions (@typescript-eslint/no-empty-function)
+# Disallow Empty Functions (no-empty-function)
 
 Empty functions can reduce readability because readers need to guess whether it’s intentional or not. So writing a clear comment for empty functions is a good practice.
 
 ## Rule Details
 
-The `@typescript-eslint/no-empty-function` rule extends the `no-empty-function` rule from ESLint core, and adds support for handling Typescript specific code that would otherwise trigger the rule.
+The `@typescript-eslint/no-empty-function` rule extends the `no-empty-function` rule from ESLint core, and adds support for handling TypeScript specific code that would otherwise trigger the rule.
 
-One example of valid Typescript specific code that would otherwise trigger the `no-empty-function` rule is the use of [parameter properties](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties) in constructor functions:
+One example of valid TypeScript specific code that would otherwise trigger the `no-empty-function` rule is the use of [parameter properties](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties) in constructor functions:
 
 ```typescript
 class Person {

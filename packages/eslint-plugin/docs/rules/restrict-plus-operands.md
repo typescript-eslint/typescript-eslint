@@ -21,7 +21,7 @@ This rule has an object option:
 - `"checkCompoundAssignments": false`: (default) does not check compound assignments (`+=`)
 - `"checkCompoundAssignments": true`
 
-### checkCompoundAssignments
+### `checkCompoundAssignments`
 
 Examples of **incorrect** code for the `{ "checkCompoundAssignments": true }` option:
 

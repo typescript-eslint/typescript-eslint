@@ -1,12 +1,15 @@
-# Roadmap
+# TSLint Migration Guide
+
+This document serves as a guid to help you migrate from TSLint.
+It lists all TSLint rules along side rules from the ESLint ecosystem that are the same or similar.
+
+## TSLint rules
 
 ✅ = done<br>
 🌟 = in ESLint core<br>
 🔌 = in another plugin<br>
 🌓 = implementations differ or ESLint version is missing functionality<br>
 🛑 = unimplemented<br>
-
-## TSLint rules
 
 ### TypeScript-specific
 
@@ -102,7 +105,7 @@
 | [`use-default-type-parameter`]       | ✅  | [`@typescript-eslint/no-unnecessary-type-arguments`]                  |
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                              |
 
-<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)<br>
+<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parentheses (`if ((foo = bar)) {}`)<br>
 
 ### Maintainability
 
