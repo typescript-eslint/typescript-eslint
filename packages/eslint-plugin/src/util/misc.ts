@@ -107,10 +107,10 @@ function getNameFromMember(
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  if (!member.computed) {
-    if (member.key.type === AST_NODE_TYPES.Identifier) {
-      return member.key.name;
-    }
+  if (member.key.type === AST_NODE_TYPES.Identifier) {
+    return member.key.name;
+  }
+  if (member.key.type === AST_NODE_TYPES.Literal) {
     return `${member.key.value}`;
   }
 
