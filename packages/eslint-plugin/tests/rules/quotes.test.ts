@@ -357,6 +357,32 @@ interface Foo {
       `,
       options: ['backtick'],
     },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  "A-B" = 2
+}
+      `,
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  'A-B' = 2
+}
+      `,
+      options: ['single'],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  'A-B' = 2
+}
+      `,
+      options: ['backtick'],
+    },
   ],
 
   invalid: [
@@ -679,6 +705,49 @@ interface Foo {
         {
           ...useSingleQuote,
           line: 6,
+          column: 3,
+        },
+      ],
+      options: ['single'],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  'A-B' = 2
+}
+      `,
+      output: `
+enum Foo {
+  A = 1,
+  "A-B" = 2
+}
+      `,
+      errors: [
+        {
+          ...useDoubleQuote,
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  "A-B" = 2
+}
+      `,
+      output: `
+enum Foo {
+  A = 1,
+  'A-B' = 2
+}
+      `,
+      errors: [
+        {
+          ...useSingleQuote,
+          line: 4,
           column: 3,
         },
       ],

@@ -36,7 +36,8 @@ export default util.createRule<Options, MessageIds>({
           option === 'backtick' &&
           (parent?.type === AST_NODE_TYPES.TSModuleDeclaration ||
             parent?.type === AST_NODE_TYPES.TSLiteralType ||
-            parent?.type === AST_NODE_TYPES.TSPropertySignature)
+            parent?.type === AST_NODE_TYPES.TSPropertySignature ||
+            parent?.type === AST_NODE_TYPES.TSEnumMember)
         ) {
           return;
         }
