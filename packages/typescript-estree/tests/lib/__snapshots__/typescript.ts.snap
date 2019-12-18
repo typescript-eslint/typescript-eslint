@@ -37483,6 +37483,7 @@ Object {
       },
       "members": Array [
         Object {
+          "computed": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -37537,6 +37538,7 @@ Object {
           "type": "TSEnumMember",
         },
         Object {
+          "computed": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -43242,6 +43244,7 @@ Object {
         },
         "members": Array [
           Object {
+            "computed": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -43296,6 +43299,7 @@ Object {
             "type": "TSEnumMember",
           },
           Object {
+            "computed": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -43629,6 +43633,7 @@ Object {
         },
         "members": Array [
           Object {
+            "computed": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -43683,6 +43688,7 @@ Object {
             "type": "TSEnumMember",
           },
           Object {
+            "computed": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -45285,6 +45291,7 @@ Object {
         },
         "members": Array [
           Object {
+            "computed": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -45339,6 +45346,7 @@ Object {
             "type": "TSEnumMember",
           },
           Object {
+            "computed": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -45635,6 +45643,7 @@ Object {
         },
         "members": Array [
           Object {
+            "computed": true,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -45671,6 +45680,7 @@ Object {
             "type": "TSEnumMember",
           },
           Object {
+            "computed": true,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -107143,6 +107153,7 @@ Object {
       },
       "members": Array [
         Object {
+          "computed": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -107178,6 +107189,7 @@ Object {
           "type": "TSEnumMember",
         },
         Object {
+          "computed": false,
           "id": Object {
             "loc": Object {
               "end": Object {
