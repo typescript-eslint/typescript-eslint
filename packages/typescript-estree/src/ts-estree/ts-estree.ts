@@ -345,7 +345,6 @@ export type Modifier =
 export type ObjectLiteralElementLike =
   | MethodDefinition
   | Property
-  | RestElement
   | SpreadElement
   | TSAbstractMethodDefinition;
 export type Parameter =
@@ -355,6 +354,13 @@ export type Parameter =
   | ObjectPattern
   | Identifier
   | TSParameterProperty;
+export type DestructuringPattern =
+  | Identifier
+  | ObjectPattern
+  | ArrayPattern
+  | RestElement
+  | AssignmentPattern
+  | MemberExpression;
 export type PrimaryExpression =
   | ArrayExpression
   | ArrayPattern
@@ -374,7 +380,7 @@ export type PrimaryExpression =
   | TemplateLiteral
   | ThisExpression
   | TSNullKeyword;
-export type PropertyName = Identifier | Literal;
+export type PropertyName = Expression;
 export type Statement =
   | BlockStatement
   | BreakStatement
@@ -509,7 +515,7 @@ interface LiteralBase extends BaseNode {
 }
 
 interface MethodDefinitionBase extends BaseNode {
-  key: Expression;
+  key: PropertyName;
   value: FunctionExpression | TSEmptyBodyFunctionExpression;
   computed: boolean;
   static: boolean;
@@ -542,7 +548,7 @@ export interface ArrayExpression extends BaseNode {
 
 export interface ArrayPattern extends BaseNode {
   type: AST_NODE_TYPES.ArrayPattern;
-  elements: Expression[];
+  elements: DestructuringPattern[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   decorators?: Decorator[];
@@ -897,7 +903,7 @@ export interface ObjectExpression extends BaseNode {
 
 export interface ObjectPattern extends BaseNode {
   type: AST_NODE_TYPES.ObjectPattern;
-  properties: ObjectLiteralElementLike[];
+  properties: (Property | RestElement)[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   decorators?: Decorator[];
@@ -923,7 +929,7 @@ export interface Property extends BaseNode {
 
 export interface RestElement extends BaseNode {
   type: AST_NODE_TYPES.RestElement;
-  argument: BindingName | Expression | PropertyName;
+  argument: DestructuringPattern;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   value?: AssignmentPattern;
