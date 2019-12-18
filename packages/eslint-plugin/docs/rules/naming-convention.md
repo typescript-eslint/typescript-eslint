@@ -56,7 +56,7 @@ When the format of an identifier is checked, it is checked in the following orde
 1. validate format
 
 At each step, if the identifier matches the option, the matching part will be removed.
-For example, if you provide the following formating option: `{ leadingUnderscore: 'allow', prefix: ['I'], format: ['StrictPascalCase'] }`, for the identifier `_IMyInterface`, then the following checks will occur:
+For example, if you provide the following formatting option: `{ leadingUnderscore: 'allow', prefix: ['I'], format: ['StrictPascalCase'] }`, for the identifier `_IMyInterface`, then the following checks will occur:
 
 1. `name = _IMyInterface`
 1. validate leading underscore - pass
@@ -109,7 +109,7 @@ If these are provided, the identifier must start with one of the provided values
   - `string` matches any type assignable to `string | null | undefined`
   - `number` matches any type assignable to `number | null | undefined`
   - `array` matches any type assignable to `Array<unknown> | null | undefined`
-  - `function` matches any type asignable to `Function | null | undefined`
+  - `function` matches any type assignable to `Function | null | undefined`
 
 The ordering of selectors does not matter. The implementation will automatically sort the selectors to ensure they match from most-specific to least specific. It will keep checking selectors in that order until it finds one that matches the name.
 
@@ -265,7 +265,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 }
 ```
 
-### Enforce the codebase follows eslint's `camelcase` conventions
+### Enforce the codebase follows ESLint's `camelcase` conventions
 
 ```json
 {

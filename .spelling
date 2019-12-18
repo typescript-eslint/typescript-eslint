@@ -7,6 +7,8 @@
 1pm
 30s
 A11y
+accessor
+accessors
 Airbnb
 Airbnb's
 ands
@@ -48,6 +50,7 @@ ESTree
 fallthrough
 falsy
 filenames
+granularly
 heavy_check_mark
 i.e.
 IIFE
@@ -72,9 +75,9 @@ necroing
 NodeJS
 npm
 nullish
+onboard
 OOM
 OOMs
-onboard
 OSS
 package.json
 Palantir
@@ -97,6 +100,7 @@ ruleset
 rulesets
 runtime
 searchable
+snake_case
 String#match
 substring
 substrings
@@ -110,7 +114,6 @@ TODO
 transpile
 truthy
 tsconfig
-tsconfig.json
 tsconfigs
 TSLint
 typecheck
@@ -121,6 +124,7 @@ typings
 unfixable
 unprefixed
 untyped
+UPPER_CASE
 VSCode
 Vue
 whitespace
