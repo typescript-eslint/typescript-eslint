@@ -386,14 +386,6 @@ tester.addFixturePatternConfig('javascript/modules', {
      * Expected babel parse errors - ts-estree is not currently throwing
      */
     'invalid-export-named-default', // babel parse errors
-
-    // babel does not recognise these as modules
-    'export-named-as-default',
-    'export-named-as-specifier',
-    'export-named-as-specifiers',
-    'export-named-specifier',
-    'export-named-specifiers-comma',
-    'export-named-specifiers',
     /**
      * TS 3.7 feature changes
      * TODO: remove me when babel adds support
@@ -406,6 +398,13 @@ tester.addFixturePatternConfig('javascript/modules', {
     // 'error-strict',
     'error-delete',
     'invalid-await',
+    // babel does not recognise these as modules
+    'export-named-as-default',
+    'export-named-as-specifier',
+    'export-named-as-specifiers',
+    'export-named-specifier',
+    'export-named-specifiers-comma',
+    'export-named-specifiers',
   ],
 });
 
@@ -557,16 +556,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     'directive-in-module',
     'directive-in-namespace',
     /**
-     * Babel parses this incorrectly
-     * https://github.com/babel/babel/issues/9324
-     */
-    'type-assertion-arrow-function',
-    /**
-     * PR for optional parameters in arrow function has been merged into Babel: https://github.com/babel/babel/pull/9463
-     * TODO: remove me in next babel > 7.3.2
-     */
-    'arrow-function-with-optional-parameter',
-    /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      */
     'const-assertions',
@@ -578,10 +567,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'abstract-class-with-abstract-constructor',
     /**
-     * TS 3.7 feature changes
-     * TODO: remove me when babel adds support
+     * TS 3.7: optional chaining
+     * babel: sets optional property as true/undefined
+     * ts-estree: sets optional property as true/false
      */
-    // optional chaining
+    'arrow-function-with-optional-parameter',
     'optional-chain',
     'optional-chain-with-parens',
     'optional-chain-call',
@@ -595,6 +585,10 @@ tester.addFixturePatternConfig('typescript/basics', {
     'never-type-param',
     'non-null-assertion-operator',
     'type-parameters-comments',
+    /**
+     * TS 3.7 feature changes
+     * TODO: remove me when babel adds support
+     */
     // type assertion function
     'type-assertion-in-function',
     'type-assertion-in-arrow-function',
@@ -638,10 +632,10 @@ tester.addFixturePatternConfig('typescript/decorators/accessor-decorators', {
   fileType: 'ts',
   ignore: [
     /**
-     * TS 3.7 feature changes
-     * TODO: remove me when babel adds support
+     * TS 3.7: optional chaining
+     * babel: sets optional property as true/undefined
+     * ts-estree: sets optional property as true/false
      */
-    // optional chaining
     'accessor-decorator-factory-instance-member',
     'accessor-decorator-factory-static-member',
     'accessor-decorator-instance-member',
@@ -652,10 +646,10 @@ tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
   fileType: 'ts',
   ignore: [
     /**
-     * TS 3.7 feature changes
-     * TODO: remove me when babel adds support
+     * TS 3.7: optional chaining
+     * babel: sets optional property as true/undefined
+     * ts-estree: sets optional property as true/false
      */
-    // optional chaining
     'class-decorator-factory',
   ],
 });
@@ -663,10 +657,10 @@ tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
   fileType: 'ts',
   ignore: [
     /**
-     * TS 3.7 feature changes
-     * TODO: remove me when babel adds support
+     * TS 3.7: optional chaining
+     * babel: sets optional property as true/undefined
+     * ts-estree: sets optional property as true/false
      */
-    // optional chaining
     'method-decorator-factory-instance-member',
     'method-decorator-factory-static-member',
   ],
@@ -681,10 +675,10 @@ tester.addFixturePatternConfig('typescript/decorators/parameter-decorators', {
     'parameter-array-pattern-decorator',
     'parameter-rest-element-decorator',
     /**
-     * TS 3.7 feature changes
-     * TODO: remove me when babel adds support
+     * TS 3.7: optional chaining
+     * babel: sets optional property as true/undefined
+     * ts-estree: sets optional property as true/false
      */
-    // optional chaining
     'parameter-decorator-constructor',
     'parameter-decorator-decorator-instance-member',
     'parameter-decorator-decorator-static-member',
@@ -695,13 +689,17 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
   fileType: 'ts',
   ignore: [
     /**
-     * TS 3.7 feature changes
-     * TODO: remove me when babel adds support
+     * TS 3.7: optional chaining
+     * babel: sets optional property as true/undefined
+     * ts-estree: sets optional property as true/false
      */
-    // optional chaining
     'property-decorator-factory-instance-member',
     'property-decorator-factory-static-member',
-    // declare class properties
+    /**
+     * TS 3.7: declare class properties
+     * babel: sets declare property as true/undefined
+     * ts-estree: sets declare property as true/false
+     */
     'property-decorator-instance-member',
     'property-decorator-static-member',
   ],
@@ -715,10 +713,9 @@ tester.addFixturePatternConfig('typescript/expressions', {
      */
     'tagged-template-expression-type-arguments',
     /**
-     * TS 3.7 feature changes
-     * TODO: remove me when babel adds support
+     * babel: sets optional property as true/undefined
+     * ts-estree: sets optional property as true/false
      */
-    // optional chaining
     'call-expression-type-arguments',
   ],
 });
@@ -752,18 +749,10 @@ tester.addFixturePatternConfig('typescript/types', {
   fileType: 'ts',
   ignore: [
     /**
-     * AST difference
+     * TS 3.7: optional chaining
+     * babel: sets optional property as true/undefined
+     * ts-estree: sets optional property as true/false
      */
-    'literal-number-negative',
-    /**
-     * Babel parse error: https://github.com/babel/babel/pull/9431
-     */
-    'function-with-array-destruction',
-    /**
-     * TS 3.7 feature changes
-     * TODO: remove me when babel adds support
-     */
-    // optional chaining
     'this-type-expanded',
   ],
 });

@@ -1403,10 +1403,12 @@ export interface TSVoidKeyword extends BaseNode {
 
 export interface UpdateExpression extends UnaryExpressionBase {
   type: AST_NODE_TYPES.UpdateExpression;
+  operator: '++' | '--';
 }
 
 export interface UnaryExpression extends UnaryExpressionBase {
   type: AST_NODE_TYPES.UnaryExpression;
+  operator: '+' | '-' | '!' | '~' | 'delete' | 'void' | 'typeof';
 }
 
 export interface VariableDeclaration extends BaseNode {

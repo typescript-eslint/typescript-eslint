@@ -98,7 +98,7 @@ let myVar: StringOrNumber;
 This rule accepts `"nofunc"` string as an option.
 `"nofunc"` is the same as `{ "functions": false, "classes": true }`.
 
-### functions
+### `functions`
 
 Examples of **correct** code for the `{ "functions": false }` option:
 
@@ -109,7 +109,7 @@ f();
 function f() {}
 ```
 
-### classes
+### `classes`
 
 Examples of **incorrect** code for the `{ "classes": false }` option:
 
@@ -134,7 +134,7 @@ function foo() {
 class A {}
 ```
 
-### variables
+### `variables`
 
 Examples of **incorrect** code for the `{ "variables": false }` option:
 
@@ -157,7 +157,7 @@ function baz() {
 var foo = 1;
 ```
 
-### typedefs
+### `typedefs`
 
 Examples of **correct** code for the `{ "typedefs": false }` option:
 
