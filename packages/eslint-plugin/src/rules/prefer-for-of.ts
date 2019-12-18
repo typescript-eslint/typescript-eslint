@@ -149,9 +149,8 @@ export default util.createRule({
       // ({ foo: a[i] }) = { foo: 0 }
       if (
         parent.type === AST_NODE_TYPES.Property &&
-        parent.parent !== undefined &&
-        parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
         parent.value === node &&
+        parent.parent?.type === AST_NODE_TYPES.ObjectExpression &&
         isAssignee(parent.parent)
       ) {
         return true;

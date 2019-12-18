@@ -1831,6 +1831,15 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-named-enum.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-named-enum-computed.src 1`] = `
+Object {
+  "column": 4,
+  "index": 35,
+  "lineNumber": 3,
+  "message": "An enum member cannot have a numeric name.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-type-alias-declaration.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-type-class-declaration.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;

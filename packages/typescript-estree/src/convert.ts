@@ -2485,6 +2485,7 @@ export class Converter {
         const result = this.createNode<TSESTree.TSEnumMember>(node, {
           type: AST_NODE_TYPES.TSEnumMember,
           id: this.convertChild(node.name),
+          computed: node.name.kind === ts.SyntaxKind.ComputedPropertyName,
         });
         if (node.initializer) {
           result.initializer = this.convertChild(node.initializer);

@@ -107,7 +107,7 @@ function getNameFromMember(
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  if (isLiteralOrIdentifier(member.key)) {
+  if (!member.computed) {
     if (member.key.type === AST_NODE_TYPES.Identifier) {
       return member.key.name;
     }
@@ -115,19 +115,6 @@ function getNameFromMember(
   }
 
   return sourceCode.text.slice(...member.key.range);
-}
-
-/**
- * This covers both actual property names, as well as computed properties that are either
- * an identifier or a literal at the top level.
- */
-function isLiteralOrIdentifier(
-  node: TSESTree.Expression,
-): node is TSESTree.Literal | TSESTree.Identifier {
-  return (
-    node.type === AST_NODE_TYPES.Literal ||
-    node.type === AST_NODE_TYPES.Identifier
-  );
 }
 
 type ExcludeKeys<
@@ -148,7 +135,6 @@ export {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
   isDefinitionFile,
-  isLiteralOrIdentifier,
   RequireKeys,
   upperCaseFirst,
 };
