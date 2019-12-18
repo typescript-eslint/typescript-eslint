@@ -162,3 +162,7 @@ I.e. in this repo you can run: `DEBUG=typescript-eslint:* yarn lint`.
 ## License
 
 TypeScript ESTree inherits from the the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
+
+## Contributing
+
+[See the contributing guide here](../../CONTRIBUTING.md)

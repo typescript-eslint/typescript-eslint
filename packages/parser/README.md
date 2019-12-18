@@ -155,3 +155,7 @@ Please use the `@typescript-eslint/parser` issue template when creating your iss
 ## License
 
 TypeScript ESLint Parser is licensed under a permissive BSD 2-clause license.
+
+## Contributing
+
+[See the contributing guide here](../../CONTRIBUTING.md)

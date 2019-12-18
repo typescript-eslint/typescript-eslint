@@ -58,3 +58,7 @@ Plugin contains only single rule `@typescript-eslint/tslint/config`.
 - https://github.com/Microsoft/tslint-microsoft-contrib
 - https://github.com/SonarSource/SonarTS
 - https://github.com/ajafff/tslint-consistent-codestyle
+
+## Contributing
+
+[See the contributing guide here](../../CONTRIBUTING.md)
