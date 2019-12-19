@@ -83,6 +83,11 @@ let myVar: StringOrNumber;
   Otherwise, ignores those references if the declaration is in upper function scopes.
   Class declarations are not hoisted, so it might be danger.
   Default is `true`.
+- `enums` (`boolean`) -
+  The flag which shows whether or not this rule checks enum declarations of upper scopes.
+  If this is `true`, this rule warns every reference to a enum before the enum declaration.
+  Otherwise, ignores those references.
+  Default is `true`.
 - `variables` (`boolean`) -
   This flag determines whether or not the rule checks variable declarations in upper scopes.
   If this is `true`, the rule warns every reference to a variable before the variable declaration.
@@ -132,6 +137,43 @@ function foo() {
 }
 
 class A {}
+```
+
+### `enums`
+
+Examples of **incorrect** code for the `{ "enums": true }` option:
+
+```ts
+/*eslint no-use-before-define: ["error", { "enums": true }]*/
+
+function foo() {
+  return Foo.FOO;
+}
+
+class Test {
+  foo() {
+    return Foo.FOO;
+  }
+}
+
+enum Foo {
+  FOO,
+  BAR,
+}
+```
+
+Examples of **correct** code for the `{ "enums": false }` option:
+
+```ts
+/*eslint no-use-before-define: ["error", { "enums": false }]*/
+
+function foo() {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
 ```
 
 ### `variables`
