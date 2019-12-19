@@ -22,3 +22,7 @@ Once it is stable, it will be renamed to `@typescript-eslint/util` for a `2.0.0`
 | [`TSESLint`](./src/ts-eslint)                                                      | Types for ESLint, correctly typed to work with the types found in `TSESTree`.                  |
 | [`ESLintUtils`](./src/eslint-utils)                                                | Tools for creating ESLint rules with TypeScript.                                               |
 | [`ParserServices`](../packages/typescript-estree/src/ts-estree/parser.ts)          | The parser services provided when parsing a file using `@typescript-eslint/typescript-estree`. |
+
+## Contributing
+
+[See the contributing guide here](../../CONTRIBUTING.md)

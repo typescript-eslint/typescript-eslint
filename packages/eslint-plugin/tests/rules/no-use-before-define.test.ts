@@ -229,6 +229,54 @@ interface Foo {
 }
 const bar = 'blah'
     `,
+    {
+      code: `
+function foo(): Foo {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: false,
+        },
+      ],
+    },
+    {
+      code: `
+let foo: Foo;
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: false,
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  foo(args: Foo): Foo {
+    return Foo.FOO;
+  }
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -837,6 +885,69 @@ var bar;
             name: 'bar',
           },
           type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  foo(args: Foo): Foo {
+    return Foo.FOO;
+  }
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(): Foo {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = Foo.Foo;
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
         },
       ],
     },

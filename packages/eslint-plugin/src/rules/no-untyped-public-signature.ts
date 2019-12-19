@@ -63,7 +63,7 @@ export default util.createRule<Options, MessageIds>({
       ) {
         return ignoredMethods.has(node.key.quasis[0].value.raw);
       }
-      if (node.key.type === AST_NODE_TYPES.Identifier && !node.computed) {
+      if (!node.computed && node.key.type === AST_NODE_TYPES.Identifier) {
         return ignoredMethods.has(node.key.name);
       }
 

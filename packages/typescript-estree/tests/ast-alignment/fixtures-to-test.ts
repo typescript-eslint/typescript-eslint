@@ -616,6 +616,8 @@ tester.addFixturePatternConfig('typescript/basics', {
     'class-with-readonly-property',
     'object-with-escaped-properties',
     'type-reference-comments',
+    // babel hard fails on computed string enum members, but TS doesn't
+    'export-named-enum-computed-string',
   ],
   ignoreSourceType: [
     /**
