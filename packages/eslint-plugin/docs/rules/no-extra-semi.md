@@ -2,7 +2,7 @@
 
 ## Rule Details
 
-This rule extends the base [eslint/no-extra-semi](https://eslint.org/docs/rules/no-extra-semi) rule.
+This rule extends the base [`eslint/no-extra-semi`](https://eslint.org/docs/rules/no-extra-semi) rule.
 
 ## How to use
 
