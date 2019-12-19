@@ -535,3 +535,18 @@ declare module 'eslint/lib/rules/brace-style' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/no-extra-semi' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'unexpected',
+    [],
+    {
+      EmptyStatement(node: TSESTree.EmptyStatement): void;
+      ClassBody(node: TSESTree.ClassBody): void;
+      MethodDefinition(node: TSESTree.MethodDefinition): void;
+    }
+  >;
+  export = rule;
+}
