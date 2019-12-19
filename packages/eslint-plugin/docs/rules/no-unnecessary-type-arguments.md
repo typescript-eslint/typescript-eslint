@@ -1,4 +1,4 @@
-# Enforces that types will not to be used (no-unnecessary-type-arguments)
+# Enforces that types will not be used unnecessary (no-unnecessary-type-arguments)
 
 Warns if an explicitly specified type argument is the default for that type parameter.
 
