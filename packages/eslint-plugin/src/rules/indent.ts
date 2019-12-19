@@ -392,7 +392,7 @@ export default util.createRule<Options, MessageIds>({
               computed: false,
               method: false,
               shorthand: false,
-            },
+            } as any,
           ],
 
           // location data

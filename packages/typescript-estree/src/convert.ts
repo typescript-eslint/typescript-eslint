@@ -2489,6 +2489,9 @@ export class Converter {
         if (node.initializer) {
           result.initializer = this.convertChild(node.initializer);
         }
+        if (node.name.kind === ts.SyntaxKind.ComputedPropertyName) {
+          result.computed = true;
+        }
         return result;
       }
 
