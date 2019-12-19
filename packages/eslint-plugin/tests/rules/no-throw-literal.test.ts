@@ -96,6 +96,9 @@ throw new CustomError();
       code: `throw 'literal' && new Error();`,
     },
     {
+      code: `throw new Error() || 'literal'`,
+    },
+    {
       code: `throw foo ? new Error() : 'literal';`,
     },
     {
@@ -286,6 +289,29 @@ throw foo.msg;
       code: `
 class CustomError {}
 throw new CustomError();
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+class CustomError extends Foo {}
+throw new CustomError();
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+    },
+    {
+      code: `
+const Error = null;
+throw Error;
       `,
       errors: [
         {
