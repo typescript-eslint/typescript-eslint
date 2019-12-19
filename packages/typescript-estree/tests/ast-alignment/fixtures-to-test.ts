@@ -616,11 +616,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     'class-with-readonly-property',
     'object-with-escaped-properties',
     'type-reference-comments',
-    // babel doesn't allow computed enum members
-    'const-enum',
-    'export-declare-const-named-enum',
-    'export-declare-named-enum',
-    'export-named-enum',
   ],
   ignoreSourceType: [
     /**
@@ -764,10 +759,6 @@ tester.addFixturePatternConfig('typescript/types', {
 
 tester.addFixturePatternConfig('typescript/declare', {
   fileType: 'ts',
-  ignore: [
-    // babel doesn't allow computed enum members
-    'enum',
-  ],
 });
 
 tester.addFixturePatternConfig('typescript/namespaces-and-modules', {

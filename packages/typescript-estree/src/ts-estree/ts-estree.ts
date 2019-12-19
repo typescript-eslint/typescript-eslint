@@ -625,7 +625,7 @@ interface TSEnumMemberBase extends BaseNode {
   type: AST_NODE_TYPES.TSEnumMember;
   id:
     | PropertyNameNonComputed
-    // this should only happen in semantically invalid code (errors 1164 and 2452)
+    // this should only happen in semantically invalid code (ts error 1164)
     | PropertyNameComputed;
   initializer?: Expression;
   computed?: boolean;
@@ -1291,7 +1291,7 @@ export interface TSEnumMemberComputedName extends TSEnumMemberBase {
 
 export interface TSEnumMemberNonComputedName extends TSEnumMemberBase {
   id: PropertyNameNonComputed;
-  computed: false;
+  computed?: false;
 }
 
 export interface TSExportAssignment extends BaseNode {
