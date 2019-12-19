@@ -317,7 +317,7 @@ declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
-a ?? b || c && d;
+(a ?? b) || c && d;
               `.trimRight(),
             },
           ],
@@ -367,7 +367,7 @@ declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
-a && b ?? c || d;
+a && (b ?? c) || d;
               `.trimRight(),
             },
           ],
@@ -432,6 +432,59 @@ if (function werid() { return x ?? 'foo' }) {}
           column: 33,
           endLine: 3,
           endColumn: 35,
+        },
+      ],
+    })),
+
+    // testing the suggestion fixer option
+    {
+      code: `
+declare const x: string | null;
+x || 'foo';
+      `.trimRight(),
+      output: null,
+      options: [{ forceSuggestionFixer: true }],
+      errors: [
+        {
+          messageId: 'preferNullish',
+          line: 3,
+          column: 3,
+          endLine: 3,
+          endColumn: 5,
+          suggestions: [
+            {
+              messageId: 'preferNullish',
+              output: `
+declare const x: string | null;
+x ?? 'foo';
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1290
+    ...nullishTypeInvalidTest((nullish, type) => ({
+      code: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type};
+declare const c: ${type};
+a || b || c;
+      `.trimRight(),
+      output: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type};
+declare const c: ${type};
+(a ?? b) || c;
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'preferNullish',
+          line: 5,
+          column: 3,
+          endLine: 5,
+          endColumn: 5,
         },
       ],
     })),

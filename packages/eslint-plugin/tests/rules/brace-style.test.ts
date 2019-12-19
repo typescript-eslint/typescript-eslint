@@ -539,6 +539,38 @@ namespace Foo
       `,
       options: ['allman'],
     },
+    {
+      code: `
+enum Foo
+{
+  A,
+  B
+}
+      `,
+      options: ['allman'],
+    },
+    {
+      code: `
+enum Foo {
+  A,
+  B
+}
+      `,
+      options: ['1tbs'],
+    },
+    {
+      code: `
+enum Foo {
+  A,
+  B
+}
+      `,
+      options: ['stroustrup'],
+    },
+    {
+      code: `enum Foo { A, B }`,
+      options: ['1tbs', { allowSingleLine: true }],
+    },
   ],
 
   invalid: [
@@ -760,7 +792,6 @@ if (f) {
       options: ['allman'],
       errors: [{ messageId: 'sameLineClose' }],
     },
-
     // allowSingleLine: true
     {
       code: `function foo() { return; \n}`,
@@ -912,14 +943,12 @@ if (f) {
         { messageId: 'sameLineOpen' },
       ],
     },
-
     // Comment interferes with fix
     {
       code: `if (foo) // comment \n{\nbar();\n}`,
       output: null,
       errors: [{ messageId: 'nextLineOpen' }],
     },
-
     // https://github.com/eslint/eslint/issues/7493
     {
       code: `if (foo) {\n bar\n.baz }`,
@@ -995,7 +1024,6 @@ if (f) {
       options: ['allman'],
       errors: [{ messageId: 'sameLineOpen' }],
     },
-
     // https://github.com/eslint/eslint/issues/7621
     {
       code: `
@@ -1108,6 +1136,41 @@ namespace Foo {
       output: `namespace Foo \n{ \n }`,
       options: ['allman'],
       errors: [{ messageId: 'sameLineOpen' }],
+    },
+    {
+      code: `
+enum Foo
+{
+}
+      `,
+      output: `
+enum Foo {
+}
+      `,
+      errors: [{ messageId: 'nextLineOpen' }],
+    },
+    {
+      code: `
+enum Foo
+{
+}
+      `,
+      output: `
+enum Foo {
+}
+      `,
+      options: ['stroustrup'],
+      errors: [{ messageId: 'nextLineOpen' }],
+    },
+    {
+      code: `enum Foo { A }`,
+      output: `enum Foo \n{\n A \n}`,
+      options: ['allman'],
+      errors: [
+        { messageId: 'sameLineOpen' },
+        { messageId: 'blockSameLine' },
+        { messageId: 'singleLineClose' },
+      ],
     },
   ],
 });

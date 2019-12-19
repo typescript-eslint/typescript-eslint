@@ -48,16 +48,6 @@ type InferMessageIdsTypeFromRule<T> = T extends TSESLint.RuleModule<
   ? TMessageIds
   : unknown;
 
-/**
- * Gets a string name representation of the given PropertyName node
- */
-function getNameFromPropertyName(propertyName: TSESTree.PropertyName): string {
-  if (propertyName.type === AST_NODE_TYPES.Identifier) {
-    return propertyName.name;
-  }
-  return `${propertyName.value}`;
-}
-
 /** Return true if both parameters are equal. */
 type Equal<T> = (a: T, b: T) => boolean;
 
@@ -90,34 +80,41 @@ function findFirstResult<T, U>(
 }
 
 /**
- * Gets a string name representation of the name of the given MethodDefinition
- * or ClassProperty node, with handling for computed property names.
+ * Gets a string representation of the name of the index signature.
  */
-function getNameFromClassMember(
-  methodDefinition:
-    | TSESTree.MethodDefinition
-    | TSESTree.ClassProperty
-    | TSESTree.TSAbstractMethodDefinition,
-  sourceCode: TSESLint.SourceCode,
+export function getNameFromIndexSignature(
+  node: TSESTree.TSIndexSignature,
 ): string {
-  if (keyCanBeReadAsPropertyName(methodDefinition.key)) {
-    return getNameFromPropertyName(methodDefinition.key);
-  }
-
-  return sourceCode.text.slice(...methodDefinition.key.range);
+  const propName: TSESTree.PropertyName | undefined = node.parameters.find(
+    (parameter: TSESTree.Parameter): parameter is TSESTree.Identifier =>
+      parameter.type === AST_NODE_TYPES.Identifier,
+  );
+  return propName ? propName.name : '(index signature)';
 }
 
 /**
- * This covers both actual property names, as well as computed properties that are either
- * an identifier or a literal at the top level.
+ * Gets a string name representation of the name of the given MethodDefinition
+ * or ClassProperty node, with handling for computed property names.
  */
-function keyCanBeReadAsPropertyName(
-  node: TSESTree.Expression,
-): node is TSESTree.PropertyName {
-  return (
-    node.type === AST_NODE_TYPES.Literal ||
-    node.type === AST_NODE_TYPES.Identifier
-  );
+function getNameFromMember(
+  member:
+    | TSESTree.MethodDefinition
+    | TSESTree.TSMethodSignature
+    | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.ClassProperty
+    | TSESTree.TSAbstractClassProperty
+    | TSESTree.Property
+    | TSESTree.TSPropertySignature,
+  sourceCode: TSESLint.SourceCode,
+): string {
+  if (member.key.type === AST_NODE_TYPES.Identifier) {
+    return member.key.name;
+  }
+  if (member.key.type === AST_NODE_TYPES.Literal) {
+    return `${member.key.value}`;
+  }
+
+  return sourceCode.text.slice(...member.key.range);
 }
 
 type ExcludeKeys<
@@ -134,8 +131,7 @@ export {
   Equal,
   ExcludeKeys,
   findFirstResult,
-  getNameFromClassMember,
-  getNameFromPropertyName,
+  getNameFromMember,
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
   isDefinitionFile,

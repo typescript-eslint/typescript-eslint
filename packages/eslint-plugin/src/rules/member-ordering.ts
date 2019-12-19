@@ -39,6 +39,7 @@ const allMemberTypes = ['field', 'method', 'constructor'].reduce<string[]>(
   },
   [],
 );
+allMemberTypes.unshift('signature');
 
 export default util.createRule<Options, MessageIds>({
   name: 'member-ordering',
@@ -104,7 +105,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor'],
+                  enum: ['signature', 'field', 'method', 'constructor'],
                 },
               },
             ],
@@ -117,7 +118,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor'],
+                  enum: ['signature', 'field', 'method', 'constructor'],
                 },
               },
             ],
@@ -130,6 +131,8 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       default: [
+        'signature',
+
         'public-static-field',
         'protected-static-field',
         'private-static-field',
@@ -194,7 +197,6 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.ClassElement | TSESTree.TypeElement,
     ): string | null {
       // TODO: add missing TSCallSignatureDeclaration
-      // TODO: add missing TSIndexSignature
       switch (node.type) {
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
         case AST_NODE_TYPES.MethodDefinition:
@@ -210,6 +212,8 @@ export default util.createRule<Options, MessageIds>({
             : 'field';
         case AST_NODE_TYPES.TSPropertySignature:
           return 'field';
+        case AST_NODE_TYPES.TSIndexSignature:
+          return 'signature';
         default:
           return null;
       }
@@ -227,14 +231,16 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSMethodSignature:
         case AST_NODE_TYPES.TSAbstractClassProperty:
         case AST_NODE_TYPES.ClassProperty:
-          return util.getNameFromPropertyName(node.key);
+          return util.getNameFromMember(node, sourceCode);
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind === 'constructor'
             ? 'constructor'
-            : util.getNameFromClassMember(node, sourceCode);
+            : util.getNameFromMember(node, sourceCode);
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
+        case AST_NODE_TYPES.TSIndexSignature:
+          return util.getNameFromIndexSignature(node);
         default:
           return null;
       }

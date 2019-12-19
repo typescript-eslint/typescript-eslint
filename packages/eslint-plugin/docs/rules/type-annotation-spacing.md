@@ -286,4 +286,4 @@ If you don't want to enforce spacing for your type annotations, you can safely t
 
 ## Compatibility
 
-- TSLint: [typedef-whitespace](https://palantir.github.io/tslint/rules/typedef-whitespace/)
+- TSLint: [`typedef-whitespace`](https://palantir.github.io/tslint/rules/typedef-whitespace/)

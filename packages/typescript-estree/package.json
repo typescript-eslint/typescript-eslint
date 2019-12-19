@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "2.9.0",
+  "version": "2.12.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "main": "dist/parser.js",
   "types": "dist/parser.d.ts",
@@ -49,9 +49,9 @@
   },
   "devDependencies": {
     "@babel/code-frame": "7.5.5",
-    "@babel/parser": "7.5.5",
-    "@babel/types": "^7.3.2",
-    "@types/babel-code-frame": "^6.20.1",
+    "@babel/parser": "7.7.5",
+    "@babel/types": "^7.7.4",
+    "@types/babel__code-frame": "^7.0.1",
     "@types/debug": "^4.1.5",
     "@types/glob": "^7.1.1",
     "@types/is-glob": "^4.0.1",
@@ -59,8 +59,7 @@
     "@types/lodash.unescape": "^4.0.4",
     "@types/semver": "^6.2.0",
     "@types/tmp": "^0.1.0",
-    "@typescript-eslint/shared-fixtures": "2.9.0",
-    "babel-code-frame": "^6.26.0",
+    "@typescript-eslint/shared-fixtures": "2.12.0",
     "lodash.isplainobject": "4.0.6",
     "tmp": "^0.1.0",
     "typescript": "*"
