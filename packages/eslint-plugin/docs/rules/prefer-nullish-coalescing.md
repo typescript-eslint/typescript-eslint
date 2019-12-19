@@ -15,7 +15,7 @@ function myFunc(foo: string | null) {
 }
 ```
 
-Because the nullish coalescing operator _only_ coalesces when the original value is `null` or `undefined`, it is much safer than relying upon logical OR operator chaining `||`; which coalesces on any _falsey_ value:
+Because the nullish coalescing operator _only_ coalesces when the original value is `null` or `undefined`, it is much safer than relying upon logical OR operator chaining `||`; which coalesces on any _falsy_ value:
 
 ```ts
 const emptyString = '';
@@ -59,11 +59,11 @@ const defaultOptions = [
 ];
 ```
 
-### ignoreConditionalTests
+### `ignoreConditionalTests`
 
 Setting this option to `true` (the default) will cause the rule to ignore any cases that are located within a conditional test.
 
-Generally expressions within conditional tests intentionally use the falsey fallthrough behaviour of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
+Generally expressions within conditional tests intentionally use the falsy fallthrough behavior of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
 If you're looking to enforce stricter conditional tests, you should consider using the `strict-boolean-expressions` rule.
 
@@ -95,11 +95,11 @@ for (let i = 0; a ?? b; i += 1) {}
 a ?? b ? true : false;
 ```
 
-### ignoreMixedLogicalExpressions
+### `ignoreMixedLogicalExpressions`
 
-Setting this option to `true` (the default) will cause the rule to ignore any logical or expressions thare are part of a mixed logical expression (with `&&`).
+Setting this option to `true` (the default) will cause the rule to ignore any logical or expressions that are part of a mixed logical expression (with `&&`).
 
-Generally expressions within mixed logical expressions intentionally use the falsey fallthrough behaviour of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
+Generally expressions within mixed logical expressions intentionally use the falsy fallthrough behavior of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
 If you're looking to enforce stricter conditional tests, you should consider using the `strict-boolean-expressions` rule.
 
@@ -133,11 +133,11 @@ a ?? (b && c && d);
 
 **_NOTE:_** Errors for this specific case will be presented as suggestions (see below), instead of fixes. This is because it is not always safe to automatically convert `||` to `??` within a mixed logical expression, as we cannot tell the intended precedence of the operator. Note that by design, `??` requires parentheses when used with `&&` or `||` in the same expression.
 
-### forceSuggestionFixer
+### `forceSuggestionFixer`
 
 Setting this option to `true` will cause the rule to use ESLint's "suggested fix" mode for all fixes. _This option is provided as to aid in transitioning your codebase onto this rule_.
 
-Suggestion fixes cannot be automatically applied via the `--fix` CLI command, but can be _manually_ chosen to be applied one at a time via an IDE or similar. This makes it safe to run autofixers on an existing codebase without worrying about potential runtime behaviour changes from this rule's fixer.
+Suggestion fixes cannot be automatically applied via the `--fix` CLI command, but can be _manually_ chosen to be applied one at a time via an IDE or similar. This makes it safe to run autofixers on an existing codebase without worrying about potential runtime behavior changes from this rule's fixer.
 
 ## When Not To Use It
 

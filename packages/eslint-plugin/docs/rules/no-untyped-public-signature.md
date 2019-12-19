@@ -42,7 +42,7 @@ private foo(param1) {
 
 This rule, in its default state, does not require any argument.
 
-### ignoredMethods
+### `ignoredMethods`
 
 You may pass method names you would like this rule to ignore, like so:
 

@@ -1,12 +1,15 @@
-# Roadmap
+# TSLint Migration Guide
+
+This document serves as a guid to help you migrate from TSLint.
+It lists all TSLint rules along side rules from the ESLint ecosystem that are the same or similar.
+
+## TSLint rules
 
 ✅ = done<br>
 🌟 = in ESLint core<br>
 🔌 = in another plugin<br>
 🌓 = implementations differ or ESLint version is missing functionality<br>
 🛑 = unimplemented<br>
-
-## TSLint rules
 
 ### TypeScript-specific
 
@@ -102,7 +105,7 @@
 | [`use-default-type-parameter`]       | ✅  | [`@typescript-eslint/no-unnecessary-type-arguments`]                  |
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                              |
 
-<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)<br>
+<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parentheses (`if ((foo = bar)) {}`)<br>
 
 ### Maintainability
 
@@ -142,7 +145,7 @@
 | [`class-name`]                      | ✅  | [`@typescript-eslint/class-name-casing`]                                            |
 | [`comment-format`]                  | 🌟  | [`capitalized-comments`][capitalized-comments] & [`spaced-comment`][spaced-comment] |
 | [`comment-type`]                    | 🛑  | N/A                                                                                 |
-| [`completed-docs`]                  | 🔌  | [`eslint-plugin-jsdoc`][plugin:jsdoc]                                               |
+| [`completed-docs`]                  | 🔌  | [`jsdoc/require-jsdoc`]                                                             |
 | [`encoding`]                        | 🛑  | N/A                                                                                 |
 | [`file-header`]                     | 🔌  | [`eslint-plugin-header`][plugin:header] or [`-file-header`][plugin:file-header]     |
 | [`file-name-casing`]                | 🔌  | [`unicorn/filename-case`]                                                           |
@@ -160,7 +163,7 @@
 | [`no-consecutive-blank-lines`]      | 🌟  | [`no-multiple-empty-lines`][no-multiple-empty-lines]                                |
 | [`no-irregular-whitespace`]         | 🌟  | [`no-irregular-whitespace`][no-irregular-whitespace] with `skipStrings: false`      |
 | [`no-parameter-properties`]         | ✅  | [`@typescript-eslint/no-parameter-properties`]                                      |
-| [`no-redundant-jsdoc`]              | 🛑  | N/A ([open issue](https://github.com/gajus/eslint-plugin-jsdoc/issues/134))         |
+| [`no-redundant-jsdoc`]              | 🔌  | [`jsdoc/no-types`]                                                                  |
 | [`no-reference-import`]             | 🛑  | N/A                                                                                 |
 | [`no-trailing-whitespace`]          | 🌟  | [`no-trailing-spaces`][no-trailing-spaces]                                          |
 | [`no-unnecessary-callback-wrapper`] | 🛑  | N/A and this might be unsafe (i.e. with `forEach`)                                  |
@@ -664,11 +667,16 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`security/detect-non-literal-require`]: https://github.com/nodesecurity/eslint-plugin-security#detect-non-literal-require
 [`security/detect-possible-timing-attacks`]: https://github.com/nodesecurity/eslint-plugin-security#detect-possible-timing-attacks
 
+<!-- eslint-plugin-jsdoc -->
+
+[plugin:jsdoc]: https://github.com/gajus/eslint-plugin-jsdoc
+[`jsdoc/require-jsdoc`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-jsdoc
+[`jsdoc/no-types`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-no-types
+
 <!-- Miscellaneous plugins -->
 
 [`prefer-arrow/prefer-arrow-functions`]: https://github.com/TristonJ/eslint-plugin-prefer-arrow
 [plugin:promise]: https://github.com/xjamundx/eslint-plugin-promise
-[plugin:jsdoc]: https://github.com/gajus/eslint-plugin-jsdoc
 [plugin:header]: https://github.com/Stuk/eslint-plugin-header
 [plugin:file-header]: https://github.com/Sekhmet/eslint-plugin-file-header
 [plugin:compat]: https://github.com/amilajack/eslint-plugin-compat

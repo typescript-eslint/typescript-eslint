@@ -4,7 +4,7 @@ Grouping overloaded members together can improve readability of the code.
 
 ## Rule Details
 
-This rule aims to standardise the way overloaded members are organized.
+This rule aims to standardize the way overloaded members are organized.
 
 The following patterns are considered warnings:
 

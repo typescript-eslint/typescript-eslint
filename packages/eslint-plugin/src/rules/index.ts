@@ -24,6 +24,7 @@ import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
+import noExtraSemi from './no-extra-semi';
 import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
@@ -101,6 +102,7 @@ export default {
   'no-explicit-any': noExplicitAny,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extra-parens': noExtraParens,
+  'no-extra-semi': noExtraSemi,
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,

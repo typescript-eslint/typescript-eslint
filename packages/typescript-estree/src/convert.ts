@@ -268,7 +268,7 @@ export class Converter {
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
     parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
-  ): any[] {
+  ): TSESTree.Statement[] {
     let allowDirectives = canContainDirective(parent);
 
     return (
@@ -400,7 +400,7 @@ export class Converter {
             : null;
         } else if (key === 'decorators') {
           if (node.decorators && node.decorators.length) {
-            result.decorators = node.decorators.map((el: any) =>
+            result.decorators = node.decorators.map(el =>
               this.convertChild(el),
             );
           }
@@ -1340,7 +1340,7 @@ export class Converter {
       }
 
       case SyntaxKind.Parameter: {
-        let parameter: any;
+        let parameter: TSESTree.RestElement | TSESTree.BindingName;
         let result: TSESTree.RestElement | TSESTree.AssignmentPattern;
 
         if (node.dotDotDotToken) {
@@ -1349,7 +1349,7 @@ export class Converter {
             argument: this.convertChild(node.name),
           });
         } else if (node.initializer) {
-          parameter = this.convertChild(node.name);
+          parameter = this.convertChild(node.name) as TSESTree.BindingName;
           result = this.createNode<TSESTree.AssignmentPattern>(node, {
             type: AST_NODE_TYPES.AssignmentPattern,
             left: parameter,
@@ -1584,11 +1584,11 @@ export class Converter {
 
       case SyntaxKind.PrefixUnaryExpression:
       case SyntaxKind.PostfixUnaryExpression: {
-        const operator = (getTextForTokenKind(node.operator) ?? '') as any;
+        const operator = getTextForTokenKind(node.operator);
         /**
          * ESTree uses UpdateExpression for ++/--
          */
-        if (/^(?:\+\+|--)$/.test(operator)) {
+        if (operator === '++' || operator === '--') {
           return this.createNode<TSESTree.UpdateExpression>(node, {
             type: AST_NODE_TYPES.UpdateExpression,
             operator,
@@ -1632,7 +1632,7 @@ export class Converter {
       case SyntaxKind.TypeOperator:
         return this.createNode<TSESTree.TSTypeOperator>(node, {
           type: AST_NODE_TYPES.TSTypeOperator,
-          operator: getTextForTokenKind(node.operator) as any,
+          operator: getTextForTokenKind(node.operator),
           typeAnnotation: this.convertChild(node.type),
         });
 
@@ -1676,7 +1676,7 @@ export class Converter {
             | TSESTree.BinaryExpression
           >(node, {
             type,
-            operator: getTextForTokenKind(node.operatorToken.kind)!,
+            operator: getTextForTokenKind(node.operatorToken.kind),
             left: this.converter(
               node.left,
               node,
@@ -1819,7 +1819,7 @@ export class Converter {
           type: AST_NODE_TYPES.MetaProperty,
           meta: this.createNode<TSESTree.Identifier>(node.getFirstToken()!, {
             type: AST_NODE_TYPES.Identifier,
-            name: getTextForTokenKind(node.keywordToken)!,
+            name: getTextForTokenKind(node.keywordToken),
           }),
           property: this.convertChild(node.name),
         });
@@ -2173,9 +2173,7 @@ export class Converter {
           if (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword) {
             result.readonly = true;
           } else {
-            result.readonly = getTextForTokenKind(node.readonlyToken.kind) as
-              | '+'
-              | '-';
+            result.readonly = getTextForTokenKind(node.readonlyToken.kind);
           }
         }
 
@@ -2183,9 +2181,7 @@ export class Converter {
           if (node.questionToken.kind === SyntaxKind.QuestionToken) {
             result.optional = true;
           } else {
-            result.optional = getTextForTokenKind(node.questionToken.kind) as
-              | '+'
-              | '-';
+            result.optional = getTextForTokenKind(node.questionToken.kind);
           }
         }
 
@@ -2492,6 +2488,9 @@ export class Converter {
         });
         if (node.initializer) {
           result.initializer = this.convertChild(node.initializer);
+        }
+        if (node.name.kind === ts.SyntaxKind.ComputedPropertyName) {
+          result.computed = true;
         }
         return result;
       }

@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/quotes';
 import * as util from '../util';
 
@@ -32,21 +29,14 @@ export default util.createRule<Options, MessageIds>({
   create(context, [option]) {
     const rules = baseRule.create(context);
 
-    const isModuleDeclaration = (node: TSESTree.Literal): boolean => {
-      return (
-        !!node.parent && node.parent.type === AST_NODE_TYPES.TSModuleDeclaration
-      );
-    };
-
-    const isTypeLiteral = (node: TSESTree.Literal): boolean => {
-      return !!node.parent && node.parent.type === AST_NODE_TYPES.TSLiteralType;
-    };
-
     return {
       Literal(node): void {
+        const parent = node.parent;
         if (
           option === 'backtick' &&
-          (isModuleDeclaration(node) || isTypeLiteral(node))
+          (parent?.type === AST_NODE_TYPES.TSModuleDeclaration ||
+            parent?.type === AST_NODE_TYPES.TSLiteralType ||
+            parent?.type === AST_NODE_TYPES.TSPropertySignature)
         ) {
           return;
         }
