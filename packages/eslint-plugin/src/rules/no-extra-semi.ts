@@ -11,7 +11,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow unnecessary semicolons',
       category: 'Possible Errors',
-      recommended: 'error',
+      recommended: false,
     },
     fixable: 'code',
     schema: baseRule.meta.schema,

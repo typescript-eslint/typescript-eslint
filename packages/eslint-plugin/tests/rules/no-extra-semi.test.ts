@@ -88,6 +88,13 @@ export class Foo {
 }
       `,
     },
+    {
+      code: `
+export class Foo {
+  public foo: number = 0; public bar: number = 1;
+}
+      `,
+    },
   ],
   invalid: [
     {
@@ -313,6 +320,38 @@ class Foo {
       errors: [
         {
           messageId: 'unexpected',
+          column: 26,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  public foo: number = 0;; public bar: number = 1;;
+  public baz: number = 1;;
+}
+      `,
+      output: `
+class Foo {
+  public foo: number = 0; public bar: number = 1;
+  public baz: number = 1;
+}
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
+        {
+          messageId: 'unexpected',
+          line: 3,
+          column: 26,
+        },
+        {
+          messageId: 'unexpected',
+          line: 3,
+          column: 51,
+        },
+        {
+          messageId: 'unexpected',
+          line: 4,
           column: 26,
         },
       ],
