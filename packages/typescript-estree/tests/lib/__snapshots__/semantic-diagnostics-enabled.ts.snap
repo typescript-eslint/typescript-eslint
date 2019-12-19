@@ -1928,6 +1928,15 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/never-type-param.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/new-target-in-arrow-function-body.src 1`] = `
+Object {
+  "column": 16,
+  "index": 16,
+  "lineNumber": 1,
+  "message": "Meta-property 'new.target' is only allowed in the body of a function declaration, function expression, or constructor.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/non-null-assertion-operator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/null-and-undefined-type-annotations.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
