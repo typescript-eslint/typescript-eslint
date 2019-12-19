@@ -274,25 +274,21 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
 
 // #endregion Schema Config
 
+// This essentially mirrors eslint's camelcase rule
+// note that that rule ignores leading and trailing underscores and only checks those in the middle of a variable name
 const defaultCamelCaseAllTheThingsConfig: Options = [
   {
     selector: 'default',
     format: ['camelCase'],
+    leadingUnderscore: 'allow',
+    trailingUnderscore: 'allow',
   },
 
   {
     selector: 'variable',
     format: ['camelCase', 'UPPER_CASE'],
-  },
-  {
-    selector: 'parameter',
-    format: ['camelCase'],
     leadingUnderscore: 'allow',
-  },
-
-  {
-    selector: 'memberLike',
-    format: ['camelCase'],
+    trailingUnderscore: 'allow',
   },
 
   {

@@ -45,23 +45,15 @@ const defaultOptions: Options = [
   {
     selector: 'default',
     format: ['camelCase'],
+    leadingUnderscore: 'allow',
+    trailingUnderscore: 'allow',
   },
 
   {
     selector: 'variable',
     format: ['camelCase', 'UPPER_CASE'],
-  },
-  {
-    selector: 'parameter',
-    format: ['camelCase'],
     leadingUnderscore: 'allow',
-  },
-
-  {
-    selector: 'memberLike',
-    modifiers: ['private'],
-    format: ['camelCase'],
-    leadingUnderscore: 'require',
+    trailingUnderscore: 'allow',
   },
 
   {
