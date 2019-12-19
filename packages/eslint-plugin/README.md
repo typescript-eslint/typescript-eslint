@@ -168,3 +168,7 @@ Pro Tip: For larger codebases you may want to consider splitting our linting int
 | [`@typescript-eslint/unified-signatures`](./docs/rules/unified-signatures.md)                             | Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter                                           |                    |          |                   |
 
 <!-- end rule list -->
+
+## Contributing
+
+[See the contributing guide here](../../CONTRIBUTING.md)
