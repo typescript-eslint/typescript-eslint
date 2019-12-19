@@ -45,8 +45,8 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       expectedSpaceAfter: "Expected a space after the '{{type}}'.",
       expectedSpaceBefore: "Expected a space before the '{{type}}'.",
-      unexpectedSpaceAfter: "Unexpected a space after the '{{type}}'.",
-      unexpectedSpaceBefore: "Unexpected a space before the '{{type}}'.",
+      unexpectedSpaceAfter: "Unexpected space after the '{{type}}'.",
+      unexpectedSpaceBefore: "Unexpected space before the '{{type}}'.",
     },
     schema: [
       {
