@@ -19,6 +19,7 @@ declare module 'eslint-utils' {
   export function getPropertyName(
     node:
       | TSESTree.MemberExpression
+      | TSESTree.OptionalMemberExpression
       | TSESTree.Property
       | TSESTree.MethodDefinition,
     initialScope?: TSESLint.Scope.Scope,
