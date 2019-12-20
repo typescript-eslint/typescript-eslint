@@ -1,4 +1,8 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_TOKEN_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -53,7 +57,7 @@ export default util.createRule({
               const afterToken = sourceCode.getTokenAfter(node.typeAnnotation);
               if (
                 afterToken &&
-                afterToken.type === 'Punctuator' &&
+                afterToken.type === AST_TOKEN_TYPES.Punctuator &&
                 afterToken.value === ';'
               ) {
                 fixes.push(fixer.remove(afterToken));

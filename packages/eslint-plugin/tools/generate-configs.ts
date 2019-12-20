@@ -55,6 +55,7 @@ const ruleEntries = Object.entries(rules).sort((a, b) =>
  * Helper function reduces records to key - value pairs.
  * @param config
  * @param entry
+ * @param settings
  */
 function reducer<TMessageIds extends string>(
   config: LinterConfigRules,

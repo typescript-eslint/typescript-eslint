@@ -287,8 +287,8 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const abstract =
-        node.type === 'TSAbstractClassProperty' ||
-        node.type === 'TSAbstractMethodDefinition';
+        node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
+        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
 
       const scope =
         'static' in node && node.static

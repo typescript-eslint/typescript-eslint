@@ -1,6 +1,6 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-empty-function';
 import * as util from '../util';
@@ -99,7 +99,7 @@ export default util.createRule<Options, MessageIds>({
       const parent = node.parent;
       if (
         isBodyEmpty(node) &&
-        parent?.type === 'MethodDefinition' &&
+        parent?.type === AST_NODE_TYPES.MethodDefinition &&
         parent.kind === 'constructor'
       ) {
         const { accessibility } = parent;
