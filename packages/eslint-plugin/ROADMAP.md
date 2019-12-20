@@ -79,7 +79,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                              |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                |
 | [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                        |
-| [`no-string-throw`]                  | 🌟  | [`no-throw-literal`][no-throw-literal]                                |
+| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/no-throw-literal`]                               |
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                   |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                    |
 | [`no-this-assignment`]               | ✅  | [`@typescript-eslint/no-this-alias`]                                  |
@@ -510,7 +510,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-shadow]: https://eslint.org/docs/rules/no-shadow
 [no-sparse-arrays]: https://eslint.org/docs/rules/no-sparse-arrays
 [dot-notation]: https://eslint.org/docs/rules/dot-notation
-[no-throw-literal]: https://eslint.org/docs/rules/no-throw-literal
 [no-fallthrough]: https://eslint.org/docs/rules/no-fallthrough
 [no-unsafe-finally]: https://eslint.org/docs/rules/no-unsafe-finally
 [no-unused-expressions]: https://eslint.org/docs/rules/no-unused-expressions
@@ -603,6 +602,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/unified-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unified-signatures.md
 [`@typescript-eslint/no-misused-new`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-misused-new.md
 [`@typescript-eslint/no-this-alias`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-this-alias.md
+[`@typescript-eslint/no-throw-literal`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-throw-literal.md
 [`@typescript-eslint/no-extraneous-class`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extraneous-class.md
 [`@typescript-eslint/no-unused-vars`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unused-vars.md
 [`@typescript-eslint/no-use-before-define`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md
