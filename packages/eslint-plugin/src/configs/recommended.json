@@ -8,7 +8,6 @@
     "@typescript-eslint/camelcase": "error",
     "@typescript-eslint/class-name-casing": "error",
     "@typescript-eslint/consistent-type-assertions": "error",
-    "@typescript-eslint/explicit-function-return-type": "warn",
     "@typescript-eslint/interface-name-prefix": "error",
     "@typescript-eslint/member-delimiter-style": "error",
     "no-array-constructor": "off",
@@ -34,5 +33,13 @@
     "prefer-const": "error",
     "prefer-rest-params": "error",
     "prefer-spread": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "warn"
+      }
+    }
+  ]
 }
