@@ -48,7 +48,7 @@ class Container {
 
 This rule, in its default state, does not require any argument.
 
-### onlyInlineLambdas
+### `onlyInlineLambdas`
 
 You may pass `"onlyInlineLambdas": true` as a rule option within an object to restrict checking only to members immediately assigned a lambda value.
 

@@ -8,30 +8,30 @@
     <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square" alt="Commitizen friendly" /></a>
 </p>
 
-## Installation
+## Getting Started
 
-Make sure you have TypeScript and `@typescript-eslint/parser` installed, then install the plugin:
+**[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
+**[You can find our FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
+
+These docs walk you through setting up ESLint, this plugin, and our parser. If you know what you're doing and just want to quick start, read on...
+
+## Quick-start
+
+### Installation
+
+Make sure you have TypeScript and [`@typescript-eslint/parser`](../parser) installed, then install the plugin:
 
 ```sh
-npm i @typescript-eslint/eslint-plugin --save-dev
+yarn add -D @typescript-eslint/eslint-plugin
 ```
 
 It is important that you use the same version number for `@typescript-eslint/parser` and `@typescript-eslint/eslint-plugin`.
 
 **Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `@typescript-eslint/eslint-plugin` globally.
 
-## Usage
+### Usage
 
-Add `@typescript-eslint/parser` to the `parser` field and `@typescript-eslint` to the plugins section of your `.eslintrc` configuration file:
-
-```json
-{
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"]
-}
-```
-
-Then configure the rules you want to use under the rules section.
+Add `@typescript-eslint/parser` to the `parser` field and `@typescript-eslint` to the plugins section of your `.eslintrc` configuration file, then configure the rules you want to use under the rules section.
 
 ```json
 {
@@ -51,7 +51,11 @@ You can also enable all the recommended rules for our plugin. Add `plugin:@types
 }
 ```
 
-You can also use [eslint:recommended](https://eslint.org/docs/rules/) (the set of rules which are recommended for all projects by the ESLint Team) with this plugin. As noted in the root README, not all eslint core rules are compatible with TypeScript, so you need to add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended` (which will adjust the one from eslint appropriately for TypeScript) to your config:
+**Note: Make sure to use `eslint --ext .js,.ts` since by [default](https://eslint.org/docs/user-guide/command-line-interface#--ext) `eslint` will only search for `.js` files.**
+
+### Recommended Configs
+
+You can also use [`eslint:recommended`](https://eslint.org/docs/rules/) (the set of rules which are recommended for all projects by the ESLint Team) with this plugin. As noted in the root README, not all ESLint core rules are compatible with TypeScript, so you need to add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended` (which will adjust the one from ESLint appropriately for TypeScript) to your config:
 
 ```json
 {
@@ -80,56 +84,7 @@ Some highly valuable rules simply require type-checking in order to be implement
 
 Pro Tip: For larger codebases you may want to consider splitting our linting into two separate stages: 1. fast feedback rules which operate purely based on syntax (no type-checking), 2. rules which are based on semantics (type-checking).
 
-NOTE: If you want to use rules which require type information, you will need to specify a path to your tsconfig.json file in the "project" property of "parserOptions". If you do not do this, you will get a runtime error which explains this.
-
-```json
-{
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
-  "plugins": ["@typescript-eslint"],
-  "rules": {
-    "@typescript-eslint/restrict-plus-operands": "error"
-  }
-}
-```
-
-See [@typescript-eslint/parser's README.md](../parser/README.md) for more information on the available "parserOptions".
-
-**Note: Make sure to use `eslint --ext .js,.ts` since by [default](https://eslint.org/docs/user-guide/command-line-interface#--ext) `eslint` will only search for .js files.**
-
-## Usage with Prettier
-
-Install [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable our code formatting related rules:
-
-```json
-{
-  "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
-  ]
-}
-```
-
-**Note: Make sure you have `eslint-config-prettier@4.0.0` or newer.**
-
-## Usage with Airbnb
-
-Airbnb has two configs, a base one [`eslint-config-airbnb-base`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base) and one that includes rules for React [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb).
-
-First you'll need to install the config according to the instructions in one of the links above. `npx install-peerdeps --dev eslint-config-airbnb` or `npx install-peerdeps --dev eslint-config-airbnb-base` should work if you are using **npm 5+**.
-
-Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.eslintrc`. You might also want to turn on `plugin:@typescript-eslint/recommended` as well to enable all of the recommended rules.
-
-```json
-{
-  "extends": ["airbnb-base", "plugin:@typescript-eslint/recommended"]
-}
-```
-
-**Note: You can use Airbnb's rules alongside Prettier, see [Usage with Prettier](#usage-with-prettier)**
+**[You can read more about linting with type information here](../../docs/getting-started/linting/TYPED_LINTING.md)**
 
 ## Supported Rules
 
@@ -166,6 +121,7 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/no-explicit-any`](./docs/rules/no-explicit-any.md)                                   | Disallow usage of the `any` type                                                                                                                    | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/no-extra-non-null-assertion`](./docs/rules/no-extra-non-null-assertion.md)                           | Disallow extra non-null assertion                                                                                                            |                    |          |                   |
 | [`@typescript-eslint/no-extra-parens`](./docs/rules/no-extra-parens.md)                                   | Disallow unnecessary parentheses                                                                                                                    |                    | :wrench: |                   |
+| [`@typescript-eslint/no-extra-semi`](./docs/rules/no-extra-semi.md)                                   | Disallow unnecessary semicolons                                                                                                                    |  | :wrench: |                   |
 | [`@typescript-eslint/no-extraneous-class`](./docs/rules/no-extraneous-class.md)                           | Forbids the use of classes as namespaces                                                                                                            |                    |          |                   |
 | [`@typescript-eslint/no-floating-promises`](./docs/rules/no-floating-promises.md)                         | Requires Promise-like values to be handled appropriately.                                                                                           |                    |          | :thought_balloon: |
 | [`@typescript-eslint/no-for-in-array`](./docs/rules/no-for-in-array.md)                                   | Disallow iterating over an array with a for-in loop                                                                                                 | :heavy_check_mark: |          | :thought_balloon: |
@@ -178,6 +134,7 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/no-parameter-properties`](./docs/rules/no-parameter-properties.md)                   | Disallow the use of parameter properties in class constructors                                                                                      |                    |          |                   |
 | [`@typescript-eslint/no-require-imports`](./docs/rules/no-require-imports.md)                             | Disallows invocation of `require()`                                                                                                                 |                    |          |                   |
 | [`@typescript-eslint/no-this-alias`](./docs/rules/no-this-alias.md)                                       | Disallow aliasing `this`                                                                                                                            | :heavy_check_mark: |          |                   |
+| [`@typescript-eslint/no-throw-literal`](./docs/rules/no-throw-literal.md)                                       | Disallow throwing literals as exceptions                                                                                                                            | |          | :thought_balloon:                  |
 | [`@typescript-eslint/no-type-alias`](./docs/rules/no-type-alias.md)                                       | Disallow the use of type aliases                                                                                                                    |                    |          |                   |
 | [`@typescript-eslint/no-unnecessary-condition`](./docs/rules/no-unnecessary-condition.md)                 | Prevents conditionals where the type is always truthy or always falsy                                                                               |                    | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/no-unnecessary-qualifier`](./docs/rules/no-unnecessary-qualifier.md)                 | Warns when a namespace qualifier is unnecessary                                                                                                     |                    | :wrench: | :thought_balloon: |
@@ -216,3 +173,7 @@ Then you should add `airbnb` (or `airbnb-base`) to your `extends` section of `.e
 | [`@typescript-eslint/unified-signatures`](./docs/rules/unified-signatures.md)                             | Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter                                           |                    |          |                   |
 
 <!-- end rule list -->
+
+## Contributing
+
+[See the contributing guide here](../../CONTRIBUTING.md)

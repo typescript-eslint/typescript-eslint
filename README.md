@@ -19,12 +19,12 @@
 - [What are ESLint and TypeScript, and how do they compare?](#what-are-eslint-and-typescript-and-how-do-they-compare)
 - [Why does this project exist?](#why-does-this-project-exist)
 - [What about TSLint?](#what-about-tslint)
-- [How does typescript-eslint work and why do you have multiple packages?](#how-does-typescript-eslint-work-and-why-do-you-have-multiple-packages)
+- [How does `typescript-eslint` work and why do you have multiple packages?](#how-does-typescript-eslint-work-and-why-do-you-have-multiple-packages)
 - [Can I use all of the existing ESLint plugins and rules without any changes?](#can-i-use-all-of-the-existing-eslint-plugins-and-rules-without-any-changes)
 - [Can we write rules which leverage type information?](#can-we-write-rules-which-leverage-type-information)
-- [What about Babel and babel-eslint?](#what-about-babel-and-babel-eslint)
+- [What about Babel and `babel-eslint`?](#what-about-babel-and-babel-eslint)
 - [How can I help?](#how-can-i-help)
-- [How do I configure my project to use typescript-eslint?](#how-do-i-configure-my-project-to-use-typescript-eslint)
+- [Packages included in this project?](#packages-included-in-this-project)
 - [Package Versions](#package-versions)
 - [Supported TypeScript Version](#supported-typescript-version)
 - [Supported ESLint version](#supported-eslint-version)
@@ -34,11 +34,12 @@
 
 ## Getting Started
 
-The following sections will give you an overview of what this project is, why it exists and how it works at a high level.
+**[You can find our Getting Started docs here](./docs/getting-started/README.md)**
+**[You can find our Linting FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
 
-**It is very important that you are familiar with these concepts before reporting issues**, so please read them and let us know if you have any feedback.
+The documentation below will give you an overview of what this project is, why it exists and how it works at a high level.
 
-If you are ready to get started you can jump to the package READMEs from here: [#how-do-i-configure-my-project-to-use-typescript-eslint](#how-do-i-configure-my-project-to-use-typescript-eslint)
+**It is very important that you are familiar with these concepts before reporting issues**, so it is a good idea to read them before raising issues.
 
 <br>
 
@@ -195,11 +196,9 @@ All positive contributions are welcome here!
 
 <br>
 
-## How do I configure my project to use `typescript-eslint`?
+## Packages included in this project
 
 Please follow the links below for the packages you care about.
-
-If you are interested in using TypeScript and ESLint together, you will want to check out [`@typescript-eslint/parser`](./packages/parser/) and [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin/) at the very least:
 
 - [`@typescript-eslint/typescript-estree`](./packages/typescript-estree/) - An entirely generic TypeScript parser which takes TypeScript source code and produces an <a href="https://github.com/estree/estree">ESTree</a>-compatible AST</p>
 
@@ -229,7 +228,7 @@ The latest version under the `canary` tag **(latest commit to master)** is:
 
 <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square" alt="NPM Version" /></a>
 
-(Note: The only exceptions to the automated publishes described above are when we are in the final phases of creating the next major version of the libraries - e.g. going from 1.x.x to 2.x.x. During these periods, we manually publish `canary` releases until we are happy with the release and promote it to `latest`.)
+(Note: The only exceptions to the automated publishes described above are when we are in the final phases of creating the next major version of the libraries - e.g. going from `1.x.x` to `2.x.x`. During these periods, we manually publish `canary` releases until we are happy with the release and promote it to `latest`.)
 
 <br>
 
@@ -298,6 +297,6 @@ Support this project with your organization. Your logo will show up here with a 
 
 <br>
 
-## Contributing Guide
+## Contributing
 
-COMING SOON
+[See the contributing guide here](./CONTRIBUTING.md)

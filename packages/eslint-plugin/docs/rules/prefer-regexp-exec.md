@@ -8,7 +8,7 @@ This rule is aimed at enforcing the more performant way of applying regular expr
 
 From [`String#match` on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match):
 
-> If the regular expression does not include the g flag, returns the same result as RegExp.exec().
+> If the regular expression does not include the g flag, returns the same result as `RegExp.exec()`.
 
 From [Stack Overflow](https://stackoverflow.com/questions/9214754/what-is-the-difference-between-regexp-s-exec-function-and-string-s-match-fun)
 
