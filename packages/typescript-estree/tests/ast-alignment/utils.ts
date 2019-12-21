@@ -234,14 +234,22 @@ export function preprocessBabylonAST(ast: any): any {
           };
         }
       },
-      /**
-       * Babel: ClassProperty + abstract: true
-       * ts-estree: TSAbstractClassProperty
-       */
       ClassProperty(node: any) {
+        /**
+         * Babel: ClassProperty + abstract: true
+         * ts-estree: TSAbstractClassProperty
+         */
         if (node.abstract) {
           node.type = 'TSAbstractClassProperty';
           delete node.abstract;
+        }
+        /**
+         * TS 3.7: declare class properties
+         * babel: sets declare property as true/undefined
+         * ts-estree: sets declare property as true/false
+         */
+        if (!node.declare) {
+          node.declare = false;
         }
       },
       TSExpressionWithTypeArguments(node: any, parent: any) {
@@ -270,6 +278,36 @@ export function preprocessBabylonAST(ast: any): any {
         ) {
           node.range[0] = node.typeParameters.range[0];
           node.loc.start = Object.assign({}, node.typeParameters.loc.start);
+        }
+      },
+      /**
+       * TS 3.7: optional chaining
+       * babel: sets optional property as true/undefined
+       * ts-estree: sets optional property as true/false
+       */
+      MemberExpression(node: any) {
+        if (!node.optional) {
+          node.optional = false;
+        }
+      },
+      CallExpression(node: any) {
+        if (!node.optional) {
+          node.optional = false;
+        }
+      },
+      OptionalCallExpression(node: any) {
+        if (!node.optional) {
+          node.optional = false;
+        }
+      },
+      /**
+       * TS 3.7: type assertion function
+       * babel: sets asserts property as true/undefined
+       * ts-estree: sets asserts property as true/false
+       */
+      TSTypePredicate(node: any) {
+        if (!node.asserts) {
+          node.asserts = false;
         }
       },
     },
