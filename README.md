@@ -39,7 +39,7 @@
 
 The documentation below will give you an overview of what this project is, why it exists and how it works at a high level.
 
-**It is crucial to be familiar with these concepts before reporting issues**, so it is a good idea to read them before raising issues.
+**It is crucial that you are familiar with these concepts before reporting issues**, so it is a good idea to read them before raising issues.
 
 <br>
 
@@ -105,7 +105,7 @@ For example:
 var x: number = 1;
 ```
 
-This is not valid JavaScript code, because it contains a so-called type annotation. When the TypeScript Compiler parses this code to produce a TypeScript AST, that: number syntax will be represented in the tree, and this is simply not something that ESLint can understand without additional help.
+This is not valid JavaScript code, because it contains a so-called type annotation. When the TypeScript Compiler parses this code to produce a TypeScript AST, the `: number` syntax will be represented in the tree, and this is simply not something that ESLint can understand without additional help.
 
 However, we can leverage the fact that ESLint has been designed with these use-cases in mind!
 
