@@ -1,6 +1,6 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -164,7 +164,7 @@ export default util.createRule<Options, MessageIds>({
               init.value instanceof RegExp;
             const isRegExpNewCall =
               init.type === AST_NODE_TYPES.NewExpression &&
-              init.callee.type === 'Identifier' &&
+              init.callee.type === AST_NODE_TYPES.Identifier &&
               init.callee.name === 'RegExp';
             const isRegExpCall = isFunctionCall(init, 'RegExp');
 
