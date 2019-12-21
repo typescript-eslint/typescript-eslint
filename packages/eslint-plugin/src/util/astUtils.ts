@@ -61,7 +61,25 @@ function isTokenOnSameLine(
   return left.loc.end.line === right.loc.start.line;
 }
 
+/**
+ * Checks if a node is a type assertion:
+ * - x as foo
+ * - <foo>x
+ */
+function isTypeAssertion(
+  node: TSESTree.Node | undefined | null,
+): node is TSESTree.TSAsExpression | TSESTree.TSTypeAssertion {
+  if (!node) {
+    return false;
+  }
+  return (
+    node.type === AST_NODE_TYPES.TSAsExpression ||
+    node.type === AST_NODE_TYPES.TSTypeAssertion
+  );
+}
+
 export {
+  isTypeAssertion,
   isNonNullAssertionPunctuator,
   isNotNonNullAssertionPunctuator,
   isNotOptionalChainPunctuator,
