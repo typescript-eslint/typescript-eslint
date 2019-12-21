@@ -1,4 +1,7 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/quotes';
 import * as util from '../util';
 
@@ -29,15 +32,32 @@ export default util.createRule<Options, MessageIds>({
   create(context, [option]) {
     const rules = baseRule.create(context);
 
+    function isAllowedAsNonBacktick(node: TSESTree.Literal): boolean {
+      const parent = node.parent;
+
+      switch (parent?.type) {
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
+        case AST_NODE_TYPES.TSMethodSignature:
+        case AST_NODE_TYPES.TSPropertySignature:
+        case AST_NODE_TYPES.TSModuleDeclaration:
+        case AST_NODE_TYPES.TSLiteralType:
+          return true;
+
+        case AST_NODE_TYPES.TSEnumMember:
+          return node === parent.id;
+
+        case AST_NODE_TYPES.TSAbstractClassProperty:
+        case AST_NODE_TYPES.ClassProperty:
+          return node === parent.key;
+
+        default:
+          return false;
+      }
+    }
+
     return {
       Literal(node): void {
-        const parent = node.parent;
-        if (
-          option === 'backtick' &&
-          (parent?.type === AST_NODE_TYPES.TSModuleDeclaration ||
-            parent?.type === AST_NODE_TYPES.TSLiteralType ||
-            parent?.type === AST_NODE_TYPES.TSPropertySignature)
-        ) {
+        if (option === 'backtick' && isAllowedAsNonBacktick(node)) {
           return;
         }
 

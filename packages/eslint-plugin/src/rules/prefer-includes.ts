@@ -1,6 +1,6 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { getStaticValue } from 'eslint-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
@@ -194,13 +194,13 @@ export default createRule({
           *fix(fixer) {
             const argNode = callNode.arguments[0];
             const needsParen =
-              argNode.type !== 'Literal' &&
-              argNode.type !== 'TemplateLiteral' &&
-              argNode.type !== 'Identifier' &&
-              argNode.type !== 'MemberExpression' &&
-              argNode.type !== 'OptionalMemberExpression' &&
-              argNode.type !== 'CallExpression' &&
-              argNode.type !== 'OptionalCallExpression';
+              argNode.type !== AST_NODE_TYPES.Literal &&
+              argNode.type !== AST_NODE_TYPES.TemplateLiteral &&
+              argNode.type !== AST_NODE_TYPES.Identifier &&
+              argNode.type !== AST_NODE_TYPES.MemberExpression &&
+              argNode.type !== AST_NODE_TYPES.OptionalMemberExpression &&
+              argNode.type !== AST_NODE_TYPES.CallExpression &&
+              argNode.type !== AST_NODE_TYPES.OptionalCallExpression;
 
             yield fixer.removeRange([callNode.range[0], argNode.range[0]]);
             if (needsParen) {

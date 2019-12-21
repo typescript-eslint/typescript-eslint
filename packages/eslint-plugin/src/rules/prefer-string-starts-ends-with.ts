@@ -1,14 +1,14 @@
 import {
+  AST_NODE_TYPES,
   TSESLint,
   TSESTree,
-  AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import {
-  isNotClosingParenToken,
   getPropertyName,
   getStaticValue,
+  isNotClosingParenToken,
 } from 'eslint-utils';
-import { RegExpParser, AST as RegExpAST } from 'regexpp';
+import { AST as RegExpAST, RegExpParser } from 'regexpp';
 import { createRule, getParserServices, getTypeName } from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
