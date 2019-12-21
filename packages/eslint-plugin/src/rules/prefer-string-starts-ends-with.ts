@@ -1,10 +1,14 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import {
-  isNotClosingParenToken,
+  AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+import {
   getPropertyName,
   getStaticValue,
+  isNotClosingParenToken,
 } from 'eslint-utils';
-import { RegExpParser, AST as RegExpAST } from 'regexpp';
+import { AST as RegExpAST, RegExpParser } from 'regexpp';
 import { createRule, getParserServices, getTypeName } from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
@@ -94,7 +98,8 @@ export default createRule({
       node: TSESTree.Node,
     ): node is TSESTree.BinaryExpression {
       return (
-        node.type === 'BinaryExpression' && EQ_OPERATORS.test(node.operator)
+        node.type === AST_NODE_TYPES.BinaryExpression &&
+        EQ_OPERATORS.test(node.operator)
       );
     }
 
@@ -138,7 +143,7 @@ export default createRule({
       node: TSESTree.Node,
       expectedObjectNode: TSESTree.Node,
     ): boolean {
-      if (node.type === 'MemberExpression') {
+      if (node.type === AST_NODE_TYPES.MemberExpression) {
         return (
           getPropertyName(node, globalScope) === 'length' &&
           isSameTokens(node.object, expectedObjectNode)
@@ -169,7 +174,7 @@ export default createRule({
       expectedObjectNode: TSESTree.Node,
     ): boolean {
       return (
-        node.type === 'BinaryExpression' &&
+        node.type === AST_NODE_TYPES.BinaryExpression &&
         node.operator === '-' &&
         isLengthExpression(node.left, expectedObjectNode) &&
         isNumber(node.right, 1)
@@ -273,7 +278,7 @@ export default createRule({
       negative: boolean,
     ): IterableIterator<TSESLint.RuleFix> {
       // left is CallExpression or MemberExpression.
-      const leftNode = (node.left.type === 'CallExpression'
+      const leftNode = (node.left.type === AST_NODE_TYPES.CallExpression
         ? node.left.callee
         : node.left) as TSESTree.MemberExpression;
       const propertyRange = getPropertyRange(leftNode);
@@ -326,7 +331,7 @@ export default createRule({
       ])](node: TSESTree.MemberExpression): void {
         let parentNode = node.parent!;
         let indexNode: TSESTree.Node | null = null;
-        if (parentNode.type === 'CallExpression') {
+        if (parentNode.type === AST_NODE_TYPES.CallExpression) {
           if (parentNode.arguments.length === 1) {
             indexNode = parentNode.arguments[0];
           }
@@ -411,7 +416,7 @@ export default createRule({
           callNode.arguments.length !== 1 ||
           !isEqualityComparison(parentNode) ||
           parentNode.left !== callNode ||
-          parentNode.right.type !== 'BinaryExpression' ||
+          parentNode.right.type !== AST_NODE_TYPES.BinaryExpression ||
           parentNode.right.operator !== '-' ||
           !isLengthExpression(parentNode.right.left, node.object) ||
           !isLengthExpression(parentNode.right.right, callNode.arguments[0]) ||
@@ -520,7 +525,7 @@ export default createRule({
             // Don't fix if it can change the behavior.
             if (
               eqNode.operator.length === 2 &&
-              (eqNode.right.type !== 'Literal' ||
+              (eqNode.right.type !== AST_NODE_TYPES.Literal ||
                 typeof eqNode.right.value !== 'string')
             ) {
               return null;
@@ -532,12 +537,12 @@ export default createRule({
             } else {
               const posNode = callNode.arguments[0];
               const posNodeIsAbsolutelyValid =
-                (posNode.type === 'BinaryExpression' &&
+                (posNode.type === AST_NODE_TYPES.BinaryExpression &&
                   posNode.operator === '-' &&
                   isLengthExpression(posNode.left, node.object) &&
                   isLengthExpression(posNode.right, eqNode.right)) ||
                 (negativeIndexSupported &&
-                  posNode.type === 'UnaryExpression' &&
+                  posNode.type === AST_NODE_TYPES.UnaryExpression &&
                   posNode.operator === '-' &&
                   isLengthExpression(posNode.argument, eqNode.right));
               if (!posNodeIsAbsolutelyValid) {
@@ -576,11 +581,11 @@ export default createRule({
           *fix(fixer) {
             const argNode = callNode.arguments[0];
             const needsParen =
-              argNode.type !== 'Literal' &&
-              argNode.type !== 'TemplateLiteral' &&
-              argNode.type !== 'Identifier' &&
-              argNode.type !== 'MemberExpression' &&
-              argNode.type !== 'CallExpression';
+              argNode.type !== AST_NODE_TYPES.Literal &&
+              argNode.type !== AST_NODE_TYPES.TemplateLiteral &&
+              argNode.type !== AST_NODE_TYPES.Identifier &&
+              argNode.type !== AST_NODE_TYPES.MemberExpression &&
+              argNode.type !== AST_NODE_TYPES.CallExpression;
 
             yield fixer.removeRange([callNode.range[0], argNode.range[0]]);
             if (needsParen) {
