@@ -128,25 +128,6 @@ export function preprocessBabylonAST(ast: any): any {
     ],
     {
       /**
-       * Not yet supported in Babel https://github.com/babel/babel/issues/9228
-       */
-      StringLiteral(node: any) {
-        node.type = 'Literal';
-      },
-      /**
-       * Not yet supported in Babel https://github.com/babel/babel/issues/9228
-       */
-      NumericLiteral(node: any) {
-        node.type = 'Literal';
-      },
-      /**
-       * Not yet supported in Babel https://github.com/babel/babel/issues/9228
-       */
-      BooleanLiteral(node: any) {
-        node.type = 'Literal';
-        node.raw = String(node.value);
-      },
-      /**
        * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
        */
       TSCallSignatureDeclaration(node: any) {

@@ -240,6 +240,7 @@ tester.addFixturePatternConfig('javascript/forIn', {
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * SyntaxError: Invalid left-hand side in for-loop
+     * TODO: Error 2405: `The left-hand side of a 'for...in' statement must be of type 'string' or 'any'."`
      */
     'for-in-with-bare-assigment',
   ],
@@ -400,9 +401,9 @@ tester.addFixturePatternConfig('typescript/basics', {
     // babel hard fails on computed string enum members, but TS doesn't
     'export-named-enum-computed-string',
     /**
-     * TS 3.7: type assertion function
-     * there is difference in range between babel and ts-estree
-     * TODO: validate this
+     * Babel: TSTypePredicate includes `:` statement in range
+     * ts-estree: TSTypePredicate does not include `:` statement in range
+     * TODO: report this to babel
      */
     'type-assertion-in-arrow-function',
     'type-assertion-in-function',
@@ -416,10 +417,10 @@ tester.addFixturePatternConfig('typescript/basics', {
     'type-guard-in-function',
     'type-guard-in-interface',
     /**
-     * TS 3.7 feature changes
-     * TODO: remove me when babel adds support
+     * TS 3.7: declare class properties
+     * Babel: declare is not allowed with accessibility modifiers
+     * TODO: report this to babel
      */
-    // declare class properties
     'abstract-class-with-declare-properties',
     'class-with-declare-properties',
   ],
