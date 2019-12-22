@@ -1,3 +1,4 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import path from 'path';
 import rule from '../../src/rules/prefer-string-starts-ends-with';
 import { RuleTester } from '../RuleTester';
@@ -13,7 +14,7 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-string-starts-ends-with', rule, {
-  valid: [
+  valid: addOptional([
     `
       function f(s: string[]) {
         s[0] === "a"
@@ -224,8 +225,8 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         x.test(s)
       }
     `,
-  ],
-  invalid: [
+  ]),
+  invalid: addOptional([
     // String indexing.
     {
       code: `
@@ -1042,5 +1043,68 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       `,
       errors: [{ messageId: 'preferStartsWith' }],
     },
-  ],
+  ]),
 });
+
+type Case<TMessageIds extends string, TOptions extends Readonly<unknown[]>> =
+  | TSESLint.ValidTestCase<TOptions>
+  | TSESLint.InvalidTestCase<TMessageIds, TOptions>;
+function addOptional<TOptions extends Readonly<unknown[]>>(
+  cases: (TSESLint.ValidTestCase<TOptions> | string)[],
+): TSESLint.ValidTestCase<TOptions>[];
+function addOptional<
+  TMessageIds extends string,
+  TOptions extends Readonly<unknown[]>
+>(
+  cases: TSESLint.InvalidTestCase<TMessageIds, TOptions>[],
+): TSESLint.InvalidTestCase<TMessageIds, TOptions>[];
+function addOptional<
+  TMessageIds extends string,
+  TOptions extends Readonly<unknown[]>
+>(
+  cases: (Case<TMessageIds, TOptions> | string)[],
+): Case<TMessageIds, TOptions>[] {
+  function makeOptional(code: string): string;
+  function makeOptional(code: string | null | undefined): string | null;
+  function makeOptional(code: string | null | undefined): string | null {
+    if (code === null || code === undefined) {
+      return null;
+    }
+    return (
+      code
+        .replace(/([^.])\.([^.])/, '$1?.$2')
+        .replace(/([^.])(\[\d)/, '$1?.$2')
+        // fix up s[s.length - 1] === "a" which got broken by the first regex
+        .replace(/(\w+?)\[(\w+?)\?\.(length - 1)/, '$1?.[$2.$3')
+    );
+  }
+
+  return cases.reduce<Case<TMessageIds, TOptions>[]>((acc, c) => {
+    if (typeof c === 'string') {
+      acc.push({
+        code: c,
+      });
+      acc.push({
+        code: makeOptional(c),
+      });
+    } else {
+      acc.push(c);
+      const code = makeOptional(c.code);
+      let output: string | null | undefined = null;
+      if ('output' in c) {
+        if (code.indexOf('?.')) {
+          output = makeOptional(c.output);
+        } else {
+          output = c.output;
+        }
+      }
+      acc.push({
+        ...c,
+        code,
+        output,
+      });
+    }
+
+    return acc;
+  }, []);
+}

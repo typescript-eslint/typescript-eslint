@@ -25,8 +25,8 @@ export default util.createRule({
     const checker = service.program.getTypeChecker();
 
     return {
-      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
-        node: TSESTree.MemberExpression,
+      ":matches(CallExpression, OptionalCallExpression)[arguments.length=0] > :matches(MemberExpression, OptionalMemberExpression)[property.name='sort'][computed=false]"(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
         // Get the symbol of the `sort` method.
         const tsNode = service.esTreeNodeToTSNodeMap.get(node);
