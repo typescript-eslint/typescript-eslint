@@ -26,12 +26,12 @@ enum PredefinedFormats {
 }
 type PredefinedFormatsString = keyof typeof PredefinedFormats;
 
-enum UnderscroreOptions {
+enum UnderscoreOptions {
   forbid = 1 << 0,
   allow = 1 << 1,
   require = 1 << 2,
 }
-type UnderscroreOptionsString = keyof typeof UnderscroreOptions;
+type UnderscoreOptionsString = keyof typeof UnderscoreOptions;
 
 enum Selectors {
   // variableLike
@@ -99,8 +99,8 @@ type TypeModifiersString = keyof typeof TypeModifiers;
 interface Selector {
   // format options
   format: PredefinedFormatsString[];
-  leadingUnderscore?: UnderscroreOptionsString;
-  trailingUnderscore?: UnderscroreOptionsString;
+  leadingUnderscore?: UnderscoreOptionsString;
+  trailingUnderscore?: UnderscoreOptionsString;
   prefix?: string[];
   suffix?: string[];
   // selector options
@@ -111,8 +111,8 @@ interface Selector {
 }
 interface NormalizedSelector {
   // format options
-  leadingUnderscore: UnderscroreOptions | null;
-  trailingUnderscore: UnderscroreOptions | null;
+  leadingUnderscore: UnderscoreOptions | null;
+  trailingUnderscore: UnderscoreOptions | null;
   prefix: string[] | null;
   suffix: string[] | null;
   format: PredefinedFormats[];
@@ -136,7 +136,7 @@ type Options = Selector[];
 
 const UNDERSCORE_SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'string',
-  enum: util.getEnumNames(UnderscroreOptions),
+  enum: util.getEnumNames(UnderscoreOptions),
 };
 const PREFIX_SUFFIX_SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'array',
@@ -336,15 +336,15 @@ export default util.createRule<Options, MessageIds>({
     const validators = parseOptions(context);
 
     function handleMember(
-      validator: ValidatiorFunction | null,
+      validator: ValidatorFunction | null,
       node:
-        | TSESTree.Property
-        | TSESTree.ClassProperty
-        | TSESTree.TSAbstractClassProperty
-        | TSESTree.TSPropertySignature
-        | TSESTree.MethodDefinition
-        | TSESTree.TSAbstractMethodDefinition
-        | TSESTree.TSMethodSignature,
+        | TSESTree.PropertyNonComputedName
+        | TSESTree.ClassPropertyNonComputedName
+        | TSESTree.TSAbstractClassPropertyNonComputedName
+        | TSESTree.TSPropertySignatureNonComputedName
+        | TSESTree.MethodDefinitionNonComputedName
+        | TSESTree.TSAbstractMethodDefinitionNonComputedName
+        | TSESTree.TSMethodSignatureNonComputedName,
       modifiers: Set<Modifiers>,
     ): void {
       if (!validator) {
@@ -352,11 +352,6 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const key = node.key;
-      /* istanbul ignore if */ if (!util.isLiteralOrIdentifier(key)) {
-        // shouldn't happen due to the selectors that are used
-        return;
-      }
-
       validator(key, modifiers);
     }
 
@@ -479,7 +474,7 @@ export default util.createRule<Options, MessageIds>({
       // #region property
 
       'Property[computed = false][kind = "init"][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]'(
-        node: TSESTree.Property,
+        node: TSESTree.PropertyNonComputedName,
       ): void {
         const modifiers = new Set<Modifiers>([Modifiers.public]);
         handleMember(validators.property, node, modifiers);
@@ -489,14 +484,16 @@ export default util.createRule<Options, MessageIds>({
         'ClassProperty[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]',
         'TSAbstractClassProperty[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]',
       ].join(', ')](
-        node: TSESTree.ClassProperty | TSESTree.TSAbstractClassProperty,
+        node:
+          | TSESTree.ClassPropertyNonComputedName
+          | TSESTree.TSAbstractClassPropertyNonComputedName,
       ): void {
         const modifiers = getMemberModifiers(node);
         handleMember(validators.property, node, modifiers);
       },
 
       'TSPropertySignature[computed = false]'(
-        node: TSESTree.TSPropertySignature,
+        node: TSESTree.TSPropertySignatureNonComputedName,
       ): void {
         const modifiers = new Set<Modifiers>([Modifiers.public]);
         if (node.readonly) {
@@ -516,7 +513,9 @@ export default util.createRule<Options, MessageIds>({
         'Property[computed = false][kind = "init"][value.type = "TSEmptyBodyFunctionExpression"]',
         'TSMethodSignature[computed = false]',
       ].join(', ')](
-        node: TSESTree.Property | TSESTree.TSMethodSignature,
+        node:
+          | TSESTree.PropertyNonComputedName
+          | TSESTree.TSMethodSignatureNonComputedName,
       ): void {
         const modifiers = new Set<Modifiers>([Modifiers.public]);
         handleMember(validators.method, node, modifiers);
@@ -533,10 +532,10 @@ export default util.createRule<Options, MessageIds>({
         'TSAbstractMethodDefinition[computed = false][kind = "method"]',
       ].join(', ')](
         node:
-          | TSESTree.ClassProperty
-          | TSESTree.TSAbstractClassProperty
-          | TSESTree.MethodDefinition
-          | TSESTree.TSAbstractMethodDefinition,
+          | TSESTree.ClassPropertyNonComputedName
+          | TSESTree.TSAbstractClassPropertyNonComputedName
+          | TSESTree.MethodDefinitionNonComputedName
+          | TSESTree.TSAbstractMethodDefinitionNonComputedName,
       ): void {
         const modifiers = getMemberModifiers(node);
         handleMember(validators.method, node, modifiers);
@@ -549,7 +548,7 @@ export default util.createRule<Options, MessageIds>({
       [[
         'Property[computed = false][kind = "get"]',
         'Property[computed = false][kind = "set"]',
-      ].join(', ')](node: TSESTree.Property): void {
+      ].join(', ')](node: TSESTree.PropertyNonComputedName): void {
         const modifiers = new Set<Modifiers>([Modifiers.public]);
         handleMember(validators.accessor, node, modifiers);
       },
@@ -557,7 +556,7 @@ export default util.createRule<Options, MessageIds>({
       [[
         'MethodDefinition[computed = false][kind = "get"]',
         'MethodDefinition[computed = false][kind = "set"]',
-      ].join(', ')](node: TSESTree.MethodDefinition): void {
+      ].join(', ')](node: TSESTree.MethodDefinitionNonComputedName): void {
         const modifiers = getMemberModifiers(node);
         handleMember(validators.accessor, node, modifiers);
       },
@@ -566,18 +565,16 @@ export default util.createRule<Options, MessageIds>({
 
       // #region enumMember
 
-      TSEnumMember(node): void {
+      // computed is optional, so can't do [computed = false]
+      'TSEnumMember[computed != true]'(
+        node: TSESTree.TSEnumMemberNonComputedName,
+      ): void {
         const validator = validators.enumMember;
         if (!validator) {
           return;
         }
 
         const id = node.id;
-        /* istanbul ignore if */ if (!util.isLiteralOrIdentifier(id)) {
-          // shouldn't happen in reality because it's not semantically valid code
-          return;
-        }
-
         validator(id);
       },
 
@@ -586,7 +583,7 @@ export default util.createRule<Options, MessageIds>({
       // #region class
 
       'ClassDeclaration, ClassExpression'(
-        node: TSESTree.ClassDeclaration | TSESTree.ClassDeclaration,
+        node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
       ): void {
         const validator = validators.class;
         if (!validator) {
@@ -716,11 +713,11 @@ function getIdentifiersFromPattern(
   }
 }
 
-type ValidatiorFunction = (
+type ValidatorFunction = (
   node: TSESTree.Identifier | TSESTree.Literal,
   modifiers?: Set<Modifiers>,
 ) => void;
-type ParsedOptions = Record<SelectorsString, null | ValidatiorFunction>;
+type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
 type Context = TSESLint.RuleContext<MessageIds, Options>;
 function parseOptions(context: Context): ParsedOptions {
   const normalizedOptions = context.options.map(opt => normalizeOption(opt));
@@ -863,11 +860,11 @@ function createValidator(
         : (): string => name.slice(0, -1);
 
     switch (option) {
-      case UnderscroreOptions.allow:
+      case UnderscoreOptions.allow:
         // no check - the user doesn't care if it's there or not
         break;
 
-      case UnderscroreOptions.forbid:
+      case UnderscoreOptions.forbid:
         if (hasUnderscore) {
           context.report({
             node,
@@ -881,7 +878,7 @@ function createValidator(
         }
         break;
 
-      case UnderscroreOptions.require:
+      case UnderscoreOptions.require:
         if (!hasUnderscore) {
           context.report({
             node,
@@ -1116,11 +1113,11 @@ function normalizeOption(option: Selector): NormalizedSelector {
     // format options
     leadingUnderscore:
       option.leadingUnderscore !== undefined
-        ? UnderscroreOptions[option.leadingUnderscore]
+        ? UnderscoreOptions[option.leadingUnderscore]
         : null,
     trailingUnderscore:
       option.trailingUnderscore !== undefined
-        ? UnderscroreOptions[option.trailingUnderscore]
+        ? UnderscoreOptions[option.trailingUnderscore]
         : null,
     prefix: option.prefix ?? null,
     suffix: option.suffix ?? null,
