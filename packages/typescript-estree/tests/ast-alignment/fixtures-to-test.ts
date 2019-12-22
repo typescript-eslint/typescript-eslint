@@ -343,39 +343,19 @@ tester.addFixturePatternConfig('typescript/basics', {
   fileType: 'ts',
   ignore: [
     /**
-     * babel error: https://github.com/babel/babel/issues/9305
-     * TypeScript does not report any diagnostics for this file, but Babel throws:
-     * [SyntaxError: Unexpected token, expected "{" (2:8)
-      1 | class Foo {
-    > 2 |   foo?();
-        |         ^
-      3 |   bar?(): string;
-      4 |   private baz?(): string;
-      5 | }]
+     * Babel and ts-estree reports optional field on different nodes
+     * TODO: investigate
      */
-    'class-with-optional-methods', // babel parse errors
-    /**
-     * There are number of things that can be reported in this file, so it's not great
-     * for comparison purposes.
-     *
-     * Nevertheless, Babel appears to throw on syntax that TypeScript doesn't report on directly.
-     *
-     * TODO: Investigate in more depth, potentially split up different parts of the interface
-     */
-    'interface-with-all-property-types', // babel parse errors
+    'class-with-optional-methods',
+    'abstract-class-with-abstract-method',
+    'abstract-class-with-optional-method',
+    'declare-class-with-optional-method',
     /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
      * TODO: report it to babel
      */
     'interface-with-extends-member-expression',
-    /**
-     * Babel bug for optional or abstract methods
-     * https://github.com/babel/babel/issues/9305
-     */
-    'abstract-class-with-abstract-method', // babel parse errors
-    'abstract-class-with-optional-method', // babel parse errors
-    'declare-class-with-optional-method', // babel parse errors
     /**
      * Was expected to be fixed by PR into Babel: https://github.com/babel/babel/pull/9302
      * But not fixed in Babel 7.3
@@ -391,6 +371,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     'directive-in-namespace',
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * TODO: validate error code TS2451 Cannot redeclare block-scoped variable '{0}'.
      */
     'const-assertions',
     /**
@@ -473,6 +454,11 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
   fileType: 'ts',
   ignore: [
     /**
+     * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
+     * TODO: enable error code TS1019: An index signature parameter cannot have a question mark.
+     */
+    'interface-with-optional-index-signature',
+    /**
      * Expected error on empty type arguments and type parameters
      * TypeScript report diagnostics correctly but babel not
      * https://github.com/babel/babel/issues/9462
@@ -488,7 +474,7 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
     'empty-type-parameters-in-method-signature',
     /**
      * Babel correctly errors on this
-     * TODO: enable error code TS1024
+     * TODO: enable error code TS1024: 'readonly' modifier can only appear on a property declaration or index signature.
      */
     'interface-method-readonly',
   ],

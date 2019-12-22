@@ -1691,7 +1691,7 @@ export class Converter {
         const computed = false;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propogate up the member expression tree
+        // the optional expression should propagate up the member expression tree
         const isChildOptional =
           (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
             object.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -1723,7 +1723,7 @@ export class Converter {
         const computed = true;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propogate up the member expression tree
+        // the optional expression should propagate up the member expression tree
         const isChildOptional =
           (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
             object.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -1755,7 +1755,7 @@ export class Converter {
         let result;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propogate up the member expression tree
+        // the optional expression should propagate up the member expression tree
         const isChildOptional =
           (callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
             callee.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -2386,15 +2386,15 @@ export class Converter {
         }
 
         if (interfaceHeritageClauses.length > 0) {
-          const interfaceExtends = [];
-          const interfaceImplements = [];
+          const interfaceExtends: TSESTree.ExpressionWithTypeArguments[] = [];
+          const interfaceImplements: TSESTree.ExpressionWithTypeArguments[] = [];
 
           for (const heritageClause of interfaceHeritageClauses) {
             if (heritageClause.token === SyntaxKind.ExtendsKeyword) {
               for (const n of heritageClause.types) {
                 interfaceExtends.push(this.convertChild(n, node));
               }
-            } else if (heritageClause.token === SyntaxKind.ImplementsKeyword) {
+            } else {
               for (const n of heritageClause.types) {
                 interfaceImplements.push(this.convertChild(n, node));
               }
