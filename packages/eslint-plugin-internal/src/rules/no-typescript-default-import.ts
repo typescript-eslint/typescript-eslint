@@ -9,7 +9,7 @@ We have `allowSyntheticDefaultImports` turned on in this project, so there are t
 - TypeScript's auto import will suggest `import ts = require('typescript');` if you type `ts`
 - VSCode's suggestion feature will suggest changing `import * as ts from 'typescript'` to `import ts from 'typescript'`
 
-In order to keep compat with a wide range of consumers, some of whom don't use `allowSyntheticDefaultImports`, we should
+In order to keep compatibility with a wide range of consumers, some of whom don't use `allowSyntheticDefaultImports`, we should
 always use either:
 - `import * as ts from 'typescript';`
 - `import { SyntaxKind } from 'typescript';`
