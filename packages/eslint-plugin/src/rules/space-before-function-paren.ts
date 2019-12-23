@@ -1,6 +1,6 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { isOpeningParenToken } from 'eslint-utils';
 import * as util from '../util';
@@ -85,8 +85,8 @@ export default util.createRule<Options, MessageIds>({
       const parent = node.parent!;
 
       return (
-        parent.type === 'MethodDefinition' ||
-        (parent.type === 'Property' &&
+        parent.type === AST_NODE_TYPES.MethodDefinition ||
+        (parent.type === AST_NODE_TYPES.Property &&
           (parent.kind === 'get' || parent.kind === 'set' || parent.method))
       );
     }

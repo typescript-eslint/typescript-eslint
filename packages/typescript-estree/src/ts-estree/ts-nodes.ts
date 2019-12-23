@@ -156,8 +156,15 @@ export type TSNode = ts.Node &
     | ts.ExportSpecifier
     | ts.ExportAssignment
     | ts.CommentRange
-    | ts.JSDocTypeExpression
+    | ts.SourceFile
+    | ts.Bundle
+    | ts.InputFiles
+    | ts.UnparsedSource
+    | ts.JsonMinusNumericLiteral
+
+    // JSDoc: Unsupported
     | ts.JSDoc
+    | ts.JSDocTypeExpression
     | ts.JSDocUnknownTag
     | ts.JSDocAugmentsTag
     | ts.JSDocClassTag
@@ -172,9 +179,12 @@ export type TSNode = ts.Node &
     | ts.JSDocPropertyTag
     | ts.JSDocParameterTag
     | ts.JSDocTypeLiteral
-    | ts.SourceFile
-    | ts.Bundle
-    | ts.InputFiles
-    | ts.UnparsedSource
-    | ts.JsonMinusNumericLiteral
+    | ts.JSDocFunctionType
+    | ts.JSDocAllType
+    | ts.JSDocUnknownType
+    | ts.JSDocNullableType
+    | ts.JSDocNonNullableType
+    | ts.JSDocOptionalType
+    | ts.JSDocVariadicType
+    | ts.JSDocAuthorTag
   );

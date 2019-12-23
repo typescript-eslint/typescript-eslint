@@ -1650,6 +1650,15 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-abstract-readonly-property.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-abstract-static-constructor.src 1`] = `
+Object {
+  "column": 2,
+  "index": 41,
+  "lineNumber": 2,
+  "message": "'abstract' modifier can only appear on a class, method, or property declaration.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-declare-properties.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-optional-method.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -2460,6 +2469,8 @@ Object {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-with-optional-index-signature.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/object-assertion-not-allowed.src 1`] = `
 Object {
   "column": 3,
@@ -2562,6 +2573,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/mapped-readonly-minus.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/mapped-readonly-plus.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/mapped-untypped.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/nested-types.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 

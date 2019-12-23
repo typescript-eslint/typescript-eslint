@@ -111,7 +111,10 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    const result = this.convertNode(node as TSNode, parent ?? node.parent);
+    const result = this.convertNode(
+      node as TSNode,
+      (parent ?? node.parent) as TSNode,
+    );
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -260,7 +263,7 @@ export class Converter {
   }
 
   /**
-   * Coverts body Nodes and add directive field to StringLiterals
+   * Coverts body Nodes and add a directive field to StringLiterals
    * @param nodes of ts.Node
    * @param parent parentNode
    * @returns Array of body statements
@@ -283,12 +286,12 @@ export class Converter {
             ) {
               const raw = child.expression.raw;
               child.directive = raw.slice(1, -1);
-              return child; // child can be null but it's filtered below
+              return child; // child can be null, but it's filtered below
             } else {
               allowDirectives = false;
             }
           }
-          return child; // child can be null but it's filtered below
+          return child; // child can be null, but it's filtered below
         })
         // filter out unknown nodes for now
         .filter(statement => statement)
@@ -361,7 +364,7 @@ export class Converter {
    * ESTree mostly as-is. The only difference is the addition of a type
    * property instead of a kind property. Recursively copies all children.
    */
-  private deeplyCopy(node: ts.Node): any {
+  private deeplyCopy(node: TSNode): any {
     const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
     /**
      * If the "errorOnUnknownASTType" option is set to true, throw an error,
@@ -374,51 +377,45 @@ export class Converter {
       type: customType,
     });
 
-    Object.keys(node)
+    if ('type' in node) {
+      result.typeAnnotation =
+        node.type && 'kind' in node.type && ts.isTypeNode(node.type)
+          ? this.convertTypeAnnotation(node.type, node)
+          : null;
+    }
+    if ('typeArguments' in node) {
+      result.typeParameters =
+        node.typeArguments && 'pos' in node.typeArguments
+          ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+          : null;
+    }
+    if ('typeParameters' in node) {
+      result.typeParameters =
+        node.typeParameters && 'pos' in node.typeParameters
+          ? this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            )
+          : null;
+    }
+    if ('decorators' in node && node.decorators && node.decorators.length) {
+      result.decorators = node.decorators.map(el => this.convertChild(el));
+    }
+
+    Object.entries<any>(node)
       .filter(
-        key =>
-          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc)$/.test(
+        ([key]) =>
+          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc|type|typeArguments|typeParameters|decorators)$/.test(
             key,
           ),
       )
-      .forEach(key => {
-        if (key === 'type') {
-          result.typeAnnotation = (node as any).type
-            ? this.convertTypeAnnotation((node as any).type, node)
-            : null;
-        } else if (key === 'typeArguments') {
-          result.typeParameters = (node as any).typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(
-                (node as any).typeArguments,
-              )
-            : null;
-        } else if (key === 'typeParameters') {
-          result.typeParameters = (node as any).typeParameters
-            ? this.convertTSTypeParametersToTypeParametersDeclaration(
-                (node as any).typeParameters,
-              )
-            : null;
-        } else if (key === 'decorators') {
-          if (node.decorators && node.decorators.length) {
-            result.decorators = node.decorators.map(el =>
-              this.convertChild(el),
-            );
-          }
+      .forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          result[key] = value.map(el => this.convertChild(el));
+        } else if (value && typeof value === 'object' && value.kind) {
+          // need to check node[key].kind to ensure we don't try to convert a symbol
+          result[key] = this.convertChild(value);
         } else {
-          if (Array.isArray((node as any)[key])) {
-            result[key] = (node as any)[key].map((el: any) =>
-              this.convertChild(el),
-            );
-          } else if (
-            (node as any)[key] &&
-            typeof (node as any)[key] === 'object' &&
-            (node as any)[key].kind
-          ) {
-            // need to check node[key].kind to ensure we don't try to convert a symbol
-            result[key] = this.convertChild((node as any)[key]);
-          } else {
-            result[key] = (node as any)[key];
-          }
+          result[key] = value;
         }
       });
     return result;
@@ -549,7 +546,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  private convertNode(node: TSNode, parent: ts.Node): TSESTree.Node | null {
+  private convertNode(node: TSNode, parent: TSNode): TSESTree.Node | null {
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
         return this.createNode<TSESTree.Program>(node, {
@@ -1694,7 +1691,7 @@ export class Converter {
         const computed = false;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propogate up the member expression tree
+        // the optional expression should propagate up the member expression tree
         const isChildOptional =
           (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
             object.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -1726,7 +1723,7 @@ export class Converter {
         const computed = true;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propogate up the member expression tree
+        // the optional expression should propagate up the member expression tree
         const isChildOptional =
           (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
             object.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -1758,7 +1755,7 @@ export class Converter {
         let result;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propogate up the member expression tree
+        // the optional expression should propagate up the member expression tree
         const isChildOptional =
           (callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
             callee.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -1841,7 +1838,7 @@ export class Converter {
           value: '',
         });
         result.raw = this.ast.text.slice(result.range[0], result.range[1]);
-        if ((parent as any).name && (parent as any).name === node) {
+        if ('name' in parent && parent.name === node) {
           result.value = node.text;
         } else {
           result.value = unescapeStringLiteralText(node.text);
@@ -2389,15 +2386,15 @@ export class Converter {
         }
 
         if (interfaceHeritageClauses.length > 0) {
-          const interfaceExtends = [];
-          const interfaceImplements = [];
+          const interfaceExtends: TSESTree.ExpressionWithTypeArguments[] = [];
+          const interfaceImplements: TSESTree.ExpressionWithTypeArguments[] = [];
 
           for (const heritageClause of interfaceHeritageClauses) {
             if (heritageClause.token === SyntaxKind.ExtendsKeyword) {
               for (const n of heritageClause.types) {
                 interfaceExtends.push(this.convertChild(n, node));
               }
-            } else if (heritageClause.token === SyntaxKind.ImplementsKeyword) {
+            } else {
               for (const n of heritageClause.types) {
                 interfaceImplements.push(this.convertChild(n, node));
               }

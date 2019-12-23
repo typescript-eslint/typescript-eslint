@@ -116,7 +116,8 @@ typeof instance.unbound === 'function';
 typeof ContainsMethods.boundStatic === 'function';
 typeof ContainsMethods.unboundStatic === 'function';
     `,
-    `interface RecordA {
+    `
+interface RecordA {
   readonly type: "A"
   readonly a: {}
 }
@@ -143,8 +144,61 @@ class CommunicationError {
 class CommunicationError {}
 const x = CommunicationError.prototype;
     `,
+    // optional chain
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+function foo(instance: ContainsMethods | null) {
+  instance?.bound();
+  instance?.unbound();
+
+  instance?.bound++;
+
+  if (instance?.bound) { }
+  if (instance?.unbound) { }
+
+  typeof instance?.bound === 'function';
+  typeof instance?.unbound === 'function';
+}
+    `,
   ],
   invalid: [
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+function foo(instance: ContainsMethods | null) {
+  const unbound = instance?.unbound;
+  instance.unbound += 1;
+  instance?.unbound as any;
+}
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'unbound',
+        },
+        {
+          line: 11,
+          messageId: 'unbound',
+        },
+        {
+          line: 12,
+          messageId: 'unbound',
+        },
+      ],
+    },
     {
       code: `
 class ContainsMethods {

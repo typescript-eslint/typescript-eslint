@@ -521,7 +521,7 @@ interface ClassDeclarationBase extends BaseNode {
 
 /** this should not be directly used - instead use ClassPropertyComputedNameBase or ClassPropertyNonComputedNameBase */
 interface ClassPropertyBase extends BaseNode {
-  key: PropertyNameComputed | PropertyNameComputed;
+  key: PropertyName;
   value: Expression | null;
   computed: boolean;
   static: boolean;
@@ -591,7 +591,7 @@ interface MemberExpressionNonComputedNameBase extends MemberExpressionBase {
 
 /** this should not be directly used - instead use MethodDefinitionComputedNameBase or MethodDefinitionNonComputedNameBase */
 interface MethodDefinitionBase extends BaseNode {
-  key: PropertyNameComputed | PropertyNameComputed;
+  key: PropertyName;
   value: FunctionExpression | TSEmptyBodyFunctionExpression;
   computed: boolean;
   static: boolean;
@@ -613,7 +613,7 @@ interface MethodDefinitionNonComputedNameBase extends MethodDefinitionBase {
 
 interface PropertyBase extends BaseNode {
   type: AST_NODE_TYPES.Property;
-  key: PropertyNameComputed | PropertyNameNonComputed;
+  key: PropertyName;
   value: Expression | AssignmentPattern | BindingName;
   computed: boolean;
   method: boolean;
@@ -638,7 +638,7 @@ interface TSHeritageBase extends BaseNode {
 
 interface TSMethodSignatureBase extends BaseNode {
   type: AST_NODE_TYPES.TSMethodSignature;
-  key: PropertyNameComputed | PropertyNameNonComputed;
+  key: PropertyName;
   computed: boolean;
   params: Parameter[];
   optional?: boolean;
@@ -652,7 +652,7 @@ interface TSMethodSignatureBase extends BaseNode {
 
 interface TSPropertySignatureBase extends BaseNode {
   type: AST_NODE_TYPES.TSPropertySignature;
-  key: PropertyNameComputed | PropertyNameNonComputed;
+  key: PropertyName;
   optional?: boolean;
   computed: boolean;
   typeAnnotation?: TSTypeAnnotation;
