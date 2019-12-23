@@ -1,4 +1,4 @@
-import { createRule } from '../createRule';
+import { createRule } from '../util';
 
 const TSESTREE_NAME = '@typescript-eslint/typescript-estree';
 const UTILS_NAME = '@typescript-eslint/experimental-utils';

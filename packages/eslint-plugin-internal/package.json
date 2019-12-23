@@ -13,5 +13,6 @@
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "2.12.0"
-  }
+  },
+  "devDependencies": {}
 }

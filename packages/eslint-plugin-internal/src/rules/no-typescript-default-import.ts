@@ -2,7 +2,7 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import { createRule } from '../createRule';
+import { createRule } from '../util';
 
 /*
 We have `allowSyntheticDefaultImports` turned on in this project, so there are two problems that arise:
@@ -20,7 +20,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: `Enforces that packages rules don't do \`import ts from 'typescript';\``,
+      description:
+        "Enforces that packages rules don't do `import ts from 'typescript';`",
       category: 'Possible Errors',
       recommended: 'error',
     },
