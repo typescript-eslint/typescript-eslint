@@ -1,5 +1,5 @@
 import semver from 'semver';
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import { sync as globSync } from 'glob';
 import isGlob from 'is-glob';
 import { astConverter } from './ast-converter';

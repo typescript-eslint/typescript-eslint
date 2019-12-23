@@ -1,5 +1,5 @@
 import unescape from 'lodash.unescape';
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;

@@ -1,4 +1,4 @@
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import { forEachComment } from 'tsutils/util/util';
 import { getLocFor } from './node-utils';
 import { TSESTree } from './ts-estree';
