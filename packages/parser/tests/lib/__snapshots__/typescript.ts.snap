@@ -40807,6 +40807,105 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/expressions/optional-call-expression-type-arguments.src 1`] = `
+Object {
+  "$id": 3,
+  "block": Object {
+    "range": Array [
+      0,
+      35,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 2,
+      "block": Object {
+        "range": Array [
+          0,
+          35,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 0,
+          "from": Object {
+            "$ref": 2,
+          },
+          "identifier": Object {
+            "name": "foo",
+            "range": Array [
+              0,
+              3,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+        Object {
+          "$id": 1,
+          "from": Object {
+            "$ref": 2,
+          },
+          "identifier": Object {
+            "name": "foo",
+            "range": Array [
+              15,
+              18,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 0,
+        },
+        Object {
+          "$ref": 1,
+        },
+      ],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 2,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 0,
+    },
+    Object {
+      "$ref": 1,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 3,
+  },
+  "variables": Array [],
+}
+`;
+
 exports[`typescript fixtures/expressions/tagged-template-expression-type-arguments.src 1`] = `
 Object {
   "$id": 2,
