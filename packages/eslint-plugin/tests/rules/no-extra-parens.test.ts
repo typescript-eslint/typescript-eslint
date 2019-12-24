@@ -119,6 +119,14 @@ typeof (a);
     }),
     ...batchedSingleLineTests({
       code: `
+const x = (1 as 1) | (1 as 1);
+const x = (<1>1) | (<1>1);
+const x = (1 as 1) | 2;
+const x = (1 as 1) + 2 + 2;
+const x = 1 + 1 + (2 as 2);
+const x = 1 | (2 as 2);
+const x = (<1>1) | 2;
+const x = 1 | (<2>2);
 t.true((me.get as SinonStub).calledWithExactly('/foo', other));
 t.true((<SinonStub>me.get).calledWithExactly('/foo', other));
 (requestInit.headers as Headers).get('Cookie');
