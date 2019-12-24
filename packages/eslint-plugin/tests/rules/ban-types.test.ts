@@ -53,8 +53,32 @@ ruleTester.run('ban-types', rule, {
       code: 'let a: NS.Bad._',
       options,
     },
+    // Replace default options instead of merging
+    {
+      code: 'let a: String;',
+      options: [
+        {
+          types: {
+            Number: {
+              message: 'Use number instead.',
+              fixWith: 'number',
+            },
+          },
+        },
+      ],
+    },
   ],
   invalid: [
+    {
+      code: 'let a: String;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
     {
       code: 'let a: Object;',
       errors: [

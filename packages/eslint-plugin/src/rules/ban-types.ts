@@ -13,7 +13,7 @@ type Types = Record<
 
 type Options = [
   {
-    types: Types;
+    types?: Types;
   },
 ];
 type MessageIds = 'bannedTypeMessage';
@@ -46,6 +46,35 @@ function getCustomMessage(
 
   return '';
 }
+
+/*
+  Defaults for this rule should be treated as an "all or nothing"
+  merge, so we need special handling here.
+
+  See: https://github.com/typescript-eslint/typescript-eslint/issues/686
+ */
+const defaultTypes = {
+  String: {
+    message: 'Use string instead',
+    fixWith: 'string',
+  },
+  Boolean: {
+    message: 'Use boolean instead',
+    fixWith: 'boolean',
+  },
+  Number: {
+    message: 'Use number instead',
+    fixWith: 'number',
+  },
+  Object: {
+    message: 'Use Record<string, any> instead',
+    fixWith: 'Record<string, any>',
+  },
+  Symbol: {
+    message: 'Use symbol instead',
+    fixWith: 'symbol',
+  },
+};
 
 export default util.createRule<Options, MessageIds>({
   name: 'ban-types',
@@ -86,33 +115,8 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   },
-  defaultOptions: [
-    {
-      types: {
-        String: {
-          message: 'Use string instead',
-          fixWith: 'string',
-        },
-        Boolean: {
-          message: 'Use boolean instead',
-          fixWith: 'boolean',
-        },
-        Number: {
-          message: 'Use number instead',
-          fixWith: 'number',
-        },
-        Object: {
-          message: 'Use Record<string, any> instead',
-          fixWith: 'Record<string, any>',
-        },
-        Symbol: {
-          message: 'Use symbol instead',
-          fixWith: 'symbol',
-        },
-      },
-    },
-  ],
-  create(context, [{ types }]) {
+  defaultOptions: [{}],
+  create(context, [{ types = defaultTypes }]) {
     const bannedTypes: Types = Object.keys(types).reduce(
       (res, type) => ({ ...res, [removeSpaces(type)]: types[type] }),
       {},
