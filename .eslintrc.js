@@ -170,8 +170,6 @@ module.exports = {
       ],
       rules: {
         '@typescript-eslint/internal/no-typescript-estree-import': 'error',
-        // plugins don't have any generated types, so it's safe to use
-        '@typescript-eslint/internal/no-typescript-default-import': 'off',
       },
     },
     // rule source files

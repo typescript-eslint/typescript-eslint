@@ -1,6 +1,6 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 import { findFirstResult } from '../util';
 

@@ -4,7 +4,7 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export type Options = [

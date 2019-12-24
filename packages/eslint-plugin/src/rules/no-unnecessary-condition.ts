@@ -3,7 +3,7 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import ts, { TypeFlags } from 'typescript';
+import * as ts from 'typescript';
 import {
   isTypeFlagSet,
   unionTypeParts,
@@ -139,13 +139,15 @@ export default createRule<Options, MessageId>({
         unionTypeParts(type).some(part =>
           isTypeFlagSet(
             part,
-            TypeFlags.Any | TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+            ts.TypeFlags.Any |
+              ts.TypeFlags.Unknown |
+              ts.TypeFlags.TypeParameter,
           ),
         )
       ) {
         return;
       }
-      const messageId = isTypeFlagSet(type, TypeFlags.Never)
+      const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
         ? 'never'
         : !isPossiblyTruthy(type)
         ? 'alwaysFalsy'
@@ -161,10 +163,10 @@ export default createRule<Options, MessageId>({
     function checkNodeForNullish(node: TSESTree.Node): void {
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
-      if (isTypeFlagSet(type, TypeFlags.Any | TypeFlags.Unknown)) {
+      if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         return;
       }
-      const messageId = isTypeFlagSet(type, TypeFlags.Never)
+      const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
         ? 'never'
         : !isPossiblyNullish(type)
         ? 'neverNullish'
