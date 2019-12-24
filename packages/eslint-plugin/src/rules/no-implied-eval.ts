@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript';
 import {
   TSESTree,
   AST_NODE_TYPES,
@@ -76,7 +76,7 @@ export default util.createRule({
         ts.SignatureKind.Call,
       );
 
-      if (signatures?.length) {
+      if (signatures.length) {
         const [{ declaration }] = signatures;
         return declaration?.kind === ts.SyntaxKind.FunctionType;
       }

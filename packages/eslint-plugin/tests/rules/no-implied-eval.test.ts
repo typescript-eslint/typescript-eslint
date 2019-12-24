@@ -636,5 +636,62 @@ const fn = (foo: string | any) => {
         },
       ],
     },
+    {
+      code: `
+window.setTimeout(\`\`, 0);
+window['setTimeout'](\`\`, 0);
+
+window.setInterval(\`\`, 0);
+window['setInterval'](\`\`, 0);
+
+window.setImmediate(\`\`);
+window['setImmediate'](\`\`);
+
+window.execScript(\`\`);
+window['execScript'](\`\`);
+      `,
+      errors: [
+        {
+          messageId: 'noImpliedEvalError',
+          line: 2,
+          column: 19,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 3,
+          column: 22,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 5,
+          column: 20,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 6,
+          column: 23,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 8,
+          column: 21,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 9,
+          column: 24,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 11,
+          column: 19,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 12,
+          column: 22,
+        },
+      ],
+    },
   ],
 });
