@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import { TSESTreeOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,

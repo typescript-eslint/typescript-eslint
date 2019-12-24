@@ -3,7 +3,7 @@ import {
   isUnionOrIntersectionType,
   unionTypeParts,
 } from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 /**
  * @param type Type being checked by name.

@@ -10,7 +10,7 @@ import {
   isTypeFlagSet,
   isVariableDeclaration,
 } from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 type Options = [

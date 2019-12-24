@@ -3,7 +3,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
-import ts, { SyntaxKind } from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export default util.createRule({
@@ -59,7 +59,7 @@ export default util.createRule({
     ): void {
       let child: ts.Node;
 
-      const isAwait = expression.kind === SyntaxKind.AwaitExpression;
+      const isAwait = expression.kind === ts.SyntaxKind.AwaitExpression;
 
       if (isAwait) {
         child = expression.getChildAt(1);
