@@ -12,7 +12,7 @@ const log = debug('typescript-eslint:typescript-estree:createDefaultProgram');
 
 /**
  * @param code The code of the file being linted
- * @param options The config object
+ * @param extra The config object
  * @param extra.tsconfigRootDir The root directory for relative tsconfig paths
  * @param extra.projects Provided tsconfig paths
  * @returns If found, returns the source file corresponding to the code and the containing program

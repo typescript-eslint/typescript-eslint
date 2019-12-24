@@ -43,7 +43,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   BigIntLiteral: [],
   ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
-  OptionalCallExpression: eslintVisitorKeys.KEYS.CallExpression,
+  OptionalCallExpression: ['callee', 'typeParameters', 'arguments'],
   OptionalMemberExpression: eslintVisitorKeys.KEYS.MemberExpression,
   TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   TSAbstractKeyword: [],
