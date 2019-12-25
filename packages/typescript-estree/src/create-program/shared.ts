@@ -1,5 +1,5 @@
 import path from 'path';
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import { Extra } from '../parser-options';
 
 interface ASTAndProgram {

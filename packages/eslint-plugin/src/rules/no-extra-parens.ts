@@ -35,21 +35,26 @@ export default util.createRule<Options, MessageIds>({
       const rule = rules.BinaryExpression as (n: typeof node) => void;
 
       // makes the rule think it should skip the left or right
-      if (util.isTypeAssertion(node.left)) {
+      const isLeftTypeAssertion = util.isTypeAssertion(node.left);
+      const isRightTypeAssertion = util.isTypeAssertion(node.right);
+      if (isLeftTypeAssertion && isRightTypeAssertion) {
+        return; // ignore
+      }
+      if (isLeftTypeAssertion) {
         return rule({
           ...node,
           left: {
             ...node.left,
-            type: AST_NODE_TYPES.BinaryExpression as any,
+            type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
       }
-      if (util.isTypeAssertion(node.right)) {
+      if (isRightTypeAssertion) {
         return rule({
           ...node,
           right: {
             ...node.right,
-            type: AST_NODE_TYPES.BinaryExpression as any,
+            type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
       }

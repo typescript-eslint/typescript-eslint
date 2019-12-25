@@ -1,4 +1,4 @@
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 
 interface SemanticOrSyntacticError extends ts.Diagnostic {
   message: string;

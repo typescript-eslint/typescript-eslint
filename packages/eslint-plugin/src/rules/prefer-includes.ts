@@ -4,7 +4,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import { getStaticValue } from 'eslint-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import { createRule, getParserServices } from '../util';
 
 export default createRule({
