@@ -14,6 +14,12 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unnecessary-type-arguments', rule, {
   valid: [
+    `f<>();`,
+    `f<string>();`,
+    `class Foo extends Bar<> {}`,
+    `class Foo extends Bar<string> {}`,
+    `class Foo implements Bar<> {}`,
+    `class Foo implements Bar<string> {}`,
     `function f<T = number>() { }
       f();`,
     `function f<T = number>() { }

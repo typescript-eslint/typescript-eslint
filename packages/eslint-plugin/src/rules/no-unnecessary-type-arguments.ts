@@ -47,7 +47,7 @@ export default util.createRule<[], MessageIds>({
 
       // TODO: would like checker.areTypesEquivalent. https://github.com/Microsoft/TypeScript/issues/13502
       if (
-        param.default === undefined ||
+        !param.default ||
         param.default.getText() !== sourceCode.getText(arg)
       ) {
         return;
@@ -104,14 +104,11 @@ function getTypeParametersFromType(
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const symAtLocation = checker.getSymbolAtLocation(type);
-  if (symAtLocation === undefined) {
+  if (!symAtLocation) {
     return undefined;
   }
 
   const sym = getAliasedSymbol(symAtLocation, checker);
-  if (sym === undefined || sym.declarations === undefined) {
-    return undefined;
-  }
 
   return findFirstResult(sym.declarations, decl =>
     tsutils.isClassLikeDeclaration(decl) ||
@@ -127,8 +124,8 @@ function getTypeParametersFromCall(
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const sig = checker.getResolvedSignature(node);
-  const sigDecl = sig === undefined ? undefined : sig.getDeclaration();
-  if (sigDecl === undefined) {
+  const sigDecl = sig?.getDeclaration();
+  if (!sigDecl) {
     return ts.isNewExpression(node)
       ? getTypeParametersFromType(node.expression, checker)
       : undefined;
@@ -140,7 +137,7 @@ function getTypeParametersFromCall(
 function getAliasedSymbol(
   symbol: ts.Symbol,
   checker: ts.TypeChecker,
-): ts.Symbol | undefined {
+): ts.Symbol {
   return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
     ? checker.getAliasedSymbol(symbol)
     : symbol;
