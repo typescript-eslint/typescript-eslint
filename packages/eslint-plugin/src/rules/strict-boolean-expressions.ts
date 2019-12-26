@@ -61,7 +61,7 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
     /**
      * Determines if the node has a boolean type.
      */
-    function isBooleanType(node: TSESTree.Node): boolean {
+    function isBooleanType(node: TSESTree.Expression): boolean {
       const tsNode = service.esTreeNodeToTSNodeMap.get<ts.ExpressionStatement>(
         node,
       );

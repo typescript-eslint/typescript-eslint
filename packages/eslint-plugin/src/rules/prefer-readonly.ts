@@ -143,7 +143,11 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isFunctionScopeBoundaryInStack(
-      node: TSESTree.Node,
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression
+        | TSESTree.MethodDefinition,
     ): boolean | tsutils.ScopeBoundary {
       if (classScopeStack.length === 0) {
         return false;
