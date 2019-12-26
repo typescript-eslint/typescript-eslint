@@ -1,6 +1,12 @@
 name: Node CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   primary_code_validation_and_tests:
@@ -75,7 +81,7 @@ jobs:
     displayName: Publish the latest code as a canary version
     runs-on: ubuntu-latest
     needs: [primary_code_validation_and_tests, unit_tests_on_other_node_versions]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js 12
