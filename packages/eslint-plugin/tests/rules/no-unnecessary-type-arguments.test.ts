@@ -60,6 +60,14 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
     `class Foo<T> {}
       const foo = new Foo<number>();`,
     `type Foo<T> = import('foo').Foo<T>;`,
+    `class Bar<T = number> {}
+      class Foo<T = number> extends Bar<T> {}`,
+    `interface Bar<T = number> {}
+      class Foo<T = number> implements Bar<T> {}`,
+    `class Bar<T = number> {}
+      class Foo<T = number> extends Bar<string> {}`,
+    `interface Bar<T = number> {}
+      class Foo<T = number> implements Bar<string> {}`,
   ],
   invalid: [
     {
@@ -140,6 +148,28 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
       ],
       output: `class Foo<T = number> {}
         const foo = new Foo();`,
+    },
+    {
+      code: `interface Bar<T = string> {}
+        class Foo<T = number> implements Bar<string> {}`,
+      errors: [
+        {
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `interface Bar<T = string> {}
+        class Foo<T = number> implements Bar {}`,
+    },
+    {
+      code: `class Bar<T = string> {}
+        class Foo<T = number> extends Bar<string> {}`,
+      errors: [
+        {
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `class Bar<T = string> {}
+        class Foo<T = number> extends Bar {}`,
     },
   ],
 });
