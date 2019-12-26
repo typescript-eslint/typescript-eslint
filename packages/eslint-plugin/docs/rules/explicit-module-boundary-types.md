@@ -1,6 +1,6 @@
-# Require explicit return type on exported functions' and classes' public class methods (explicit-module-boundary-types)
+# Require explicit return and argument types on exported functions' and classes' public class methods (`explicit-module-boundary-types`)
 
-Explicit types for function return values makes it clear to any calling code what is the module boundary's output.
+Explicit types for function return values and arguments makes it clear to any calling code what is the module boundary's input and output.
 
 Consider using this rule in place of [`no-untyped-public-signature`](./no-untyped-public-signature.md) which has been deprecated.
 
@@ -24,6 +24,9 @@ export default function() {
 // Should indicate that a string is returned
 export var arrowFn = () => 'test';
 
+// All arguments should be typed
+export var arrowFn = (arg): string => `test ${arg}`;
+
 export class Test {
   // Should indicate that no value is returned (void)
   method() {
@@ -46,7 +49,7 @@ export var fn = function(): number {
 };
 
 // A return value of type string
-export var arrowFn = (): string => 'test';
+export var arrowFn = (arg: string): string => `test ${arg}`;
 
 // Class is not exported
 class Test {
@@ -66,6 +69,8 @@ type Options = {
   allowTypedFunctionExpressions?: boolean;
   // if true, functions immediately returning another function expression will not be checked
   allowHigherOrderFunctions?: boolean;
+  // if true, body-less arrow functions are allowed to return an object as const
+  allowDirectConstAssertionInArrowFunctions?: boolean;
   // an array of function/method names that will not be checked
   allowedNames?: string[];
 };
@@ -165,7 +170,26 @@ export function fn() {
 }
 ```
 
-### `allowedName`
+### `allowDirectConstAssertionInArrowFunctions`
+
+Examples of additional **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+
+```ts
+export const func = (value: number) => ({ type: 'X', value } as const);
+```
+
+Examples of additional **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+
+```ts
+export const func = (value: number) => ({ type: 'X', value });
+export const foo = () => {
+  return {
+    bar: true,
+  } as const;
+};
+```
+
+### `allowedNames`
 
 You may pass function/method names you would like this rule to ignore, like so:
 

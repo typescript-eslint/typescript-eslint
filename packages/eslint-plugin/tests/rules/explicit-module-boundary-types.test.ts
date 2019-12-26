@@ -62,7 +62,7 @@ export class Test {
     return 1;
   }
   set prop() {}
-  private method() {
+  private method(one) {
     return;
   }
   arrow = (): string => 'arrow';
@@ -145,7 +145,7 @@ export class App {
       filename: 'test.ts',
       code: `
 export const myObj = {
-  set myProp(val) {
+  set myProp(val: number) {
     this.myProp = val;
   },
 };
@@ -252,7 +252,7 @@ export const func4 = (value: number) => x as const;
     {
       filename: 'test.ts',
       code: `
-export const func1 = (value) => value;
+export const func1 = (value: string) => value;
 export const func2 = (value: number) => ({ type: "X", value });
       `,
       options: [
@@ -365,7 +365,7 @@ export class Test {
   method() {
     return;
   }
-  arrow = () => 'arrow';
+  arrow = (arg) => 'arrow';
   private method() {
     return;
   }
@@ -387,11 +387,18 @@ export class Test {
           endColumn: 11,
         },
         {
+          messageId: 'missingArgType',
+          line: 11,
+          endLine: 11,
+          column: 11,
+          endColumn: 27,
+        },
+        {
           messageId: 'missingReturnType',
           line: 11,
           endLine: 11,
           column: 11,
-          endColumn: 16,
+          endColumn: 19,
         },
       ],
     },
@@ -762,6 +769,32 @@ export const func2 = (value: number) => value;
           endLine: 2,
           column: 22,
           endColumn: 40,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'export function fn(test): string { return "123" };',
+      errors: [
+        {
+          messageId: 'missingArgType',
+          line: 1,
+          endLine: 1,
+          column: 8,
+          endColumn: 50,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'export const fn = (one: number, two): string => "123";',
+      errors: [
+        {
+          messageId: 'missingArgType',
+          line: 1,
+          endLine: 1,
+          column: 19,
+          endColumn: 54,
         },
       ],
     },

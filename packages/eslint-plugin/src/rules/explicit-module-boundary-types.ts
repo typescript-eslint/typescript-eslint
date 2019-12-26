@@ -13,7 +13,7 @@ type Options = [
     allowedNames?: string[];
   },
 ];
-type MessageIds = 'missingReturnType';
+type MessageIds = 'missingReturnType' | 'missingArgType';
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-module-boundary-types',
@@ -21,12 +21,13 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        "Require explicit return types on exported functions' and classes' public class methods",
+        "Require explicit return and argument types on exported functions' and classes' public class methods",
       category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {
       missingReturnType: 'Missing return type on function.',
+      missingArgType: "Argument '{{name}}' should be typed.",
     },
     schema: [
       {
@@ -324,6 +325,22 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
+      const paramIdentifiers = node.params.filter(
+        param => param.type === AST_NODE_TYPES.Identifier,
+      ) as TSESTree.Identifier[];
+      const untypedArgs = paramIdentifiers.filter(isArgumentUntyped);
+      if (untypedArgs.length) {
+        untypedArgs.forEach(untypedArg =>
+          context.report({
+            node,
+            messageId: 'missingArgType',
+            data: {
+              name: untypedArg.name,
+            },
+          }),
+        );
+      }
+
       if (isAllowedName(node.parent)) {
         return;
       }
@@ -429,6 +446,13 @@ export default util.createRule<Options, MessageIds>({
       }
 
       return false;
+    }
+
+    function isArgumentUntyped(node: TSESTree.Identifier): boolean {
+      return (
+        !node.typeAnnotation ||
+        node.typeAnnotation.typeAnnotation.type === AST_NODE_TYPES.TSAnyKeyword
+      );
     }
 
     return {
