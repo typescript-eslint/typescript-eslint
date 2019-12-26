@@ -4,15 +4,6 @@ import * as ts from 'typescript';
 import * as util from '../util';
 import { findFirstResult } from '../util';
 
-interface ArgsAndParams {
-  typeArguments: ts.NodeArray<ts.TypeNode>;
-  typeParameters: readonly ts.TypeParameterDeclaration[];
-}
-
-type ExtendingClassLikeDeclaration = ts.ClassLikeDeclaration & {
-  heritageClauses: ts.NodeArray<ts.HeritageClause>;
-};
-
 type ParameterCapableTSNode =
   | ts.CallExpression
   | ts.NewExpression
@@ -43,64 +34,51 @@ export default util.createRule<[], MessageIds>({
   create(context) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     function checkTSArgsAndParameters(
       esParameters: TSESTree.TSTypeParameterInstantiation,
-      { typeArguments, typeParameters }: ArgsAndParams,
+      typeParameters: readonly ts.TypeParameterDeclaration[],
     ): void {
       // Just check the last one. Must specify previous type parameters if the last one is specified.
-      const i = typeArguments.length - 1;
-      const arg = typeArguments[i];
+      const i = esParameters.params.length - 1;
+      const arg = esParameters.params[i];
       const param = typeParameters[i];
 
       // TODO: would like checker.areTypesEquivalent. https://github.com/Microsoft/TypeScript/issues/13502
       if (
-        param.default === undefined ||
-        param.default.getText() !== arg.getText()
+        !param.default ||
+        param.default.getText() !== sourceCode.getText(arg)
       ) {
         return;
       }
 
       context.report({
+        node: arg,
+        messageId: 'unnecessaryTypeParameter',
         fix: fixer =>
           fixer.removeRange(
             i === 0
-              ? [typeArguments.pos - 1, typeArguments.end + 1]
-              : [typeArguments[i - 1].end, arg.end],
+              ? esParameters.range
+              : [esParameters.params[i - 1].range[1], arg.range[1]],
           ),
-        messageId: 'unnecessaryTypeParameter',
-        node: esParameters.params[i],
       });
     }
 
     return {
       TSTypeParameterInstantiation(node): void {
-        const parentDeclaration = parserServices.esTreeNodeToTSNodeMap.get<
-          ExtendingClassLikeDeclaration | ParameterCapableTSNode
-        >(node.parent!);
+        const expression = parserServices.esTreeNodeToTSNodeMap.get<
+          ParameterCapableTSNode
+        >(node);
 
-        const expression = tsutils.isClassLikeDeclaration(parentDeclaration)
-          ? parentDeclaration.heritageClauses[0].types[0]
-          : parentDeclaration;
-
-        const argsAndParams = getArgsAndParameters(expression, checker);
-        if (argsAndParams !== undefined) {
-          checkTSArgsAndParameters(node, argsAndParams);
+        const typeParameters = getTypeParametersFromNode(expression, checker);
+        if (typeParameters) {
+          checkTSArgsAndParameters(node, typeParameters);
         }
       },
     };
   },
 });
-
-function getArgsAndParameters(
-  node: ParameterCapableTSNode,
-  checker: ts.TypeChecker,
-): ArgsAndParams | undefined {
-  const typeParameters = getTypeParametersFromNode(node, checker);
-  return typeParameters === undefined
-    ? undefined
-    : { typeArguments: node.typeArguments!, typeParameters };
-}
 
 function getTypeParametersFromNode(
   node: ParameterCapableTSNode,
@@ -126,14 +104,11 @@ function getTypeParametersFromType(
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const symAtLocation = checker.getSymbolAtLocation(type);
-  if (symAtLocation === undefined) {
+  if (!symAtLocation) {
     return undefined;
   }
 
   const sym = getAliasedSymbol(symAtLocation, checker);
-  if (sym === undefined || sym.declarations === undefined) {
-    return undefined;
-  }
 
   return findFirstResult(sym.declarations, decl =>
     tsutils.isClassLikeDeclaration(decl) ||
@@ -149,8 +124,8 @@ function getTypeParametersFromCall(
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const sig = checker.getResolvedSignature(node);
-  const sigDecl = sig === undefined ? undefined : sig.getDeclaration();
-  if (sigDecl === undefined) {
+  const sigDecl = sig?.getDeclaration();
+  if (!sigDecl) {
     return ts.isNewExpression(node)
       ? getTypeParametersFromType(node.expression, checker)
       : undefined;
@@ -162,7 +137,7 @@ function getTypeParametersFromCall(
 function getAliasedSymbol(
   symbol: ts.Symbol,
   checker: ts.TypeChecker,
-): ts.Symbol | undefined {
+): ts.Symbol {
   return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
     ? checker.getAliasedSymbol(symbol)
     : symbol;
