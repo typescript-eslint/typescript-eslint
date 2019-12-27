@@ -955,6 +955,24 @@ ruleTester.run('strict-boolean-expressions', rule, {
       ],
     },
     {
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 2,
+          column: 55,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 3,
+          column: 37,
+        },
+      ],
+      code: `
+        const f1 = (x: boolean | null | undefined) => x ? 1 : 0;
+        const f2 = (x?: boolean) => x ? 1 : 0;
+      `,
+    },
+    {
       options: [{ ignoreRhs: true }],
       errors: [
         {
