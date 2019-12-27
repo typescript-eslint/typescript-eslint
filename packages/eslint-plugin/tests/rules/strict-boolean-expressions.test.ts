@@ -178,6 +178,35 @@ ruleTester.run('strict-boolean-expressions', rule, {
       declare const x: string | null;
       y = x ?? 'foo';
     `,
+    {
+      options: [{ allowSafe: true }],
+      code: `
+        type TestType = { a: string; };
+        const f1 = (x: boolean | TestType) => x ? 1 : 0;
+        const f2 = (x: true | TestType) => x ? 1 : 0;
+        const f3 = (x: TestType | false) => x ? 1 : 0;
+      `,
+    },
+    {
+      options: [{ allowNullable: true, allowSafe: true }],
+      code: `
+        type TestType = { a: string; };
+        type TestType2 = { b: number; };
+        const f1 = (x?: boolean | TestType) => x ? 1 : 0;
+        const f2 = (x: TestType | TestType2 | null) => x ? 1 : 0;
+        const f3 = (x?: TestType | TestType2 | null) => x ? 1 : 0;
+        const f4 = (x?: TestType2 | true) => x ? 1 : 0;
+        const f5 = (g?: (x: number) => number) => g ? g(1) : 0;
+      `,
+    },
+    {
+      options: [{ allowNullable: true, allowSafe: true, ignoreRhs: true }],
+      code: `
+        type TestType = { foo? : { bar?: string; }; };
+        const f1 = (x?: TestType) => x && x.foo && x.foo.bar
+        const f2 = (g?: (x: number) => number) => g && g(1)
+      `,
+    },
   ],
 
   invalid: [
@@ -963,6 +992,77 @@ const objAndBool = obj && bool;
       code: `
         const f = (x: null | undefined) => x ? 1 : 0;
         const f = (x?: number) => x ? 1 : 0;
+      `,
+    },
+    {
+      options: [{ allowSafe: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 3,
+          column: 42,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 4,
+          column: 42,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 5,
+          column: 44,
+        },
+      ],
+      code: `
+        type Type = { a: string; };
+        const f1 = (x: Type | string) => x ? 1 : 0;
+        const f2 = (x: Type | number) => x ? 1 : 0;
+        const f3 = (x: number | string) => x ? 1 : 0;
+      `,
+    },
+    {
+      options: [{ allowSafe: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 8,
+          column: 34,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 9,
+          column: 34,
+        },
+      ],
+      code: `
+        enum Enum1 {
+          A, B, C
+        }
+        enum Enum2 {
+          A = 'A', B = 'B', C = 'C'
+        }
+        const f1 = (x: Enum1) => x ? 1 : 0;
+        const f2 = (x: Enum2) => x ? 1 : 0;
+      `,
+    },
+    {
+      options: [{ allowNullable: true, allowSafe: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 3,
+          column: 43,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 4,
+          column: 49,
+        },
+      ],
+      code: `
+        type Type = { a: string; };
+        const f1 = (x?: Type | string) => x ? 1 : 0;
+        const f2 = (x: Type | number | null) => x ? 1 : 0;
       `,
     },
   ],
