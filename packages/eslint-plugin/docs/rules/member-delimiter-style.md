@@ -32,7 +32,7 @@ type Bar = {
 }
 ```
 
-- Linebreak (none) style.
+- Line break (none) style.
 
 <!-- prettier-ignore -->
 ```ts

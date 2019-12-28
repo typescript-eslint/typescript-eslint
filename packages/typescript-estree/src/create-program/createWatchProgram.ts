@@ -355,7 +355,7 @@ function maybeInvalidateProgram(
    */
   let updatedProgram = existingWatch.getProgram().getProgram();
 
-  // In case this change causes problems in larger real world codebases
+  // In case this change causes problems in larger real world code bases
   // Provide an escape hatch so people don't _have_ to revert to an older version
   if (process.env.TSESTREE_NO_INVALIDATION === 'true') {
     return updatedProgram;

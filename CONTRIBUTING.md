@@ -52,6 +52,7 @@ We have a sophisticated CI process setup which gets run on every PR. You must pa
   - You can run `yarn lint` in any package or in the root.
 - If you have made changes to any markdown documentation, ensure there are no spelling errors
   - You can run `yarn check:spelling` in the root.
+  - Or if you are using vscode, you can use [`Code Spell Checker`](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) plugin.
 - If you have made changes within the `eslint-plugin` package, ensure the configs and documentation are valid.
   - You can run `yarn check:configs` and `yarn check:docs` in the root, or in the `eslint-plugin` folder.
 

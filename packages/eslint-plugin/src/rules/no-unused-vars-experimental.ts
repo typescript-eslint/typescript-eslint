@@ -244,7 +244,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function handleDestructure(parent: ts.BindingPattern): void {
-      // the entire desctructure is unused
+      // the entire destructure is unused
       // note that this case only ever triggers for simple, single-level destructured objects
       // i.e. these will not trigger it:
       // - const {a:_a, b, c: {d}} = z;

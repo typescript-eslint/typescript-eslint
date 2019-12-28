@@ -17,7 +17,7 @@ class Container {
 
   public constructor(
     onlyModifiedInConstructor: number,
-    // Private parameter properties can also be marked as reaodnly
+    // Private parameter properties can also be marked as readonly
     private neverModifiedParameter: string,
   ) {
     this.onlyModifiedInConstructor = onlyModifiedInConstructor;

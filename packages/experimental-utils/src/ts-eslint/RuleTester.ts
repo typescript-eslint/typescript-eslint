@@ -23,7 +23,7 @@ interface SuggestionOutput<TMessageIds extends string> {
   messageId: TMessageIds;
   data?: Record<string, unknown>;
   /**
-   * NOTE: Suggestions will be applied as a stand-alone change, without triggering multipass fixes.
+   * NOTE: Suggestions will be applied as a stand-alone change, without triggering multi-pass fixes.
    * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
    */
   output: string;
