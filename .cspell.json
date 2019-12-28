@@ -10,7 +10,7 @@
     "**/**/CHANGELOG.md",
     "**/**/CONTRIBUTORS.md",
     "**/**/ROADMAP.md",
-    "**/*.d.ts"
+    "**/*.{d.ts,json}"
   ],
   "dictionaries": [
     "typescript",
