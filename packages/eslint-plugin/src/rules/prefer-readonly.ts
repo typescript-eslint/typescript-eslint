@@ -1,5 +1,5 @@
 import * as tsutils from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 import { typeIsOrHasBaseType } from '../util';
 import {

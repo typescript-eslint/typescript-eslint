@@ -6,6 +6,7 @@ module.exports = {
     'jest',
     'import',
     'eslint-comments',
+    '@typescript-eslint/internal',
   ],
   env: {
     es6: true,
@@ -117,6 +118,11 @@ module.exports = {
     'import/no-self-import': 'error',
     // Require modules with a single export to use a default export
     'import/prefer-default-export': 'off', // we want everything to be named
+
+    //
+    // Internal repo rules
+    //
+    '@typescript-eslint/internal/no-typescript-default-import': 'error',
   },
   parserOptions: {
     sourceType: 'module',
@@ -127,8 +133,10 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   overrides: [
+    // all test files
     {
       files: [
+        'packages/eslint-plugin-internal/tests/**/*.test.ts',
         'packages/eslint-plugin-tslint/tests/**/*.ts',
         'packages/eslint-plugin/tests/**/*.test.ts',
         'packages/parser/tests/**/*.ts',
@@ -138,6 +146,7 @@ module.exports = {
         'jest/globals': true,
       },
       rules: {
+        'eslint-plugin/no-identical-tests': 'error',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
         'jest/no-alias-methods': 'error',
@@ -152,26 +161,31 @@ module.exports = {
         'jest/valid-expect': 'error',
       },
     },
+    // plugin source files
     {
       files: [
-        'packages/eslint-plugin/tests/**/*.test.ts',
-        'packages/eslint-plugin-tslint/tests/**/*.spec.ts',
+        'packages/eslint-plugin-internal/**/*.ts',
+        'packages/eslint-plugin-tslint/**/*.ts',
+        'packages/eslint-plugin/**/*.ts',
       ],
       rules: {
-        'eslint-plugin/no-identical-tests': 'error',
+        '@typescript-eslint/internal/no-typescript-estree-import': 'error',
       },
     },
+    // rule source files
     {
       files: [
-        'packages/eslint-plugin/src/rules/**/*.ts',
-        'packages/eslint-plugin/src/configs/**/*.ts',
+        'packages/eslint-plugin-internal/src/rules/**/*.ts',
         'packages/eslint-plugin-tslint/src/rules/**/*.ts',
+        'packages/eslint-plugin/src/configs/**/*.ts',
+        'packages/eslint-plugin/src/rules/**/*.ts',
       ],
       rules: {
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
       },
     },
+    // tools and tests
     {
       files: ['**/tools/**/*.ts', '**/tests/**/*.ts'],
       rules: {

@@ -260,7 +260,7 @@ tester.addFixturePatternConfig('javascript/modules', {
     'error-delete',
     'invalid-await',
     'invalid-export-named-default',
-    // babel does not recognise these as modules
+    // babel does not recognize these as modules
     'export-named-as-default',
     'export-named-as-specifier',
     'export-named-as-specifiers',

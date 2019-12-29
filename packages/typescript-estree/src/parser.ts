@@ -1,5 +1,5 @@
 import semver from 'semver';
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import { sync as globSync } from 'glob';
 import isGlob from 'is-glob';
 import { astConverter } from './ast-converter';
@@ -51,8 +51,8 @@ interface ASTAndProgram {
 
 /**
  * @param code The code of the file being linted
- * @param options The config object
- * @param shouldProvideParserServices True iff the program should be attempted to be calculated from provided tsconfig files
+ * @param shouldProvideParserServices True if the program should be attempted to be calculated from provided tsconfig files
+ * @param shouldCreateDefaultProgram True if the program should be created from compiler host
  * @returns Returns a source file and program corresponding to the linted code
  */
 function getProgramAndAST(
@@ -366,7 +366,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   )!;
 
   /**
-   * Determine whether or not two-way maps of converted AST nodes should be preserved
+   * Determine whatever or not two-way maps of converted AST nodes should be preserved
    * during the conversion process
    */
   const shouldPreserveNodeMaps =

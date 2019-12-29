@@ -45,7 +45,7 @@ The rule accepts an options object with the following properties:
 
 ```ts
 type Options = {
-  // if true, checking void expresions will be skipped
+  // if true, checking void expressions will be skipped
   ignoreVoid?: boolean;
 };
 

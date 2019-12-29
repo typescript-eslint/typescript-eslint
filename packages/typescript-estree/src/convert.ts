@@ -1,6 +1,6 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import {
   canContainDirective,
   createError,
@@ -300,20 +300,21 @@ export class Converter {
 
   /**
    * Converts a ts.Node's typeArguments to TSTypeParameterInstantiation node
-   * @param typeArguments ts.Node typeArguments
+   * @param typeArguments ts.NodeArray typeArguments
+   * @param node parent used to create this node
    * @returns TypeParameterInstantiation node
    */
   private convertTypeArgumentsToTypeParameters(
     typeArguments: ts.NodeArray<ts.TypeNode>,
+    node: ts.Node,
   ): TSESTree.TSTypeParameterInstantiation {
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
 
-    return {
+    return this.createNode<TSESTree.TSTypeParameterInstantiation>(node, {
       type: AST_NODE_TYPES.TSTypeParameterInstantiation,
       range: [typeArguments.pos - 1, greaterThanToken.end],
-      loc: getLocFor(typeArguments.pos - 1, greaterThanToken.end, this.ast),
       params: typeArguments.map(typeArgument => this.convertType(typeArgument)),
-    };
+    });
   }
 
   /**
@@ -386,7 +387,7 @@ export class Converter {
     if ('typeArguments' in node) {
       result.typeParameters =
         node.typeArguments && 'pos' in node.typeArguments
-          ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+          ? this.convertTypeArgumentsToTypeParameters(node.typeArguments, node)
           : null;
     }
     if ('typeParameters' in node) {
@@ -1296,7 +1297,10 @@ export class Converter {
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+            ? this.convertTypeArgumentsToTypeParameters(
+                node.typeArguments,
+                node,
+              )
             : undefined,
           tag: this.convertChild(node.tag),
           quasi: this.convertChild(node.template),
@@ -1440,6 +1444,7 @@ export class Converter {
           if (superClass.types[0] && superClass.types[0].typeArguments) {
             result.superTypeParameters = this.convertTypeArgumentsToTypeParameters(
               superClass.types[0].typeArguments,
+              superClass.types[0],
             );
           }
         }
@@ -1781,6 +1786,7 @@ export class Converter {
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments,
+            node,
           );
         }
         return result;
@@ -1798,6 +1804,7 @@ export class Converter {
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments,
+            node,
           );
         }
         return result;
@@ -1958,7 +1965,10 @@ export class Converter {
           openingElement: this.createNode<TSESTree.JSXOpeningElement>(node, {
             type: AST_NODE_TYPES.JSXOpeningElement,
             typeParameters: node.typeArguments
-              ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+              ? this.convertTypeArgumentsToTypeParameters(
+                  node.typeArguments,
+                  node,
+                )
               : undefined,
             selfClosing: true,
             name: this.convertJSXTagName(node.tagName, node),
@@ -1976,7 +1986,10 @@ export class Converter {
         return this.createNode<TSESTree.JSXOpeningElement>(node, {
           type: AST_NODE_TYPES.JSXOpeningElement,
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+            ? this.convertTypeArgumentsToTypeParameters(
+                node.typeArguments,
+                node,
+              )
             : undefined,
           selfClosing: false,
           name: this.convertJSXTagName(node.tagName, node),
@@ -2081,7 +2094,10 @@ export class Converter {
           type: AST_NODE_TYPES.TSTypeReference,
           typeName: this.convertType(node.typeName),
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+            ? this.convertTypeArgumentsToTypeParameters(
+                node.typeArguments,
+                node,
+              )
             : undefined,
         });
       }
@@ -2362,6 +2378,7 @@ export class Converter {
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments,
+            node,
           );
         }
         return result;
@@ -2454,7 +2471,10 @@ export class Converter {
           parameter: this.convertChild(node.argument),
           qualifier: this.convertChild(node.qualifier),
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+            ? this.convertTypeArgumentsToTypeParameters(
+                node.typeArguments,
+                node,
+              )
             : null,
         });
 
