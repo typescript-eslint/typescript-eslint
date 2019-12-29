@@ -6,6 +6,7 @@ import {
   createSnapshotTestBlock,
   formatSnapshotName,
 } from '../../tools/test-utils';
+import { relative } from 'path';
 
 const JSX_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx';
@@ -36,7 +37,12 @@ describe('JSX', () => {
       };
       it(
         formatSnapshotName(filename, fixturesDir),
-        createSnapshotTestBlock(code, config),
+        createSnapshotTestBlock(
+          code,
+          config,
+          undefined,
+          relative(fixturesDir + '/..', filename),
+        ),
       );
     };
   }
