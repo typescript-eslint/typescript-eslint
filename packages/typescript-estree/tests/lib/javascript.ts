@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import glob from 'glob';
+import { relative } from 'path';
 import { TSESTreeOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
@@ -21,7 +22,12 @@ describe('javascript', () => {
     };
     it(
       formatSnapshotName(filename, FIXTURES_DIR),
-      createSnapshotTestBlock(code, config),
+      createSnapshotTestBlock(
+        code,
+        config,
+        undefined,
+        relative(FIXTURES_DIR + '/..', filename),
+      ),
     );
   });
 });

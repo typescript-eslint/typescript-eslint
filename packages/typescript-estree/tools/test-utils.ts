@@ -1,6 +1,8 @@
 import * as parser from '../src/parser';
 import { TSESTreeOptions } from '../src/parser-options';
 
+import 'jest-specific-snapshot';
+
 export function parseCodeAndGenerateServices(
   code: string,
   config: TSESTreeOptions,
@@ -14,12 +16,14 @@ export function parseCodeAndGenerateServices(
  * @param code The source code to parse
  * @param config the parser configuration
  * @param generateServices Flag determining whether to generate ast maps and program or not
+ * @param snapshotPath path to output snapshot file
  * @returns callback for Jest it() block
  */
 export function createSnapshotTestBlock(
   code: string,
   config: TSESTreeOptions,
   generateServices?: true,
+  snapshotPath?: string,
 ): jest.ProvidesCallback {
   /**
    * @returns the AST object
@@ -34,7 +38,13 @@ export function createSnapshotTestBlock(
   return (): void => {
     try {
       const result = parse();
-      expect(result).toMatchSnapshot();
+      if (snapshotPath) {
+        expect(result).toMatchSpecificSnapshot(
+          `./__snapshots__/${snapshotPath}.snap`,
+        );
+      } else {
+        expect(result).toMatchSnapshot();
+      }
     } catch (e) {
       /**
        * If we are deliberately throwing because of encountering an unknown
